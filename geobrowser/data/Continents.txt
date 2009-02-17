@@ -1,0 +1,13 @@
+ContinentID	Continent
+1	Africa
+2	Antarctic Region 
+3	Arctic Region 
+4	Asia 
+5	Central America and the Caribbean 
+6	Central Asia
+7	Europe
+8	Middle East 
+9	North America 
+10	Pacific
+11	South America
+12	Southeast Asia 

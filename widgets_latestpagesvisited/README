@@ -1,0 +1,7 @@
+Latest Pages Visited widget 0.1 for the SilverStripe Blog Module
+11.11.2008
+By nt@sunnysideup.co.nz
+
+Released under the BSD license.
+
+Extract this to your SilverStripe root directory and run "db/build", then visit your blog page and drag and drop the Widget Installer or Theme Installer box to the right.

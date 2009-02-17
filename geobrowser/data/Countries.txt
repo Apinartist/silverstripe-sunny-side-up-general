@@ -1,0 +1,273 @@
+CountryId	Country	FIPS104	ISO2	ISO3	ISON	Internet	Capital	ContinentID	NationalitySingular	NationalityPlural	Currency	CurrencyCode	Population	Title	Comment
+212	Sao Tome and Principe	TP	ST	STP	678	ST	Sao Tome	1	Sao Tomean	Sao Tomeans	Dobra	STD	165034	SÒo TomÚ and PrÝncipe	
+201	RÚunion	RE	RE	REU	638	RE	Saint-Denis	1	Reunionese	Reunionese	Euro	EUR	732570	RÚunion	
+44	Cape Verde	CV	CV	CPV	132	CV	Praia 	1	Cape Verdean	Cape Verdeans	Cape Verdean Escudo 	CVE	405163	Cape Verde	
+51	Clipperton Island	IP	--	-- 	--	--		1					0	Clipperton Island	ISO includes with French Polynesia
+157	Mauritius	MP	MU	MUS	480	MU	Port Louis 	1	Mauritian	Mauritians	Mauritius Rupee	MUR	1189825	Mauritius	
+272	Zaire	--	--	-- 	--	--		1					0	Zaire	see Democratic Republic of the Congo
+3	Algeria	AG	DZ	DZA	12	DZ	Algiers 	1	Algerian	Algerians	Algerian Dinar 	DZD	31736053	Algeria	
+6	Angola	AO	AO	AGO	24	AO	Luanda 	1	Angolan	Angolans	Kwanza 	AOA	10366031	Angola	
+22	Bassas da India	BS	--	-- 	--	--		1					0	Bassas da India	ISO includes with the Miscellaneous (French) Indian Ocean Islands
+26	Benin	BN	BJ	BEN	204	BJ	Porto-Novo  	1	Beninese	Beninese	CFA Franc BCEAO	XOF	6590782	Benin	
+31	Botswana	BC	BW	BWA	72	BW	Gaborone 	1	Motswana	Batswana	Pula 	BWP	1586119	Botswana	
+38	Burkina Faso	UV	BF	BFA	854	BF	Ouagadougou 	1	Burkinabe	Burkinabe	CFA Franc BCEAO	XOF	12272289	Burkina Faso	
+40	Burundi	BY	BI	BDI	108	BI	Bujumbura 	1	Burundi	Burundians	Burundi Franc 	BIF	6223897	Burundi	
+42	Cameroon	CM	CM	CMR	120	CM	Yaounde 	1	Cameroonian	Cameroonians	CFA Franc BEAC	XAF	15803220	Cameroon	
+46	Central African Republic	CT	CF	CAF	140	CF	Bangui 	1	Central African	Central Africans	CFA Franc BEAC	XAF	3576884	The Central African Republic	
+47	Chad	CD	TD	TCD	148	TD	N'Djamena 	1	Chadian	Chadians	CFA Franc BEAC	XAF	8707078	Chad	
+54	Comoros	CN	KM	COM	174	KM	Moroni 	1	Comoran	Comorans	Comoro Franc	KMF	596202	Comoros	
+55	"Congo, Democratic Republic of the"	CG	CD	COD	180	CD	Kinshasa 	1	Congolese	Congolese	Franc Congolais	CDF	53624718	Democratic Republic of the Congo	formerly Zaire
+56	"Congo, Republic of the"	CF	CG	COG	178	CG	Brazzaville 	1	Congolese	Congolese	CFA Franc BEAC	XAF	2894336	Republic of the Congo	
+60	Cote d'Ivoire	IV	CI	CIV	384	CI	Yamoussoukro	1	Ivorian	Ivorians	CFA Franc BCEAO	XOF	16393221	Cote d'Ivoire	
+66	Djibouti	DJ	DJ	DJI	262	DJ	Djibouti 	1	Djiboutian	Djiboutians	Djibouti Franc	DJF	460700	Djibouti	
+71	Egypt	EG	EG	EGY	818	EG	Cairo 	1	Egyptian	Egyptians	Egyptian Pound 	EGP	69536644	Egypt	
+73	Equatorial Guinea	EK	GQ	GNQ	226	GQ	Malabo 	1	Equatorial Guinean	Equatorial Guineans	CFA Franc BEAC	XAF	486060	Equatorial Guinea	
+74	Eritrea	ER	ER	ERI	232	ER	Asmara 	1	Eritrean	Eritreans	Nakfa	ERN	4298269	Eritrea	
+76	Ethiopia	ET	ET	ETH	231	ET	Addis Ababa 	1	Ethiopian	Ethiopians	Ethiopian Birr	ETB	65891874	Ethiopia	
+77	Europa Island	EU	--	-- 	--	--		1					0	Europa Island	ISO includes with the Miscellaneous (French) Indian Ocean Islands
+87	Gabon	GB	GA	GAB	266	GA	Libreville 	1	Gabonese	Gabonese	CFA Franc BEAC	XAF	1221175	Gabon	
+88	The Gambia	GA	GM	GMB	270	GM	Banjul 	1	Gambian	Gambians	Dalasi	GMD	1411205	The Gambia	
+92	Ghana	GH	GH	GHA	288	GH	Accra 	1	Ghanaian	Ghanaians	Cedi	GHC	19894014	Ghana	
+94	Glorioso Islands	GO	--	-- 	--	--		1					0	The Glorioso Islands	ISO includes with the Miscellaneous (French) Indian Ocean Islands
+102	Guinea	GV	GN	GIN	324	GN	Conakry 	1	Guinean	Guineans	Guinean Franc 	GNF	7613870	Guinea	
+103	Guinea-Bissau	PU	GW	GNB	624	GW	Bissau 	1	Guinean	Guineans	CFA Franc BCEAO	XOF	1315822	Guinea-Bissau	
+127	Juan de Nova Island	JU	--	-- 	--	--		1					0	Juan de Nova Island	ISO includes with the Miscellaneous (French) Indian Ocean Islands
+129	Kenya	KE	KE	KEN	404	KE	Nairobi 	1	Kenyan	Kenyans	Kenyan shilling 	KES	30765916	Kenya	
+139	Lesotho	LT	LS	LSO	426	LS	Maseru 	1	Basotho	Mosotho	Loti	LSL	2177062	Lesotho	
+140	Liberia	LI	LR	LBR	430	LR	Monrovia 	1	Liberian	Liberians	Liberian Dollar	LRD	3225837	Liberia	
+141	Libya	LY	LY	LBY	434	LY	Tripoli 	1	Libyan	Libyans	Libyan Dinar	LYD	5240599	Libya	
+147	Madagascar	MA	MG	MDG	450	MG	Antananarivo 	1	Malagasy	Malagasy	Malagasy Franc	MGF	15982563	Madagascar	
+148	Malawi	MI	MW	MWI	454	MW	Lilongwe 	1	Malawian	Malawians	Kwacha	MWK	10548250	Malawi	
+151	Mali	ML	ML	MLI	466	ML	Bamako 	1	Malian	Malians	CFA Franc BCEAO	XOF	11008518	Mali	
+156	Mauritania	MR	MR	MRT	478	MR	Nouakchott 	1	Mauritanian	Mauritanians	Ouguiya	MRO	2747312	Mauritania	
+158	Mayotte	MF	YT	MYT	175	YT	Mamoutzou 	1	Mahorais	Mahorais	Euro	EUR	163366	Mayotte	
+168	Morocco	MO	MA	MAR	504	MA	Rabat 	1	Moroccan	Moroccans	Moroccan Dirham	MAD	30645305	Morocco	
+169	Mozambique	MZ	MZ	MOZ	508	MZ	Maputo 	1	Mozambican	Mozambicans	Metical	MZM	19371057	Mozambique	
+171	Namibia	WA	NA	NAM	516	NA	Windhoek 	1	Namibian	Namibians	Namibian Dollar 	NAD	1797677	Namibia	
+180	Niger	NG	NE	NER	562	NE	Niamey 	1	Nigerien	Nigeriens	CFA Franc BCEAO	XOF	10355156	Niger	
+181	Nigeria	NI	NG	NGA	566	NG	Abuja	1	Nigerian	Nigerians	Naira	NGN	126635626	Nigeria	
+204	Rwanda	RW	RW	RWA	646	RW	Kigali 	1	Rwandan	Rwandans	Rwanda Franc	RWF	7312756	Rwanda	
+205	Saint Helena	SH	SH	SHN	654	SH	Jamestown 	1	Saint Helenian	Saint Helenians	Saint Helenian Pound 	SHP	7266	Saint Helena	
+214	Senegal	SG	SN	SEN	686	SN	Dakar 	1	Senegalese	Senegalese	CFA Franc BCEAO	XOF	10284929	Senegal	
+217	Seychelles	SE	SC	SYC	690	SC	Victoria 	1	Seychellois	Seychellois	Seychelles Rupee	SCR	79715	Seychelles	
+218	Sierra Leone	SL	SL	SLE	694	SL	Freetown 	1	Sierra Leonean	Sierra Leoneans	Leone	SLL	5426618	Sierra Leone	
+223	Somalia	SO	SO	SOM	706	SO	Mogadishu 	1	Somali	Somalis	Somali Shilling	SOS	7488773	Somalia	
+224	South Africa	SF	ZA	ZAF	710	ZA	Pretoria	1	South African	South Africans	Rand	ZAR	43586097	South Africa	
+229	Sudan	SU	SD	SDN	736	SD	Khartoum 	1	Sudanese	Sudanese	Sudanese Dinar	SDD	36080373	Sudan	
+232	Swaziland	WZ	SZ	SWZ	748	SZ	Mbabane 	1	Swazi	Swazis	Lilangeni	SZL	1104343	Swaziland	
+238	Tanzania	TZ	TZ	TZA	834	TZ	Dar es Salaam	1	Tanzanian	Tanzanians	Tanzanian Shilling	TZS	36232074	Tanzania	
+240	Togo	TO	TG	TGO	768	TG	Lome 	1	Togolese	Togolese	CFA Franc BCEAO	XOF	5153088	Togo	
+244	Tromelin Island	TE	--	-- 	--	--		1					0	Tromelin Island	ISO includes with the Miscellaneous (French) Indian Ocean Islands
+245	Tunisia	TS	TN	TUN	788	TN	Tunis 	1	Tunisian	Tunisians	Tunisian Dinar	TND	9705102	Tunisia	
+250	Uganda	UG	UG	UGA	800	UG	Kampala 	1	Ugandan	Ugandans	Uganda Shilling	UGX	23985712	Uganda	
+267	Western Sahara	WI	EH	ESH	732	EH		1	Sahrawian	Sahrawis	Moroccan Dirham	MAD	250559	Western Sahara	
+273	Zambia	ZA	ZM	ZWB	894	ZM	Lusaka 	1	Zambian	Zambians	Kwacha	ZMK	9770199	Zambia	
+274	Zimbabwe	ZI	ZW	ZWE	716	ZW	Harare 	1	Zimbabwean	Zimbabweans	Zimbabwe Dollar	ZWD	11365366	Zimbabwe	
+8	Antarctica	AY	AQ	ATA	10	AQ		2					0	Antarctica	ISO defines as the territory south of 60 degrees south latitude
+32	Bouvet Island	BV	BV	BVT	74	BV		2			Norwegian Krone 	NOK	0	Bouvet Island	
+86	French Southern and Antarctic Lands	FS	TF	ATF	260	TF		2			Euro	EUR	0	The French Southern and Antarctic Lands	FIPS 10-4 does not include the French-claimed portion of Antarctica (Terre Adelie)
+106	Heard Island and McDonald Islands	HM	HM	HMD	334	HM		2			Australian Dollar	AUD	0	The Heard Island and McDonald Islands	
+225	South Georgia and the South Sandwich Islands	SX	GS	SGS	239	GS		2			Pound Sterling	GBP	0	The South Georgia and the South Sandwich Islands	
+96	Greenland	GL	GL	GRL	304	GL	Nuuk 	3	Greenlandic	Greenlanders	Danish Krone	DKK	56352	Greenland	
+112	Iceland	IC	IS	ISL	352	IS	Reykjavik 	3	Icelandic	Icelanders	Iceland Krona	ISK	277906	Iceland	
+121	Jan Mayen	JN	--	-- 	--	--		3			Norway Kroner	NOK	0	Jan Mayen	ISO includes with Svalbard
+231	Svalbard	SV	SJ	SJM	744	SJ	Longyearbyen 	3			Norwegian Krone	NOK	2332	Svalbard	ISO includes Jan Mayen
+1	Afghanistan	AF	AF	AFG	4	AF	Kabul 	4	Afghan	Afghans	Afghani 	AFA	26813057	Afghanistan	
+20	Bangladesh	BG	BD	BGD	50	BD	Dhaka 	4	Bangladeshi	Bangladeshis	Taka 	BDT	131269860	Bangladesh	
+28	Bhutan	BT	BT	BTN	64	BT	Thimphu 	4	Bhutanese	Bhutanese	Ngultrum	BTN	2049412	Bhutan	
+49	China	CH	CN	CHN	156	CN	Beijing 	4	Chinese	Chinese	Yuan Renminbi	CNY	1273111290	China	see also Taiwan
+113	India	IN	IN	IND	356	IN	New Delhi 	4	Indian	Indians	Indian Rupee 	INR	1029991145	India	
+122	Japan	JA	JP	JPN	392	JP	Tokyo 	4	Japanese	Japanese	Yen 	JPY	126771662	Japan	
+132	"Korea, North"	KN	KP	PRK	408	KP	P'yongyang 	4	Korean	Koreans	North Korean Won	KPW	21968228	North Korea	
+133	"Korea, South"	KS	KR	KOR	410	KR	Seoul 	4	Korean	Koreans	Won	KRW	47904370	South Korea	
+150	Maldives	MV	MV	MDV	462	MV	Male 	4	Maldivian	Maldivians	Rufiyaa	MVR	310764	Maldives	
+165	Mongolia	MG	MN	MNG	496	MN	Ulaanbaatar 	4	Mongolian	Mongolians	Tugrik	MNT	2654999	Mongolia	
+174	Nepal	NP	NP	NPL	524	NP	Kathmandu 	4	Nepalese	Nepalese	Nepalese Rupee	NPR	25284463	Nepal	
+187	Pakistan	PK	PK	PAK	586	PK	Islamabad 	4	Pakistani	Pakistanis	Pakistan Rupee	PKR	144616639	Pakistan	
+203	Russia	RS	RU	RUS	643	RU	Moscow 	4	Russian	Russians	Russian Ruble	RUB	145470197	Russia	
+228	Sri Lanka	CE	LK	LKA	144	LK	Colombo	4	Sri Lankan	Sri Lankans	Sri Lanka Rupee	LKR	19408635	Sri Lanka	
+30	Bosnia and Herzegovina	BK	BA	BIH	70	BA	Sarajevo 	7	Bosnian and Herzegovinian	Bosnians and Herzegovinians	Convertible Marka	BAM	3922205	Bosnia and Herzegovina	
+7	Anguilla	AV	AI	AIA	660	AI	The Valley 	5	Anguillan	Anguillans	East Caribbean Dollar 	XCD	12132	Anguilla	
+9	Antigua and Barbuda	AC	AG	ATG	28	AG	Saint John's 	5	Antiguan and Barbudan	Antiguans and Barbudans	East Caribbean Dollar 	XCD	66970	Antigua and Barbuda	
+12	Aruba	AA	AW	ABW	533	AW	Oranjestad 	5	Aruban	Arubans	Aruban Guilder	AWG	70007	Aruba	
+17	The Bahamas	BF	BS	BHS	44	BS	Nassau 	5	Bahamian	Bahamians	Bahamian Dollar 	BSD	297852	The Bahamas	
+21	Barbados	BB	BB	BRB	52	BB	Bridgetown 	5	Barbadian	Barbadians	Barbados Dollar	BBD	275330	Barbados	
+25	Belize	BH	BZ	BLZ	84	BZ	Belmopan 	5	Belizean	Belizeans	Belize Dollar	BZD	256062	Belize	
+35	British Virgin Islands	VI	VG	VGB	92	VG	Road Town 	5	British Virgin Islander	British Virgin Islanders	US Dollar	USD	20812	The British Virgin Islands	
+45	Cayman Islands	CJ	KY	CYM	136	KY	George Town 	5	Caymanian	Caymanians	Cayman Islands Dollar	KYD	35527	The Cayman Islands	
+59	Costa Rica	CS	CR	CRI	188	CR	San Jose 	5	Costa Rican	Costa Ricans	Costa Rican Colon	CRC	3773057	Costa Rica	
+62	Cuba	CU	CU	CUB	192	CU	Havana 	5	Cuban	Cubans	Cuban Peso	CUP	11184023	Cuba	
+67	Dominica	DO	DM	DMA	212	DM	Roseau 	5	Dominican	Dominicans	East Caribbean Dollar	XCD	70786	Dominica	
+68	Dominican Republic	DR	DO	DOM	214	DO	Santo Domingo 	5	Dominican	Dominicans	Dominican Peso	DOP	8581477	The Dominican Republic	
+72	El Salvador	ES	SV	SLV	222	SV	San Salvador 	5	Salvadoran	Salvadorans	El Salvador Colon	SVC	6237662	El Salvador	
+97	Grenada	GJ	GD	GRD	308	GD	Saint George's 	5	Grenadian	Grenadians	East Caribbean Dollar	XCD	89227	Grenada	
+98	Guadeloupe	GP	GP	GLP	312	GP	Basse-Terre 	5	Guadeloupe	Guadeloupians	Euro	EUR	431170	Guadeloupe	
+100	Guatemala	GT	GT	GTM	320	GT	Guatemala 	5	Guatemalan	Guatemalans	Quetzal	GTQ	12974361	Guatemala	
+105	Haiti	HA	HT	HTI	332	HT	Port-au-Prince 	5	Haitian	Haitians	Gourde	HTG	6964549	Haiti	
+108	Honduras	HO	HN	HND	340	HN	Tegucigalpa 	5	Honduran	Hondurans	Lempira	HNL	6406052	Honduras	
+120	Jamaica	JM	JM	JAM	388	JM	Kingston 	5	Jamaican	Jamaicans	Jamaican dollar 	JMD	2665636	Jamaica	
+155	Martinique	MB	MQ	MTQ	474	MQ	Fort-de-France 	5	Martiniquais	Martiniquais	Euro	EUR	418454	Martinique	
+167	Montserrat	MH	MS	MSR	500	MS	Plymouth	5	Montserratian	Montserratians	East Caribbean Dollar	XCD	7574	Montserrat	
+173	Navassa Island	BQ	--	-- 	--	--		5					0	Navassa Island	
+176	Netherlands Antilles	NT	AN	ANT	530	AN	Willemstad 	5	Dutch Antillean	Dutch Antilleans	Netherlands Antillean guilder 	ANG	212226	The Netherlands Antilles	
+179	Nicaragua	NU	NI	NIC	558	NI	Managua 	5	Nicaraguan	Nicaraguans	Cordoba Oro	NIO	4918393	Nicaragua	
+190	Panama	PM	PA	PAN	591	PA	Panama 	5	Panamanian	Panamanians	balboa 	PAB	2845647	Panama	
+199	Puerto Rico	RQ	PR	PRI	630	PR	San Juan 	5	Puerto Rican	Puerto Ricans	US Dollar	USD	3937316	Puerto Rico	
+206	Saint Kitts and Nevis	SC	KN	KNA	659	KN	Basseterre 	5	Kittitian and Nevisian	Kittitians and Nevisians	East Caribbean Dollar 	XCD	38756	Saint Kitts and Nevis	
+207	Saint Lucia	ST	LC	LCA	662	LC	Castries 	5	Saint Lucian	Saint Lucians	East Caribbean Dollar 	XCD	158178	Saint Lucia	
+209	Saint Vincent and the Grenadines	VC	VC	VCT	670	VC	Kingstown 	5	Saint Vincentian	Saint Vincentians	East Caribbean Dollar 	XCD	115942	Saint Vincent and the Grenadines	
+243	Trinidad and Tobago	TD	TT	TTO	780	TT	Port-of-Spain 	5	Trinidadian and Tobagonian	Trinidadians and Tobagonians	Trinidad and Tobago Dollar	TTD	1169682	Trinidad and Tobago	
+248	Turks and Caicos Islands	TK	TC	TCA	796	TC	Cockburn Town 	5			US Dollar	USD	18122	The Turks and Caicos Islands	
+261	Virgin Islands	VQ	VI	VIR	850	VI	Charlotte Amalie 	5	Virgin Islander	Virgin Islanders	US Dollar	USD	122211	The Virgin Islands	
+262	Virgin Islands (UK)	--	--	-- 	--	--		5			US Dollar	USD	0	Virgin Islands (UK)	see British Virgin Islands
+263	Virgin Islands (US)	--	--	-- 	--	--		5			US Dollar	USD	0	Virgin Islands (US)	see Virgin Islands
+11	Armenia	AM	AM	ARM	51	AM	Yerevan 	6	Armenian	Armenians	Armenian Dram 	AMD	3336100	Armenia	
+16	Azerbaijan	AJ	AZ	AZE	31	AZ	Baku (Baki) 	6	Azerbaijani	Azerbaijanis	Azerbaijani Manat 	AZM	7771092	Azerbaijan	
+23	Belarus	BO	BY	BLR	112	BY	Minsk 	6	Belarusian	Belarusians	Belarussian Ruble	BYR	10350194	Belarus	
+90	Georgia	GG	GE	GEO	268	GE	T'bilisi 	6	Georgian	Georgians	Lari	GEL	4989285	Georgia	
+128	Kazakhstan	KZ	KZ	KAZ	398	KZ	Astana 	6	Kazakhstani	Kazakhstanis	Tenge	KZT	16731303	Kazakhstan	
+135	Kyrgyzstan	KG	KG	KGZ	417	KG	Bishkek 	6	Kyrgyzstani	Kyrgyzstanis	Som	KGS	4753003	Kyrgyzstan	
+163	Moldova	MD	MD	MDA	498	MD	Chisinau 	6	Moldovan	Moldovans	Moldovan Leu	MDL	4431570	Moldova	
+237	Tajikistan	TI	TJ	TJK	762	TJ	Dushanbe 	6	Tajikistani	Tajikistanis	Somoni	TJS	6578681	Tajikistan	
+247	Turkmenistan	TX	TM	TKM	795	TM	Ashgabat 	6	Turkmen	Turkmens	Manat	TMM	4603244	Turkmenistan	
+251	Ukraine	UP	UA	UKR	804	UA	Kiev 	6	Ukrainian	Ukrainians	Hryvnia	UAH	48760474	The Ukraine	
+257	Uzbekistan	UZ	UZ	UZB	860	UZ	Tashkent	6	Uzbekistani	Uzbekistanis	Uzbekistan Sum	UZS	25155064	Uzbekistan	
+166	Montenegro	--	--	-- 	--	--		7					0	Montenegro	now included as region within Yugoslavia
+215	Serbia	--	--	-- 	--	--		7					0	Serbia	now included as region within Yugoslavia
+216	Serbia and Montenegro	--	--	-- 	--	--		7					0	Serbia and Montenegro	See Yugoslavia
+2	Albania	AL	AL	ALB	8	AL	Tirana 	7	Albanian	Albanians	Lek 	ALL	3510484	Albania	
+5	Andorra	AN	AD	AND	20	AD	Andorra la Vella 	7	Andorran	Andorrans	Euro	EUR	67627	Andorra	
+15	Austria	AU	AT	AUT	40	AT	Vienna 	7	Austrian	Austrians	Euro	EUR	8150835	Austria	
+24	Belgium	BE	BE	BEL	56	BE	Brussels 	7	Belgian	Belgians	Euro	EUR	10258762	Belgium	
+37	Bulgaria	BU	BG	BGR	100	BG	Sofia 	7	Bulgarian	Bulgarians	Lev 	BGN	7707495	Bulgaria	
+61	Croatia	HR	HR	HRV	191	HR	Zagreb 	7	Croatian	Croats	Kuna	HRK	4334142	Croatia	
+64	Czech Republic	EZ	CZ	CZE	203	CZ	Prague 	7	Czech	Czechs	Czech Koruna	CZK	10264212	The Czech Republic	
+65	Denmark	DA	DK	DNK	208	DK	Copenhagen 	7	Danish	Danes	Danish Krone	DKK	5352815	Denmark	
+75	Estonia	EN	EE	EST	233	EE	Tallinn 	7	Estonian	Estonians	Kroon	EEK	1423316	Estonia	
+79	Faroe Islands	FO	FO	FRO	234	FO	Torshavn 	7	Faroese	Faroese	Danish Krone 	DKK	45661	The Faroe Islands	
+81	Finland	FI	FI	FIN	246	FI	Helsinki 	7	Finnish	Finns	Euro	EUR	5175783	Finland	
+82	France	FR	FR	FRA	250	FR	Paris 	7	Frenchman	Frenchmen	Euro	EUR	59551227	France	
+91	Germany	GM	DE	DEU	276	DE	Berlin 	7	German	Germans	Euro	EUR	83029536	Deutschland	
+93	Gibraltar	GI	GI	GIB	292	GI	Gibraltar 	7	Gibraltar	Gibraltarians	Gibraltar Pound	GIP	27649	Gibraltar	
+95	Greece	GR	GR	GRC	300	GR	Athens 	7	Greek	Greeks	Euro	EUR	10623835	Greece	
+101	Guernsey	GK	--	-- 	--	GG	Saint Peter Port 	7	Channel Islander	Channel Islanders	Pound Sterling	GBP	64342	Guernsey	ISO includes with the United Kingdom
+107	Holy See (Vatican City)	VT	VA	VAT	336	VA	Vatican City 	7			Euro	EUR	890	The Vatican City	
+111	Hungary	HU	HU	HUN	348	HU	Budapest 	7	Hungarian	Hungarians	Forint	HUF	10106017	Hungary	
+117	Ireland	EI	IE	IRL	372	IE	Dublin 	7	Irish	Irishmen	Euro	EUR	3840838	Ireland	
+119	Italy	IT	IT	ITA	380	IT	Rome 	7	Italian	Italians	Euro	EUR	57679825	Italia 	
+124	Jersey	JE	--	-- 	--	JE	Saint Helier 	7	Channel Islander	Channel Islanders	Pound Sterling	GBP	89361	Jersey	ISO includes with the United Kingdom
+137	Latvia	LG	LV	LVA	428	LV	Riga 	7	Latvian	Latvians	Latvian Lats	LVL	2385231	Latvia	
+142	Liechtenstein	LS	LI	LIE	438	LI	Vaduz 	7	Liechtenstein	Liechtensteiners	Swiss Franc	CHF	32528	Liechtenstein	
+143	Lithuania	LH	LT	LTU	440	LT	Vilnius 	7	Lithuanian	Lithuanians	Lithuanian Litas	LTL	3610535	Lithuania	
+144	Luxembourg	LU	LU	LUX	442	LU	Luxembourg 	7	Luxembourg	Luxembourgers	Euro	EUR	442972	Luxembourg	
+146	"Macedonia, The Former Yugoslav Republic of"	MK	MK	MKD	807	MK	Skopje 	7	Macedonian	Macedonians	Denar	MKD	2046209	Makedonija	
+152	Malta	MT	MT	MLT	470	MT	Valletta 	7	Maltese	Maltese	Maltese Lira	MTL	394583	Malta	
+153	"Man, Isle of"	IM	--	-- 	--	IM	Douglas 	7	Manxman	Manxmen	Pound Sterling	GBP	73489	The Isle of Man	ISO includes with the United Kingdom
+164	Monaco	MN	MC	MCO	492	MC	Monaco 	7	Monegasque	Monegasques	Euro	EUR	31842	Monaco	
+175	Netherlands	NL	NL	NLD	528	NL	Amsterdam 	7	Dutchman	Dutchmen	Euro	EUR	15981472	The Netherlands	
+185	Norway	NO	NO	NOR	578	NO	Oslo 	7	Norwegian	Norwegians	Norwegian Krone	NOK	4503440	Norway	
+197	Poland	PL	PL	POL	616	PL	Warsaw 	7	Polish	Poles	Zloty	PLN	38633912	Poland	
+198	Portugal	PO	PT	PRT	620	PT	Lisbon 	7	Portuguese	Portuguese	Euro	EUR	10066253	Portugal	
+202	Romania	RO	RO	ROU	642	RO	Bucharest 	7	Romanian	Romanians	Leu	ROL	22364022	Romania	
+211	San Marino	SM	SM	SMR	674	SM	San Marino 	7	Sammarinese	Sammarinese	Euro	EUR	27336	San Marino	
+220	Slovakia	LO	SK	SVK	703	SK	Bratislava 	7	Slovakian	Slovaks	Slovak Koruna	SKK	5414937	Slovakia	
+221	Slovenia	SI	SI	SVN	705	SI	Ljubljana 	7	Slovenian	Slovenes	Euro	EUR	1930132	Slovenia	
+226	Spain	SP	ES	ESP	724	ES	Madrid 	7	Spanish	Spaniards	Euro	EUR	40037995	Spain	
+233	Sweden	SW	SE	SWE	752	SE	Stockholm 	7	Swedish	Swedes	Swedish Krona	SEK	8875053	Sweden	
+234	Switzerland	SZ	CH	CHE	756	CH	Bern 	7	Swiss	Swiss	Swiss Franc	CHF	7283274	Switzerland	
+253	United Kingdom	UK	GB	GBR	826	UK	London 	7	British	Britons	Pound Sterling	GBP	59647790	The United Kingdom	"ISO includes Guernsey, Isle of Man, Jersey"
+271	Yugoslavia	YI	YU	YUG	891	YU	Belgrade 	7	Serbian	Serbs	Yugoslavian Dinar 	YUM	10677290	Yugoslavia	NULL
+18	Bahrain	BA	BH	BHR	48	BH	Manama 	8	Bahraini	Bahrainis	Bahraini Dinar 	BHD	645361	Bahrain	
+63	Cyprus	CY	CY	CYP	196	CY	Nicosia 	8	Cypriot	Cypriots	Cyprus Pound	CYP	762887	Cyprus	
+89	Gaza Strip	GZ	--	-- 	--	--		8			New Israeli Shekel 	ILS	1178119	The Gaza Strip	
+115	Iran	IR	IR	IRN	364	IR	Tehran 	8	Iranian	Iranians	Iranian Rial	IRR	66128965	Iran	
+116	Iraq	IZ	IQ	IRQ	368	IQ	Baghdad 	8	Iraqi	Iraqis	Iraqi Dinar	IQD	23331985	Iraq	
+118	Israel	IS	IL	ISR	376	IL	Jerusalem	8	Israeli	Israelis	New Israeli Sheqel	ILS	5938093	Israel	
+126	Jordan	JO	JO	JOR	400	JO	Amman 	8	Jordanian	Jordanians	Jordanian Dinar	JOD	5153378	Jordan	
+134	Kuwait	KU	KW	KWT	414	KW	Kuwait 	8	Kuwaiti	Kuwaitis	Kuwaiti Dinar	KWD	2041961	Al Kuwayt	
+138	Lebanon	LE	LB	LBN	422	LB	Beirut 	8	Lebanese	Lebanese	Lebanese Pound	LBP	3627774	Lebanon	
+186	Oman	MU	OM	OMN	512	OM	Muscat 	8	Omani	Omanis	Rial Omani	OMR	2622198	Oman	
+200	Qatar	QA	QA	QAT	634	QA	Doha 	8	Qatari	Qataris	Qatari Rial	QAR	769152	Qatar	
+213	Saudi Arabia	SA	SA	SAU	682	SA	Riyadh 	8	Saudi Arabian 	Saudis	Saudi Riyal	SAR	22757092	Saudi Arabia	
+235	Syria	SY	SY	SYR	760	SY	Damascus 	8	Syrian	Syrians	Syrian Pound	SYP	16728808	Syria	
+246	Turkey	TU	TR	TUR	792	TR	Ankara 	8	Turkish	Turks	Turkish Lira	TRL	66493970	Turkey	
+252	United Arab Emirates	AE	AE	ARE	784	AE	Abu Dhabi 	8	Emirati	Emiratis	UAE Dirham	AED	2407460	The United Arab Emirates	
+266	West Bank	WE	--	-- 	--	--		8			New Israeli Shekel 	ILS	2090713	The West Bank	
+270	Yemen	YM	YE	YEM	887	YE	Sanaa 	8	Yemeni	Yemenis	Yemeni Rial	YER	18078035	Yemen	
+275	"Palestinian Territory, Occupied"	--	PS	PSE	275	PS		8					0	Palestine	NULL
+27	Bermuda	BD	BM	BMU	60	BM	Hamilton 	9	Bermudian	Bermudians	Bermudian Dollar 	BMD	63503	Bermuda	
+43	Canada	CA	CA	CAN	124	CA	Ottawa 	9	Canadian	Canadians	Canadian Dollar 	CAD	31592805	Canada	
+159	Mexico	MX	MX	MEX	484	MX	Mexico 	9	Mexican	Mexicans	Mexican Peso	MXN	101879171	Mexico	
+208	Saint Pierre and Miquelon	SB	PM	SPM	666	PM	Saint-Pierre 	9	Frenchman	Frenchmen	Euro	EUR	6928	Saint Pierre and Miquelon	
+254	United States	US	US	USA	840	US	"Washington, DC "	9	American	Americans	US Dollar	USD	278058881	The United States	
+255	United States Minor Outlying Islands	--	UM	UMI	581	UM		9			US Dollar	USD	0	The United States Minor Outlying Islands	"ISO includes Baker Island, Howland Island, Jarvis Island, Johnston Atoll, Kingman Reef, Midway Islands, Palmyra Atoll, Wake Island"
+268	Western Samoa	--	--	-- 	--	--		10			Tala	WST	0	Western Samoa	see Samoa
+4	American Samoa	AQ	AS	ASM	16	AS	Pago Pago 	10	American Samoan	American Samoans	US Dollar	USD	67084	American Samoa	
+14	Australia	AS	AU	AUS	36	AU	Canberra 	10	Australian	Australians	Australian dollar 	AUD	19357594	Australia	"ISO includes Ashmore and Cartier Islands,Coral Sea Islands"
+19	Baker Island	FQ	--	-- 	--	--		10					0	Baker Island	ISO includes with the US Minor Outlying Islands
+57	Cook Islands	CW	CK	COK	184	CK	Avarua 	10	Cook Islander	Cook Islanders	New Zealand Dollar 	NZD	20611	The Cook Islands	
+58	Coral Sea Islands	CR	--	-- 	--	--		10					0	The Coral Sea Islands	ISO includes with Australia
+80	Fiji	FJ	FJ	FJI	242	FJ	Suva 	10	Fijian	Fijians	Fijian Dollar 	FJD	844330	Fiji	
+85	French Polynesia	FP	PF	PYF	258	PF	Papeete 	10	French Polynesian	French Polynesians	CFP Franc	XPF	253506	French Polynesia	ISO includes Clipperton Island
+99	Guam	GQ	GU	GUM	316	GU	Hagatna	10	Guamanian	Guamanians	US Dollar	USD	157557	Guam	
+110	Howland Island	HQ	--	-- 	--	--		10					7210505	Howland Island	ISO includes with the US Minor Outlying Islands
+123	Jarvis Island	DQ	--	-- 	--	--		10					0	Jarvis Island	ISO includes with the US Minor Outlying Islands
+125	Johnston Atoll	JQ	--	-- 	--	--		10					0	Johnston Atoll	ISO includes with the US Minor Outlying Islands
+130	Kingman Reef	KQ	--	-- 	--	--		10					0	Kingman Reef	ISO includes with the US Minor Outlying Islands
+131	Kiribati	KR	KI	KIR	296	KI	Tarawa 	10	I-Kiribati	I-Kiribati	Australian dollar 	AUD	94149	Kiribati	
+154	Marshall Islands	RM	MH	MHL	584	MH	Majuro 	10	Marshallese	Marshallese	US Dollar	USD	70822	The Marshall Islands	
+160	"Micronesia, Federated States of"	FM	FM	FSM	583	FM	Palikir 	10	Micronesian	Micronesians	US Dollar	USD	134597	The Federated States of Micronesia	
+161	Midway Islands	MQ	--	-- 	--	--		10			United States Dollars	USD	0	The Midway Islands	ISO includes with the US Minor Outlying Islands
+172	Nauru	NR	NR	NRU	520	NR		10	Nauruan	Nauruans	Australian Dollar	AUD	12088	Nauru	
+177	New Caledonia	NC	NC	NCL	540	NC	Noumea 	10	New Caledonian	New Caledonians	CFP Franc	XPF	204863	New Caledonia	
+178	New Zealand	NZ	NZ	NZL	554	NZ	Wellington 	10	New Zealand	New Zealanders	New Zealand Dollar	NZD	3864129	New Zealand	
+182	Niue	NE	NU	NIU	570	NU	Alofi 	10	Niuean	Niueans	New Zealand Dollar	NZD	2124	Niue	
+183	Norfolk Island	NF	NF	NFK	574	NF	Kingston 	10	Norfolk Islander	Norfolk Islanders	Australian Dollar	AUD	1879	Norfolk Island	
+184	Northern Mariana Islands	CQ	MP	MNP	580	MP	Saipan 	10			US Dollar	USD	74612	The Northern Mariana Islands	
+188	Palau	PS	PW	PLW	585	PW	Koror 	10	Palauan	Palauans	US Dollar	USD	19092	Palau	
+189	Palmyra Atoll	LQ	--	-- 	--	--		10					0	Palmyra Atoll	ISO includes with the US Minor Outlying Islands
+191	Papua New Guinea	PP	PG	PNG	598	PG	Port Moresby 	10	Papua New Guinean	Papua New Guineans	Kina	PGK	5049055	Papua New Guinea	
+196	Pitcairn Islands	PC	PN	PCN	612	PN	Adamstown 	10	Pitcairn Islander	Pitcairn Islanders	New Zealand Dollar	NZD	47	The Pitcairn Islands	
+210	Samoa	WS	WS	WSM	882	WS	Apia 	10	Samoan	Samoans	Tala	WST	179058	Samoa	NULL
+222	Solomon Islands	BP	SB	SLB	90	SB	Honiara 	10	Solomon Islander	Solomon Islanders	Solomon Islands Dollar	SBD	480442	The Solomon Islands	
+241	Tokelau	TL	TK	TKL	772	TK		10	Tokelauan	Tokelauans	New Zealand Dollar	NZD	1445	Tokelau	
+242	Tonga	TN	TO	TON	776	TO	Nuku'alofa 	10	Tongan	Tongans	Pa'anga	TOP	104227	Tonga	
+249	Tuvalu	TV	TV	TUV	798	TV	Funafuti 	10	Tuvaluan	Tuvaluans	Australian Dollar	AUD	10991	Tuvalu	
+258	Vanuatu	NH	VU	VUT	548	VU	Port-Vila 	10	Ni-Vanuatu	Ni-Vanuatu	Vatu	VUV	192910	Vanuatu	
+264	Wake Island	WQ	--	-- 	--	--		10			US Dollar	USD	0	Wake Island	ISO includes with the US Minor Outlying Islands
+265	Wallis and Futuna	WF	WF	WLF	876	WF	Mata-Utu	10	Wallis and Futuna Islander	Wallis and Futuna Islanders	CFP Franc	XPF	15435	Wallis and Futuna	
+78	Falkland Islands (Islas Malvinas)	FK	FK	FLK	238	FK	Stanley	11	Falkland Island	Falkland Islanders	Falkland Islands Pound	FKP	2895	The Falkland Islands 	
+53	Colombia	CO	CO	COL	170	CO	Bogota 	11	Colombian	Colombians	Colombian Peso 	COP	40349388	Colombia	
+259	Venezuela	VE	VE	VEN	862	VE	Caracas 	11	Venezuelan	Venezuelans	Bolivar	VEB	23916810	Venezuela	
+10	Argentina	AR	AR	ARG	32	AR	Buenos Aires 	11	Argentine	Argentines	Argentine Peso 	ARS	37384816	Argentina	
+29	Bolivia	BL	BO	BOL	68	BO	La Paz /Sucre 	11	Bolivian	Bolivians	Boliviano 	BOB	8300463	Bolivia	
+33	Brazil	BR	BR	BRA	76	BR	Brasilia 	11	Brazilian	Brazilians	Brazilian Real 	BRL	174468575	Brazil	
+48	Chile	CI	CL	CHL	152	CL	Santiago 	11	Chilean	Chileans	Chilean Peso 	CLP	15328467	Chile	
+70	Ecuador	EC	EC	ECU	218	EC	Quito 	11	Ecuadorian	Ecuadorians	US Dollar	USD	13183978	Ecuador	
+84	French Guiana	FG	GF	GUF	254	GF	Cayenne 	11	French Guianese	French Guianese	Euro	EUR	177562	French Guiana	
+104	Guyana	GY	GY	GUY	328	GY	Georgetown 	11	Guyanese	Guyanese	Guyana Dollar	GYD	697181	Guyana	
+193	Paraguay	PA	PY	PRY	600	PY	Asuncion 	11	Paraguayan	Paraguayans	Guarani	PYG	5734139	Paraguay	
+194	Peru	PE	PE	PER	604	PE	Lima 	11	Peruvian	Peruvians	Nuevo Sol	PEN	27483864	Peru	
+230	Suriname	NS	SR	SUR	740	SR	Paramaribo 	11	Surinamese	Surinamers	Suriname Guilder	SRG	433998	Suriname	
+256	Uruguay	UY	UY	URY	858	UY	Montevideo 	11	Uruguayan	Uruguayans	Peso Uruguayo	UYU	3360105	Uruguay	
+13	Ashmore and Cartier	AT	--	-- 	--	--		12					0	Ashmore and Cartier	ISO includes with Australia
+34	British Indian Ocean Territory	IO	IO	IOT	86	IO		12			US Dollar	USD	0	The British Indian Ocean Territory	
+36	Brunei Darussalam	BX	BN	BRN	96	BN		12			Brunei Dollar	BND	372361	Brunei	
+39	Burma	BM	MM	MMR	104	MM	Rangoon 	12	Burmese	Burmese	kyat 	MMK	41994678	Burma	ISO uses the name Myanmar
+41	Cambodia	CB	KH	KHM	116	KH	Phnom Penh 	12	Cambodian	Cambodians	Riel 	KHR	12491501	Cambodia	
+50	Christmas Island	KT	CX	CXR	162	CX	The Settlement 	12	Christmas Island	Christmas Islanders	Australian Dollar 	AUD	2771	Christmas Island	
+52	Cocos (Keeling) Islands	CK	CC	CCK	166	CC	West Island 	12	Cocos Islander	Cocos Islanders	Australian Dollar 	AUD	633	The Cocos Islands	
+109	Hong Kong (SAR)	HK	HK	HKG	344	HK		12			Hong Kong Dollar 	HKD	0	Xianggang 	
+114	Indonesia	ID	ID	IDN	360	ID	Jakarta 	12	Indonesian	Indonesians	Rupiah	IDR	228437870	Indonesia	
+136	Laos	LA	LA	LAO	418	LA	Vientiane 	12	Lao	Laos	Kip	LAK	5635967	Laos	
+145	Macao	MC	MO	MAC	446	MO		12	Chinese	Chinese	Pataca	MOP	453733	Macao	
+149	Malaysia	MY	MY	MYS	458	MY	Kuala Lumpur 	12	Malaysian	Malaysians	Malaysian Ringgit	MYR	22229040	Malaysia	
+192	Paracel Islands	PF	--	-- 	--	--		12					0	The Paracel Islands	
+195	Philippines	RP	PH	PHL	608	PH	Manila 	12	Philippine	Filipinos	Philippine Peso	PHP	82841518	The Philippines	
+219	Singapore	SN	SG	SGP	702	SG	Singapore 	12	Singaporeian	Singaporeans	Singapore Dollar	SGD	4300419	Singapore	
+227	Spratly Islands	PG	--	-- 	--	--		12					0	The Spratly Islands	
+236	Taiwan	TW	TW	TWN	158	TW	Taipei 	12	Chinese	Chinese	New Taiwan Dollar	TWD	22370461	Taiwan	
+239	Thailand	TH	TH	THA	764	TH	Bangkok 	12	Thai	Thai	Baht	THB	61797751	Thailand	
+260	Vietnam	VM	VN	VNM	704	VN	Hanoi 	12	Vietnamese	Vietnamese	Dong	VND	79939014	Vietnam	
+69	East Timor	TT	TL	TLS	626	TP		12			Timor Escudo	TPE	1040880	East Timor	NULL
+170	Myanmar	--	--	-- 	--	--		12			Kyat	MMK	0	Myanmar	see Burma

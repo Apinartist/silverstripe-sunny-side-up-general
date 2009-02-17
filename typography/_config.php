@@ -1,0 +1,3 @@
+<?php
+TypographyTestPage::setAutoInclude(true);
+

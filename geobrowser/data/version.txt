@@ -1,0 +1,5 @@
+"Component","Version","Rows"
+"GeoWorldMap","2.0.5.8",""
+"Countries","Oct 06, 2008","275"
+"Regions","Oct 31, 2005","3953"
+"Cities","Oct 13, 2008","36666"

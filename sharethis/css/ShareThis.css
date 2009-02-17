@@ -1,0 +1,10 @@
+#shareThisUL{
+	list-style :none;
+}
+
+#shareThisUL li{
+	display:inline;
+}
+#shareThisUL li img{
+	padding-right : 3px;
+}
