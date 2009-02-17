@@ -3,6 +3,9 @@
 
 
 /*
+ * Based on Silverstripe's module
+ * developed by www.sunnysideup.co.nz
+ * author: Nicolaas - modules [at] sunnysideup.co.nz
  *
  * This module allows you to add flashObjects the "correct" way.
  * You can either use a DataObjectDecorator OR just use pre-configured data for your flashobjects

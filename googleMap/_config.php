@@ -1,5 +1,8 @@
 <?php
 /**
+ * developed by www.sunnysideup.co.nz
+ * author: Nicolaas - modules [at] sunnysideup.co.nz
+ *
  * How to work this module
  * 1. review settings below
  * 2. add extension: DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD'));
@@ -31,7 +34,7 @@ ListingPage::add_extension('ListingPage', 'GoogleMapLocationsDOD');
 ListingPage_Controller::add_extension('ListingPage_Controller', 'GoogleMapLocationsDOD_Controller');
 array_push(ListingPage::$extensions, 'GoogleMapLocationsDOD');
 
-define("GoogleMapAPIKey", "ABQIAAAAzfHfmgAlqXWVcxmSxSSiWBS2F6dxwAZs0bBsd4sGT8YhwcFugRRI86HeZ8qw3VGm-QF4uoED2AeOfg");//www.friars.co.nz: ABQIAAAAzfHfmgAlqXWVcxmSxSSiWBT0u1uABmhCXKf7UA7e9DKc_dVTFBRV8rNHoROLOkWHMAzSRI_8PD8mGg
+define("GoogleMapAPIKey", "");
 /* MAP*/
 GoogleMap::setDefaultLatitude(-41.2943);
 GoogleMap::setDefaultLongitude(173.2210);
@@ -85,7 +88,7 @@ GoogleMap::setCustomSearchFormHtml(""); //html for custom form (or other html) o
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
 GoogleMap::setPreloadImages(true); //pre-load marker images
 GoogleMap::setDefaultIconUrl(""); //default Icon Url
-GoogleMap::setIconFolder("http://staging.friars.co.nz.drupalfocus.com/themes/main/images/icons/map/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
+GoogleMap::setIconFolder("http://www.mysite.com/themes/main/images/icons/map/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
 GoogleMap::setIconWidth(20); //default icon width in pixels (e.g. 20)
 GoogleMap::setIconHeight(34); //default icon height in pixels (e.g. 34)
 GoogleMap::setIconExtension("png"); //default icon extension (e.g. png, gif or jpg)

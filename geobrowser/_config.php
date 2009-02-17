@@ -1,3 +1,18 @@
 <?php
 
-BrowseRegionsPage::$allowed_children = array("BrowseRegionsPage", "BusinessPage");
+
+/**
+* developed by www.sunnysideup.co.nz
+* author: Nicolaas modules [at] sunnysideup.co.nz
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+**/

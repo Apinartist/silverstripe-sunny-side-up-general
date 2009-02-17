@@ -1,5 +1,10 @@
 <?php
-/* config stuff goes here */
+
+ /**
+ * based on the Silverstripe Module
+ * developed by www.sunnysideup.co.nz
+ * author: Nicolaas - modules [at] sunnysideup.co.nz
+ **/
 
 LatestPagesVisitedWidget::setNumberOfPagesBack(7);
 
