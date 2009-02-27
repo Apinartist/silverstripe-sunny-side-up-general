@@ -7,18 +7,27 @@
 	<% if getAddAddressFinder %>
 	<div class="findAddressHtml">
 		<a class="searchForAddress" href="#map" onclick="jQuery('#googleMapAddressFinderFieldSet').slideToggle(); return false;">search for address/location</a>
-		<fieldset style="display: none;" id="googleMapAddressFinderFieldSet">
+		<fieldset style="display: none;" id="googleMapAddressFinderFieldSet" class="middleColumn">
 			<input type="text" class="infoTabInputAddress" id="mapAddress2" size="60" value="Enter your address or location" onclick="this.value = '';"/>
 			<input type="button" class="submitButton" id="infoTabSubmitAddress2" value="find locations around your address"/>
 		</fieldset>
 	</div>
 	<% end_if %>
-
+	<% if canEdit %>
+	<div id="googleMapEditLine">
+		<h4>How to update this map?</h4>
+		<ul>
+			<li><b>to add point:</b> right-mouse-click on map</li>
+			<li><b>to delete point:</b> right-mouse-click on marker (icon)</li>
+			<li><b>to update point:</b> left-click on a marker and drag (click on icon, move your mouse while holding the click button down, let go to drop on new location)</li>
+		</ul>
+	</div>
+	<% end_if %>
   <div id="map" style="width: {$getGoogleMapWidth}px; height: {$getGoogleMapHeight}px;">
-	 <% if getShowStaticMapFirst %><a href="#" id="loadMapNowWithinMap" onclick="loadMapScripts(); return false;">$dataPointsStaticMapHTML</a><% end_if %>
+		<% if getShowStaticMapFirst %><a href="#" id="loadMapNowWithinMap" onclick="loadMapScripts(); return false;">$dataPointsStaticMapHTML</a><% end_if %>
 	</div>
 
-	<div id="extraMapOptions typography">
+	<div id="extraMapOptions" class="typography">
    <div id="MapControlsOutsideMap" class="MapExtraInformation">
     <a href="#map" onclick="return !savePosition();">save map position</a> |
     <a href="#map" onclick="return !goToSavedPosition();">back to saved map position</a> |

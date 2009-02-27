@@ -21,7 +21,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 				"HasGeoInfo" => "Boolean",
 			),
 			'has_many' => array(
-				"GeoPoints" => "GoogleMapLocationsDOD"
+				"GeoPoints" => "GoogleMapLocationsObject"
 			),
 			'default' => array()
 		);
@@ -139,7 +139,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	function addAddress($address = '') {
 		$this->initiateMap();
-		if(!$address) {
+		if(!$address && isset($_REQUEST["address"])) {
 			$address = urlencode($_REQUEST["address"]);
 		}
 		if($address) {
@@ -153,6 +153,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	function addUpdateServerUrlAddPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
 		$this->initiateMap();
 		$v = $this->owner->URLSegment."/".$UpdateServerUrlAddPoint;
+		die($v);
 		$this->map->setUpdateServerURLAddPoint($v);
 	}
 
@@ -162,6 +163,10 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		$this->map->setUpdateServerUrlDragend($v);
 	}
 
+	function addAllowAddingAndDeletingPoints() {
+		$this->initiateMap();
+		$this->map->allowAddPointsToMap();
+	}
 
 	/**
 	* NOTE: hello ;-)
@@ -234,29 +239,55 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function showAroundMeXML() {
-		$lon = floatval($_REQUEST["x"]);
-		$lat = floatval($_REQUEST["y"]);
-		$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
-		$where = "(".$orderByRadius.") > 0 AND Latitude <> 0 AND Longitude <> 0";
-		$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, '', self::$number_shown_in_around_me );
-		if(is_object($objects)) {
-			return $this->makeXMLData(null, $objects, "Closest to me", self::$number_shown_in_around_me . " points closest ones");
-		}
-		else {
-			//return false;
+		if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) ) {
+			$lon = floatval($_REQUEST["x"]);
+			$lat = floatval($_REQUEST["y"]);
+			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
+			$where = "(".$orderByRadius.") > 0 AND Latitude <> 0 AND Longitude <> 0";
+			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, '', self::$number_shown_in_around_me );
+			if(is_object($objects)) {
+				return $this->makeXMLData(null, $objects, "Closest to me", self::$number_shown_in_around_me . " points closest ones");
+			}
+			else {
+				//return false;
+			}
 		}
 	}
 
+
 	public function updateMeXML() {
-		$lon = floatval($_REQUEST["x"]);
-		$lat = floatval($_REQUEST["y"]);
-		$id = intval($_REQUEST["i"]);
-		if($lon && $lat && $id) {
-			if($point = DataObject::get_by_id("GoogleMapLocationsObject", $id)) {
-				$point->Latitude = $lat;
-				$point->Longitude = $lon;
-				$point->write();
-				return  "point updated";
+		if($this->owner->canEdit()) {
+			if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) && isset($_REQUEST["i"]) ) {
+				$lon = floatval($_REQUEST["x"]);
+				$lat = floatval($_REQUEST["y"]);
+				$id = intval($_REQUEST["i"]);
+				if($lon && $lat) {
+					if( 0 == $id ) {
+						$point = new GoogleMapLocationsObject;
+						$point->ParentID = $this->owner->ID;
+						$point->Latitude = $lat;
+						$point->Longitude = $lon;
+						$point->write();
+						return $point->ID;
+					}
+					elseif($id > 0) {
+						$point = DataObject::get_by_id("GoogleMapLocationsObject", $id);
+						if($point) {
+							$point->Latitude = $lat;
+							$point->Longitude = $lon;
+							$point->Address = "";
+							$point->FullAddress = "";
+							$point->write();
+							return  "point updated";
+						}
+					}
+					elseif($id < 1) {
+						$point = DataObject::get_by_id("GoogleMapLocationsObject", (-1 * $id));
+						$point->delete();
+						$point = null;
+						return "point deleted";
+					}
+				}
 			}
 		}
 		return  "point could NOT be updated.";

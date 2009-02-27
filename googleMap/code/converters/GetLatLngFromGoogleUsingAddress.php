@@ -3,6 +3,7 @@
 	 * Geocode an address-string to a set of coordinates using Google's free
 	 * geocoding services.
 	 *
+	 * see: http://code.google.com/apis/maps/documentation/geocoding/index.html
 	 *
 	 * CHECKS IF CURL / file_get_contents is available
 	 * Requirements: allow_url_fopen = on
@@ -15,11 +16,12 @@
 	 */
 class GetLatLngFromGoogleUsingAddress extends Object {
 
+
 	public $status;
 
 	public $Value;
 
-	public static $geocode_url = "http://maps.google.com/maps/geo?q=%s&output=json&key=%s";
+	public static $geocode_url = "http://maps.google.com/maps/geo?sensor=false&oe=utf8&q=%s&output=json&key=%s";
 
 	 /**
 		* Instead of asking for a selection on multiple matches,
@@ -99,7 +101,7 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 	*/
 	public static function get_placemark($q, $tryAnyway = 0) {
 		$q = trim($q);
-		$result = DataObject::get_one("GetLatLngFromGoogleUsingAddress_SearchRecord", '`SearchPhrase` = "'.($q).'"');
+		$result = DataObject::get_one("GetLatLngFromGoogleUsingAddressSearchRecord", '`SearchPhrase` = "'.($q).'"');
 		if($result) {
 			return unserialize($result->ResultArray);
 		}
@@ -109,7 +111,7 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 				return "Could not find address";
 			}
 			else {
-				$object = new GetLatLngFromGoogleUsingAddress_SearchRecord();
+				$object = new GetLatLngFromGoogleUsingAddressSearchRecord();
 				$object->SearchPhrase = $q;
 				$object->ResultArray = serialize($responseObj->Placemark[0]);
 				$object->write();
@@ -306,14 +308,3 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 
 
 
-class GetLatLngFromGoogleUsingAddress_SearchRecord extends DataObject {
-
-	static $db = array(
-		"SearchPhrase" => "Text",
-		"ResultArray" => "Text"
-	);
-
-
-
-
-}

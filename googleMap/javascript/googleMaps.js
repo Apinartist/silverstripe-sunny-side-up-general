@@ -2,10 +2,11 @@
 many thanks to : http://econym.googlepages.com/index.htm
 created by www.sunnysideup.co.nz
 to do:
+	-. map.setZoom(marker.accuracy*2 + 3);
+	-. replace add marker title from longitue, lattitude to address
 	-. replace javascript(void) with a warning message that the command did not work.
 	-. allow an icon to be anchored anywhere (right now it is at the center bottom)
 	-. zoom to in xml does not work....
-	-. all markers should have unique ID (e.g. addPointggg0)
 	-. make all human added markers dragable
 	-. implement this:
 <?xml version="1.0" encoding="UTF-8"?>
@@ -31,6 +32,10 @@ to do:
 	2. find id for styleUrl
 		3. get location from styleUrl
 			4. replace icon URL with styleUrl
+
+TO DO:
+
+
 */
 
 var map = null;
@@ -63,9 +68,7 @@ function loadMap() {
 				infoWindowOptions:{maxWidth:280, zoomLevel:17, mapType:G_HYBRID_MAP},
 				addAntipodean:true,
 				addDirections:true,
-				addCustomSearchForm:true,
-				customSearchFormName: "my content",
-				customSearchFormHtml: "put your own custom content here",
+				addCurrentAddressFinder:true,
 /* MARKER AND ICONS (include title to have a title)*/
 				addPointsToMap:true,
 				markerOptions:{bouncy:true,title: "click me"},
@@ -161,7 +164,6 @@ function GMC(mapDivName, url, opts) {
 	if(!this.opts.defaultLongitude) {  this.opts.defaultLongitude = NZLongitude; }
 	if(!this.opts.defaultZoom) {  this.opts.defaultZoom = NZZoom; }
 	if(!this.opts.defaultTitle) {this.opts.defaultTitle = "Map Ready"; }
-	if(!this.opts.customSearchFormName) {this.opts.customSearchFormName + "Around Here";}
 	var el = null;
 	//clear html areas
 	if(this.opts.changePageTitle) {document.title = this.opts.defaultTitle;}
@@ -236,11 +238,24 @@ GMC.prototype.setupMap = function (mapDivName) {
 		}
 	);
 	GEvent.addListener(map, "singlerightclick", function(point, image, marker) {
-			if(marker.markerName) {
+			if(marker) {
 				//GEvent.trigger(marker, "clickHideMe");
 				marker.hide();
 				map.closeInfoWindow();
 				GMO.updateLists();
+				if(GMO.opts.updateServerUrlDragend) {
+					//delete marker from database....
+					var lng = marker.getPoint().lng();
+					var lat = marker.getPoint().lat();
+					var id = marker.serverId * -1;
+					jQuery.get(
+						GMO.opts.updateServerUrlDragend,
+						{ x: lng, y: lat, i: id },
+						function(data){
+							GMO.updateStatus('<p>' + data + '</p>');
+						}
+					);
+				}
 			}
 			else {
 				point = map.fromContainerPixelToLatLng(point);
@@ -273,9 +288,6 @@ GMC.prototype.addViewFinder = function (width, height) {
 		function() {
 			var mini = ovMap.getOverviewMap();
 			ovMap.hide(true);
-			GEvent.addListener(mini,"load",function(){
-				ovMap.hide(true);
-			});
 		}, 1000
 	);
 }
@@ -466,7 +478,7 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 		});
 	}
 	var moveNotice = '';
-	if(m.draggable()) {
+	if(m.draggable) {
 		moveNotice = ' - <b>marker can be dragged to new location once this info window has been closed</b>';
 	}
 	if(hiddenMarkerArray.length) {
@@ -558,8 +570,30 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 		}
 		tabsHtml.push(new GInfoWindowTab("directions", '<div id="infoWindowTab2" class="infoWindowTab">' + findDirections + '</div>' ));
 	}
-	if(this.opts.addCustomSearchForm) {
-		tabsHtml.push(new GInfoWindowTab(this.opts.customSearchFormName, '<div id="infoWindowTab3" class="infoWindowTab">' + this.opts.customSearchFormHtml + '</div>'));
+	if(this.opts.addCurrentAddressFinder) {
+		tabsHtml.push(new GInfoWindowTab("address", '<div id="infoWindowTab3" class="infoWindowTab"><a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'findAddressFromLngLat\')">find address</a></div>'));
+		GEvent.addListener(m, "findAddressFromLngLat",
+			function() {
+				geocoder = new GClientGeocoder();
+				geocoder.getLocations(
+					m.getLatLng(),
+					function(response) {
+						var html = '<p>Address not found</p>';
+						if (!response || response.Status.code != 200) {
+							var html = '<p>Address could not be retrieved from server</p>';
+						}
+						else {
+							place = response.Placemark[0];
+							if(place) {
+								var html = place.address;
+							}
+						}
+						html += '<hr /><h2>This is NOT necessarily the actual address for '+m.markerName+'. The address above is the address (as provided by Google Maps) of the marker on the map.</h2>';
+						jQuery("#infoWindowTab3").html(html);
+					}
+				);
+			}
+		);
 	}
 	m.openInfoWindowTabsHtml(tabsHtml,options);
 }
@@ -641,6 +675,7 @@ GMC.prototype.createStandardIcon = function(iconUrl) {
 /* process XML sheets */
 GMC.prototype.createPointXml = function (name, pointLngLat, description, latitude, longitude, zoom, info) {//creates XML for one point only
 	//change first three to arrays
+
 	var serverId = "Marker_manuallyAdded" + GMO.layerInfo.length;
 	var string = '<?xml version="1.0" encoding="UTF-8"?>'
 	+ '<kml xmlns="http://earth.google.com/kml/2.1"><Document>'
@@ -658,6 +693,24 @@ GMC.prototype.createPointXml = function (name, pointLngLat, description, latitud
 	+ '</Placemark>'
 	+ '</Document>'
 	+'</kml>';
+	if(GMO.opts.updateServerUrlDragend) {
+		var pointLngLatArray = pointLngLat.split(',');
+		var lng = parseFloat(pointLngLatArray[0]);
+		var lat = parseFloat(pointLngLatArray[1]);
+		jQuery.get(
+			GMO.opts.updateServerUrlDragend,
+			{ x: lng, y: lat, i: 0 },
+			function(data){
+				if(parseInt(data) > 0) {
+					GMO.updateStatus('<p>added point to database</p>');
+					GMO.lastMarker.serverId = data;
+				}
+				else {
+					GMO.updateStatus('<p>could NOT add point to database</p>');
+				}
+			}
+		);
+	}
 	return string;
 }
 

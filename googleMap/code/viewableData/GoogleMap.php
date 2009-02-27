@@ -52,12 +52,9 @@ class GoogleMap extends ViewableData {
 		static function setAddAntipodean($v) {self::$AddAntipodean = $v;}
 	protected static $AddDirections = false;
 		static function setAddDirections($v) {self::$AddDirections = $v;}
-	protected static $AddCustomSearchForm = false;
-		static function setaddCustomSearchForm($v) {self::$AddCustomSearchForm = $v;}
-	protected static $CustomSearchFormHtml = false;
-		static function setCustomSearchFormHtml($v) {self::$CustomSearchFormHtml = $v;}
-	protected static $CustomSearchFormName = "";
-		static function setCustomSearchFormName($v) {self::$CustomSearchFormName = $v;}
+	protected static $AddCurrentAddressFinder = false;
+		static function setAddCurrentAddressFinder($v) {self::$AddCurrentAddressFinder = $v;}
+
 
 	/* MARKERS */
 	protected static $AddPointsToMap = false;
@@ -162,15 +159,22 @@ class GoogleMap extends ViewableData {
 	protected $filteredClassNameArray = Array();
 
 	/* SERVER INTERACTION */
-	protected $UpdateServerUrlAddPoint = "";
+	protected $UpdateServerUrlAddressSearchPoint = "";
 	protected $UpdateServerUrlDragend = "";
 
 	/* Option 1 / 3 Set Address and update functions for Map */
 	public function setAddress($v) {$this->Address = Convert::raw2js($v);}
-	public function setUpdateServerUrlAddPoint($v) {$this->UpdateServerUrlAddPoint = Director::absoluteBaseURL().$v;}
-	public function getUpdateServerURLAddPoint() {return $this->UpdateServerUrlAddPoint;}
+	public function setUpdateServerUrlAddressSearchPoint($v) {$this->UpdateServerUrlAddressSearchPoint = Director::absoluteBaseURL().$v;}
+	public function getUpdateServerURLAddressSearchPoint() {return $this->UpdateServerUrlAddressSearchPoint;}
 	public function setUpdateServerUrlDragend($v) {$this->UpdateServerUrlDragend = Director::absoluteBaseURL().$v; }
 	public function getUpdateServerUrlDragend() {return $this->UpdateServerUrlDragend;}
+	public function allowAddPointsToMap() {self::$AddPointsToMap = true;}
+
+	public function canEdit() {
+		if($this->UpdateServerUrlDragend) {
+			return true;
+		}
+	}
 
 	public function orderItemsByLatitude($unsortedSet = null) {
 		if(!$unsortedSet) {
@@ -377,9 +381,7 @@ class GoogleMap extends ViewableData {
 				infoWindowOptions:'.self::$InfoWindowOptions.',
 				addAntipodean:'.$this->showFalseOrTrue(self::$AddAntipodean).',
 				addDirections:'.$this->showFalseOrTrue(self::$AddDirections).',
-				addCustomSearchForm:'.$this->showFalseOrTrue(self::$AddCustomSearchForm).',
-				customSearchFormName: "'.self::$CustomSearchFormName.'",
-				customSearchFormHtml: "'.Convert::raw2js(self::$CustomSearchFormHtml).'",
+				addCurrentAddressFinder:'.$this->showFalseOrTrue(self::$AddCurrentAddressFinder).',
 		/* MARKER AND ICONS (include title to have a title)*/
 				addPointsToMap:'.$this->showFalseOrTrue(self::$AddPointsToMap).',
 				markerOptions: {bouncy:true,title: "click me", draggable: true},
@@ -408,7 +410,7 @@ class GoogleMap extends ViewableData {
 				defaultLongitude:'.intval(self::$DefaultLongitude+0).',
 				defaultZoom:'.intval(self::$DefaultZoom+0).',
 		/* SERVER INTERACTION */
-				updateServerUrlAddPoint: "'.$this->getUpdateServerUrlAddPoint().'",
+				updateServerUrlAddressSearchPoint: "'.$this->getUpdateServerUrlAddressSearchPoint().'",
 				updateServerUrlDragend: "'.$this->getupdateServerUrlDragend().'",
 				latFormFieldId:"'.self::$LatFormFieldId.'",
 				lngFormFieldId:"'.self::$LngFormFieldId.'",

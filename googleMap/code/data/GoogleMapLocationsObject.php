@@ -68,8 +68,8 @@ class GoogleMapLocationsObject extends DataObject {
 			new HiddenField('ParentID', 'ParentID', $parentPageID)
 		);
 		$fieldset->push(new HeaderField('Auto-completed (not required)', 2));
-		$fieldset->push(new NumericField('Latitude', 'Latitude'));
-		$fieldset->push(new NumericField('Longitude', 'Longitude'));
+		$fieldset->push(new TextField('Latitude', 'Latitude'));
+		$fieldset->push(new TextField('Longitude', 'Longitude'));
 		$fieldset->push(new TextField('PointString', 'PointString'));
 		$fieldset->push(new TextField('FullAddress', 'Found Address'));
 		$fieldset->push(new NumericField('Accuracy', 'Accuracy'));
@@ -110,38 +110,67 @@ class GoogleMapLocationsObject extends DataObject {
 		$this->GeoPointField->setX($this->Longitude);
 		parent::onBeforeWrite();
 		*/
-		$this->findGooglePoints();
+		$this->findGooglePoints(true);
 	}
 
 	function completePoints() {
-		$uncompletedPoints = DataObject::get("GoogleMapLocationsObject", '`GoogleMapLocationsObject`.`Address` <> `GoogleMapLocationsObject`.`FullAddress` AND `GoogleMapLocationsObject`.`Manual` <> 1 AND `GoogleMapLocationsObject`.`Address` <> IsNull AND `GoogleMapLocationsObject`.`Address` <');
+		$uncompletedPoints = DataObject::get("GoogleMapLocationsObject", '((`GoogleMapLocationsObject`.`Address` <> `GoogleMapLocationsObject`.`FullAddress`) OR (`GoogleMapLocationsObject`.`Address` = IsNull OR `GoogleMapLocationsObject`.`Address` = "")) AND `GoogleMapLocationsObject`.`Manual` <> 1 AND `GoogleMapLocationsObject`.`Address` <> IsNull AND ((`GoogleMapLocationsObject`.`Address`) <> "" OR (`GoogleMapLocationsObject`.`Longitude`<> 0 AND `GoogleMapLocationsObject`.`Latitude` <> 0 AND (`GoogleMapLocationsObject`.`Address` = "" OR `GoogleMapLocationsObject`.`Address` = IsNull))');
 		if($uncompletedPoints) {
 			foreach($uncompletedPoints as $point) {
-				$point->findGooglePoints();
+				$point->findGooglePoints(false);
 			}
 		}
 	}
-	function findGooglePoints() {
+	function findGooglePoints($doNotWrite) {
 		if($this) {
-			if(!$this->Manual && (!$this->Latitude || !$this->Longitude)) {
+			if(!$this->Manual && ( (!$this->Latitude || !$this->Longitude) || ($this->Latitude && $this->Longitude && !$this->Address) ) ) {
 				if($this->Address) {
 					$newData = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($this->Address);
-					$this->addDataFromArray($newData);
 				}
+				else {
+					$newData = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($this->Latitude.",".$this->Longitude);
+				}
+				$this->addDataFromArray($newData, $doNotWrite);
 			}
 		}
 	}
 
-	function addDataFromArray($newData) {
-		if(isset($newData["address"])) {$this->FullAddress = $newData["address"]; $this->Address = $newData["address"];}
-		if(isset($newData[0])) {$this->Longitude = $newData[0];}
-		if(isset($newData[1])) {$this->Latitude = $newData[1];}
+	function addDataFromArray($newData, $doNotWrite = false) {
+		if(isset($newData["address"])) {$this->FullAddress = $newData["address"]; }
+		$option = "";
+		foreach($newData as $key => $value) {
+			if("0" == $key && floatval($value)) {
+				$option .= "A";
+				$this->Longitude = $value;
+			}
+			elseif("1" == $key &&  floatval($value) && "A" == $option) {
+				$option .= "B";
+				$this->Latitude = $value;
+			}
+			elseif("1" == $key && floatval($value) && "A" != $option) {
+				$option .= "C";
+				$this->Longitude = $value;
+			}
+			elseif("2" == $key && floatval($value) && "C" == $option) {
+				$option .= "D";
+				$this->Latitude = $value;
+			}
+		}
 		if(isset($newData["CountryNameCode"])) {$this->CountryNameCode = $newData["CountryNameCode"];}
 		if(isset($newData["AdministrativeAreaName"])) {$this->AdministrativeAreaName = $newData["AdministrativeAreaName"];}
 		if(isset($newData["SubAdministrativeAreaName"])) {$this->SubAdministrativeAreaName = $newData["SubAdministrativeAreaName"];}
 		if(isset($newData["LocalityName"])) {$this->LocalityName = $newData["LocalityName"];}
 		if(isset($newData["ThoroughfareName"])) {$this->ThoroughfareName = $newData["ThoroughfareName"];}
 		if(isset($newData["PostalCodeNumber"])) {$this->PostalCodeNumber = $newData["PostalCodeNumber"];}
-		$this->Write();
+		if(isset($newData["Accuracy"])) {
+			$this->Accuracy = $newData["Accuracy"];
+			if($newData["Accuracy"]> 2) {
+				$this->Address = $newData["address"];
+			}
+		}
+		if(!$doNotWrite) {
+		/* AS THIS IS A onBeforeWrite there is NO POINT in writing!!!!! */
+			$this->write();
+		}
 	}
 }
