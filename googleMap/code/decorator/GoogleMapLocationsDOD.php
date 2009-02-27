@@ -150,11 +150,11 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 	}
 
-	function addUpdateServerUrlAddPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
+	function addUpdateServerUrlSearchAddressPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
 		$this->initiateMap();
 		$v = $this->owner->URLSegment."/".$UpdateServerUrlAddPoint;
 		die($v);
-		$this->map->setUpdateServerURLAddPoint($v);
+		$this->map->setUpdateServerURLSearchAddressPoint($v);
 	}
 
 	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "updateMeXML/?getXML=1") {
