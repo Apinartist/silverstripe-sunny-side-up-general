@@ -1,4 +1,35 @@
 ___________________________________
+Features (some still to do)
+-----------------------------------
+* add one or more locations per page
+* convert addresses to LAT LNG
+* convert LAT LNG to addresses
+* map with the following side features
+ - warns when points are overlapping
+ - lists of points and layers with ability to hide
+ - move markers
+ - add markers
+ - delete markers
+ - find antipodeans
+ - find around me (points closest to point)
+ - add polygons, lines and points
+ - add directions
+ - customise the...
+   - icons
+	 - map size
+	 - viewfinder
+	 - zoom
+	 - map type
+	 - map control type
+	 - starting lat, lng, zoom
+	 - infowindow
+	 - country
+	 - locale
+* static maps and interactive maps
+* use data directly in GoogleEarth Application
+* update database using map itself (e.g. drag marker to update location)
+
+___________________________________
 Concept
 -----------------------------------
 
@@ -12,6 +43,13 @@ From there, the module works out what points it should use.
 Interaction:
 If the user can edit the current page, then it can also edit the locations (points) associated with current page.
 Add/Edit/Delete can be done on the map itself.
+
+How it works:
+Basically,  you add a bunch of pages to the viewer, using the decorator.
+The viewer then creates a XML dataset, and JS files.
+The JS scripts are loaded inline with html and load the map
+The JS scripts also use ajax to retrieve data for map (as xml).
+The XML file can be used as a KML file for Google Earth as well.
 
 ___________________________________
 How to install and use this module
@@ -41,6 +79,7 @@ To Do PHP
 - NO STATIC option
 - NO dynamic option
 - static maps not working
+- layer management
 - implement:
 
 
