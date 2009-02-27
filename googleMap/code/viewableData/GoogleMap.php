@@ -1,13 +1,7 @@
 <?php
 /**
- * This object is a highly customisable object
- * it requires google data points as input
- * it can load a google map to your page and return datapoints as XML
- * you implement it in a page controller by adding:
- * function init() { $m = new GoogleMap(); $m->loadGoogleMap($this->URLSegment."/returnXMLData")}
- * function returnXMLData() { $this->renderWith("GoogleMapXml"); $m = new GoogleMap(); $m->setDataObject(...); return $m->getXmlDataPoints; }
- * SHOULD BE CHANGE TO RequestHandlingData *************** see http://pastie.org/292754
-	*/
+
+**/
 class GoogleMap extends ViewableData {
 
 	static $includesDone = false;// this is a hack to avoid having multiple includes
@@ -181,7 +175,7 @@ class GoogleMap extends ViewableData {
 			$unsortedSet = $this->dataPointsObjectSet;
 		}
 		$sortedSet = new DataObjectSet();
-		if($unsortedSet->Count()) {
+		if($unsortedSet->count()) {
 			foreach($unsortedSet as $item) {
 				$tempArray[$item->Latitude] = $item;
 			}
@@ -256,8 +250,19 @@ class GoogleMap extends ViewableData {
 
 	public function getDataPointCount() {
 		if($this->dataPointsObjectSet) {
-			return $this->dataPointsObjectSet->Count();
+			return $this->dataPointsObjectSet->count();
 		}
+		elseif($this->GooglePointsDataObject){
+			return $this->GooglePointsDataObject->count();
+		}
+		elseif(isset($_SESSION["addCustomGoogleMap"])) {
+			return count($_SESSION["addCustomGoogleMap"]);
+		}
+		return 0;
+	}
+
+	public function EnoughPointsForAList() {
+		if($this->getDataPointCount() > 1) {return true;} else {return false;}
 	}
 
 	public function URLSegment() {
@@ -283,6 +288,7 @@ class GoogleMap extends ViewableData {
 		$this->dataPointsXML = '';
 		$this->dataPointsObjectSet = New DataObjectSet();
 		$this->loadDefaults();
+		$idArray = array();
 		if(self::$GoogleMapWidth > 512) { $staticMapWidth = 512;	}	else { $staticMapWidth = self::$GoogleMapWidth;	}
 		if(self::$GoogleMapHeight > 512) { $staticMapHeight = 512;	}	else { $staticMapHeight = self::$GoogleMapHeight;	}
 		$this->dataPointsStaticMapHTML = "size=".$staticMapWidth."x".$staticMapHeight;
@@ -296,43 +302,46 @@ class GoogleMap extends ViewableData {
 			foreach($this->GooglePointsDataObject as $dataPoint) {
 				$dataPoint->addParentData();
 				if(!count($this->filteredClassNameArray) || in_array($dataPoint->ClassName, $this->filteredClassNameArray)) {
-					if($dataPoint->PointType == "polygon") {
-						$dataLine = '<Polygon><outerBoundaryIs><LinearRing><coordinates>'.$dataPoint->PointString.'</coordinates></LinearRing></outerBoundaryIs></Polygon>';
+					if(!in_array($dataPoint->ID, $idArray)) {
+						if($dataPoint->PointType == "polygon") {
+							$dataLine = '<Polygon><outerBoundaryIs><LinearRing><coordinates>'.$dataPoint->PointString.'</coordinates></LinearRing></outerBoundaryIs></Polygon>';
+						}
+						elseif($dataPoint->PointType == "polyline") {
+							$dataLine = '<LineString><coordinates>'.$dataPoint->PointString.'</coordinates></LineString>';
+						}
+						else {
+							$dataLine = '<Point><coordinates>'.$dataPoint->Longitude.','.$dataPoint->Latitude.'</coordinates></Point>';
+						}
+						$link = '';
+						if($dataPoint->URLSegment) {
+							$link = $dataPoint->AjaxInfoWindowLink;
+						}
+						if($dataPoint->staticIcon) {
+							$staticIcon = $dataPoint->staticIcon;
+						}
+						else {
+							$staticIcon = self::$StaticIcon;
+						}
+						if($count) {
+						 $this->dataPointsStaticMapHTML .= '|';
+						}
+						$center = round($dataPoint->Latitude, 6).",".round($dataPoint->Longitude, 6);
+						if(!$count) {
+							$defaultCenter = $center;
+						}
+						$this->dataPointsStaticMapHTML .= $center.",".$staticIcon;
+						$pointsXml .=
+									'<Placemark>'.
+									'<id>'.$dataPoint->ID.'</id>'.
+									'<name>'.Convert::raw2xml($dataPoint->Name).'</name>'.
+									$dataLine.
+									'<description><![CDATA[ '.$dataPoint->AjaxInfoWindowLink.']]></description>'.
+									'</Placemark>';
+						$this->dataPointsObjectSet->push($dataPoint);
+						$count++;
 					}
-					elseif($dataPoint->PointType == "polyline") {
-						$dataLine = '<LineString><coordinates>'.$dataPoint->PointString.'</coordinates></LineString>';
-					}
-					else {
-						$dataLine = '<Point><coordinates>'.$dataPoint->Longitude.','.$dataPoint->Latitude.'</coordinates></Point>';
-					}
-					$link = '';
-					if($dataPoint->URLSegment) {
-						$link = $dataPoint->AjaxInfoWindowLink;
-					}
-					if($dataPoint->staticIcon) {
-						$staticIcon = $dataPoint->staticIcon;
-					}
-					else {
-						$staticIcon = self::$StaticIcon;
-					}
-					if($count) {
-					 $this->dataPointsStaticMapHTML .= '|';
-					}
-					$center = round($dataPoint->Latitude, 6).",".round($dataPoint->Longitude, 6);
-					if(!$count) {
-						$defaultCenter = $center;
-					}
-					$this->dataPointsStaticMapHTML .= $center.",".$staticIcon;
-					$pointsXml .=
-								'<Placemark>'.
-								'<id>'.$dataPoint->ID.'</id>'.
-								'<name>'.Convert::raw2xml($dataPoint->Name).'</name>'.
-								$dataLine.
-								'<description><![CDATA[ '.$dataPoint->AjaxInfoWindowLink.']]></description>'.
-								'</Placemark>';
-					$this->dataPointsObjectSet->push($dataPoint);
-					$count++;
 				}
+				$idArray[$dataPoint->ID] = $dataPoint->ID;
 			}
 			if($count == 1) {
 				$this->dataPointsStaticMapHTML .= '&amp;center='.$defaultCenter.'&amp;zoom='.self::$DefaultZoom;

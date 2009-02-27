@@ -1,42 +1,7 @@
-/*
-many thanks to : http://econym.googlepages.com/index.htm
-created by www.sunnysideup.co.nz
-to do:
-	-. map.setZoom(marker.accuracy*2 + 3);
-	-. replace add marker title from longitue, lattitude to address
-	-. replace javascript(void) with a warning message that the command did not work.
-	-. allow an icon to be anchored anywhere (right now it is at the center bottom)
-	-. zoom to in xml does not work....
-	-. make all human added markers dragable
-	-. implement this:
-<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://earth.google.com/kml/2.2">
-<Document>
-			<Style id="randomColorIcon">
-						<IconStyle>
-									<Icon>
-												<href>http://maps.google.com/mapfiles/kml/pal3/icon21.png</href>
-									</Icon>
-						</IconStyle>
-			</Style>
-			<Placemark>
-						<name>IconStyle.kml</name>
-						<styleUrl>#randomColorIcon</styleUrl>
-						<Point>
-									<coordinates>-122.36868,37.831145,0</coordinates>
-						</Point>
-			</Placemark>
-</Document>
-</kml>
-1. if points has styleUrl
-	2. find id for styleUrl
-		3. get location from styleUrl
-			4. replace icon URL with styleUrl
+/**
+	many thanks to : http://econym.googlepages.com/index.htm
+**/
 
-TO DO:
-
-
-*/
 
 var map = null;
 var geocoder = null;
@@ -853,7 +818,7 @@ GMC.prototype.processXml = function(doc) {
 			map.closeInfoWindow();
 		}
 		if(pointCount > 1) {
-			this.updateStatus(pointCount + " points added.");
+			this.updateStatus(pointCount + " locations added.");
 		}
 		else {
 			window.setTimeout(
@@ -863,7 +828,7 @@ GMC.prototype.processXml = function(doc) {
 				}
 				, 300
 			);
-			this.updateStatus("One point loaded.");
+			this.updateStatus("One location loaded.");
 		}
 	}
 	else {
@@ -879,10 +844,10 @@ GMC.prototype.processXml = function(doc) {
 
 GMC.prototype.tooManyPointsWarning = function(pointCount) {
 	if(pointCount > 100) {
-		this.updateStatus("In total, " + pointCount + " points are being loaded. It may take a while for all the points to show on the map, please be patient.");
+		this.updateStatus("In total, " + pointCount + " location are being loaded. It may take a while for all the locations to show on the map, please be patient.");
 	}
 	else if(pointCount == 0) {
-		this.updateStatus("No points could be found.");
+		this.updateStatus("No locations could be found.");
 	}
 }
 
@@ -1115,10 +1080,10 @@ GMC.prototype.updateAddressFormFields = function(latitude, longitude) {
 /* special searches: find route */
 GMC.prototype.showRoute = function() {
 	if(!this.floatFrom) {
-		this.updateStatus("No valid starting point has been selected.");
+		this.updateStatus("No valid start location has been selected.");
 	}
 	else if(!this.floatTo) {
-		this.updateStatus("No valid end point has been selected.");
+		this.updateStatus("No valid end location has been selected.");
 	}
 	else {
 		GMO.routeShown = true;
@@ -1505,6 +1470,8 @@ GMC.prototype.helpHtml = function () {
 		+ '<li><b>Finding directions</b> can be done by clicking on a first marker and choosing <i>from here</i> under the <i>directions</i> tab, then doing the same for another marker choosing the <i>to here</i> link. Finally, click on the <i>calculate route</i> link at the bottom of the <i>directions</i> tab and the map will calculate your route.</li>';
 	}
 	string += ''
+		+ '<li>many thanks to: http://econym.googlepages.com</li>'
+		+ '<li>module developed by www.sunnysideup.co.nz</li>'
 		+ '<li>To <b>hide</b> help from the map, just click on the (x).</li>'
 		+ '</ul>'
 	return string;

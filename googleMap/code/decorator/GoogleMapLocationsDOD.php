@@ -1,10 +1,5 @@
 <?php
 /*
- * Created on 01/11/2008
- * This class adds Google Data to Page
- * and has the following options available
- * 1. show all child points
- * 2. show points around x / y
  *
  */
 
@@ -64,12 +59,10 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		return $fields;
  }
 
-
-
-
-
-
-	/* GENERAL */
+/* ******************************
+ *  GENERAL FUNCTIONS
+ *  ******************************
+ */
 	function GoogleMapController() {
 		return $this->map;
 	}
@@ -167,10 +160,6 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		$this->initiateMap();
 		$this->map->allowAddPointsToMap();
 	}
-
-	/**
-	* NOTE: hello ;-)
-	*/
 
 	function addCustomMap($pages, $retainOldSessionData = false) {
 		if($pages) {
@@ -273,19 +262,38 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 					elseif($id > 0) {
 						$point = DataObject::get_by_id("GoogleMapLocationsObject", $id);
 						if($point) {
-							$point->Latitude = $lat;
-							$point->Longitude = $lon;
-							$point->Address = "";
-							$point->FullAddress = "";
-							$point->write();
-							return  "point updated";
+							if($point->ParentID == $this->owner->ID) {
+								$point->Latitude = $lat;
+								$point->Longitude = $lon;
+								$point->Address = "";
+								$point->FullAddress = "";
+								$point->write();
+								return  "location updated";
+							}
+							else {
+								return "you dont have permission to update that location";
+							}
+						}
+						else {
+							return "could not find location";
 						}
 					}
 					elseif($id < 1) {
+
 						$point = DataObject::get_by_id("GoogleMapLocationsObject", (-1 * $id));
-						$point->delete();
-						$point = null;
-						return "point deleted";
+						if($point) {
+							if($point->ParentID == $this->owner->ID) {
+								$point->delete();
+								$point = null;
+								return "location deleted";
+							}
+							else {
+								return "you dont have permission to delete that location";
+							}
+						}
+						else {
+							return "could not find location";
+						}
 					}
 				}
 			}

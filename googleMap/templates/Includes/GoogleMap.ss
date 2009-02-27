@@ -23,6 +23,7 @@
 		</ul>
 	</div>
 	<% end_if %>
+	<% if getTitleDivId %><h4 id="$getTitleDivId" class="MapExtraInformation"></h4><% end_if %>
   <div id="map" style="width: {$getGoogleMapWidth}px; height: {$getGoogleMapHeight}px;">
 		<% if getShowStaticMapFirst %><a href="#" id="loadMapNowWithinMap" onclick="loadMapScripts(); return false;">$dataPointsStaticMapHTML</a><% end_if %>
 	</div>
@@ -34,9 +35,8 @@
     <a href="#map" onclick="initiateGoogleMap(); return false;">reset map</a> |
     <a href="#map" onclick="return !turnOnStaticMaps(this, '{$URLSegment}')" title="without loading dynamic maps (stop maps) - pages load faster">stop maps</a>
    </div>
-   <% if getTitleDivId %><h4 id="$getTitleDivId" class="MapExtraInformation"></h4><% end_if %>
    <% if getLayerListDivId %><div id="$getLayerListDivId" class="MapExtraInformation"></div><% end_if %>
-   <% if getSideBarDivId %>
+   <% if getSideBarDivId %><% if EnoughPointsForAList %>
 	 <div id="$getSideBarDivId" class="MapExtraInformation">
 		<% if dataPointsObjectSet %>
 		<ul>
@@ -46,8 +46,8 @@
 		</ul>
 		<% end_if %>
 	 </div>
-	 <% end_if %>
-   <% if getDropDownDivId %><div id="$getDropDownDivId" class="MapExtraInformation"></div><% end_if %>
+	 <% end_if %><% end_if %>
+   <% if getDropDownDivId %><% if EnoughPointsForAList %><div id="$getDropDownDivId" class="MapExtraInformation"></div><% end_if %><% end_if %>
    <% if getDirectionsDivId %><div id="$getDirectionsDivId" class="MapExtraInformation"></div><% end_if %>
    <% if getStatusDivId %><div id="$getStatusDivId" class="MapExtraInformation"></div><% end_if %>
   </div>

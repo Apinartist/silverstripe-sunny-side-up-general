@@ -1,31 +1,9 @@
 <?php
-/**
- * developed by www.sunnysideup.co.nz
- * author: Nicolaas - modules [at] sunnysideup.co.nz
- *
- * How to work this module
- * 1. review settings below
- * 2. add extension: DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD'));
- * 3. run db/build/?flush=1
- * you can add maps as follows by adding the following to your init() function in a page controller:
- * $this->addMap("showPagePointsMapXML"); //SEE GoogleMapLocationsDOD for the type of maps you can add
- *
- * for each page type you must / can:
- * - static $defaults = array ("HasGeoInfo" => 1); - allow points to be added in the CMS
- * - add a map and static map icon (to be implemented)
- *
- * you can filter the map data for particular pagetypes
- *
- * @ TO DO:
- * - lines
- * - polygons
- * - integrate with GIS model
- * - NO STATIC option
- * - NO dynamic option
-*/
 
 
-define("GoogleMapAPIKey", "abcetc...");
+
+
+define("GoogleMapAPIKey", "ABQIAAAAzfHfmgAlqXWVcxmSxSSiWBT0u1uABmhCXKf7UA7e9DKc_dVTFBRV8rNHoROLOkWHMAzSRI_8PD8mGg");
 /* MAP*/
 GoogleMap::setDefaultLatitude(12.0001);
 GoogleMap::setDefaultLongitude(133.2210);
@@ -62,8 +40,8 @@ GoogleMap::setFillOpacity(0.3);//opacity for polygons (default is 0.3 - should r
 GoogleMap::setPolyIcon(""); //location for icon used for polygon and polyline (e.g. http://www.mysite.com/icon.png)
 
 /* HELPDIVS */
-GoogleMap::setSideBarDivId("GmapDropSideBarId"); //ID for DIV that shows additional information about map leave blank to remove)"
-GoogleMap::setDropDownDivId(""); //ID for DIV of dropdown box with points in map (leave blank to remove)
+GoogleMap::setSideBarDivId(""); //ID for DIV that shows additional information about map leave blank to remove)"
+GoogleMap::setDropDownDivId("GoogleMapDropDownList"); //ID for DIV of dropdown box with points in map (leave blank to remove)
 GoogleMap::setTitleDivId("GmapTitleID"); //ID for DIV of map title (leave blank to remove)
 GoogleMap::setLayerListDivId(""); //ID for DIV that shows list of map layers (leave blank to remove)
 GoogleMap::setDirectionsDivId(""); //ID for DIV that shows directions from map (leave blank to remove)
@@ -71,7 +49,7 @@ GoogleMap::setStatusDivId(""); //ID for DIV that shows status of map
 
 /* INFOWINDOW*/
 GoogleMap::setInfoWindowOptions("{maxWidth:280, zoomLevel:17, mapType:G_HYBRID_MAP}"); //info window options (see http://code.google.com/apis/maps/documentation/reference.html for details)
-GoogleMap::setAddCurrentAddressFinder(true); //add a tab with the address finder
+GoogleMap::setAddCurrentAddressFinder(false); //add a tab with the address finder
 
 /* MARKER AND ICONS (include title to have a title)*/
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
@@ -91,5 +69,5 @@ GoogleMap::setLngFormFieldId(""); //longitude form field to be updated on new ma
 GoogleMap::setDefaultCountryCode(""); //default country code for address searches (to narrow searches to one country) - examples include US or NZ
 GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an address (e.g. New Zealand or United Kingdom)
 GoogleMap::setStyleSheetUrl("googleMap/css/mapDirections.css"); //style sheet to be used for formatting directions (e.g. googleMap/css/mapDirections.css)
-GoogleMap::setLocaleForResults("en_NZ"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
+GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 
