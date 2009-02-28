@@ -1,4 +1,12 @@
 ___________________________________
+KNOWN BUGS AND ISSUES
+-----------------------------------
+this module does NOT work if the html of your page starts with :
+<?xml version="1.0" encoding="UTF-8"?>
+http://code.google.com/p/gmaps-api-issues/issues/detail?id=530
+
+
+___________________________________
 Features (some still to do)
 -----------------------------------
 * add one or more locations per page
