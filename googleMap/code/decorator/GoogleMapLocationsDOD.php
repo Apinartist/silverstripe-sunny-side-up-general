@@ -215,7 +215,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 		//print_r($array);
 		$where = " `SiteTree`.`ID` IN (-1 ";
-		if(count($array)) {
+		if(is_array($array)) {
 			foreach($array as $id) {
 				if($id > 0) {
 					$where .= ", ".$id;
