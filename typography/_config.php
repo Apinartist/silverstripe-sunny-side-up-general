@@ -10,5 +10,5 @@
  **/
 
 
-TypographyTestPage::setAutoInclude(true);
+//TypographyTestPage::setAutoInclude(true);
 
