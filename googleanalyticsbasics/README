@@ -1,0 +1,27 @@
+###############################################
+GeoBrowser
+Pre 0.1 proof of concept
+###############################################
+
+Developer
+-----------------------------------------------
+Nicolaas Francken [at] sunnysideup.co.nz
+
+Requirements
+-----------------------------------------------
+SilverStripe 2.3.0 or greater.
+
+Documentation
+-----------------------------------------------
+Allows you to create a complete world browser
+(or part thereof - e.g. Africa only)
+
+We are not 100% sure about the copyright of the data
+supplied (regions, cities, etc..., so please use at
+your own risk).
+
+Installation Instructions
+-----------------------------------------------
+add module, review ideas in _config.php,
+place configurations into your mysite/_config.php file
+
