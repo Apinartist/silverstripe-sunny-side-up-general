@@ -1,29 +1,27 @@
 ###############################################
-widgets last pages visited
+PrettyPhoto
+Pre 0.1 proof of concept
 ###############################################
 
-Maintainer Contact
+Developer
 -----------------------------------------------
-nicolaas [at] sunnysideup.co.nz
+Nicolaas Francken [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
-SS 2.3+
-
+SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-includes a widget "last pages visited" and a
-page with the same information
+adds the photoviewer - pretty photo
+(jQuery extension) to the site
 
 
 Installation Instructions
 -----------------------------------------------
-
-
-Usage Overview
------------------------------------------------
-
-
-
+add module
+use PrettyPhoto::include_code()
+OR
+PrettyPhoto::block() to
+add and remove code
 

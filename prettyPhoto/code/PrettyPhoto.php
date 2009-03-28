@@ -2,7 +2,7 @@
 
 class PrettyPhoto extends Object {
 
-	static function includeCode() {
+	static function include_code() {
 		if(Director::is_ajax()) {
 			self::block();
 		}

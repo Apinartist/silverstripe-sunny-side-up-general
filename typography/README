@@ -1,37 +1,30 @@
 ###############################################
-widgets currency converter
+TYPOGRAPHY
+Pre 0.1 proof of concept
 ###############################################
 
-Maintainer Contact
+Developer
 -----------------------------------------------
-nicolaas [at] sunnysideup.co.nz
+Nicolaas Francken [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
-SS 2.3+
-
+SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-includes a widget currency converter and a currency
-converter page
 
-uses http://download.finance.yahoo.com/d/quotes.csv
+this module allows you to review the typography
+styling in live-like setting.
 
 
 Installation Instructions
 -----------------------------------------------
+add module
+review _config for options
 
 
-Usage Overview
+Thank you
 -----------------------------------------------
-
-in the currency converter page, you can use
-
-?a=123&f=NZD&t=USD
-
-this will convert 123 NZD$ to USD$
-
-
 
 

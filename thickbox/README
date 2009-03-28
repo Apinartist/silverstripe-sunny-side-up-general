@@ -1,37 +1,30 @@
 ###############################################
-widgets currency converter
+THICKBOX
+Pre 0.1 proof of concept
 ###############################################
 
-Maintainer Contact
+Developer
 -----------------------------------------------
-nicolaas [at] sunnysideup.co.nz
+Nicolaas Francken [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
-SS 2.3+
-
+SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-includes a widget currency converter and a currency
-converter page
 
-uses http://download.finance.yahoo.com/d/quotes.csv
+ * see http://jquery.com/demo/thickbox/
+ * to start - add class="thickbox" ?KeepThis=true&TB_iframe=true&height=400&width=600
 
 
 Installation Instructions
 -----------------------------------------------
+add module
+review _config for options
 
 
-Usage Overview
+Thank you
 -----------------------------------------------
-
-in the currency converter page, you can use
-
-?a=123&f=NZD&t=USD
-
-this will convert 123 NZD$ to USD$
-
-
 
 

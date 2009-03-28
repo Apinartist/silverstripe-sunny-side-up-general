@@ -1,5 +1,5 @@
 ###############################################
-GoogleAnalyticsBasics
+Mysql Dump
 Pre 0.1 proof of concept
 ###############################################
 
@@ -13,13 +13,17 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-Adds GoogleAnalyticsCode to the bottom of your page
-by adding
+Gives you a mysql dump for synchronising a local
+and server database.
 
-<% include Analytics %>
+make sure that live and local site have the same codebase...
+run /dev/build/ on your live site
+go to /dump/import/ on your live site to download an sql text file
+run dev/build/ on your local site
+go to your local phpMyAdmin and import the file
+
 
 Installation Instructions
 -----------------------------------------------
 add module, review ideas in _config.php,
 place configurations into your mysite/_config.php file
-

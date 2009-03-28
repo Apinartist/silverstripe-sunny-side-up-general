@@ -3,7 +3,7 @@
 
 class ThickBox extends Object {
 
-	static function includeCode() {
+	static function include_code() {
 		Requirements::javascript('thickbox/javascript/jquery.thickbox.js');
 		Requirements::css('thickbox/css/thickbox.css');
 	}

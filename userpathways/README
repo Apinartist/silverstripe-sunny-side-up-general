@@ -1,24 +1,29 @@
 ###############################################
-Hidemailto Module
+userpath Module
 ###############################################
 
 Maintainer Contact
 -----------------------------------------------
-Matt Peel (Nickname: mpeel, mattSS)
-<matt (at) silverstripe (dot) com>
+nicolaas [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
+SS 2.3+
+
 
 Documentation
 -----------------------------------------------
-http://doc.silverstripe.com/doku.php?id=modules:hidemailto
+
 
 Installation Instructions
 -----------------------------------------------
 
+
 Usage Overview
 -----------------------------------------------
+this module keeps track of pages visted by users.
+it is not meant to replace statistics modules.
+The only thing it will ever do is measure what user
+visits what page.
 
-Known issues:
------------------------------------------------
+

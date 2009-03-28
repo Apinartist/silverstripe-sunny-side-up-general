@@ -25,7 +25,7 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 		$newDistance = $maxradius+1;
 		$existingPage = null;
 		$newPage = null;
-		$radiusSelectionSQL = GoogleMapLocationsObject::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "BrowseCitiesPage", "Latitude", "Longitude");
+		$radiusSelectionSQL = self::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "BrowseCitiesPage", "Latitude", "Longitude");
 		$sqlQuery = new SQLQuery();
 		$sqlQuery->select = array("`BrowseCitiesPage`.`ID`, ". $radiusSelectionSQL." as distance");
 		$sqlQuery->from[] = "`BrowseCitiesPage`";
