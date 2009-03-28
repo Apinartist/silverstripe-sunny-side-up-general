@@ -18,5 +18,5 @@ ShareThis::$ShowTitle = false;
 ShareThis::$IconTransparent = true;
 ShareThis::set_include_by_default(true);
 ShareThis::set_always_include (true);
-ShareThis::set_share_all_button(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
+ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
 */
