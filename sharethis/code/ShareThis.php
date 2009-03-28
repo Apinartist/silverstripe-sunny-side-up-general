@@ -30,21 +30,7 @@ class ShareThis extends DataObjectDecorator {
 
 	/**
 	* Sets the enabled icons list. May contain any of the following:
-	* - email
-	* - print
-	* - digg
-	* - reddit
-	* - delicious
-	* - furl
-	* - ma.gnolia
-	* - newsvine
-	* - live
-	* - myweb
-	* - google
-	* - stumbleupon
-	* - simpy
-	* - facebook
-	* - socialmarker
+	* - email, print, digg, reddit, delicious, furl, ma.gnolia, newsvine, live, myweb, google, stumbleupon, simpy, facebook, socialmarker
 	*
 	* Example: ShareIcons::$EnabledIcons = array('digg', 'delicious');
 	* @var array
@@ -70,6 +56,8 @@ class ShareThis extends DataObjectDecorator {
 	* @var boolean
 	*/
 
+	static $share_this_all_in_one = false;
+
 	static $always_include = true;
 
 	function extraDBFields(){
@@ -89,13 +77,17 @@ class ShareThis extends DataObjectDecorator {
 		self::$include_by_default = $value;
 	}
 
+	static function set_share_this_all_in_one($value) {
+		self::$share_this_all_in_one = $value;
+	}
+
 	static function set_always_include($value) {
 		self::$always_include = $value;
 	}
-	/**
-	* Add a share icons field to cms
-	* This method doesn't seemed to get automatically called. had to add a static method to config.
-	*/
+
+	var $pageURL = '';
+	var $pageTitle = '';
+	var $pageIcon = '';
 
 	function updateCMSFields(FieldSet &$fields) {
 		$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
@@ -116,7 +108,7 @@ class ShareThis extends DataObjectDecorator {
 	function augmentDatabase() {
 	}
 
-	function thisPageHasShareThis() {
+	public function ThisPageHasShareThis() {
 		if($this->owner) {
 			if(self::$always_include) {
 				return true;
@@ -130,7 +122,7 @@ class ShareThis extends DataObjectDecorator {
 		return false;
 	}
 
-	function Icons(){
+	public function Icons(){
 		$doSet = new DataObjectSet();
 		if($this->thisPageHasShareThis()){
 			Requirements::css("sharethis/css/ShareThis.css");
@@ -157,64 +149,90 @@ class ShareThis extends DataObjectDecorator {
 		return $doSet;
 	}
 
+	public function ShareAll() {
+		if(self::$share_this_all_in_one) {
+			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
+			Requirements::javascript("http://w.sharethis.com/button/sharethis.js#&amp;type=website");
+			return '
+<script language="javascript" type="text/javascript">
+	SHARETHIS.addEntry(
+		{
+			title:"'.urldecode($this->pageTitle).'",
+			url:"'.urldecode($this->pageICON).'"
+			icon:"'.urldecode($this->pageURL).'"
+			/*
+				summary: (required) utf-8 string, defaults to document.title
+				content: (optional) utf-8 string, defaults to null
+				updated: (optional) ISO 8601 date, defaults to document.lastModified
+				published: (optional) ISO 8601 date, defaults to null
+				author: currently not implemented
+				category: currently not implemented
+			*/
+		},
+		{button:true}
+	);
+</script>';
+		}
+		else {
+			return false;
+		}
+	}
+
 	private function bookmarks() {
 		$bookmarks = array();
 		if($this->owner) {
-			$page_url = urlencode(
-				Director::absoluteBaseURL().
-				$this->owner->URLSegment
-			);
-			$page_title = urlencode($this->owner->Title);
+			$this->pageURL = urlencode(Director::absoluteBaseURL().$this->owner->URLSegment);
+			$this->pageTitle = urlencode($this->owner->Title);
 			$bookmarks = array(
 			"email" => array(
-				 "url" => "mailto:?body=$page_url",
+				 "url" => "mailto:?body=".$this->pageURL."",
 				 "title" => "Email"),
 			"print" => array(
 				 "url" => "#",
 				 "click" => "window.print(); return false;",
 				 "title" => "Print"),
 			"digg" => array(
-				 "url" => "http://digg.com/submit?".htmlentities("phase=2&url=$page_url&title=$page_title"),
+				 "url" => "http://digg.com/submit?".htmlentities("phase=2&url=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Digg this!"),
 			"reddit" => array(
-				 "url" => "http://reddit.com/submit?".htmlentities("url=$page_url&title=$page_title"),
+				 "url" => "http://reddit.com/submit?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Reddit!"),
 			"delicious" => array(
-				 "url" => "http://del.icio.us/post?".htmlentities("v=4&noui&jump=close&url=$page_url&title=$page_title"),
+				 "url" => "http://del.icio.us/post?".htmlentities("v=4&noui&jump=close&url=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Add to del.icio.us"),
 			"furl" => array(
-				 "url" => "http://www.furl.net/storeIt.jsp?".htmlentities("t=$page_title&u=$page_url"),
+				 "url" => "http://www.furl.net/storeIt.jsp?".htmlentities("t=".$this->pageTitle."&u=".$this->pageURL.""),
 				 "title" => "Furl this!"),
 			"ma.gnolia" => array(
-				 "url" => "http://ma.gnolia.com/bookmarklet/add?".htmlentities("url=$page_url&title=$page_title"),
+				 "url" => "http://ma.gnolia.com/bookmarklet/add?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Add to ma.gnolia"),
 			"newsvine" => array(
-				 "url" => "http://www.newsvine.com/_tools/seed".htmlentities("&save?u=$page_url&h=$page_title"),
+				 "url" => "http://www.newsvine.com/_tools/seed".htmlentities("&save?u=".$this->pageURL."&h=".$this->pageTitle.""),
 				 "title" => "Save to Newsvine!"),
 			"live" => array(
-				 "url" => "https://favorites.live.com/quickadd.aspx?".htmlentities("marklet=1&mkt=en-us&url=$page_url&title=$page_title&top=1"),
+				 "url" => "https://favorites.live.com/quickadd.aspx?".htmlentities("marklet=1&mkt=en-us&url=".$this->pageURL."&title=".$this->pageTitle."&top=1"),
 				 "title" => "Add to Windows Live"),
 			"myweb" => array(
-				 "url" =>  "http://myweb.yahoo.com/myresults/bookmarklet?".htmlentities("t=$page_title&u=$page_url&ei=UTF"),
+				 "url" =>  "http://myweb.yahoo.com/myresults/bookmarklet?".htmlentities("t=".$this->pageTitle."&u=".$this->pageURL."&ei=UTF"),
 				 "title" => "Add to Yahoo MyWeb"),
 			"google" => array(
-				 "url" =>  "http://www.google.com/bookmarks/mark?".htmlentities("op=edit&output=popup&bkmk=$page_url&title=$page_title"),
+				 "url" =>  "http://www.google.com/bookmarks/mark?".htmlentities("op=edit&output=popup&bkmk=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Googlize this post!"),
 			"stumbleupon" => array(
-				 "url" => "http://www.stumbleupon.com/submit?".htmlentities("url=$page_url&title=$page_title"),
+				 "url" => "http://www.stumbleupon.com/submit?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Stumble It!"),
 			"simpy" => array(
-				 "url" => "http://simpy.com/simpy/LinkAdd.do?".htmlentities("title=$page_title&href=$page_url"),
+				 "url" => "http://simpy.com/simpy/LinkAdd.do?".htmlentities("title=".$this->pageTitle."&href=".$this->pageURL.""),
 				 "title" => "Add to Simpy"),
 			"favourites" => array(
 				 "url" => "#",
-				 "click" => "bookmark('$page_url', '$page_title'); return false;",
+				 "click" => "bookmark('".$this->pageURL."', '".$this->pageTitle."'); return false;",
 				 "title" => "Add to favourites (Internet Explorer Only)"),
 			"facebook" => array(
-				 "url" => "http://www.facebook.com/share.php?".htmlentities("u=$page_url&t=$page_title"),
+				 "url" => "http://www.facebook.com/share.php?".htmlentities("u=".$this->pageURL."&t=".$this->pageTitle.""),
 				 "title" => "Share on Facebook"),
 			"socialmarker" => array(
-				 "url" => "http://www.socialmarker.com/?".htmlentities("link=$page_url&title=$page_title"),
+				 "url" => "http://www.socialmarker.com/?".htmlentities("link=".$this->pageURL."&title=".$this->pageTitle.""),
 				 "title" => "Bookmark Elsewhere")
 			);
 		}

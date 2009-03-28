@@ -1,0 +1,29 @@
+###############################################
+ShareThis
+Pre 0.1 proof of concept
+###############################################
+
+Developer
+-----------------------------------------------
+Nicolaas Francken [at] sunnysideup.co.nz
+
+Requirements
+-----------------------------------------------
+SilverStripe 2.3.0 or greater.
+
+Documentation
+-----------------------------------------------
+
+
+
+Installation Instructions
+-----------------------------------------------
+add module
+review _config for options
+
+
+Thank you
+-----------------------------------------------
+This module is heavily based on the original
+SS ShareThis module.
+
