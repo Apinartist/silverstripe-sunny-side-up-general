@@ -158,7 +158,7 @@ class ShareThis extends DataObjectDecorator {
 	SHARETHIS.addEntry(
 		{
 			title:"'.urldecode($this->pageTitle).'",
-			url:"'.urldecode($this->pageICON).'"
+			url:"'.urldecode($this->pageICON).'",
 			icon:"'.urldecode($this->pageURL).'"
 			/*
 				summary: (required) utf-8 string, defaults to document.title
