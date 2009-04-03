@@ -36,10 +36,12 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
+		Requirements::themedCSS("CampaignMonitorSignupPage")
 	}
 
 	function thankyou() {
 		$this->ShowThankYouMessage = true;
+		return array();
 	}
 
 }
