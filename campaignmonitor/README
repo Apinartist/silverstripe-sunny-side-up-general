@@ -1,0 +1,22 @@
+###############################################
+CampaignMonitorSignupPage Module
+Pre 0.1 proof of concept
+###############################################
+
+Developer
+-----------------------------------------------
+Nicolaas Francken [at] sunnysideup.co.nz
+
+Requirements
+-----------------------------------------------
+SilverStripe 2.3.0 or greater.
+
+Documentation
+-----------------------------------------------
+This module allows you to add a html snippet from
+Campaign Monitor or similar, adding a newsletter
+signup form.
+
+Installation Instructions
+-----------------------------------------------
+add module
