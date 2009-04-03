@@ -9,7 +9,7 @@ class CampaignMonitorSignupPage extends Page {
 	static $icon = "campaignmonitor/images/treeicons/CampaignMonitorSignupPage";
 
 	static $db = array(
-		"FormHTML" => "HTMLText"
+		"FormHTML" => "HTMLText",
 		"ThankYouMessage" => "HTMLText"
 	);
 
