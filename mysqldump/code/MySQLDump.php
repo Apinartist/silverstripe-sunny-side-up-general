@@ -1,16 +1,7 @@
 <?php
 
 /**
-	* Dump data from MySQL database
-	*
-	* @name    MySQLDump
-	* @author  Marcus Vinícius <mv@cidademais.com.br>
-	* @version 1.1 2005-06-01
-	* @example
-	*
-	* $dump = new MySQLDump();
-	* print $dump->dumpDatabase("mydb");
-	*
+	* based on a class MySQLDump by Marcus Vinícius <mv[at]cidademais.com.br>
 	*/
 class MySQLDump extends DatabaseAdmin {
 
