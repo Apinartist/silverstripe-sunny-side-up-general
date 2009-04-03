@@ -12,7 +12,7 @@
 	//must set
 	//FlashObject::setDefaultID("FlashObject");
 
-	//may set
+	//may set - allows you to add one flash file to each page with title and alternative content
 	//DataObject::add_extension('SiteTree', 'FlashObjectDOD');
 
  //basics

@@ -8,6 +8,8 @@ class FlashObject extends ViewableData  {
 
 	static $UseDynamicInsert = true;
 
+	static $Title = "MyFlashObjectTitle";
+
 	static $Filename = "flashObject.swf";
 
 	static $ID = "FlashObject";
@@ -26,19 +28,29 @@ class FlashObject extends ViewableData  {
 
 	public function CreateFlashObject($Title = '', $FlashFileID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', Array $ParamArray) {
 		if(!$Title ) {$Title  = self::$Title ;}
-			$Title = Convert::raw2js($Title);
+		$Title = Convert::raw2js($Title);
+
 		if(!$FlashFileID ) {$FlashFileID  = self::$FlashFileID ;}
-			$FlashFileID = Convert::raw2js($FlashFileID);
-		if(!$FlashFilename) {$FlashFilename = Convert::raw2js(self::$FlashFilename);}else {$FlashFilename = self::$Filename;}
-			$FlashFilename = Convert::raw2js($FlashFilename);
+		$FlashFileID = Convert::raw2js($FlashFileID);
+
 		if(!$AlternativeContent) {$AlternativeContent = self::$AlternativeContent;}
+
 		if(!$Width) {$Width = self::$Width;}
-			$Width = intval($Width);
+		$Width = intval($Width);
+
 		if(!$Height) {$Height = self::$Height;}
-			$Height = intval($Height);
+		$Height = intval($Height);
+
 		if(!$FlashVersion) {$FlashVersion = self::$FlashVersion;}
+
 		if(!$ParamArray) {$ParamArray = self::$ParamArray;}
+
 		$doSet = new DataObjectSet();
+
+
+		if(!$FlashFilename) {$FlashFilename = Convert::raw2js(self::$FlashFilename);}else {$FlashFilename = self::$Filename;}
+		$FlashFilename = Convert::raw2js($FlashFilename);
+
 		if($FlashFilename) {
 			$params = '';
 			$paramsJS = '';
@@ -83,8 +95,6 @@ class FlashObject extends ViewableData  {
 			Requirements::customScript($js);
 
 		}
-		debug::show($doSet);
-		die();
 		return $doSet;
   }
 

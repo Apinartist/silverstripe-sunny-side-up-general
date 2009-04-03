@@ -6,12 +6,15 @@
 
 class FlashObjectDOD extends DataObjectDecorator {
 
-	static $UseDynamicInsert = true;
-
 	function extraDBFields(){
 		return array(
-			'db' =>   array("AlternativeContent" => "HTMLText", "Title" => "Varchar(255)"),
-			'has_one' => array("FlashFile" => "File"),
+			'db' =>   array(
+				"AlternativeContent" => "HTMLText",
+				"Title" => "Varchar(255)"
+			),
+			'has_one' => array(
+				"FlashFile" => "File"
+			),
 		);
 	}
 
@@ -37,7 +40,7 @@ class FlashObjectDOD extends DataObjectDecorator {
 
 	public function CreateFlashObject() {
 		$obj = new FlashObject();
-		return $obj->CreateFlashObject($this->owner->Title, $this->owner->FlashFile->Filename, $this->owner->AlternativeContent);
+		return $obj->CreateFlashObject($this->owner->Title, null, $this->owner->FlashFile->Filename, $this->owner->AlternativeContent);
   }
 
 
