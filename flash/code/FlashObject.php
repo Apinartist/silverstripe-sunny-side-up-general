@@ -75,13 +75,14 @@ class FlashObject extends ViewableData  {
 				$js = '
 					jQuery(document).ready(
 						function () {
-							jQuery("#'.$FlashFileDivID.'").hide();
+							jQuery(".FlashAlternativeContent").hide();
 							var flashvars = {};
 							var params = {};
 							'.$paramsJS.'
 							var attributes = {};
 							attributes.id = "'.$FlashFileDivID.'";
 							swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileDivID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
+							jQuery(".FlashAlternativeContent").fadeIn(3000);
 						}
 					);';
 			}
