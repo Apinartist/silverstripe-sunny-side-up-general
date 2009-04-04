@@ -44,19 +44,69 @@ class TypographyTestPage extends Page {
 	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
 	Proin ultrices nulla id enim.
 	Nullam mi.
-	<a href="home"><img src="cms/images/loading.gif" alt="loading image" width="50" height="50" /></a>
+	<a href="home"><img src="cms/images/loading.gif" alt="loading image" width="150" height="150" /></a>
 	In ipsum arcu, sodales commodo, elementum at, euismod nec, felis.
 	Vestibulum laoreet, felis at vulputate posuere, tellus lorem ornare ante, eget commodo magna metus vitae mauris.
 	Aliquam et enim.
 	Integer vel erat sit amet nulla feugiat scelerisque.
 	Fusce ornare molestie mauris.
-	<img src="cms/images/loading.gif" alt="loading image" width="50" height="50" class="right" />
 	Aliquam a leo quis eros mollis varius.
 	Quisque egestas velit ac dui.
 	Quisque eu purus vel risus tincidunt dictum.
 	Curabitur sit amet turpis id leo vestibulum imperdiet.
 	Suspendisse mollis ultrices nulla.
-	<img src="cms/images/loading.gif" alt="loading image" width="50" height="50" class="left" />
+	Donec tortor sapien, condimentum a, iaculis at, faucibus id, pede.
+	Proin ultrices sagittis metus.
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+	Proin ultrices nulla id enim.
+	Nullam mi.
+</p>
+
+<p>
+	In in purus eget mauris fringilla placerat.
+	Proin pellentesque fermentum dui.
+	Donec tortor sapien, condimentum a, iaculis at, faucibus id, pede.
+	Proin ultrices sagittis metus.
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+	Proin ultrices nulla id enim.
+	Nullam mi.
+	In ipsum arcu, sodales commodo, elementum at, euismod nec, felis.
+	Vestibulum laoreet, felis at vulputate posuere, tellus lorem ornare ante, eget commodo magna metus vitae mauris.
+	Aliquam et enim.
+	Integer vel erat sit amet nulla feugiat scelerisque.
+	Fusce ornare molestie mauris.
+	<img src="cms/images/loading.gif" alt="loading image" width="150" height="150" class="right" />
+	Aliquam a leo quis eros mollis varius.
+	Quisque egestas velit ac dui.
+	Quisque eu purus vel risus tincidunt dictum.
+	Curabitur sit amet turpis id leo vestibulum imperdiet.
+	Suspendisse mollis ultrices nulla.
+	Donec tortor sapien, condimentum a, iaculis at, faucibus id, pede.
+	Proin ultrices sagittis metus.
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+	Proin ultrices nulla id enim.
+	Nullam mi.
+</p>
+
+<p>
+	In in purus eget mauris fringilla placerat.
+	Proin pellentesque fermentum dui.
+	Donec tortor sapien, condimentum a, iaculis at, faucibus id, pede.
+	Proin ultrices sagittis metus.
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+	Proin ultrices nulla id enim.
+	Nullam mi.
+	In ipsum arcu, sodales commodo, elementum at, euismod nec, felis.
+	Vestibulum laoreet, felis at vulputate posuere, tellus lorem ornare ante, eget commodo magna metus vitae mauris.
+	Aliquam et enim.
+	Integer vel erat sit amet nulla feugiat scelerisque.
+	Fusce ornare molestie mauris.
+	Aliquam a leo quis eros mollis varius.
+	Quisque egestas velit ac dui.
+	Quisque eu purus vel risus tincidunt dictum.
+	Curabitur sit amet turpis id leo vestibulum imperdiet.
+	Suspendisse mollis ultrices nulla.
+	<img src="cms/images/loading.gif" alt="loading image" width="150" height="150" class="left" />
 	Donec tortor sapien, condimentum a, iaculis at, faucibus id, pede.
 	Proin ultrices sagittis metus.
 	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
@@ -369,51 +419,11 @@ class TypographyTestPage extends Page {
 }
 
 class TypographyTestPage_Controller extends Page_Controller {
- function init() {
-	Requirements::javascript("jsparty/jquery/jquery.js");
-	Requirements::customScript('
-		jQuery(document).ready(
-			function () {
-				jQuery(".typography img").css("heigth", "100px");
-				jQuery(".typography img").css("width", "200px");
 
-				for(var i = 1; i < 11; i++) {
-					var className = ".colour" + i;
-					var colourName = jQuery(className).css("background-color");
-					jQuery(className).html("<span style=\'color: #fff;\'>" + colourName + "<\/span> <span style=\'color: #000;\'>" + colourName + "<\/span>");
-				}
-			}
-		);
-	');
-	$classes = ClassInfo::subclassesFor("SiteTree");
-	$listArray = array();
-	$j = 0;
-	foreach($classes as $className) {
-		if($className != "SiteTree" && $className != "Page") {
-		 $j++;
-			$objects = DataObject::get($className, '', 'RAND()', '', 1);
-			if(is_object($objects) && $objects->count()) {
-				foreach($objects as $obj) {}
-				$count = DataObject::get($className)->Count();
-				$iconFile = $obj->stat("icon")."-file.gif";
-				$listArray[(1000 * $count) + $j] = '
-				<li style="background-image: url('.$iconFile.'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.5em; margin: 0.3em; padding-left: 2em;">
-					<a href="'.$obj->Link().'">'.$count.' x '.$className.' classes - example: <i>'.$obj->Title.'</i><br />'.Director::absoluteBaseURL().$obj->URLSegment.'</a>
-				</li>';
-			}
-			else {
-				$string = "{$className}::$"."icon";
-				$iconFile = eval("return $string ;")."-file.gif";
-				$listArray[$j] = '
-				<li style="background-image: url('.$iconFile.'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.5em; margin: 0.3em; padding-left: 2em;">
-					There are no instances of <i>'.$className.'</i>
-				</li>';
-			}
-		}
-		ksort($listArray);
+	function init() {
+		parent::init();
+		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript('typography/javascript/typography.js');
 	}
-	$this->Content .= '<h1 id="allclasses">All classes ('.$j.'): </h1><ul>'.implode("", $listArray).'</ul>';
-	parent::init();
- }
 }
 
