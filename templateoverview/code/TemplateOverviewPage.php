@@ -58,7 +58,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		parent::init();
 		Requirements::javascript("jsparty/jquery/jquery.js");
 		Requirements::javascript('templateoverview/javascript/TemplateOverviewPage.js');
-		Requirements::themedCSS("templateoverview/css/TemplateOverviewPage.css");
+		Requirements::css("templateoverview/css/TemplateOverviewPage.css");
 	}
 
 	function showall () {
@@ -83,9 +83,10 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 			if($className != "SiteTree" && $className != "TemplateOverviewPage") {
 				if($this->ShowAll) {
 					$objects = DataObject::get($className);
+					$count = 0;
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
-							$object = $this->createPageObject($obj);
+							$object = $this->createPageObject($obj, $count++);
 							$ListOfAllClasses->push($object);
 						}
 					}
@@ -95,11 +96,13 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 					$objects = DataObject::get($className, '', 'RAND()', '', 1);
 					if(is_object($objects) && $objects->count()) {
 						$obj = $objects->First();
+						$count = DB::query('Select COUNT(*) from SiteTree_Live where ClassName = "'.$obj->ClassName.'"')->value();
 					}
 					else {
 						$obj = singleton($className);
+						$count = 0;
 					}
-					$object = $this->createPageObject($obj);
+					$object = $this->createPageObject($obj, $count);
 					$ListOfAllClasses->push($object);
 				}
 			}
@@ -108,10 +111,9 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $ListOfAllClasses;
 	}
 
-	private function createPageObject($obj) {
+	private function createPageObject($obj, $count) {
 		$this->TotalCount++;
 		$listArray = array();
-		$count = DB::query('Select COUNT(*) from SiteTree_Live where ClassName = "'.$obj->ClassName.'"')->value();
 		$indexNumber = (10000 * $count) + $this->TotalCount;
 		$listArray["indexNumber"] = $indexNumber;
 		$listArray["ClassName"] = $obj->ClassName;

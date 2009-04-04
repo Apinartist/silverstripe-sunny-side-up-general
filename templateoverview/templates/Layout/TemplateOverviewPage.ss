@@ -4,10 +4,13 @@
 	<% if Count %>
 	<li style="background-image: url({$Icon});">
 		<span class="typo-heading">$Count x $ClassName - template</span>
+		<% if ShowAll %>
+		<span class="typo-fullLink"><a href="$FullLink">$FullLink - $Title</a></span>
+		<% else %>
 		<span class="typo-example"><em>example:</em> <a href="$URLSegment">$Title</a></span>
 		<span class="typo-fullLink"><em>link:</em> <a href="$FullLink">$FullLink</a></span>
 		<% if AddShowMoreLink %>
-			<% if ShowAll %><% else %>
+
 		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">see all</a></span>
 		<ol id="entry-for-$URLSegment"><li>&nbsp;</li></ol>
 		<% end_if %><% end_if %>
