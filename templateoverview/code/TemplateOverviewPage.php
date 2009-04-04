@@ -48,7 +48,7 @@ class TemplateOverviewPage extends Page {
 
 }
 
-class TypographyTestPage_Controller extends Page_Controller {
+class TemplateOverviewPage_Controller extends Page_Controller {
 
 	var $ListOfAllClasses = null;
 
