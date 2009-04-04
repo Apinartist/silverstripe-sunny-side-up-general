@@ -50,63 +50,19 @@ class TemplateOverviewPage extends Page {
 
 class TemplateOverviewPage_Controller extends Page_Controller {
 
-	var $ListOfAllClasses = null;
-
 	var $TotalCount = 0;
+
+	var $ShowAll = false;
 
 	function init() {
 		parent::init();
 		Requirements::javascript("jsparty/jquery/jquery.js");
 		Requirements::javascript('templateoverview/javascript/TemplateOverviewPage.js');
-		Requirements::css("templateoverview/css/TemplateOverviewPage.css");
-		$this->ListOfAllClasses =  new DataObjectSet();
-		$classes = ClassInfo::subclassesFor("SiteTree");
-		$j = 0;
-		foreach($classes as $className) {
-			if($className != "SiteTree" && $className != "TemplateOverviewPage") {
-				$j++;
-				$obj = null;
-				$listArray = array();
-				$objects = DataObject::get($className, '', 'RAND()', '', 1);
-				if(is_object($objects) && $objects->count()) {
-					$obj = $objects->First();
-					$count = DB::query("Select COUNT(*) from SiteTree_Live where ClassName = '$className'")->value();
-				}
-				else {
-					$obj = singleton($className);
-					$count = 0;
-				}
-				$listArray["indexNumber"] = (10000 * $count) + $j;
-				$listArray["ClassName"] = $className;
-				$listArray["Count"] = $count;
-				if($count > 1) {
-					$listArray["AddShowMoreLink"] = true;
-				}
-				else {
-					$listArray["AddShowMoreLink"] = false;
-				}
-				$listArray["ID"] = $obj->ID;
-				$listArray["TypoURLSegment"] = $this->URLSegment;
-				$listArray["Title"] = $obj->Title;
-				$listArray["FullLink"] = Director::absoluteBaseURL().$obj->Link();
-				$listArray["URLSegment"] = $obj->URLSegment;
-				$staticIcon = $obj->stat("icon");
-				if(is_array($staticIcon)) {
-					$iconArray = $obj->stat("icon");
-					$icon = $iconArray[0];
-				}
-				else {
-					$icon = $obj->stat("icon");
-				}
-				$listArray["Icon"] = $icon."-file.gif";
-				$object = new ArrayData($listArray);
-				$this->ListOfAllClasses->push($object);
-			}
-		}
-		$this->ListOfAllClasses->sort("indexNumber");
-		$this->TotalCount = $this->ListOfAllClasses->count();
-		$this->Content = '';
-		return $this->renderWith(array('TemplateOverviewPage', 'Page'));
+		Requirements::themedCSS("templateoverview/css/TemplateOverviewPage.css");
+	}
+
+	function showall () {
+		$this->ShowAll = true;
 	}
 
 	function showmore() {
@@ -117,6 +73,75 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		}
 		$array = array("Results" => $data);
 		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
+	}
+
+	public function ListOfAllClasses() {
+		$ListOfAllClasses =  new DataObjectSet();
+		$classes = ClassInfo::subclassesFor("SiteTree");
+		$j = 0;
+		foreach($classes as $className) {
+			if($className != "SiteTree" && $className != "TemplateOverviewPage") {
+				if($this->ShowAll) {
+					$objects = DataObject::get($className) {
+						if(is_object($objects) && $objects->count()) {
+							foreach($objects as $obj) {
+								$indexNumber($obj->Sort);
+								$object = $this->createPageObject($obj, $indexNumber);
+								$ListOfAllClasses->push($object);
+							}
+						}
+					}
+				}
+				else {
+					$j++;
+					$obj = null;
+					$objects = DataObject::get($className, '', 'RAND()', '', 1);
+					if(is_object($objects) && $objects->count()) {
+						$obj = $objects->First();
+						$count = DB::query("Select COUNT(*) from SiteTree_Live where ClassName = '$className'")->value();
+					}
+					else {
+						$obj = singleton($className);
+						$count = 0;
+					}
+					$indexNumber = (10000 * $count) + $j;
+					$object = $this->createPageObject($obj, $indexNumber);
+					$ListOfAllClasses->push($object);
+				}
+			}
+		}
+		$ListOfAllClasses->sort("indexNumber");
+		$this->TotalCount = $ListOfAllClasses->count();
+		return $ListOfAllClasses;
+	}
+
+	private function createPageObject($obj, $indexNumber) {
+		$listArray = array();
+		$listArray["indexNumber"] = $indexNumber;
+		$listArray["ClassName"] = $className;
+		$listArray["Count"] = $count;
+		if($count > 1) {
+			$listArray["AddShowMoreLink"] = true;
+		}
+		else {
+			$listArray["AddShowMoreLink"] = false;
+		}
+		$listArray["ID"] = $obj->ID;
+		$listArray["TypoURLSegment"] = $this->URLSegment;
+		$listArray["Title"] = $obj->Title;
+		$listArray["FullLink"] = Director::absoluteBaseURL().$obj->URLSegment;
+		$listArray["URLSegment"] = $obj->URLSegment;
+		$staticIcon = $obj->stat("icon");
+		if(is_array($staticIcon)) {
+			$iconArray = $obj->stat("icon");
+			$icon = $iconArray[0];
+		}
+		else {
+			$icon = $obj->stat("icon");
+		}
+		$listArray["Icon"] = $icon."-file.gif";
+		$object = new ArrayData($listArray);
+		return $object;
 	}
 
 }
