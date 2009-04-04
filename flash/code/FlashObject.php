@@ -6,49 +6,49 @@
 
 class FlashObject extends ViewableData  {
 
-	static $UseDynamicInsert = true;
+	static $use_dynamic_insert = true;
 
-	static $Title = "MyFlashObjectTitle";
+	static $title = "MyFlashObjectTitle";
 
-	static $Filename = "flashObject.swf";
+	static $filename = "flashObject.swf";
 
-	static $ID = "FlashObject";
+	static $flash_file_div_id = "FlashObject";
 
-	static $Width = 200;
+	static $width = 200;
 
-	static $Height = 200;
+	static $height = 200;
 
-	static $FlashVersion = "6.0.0";
+	static $flash_version = "6.0.0";
 
-	static $AlternativeContent = '<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
+	static $alternative_content = '<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
 
-	static $params = Array();
+	static $param_array = Array();
 
-	static $externalFlashFile = '';
+	static $external_flash_file = '';
 
-	public function CreateFlashObject($Title = '', $FlashFileID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', Array $ParamArray) {
-		if(!$Title ) {$Title  = self::$Title ;}
+	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', Array $ParamArray) {
+		if(!$Title ) {$Title  = self::$title ;}
 		$Title = Convert::raw2js($Title);
 
-		if(!$FlashFileID ) {$FlashFileID  = self::$FlashFileID ;}
-		$FlashFileID = Convert::raw2js($FlashFileID);
+		if(!$FlashFileDivID ) {$FlashFileDivID  = self::$flash_file_div_id ;}
+		$FlashFileID = Convert::raw2js($FlashFileDivID);
 
-		if(!$AlternativeContent) {$AlternativeContent = self::$AlternativeContent;}
+		if(!$AlternativeContent) {$AlternativeContent = self::$alternative_content;}
 
-		if(!$Width) {$Width = self::$Width;}
+		if(!$Width) {$Width = self::$width;}
 		$Width = intval($Width);
 
-		if(!$Height) {$Height = self::$Height;}
+		if(!$Height) {$Height = self::$height;}
 		$Height = intval($Height);
 
-		if(!$FlashVersion) {$FlashVersion = self::$FlashVersion;}
+		if(!$FlashVersion) {$FlashVersion = self::$flash_version;}
 
-		if(!$ParamArray) {$ParamArray = self::$ParamArray;}
+		if(!$ParamArray) {$ParamArray = self::$param_array;}
 
 		$doSet = new DataObjectSet();
 
 
-		if(!$FlashFilename) {$FlashFilename = Convert::raw2js(self::$FlashFilename);}else {$FlashFilename = self::$Filename;}
+		if(!$FlashFilename) {$FlashFilename = self::$filename;}
 		$FlashFilename = Convert::raw2js($FlashFilename);
 
 		if($FlashFilename) {
@@ -68,45 +68,47 @@ class FlashObject extends ViewableData  {
 				'FlashVersion' => $FlashVersion,
 				'AlternativeContent' => $AlternativeContent,
 				'Parameters' => $params,
-				'UseDynamicInsert' => $UseDynamicInsert,
+				'UseDynamicInsert' => self::$use_dynamic_insert,
 			);
 			$doSet->push(new ArrayData($record));
-			if(self::$UseDynamicInsert) {
+			if(self::$use_dynamic_insert) {
 				$js = '
-					var flashvars = {};
-					var params = {};
-					'.$paramsJS.'
-					var attributes = {};
-					attributes.id = "'.self::$ID.'";
-					setTimeout(
-						function() {
-							swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
-						}, 1000);';
+					jQuery(document).ready(
+						function () {
+							jQuery("#'.$FlashFileDivID.'").hide();
+							var flashvars = {};
+							var params = {};
+							'.$paramsJS.'
+							var attributes = {};
+							attributes.id = "'.$FlashFileDivID.'";
+							swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileDivID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
+						}
+					);';
 			}
 			else {
 				$js = '
 					jQuery(document).ready(
 						function () {
-							swfobject.registerObject("'.$FlashFileID.'", "'.$FlashVersion.'", "flash/swfobject/expressInstall.swf");
+							swfobject.registerObject("'.$FlashFileDivID.'", "'.$FlashVersion.'", "flash/swfobject/expressInstall.swf");
 						}
 					);';
 			}
+			Requirements::javascript("jsparty/jquery/jquery.js");
 			Requirements::javascript("flash/javascript/swfobject.js");
 			Requirements::customScript($js);
-
 		}
 		return $doSet;
   }
 
-	static function setUseDynamicInsert($value) {self::$UseDynamicInsert = $value;}
-	static function setFilename($value) {self::$Filename = $value;}
-	static function setDefaultID($value) {self::$ID = $value;}
-	static function setDefaultWidth($value) {self::$Width = $value;}
-	static function setDefaultHeight($value) {self::$Height = $value;}
-	static function setDefaultFlashVersion($value) {self::$FlashVersion = $value;}
-	static function setDefaultAlternativeContent($value) {self::$AlternativeContent = $value;}
-	static function setDefaultExternalFlashFile($value) {self::$externalFlashFile = $value;}
-	static function addParam($name, $value) {self::$params[$name] = $value;}
+	static function set_use_dynamic_insert($value) {self::$use_dynamic_insert = $value;}
+	static function set_filename($value) {self::$filename = $value;}
+	static function set_default_div_id($value) {self::$div_id = $value;}
+	static function set_default_width($value) {self::$width = $value;}
+	static function set_default_height($value) {self::$height = $value;}
+	static function set_default_flash_version($value) {self::$flash_version = $value;}
+	static function set_default_alternative_content($value) {self::$alternative_content = $value;}
+	static function set_default_external_flash_file($value) {self::$external_flashFile = $value;}
+	static function add_param($name, $value) {self::$param_array[$name] = $value;}
 }
 
 

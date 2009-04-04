@@ -10,17 +10,17 @@
  **/
 
 	//must set
-	//FlashObject::setDefaultID("FlashObject");
+	//FlashObject::set_default_div_id("FlashObject");
 
 	//may set - allows you to add one flash file to each page with title and alternative content
 	//DataObject::add_extension('SiteTree', 'FlashObjectDOD');
 
  //basics
-	//FlashObject::setDefaultExternalFlashFile("");
-	//FlashObject::setDefaultWidth(826);
-	//FlashObject::setDefaultHeight(173);
-	//FlashObject::setDefaultFlashVersion("6.0.0");
-	//FlashObject::setDefaultAlternativeContent('<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>');
+	//FlashObject::set_default_external_flash_file("");
+	//FlashObject::set_default_width(826);
+	//FlashObject::set_default_height(173);
+	//FlashObject::set_default_flash_version("6.0.0");
+	//FlashObject::set_default_alternative_content('<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>');
 
 	//parameters
 	//FlashObject::addParam("quality", "high");
