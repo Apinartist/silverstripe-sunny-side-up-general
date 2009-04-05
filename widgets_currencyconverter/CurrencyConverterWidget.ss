@@ -11,7 +11,7 @@
   </div>
 
   <div id="CurrencyConverterFromHolder" class="CurrencyConverterHolder">
-   <label for="CurrencyConverterFromCurrencyCode">from this type of currency</label>
+   <label for="CurrencyConverterFromCurrencyCode">from this currency</label>
    <select name="CurrencyConverterFromCurrencyCode" size="1" id="CurrencyConverterFromCurrencyCode">
 <% control Currencies %>
     <option value="$code" <% if currentFrom %>selected="selected"<% end_if %>>$name</option>
@@ -22,7 +22,7 @@ $currentFrom,
   </div>
 
   <div id="CurrencyConverterToHolder" class="CurrencyConverterHolder">
-   <label for="CurrencyConverterToCurrencyCode">into this type of currency</label>
+   <label for="CurrencyConverterToCurrencyCode">into currency</label>
    <select name="CurrencyConverterToCurrencyCode" size="1" id="CurrencyConverterToCurrencyCode">
 <% control Currencies %>
     <option value="$code" <% if currentTo %>selected="selected"<% end_if %>>$name</option>
