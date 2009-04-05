@@ -111,7 +111,12 @@ class GoogleMap extends ViewableData {
 		static function setDefaultZoom($v) {self::$DefaultZoom = $v;}
 	protected static $ShowStaticMapFirst = 0;
 		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v;}
-		public function getShowStaticMapFirst() {return self::$ShowStaticMapFirst;}
+		public function getShowStaticMapFirst() {
+			if(!self::$ShowStaticMapFirst || (isset($_SESSION["staticMapsOff"]) && $_SESSION["staticMapsOff"]) ) {
+				return false;
+			}
+			return true;
+		}
 	/* STATIC MAP */
 	protected static $StaticMapSettings = "maptype=roadmap";
 		static function setStaticMapSettings($v) {self::$StaticMapSettings = $v;}
@@ -225,12 +230,12 @@ class GoogleMap extends ViewableData {
 		$this->URLForData[] = $URLForData;
 		ContentNegotiator::disable();
 		if(!self::$includesDone) {
-			Requirements::css("googleMap/css/map.css");
+			Requirements::themedCSS("googleMap/css/map.css");
 			//Requirements::javascript("mysite/javascript/jQuery.js");
 			Requirements::javascript('googleMap/javascript/googleMapStatic.js');
 			Requirements::javascript("googleMap/javascript/loadAjaxInfoWindow.js");
 			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');
-			if(!self::$ShowStaticMapFirst || isset($_SESSION["staticMapsOff"]) && $_SESSION["staticMapsOff"]) {
+			if(!$this->getShowStaticMapFirst()) {
 				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=".GoogleMapAPIKey);
 				Requirements::javascript("googleMap/javascript/googleMaps.js");
 				$js .= 'var scriptsLoaded = true; jQuery(document).ready( function() { initiateGoogleMap();} );';

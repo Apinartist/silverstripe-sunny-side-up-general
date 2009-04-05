@@ -238,8 +238,13 @@ GMC.prototype.setupMap = function (mapDivName) {
 		}
 	);
 	if(this.opts.viewFinderSize > 0) {
-		this.viewFinderSize = this.opts.viewFinderSize;
-		this.addViewFinder(this.opts.viewFinderSize, this.opts.viewFinderSize);
+
+		window.setTimeout(
+			function() {
+				GMO.viewFinderSize = GMO.opts.viewFinderSize;
+				GMO.addViewFinder(GMO.opts.viewFinderSize, GMO.opts.viewFinderSize);
+			}, 2000
+		);
 	}
 }
 GMC.prototype.basicResetMap = function () {
@@ -494,11 +499,11 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 				+ '<p class="infoTabAlternative">';
 			if(this.routeShown) {
 				findDirections += ''
-					+ '<br /><br /><b>Do next:</b></p><p><a href="javascript:GEvent.trigger(GMO.lastMarker,\'clickClearRoute\')" id="clearRouteLink">Clear Last Route</a> ';
+					+ '<b>Do next:</b></p><p><a href="javascript:GEvent.trigger(GMO.lastMarker,\'clickClearRoute\')" id="clearRouteLink">Clear Last Route</a> ';
 			}
 			else if((this.floatFrom || this.floatTo) || (this.to || this.from)) {
 				findDirections += ''
-					+ '<br /><br /><b>Do next:</b></p><p><a href="javascript:void(0)" class="submitButton" onclick="GEvent.trigger(GMO.lastMarker,\'clickFindRoute\')" id="calculateLinkRoute">Calculate Route</a>';
+					+ '<b>Do next:</b></p><p><a href="javascript:void(0)" class="submitButton" onclick="GEvent.trigger(GMO.lastMarker,\'clickFindRoute\')" id="calculateLinkRoute">Calculate Route</a>';
 			}
 			else if(this.layerInfo[m.layerId].pointCount > 1 && this.layerInfo[m.layerId].pointCount < 20) {
 				findDirections += ''
@@ -1240,18 +1245,20 @@ GMC.prototype.directionsOnLoad = function (){
 	copyright(directions.getCopyrightsHtml());
 	//open window
 	var html =  ''
-	+ '<p id="directionsPrintOptions"><a href="javascript:void(0)" onclick="GMO.printDirections()">Print Directions</a>, <a href="javascript:void(0)" onclick="GMO.clearRouteAll();">Clear Route</a></p>'
 	+ '<div id="directionsInnerDiv">'
 	+ ' <table class="directionsClassTable"><col class="col1" /><col class="col2"/>' + html + '</table>'
 	+ '</div>';
 	var directionsPanel = document.getElementById(GMO.opts.directionsDivId);
 	if(directionsPanel) {
+		html += ''
+		+ '<p id="directionsPrintOptions"><a href="javascript:void(0)" onclick="GMO.printDirections()">Print Directions</a>, <a href="javascript:void(0)" onclick="GMO.clearRouteAll();">Clear Route</a></p>'
 		directionsPanel.innerHTML = html;
 		GMO.updateStatus('Directions Loaded - <a href="javascript:void(0)" onclick="GMO.printDirections()">Print Directions</a>.');
 	}
 	else {
 		GMO.openDirectionsPopup(html);
 	}
+	GMO.updateStatus("Route Loaded");
 	//clear variables
 	GMO.clearRouteVariables();
 	GMO.attachStyleDirections(document);

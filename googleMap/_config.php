@@ -19,7 +19,7 @@ GoogleMap::setViewFinderSize(200); //size of the view finder in pixels (e.g. 250
 GoogleMap::setMapAddTypeControl(true);//Allow the visitor to change the map type (e.g. from a satellite to a normal map)
 GoogleMap::setMapControlSizeOneToThree(3);//map controller size (allows user to zoom and pan)", array("1" => "small", "2" => "medium", "3" => "large"), $value = "3"));
 GoogleMap::setMapScaleInfoSizeInPixels(150); //size of the map scale in pixels (default is 100)
-GoogleMap::setShowStaticMapFirst(0); //if set to 1, the map will load as a picture rather than an interactive map, with the opportunity to start an interactive map
+GoogleMap::setShowStaticMapFirst(0); //if set to 1, the map will load as a picture rather than an interactive map, with the opportunity to start an interactive map - you need to set this to 1 (true)
 
 /* STATIC MAP SETTINGS
 //center=-41.2943,173.2210&amp;zoom=5&amp;size=512x512&amp;maptype=roadmap - ONLY MAPTYPE IS REQUIRED

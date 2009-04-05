@@ -85,11 +85,11 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	protected function hasStaticMaps() {
-  	return (!isset($_SESSION["staticMapsOff"]) && $this->map->getShowStaticMapFirst()) ? true : false;
+  	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"]) && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
 
 	static function hasStaticMapsStaticFunction() {
-  	return (!isset($_SESSION["staticMapsOff"])  && $this->map->getShowStaticMapFirst()) ? true : false;
+  	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"])  && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
 
 	private function initiateMap() {
