@@ -1,7 +1,9 @@
 <?php
 
 /*
- set default using Javascript
+				$page->DefaultFromCurrencyCode = "NZD";
+				$page->DefaultToCurrencyCode = "EUR";
+				$page->DefaultAmount = "100";
 */
 
 class CurrencyConverterWidget extends Widget {
@@ -15,8 +17,8 @@ class CurrencyConverterWidget extends Widget {
 	"DefaultAmount" => "Currency"
  );
  static $defaults = array(
-	"DefaultFromCurrency" => "EUR",
-	"DefaultToCurrency" => "USD",
+	"DefaultFromCurrency" => "NZD",
+	"DefaultToCurrency" => "EUR",
 	"DefaultAmount" => "1"
  );
 
