@@ -4,6 +4,10 @@ class CurrencyConverterPage extends Page {
 
 	static $icon = "widgets_currencyconverter/images/treeicons/CurrencyConverterPage";
 
+	static $db = array(
+		"IntroText" = "Varchar(250)"
+	);
+
 	static $has_one = array(
 		"MainContent" => "WidgetArea",
 	);
@@ -14,6 +18,7 @@ class CurrencyConverterPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Content.Main.Disclaimer", new TextField("IntroText", "Intro Text (can put disclaimer here)"));
 		return $fields;
 	}
 

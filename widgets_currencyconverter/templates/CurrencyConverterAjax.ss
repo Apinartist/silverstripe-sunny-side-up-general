@@ -8,6 +8,7 @@
 	<script src="widgets_currencyconverter/javascript/CurrencyConverter.js" type="text/javascript"></script>
 </head>
 <body>
+$IntroText
 $CurrencyConverterWidget
 </body>
 </html>
