@@ -3,7 +3,7 @@
 	<div id="wrapperFor-{$ID}" style="height: {$Height}px!important; width: {$Width}px!important;">
 		<% if UseDynamicInsert %>
     <div id="$ID" style="height: {$Height}px!important; width: {$Width}px!important;">
-      <p class="FlashAlternativeContent">$AlternativeContent</p>
+      <p class="FlashAlternativeContent" style="display: none;">$AlternativeContent</p>
     </div>
 		<% else %>
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$Width" height="$Height" id="$ID">
@@ -13,7 +13,7 @@
 	<object type="application/x-shockwave-flash" data="$FileName" width="$Width" height="$Height">
 		$Parameters
 	<!--<![endif]-->
-		<p class="FlashAlternativeContent">$AlternativeContent</p>
+		<p class="FlashAlternativeContent" style="display: none;">$AlternativeContent</p>
 	<!--[if !IE]>-->
 	</object>
 	<!--<![endif]-->
