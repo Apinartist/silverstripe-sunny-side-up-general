@@ -80,13 +80,13 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
 		foreach($classes as $className) {
-			if($className != "SiteTree" && $className != "TemplateOverviewPage") {
+			if($className != "SiteTree" && $className != "TemplateOverviewPage" ) {
 				if($this->ShowAll) {
 					$objects = DataObject::get($className);
 					$count = 0;
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
-							$object = $this->createPageObject($obj, $count++);
+							$object = $this->createPageObject($obj, $count++, $className);
 							$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 						}
 					}
@@ -102,7 +102,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 						$obj = singleton($className);
 						$count = 0;
 					}
-					$object = $this->createPageObject($obj, $count);
+					$object = $this->createPageObject($obj, $count, $className);
 					$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 				}
 			}
@@ -120,12 +120,12 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $doSet;
 	}
 
-	private function createPageObject($obj, $count) {
+	private function createPageObject($obj, $count, $className) {
 		$this->TotalCount++;
 		$listArray = array();
 		$indexNumber = (10000 * $count) + $this->TotalCount;
 		$listArray["indexNumber"] = $indexNumber;
-		$listArray["ClassName"] = $obj->ClassName;
+		$listArray["ClassName"] = $className;
 		$listArray["Count"] = $count;
 		if($count > 1) {
 			$listArray["AddShowMoreLink"] = true;
