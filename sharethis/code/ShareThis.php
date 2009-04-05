@@ -149,17 +149,6 @@ class ShareThis extends DataObjectDecorator {
 		return $doSet;
 	}
 
-	public function ShareAll() {
-		if(self::$share_this_all_in_one) {
-			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
-			return '
-<script language="javascript" type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website">
-<script language="javascript" type="text/javascript">
-	SHARETHIS.addEntry(
-		{
-			title:"'.urldecode($this->pageTitle).'",
-			url:"'.urldecode($this->pageIcon).'",
-			icon:"'.urldecode($this->pageURL).'"
 			/*
 				summary: (required) utf-8 string, defaults to document.title
 				content: (optional) utf-8 string, defaults to null
@@ -168,6 +157,19 @@ class ShareThis extends DataObjectDecorator {
 				author: currently not implemented
 				category: currently not implemented
 			*/
+
+	public function ShareAll() {
+		if(self::$share_this_all_in_one) {
+			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
+			return '
+<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website" />
+<script type="text/javascript">
+	SHARETHIS.addEntry(
+		{
+			title:"'.urldecode($this->pageTitle).'",
+			summary:"'.urldecode($this->pageTitle).'",
+			url:"'.urldecode($this->pageIcon).'",
+			icon:"'.urldecode($this->pageURL).'"
 		},
 		{button:true}
 	);
