@@ -82,7 +82,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		foreach($classes as $className) {
 			if($className != "SiteTree" && $className != "TemplateOverviewPage" ) {
 				if($this->ShowAll) {
-					$objects = DataObject::get($className);
+					$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
 					$count = 0;
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
@@ -93,7 +93,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 				}
 				else {
 					$obj = null;
-					$objects = DataObject::get($className, '', 'RAND() ASC', '', 1);
+					$objects = DataObject::get($className, 'ClassName = "'.$className.'"', 'RAND() ASC', '', 1);
 					if(is_object($objects) && $objects->count()) {
 						$obj = $objects->First();
 						$count = DB::query('Select COUNT(*) from SiteTree_Live where ClassName = "'.$obj->ClassName.'"')->value();
@@ -149,6 +149,18 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$listArray["Icon"] = $icon."-file.gif";
 		$object = new ArrayData($listArray);
 		return $object;
+	}
+
+	function FinalClass($obj) {
+		$array = ClassInfo::subclassesFor($obj->ClassName);
+		if(count($array)) {
+			foreach($array as $class) {
+				if(DataObject::get_by_id($class, $obj->ID)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 }
