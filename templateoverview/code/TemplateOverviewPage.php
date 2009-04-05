@@ -93,7 +93,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 				}
 				else {
 					$obj = null;
-					$objects = DataObject::get($className, '', 'RAND()', '', 1);
+					$objects = DataObject::get($className, '', 'RAND() ASC', '', 1);
 					if(is_object($objects) && $objects->count()) {
 						$obj = $objects->First();
 						$count = DB::query('Select COUNT(*) from SiteTree_Live where ClassName = "'.$obj->ClassName.'"')->value();
