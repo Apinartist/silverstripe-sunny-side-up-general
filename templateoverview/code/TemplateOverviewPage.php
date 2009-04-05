@@ -77,7 +77,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 	}
 
 	public function ListOfAllClasses() {
-		$ListOfAllClasses =  new DataObjectSet();
+		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
 		foreach($classes as $className) {
 			if($className != "SiteTree" && $className != "TemplateOverviewPage") {
@@ -87,7 +87,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
 							$object = $this->createPageObject($obj, $count++);
-							$ListOfAllClasses->push($object);
+							$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 						}
 					}
 				}
@@ -103,12 +103,21 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 						$count = 0;
 					}
 					$object = $this->createPageObject($obj, $count);
-					$ListOfAllClasses->push($object);
+					$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 				}
 			}
 		}
-		$ListOfAllClasses->sort("indexNumber");
-		return $ListOfAllClasses;
+		ksort($ArrayOfAllClasses);
+		if(!$this->TotalCount) {
+			$this->TotalCount = count(ClassInfo::subclassesFor("SiteTree"));
+		}
+		$doSet =  new DataObjectSet();
+		if(count($ArrayOfAllClasses)) {
+			foreach($ArrayOfAllClasses as $item) {
+				$doSet->push($item);
+			}
+		}
+		return $doSet;
 	}
 
 	private function createPageObject($obj, $count) {
