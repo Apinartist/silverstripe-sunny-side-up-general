@@ -138,7 +138,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$listArray["Title"] = $obj->Title;
 		$listArray["FullLink"] = Director::absoluteBaseURL().$obj->URLSegment;
 		$listArray["URLSegment"] = $obj->URLSegment;
-		$staticIcon = $obj->stat("icon");
+		$staticIcon = $obj->stat("icon", true);
 		if(is_array($staticIcon)) {
 			$iconArray = $obj->stat("icon");
 			$icon = $iconArray[0];
