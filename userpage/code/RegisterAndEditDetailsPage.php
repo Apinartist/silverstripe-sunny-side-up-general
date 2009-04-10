@@ -91,10 +91,14 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		if(isset($_GET["ajax"])) {
 			return $this->renderWith(array("Thickbox", "RegisterPage"));
 		}
+
 		return array();
 	}
 
 	function Form() {
+		if(isset($_REQUEST["BackURL"])){
+			Session::set('BackURL', $_REQUEST["BackURL"]);
+		}
 		$member = Member::currentUser();
 		$fields = new FieldSet();
 		$passwordField = new ConfirmedPasswordField("Password", "Password");
@@ -121,6 +125,9 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			"FirstName",
 			"Email",
 		);
+		foreach($requiredFieldList as $fieldName) {
+			$fields->dataFieldByName($fieldName)->addExtraClass("RequiredField");
+		}
 		$requiredFields = new CustomRequiredFields($requiredFieldList);
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
 		// Load any data avaliable into the form.
@@ -154,10 +161,20 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 		if($newPerson) {
 			$member->logIn();
-			Director::redirect($this->Link() . 'welcome');
+			$link = ContentController::join_links($this->Link() , 'welcome');
 		}
 		else {
-			Director::redirect($this->Link() . 'thanks');
+			$link = ContentController::join_links($this->Link() , 'thanks');
+		}
+		if(!isset($_REQUEST["BackURL"]) && Session::get('BackURL')) {
+			$_REQUEST["BackURL"] = Session::get('BackURL');
+		}
+		if(isset($_REQUEST["BackURL"])){
+			$link = urldecode($_REQUEST["BackURL"]);
+			Session::set('BackURL', '');
+		}
+		if($link) {
+			Director::redirect($link);
 		}
 		return array();
 	}
