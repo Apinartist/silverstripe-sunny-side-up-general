@@ -7,7 +7,7 @@
 class RegisterAndEditDetailsPage extends Page {
 
 
-	static $icon = "registration/images/treeicons/RegisterAndEditDetailsPage";
+	static $icon = "userpage/images/treeicons/RegisterAndEditDetailsPage";
 
 	static $can_be_root = false;
 
@@ -126,7 +126,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			"Email",
 		);
 		foreach($requiredFieldList as $fieldName) {
-			$fields->dataFieldByName($fieldName)->addExtraClass("RequiredField");
+			$fields->fieldByName($fieldName)->addExtraClass("RequiredField");
 		}
 		$requiredFields = new CustomRequiredFields($requiredFieldList);
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
