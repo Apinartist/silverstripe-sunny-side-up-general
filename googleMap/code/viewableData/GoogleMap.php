@@ -253,12 +253,12 @@ class GoogleMap extends ViewableData {
 		if(!self::$includesDone) {
 			Requirements::themedCSS("googleMap/css/map.css");
 			//Requirements::javascript("mysite/javascript/jQuery.js");
-			Requirements::javascript('googleMap/javascript/googleMapStatic.js');
-			Requirements::javascript("googleMap/javascript/loadAjaxInfoWindow.js");
+			Requirements::javascript('googlemap/javascript/googleMapStatic.js');
+			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
 			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');
 			if(!$this->getShowStaticMapFirst()) {
 				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=".GoogleMapAPIKey);
-				Requirements::javascript("googleMap/javascript/googleMaps.js");
+				Requirements::javascript("googlemap/javascript/googleMaps.js");
 				$js .= 'var scriptsLoaded = true; jQuery(document).ready( function() { initiateGoogleMap();} );';
 			}
 			else {
