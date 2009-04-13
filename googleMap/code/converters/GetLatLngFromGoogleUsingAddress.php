@@ -85,7 +85,6 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 		$response = curl_exec( $curl );
 		if(!$response) {
 			$response = file_get_contents($url);
-			debug::show( "file get contents response: ".$response ) ;
 			if(!$response) {
 				return false;
 			}
