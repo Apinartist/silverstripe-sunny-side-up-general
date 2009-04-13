@@ -876,16 +876,31 @@ GMC.prototype.updateLists = function() {
 		}
 		sideBarArray.sort();
 	}
+	if(this.gmarkers.length > 3) {
+		var displayItemList="block";
+	}
+	else {
+		var displayItemList="none";
+	}
+	if(this.layerInfo.length > 1) {
+		var displayLayerList="block";
+	}
+	else {
+		var displayLayerList="none";
+	}
 	if(this.opts.sideBarId) {
+		jQuery("#"+this.opts.sideBarId).css("display", displayItemList);
 		this.createSideBar(sideBarArray);
 	}
 	if(this.opts.dropBoxId) {
+		jQuery("#"+this.opts.dropBoxId).css("display", displayItemList);
 		this.createDropDown(sideBarArray);
 	}
 	if(this.opts.titleId) {
 		this.updateTitles();
 	}
 	if(this.opts.layerListId) {
+		jQuery("#"+this.opts.layerListId).css("display", displayLayerList);
 		this.updateLayerList();
 	}
 	this.updateStatus("Map Ready");

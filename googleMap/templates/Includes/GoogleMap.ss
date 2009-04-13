@@ -46,18 +46,18 @@
 	</div>
 	<% end_if %>
 	<% if getLayerListDivId %><div id="$getLayerListDivId" class="MapExtraInformation"></div><% end_if %>
-	<% if getSideBarDivId %><% if EnoughPointsForAList %>
-	<div id="$getSideBarDivId" class="MapExtraInformation">
-	<% if dataPointsObjectSet %>
+	<% if getSideBarDivId %>
+	<div id="$getSideBarDivId" class="MapExtraInformation <% if EnoughPointsForAList %><% else %>hideMe<% end_if %>" >
+		<% if dataPointsObjectSet %>
 		<ul>
-		<% control orderItemsByLatitude %>
+			<% control orderItemsByLatitude %>
 			<li>$Title $AjaxInfoWindowLink</li>
-		<% end_control %>
+			<% end_control %>
 		</ul>
-	<% end_if %>
+		<% end_if %>
 	</div>
-	<% end_if %><% end_if %>
-	<% if getDropDownDivId %><% if EnoughPointsForAList %><div id="$getDropDownDivId" class="MapExtraInformation"></div><% end_if %><% end_if %>
+	<% end_if %>
+	<% if getDropDownDivId %><div id="$getDropDownDivId" class="MapExtraInformation <% if EnoughPointsForAList %><% else %>hideMe<% end_if %>"  ></div><% end_if %>
 	<% if getDirectionsDivId %><div id="$getDirectionsDivId" class="MapExtraInformation"></div><% end_if %>
 	<% if getStatusDivId %><div id="$getStatusDivId" class="MapExtraInformation"></div><% end_if %>
 </div>

@@ -65,10 +65,12 @@ function swapGoogleMapButtons() {
 		jQuery(".findAddressHtml").show();
 		jQuery(".loadInteractiveMap").hide();
 		jQuery("#MapControlsOutsideMap, #GoogleMapExtraLayersAsList").show();
+		jQuery(".hideMe").hide();
 	}
 	else {
 		jQuery(".loadInteractiveMap").show();
 		jQuery(".findAddressHtml").hide();
 		jQuery("#MapControlsOutsideMap, #GoogleMapExtraLayersAsList").hide();
+		jQuery(".hideMe").hide();
 	}
 }
