@@ -67,6 +67,10 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		return $this->map;
 	}
 
+	public function addExtraLayersAsLinks($Title, $URLSegment) {
+		$this->map->addExtraLayersAsLinks($Title, $URLSegment);
+	}
+
 	public function hasMap() {
 		if($this->map) {
 			return true;
@@ -88,6 +92,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
   	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"]) && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
 
+
 	static function hasStaticMapsStaticFunction() {
   	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"])  && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
@@ -97,6 +102,8 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 			$this->map = new GoogleMap();
 		}
 	}
+
+
 
 /* ******************************
  * CREATING MAPS ON PAGES - SEVERAL OPTIONS
@@ -227,15 +234,48 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		return $this->makeXMLData($pages, null, "Search results", "Search results");
 	}
 
-	public function showAroundMeXML() {
-		if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) ) {
+	public function showAroundMeXML($classNameForParent = "") {
+		$lon = 0;
+		$lat = 0;
+		$excludeIDList = array();
+		if(isset($_REQUEST["x"]) && isset($_REQUEST["y"])) {
 			$lon = floatval($_REQUEST["x"]);
 			$lat = floatval($_REQUEST["y"]);
+		}
+		elseif($id = intval(Director::URLParam("ID"))) {
+			$objects = DataObject::get("GoogleMapLocationsObject", "ParentID = $id");
+			if($count = $objects->count()) {
+				foreach($objects as $point) {
+					$lon += $point->Longitude;
+					$lat += $point->Latitude;
+					$excludeIDList[] = $point->ID;
+				}
+				$lon = $lon / $count;
+				$lat = $lat / $count;
+			}
+		}
+		if($otherClass = Director::URLParam("OtherID")) {
+			$classNameForParent = $otherClass;
+		}
+		if(isset($_REQUEST["title"])) {
+			$title = $_REQUEST["title"];
+		}
+		else {
+			$title = "Closest to me";
+		}
+		if($lon && $lat) {
 			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
-			$where = "(".$orderByRadius.") > 0 AND Latitude <> 0 AND Longitude <> 0";
-			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, '', self::$number_shown_in_around_me );
+			$where = "(".$orderByRadius.") > 0 AND `GoogleMapLocationsObject`.`Latitude` <> 0 AND `GoogleMapLocationsObject`.`Longitude` <> 0";
+			if($classNameForParent) {
+				$where .= ' AND `SiteTree_Live`.`ClassName` = "'.$classNameForParent.'"';
+			}
+			if(count($excludeIDList)) {
+				$where .= ' AND `GoogleMapLocationsObject`.`ID` NOT IN ('.implode(",",$excludeIDList).') ';
+			}
+			$join = 'Left Join SiteTree_Live On SiteTree_Live.ID = GoogleMapLocationsObject.ParentID';
+			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, $join, self::$number_shown_in_around_me );
 			if(is_object($objects)) {
-				return $this->makeXMLData(null, $objects, "Closest to me", self::$number_shown_in_around_me . " points closest ones");
+				return $this->makeXMLData(null, $objects, $title, self::$number_shown_in_around_me . " closest points");
 			}
 			else {
 				//return false;

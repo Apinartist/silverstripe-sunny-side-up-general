@@ -32,7 +32,7 @@ function delayedMapStartup() {
 					function() {
 						scriptsLoaded = true;
 						initiateGoogleMap();
-						jQuery("#MapControlsOutsideMap").fadeIn();
+						jQuery("#MapControlsOutsideMap, #GoogleMapExtraLayersAsList").fadeIn();
 						swapGoogleMapButtons();
 					}
 					, 100
@@ -64,11 +64,11 @@ function swapGoogleMapButtons() {
 	if(scriptsLoaded) {
 		jQuery(".findAddressHtml").show();
 		jQuery(".loadInteractiveMap").hide();
-		jQuery("#MapControlsOutsideMap").show();
+		jQuery("#MapControlsOutsideMap, #GoogleMapExtraLayersAsList").show();
 	}
 	else {
 		jQuery(".loadInteractiveMap").show();
 		jQuery(".findAddressHtml").hide();
-		jQuery("#MapControlsOutsideMap").hide();
+		jQuery("#MapControlsOutsideMap, #GoogleMapExtraLayersAsList").hide();
 	}
 }

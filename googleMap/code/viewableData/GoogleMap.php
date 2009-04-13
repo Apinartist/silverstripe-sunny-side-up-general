@@ -149,17 +149,21 @@ class GoogleMap extends ViewableData {
 	public $dataPointsObjectSet;
 	public $dataPointsStaticMapHTML;
 
-	protected $URLForData = Array();
+/* map data */
 	protected $GooglePointsDataObject = null;
-	protected $dataObjectTitle = "";
 	protected $whereStatementDescription = "";
 	protected $fieldNameForGoogleDataObjectWithPages = "GoogleDataPoints";
 	protected $Address = "";
 	protected $filteredClassNameArray = Array();
 
+/* map titles and headings */
+	protected $dataObjectTitle = "";
+
 	/* SERVER INTERACTION */
 	protected $UpdateServerUrlAddressSearchPoint = "";
 	protected $UpdateServerUrlDragend = "";
+	protected $ExtraLayersAsLinks = null;
+	protected $URLForData = Array();
 
 	/* Option 1 / 3 Set Address and update functions for Map */
 	public function setAddress($v) {$this->Address = Convert::raw2js($v);}
@@ -168,6 +172,23 @@ class GoogleMap extends ViewableData {
 	public function setUpdateServerUrlDragend($v) {$this->UpdateServerUrlDragend = Director::absoluteBaseURL().$v; }
 	public function getUpdateServerUrlDragend() {return $this->UpdateServerUrlDragend;}
 	public function allowAddPointsToMap() {self::$AddPointsToMap = true;}
+
+	public function addExtraLayersAsLinks($Title, $URLSegment) {
+		if(!$this->ExtraLayersAsLinks) {
+			$this->ExtraLayersAsLinks = new DataObjectSet();
+		}
+		if(!strpos($URLSegment, "?")) {
+			$URLSegment .= "?";
+		}
+		$URLSegment .='&amp;title='.urlencode($Title);
+		$this->ExtraLayersAsLinks->push(new ArrayData(array("Title" => $Title, "URLSegment" => $URLSegment)));
+	}
+
+	public function AllExtraLayersAsLinks() {
+		if(!$this->getShowStaticMapFirst()) {
+			return $this->ExtraLayersAsLinks;
+		}
+	}
 
 	public function canEdit() {
 		if($this->UpdateServerUrlDragend) {
