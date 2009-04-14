@@ -7,14 +7,14 @@ class PrettyPhoto extends Object {
 			self::block();
 		}
 		else {
-			Requirements::javascript('prettyPhoto/javascript/jquery.prettyPhoto.js');
-			Requirements::css('prettyPhoto/css/prettyPhoto.css');
+			Requirements::javascript('prettyphoto/javascript/jquery.prettyPhoto.js');
+			Requirements::css('prettyphoto/css/prettyPhoto.css');
 		}
 	}
 
 	static function block() {
-		Requirements::block('prettyPhoto/javascript/jquery.prettyPhoto.js');
-		Requirements::block('prettyPhoto/css/prettyPhoto.css');
+		Requirements::block('prettyphoto/javascript/jquery.prettyPhoto.js');
+		Requirements::block('prettyphoto/css/prettyPhoto.css');
 	}
 
 
