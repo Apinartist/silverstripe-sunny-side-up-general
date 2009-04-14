@@ -2,12 +2,494 @@
 	Class: prettyPhoto
 	Use: Lightbox clone for jQuery
 	Author: Stephane Caron (http://www.no-margin-for-errors.com)
-	Version: 2.2.6
+	Version: 2.2.2
+	Patched By: Michael Mitchell (http://www.michaelmitchell.co.nz)
 ------------------------------------------------------------------------- */
+(function($) {
+	$.fn.prettyPhoto = function(settings) {
+		// global Variables
+		var isSet = false; /* Total position in the array */
+		var setCount = 0; /* Total images in the set */
+		var setPosition = 0; /* Position in the set */
+		var arrayPosition = 0; /* Total position in the array */
+		var hasTitle = false;
+		var caller = 0;
+		var doresize = true;
+		var imagesArray = [];
+
+		$(window).scroll(function(){ _centerPicture(); });
+		$(window).resize(function(){ _centerPicture(); _resizeOverlay(); });
+		$(document).keyup(function(e){
+			switch(e.keyCode){
+				case 37:
+					if (setPosition == 1) return;
+					changePicture('previous');
+					break;
+				case 39:
+					if (setPosition == setCount) return;
+					changePicture('next');
+					break;
+				case 27:
+					close();
+					break;
+			};
+	    });
 
 
-(function(A){A.fn.prettyPhoto=function(P){var M=0;var D=true;var K=[];var C=0;A(window).scroll(function(){B();});A(window).resize(function(){B();N();});A(document).keyup(function(T){switch(T.keyCode){case 37:if(C==1){return ;}J("previous");break;case 39:if(C==setCount){return ;}J("next");break;case 27:I();break;}});P=jQuery.extend({animationSpeed:"normal",padding:40,opacity:0.35,showTitle:true,allowresize:true,counter_separator_label:"/",theme:"light_rounded"},P);A(this).each(function(){var V=false;var U=false;var W=0;var T=0;K[K.length]=this;A(this).bind("click",function(){G(this);return false;});});function G(T){M=A(T);theRel=A(M).attr("rel");galleryRegExp=/\[(?:.*)\]/;theGallery=galleryRegExp.exec(theRel);isSet=false;setCount=0;for(i=0;i<K.length;i++){if(A(K[i]).attr("rel").indexOf(theGallery)!=-1){setCount++;if(setCount>1){isSet=true;}if(A(K[i]).attr("href")==A(T).attr("href")){C=setCount;arrayPosition=i;}}}Q(isSet);A("div.pp_pic_holder p.currentTextHolder").text(C+P.counter_separator_label+setCount);B();A("div.pp_pic_holder #full_res").hide();A(".pp_loaderIcon").show();R();}showimage=function(W,T,Z,Y,X,U,V){A(".pp_loaderIcon").hide();var a=F();if(A.browser.opera){windowHeight=window.innerHeight;windowWidth=window.innerWidth;}else{windowHeight=A(window).height();windowWidth=A(window).width();}A("div.pp_pic_holder .pp_content").animate({height:X,width:Z},P.animationSpeed);projectedTop=a.scrollTop+((windowHeight/2)-(Y/2));if(projectedTop<0){projectedTop=0+A("div.ppt").height();}A("div.pp_pic_holder").animate({top:projectedTop,left:((windowWidth/2)-(Z/2)),width:Z},P.animationSpeed,function(){A("#fullResImage").attr({width:W,height:T});A("div.pp_pic_holder").width(Z);A("div.pp_pic_holder .hoverContainer").height(T).width(W);A("div.pp_pic_holder #full_res").fadeIn(P.animationSpeed);E();if(V){A("a.pp_expand,a.pp_contract").fadeIn(P.animationSpeed);}});};function J(T){if(T=="previous"){arrayPosition--;C--;}else{arrayPosition++;C++;}if(!D){D=true;}A("div.pp_pic_holder .hoverContainer,div.pp_pic_holder .pp_details").fadeOut(P.animationSpeed);A("div.pp_pic_holder #full_res").fadeOut(P.animationSpeed,function(){A(".pp_loaderIcon").show();R();});S();A("a.pp_expand,a.pp_contract").fadeOut(P.animationSpeed,function(){A(this).removeClass("pp_contract").addClass("pp_expand");});}function I(){A("div.pp_pic_holder,div.ppt").fadeOut(P.animationSpeed,function(){A("div.pp_overlay").fadeOut(P.animationSpeed,function(){A("div.pp_overlay,div.pp_pic_holder,div.ppt").remove();if(A.browser.msie&&A.browser.version==6){A("select").css("visibility","visible");}});});D=true;}function H(){if(C==setCount){A("div.pp_pic_holder a.pp_next").css("visibility","hidden");A("div.pp_pic_holder a.pp_arrow_next").addClass("disabled").unbind("click");}else{A("div.pp_pic_holder a.pp_next").css("visibility","visible");A("div.pp_pic_holder a.pp_arrow_next.disabled").removeClass("disabled").bind("click",function(){J("next");return false;});}if(C==1){A("div.pp_pic_holder a.pp_previous").css("visibility","hidden");A("div.pp_pic_holder a.pp_arrow_previous").addClass("disabled").unbind("click");}else{A("div.pp_pic_holder a.pp_previous").css("visibility","visible");A("div.pp_pic_holder a.pp_arrow_previous.disabled").removeClass("disabled").bind("click",function(){J("previous");return false;});}A("div.pp_pic_holder p.currentTextHolder").text(C+P.counter_separator_label+setCount);var T=(isSet)?A(K[arrayPosition]):A(M);if(T.attr("title")){A("div.pp_pic_holder .pp_description").show().html(unescape(T.attr("title")));}else{A("div.pp_pic_holder .pp_description").hide().text("");}if(T.find("img").attr("alt")&&P.showTitle){hasTitle=true;A("div.ppt .ppt_content").html(unescape(T.find("img").attr("alt")));}else{hasTitle=false;}}function L(U,T){hasBeenResized=false;A("div.pp_pic_holder .pp_details").width(U);A("div.pp_pic_holder .pp_details p.pp_description").width(U-parseFloat(A("div.pp_pic_holder a.pp_close").css("width")));contentHeight=T+parseFloat(A("div.pp_pic_holder .pp_details").height())+parseFloat(A("div.pp_pic_holder .pp_details").css("margin-top"))+parseFloat(A("div.pp_pic_holder .pp_details").css("margin-bottom"));contentWidth=U;containerHeight=T+parseFloat(A("div.ppt").height())+parseFloat(A("div.pp_pic_holder .pp_top").height())+parseFloat(A("div.pp_pic_holder .pp_bottom").height());containerWidth=U+P.padding;imageWidth=U;imageHeight=T;windowHeight=A(window).height();windowWidth=A(window).width();if(((containerWidth>windowWidth)||(containerHeight>windowHeight))&&D&&P.allowresize){hasBeenResized=true;notFitting=true;while(notFitting){if((containerWidth>windowWidth)){imageWidth=(windowWidth-200);imageHeight=(T/U)*imageWidth;}else{if((containerHeight>windowHeight)){imageHeight=(windowHeight-200);imageWidth=(U/T)*imageHeight;}else{notFitting=false;}}containerHeight=imageHeight;containerWidth=imageWidth;}contentHeight=imageHeight+parseFloat(A("div.pp_pic_holder .pp_details").height())+parseFloat(A("div.pp_pic_holder .pp_details").css("margin-top"))+parseFloat(A("div.pp_pic_holder .pp_details").css("margin-bottom"));contentWidth=imageWidth;containerHeight=imageHeight+parseFloat(A("div.ppt").height())+parseFloat(A("div.pp_pic_holder .pp_top").height())+parseFloat(A("div.pp_pic_holder .pp_bottom").height());containerWidth=imageWidth+P.padding;A("div.pp_pic_holder .pp_details").width(contentWidth);A("div.pp_pic_holder .pp_details p.pp_description").width(contentWidth-parseFloat(A("div.pp_pic_holder a.pp_close").css("width")));}return{width:imageWidth,height:imageHeight,containerHeight:containerHeight,containerWidth:containerWidth,contentHeight:contentHeight,contentWidth:contentWidth,resized:hasBeenResized};}function B(){if(A("div.pp_pic_holder").size()>0){var T=F();if(A.browser.opera){windowHeight=window.innerHeight;windowWidth=window.innerWidth;}else{windowHeight=A(window).height();windowWidth=A(window).width();}if(D){projectedTop=(windowHeight/2)+T.scrollTop-(A("div.pp_pic_holder").height()/2);if(projectedTop<0){projectedTop=0+A("div.ppt").height();}A("div.pp_pic_holder").css({top:projectedTop,left:(windowWidth/2)+T.scrollLeft-(A("div.pp_pic_holder").width()/2)});A("div.ppt").css({top:A("div.pp_pic_holder").offset().top-A("div.ppt").height(),left:A("div.pp_pic_holder").offset().left+(P.padding/2)});}}}function E(){if(isSet){A("div.pp_pic_holder .hoverContainer").fadeIn(P.animationSpeed);}A("div.pp_pic_holder .pp_details").fadeIn(P.animationSpeed);O();}function O(){if(P.showTitle&&hasTitle){A("div.ppt").css({top:A("div.pp_pic_holder").offset().top-22,left:A("div.pp_pic_holder").offset().left+(P.padding/2),display:"none"});A("div.ppt div.ppt_content").css("width","auto");if(A("div.ppt").width()>A("div.pp_pic_holder").width()){A("div.ppt div.ppt_content").css("width",A("div.pp_pic_holder").width()-(P.padding*2));}else{A("div.ppt div.ppt_content").css("width","");}A("div.ppt").fadeIn(P.animationSpeed);}}function S(){A("div.ppt").fadeOut(P.animationSpeed);}function R(){H();imgPreloader=new Image();nextImage=new Image();if(isSet&&C>setCount){nextImage.src=A(K[arrayPosition+1]).attr("href");}prevImage=new Image();if(isSet&&K[arrayPosition-1]){prevImage.src=A(K[arrayPosition-1]).attr("href");}A("div.pp_pic_holder .pp_content").css("overflow","hidden");if(isSet){A("div.pp_pic_holder #fullResImage").attr("src",A(K[arrayPosition]).attr("href"));}else{A("div.pp_pic_holder #fullResImage").attr("src",A(M).attr("href"));}imgPreloader.onload=function(){var T=L(imgPreloader.width,imgPreloader.height);imgPreloader.width=T.width;imgPreloader.height=T.height;setTimeout("showimage(imgPreloader.width,imgPreloader.height,"+T.containerWidth+","+T.containerHeight+","+T.contentHeight+","+T.contentWidth+","+T.resized+")",500);};(isSet)?imgPreloader.src=A(K[arrayPosition]).attr("href"):imgPreloader.src=A(M).attr("href");}function F(){scrollTop=window.pageYOffset||document.documentElement.scrollTop||0;scrollLeft=window.pageXOffset||document.documentElement.scrollLeft||0;return{scrollTop:scrollTop,scrollLeft:scrollLeft};}function N(){A("div.pp_overlay").css({height:A(document).height(),width:A(window).width()});}function Q(){backgroundDiv="<div class='pp_overlay'></div>";A("body").append(backgroundDiv);A("div.pp_overlay").css("height",A(document).height()).bind("click",function(){I();});pictureHolder='<div class="pp_pic_holder"><div class="pp_top"><div class="pp_left"></div><div class="pp_middle"></div><div class="pp_right"></div></div><div class="pp_content"><a href="#" class="pp_expand" title="Expand the image">Expand</a><div class="pp_loaderIcon"></div><div class="hoverContainer"><a class="pp_next" href="#">next</a><a class="pp_previous" href="#">previous</a></div><div id="full_res"><img id="fullResImage" src="" /></div><div class="pp_details clearfix"><a class="pp_close" href="#">Close</a><p class="pp_description"></p><div class="pp_nav"><a href="#" class="pp_arrow_previous">Previous</a><p class="currentTextHolder">0'+P.counter_separator_label+'0</p><a href="#" class="pp_arrow_next">Next</a></div></div></div><div class="pp_bottom"><div class="pp_left"></div><div class="pp_middle"></div><div class="pp_right"></div></div></div>';titleHolder='<div class="ppt"><div class="ppt_left"></div><div class="ppt_content"></div><div class="ppt_right"></div></div>';A("body").append(pictureHolder).append(titleHolder);A(".pp_pic_holder,.titleHolder").css({opacity:0});A(".pp_pic_holder,.ppt").addClass(P.theme);A("a.pp_close").bind("click",function(){I();return false;});A("a.pp_expand").bind("click",function(){if(A(this).hasClass("pp_expand")){A(this).removeClass("pp_expand").addClass("pp_contract");D=false;}else{A(this).removeClass("pp_contract").addClass("pp_expand");D=true;}S();A("div.pp_pic_holder .hoverContainer,div.pp_pic_holder #full_res").fadeOut(P.animationSpeed);A("div.pp_pic_holder .pp_details").fadeOut(P.animationSpeed,function(){R();});return false;});A(".pp_pic_holder .pp_previous,.pp_pic_holder .pp_arrow_previous").bind("click",function(){J("previous");return false;});A(".pp_pic_holder .pp_next,.pp_pic_holder .pp_arrow_next").bind("click",function(){J("next");return false;});A(".hoverContainer").css({"margin-left":P.padding/2});if(!isSet){A(".hoverContainer,.pp_nav").hide();}if(A.browser.msie&&A.browser.version==6){A("body").addClass("ie6");A("select").css("visibility","hidden");}A("div.pp_overlay").css("opacity",0).fadeTo(P.animationSpeed,P.opacity,function(){A("div.pp_pic_holder").css("opacity",0).fadeIn(P.animationSpeed,function(){A("div.pp_pic_holder").attr("style","left:"+A("div.pp_pic_holder").css("left")+";top:"+A("div.pp_pic_holder").css("top")+";");});});}};})(jQuery);
+		settings = jQuery.extend({
+			animationSpeed: 'normal', /* fast/slow/normal */
+			padding: 40, /* padding for each side of the picture */
+			opacity: 0.35, /* Value betwee 0 and 1 */
+			showTitle: true, /* true/false */
+			allowresize: true, /* true/false */
+			counter_separator_label: '/' /* Teh separator for the gallery counter 1 "of" 2 */
+		}, settings);
 
-jQuery(document).ready(function(){
-	jQuery("a[rel^='prettyPhoto']").prettyPhoto();
-});
+		$(this).each(function(){
+			imagesArray[imagesArray.length] = this;
+			$(this).bind('click',function(){
+				open(this); return false;
+			});
+		});
+
+		function open(el) {
+			caller = $(el);
+
+			// Find out if the picture is part of a set
+			theRel = $(caller).attr('rel');
+			galleryRegExp = /\[(?:.*)\]/;
+			theGallery = galleryRegExp.exec(theRel);
+
+			// Find out the type of content
+			contentType = "image";
+			if($(caller).attr('href').indexOf('.swf') > 0){ hasTitle = false; contentType = 'flash'; };
+
+			// Calculate the number of items in the set, and the position of the clicked picture.
+			isSet = false;
+			setCount = 0;
+			for (i = 0; i < imagesArray.length; i++){
+				if($(imagesArray[i]).attr('rel').indexOf(theGallery) != -1){
+					setCount++;
+					if(setCount > 1) isSet = true;
+
+					if($(imagesArray[i]).attr('href') == $(el).attr('href')){
+						setPosition = setCount;
+						arrayPosition = i;
+					};
+				};
+			};
+
+			_buildOverlay(isSet);
+
+			// Display the current position
+			$('div.pictureHolder p.currentTextHolder').text(setPosition + settings.counter_separator_label + setCount);
+
+			// Position the picture in the center of the viewing area
+			_centerPicture();
+
+			$('div.pictureHolder #fullResImageContainer').hide();
+			$('.loaderIcon').show();
+
+			// Display the correct type of information
+			(contentType == 'image') ? _preload() : _writeFlash();
+		};
+
+		showimage = function(width,height,containerWidth,containerHeight,contentHeight,contentWidth,resized){
+			$('.loaderIcon').hide();
+			var scrollPos = _getScroll();
+
+			if($.browser.opera) {
+				windowHeight = window.innerHeight;
+				windowWidth = window.innerWidth;
+			}else{
+				windowHeight = $(window).height();
+				windowWidth = $(window).width();
+			};
+
+			$('div.pictureHolder .content').animate({'height':contentHeight,'width':containerWidth},settings.animationSpeed);
+
+			projectedTop = scrollPos['scrollTop'] + ((windowHeight/2) - (containerHeight/2));
+			if(projectedTop < 0) projectedTop = 0 + $('div.prettyPhotoTitle').height();
+
+			// Resize the holder
+			$('div.pictureHolder').animate({
+				'top': projectedTop,
+				'left': ((windowWidth/2) - (containerWidth/2)),
+				'width': containerWidth
+			},settings.animationSpeed,function(){
+				$('#fullResImage').attr({
+					'width':width,
+					'height':height
+				});
+
+				$('div.pictureHolder').width(containerWidth);
+				$('div.pictureHolder .hoverContainer').height(height).width(width);
+
+				// Show the nav elements
+				_shownav();
+
+				// Fade the new image
+				$('div.pictureHolder #fullResImageContainer').fadeIn(settings.animationSpeed);
+
+				// Fade the resizing link if the image is resized
+				if(resized) $('a.expand,a.contract').fadeIn(settings.animationSpeed);
+			});
+		};
+
+		function changePicture(direction){
+			if(direction == 'previous') {
+				arrayPosition--;
+				setPosition--;
+			}else{
+				arrayPosition++;
+				setPosition++;
+			};
+
+			// Allow the resizing of the images
+			if(!doresize) doresize = true;
+
+			// Fade out the current picture
+			$('div.pictureHolder .hoverContainer,div.pictureHolder .details').fadeOut(settings.animationSpeed);
+			$('div.pictureHolder #fullResImageContainer').fadeOut(settings.animationSpeed,function(){
+				$('.loaderIcon').show();
+
+				// Preload the image
+				_preload();
+			});
+
+			_hideTitle();
+			$('a.expand,a.contract').fadeOut(settings.animationSpeed,function(){
+				$(this).removeClass('contract').addClass('expand');
+			});
+		};
+
+		function close(){
+			$('div.pictureHolder,div.prettyPhotoTitle').fadeOut(settings.animationSpeed, function(){
+				$('div.prettyPhotoOverlay').fadeOut(settings.animationSpeed, function(){
+					$('div.prettyPhotoOverlay,div.pictureHolder,div.prettyPhotoTitle').remove();
+
+					// To fix the bug with IE select boxes
+					if($.browser.msie && $.browser.version == 6){
+						$('select').css('visibility','visible');
+					};
+				});
+			});
+		};
+
+		function _checkPosition(){
+			// If at the end, hide the next link
+			if(setPosition == setCount) {
+				$('div.pictureHolder a.next').css('visibility','hidden');
+				$('div.pictureHolder a.arrow_next').addClass('disabled').unbind('click');
+			}else{
+				$('div.pictureHolder a.next').css('visibility','visible');
+				$('div.pictureHolder a.arrow_next.disabled').removeClass('disabled').bind('click',function(){
+					changePicture('next');
+					return false;
+				});
+			};
+
+			// If at the beginning, hide the previous link
+			if(setPosition == 1) {
+				$('div.pictureHolder a.previous').css('visibility','hidden');
+				$('div.pictureHolder a.arrow_previous').addClass('disabled').unbind('click');
+			}else{
+				$('div.pictureHolder a.previous').css('visibility','visible');
+				$('div.pictureHolder a.arrow_previous.disabled').removeClass('disabled').bind('click',function(){
+					changePicture('previous');
+					return false;
+				});
+			};
+
+			// Change the current picture text
+			$('div.pictureHolder p.currentTextHolder').text(setPosition + settings.counter_separator_label + setCount);
+
+			(isSet) ? $c = $(imagesArray[arrayPosition]) : $c = $(caller);
+
+			if($c.attr('title')){
+				$('div.pictureHolder .description').show().html(unescape($c.attr('title')));
+			}else{
+				$('div.pictureHolder .description').hide().text('');
+			};
+
+			if($c.find('img').attr('alt') && settings.showTitle){
+				hasTitle = true;
+				$('div.prettyPhotoTitle .prettyPhotoTitleContent').html(unescape($c.find('img').attr('alt')));
+			}else{
+				hasTitle = false;
+			};
+		};
+
+		function _fitToViewport(width,height){
+			hasBeenResized = false;
+
+			$('div.pictureHolder .details').width(width); /* To have the correct height */
+			$('div.pictureHolder .details p.description').width(width - parseFloat($('div.pictureHolder a.close').css('width'))); /* So it doesn't overlap the button */
+
+			// Get the container size, to resize the holder to the right dimensions
+			contentHeight = height + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
+			contentWidth = width;
+			containerHeight = height + parseFloat($('div.prettyPhotoTitle').height()) + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
+			containerWidth = width + settings.padding;
+
+			// Define them in case there's no resize needed
+			imageWidth = width;
+			imageHeight = height;
+
+			if($.browser.opera) {
+				windowHeight = window.innerHeight;
+				windowWidth = window.innerWidth;
+			}else{
+				windowHeight = $(window).height();
+				windowWidth = $(window).width();
+			};
+
+			if( ((containerWidth > windowWidth) || (containerHeight > windowHeight)) && doresize && settings.allowresize) {
+				hasBeenResized = true;
+
+				if((containerWidth > windowWidth) && (containerHeight > windowHeight)){
+					// Get the original geometry and calculate scales
+					var xscale =  (containerWidth + 200) / windowWidth;
+					var yscale = (containerHeight + 200) / windowHeight;
+				}else{
+					// Get the original geometry and calculate scales
+					var xscale = windowWidth / containerWidth;
+					var yscale = windowHeight / containerHeight;
+				}
+
+				// Recalculate new size with default ratio
+				if (yscale>xscale){
+					imageWidth = Math.round(width * (1/yscale));
+					imageHeight = Math.round(height * (1/yscale));
+				} else {
+					imageWidth = Math.round(width * (1/xscale));
+					imageHeight = Math.round(height * (1/xscale));
+				};
+
+				// Define the new dimensions
+				contentHeight = imageHeight + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
+				contentWidth = imageWidth;
+				containerHeight = imageHeight + parseFloat($('div.prettyPhotoTitle').height()) + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
+				containerWidth = imageWidth + settings.padding;
+
+				$('div.pictureHolder .details').width(contentWidth); /* To have the correct height */
+				$('div.pictureHolder .details p.description').width(contentWidth - parseFloat($('div.pictureHolder a.close').css('width'))); /* So it doesn't overlap the button */
+			};
+
+			return {
+				width:imageWidth,
+				height:imageHeight,
+				containerHeight:containerHeight,
+				containerWidth:containerWidth,
+				contentHeight:contentHeight,
+				contentWidth:contentWidth,
+				resized:hasBeenResized
+			};
+		};
+
+		function _centerPicture(){
+			//Make sure the gallery is open
+			if($('div.pictureHolder').size() > 0){
+
+				var scrollPos = _getScroll();
+
+				if($.browser.opera) {
+					windowHeight = window.innerHeight;
+					windowWidth = window.innerWidth;
+				}else{
+					windowHeight = $(window).height();
+					windowWidth = $(window).width();
+				};
+
+				if(doresize) {
+					projectedTop = (windowHeight/2) + scrollPos['scrollTop'] - ($('div.pictureHolder').height()/2);
+					if(projectedTop < 0) projectedTop = 0 + $('div.prettyPhotoTitle').height();
+
+					$('div.pictureHolder').css({
+						'top': projectedTop,
+						'left': (windowWidth/2) + scrollPos['scrollLeft'] - ($('div.pictureHolder').width()/2)
+					});
+
+					$('div.prettyPhotoTitle').css({
+						'top' : $('div.pictureHolder').offset().top - $('div.prettyPhotoTitle').height(),
+						'left' : $('div.pictureHolder').offset().left + (settings.padding/2)
+					});
+				};
+			};
+		};
+
+		function _shownav(){
+			if(isSet) $('div.pictureHolder .hoverContainer').fadeIn(settings.animationSpeed);
+			$('div.pictureHolder .details').fadeIn(settings.animationSpeed);
+
+			_showTitle();
+		};
+
+		function _showTitle(){
+			if(settings.showTitle && hasTitle){
+				$('div.prettyPhotoTitle').css({
+					'top' : $('div.pictureHolder').offset().top,
+					'left' : $('div.pictureHolder').offset().left + (settings.padding/2),
+					'display' : 'block'
+				});
+
+				$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width','auto');
+
+				if($('div.prettyPhotoTitle').width() > $('div.pictureHolder').width()){
+					$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width',$('div.pictureHolder').width() - (settings.padding * 2));
+				}else{
+					$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width','');
+				};
+
+				$('div.prettyPhotoTitle').animate({'top':($('div.pictureHolder').offset().top - 22)},settings.animationSpeed);
+			};
+		};
+
+		function _hideTitle() {
+			$('div.prettyPhotoTitle').animate({'top':($('div.pictureHolder').offset().top)},settings.animationSpeed,function() { $(this).css('display','none'); });
+		};
+
+		function _preload(){
+			// Hide the next/previous links if on first or last images.
+			_checkPosition();
+
+			// Set the new image
+			imgPreloader = new Image();
+
+			// Preload the neighbour images
+			nextImage = new Image();
+			if(isSet) nextImage.src = $(imagesArray[arrayPosition + 1]).attr('href');
+			prevImage = new Image();
+			if(isSet && imagesArray[arrayPosition - 1]) prevImage.src = $(imagesArray[arrayPosition - 1]).attr('href');
+
+			$('div.pictureHolder .content').css('overflow','hidden');
+
+			if(isSet) {
+				$('div.pictureHolder #fullResImage').attr('src',$(imagesArray[arrayPosition]).attr('href'));
+			}else{
+				$('div.pictureHolder #fullResImage').attr('src',$(caller).attr('href'));
+			};
+
+			imgPreloader.onload = function(){
+				var correctSizes = _fitToViewport(imgPreloader.width,imgPreloader.height);
+				imgPreloader.width = correctSizes['width'];
+				imgPreloader.height = correctSizes['height'];
+
+				// Need that small delay for the anim to be nice
+				setTimeout('showimage(imgPreloader.width,imgPreloader.height,'+correctSizes["containerWidth"]+','+correctSizes["containerHeight"]+','+correctSizes["contentHeight"]+','+correctSizes["contentWidth"]+','+correctSizes["resized"]+')',500);
+			};
+
+			(isSet) ? imgPreloader.src = $(imagesArray[arrayPosition]).attr('href') : imgPreloader.src = $(caller).attr('href');
+		};
+
+		function _getScroll(){
+			scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+			scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+			return {scrollTop:scrollTop,scrollLeft:scrollLeft};
+		};
+
+		function _resizeOverlay() {
+			$('div.prettyPhotoOverlay').css({
+				'height':$(document).height(),
+				'width':$(window).width()
+			});
+		};
+
+		function _writeFlash(){
+			flashParams = $(caller).attr('rel').split(';');
+			$(flashParams).each(function(i){
+				// Define the width and height
+				if(flashParams[i].indexOf('width') >= 0) flashWidth = flashParams[i].substring(flashParams[i].indexOf('width') + 6, flashParams[i].length);
+				if(flashParams[i].indexOf('height') >= 0) flashHeight = flashParams[i].substring(flashParams[i].indexOf('height') + 7, flashParams[i].length);
+				if(flashParams[i].indexOf('flashvars') >= 0) flashVars = flashParams[i].substring(flashParams[i].indexOf('flashvars') + 10, flashParams[i].length);
+			});
+
+			$('.pictureHolder #fullResImageContainer').append('<embed width="'+flashWidth+'" height="'+flashHeight+'" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" wmode="opaque" name="prettyFlash" flashvars="'+flashVars+'" allowscriptaccess="always" bgcolor="#FFFFFF" quality="high" src="'+$(caller).attr('href')+'"/>');
+			$('#fullResImage').hide();
+
+			contentHeight = parseFloat(flashHeight) + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
+			contentWidth = parseFloat(flashWidth)+ parseFloat($('div.pictureHolder .details').width()) + parseFloat($('div.pictureHolder .details').css('margin-left')) + parseFloat($('div.pictureHolder .details').css('margin-right'));
+			containerHeight = contentHeight + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
+			containerWidth = parseFloat(flashWidth) + parseFloat($('div.pictureHolder .content').css("padding-left")) + parseFloat($('div.pictureHolder .content').css("padding-right")) + settings.padding;
+
+			setTimeout('showimage('+flashWidth+','+flashHeight+','+containerWidth+','+containerHeight+','+contentHeight+','+contentWidth+')',500);
+		};
+
+		function _buildOverlay(){
+
+			// Build the background overlay div
+			backgroundDiv = "<div class='prettyPhotoOverlay'></div>";
+			$('body').append(backgroundDiv);
+			$('div.prettyPhotoOverlay').css('height',$(document).height()).bind('click',function(){
+				close();
+			});
+
+			// Basic HTML for the picture holder
+			pictureHolder = '<div class="pictureHolder"><div class="top"><div class="left"></div><div class="middle"></div><div class="right"></div></div><div class="content"><a href="#" class="expand" title="Expand the image">Expand</a><div class="loaderIcon"></div><div class="hoverContainer"><a class="next" href="#">next</a><a class="previous" href="#">previous</a></div><div id="fullResImageContainer"><img id="fullResImage" src="" /></div><div class="details clearfix"><a class="close" href="#">Close</a><p class="description"></p><div class="nav"><a href="#" class="arrow_previous">Previous</a><p class="currentTextHolder">0'+settings.counter_separator_label+'0</p><a href="#" class="arrow_next">Next</a></div></div></div><div class="bottom"><div class="left"></div><div class="middle"></div><div class="right"></div></div></div>';
+
+			// Basic html for the title holder
+			titleHolder = '<div class="prettyPhotoTitle"><div class="prettyPhotoTitleLeft"></div><div class="prettyPhotoTitleContent"></div><div class="prettyPhotoTitleRight"></div></div>';
+
+			$('body').append(pictureHolder).append(titleHolder);
+
+			$('.pictureHolder,.titleHolder').css({'opacity': 0});
+			$('a.close').bind('click',function(){ close(); return false; });
+			$('a.expand').bind('click',function(){
+
+				// Expand the image
+				if($(this).hasClass('expand')){
+					$(this).removeClass('expand').addClass('contract');
+					doresize = false;
+				}else{
+					$(this).removeClass('contract').addClass('expand');
+					doresize = true;
+				};
+
+				_hideTitle();
+				$('div.pictureHolder .hoverContainer,div.pictureHolder #fullResImageContainer').fadeOut(settings.animationSpeed);
+				$('div.pictureHolder .details').fadeOut(settings.animationSpeed,function(){
+					_preload();
+				});
+
+				return false;
+			});
+
+			$('.pictureHolder .previous,.pictureHolder .arrow_previous').bind('click',function(){
+				changePicture('previous');
+				return false;
+			});
+
+			$('.pictureHolder .next,.pictureHolder .arrow_next').bind('click',function(){
+				changePicture('next');
+				return false;
+			});
+
+			$('.hoverContainer').css({
+				'margin-left': settings.padding/2
+			});
+
+			// If it's not a set, hide the links
+			if(!isSet) {
+				$('.hoverContainer,.nav').hide();
+			};
+
+
+			// To fix the bug with IE select boxes
+			if($.browser.msie && $.browser.version == 6){
+				$('select').css('visibility','hidden');
+			};
+
+			// Then fade it in
+			$('div.prettyPhotoOverlay').css('opacity',0).fadeTo(settings.animationSpeed,settings.opacity, function(){
+				$('div.pictureHolder').css('opacity',0).fadeIn(settings.animationSpeed,function(){
+					// To fix an IE bug
+					$('div.pictureHolder').attr('style','left:'+$('div.pictureHolder').css('left')+';top:'+$('div.pictureHolder').css('top')+';');
+				});
+			});
+		};
+	};
+
+	$(document).ready(function(){
+		$("a[rel^='prettyPhoto']").prettyPhoto();
+	});
+})(jQuery);
