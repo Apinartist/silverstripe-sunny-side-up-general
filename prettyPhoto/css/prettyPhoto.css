@@ -2,31 +2,31 @@
 	This you can edit.
 ------------------------------------------------------------------------- */
 
-	div.pictureHolder .top .left { background: url(/prettyPhoto/images/tl.gif) top left no-repeat; } /* Top left corner */
+	div.pictureHolder .top .left { background: url(../images/tl.gif) top left no-repeat; } /* Top left corner */
 	div.pictureHolder .top .middle { background: #fff; } /* Top pattern/color */
-	div.pictureHolder .top .right { background: url(/prettyPhoto/images/tr.gif) top left no-repeat; } /* Top right corner */
+	div.pictureHolder .top .right { background: url(../images/tr.gif) top left no-repeat; } /* Top right corner */
 
 	div.pictureHolder .content { background-color: #fff; } /* Content background */
-	div.pictureHolder .content a.next:hover { background: url(/prettyPhoto/images/btnNext.gif) center right no-repeat; cursor: pointer; } /* Next button */
-	div.pictureHolder .content a.previous:hover { background: url(/prettyPhoto/images/btnPrevious.gif) center left no-repeat; cursor: pointer; } /* Previous button */
-	div.pictureHolder .content a.expand { background: url(/prettyPhoto/images/btnExpand.gif) top left no-repeat; cursor: pointer; } /* Expand button */
-	div.pictureHolder .content a.expand:hover { background: url(/prettyPhoto/images/btnExpand.gif) bottom left no-repeat; cursor: pointer; } /* Expand button hover */
-	div.pictureHolder .content a.contract { background: url(/prettyPhoto/images/btnContract.gif) top left no-repeat; cursor: pointer; } /* Contract button */
-	div.pictureHolder .content a.contract:hover { background: url(/prettyPhoto/images/btnContract.gif) bottom left no-repeat; cursor: pointer; } /* Contract button hover */
-	div.pictureHolder .content a.close { width: 61px; height: 22px; background: url(/prettyPhoto/images/btnClose.gif) center left no-repeat; cursor: pointer; } /* Close button */
+	div.pictureHolder .content a.next:hover { background: url(../images/btnNext.gif) center right no-repeat; cursor: pointer; } /* Next button */
+	div.pictureHolder .content a.previous:hover { background: url(../images/btnPrevious.gif) center left no-repeat; cursor: pointer; } /* Previous button */
+	div.pictureHolder .content a.expand { background: url(../images/btnExpand.gif) top left no-repeat; cursor: pointer; } /* Expand button */
+	div.pictureHolder .content a.expand:hover { background: url(../images/btnExpand.gif) bottom left no-repeat; cursor: pointer; } /* Expand button hover */
+	div.pictureHolder .content a.contract { background: url(../images/btnContract.gif) top left no-repeat; cursor: pointer; } /* Contract button */
+	div.pictureHolder .content a.contract:hover { background: url(../images/btnContract.gif) bottom left no-repeat; cursor: pointer; } /* Contract button hover */
+	div.pictureHolder .content a.close { width: 61px; height: 22px; background: url(../images/btnClose.gif) center left no-repeat; cursor: pointer; } /* Close button */
 
-	div.pictureHolder .content .details .nav a.arrow_previous { background: url(/prettyPhoto/images/arrow_previous.gif) top left no-repeat; } /* The previous arrow in the bottom nav */
-	div.pictureHolder .content .details .nav a.arrow_next { background: url(/prettyPhoto/images/arrow_next.gif) top left no-repeat; } /* The next arrow in the bottom nav */
+	div.pictureHolder .content .details .nav a.arrow_previous { background: url(../images/arrow_previous.gif) top left no-repeat; } /* The previous arrow in the bottom nav */
+	div.pictureHolder .content .details .nav a.arrow_next { background: url(../images/arrow_next.gif) top left no-repeat; } /* The next arrow in the bottom nav */
 
-	div.pictureHolder .bottom .left { background: url(/prettyPhoto/images/bl.gif) top left no-repeat; } /* Bottom left corner */
+	div.pictureHolder .bottom .left { background: url(../images/bl.gif) top left no-repeat; } /* Bottom left corner */
 	div.pictureHolder .bottom .middle { background: #fff; } /* Bottom pattern/color */
-	div.pictureHolder .bottom .right { background: url(/prettyPhoto/images/br.gif) top left no-repeat; } /* Bottom right corner */
+	div.pictureHolder .bottom .right { background: url(../images/br.gif) top left no-repeat; } /* Bottom right corner */
 
-	div.pictureHolder .loaderIcon { background: url(/prettyPhoto/images/loader.gif) center center no-repeat; } /* Loader icon */
+	div.pictureHolder .loaderIcon { background: url(../images/loader.gif) center center no-repeat; } /* Loader icon */
 
-	div.prettyPhotoTitle div.prettyPhotoTitleLeft { background: url(/prettyPhoto/images/ttl.gif) top left no-repeat; }
-	div.prettyPhotoTitle div.prettyPhotoTitleRight { background: url(/prettyPhoto/images/ttr.gif) top left no-repeat; }
-	div.prettyPhotoTitle div.prettyPhotoTitleContent { background: url(/prettyPhoto/images/ttp.gif) top left repeat-x; }
+	div.prettyPhotoTitle div.prettyPhotoTitleLeft { background: url(../images/ttl.gif) top left no-repeat; }
+	div.prettyPhotoTitle div.prettyPhotoTitleRight { background: url(../images/ttr.gif) top left no-repeat; }
+	div.prettyPhotoTitle div.prettyPhotoTitleContent { background: url(../images/ttp.gif) top left repeat-x; }
 
 
 /* ------------------------------------------------------------------------
@@ -110,7 +110,7 @@
 			display: block; float: right;
 			text-indent: -10000px;
 			width: 49%; height: 100%;
-			background: url(/prettyPhoto/images/btnNext.gif) 10000px 50% no-repeat; /* Need to be defined that way to fix an IE bug */
+			background: url(../images/btnNext.gif) 10000px 50% no-repeat; /* Need to be defined that way to fix an IE bug */
 		}
 
 		div.pictureHolder .content a.previous {
@@ -118,7 +118,7 @@
 			display: block;
 			text-indent: -10000px;
 			width: 49%; height: 100%;
-			background: url(/prettyPhoto/images/btnNext.gif) 10000px 50% no-repeat; /* Need to be defined that way to fix an IE bug */
+			background: url(../images/btnNext.gif) 10000px 50% no-repeat; /* Need to be defined that way to fix an IE bug */
 
 		}
 
