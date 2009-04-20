@@ -427,6 +427,12 @@ class TypographyTestPage_Controller extends Page_Controller {
 	}
 	
 	function Form() {
+		$array = array();
+		$array[] = "green";
+		$array[] = "yellow";
+		$array[] = "blue";
+		$array[] = "pink";
+		$array[] = "orange";
 		$form = new Form(
 			$controller = $this,
 			$name = "TestForm",
@@ -434,11 +440,12 @@ class TypographyTestPage_Controller extends Page_Controller {
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
 				new TextField($name = "TextField", $title = "Text Field Example"),
+				new TextareaField($name = "TextareaField", $title = "Textarea Field", 5, 5),
 				new EmailField("EmailField", "Email address"),
 				new HeaderField($name = "HeaderField2", $title = "HeaderField Level 2", 2),
 				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
-				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$source = Geoip::getCountryDropDown()),
-				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$source = Geoip::getCountryDropDown()),
+				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$array),
+				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$array),
 				new HeaderField($name = "HeaderField3", $title = "HeaderField Level 3", 3),
 				new NumericField($name = "NumericField", $title = "Numeric Field "),
 				new DateField($name = "DateField", $title = "Date Field"),
@@ -454,7 +461,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 			)
 		);
 		return $form;		
-	}
+	}	
 }
 
 
