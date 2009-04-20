@@ -425,6 +425,36 @@ class TypographyTestPage_Controller extends Page_Controller {
 		Requirements::javascript("jsparty/jquery/jquery.js");
 		Requirements::javascript('typography/javascript/typography.js');
 	}
+	
+	function Form() {
+		$form = new Form(
+			$controller = $this,
+			$name = "TestForm",
+			$fields = new FieldSet(
+				// List the your fields here
+				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
+				new TextField($name = "TextField", $title = "Text Field Example"),
+				new EmailField("EmailField", "Email address"),
+				new HeaderField($name = "HeaderField2", $title = "HeaderField Level 2", 2),
+				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
+				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$source = Geoip::getCountryDropDown()),
+				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$source = Geoip::getCountryDropDown()),
+				new HeaderField($name = "HeaderField3", $title = "HeaderField Level 3", 3),
+				new NumericField($name = "NumericField", $title = "Numeric Field "),
+				new DateField($name = "DateField", $title = "Date Field"),
+				new CheckboxField($name = "CheckboxField", $title = "Checkbox Field")
+			), 
+			$actions = new FieldSet(
+					// List the action buttons here
+					new FormAction("signup", "Sign up")
+
+			), 
+			$requiredFields = new RequiredFields(
+					// List the required fields here: "Email", "FirstName"
+			)
+		);
+		return $form;		
+	}
 }
 
 
