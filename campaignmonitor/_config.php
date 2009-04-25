@@ -8,4 +8,6 @@
  *
  **/
 
-// at present their no configs for this module
+//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+//===================---------------- START campaignmonitor MODULE ----------------===================
+//===================---------------- END campaignmonitor MODULE ----------------===================

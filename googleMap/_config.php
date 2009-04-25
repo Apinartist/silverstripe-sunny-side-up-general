@@ -1,10 +1,15 @@
 <?php
 
 
-
-/*
-* configuration options below.  Please make sure to set all of them.
+/**
+ * developed by www.sunnysideup.co.nz
+ * author: Nicolaas - modules [at] sunnysideup.co.nz
 **/
+
+
+//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+//===================---------------- START googlemap MODULE ----------------===================
+
 
 /*
 define("GoogleMapAPIKey", "abc");
@@ -76,3 +81,5 @@ GoogleMap::setStyleSheetUrl("googleMap/css/mapDirections.css"); //style sheet to
 GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 
 */
+
+//===================---------------- END googlemap MODULE ----------------===================
