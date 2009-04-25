@@ -22,6 +22,8 @@ class ManyMonthsCalendar extends ViewableData {
 
 	//internal variables
 	private static $count_of_calenders_shown = 0;
+	private $month = 1;
+	private $year = 1974;
 	private $timeStamp = 0;
 	private $daysInMonth = 25; //set to unrealistic number to make sure that it actually gets set correctly
 
@@ -94,7 +96,6 @@ class ManyMonthsCalendar extends ViewableData {
 		$this->calendarName = $name;
 
 		// Set day, month and year of calendar
-		$this->day = 1;
 		$this->month = (0 == $month ) ?	date('n') : $month;
 		$this->year = (0 == $year) ? date('Y') : $year;
 
@@ -102,25 +103,18 @@ class ManyMonthsCalendar extends ViewableData {
 		if (!preg_match('~[0-9]{4}~', $this->year)) {
 			debug::show($this->year);
 			user_error('Year should be a valid number in the ManyMonthsCalendar Class', E_USER_ERROR);
-
 		}
 		if (!is_numeric($this->month) || $this->month < 0 || $this->month > 13) {
 			debug::show($this->month);
 			user_error('Month should be a valid number in the ManyMonthsCalendar Class', E_USER_ERROR);
-
 		}
 		// Set the current timestamp
-		$this->timeStamp = mktime(1,1,1,$this->month, $this->day, $this->year);
+		$this->timeStamp = mktime(1,1,1,$this->month, 1, $this->year);
 		// Set the number of days in the current month
 		$this->daysInMonth = date('t',$this->timeStamp);
 	}
 
 
-
-	// Gets the long name of the current month
-	private function getMonthName() {
-		return ucwords(self::$month_names[$this->month-1]);
-	}
 
 	public function addEvent($timeStamp, $title, $link = '') {
 		$this->events[$timeStamp][$this->cleanEventTitle($title)]] = array(
@@ -133,18 +127,6 @@ class ManyMonthsCalendar extends ViewableData {
 		if(isset($this->events[$timeStamp][$this->cleanEventTitle($title)])) {
 			unset($this->events[$timeStamp][$this->cleanEventTitle($title)]);
 		}
-	}
-
-	private function cleanEventTitle($title) {
-		$title = eregi_replace("[^[:alnum:]]", " ", $title);
-		$title = trim(eregi_replace(" +", "", $title)); //removes excess spaces
-		return $title;
-	}
-
-
-
-	private function makeTimeStamp($offset) {
-		return strtotime($offset, $this->timeStamp);
 	}
 
 	public function ManyMonthsCalendar() {
@@ -245,4 +227,20 @@ class ManyMonthsCalendar extends ViewableData {
 		}
 		return new ArrayData($array);
 	}
+
+	private function cleanEventTitle($title) {
+		$title = eregi_replace("[^[:alnum:]]", " ", $title);
+		$title = trim(eregi_replace(" +", "", $title)); //removes excess spaces
+		return $title;
+	}
+
+	private function makeTimeStamp($offset) {
+		return strtotime($offset, $this->timeStamp);
+	}
+
+	private function getMonthName() {
+		return ucwords(self::$month_names[$this->month-1]);
+	}
+
+
 }
