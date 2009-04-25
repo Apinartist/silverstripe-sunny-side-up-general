@@ -36,9 +36,7 @@ function MyCalendar() {
 }
 
 to style, add a css file called ManyMonthsCalendar.css to your themed folder
-(review css file in module for selectors).
-
-NOTE, previous and next links add $_GET["m"] and $_GET["y"] to find the right months and year
+(review css file in module itself for selectors).
 
 
 Installation Instructions
