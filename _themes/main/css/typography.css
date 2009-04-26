@@ -1,0 +1,11 @@
+.typography{}.smallFont{}
+/* HEADINGS */
+.typography h1{}	.typography h1.mainPageTitle{}.typography h2{}.typography h3{}.typography h4{}.typography h5{}.typography h6{}#BlogContent h4{}.typography strong, .typography b{}.typography em{}.typography u{}.typography blockquote{}.typography blockquote p{}.typography address{}.typography a{}	.typography a:hover{}	.typography a:active{}
+.typography ul, .typography ol, .typography dl{}	.typography ul{}		.typography ul li{}	.typography ol{}		.typography ol li{}	.typography dl{}		.typography dl dd{}		.typography dl dt{}
+
+.typography table{}	.typography table th, .typography table td{}		.typography table th{ }		.typography table td{}		.typography table p, .typography table ul, .typography table ol, .typography table dl{}.typography img.left{float: left; margin: 1em 1em 1em 0;}.typography img.right{float: right; margin: 1em 0 1em 1em;}
+#colourTable td {width: 175px; height: 175px; vertical-align: top;}.colour1 {background-color: #fff} /* Dark grey */.colour2 {background-color: #fff} /* Light blue */.colour3 {background-color: #fff} /* Pink */.colour4 {background-color: #fff} /* Ligh grey*/.colour5 {background-color: #fff;} /* colourName here */.colour6 {background-color: #fff} /* colourName here */
+.colour7 {background-color: #fff} /* colourName here */.colour8 {background-color: #fff} /* colourName here */.colour9 {background-color: #fff} /* colourName here */.colour10 {background-color: #fff;} /* colourName */.colour11 {background-color: #fff;} /* colourName */.colour12 {background-color: #fff;} /* colourName */
+
+
+

@@ -216,6 +216,4 @@ class MySQLDump extends DatabaseAdmin {
 			echo "-- --------------------------------------------------------\n\n";
 		}
 	}
-
-
 }
