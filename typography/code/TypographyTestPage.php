@@ -425,7 +425,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 		Requirements::javascript("jsparty/jquery/jquery.js");
 		Requirements::javascript('typography/javascript/typography.js');
 	}
-	
+
 	function Form() {
 		$array = array();
 		$array[] = "green";
@@ -450,18 +450,18 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new NumericField($name = "NumericField", $title = "Numeric Field "),
 				new DateField($name = "DateField", $title = "Date Field"),
 				new CheckboxField($name = "CheckboxField", $title = "Checkbox Field")
-			), 
+			),
 			$actions = new FieldSet(
 					// List the action buttons here
 					new FormAction("signup", "Sign up")
 
-			), 
+			),
 			$requiredFields = new RequiredFields(
 					// List the required fields here: "Email", "FirstName"
 			)
 		);
-		return $form;		
-	}	
+		return $form;
+	}
 }
 
 
