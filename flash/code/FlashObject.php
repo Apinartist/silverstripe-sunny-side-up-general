@@ -26,7 +26,7 @@ class FlashObject extends ViewableData  {
 
 	static $external_flash_file = '';
 
-	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', Array $ParamArray) {
+	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray) {
 		if(!$Title ) {$Title  = self::$title ;}
 		$Title = Convert::raw2js($Title);
 
@@ -55,7 +55,7 @@ class FlashObject extends ViewableData  {
 			$params = '';
 			$paramsJS = '';
 			foreach($ParamArray as $key=>$value) {
-				$params .= '<param name="'.$key.'" value="'.$value.'" />';
+				$params .= '<param name="'.$key.'" value="'.Convert::Raw2ATT($value).'" />';
 				$paramsJS .= '
 					params.'.$key.' = "'.$value.'";';
 			}
@@ -82,7 +82,7 @@ class FlashObject extends ViewableData  {
 							var attributes = {};
 							attributes.id = "'.$FlashFileDivID.'";
 							swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileDivID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
-							jQuery(".FlashAlternativeContent").fadeIn(3000);
+							//jQuery(".FlashAlternativeContent").fadeIn(3000);
 						}
 					);';
 			}
