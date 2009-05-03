@@ -1,5 +1,5 @@
 ###############################################
-GeoBrowser
+EcommerceXtra
 Pre 0.1 proof of concept
 ###############################################
 
@@ -13,15 +13,14 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-Allows you to create a complete world browser
-(or part thereof - e.g. Africa only)
+Provides extra functionality for the SS ecommerce
+code base.
 
-We are not 100% sure about the copyright of the data
-supplied (regions, cities, etc..., so please use at
-your own risk).
 
 Installation Instructions
 -----------------------------------------------
-add module, review ideas in _config.php,
-place configurations into your mysite/_config.php file
-
+1. Find out how to add modules to SS and add module as per usual.
+2. copy configurations from this module's _config.php file
+into mysite/_config.php file and edit settings as required.
+NB. the idea is not to edit the module at all so that
+you can upgrade it later.
