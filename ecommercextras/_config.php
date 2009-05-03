@@ -15,4 +15,3 @@
 //StorageProduct::set_can_create(true);
 //===================---------------- END ecommercextra MODULE ----------------===================
 
-//
