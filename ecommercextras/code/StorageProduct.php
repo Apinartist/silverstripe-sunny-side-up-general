@@ -59,6 +59,78 @@ class StorageProduct extends Product {
 		return new HeaderField("Not available", "Variations are not available");
 	}
 
+	/* IMPORTANT ! */
+	public function Product($current = false) {
+		if($current) return DataObject::get_by_id('StorageProduct', $this->_productID);
+		else return Versioned::get_version('StorageProductProduct', $this->_productID, $this->_productVersion);
+	}
+
+	public function TableTitle() {
+		return "-----------";
+	}
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		if(self::$can_create) {
+
+			Db::query('Update SiteTree_versions Set `ClassName` = "StorageProductGroup" where `ClassName` = "ProductGroup";');
+			Db::query('Update SiteTree_Live Set `ClassName` = "StorageProductGroup" where `ClassName` = "ProductGroup";');
+			Db::query('Update SiteTree Set `ClassName` = "StorageProductGroup" where `ClassName` = "ProductGroup";');
+
+			Db::query('Update SiteTree_Live Set `ClassName` = "StorageProduct" where `ClassName` = "Product";');
+			Db::query('Update SiteTree_versions Set `ClassName` = "StorageProduct" where `ClassName` = "Product";');
+			Db::query('Update SiteTree Set `ClassName` = "StorageProduct" where `ClassName` = "Product";');
+
+			/*
+			$obj = DataObject::get("SiteTree", '`ClassName` = "ProductGroup" OR `ClassName` = "Product"' );
+			foreach($obj as $page) {
+
+				$message = '';
+				if($page->Parent()) {
+					$message .= "checking ".$page->Title;
+					$message .= " --- parent is StorageProductGroup";
+					$children = $page->Children();
+					if($children->count()) {
+						$message .=  " --- has children";
+						if($page->ClassName != "StorageProductGroup") {
+							$message .=  ' --- <span style="color: red;">changing to StorageProductGroup</span>';
+							$page->setClassName( "StorageProductGroup" );
+							$page = $page->newClassInstance( "StorageProductGroup" );
+						}
+						else {
+							$message .=  ' --- <span style="color: green;">className = '.$page->ClassName.'</span>';
+						}
+					}
+					else {
+						$message .=  " --- does not have children ";
+						if($page->ClassName != "StorageProduct") {
+							$message .=  ' --- <span style="color: red;">changing to StorageProduct</span>';
+							$page->setClassName( "StorageProduct" );
+							$page = $page->newClassInstance( "StorageProduct" );
+							$page->AllowPurchase = 1;
+						}
+						else {
+							$message .=  '--- <span style="color: green;">className = '.$page->ClassName.'</span>';
+						}
+					}
+				}
+				else {
+					$message .=  ' --- <span style="color: red;">changing to StorageProductGroup</span>';
+					$page->setClassName( "StorageProductGroup" );
+					$page = $page->newClassInstance( "StorageProductGroup" );
+				}
+				if("StorageProduct" == $page->ClassName || "StorageProductGroup" == $page->ClassName) {
+					$page->write();
+					$page->writeToStage('Stage');
+					$page->publish('Stage', 'Live');
+				}
+				$message .=  ' ||| end <hr />';
+				Database::alteration_message($message);
+			}
+			*/
+		}
+	}
+
 }
 
 class StorageProduct_Controller extends Product_Controller {

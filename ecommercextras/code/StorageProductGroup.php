@@ -57,30 +57,8 @@ class StorageProductGroup extends ProductGroup {
 	 * @param array $permissions
 	 * @return DataObjectSet
 	 */
-	function ProductsShowable() {
-		$filter = "`ShowInMenus` = 1";
-		$products = new DataObjectSet();
-
-		$childProducts = DataObject::get('StorageProduct', "`ParentID` = $this->ID AND $filter");
-		$relatedProducts = $this->getManyManyComponents('StorageProducts', $filter);
-
-		if($childProducts) {
-			$products->merge($childProducts);
-		}
-
-		if($relatedProducts) {
-			$products->merge($relatedProducts);
-		}
-
-		if($childGroups = $this->ChildGroups()) {
-			foreach($childGroups as $childGroup) {
-				$products->merge($childGroup->ProductsShowable());
-			}
-		}
-
-		$products->removeDuplicates();
-
-		return $products;
+	function StorageProducts() {
+		return DataObject::get('StorageProduct', "`ShowInMenus` = 1");
 	}
 
 	/**
@@ -103,6 +81,35 @@ class StorageProductGroup extends ProductGroup {
 		}
 	}
 
+	function requireDefaultRecords() {
+		//bypassing Product
+		singleton('Page')->requireDefaultRecords();
+		if(self::$can_create) {
+
+			if(!DataObject::get_one('StorageProductGroup')) {
+				$page1 = new StorageProductGroup();
+				$page1->Title = 'Products';
+				$page1->Content = "
+					<p>This is the top level products page, it uses the <em>product group</em> page type, and it allows you to show your products checked as 'featured' on it. It also allows you to nest <em>product group</em> pages inside it.</p>
+					<p>For example, you have a product group called 'DVDs', and inside you have more product groups like 'sci-fi', 'horrors' or 'action'.</p>
+					<p>In this example we have setup a main product group (this page), with a nested product group containing 2 example products.</p>
+				";
+				$page1->URLSegment = 'products';
+				$page1->writeToStage('Stage');
+				$page1->publish('Stage', 'Live');
+				Database::alteration_message('Product group page \'Products\' created', 'created');
+
+				$page2 = new StorageProductGroup();
+				$page2->Title = 'Example product group';
+				$page2->Content = '<p>This is a nested <em>product group</em> within the main <em>product group</em> page. You can add a paragraph here to describe what this product group is about, and what sort of products you can expect to find in it.</p>';
+				$page2->URLSegment = 'example-product-group';
+				$page2->ParentID = $page1->ID;
+				$page2->writeToStage('Stage');
+				$page2->publish('Stage', 'Live');
+				Database::alteration_message('Product group page \'Example product group\' created', 'created');
+			}
+		}
+	}
 
 
 }
@@ -111,9 +118,20 @@ class StorageProductGroup_Controller extends ProductGroup_Controller {
 	function init() {
 		parent::init();
 		Requirements::javascript("jsparty/jquery/jquery.js");
-		Requirements::javascript("mysite/javascript/dragToCart.js");
-		Requirements::javascript("mysite/javascript/jquery-ui-1.6.custom.min.js");
+		Requirements::javascript("ecommercextras/javascript/dragToCart.js");
+		Requirements::javascript("ecommercextras/javascript/jquery-ui-1.6.custom.min.js");
+		Requirements::themedCSS("dragToCart");
+		Requirements::customScript("dragToCart.AjaxStorageCartURL = '".$this->URLSegment."/storagecart/';");
 	}
 
+	function storagecart() {
+		$id = intval(Director::URLParam("ID") - 0);
+		$page = DataObject::get_by_id("StorageProduct", $id);
+		if($page->AllowPurchase() && $page->Variations()->Count() == 0) {
+			ShoppingCart::add_new_item(new Product_OrderItem($page));
+		}
+		return $this->renderWith("AjaxStorageCart");
+	}
+
+
 }
-?>

@@ -1,4 +1,4 @@
-<% include ProductMenu %>
+<% include StorageProductMenu %>
 
 <div id="ProductGroup">
 	<div id="Breadcrumbs" class="typography">
@@ -13,35 +13,18 @@
 		</div>
 	<% end_if %>
 
-	<% if FeaturedProducts %>
-		<h3 class="categoryTitle"><% _t("FEATURED","Featured Products") %></h3>
+	<% if StorageProducts %>
+		<h3 class="categoryTitle">Items</h3>
 		<div id="FeaturedProducts" class="category">
-			<div class="resultsBar typography">
-				<p class="resultsShowing">Showing <span class="firstProductIndex">1</span> to <span class="lastProductIndex">$FeaturedProducts.Count</span> of <span class="productsTotal">$FeaturedProducts.Count</span> products</p>
-			</div>
-			<div class="clear"><!-- --></div>
 			<ul class="productList">
-				<% control FeaturedProducts %>
-					<% include ProductGroupItem %>
+				<% control StorageProducts %>
+					<% include StorageProductGroupItem %>
 				<% end_control %>
 			</ul>
 			<div class="clear"><!-- --></div>
 		</div>
+	<% else %>
+	<p>There are no storage items available</p>
 	<% end_if %>
 
-	<% if NonFeaturedProducts %>
-		<h3 class="categoryTitle"><% _t("OTHER","Other Products") %></h3>
-		<div id="NonFeaturedProducts" class="category">
-			<div class="resultsBar typography">
-				<p class="resultsShowing">Showing <span class="firstProductIndex">1</span> to <span class="lastProductIndex">$NonFeaturedProducts.Count</span> of <span class="productsTotal">$NonFeaturedProducts.Count</span> products</p>
-			</div>
-			<div class="clear"><!-- --></div>
-			<ul class="productList">
-				<% control NonFeaturedProducts %>
-					<% include ProductGroupItem %>
-				<% end_control %>
-			</ul>
-			<div class="clear"><!-- --></div>
-		</div>
-	<% end_if %>
 </div>

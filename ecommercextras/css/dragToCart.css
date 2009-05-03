@@ -1,0 +1,10 @@
+/* draggable item - has one or more of the following classes */
+.productItem {background-color: green!important;}
+.isInCart {background-color: orange!important;}
+.ui-draggable{background-color: pink!important;}
+.ui-draggable-dragging{background-color: black!important;}
+
+/* dropable zone  - has one or more of the following classes*/
+.dropHover{background-color: red!important;}
+.ui-droppable{background-color: blue!important;}
+.beingUpdated{background-color: yellow!important;}
