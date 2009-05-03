@@ -216,4 +216,15 @@ class MySQLDump extends DatabaseAdmin {
 			echo "-- --------------------------------------------------------\n\n";
 		}
 	}
+
+	public function import() {
+		require_once("../_third_party/BigDumpOriginal.php");
+		if(file_exists("../../mysite/data/data.sql")) {
+			define("SS_DATABASE_FILE", "../../mysite/data/data.sql");
+		}
+		else {
+			die("no file found");
+		}
+	}
+
 }
