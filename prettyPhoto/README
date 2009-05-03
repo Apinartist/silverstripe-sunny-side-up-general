@@ -19,7 +19,7 @@ adds the photoviewer - pretty photo
 
 Installation Instructions
 -----------------------------------------------
-add module
+add module as per usual
 use PrettyPhoto::include_code()
 OR
 PrettyPhoto::block() to
