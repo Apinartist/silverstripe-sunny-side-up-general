@@ -251,7 +251,7 @@ class GoogleMap extends ViewableData {
 		$this->URLForData[] = $URLForData;
 		ContentNegotiator::disable();
 		if(!self::$includesDone) {
-			Requirements::themedCSS("googleMap/css/map.css");
+			Requirements::themedCSS("googlemap/css/map.css");
 			//Requirements::javascript("mysite/javascript/jQuery.js");
 			Requirements::javascript('googlemap/javascript/googleMapStatic.js');
 			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
