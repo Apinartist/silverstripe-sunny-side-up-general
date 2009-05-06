@@ -16,6 +16,27 @@ Documentation
 this module allows you to review all your classes
 (templates) used on a website.
 
+It has a page type that lists all templates used on the website (with links and icons).
+
+It also allows you to add:
+
+<% include TemplateDevelopment %> at the bottom of your Page.ss file.
+
+When logged-in as admin, the TemplateDevelopment template include allows you to
+visit the front-end of the website and:
+
+a. upload and view designs
+b. view and edit to do field (as per SS standard install)
+c. add a testing entry:
+	- it will automatically note browser operating system etc... you are using
+	- date
+	- notes (i.e. tested on ie6 by so and so on 12/12/2012)
+d. link through to edit page in the CMS
+e. review stats (last changed, etc... for the template).
+
+These fields are added as Many_Many (image object and testing object).
+The reason for this is to minimise the footprint on the SiteTree table.
+
 Installation Instructions
 -----------------------------------------------
 1. Find out how to add modules to SS and add module as per usual.
