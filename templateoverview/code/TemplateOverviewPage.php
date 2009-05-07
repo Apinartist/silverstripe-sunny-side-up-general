@@ -51,7 +51,7 @@ class TemplateOverviewPage extends Page {
 
 class TemplateOverviewPage_Controller extends Page_Controller {
 
-	var $TotalCount = 0;
+	var $counter = 0;
 
 	var $ShowAll = false;
 
@@ -109,9 +109,6 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 			}
 		}
 		ksort($ArrayOfAllClasses);
-		if(!$this->TotalCount) {
-			$this->TotalCount = count(ClassInfo::subclassesFor("SiteTree"));
-		}
 		$doSet =  new DataObjectSet();
 		if(count($ArrayOfAllClasses)) {
 			foreach($ArrayOfAllClasses as $item) {
@@ -121,10 +118,14 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $doSet;
 	}
 
+	public function TotalCount () {
+		return count(ClassInfo::subclassesFor("SiteTree"))-1;
+	}
+
 	private function createPageObject($obj, $count, $className) {
-		$this->TotalCount++;
+		$this->counter++;
 		$listArray = array();
-		$indexNumber = (10000 * $count) + $this->TotalCount;
+		$indexNumber = (10000 * $count) + $this->counter;
 		$listArray["indexNumber"] = $indexNumber;
 		$listArray["ClassName"] = $className;
 		$listArray["Count"] = $count;
