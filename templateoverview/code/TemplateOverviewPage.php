@@ -10,7 +10,7 @@ class TemplateOverviewPage extends Page {
 
 	static $auto_include = false;
 
-	static function setAutoInclude($value) {
+	static function set_auto_include($value) {
 		self::$auto_include = $value;
 	}
 
@@ -18,11 +18,12 @@ class TemplateOverviewPage extends Page {
 		"URLSegment" => "templates",
 		"ShowInMenus" => false,
 		"ShowInSearch" => false,
-		"Title" => "Templates overview",
+		"Title" => "Template overview (internal use only)",
+		"MenuTitle" => "Template overview",
 	);
 
 	public function canCreate() {
-		return !DataObject::get("TemplateOverviewPage");
+		return !DataObject::get("SiteTree", 'ClassName = "TemplateOverviewPage"');
 	}
 
 	public function requireDefaultRecords() {
