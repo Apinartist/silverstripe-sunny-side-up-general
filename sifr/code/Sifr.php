@@ -16,7 +16,7 @@ class Sifr extends Object {
 
 	static $hide_browser_text = true;
 
-	static $bFixFragIdBug = true;
+	static $b_fix_frag_id_bug = true;
 
 	static $is_disabled = false;
 
@@ -65,8 +65,8 @@ class Sifr extends Object {
 		}
 		$js .= "sIFR.setup();\n";
 		$js .= "}";
-		Requirements::css("sifr/css/sIFR-screen.css", 'screen, projection');
-		Requirements::css("sifr/css/sIFR-print.css", 'print');
+		Requirements::themedCSS("sIFR-screen.css", 'screen, projection');
+		Requirements::themedCSS("sIFR-print.css", 'print');
 		Requirements::javascript("sifr/javascript/sifr.js");
 		Requirements::javascript("sifr/javascript/sifr-addons.js");
 		Requirements::customScript($js);
@@ -76,7 +76,7 @@ class Sifr extends Object {
 
 
 	*/
-	static function replaceElement($named = "sifr", $element = "", $font = "") {
+	static function replace_element($named = "sifr", $element = "", $font = "") {
 		$theme = SSViewer::current_theme();
 		if(!$theme || 1 == 1) {
 			$theme = 'sifr';
@@ -89,12 +89,12 @@ class Sifr extends Object {
 			return die("can not find: ".$file);
 		}
 		self::$fonts[$named] = array('sSelector' => $element,'sFlashSrc' => $file,'named' => $named);
-		self::setColoursAndCase($named);
-		self::setPadding($named);
-		self::setPosition($named);
+		self::set_colours_and_case($named);
+		self::set_padding($named);
+		self::set_position($named);
 	}
 
-	static function setColoursAndCase($named = "sifr", $sColor = "#000000", $sLinkColor = "#555555", $bBgColor = "#FFFFFF", $sHoverColor = "#999999", $sWmode = "transparent", $sCase = "") {
+	static function set_colour_and_case($named = "sifr", $sColor = "#000000", $sLinkColor = "#555555", $bBgColor = "#FFFFFF", $sHoverColor = "#999999", $sWmode = "transparent", $sCase = "") {
 		$array = Array(
 			'sColor' => $sColor,
 			'sLinkColor' => $sLinkColor ,
@@ -116,7 +116,7 @@ class Sifr extends Object {
 		self::$fonts[$named] = array_merge(self::$fonts[$named],$array);
 	}
 
-	static function setPosition($named = "sifr", $textalign = "left", $offsetLeft = 0, $offsetTop = 0) {
+	static function set_position($named = "sifr", $textalign = "left", $offsetLeft = 0, $offsetTop = 0) {
 		$array = Array(
 			Array(
 				'textalign' => $textalign,
@@ -147,8 +147,8 @@ class Sifr extends Object {
 		this bug can be fixed by updating the VBScript engine the browser uses. However, for those users
 		who still have the wrong engine sIFR contains a workaround.
 	*/
-	static function disableFixFragIdBug() {
-		self::$bFixFragIdBug = false;
+	static function disable_fix_frag_id_bug() {
+		self::$b_fix_frag_id_bug = false;
 	}
 	/*
 		Determines whether sIFR will hide the text you want to replace or not.
