@@ -131,6 +131,7 @@ class StorageProduct extends Product {
 		}
 	}
 
+
 }
 
 class StorageProduct_Controller extends Product_Controller {

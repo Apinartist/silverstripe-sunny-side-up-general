@@ -13,7 +13,7 @@
 									<% else %>
 										$CartTitle.XML
 									<% end_if %>
-									<% include StorageProductImage %>
+									<% include StorageProductImageInCart %>
 								</span>
 								<span class="price">
 									<% _t("PRICE","Price") %> : <strong>$UnitPrice.Nice</strong>
