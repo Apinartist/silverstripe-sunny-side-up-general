@@ -88,13 +88,13 @@ class Sifr extends Object {
 		if(!file_exists("../".$file)) {
 			return die("can not find: ".$file);
 		}
-		self::$fonts[$named] = array('sSelector' => $element,'sFlashSrc' => $file,'named' => $named);
+		self::$fonts[$named] = array('sSelector' => $element,'sFlashSrc' => "http://localhost/massolutions/".$file,'named' => $named);
 		self::set_colours_and_case($named);
 		self::set_padding($named);
 		self::set_position($named);
 	}
 
-	static function set_colour_and_case($named = "sifr", $sColor = "#000000", $sLinkColor = "#555555", $bBgColor = "#FFFFFF", $sHoverColor = "#999999", $sWmode = "transparent", $sCase = "") {
+	static function set_colours_and_case($named = "sifr", $sColor = "#000000", $sLinkColor = "#555555", $bBgColor = "#FFFFFF", $sHoverColor = "#999999", $sWmode = "transparent", $sCase = "") {
 		$array = Array(
 			'sColor' => $sColor,
 			'sLinkColor' => $sLinkColor ,
@@ -106,7 +106,7 @@ class Sifr extends Object {
 		self::$fonts[$named] = array_merge(self::$fonts[$named],$array);
 	}
 
-  static function setPadding($named = "sifr", $nPaddingTop = 0, $nPaddingBottom = 0, $nPaddingRight = 0, $nPaddingLeft = 0) {
+  static function set_padding($named = "sifr", $nPaddingTop = 0, $nPaddingBottom = 0, $nPaddingRight = 0, $nPaddingLeft = 0) {
 		$array = Array(
 			'nPaddingTop' => $nPaddingTop,
 			'nPaddingBottom' => $nPaddingBottom ,
@@ -128,6 +128,12 @@ class Sifr extends Object {
 	}
 
 
+
+	function is_disabled() {
+		$state = self::$is_disabled;
+		return ($state) ? true : false;
+	}
+
 	/*
 		Disable the sIFR so that you can test without the new fancy fonts
 		around for printing and for the 0.1% of people
@@ -136,10 +142,7 @@ class Sifr extends Object {
 		self::$is_disabled = true;
 	}
 
-	function is_disabled() {
-		$state = self::$is_disabled;
-		return ($state) ? true : false;
-	}
+
 	/*
 		Determines whether the Fragment Identifier Bug will be fixed or not.
 		This is a very peculiar bug in IE where for each Flash movie in the page the fragment identifier
