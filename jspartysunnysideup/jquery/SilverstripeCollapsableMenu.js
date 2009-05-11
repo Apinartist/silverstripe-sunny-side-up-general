@@ -2,7 +2,7 @@
  WRITTEN BY nicolaas [at] sunnysideup.co.nz
 
  This sets up a collapsable menu (a la the left-hand in the CMS) for a typical SS menu structure.
- Leaving the current and sections open by default.
+ Leaving the "current" and "section" marked nodes open by default.
 
  required template:
 
