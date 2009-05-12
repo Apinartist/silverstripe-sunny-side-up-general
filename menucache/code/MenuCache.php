@@ -8,6 +8,9 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 	function CachedMenu() {
+		if(isset($_GET["flush"])) {
+			$this->clearmenucache();
+		}
 		if(!$this->owner->MenuCache) {
 			$response = Director::test($this->owner->URLSegment."/showcachedmenu/");
 			if(is_object($response)) {
@@ -25,7 +28,10 @@ class MenuCache extends DataObjectDecorator {
 		}
 	}
 
-
+	function clearmenucache () {
+		$sql = 'Update SiteTree_Live Set MenuCache = ""';
+		DB::query($sql);
+	}
 
 
 
