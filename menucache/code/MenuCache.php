@@ -33,6 +33,10 @@ class MenuCache extends DataObjectDecorator {
 		DB::query($sql);
 	}
 
+	function onBeforeWrite() {
+		$this->clearmenucache();
+		parent::onBeforeWrite();
+	}
 
 
 }
