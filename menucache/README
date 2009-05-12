@@ -16,6 +16,12 @@ Documentation
 This module allows you to cache the menu, which
 can put a big straing on your database.
 
+The first time a page is loaded, it will run the standard menu,
+after that, it will retrieve the menu as one big chunk of html.
+
+NOTE: this does not work if you expect the menu to change with
+added actions (e.g. http://www.mysite.com/mypage/myaction/)
+
 
 Installation Instructions
 -----------------------------------------------
@@ -24,4 +30,7 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module, but instead customise it
 in your mysite folder at all so that you can upgrade it later.
-3. setup the template using the template provided as example
+3. copy the template syntax from your menu and copy it to
+/themes/mytheme/templates/Includes/CachedMenu.ss
+4. replace <% include MyNonCachedMenuFile %> in your template with
+$CachedMenu (NOTE: dont use $MenuCache)
