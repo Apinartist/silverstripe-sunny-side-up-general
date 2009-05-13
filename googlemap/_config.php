@@ -13,6 +13,10 @@
 
 /*
 define("GoogleMapAPIKey", "abc");
+
+//add maps to all pages...
+DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
+
 // MAP
 GoogleMap::setDefaultLatitude(12.0001);
 GoogleMap::setDefaultLongitude(133.2210);
