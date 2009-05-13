@@ -16,10 +16,15 @@ class Sifr extends Object {
 
 	protected static $is_disabled = false;
 
-	protected static $js_custom_file_location = "mysite/javascript/sifr.js";
+	protected static $js_custom_file_location = "mysite/javascript/sifr-config.js";
 
 	static function disable() {
 		self::$is_disabled = true;
+		Requirements::block("sifr/css/sifr.css");
+		Requirements::block("sifr-themed");
+		Requirements::block("sifr/javascript/sifr.js");
+		Requirements::block("sifr/javascript/sifr-debug.js");
+		Requirements::block(self::$js_custom_file_location);
 	}
 
 	static function set_js_custom_file_location($folderAndFile) {
@@ -29,7 +34,7 @@ class Sifr extends Object {
 	static function load_sifr() {
 		if(!self::$is_disabled) {
 			Requirements::css("sifr/css/sifr.css", 'screen, projection');
-			Requirements::themedCSS("sifr-themed.css", 'screen, projection');
+			Requirements::themedCSS("sifr-themed", 'screen, projection');
 			Requirements::javascript("sifr/javascript/sifr.js");
 			Requirements::javascript("sifr/javascript/sifr-debug.js");
 			Requirements::javascript(self::$js_custom_file_location);

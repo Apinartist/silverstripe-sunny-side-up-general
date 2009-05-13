@@ -52,7 +52,7 @@ sIFR.activate(smudger);
 // of the entire Flash movie to be a light grey, and the `color` of the text to
 // be red. Read more about styling at <http://wiki.novemberborn.net/sifr3/Styling>.
 sIFR.replace(smudger, {
-  selector: '#Intro p',
+  selector: '.sifrText',
   css: '.sIFR-root {color: #fff; background-color: transparent; font-size: 23px; leading: -11px;}',
   wmode: 'transparent'
 });
