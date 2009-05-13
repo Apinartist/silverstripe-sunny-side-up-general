@@ -15,19 +15,30 @@ Documentation
 -----------------------------------------------
 
 
-**** Making Fonts ****
-http://www.sifrgenerator.com/, or, http://www.coffeecup.com/sifr-font-maker/
+To customise this module - do the following:
 
+**** Making Fonts ****
+go to the source code and create your own flash file
+OR, when make one online (easier!)
+Save font in mysite/fonts/myfont.swf
+--- http://www.sifrgenerator.com/
+----- choose the latest version of sifr when asked
+----- (see FUTURE PROOFING below).
+--- http://www.coffeecup.com/sifr-font-maker/ - not as good)
 
 *** JS CONFIG ****
-http://wiki.novemberborn.net/sifr3/JavaScript+Configuration
+go to mysite/javascript/sifr-config.js and change the path of the font
+--- also see http://wiki.novemberborn.net/sifr3/JavaScript+Configuration
+--- also see http://wiki.novemberborn.net/sifr3/JavaScript+Methods
 
-**** STYLING ****
-http://wiki.novemberborn.net/sifr3/Styling
+*** STYLING
+scroll down to bottom of mysite/javascript/sifr-config.js file and adjust styles
+create a themed css file: themes/mytheme/css/sifr-themed.css and edit it
+--- also see http://wiki.novemberborn.net/sifr3/Styling
 
-
-**** get the latest version ****
-http://dev.novemberborn.net/sifr3/nightlies/
+**** FUTURE PROOF ****
+we can get the lastest version here (for the future):
+--- also see http://dev.novemberborn.net/sifr3/nightlies/
 
 
 Installation Instructions
