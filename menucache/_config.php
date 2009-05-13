@@ -8,5 +8,8 @@
 //===================---------------- START metatags MODULE ----------------===================
 //DataObject::add_extension('SiteTree', 'MenuCache');
 //Object::add_extension('ContentController', 'MenuCache_Controller');
+//-- static publishing --
+//Object::add_extension("SiteTree", "FilesystemPublisher('cache/', 'php')");
+//MenuCache::add_class_name_to_cache("HomePage");
 //===================---------------- START metatags MODULE ----------------===================
 
