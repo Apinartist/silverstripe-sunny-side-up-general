@@ -1,7 +1,0 @@
-SiteTree:
-   searchformholder:
-      URLSegment: searchformholder
-      Title: searchformholder
-   publishedPage:
-      Title: publishedPage
-      Content: English content
