@@ -30,6 +30,7 @@ class MenuCache extends DataObjectDecorator {
 					$urls = array_merge($urls, (array)$page->subPagesToCache());
 				}
 			}
+		}
 		// add any custom URLs which are not SiteTree instances
 		//$urls[] = "sitemap.xml";
 		return $urls;
@@ -73,13 +74,25 @@ class MenuCache extends DataObjectDecorator {
 			else {
 				$content = $response . '';
 			}
-			$sql = 'Update SiteTree_Live Set MenuCache = "'.addslashes($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
+			$sql = 'Update SiteTree_Live Set MenuCache = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 			DB::query($sql);
 			return $content;
 		}
 		else {
 			return $this->owner->MenuCache;
 		}
+	}
+
+	private function compressAndPrepareHTML($html) {
+		$pat[0] = "/^\s+/";
+		$pat[1] = "/\s{2,}/";
+		$pat[2] = "/\s+\$/";
+		$rep[0] = "";
+		$rep[1] = " ";
+		$rep[2] = "";
+		$html = preg_replace($pat, $rep, $html);
+		$html = trim($html);
+		return addslashes($html);
 	}
 
 	function clearmenucache () {
@@ -91,6 +104,7 @@ class MenuCache extends DataObjectDecorator {
 		$this->clearmenucache();
 		parent::onBeforeWrite();
 	}
+
 
 
 }
