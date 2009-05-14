@@ -95,10 +95,6 @@ class MenuCache extends DataObjectDecorator {
 		return addslashes($html);
 	}
 
-	function clearmenucache () {
-		$sql = 'Update SiteTree_Live Set MenuCache = ""';
-		DB::query($sql);
-	}
 
 	function onBeforeWrite() {
 		$this->clearmenucache();
@@ -111,10 +107,16 @@ class MenuCache extends DataObjectDecorator {
 
 class MenuCache_controller extends Extension {
 
-	static $allowed_actions = array("showcachedmenu");
+	static $allowed_actions = array("showcachedmenu","clearmenucache");
 
 	function showcachedmenu() {
 		return $this->owner->renderWith("UsedToCreateMenuCache");
+	}
+
+	function clearmenucache () {
+		$sql = 'Update SiteTree_Live Set MenuCache = ""';
+		DB::query($sql);
+		die("all cached menus have been deleted");
 	}
 
 }
