@@ -19,18 +19,18 @@ class DatabaseAdmin extends Controller {
 		'testinstall',
 		'import'
 	);
-	
+
 	function init() {
 		parent::init();
-		
+
 		// We allow access to this controller regardless of live-status or ADMIN permission only
 		// if on CLI or with the database not ready. The latter makes it less errorprone to do an
 		// initial schema build without requiring a default-admin login.
 		// Access to this controller is always allowed in "dev-mode", or of the user is ADMIN.
 		$canAccess = (
-			Director::isDev() 
-			|| !Security::database_is_ready() 
-			|| Director::is_cli() 
+			Director::isDev()
+			|| !Security::database_is_ready()
+			|| Director::is_cli()
 			|| Permission::check("ADMIN")
 		);
 		if(!$canAccess) {
@@ -83,14 +83,11 @@ class DatabaseAdmin extends Controller {
 	 */
 	function build() {
 		// The default time limit of 30 seconds is normally not enough
-		if(ini_get("safe_mode") != "1") {
-			set_time_limit(600);
-		}
 
 		// Get all our classes
 		ManifestBuilder::create_manifest_file();
 		require(MANIFEST_FILE);
-		
+
 		if(isset($_GET['returnURL'])) {
 			echo "<p>Setting up the database; you will be returned to your site shortly....</p>";
 			$this->doBuild(true);
@@ -219,7 +216,7 @@ class DatabaseAdmin extends Controller {
 			echo "OK";
 		}
 	}
-	
+
 	/**
 	 * Clear all data out of the database
 	 */
