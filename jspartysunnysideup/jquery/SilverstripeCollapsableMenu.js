@@ -7,15 +7,15 @@
  required template:
 
 <% control Menu(1) %><% if ShowInMenus %>
-	<li class="Level1 jQueryLinkingMode" ><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a>
+	<li class="L1 jQueryLinkingMode" ><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a>
 		<% if Children %>
 		<ul>
 			<% control Children %><% if ShowInMenus %>
-			<li class="Level2 jQueryLinkingMode" ><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a>
+			<li class="L2 jQueryLinkingMode" ><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a>
 				<% if Children %>
 				<ul>
 					<% control Children %><% if ShowInMenus %>
-					<li class="Level3 jQueryLinkingMode"><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a></li>
+					<li class="L3 jQueryLinkingMode"><a href="jQueryLink" title="Go to the jQueryMenuTitle.XML page">jQueryMenuTitle</a></li>
 					<% end_if %><% end_control %>
 				</ul><% end_if %>
 			</li><% end_if %><% end_control %>
@@ -44,6 +44,8 @@ jQuery.extend({
 		plusText: "+",
 
 		minusText: "-",
+
+		Level1Class: "L1",
 
 		init: function(mainULid, plusText, minusText) {
 
@@ -91,7 +93,7 @@ jQuery.extend({
 							jQuery.SilverstripeCollapsableMenu .collapse(jQuery(this).children("ul"));
 						}
 					}
-					if(!jQuery(this).hasClass("Level1")) {
+					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class)) {
 						jQuery(this).hide();
 					}
 				}
