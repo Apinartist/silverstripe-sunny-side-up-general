@@ -114,6 +114,7 @@ class MenuCache_controller extends Extension {
 	static $allowed_actions = array("showcachedmenu","clearmenucache");
 
 	function showcachedmenu() {
+		return $this->owner->flushCache();
 		return $this->owner->renderWith("UsedToCreateMenuCache");
 	}
 
