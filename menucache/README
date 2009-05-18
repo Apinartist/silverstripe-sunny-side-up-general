@@ -34,3 +34,31 @@ in your mysite folder at all so that you can upgrade it later.
 /themes/mytheme/templates/Includes/CachedMenu.ss
 4. replace <% include MyNonCachedMenuFile %> in your template with
 $CachedMenu (NOTE: dont use $MenuCache)
+
+
+example htaccess file (NOTE .php as the extension)
+-----------------------------------------------
+### SILVERSTRIPE START ###
+# Cached content -
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteCond %{QUERY_STRING} ^$
+RewriteCond %{REQUEST_URI} ^/(.*)$
+RewriteCond %{REQUEST_URI} /(.*[^/])/?$
+RewriteCond %{DOCUMENT_ROOT}/cache/%1.php -f
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* /cache/%1.php [L]
+
+# Cached content - homepage
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteCond %{QUERY_STRING} ^$
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteCond /cache/index.php -f
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* /cache/index.php [L]
+
+# Dynamic content
+RewriteCond %{REQUEST_URI} !(\.gif)|(\.jpg)|(\.png)|(\.css)|(\.js)|(\.php)$
+RewriteCond %{REQUEST_URI} ^(.*)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* /sapphire/main.php?url=%1&%{QUERY_STRING} [L]
+### SILVERSTRIPE END ###
