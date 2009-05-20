@@ -53,16 +53,17 @@ jQuery.extend({
 			if(allLinkPrepend) {this.allLinkPrepend = allLinkPrepend;}
 			if(allLinkAppend) {this.allLinkAppend = allLinkAppend;}
 			this.collapse(jQuery(this.mainULid));
-			jQuery(this.mainULid +" li.toggle").click(
+			jQuery(this.mainULid +" li a.toggle ").click(
 				function() {
-					jQuery(this).children("ul").slideToggle();
-					if(jQuery(this).hasClass("menuPlus")) {
-						jQuery(this).removeClass("menuPlus");
-						jQuery(this).addClass("menuMinus");
+					var el = jQuery(this).parent("li");
+					el.children("ul").slideToggle();
+					if(el.hasClass("menuPlus")) {
+						el.removeClass("menuPlus");
+						el.addClass("menuMinus");
 					}
 					else {
-						jQuery(this).removeClass("menuMinus");
-						jQuery(this).addClass("menuPlus");
+						el.removeClass("menuMinus");
+						el.addClass("menuPlus");
 					}
 					return false;
 				}
@@ -73,12 +74,11 @@ jQuery.extend({
 			jQuery(element).children("li").each(
 				function() {
 					if(jQuery(this).children("ul").length > 0) {
-						jQuery(this).addClass("toggle");
-						var name = jQuery(this).children("a").text();
-						var link = jQuery(this).children("a").attr("href");
-						jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
+						jQuery(this).children("a").addClass("toggle");
+						var addShowAllLink = true;
 						if(jQuery(this).hasClass("section") || jQuery(this).hasClass("current")) {
 							if(jQuery(this).hasClass("current")) {
+								addShowAllLink = false;
 								jQuery(this).children("ul").children("li").each(
 									function() {
 										if(jQuery(this).children("ul").length > 0) {
@@ -90,6 +90,11 @@ jQuery.extend({
 						}
 						else {
 							jQuery.SilverstripeCollapsableMenu.collapse(jQuery(this).children("ul"));
+						}
+						if (addShowAllLink) {
+							var name = jQuery(this).children("a").text();
+							var link = jQuery(this).children("a").attr("href");
+							jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
 						}
 					}
 					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class)) {
