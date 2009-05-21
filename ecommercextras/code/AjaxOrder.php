@@ -6,23 +6,6 @@ class AjaxOrder extends DataObjectDecorator {
 		HTTP::set_cache_age(0);
 		return ShoppingCart::current_order();
 	}
-/*
-	function addLink() {
-		return ShoppingCart_Controller::add_item_link($this->_productID);
-	}
-
-	function removeLink() {
-		return ShoppingCart_Controller::remove_item_link($this->_productID);
-	}
-
-	function removeallLink() {
-		return ShoppingCart_Controller::remove_all_item_link($this->_productID);
-	}
-
-	function setquantityLink() {
-		return ShoppingCart_Controller::set_quantity_item_link($this->_productID);
-	}
-*/
 	function IsCheckoutPage() {
 		return ("CheckoutPage" == $this->owner->ClassName);
 	}
@@ -31,25 +14,50 @@ class AjaxOrder extends DataObjectDecorator {
 		return CheckoutPage::find_link();
 	}
 
-	function ajaxGetCart() {
-		return $this->renderWith("AjaxCart");
+
+	function addLinkAjax() {
+		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+		return $this->owner->URLSegment."/additemwithajax/".$this->owner->ID.'/';
 	}
 
-	function ajaxRemoveItem() {
-		$id = Director::urlParam("ID");
-		ShoppingCart::remove_all_item($id);
-		return $this->renderWith("AjaxCart");
+	function removeLinkAjax() {
+		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+		return $this->owner->URLSegment."/removeitemwithajax/".$this->owner->ID.'/';
 	}
 
-	function ajaxAddItem() {
-		$id = Director::urlParam("ID");
+}
+
+class AjaxOrder_controller extends Extension {
+
+	static $allowed_actions = array(
+		"additemwithajax"
+	);
+
+	function additemwithajax() {
+		$id = intval(Director::URLParam("ID"));
 		$item = DataObject::get_by_id("Product", $id);
-		ShoppingCart::add_new_item(new Product_OrderItem($item));
-		return $this->renderWith("AjaxCart");
+		if($item) {
+			ShoppingCart::add_new_item(new Product_OrderItem($item));
+		}
+		return $this->owner->renderWith("AjaxCart");
+	}
+
+	function ajaxGetCart() {
+		return $this->owner->renderWith("AjaxCart");
+	}
+
+	function removeitemwithajax() {
+		$id = intval(Director::URLParam("ID"));
+		if($item) {
+			ShoppingCart::remove_all_item($id);
+		}
+		return $this->owner->renderWith("AjaxCart");
 	}
 
 
-	function ajaxStartAgain() {
+
+
+	function clearcompletecart() {
 		ShoppingCart::clear();
 		if($m = Member::currentUser()) {
 			$m->logout();
@@ -61,19 +69,11 @@ class AjaxOrder extends DataObjectDecorator {
 		}
 		$id = Director::urlParam("ID");
 		if(!$id) {
-			Director::redirect("home/ajaxStartAgain/1");
+			Director::redirect("home/clearcompletecart/1");
 		}
 		else {
 			return array();
 		}
 	}
-
-
-
-
-
-}
-
-class AjaxOrder_controller extends Extension {
 
 }
