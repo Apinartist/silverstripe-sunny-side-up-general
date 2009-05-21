@@ -26,6 +26,19 @@ class CurrencyConverterWidget extends Widget {
 		"DefaultAmount" => "1"
 	);
 
+	static function set_default_from_currency($v) {
+		self::$defaults["DefaultFromCurrency"] = $v;
+	}
+
+	static function set_default_to_currency($v) {
+		self::$defaults["DefaultToCurrency"] = $v;
+	}
+
+	static function set_default_amount($v) {
+		self::$defaults["DefaultAmount"] = $v;
+	}
+
+
 	protected static $currency_list = array(
 		"-0-" => "-- Main Currencies: --",
 		"eur" => "euro",
