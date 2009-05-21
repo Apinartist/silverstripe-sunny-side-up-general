@@ -184,7 +184,7 @@ class CurrencyConverterWidget extends Widget {
 
 	static function from_equals_to() {
 		self::retrieveDefaults();
-		return (self::$to_currency_code == self::$from_currency_code);
+		return (strtolower(self::$to_currency_code) == strtolower(self::$from_currency_code));
 	}
 
 	static function has_from_and_to_currencies() {
@@ -197,7 +197,7 @@ class CurrencyConverterWidget extends Widget {
 
 	static function get_rate() {
 		//$url = http://finance.yahoo.com/currency/convert?amt=1&from=NZD&to=USD&submit=Convert
-		if(self::has_from_and_to_currencies()) {
+		if(self::has_from_and_to_currencies() && !self::from_equals_to()) {
 			if(isset(self::$rates[self::$from_currency_code.".".self::$to_currency_code]) && self::$rates[self::$from_currency_code.".".self::$to_currency_code] > 0) {
 				return self::$rates[self::$from_currency_code.".".self::$to_currency_code]+0;
 			}
@@ -228,6 +228,10 @@ class CurrencyConverterWidget extends Widget {
 				}
 			}
 		}
+		elseif(self::from_equals_to()) {
+			self::$rates[self::$from_currency_code.".".self::$to_currency_code] = 1;
+			return self::$rates[self::$from_currency_code.".".self::$to_currency_code]+0;
+		}
 		else {
 			if(self::$debug) {echo "-- could not find from and to values!";}
 		}
@@ -256,12 +260,18 @@ class CurrencyConverterWidget extends Widget {
 			else {
 				self::$from_currency_code = self::$defaults["DefaultFromCurrency"];
 			}
+			if(!self::$from_currency_code && self::$to_currency_code) {
+				self::$from_currency_code = self::$to_currency_code;
+			}
 		}
 		if(!self::$to_currency_code) {
 			if(self::$to_currency_code = Session::get("CurrencyConverter.to_currency_code")) {
 			}
 			else {
 				self::$to_currency_code = self::$defaults["DefaultToCurrency"];
+			}
+			if(self::$from_currency_code && !self::$to_currency_code) {
+				self::$to_currency_code = self::$from_currency_code;
 			}
 		}
 	}
