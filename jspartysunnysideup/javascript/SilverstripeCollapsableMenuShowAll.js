@@ -41,9 +41,9 @@ jQuery.extend({
 
 		mainULid: "#menu",
 
-		allLinkPrepend: "[go to: ",
+		allLinkPrepend: "&gt;",
 
-		allLinkAppend: "]",
+		allLinkAppend: "",
 
 		Level1Class: "L1",
 
@@ -76,20 +76,14 @@ jQuery.extend({
 					if(jQuery(this).children("ul").length > 0) {
 						jQuery(this).children("a").addClass("toggle");
 						var addShowAllLink = true;
+						jQuery.SilverstripeCollapsableMenu.collapse(jQuery(this).children("ul"));
 						if(jQuery(this).hasClass("section") || jQuery(this).hasClass("current")) {
 							if(jQuery(this).hasClass("current")) {
 								addShowAllLink = false;
-								jQuery(this).children("ul").children("li").each(
-									function() {
-										if(jQuery(this).children("ul").length > 0) {
-											jQuery.SilverstripeCollapsableMenu.collapse(element);
-										}
-									}
-								);
 							}
 						}
 						else {
-							jQuery.SilverstripeCollapsableMenu.collapse(jQuery(this).children("ul"));
+
 						}
 						if (addShowAllLink) {
 							var name = jQuery(this).children("a").text();
@@ -97,13 +91,16 @@ jQuery.extend({
 							jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
 						}
 					}
-					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class)) {
+					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class) && !jQuery(this).hasClass("section")  && !jQuery(this).hasClass("current") && !jQuery(this).parent("ul").hasClass("currentUL")) {
 						jQuery(this).parent("ul").hide();
+					}
+					else if(jQuery(this).hasClass("section")  || jQuery(this).hasClass("current") || jQuery(this).parent("ul").hasClass("currentUL")) {
+						jQuery(this).parent("ul").addClass("currentUL");
+						jQuery(this).parent("ul").show();
 					}
 				}
 			);
 		}
-
 
 
 	}
