@@ -10,7 +10,7 @@
 //===================---------------- START mysqldump MODULE ----------------===================
 /*
 Director::addRules(8, array(
-	//'Security/$Action/$ID' => 'Security',
+	//'importexport/$Action/$ID' => 'Security',
 	'dump//$Action' => 'MySQLDump'
 ));
 */

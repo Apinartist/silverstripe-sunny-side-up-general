@@ -23,7 +23,7 @@ class MySQLDump extends DatabaseAdmin {
 
 
 
-	function import() {
+	function export() {
 
 		global $databaseConfig;
 
