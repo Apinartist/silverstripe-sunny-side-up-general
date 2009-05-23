@@ -9,7 +9,6 @@ class FlashObjectDOD extends DataObjectDecorator {
 	function extraDBFields(){
 		return array(
 			'db' =>   array(
-				"AlternativeContent" => "HTMLText",
 				"Title" => "Varchar(255)"
 			),
 			'has_one' => array(
@@ -31,10 +30,7 @@ class FlashObjectDOD extends DataObjectDecorator {
 	function updateCMSFields(FieldSet &$fields) {
 		if( ! FlashObject::has_external_flash_file()) {
 			$fields->addFieldToTab("Root.Content.FlashObject", new FileIFrameField('FlashFile', 'File'));
-			if(!self::$AlternativeContent) {
-				$fields->addFieldToTab("Root.Content.FlashObject", new TextField('Title', 'Title'));
-				$fields->addFieldToTab("Root.Content.FlashObject", new TextField('AlternativeContent', 'AlternativeContent'));
-			}
+			$fields->addFieldToTab("Root.Content.FlashObject", new TextField('Title', 'Title'));
 		}
 		return $fields;
  }
