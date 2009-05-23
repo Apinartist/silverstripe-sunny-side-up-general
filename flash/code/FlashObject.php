@@ -101,6 +101,7 @@ class FlashObject extends ViewableData  {
 		return $doSet;
   }
 
+	static function has_external_flash_file() {self::$external_flash_file ? true : false;}
 	static function set_use_dynamic_insert($value) {self::$use_dynamic_insert = $value;}
 	static function set_filename($value) {self::$filename = $value;}
 	static function set_default_div_id($value) {self::$flash_file_div_id = $value;}

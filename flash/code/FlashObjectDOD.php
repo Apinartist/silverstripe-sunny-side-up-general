@@ -29,9 +29,10 @@ class FlashObjectDOD extends DataObjectDecorator {
 	function augmentDatabase() {}
 
 	function updateCMSFields(FieldSet &$fields) {
-		if(!self::$externalFlashFile) {
+		if( ! FlashObject::has_external_flash_file()) {
 			$fields->addFieldToTab("Root.Content.FlashObject", new FileIFrameField('FlashFile', 'File'));
 			if(!self::$AlternativeContent) {
+				$fields->addFieldToTab("Root.Content.FlashObject", new TextField('Title', 'Title'));
 				$fields->addFieldToTab("Root.Content.FlashObject", new TextField('AlternativeContent', 'AlternativeContent'));
 			}
 		}
