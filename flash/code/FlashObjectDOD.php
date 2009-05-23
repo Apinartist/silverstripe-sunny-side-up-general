@@ -36,10 +36,23 @@ class FlashObjectDOD extends DataObjectDecorator {
  }
 
 	public function CreateFlashObject() {
-		$obj = new FlashObject();
-		return $obj->CreateFlashObject($this->owner->Title, null, $this->owner->FlashFile->Filename);
+		if($this->owner->FlashFileID) {
+			$obj = new FlashObject();
+			$flashFile = $this->owner->FlashFile();
+			return $obj->CreateFlashObject($this->owner->Title, null, $flashFile->Filename);
+		}
+		else {
+			return new DataObjectSet();
+		}
   }
 
+	/*
+	legacy function
+	*/
+
+	public function FlashObjectData() {
+		return $this->CreateFlashObject();
+	}
 
 }
 

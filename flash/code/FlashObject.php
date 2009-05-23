@@ -26,7 +26,7 @@ class FlashObject extends ViewableData  {
 
 	protected static $external_flash_file = '';
 
-	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray) {
+	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray = array()) {
 		if(!$Title ) {$Title  = self::$title ;}
 		$Title = Convert::raw2js($Title);
 
