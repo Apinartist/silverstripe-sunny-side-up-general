@@ -218,8 +218,17 @@ class MySQLDump extends DatabaseAdmin {
 	}
 
 	public function import() {
-		require_once("../_third_party/BigDumpOriginal.php");
-		if(file_exists("../../mysite/data/data.sql")) {
+		header("location: ../mysqldump/_third_party/BigDumpOriginal.php");
+		die("to be implemented");
+		$dir = dirname(getcwd());
+		global $database;
+		chdir("$dir/mysqldump/_third_party/");
+		define("SS_DATABASE_NAME", $database);
+		echo __FILE__;
+		echo chroot();
+		$_SERVER["PHP_SELF"] = "$dir/mysqldump/_third_party/";
+		require_once("$dir/mysqldump/_third_party/BigDumpOriginal.php");
+		if(file_exists("$dir/mysite/data/data.sql")) {
 			define("SS_DATABASE_FILE", "../../mysite/data/data.sql");
 		}
 		else {

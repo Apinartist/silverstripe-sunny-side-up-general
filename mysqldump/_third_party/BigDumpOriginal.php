@@ -37,6 +37,11 @@
 
 // Database configuration
 
+define("SS_DATABASE_FILE", "../../mysite/data/data.sql");
+define("SS_DATABASE_SERVER", "localhost");
+define("SS_DATABASE_NAME", "kprcateringconz");
+define("SS_DATABASE_USERNAME", "root");
+define("SS_DATABASE_PASSWORD", "");
 
 
 $db_server   = SS_DATABASE_SERVER;
@@ -46,7 +51,7 @@ $db_password = SS_DATABASE_PASSWORD;
 
 // Other settings (optional)
 
-$filename         = SS_DATABASE_NAME;     // Specify the dump filename to suppress the file selection dialog
+$filename         = SS_DATABASE_FILE;     // Specify the dump filename to suppress the file selection dialog
 $csv_insert_table = '';     // Destination table for CSV files
 $ajax             = true;   // AJAX mode: import will be done without refreshing the website
 $linespersession  = 3000;   // Lines to be executed per one import session
