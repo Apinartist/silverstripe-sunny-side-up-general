@@ -108,7 +108,7 @@ class FlashObject extends ViewableData  {
 	static function set_default_height($value) {self::$height = $value;}
 	static function set_default_flash_version($value) {self::$flash_version = $value;}
 	static function set_default_alternative_content($value) {self::$alternative_content = $value;}
-	static function set_default_external_flash_file($value) {self::$external_flashFile = $value;}
+	static function set_default_external_flash_file($value) {self::$external_flash_file = $value;}
 	static function add_param($name, $value) {self::$param_array[$name] = $value;}
 }
 
