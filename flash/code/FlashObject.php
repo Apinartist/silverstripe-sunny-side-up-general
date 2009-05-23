@@ -6,25 +6,25 @@
 
 class FlashObject extends ViewableData  {
 
-	static $use_dynamic_insert = true;
+	protected static $use_dynamic_insert = true;
 
-	static $title = "MyFlashObjectTitle";
+	protected static $title = "MyFlashObjectTitle";
 
-	static $filename = "flashObject.swf";
+	protected static $filename = "flashObject.swf";
 
-	static $flash_file_div_id = "FlashObject";
+	protected static $flash_file_div_id = "FlashObject";
 
-	static $width = 200;
+	protected static $width = 200;
 
-	static $height = 200;
+	protected static $height = 200;
 
-	static $flash_version = "6.0.0";
+	protected static $flash_version = "6.0.0";
 
-	static $alternative_content = '<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
+	protected static $alternative_content = '<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
 
-	static $param_array = Array();
+	protected static $param_array = Array();
 
-	static $external_flash_file = '';
+	protected static $external_flash_file = '';
 
 	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray) {
 		if(!$Title ) {$Title  = self::$title ;}
@@ -103,7 +103,7 @@ class FlashObject extends ViewableData  {
 
 	static function set_use_dynamic_insert($value) {self::$use_dynamic_insert = $value;}
 	static function set_filename($value) {self::$filename = $value;}
-	static function set_default_div_id($value) {self::$div_id = $value;}
+	static function set_default_div_id($value) {self::$flash_file_div_id = $value;}
 	static function set_default_width($value) {self::$width = $value;}
 	static function set_default_height($value) {self::$height = $value;}
 	static function set_default_flash_version($value) {self::$flash_version = $value;}
