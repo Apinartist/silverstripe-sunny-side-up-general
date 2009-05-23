@@ -462,6 +462,11 @@ class TypographyTestPage_Controller extends Page_Controller {
 		);
 		return $form;
 	}
+
+	function TestForm() {
+		die("thank you for signing up to twenty years of free chocolate");
+	}
+
 }
 
 
