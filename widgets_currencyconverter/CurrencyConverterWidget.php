@@ -173,6 +173,10 @@ class CurrencyConverterWidget extends Widget {
 		self::$debug = $trueOrFalse;
 	}
 
+	static function get_currency_list() {
+		return self::$currency_list;
+	}
+
 	static function set_from_currency_code($v) {
 		if(self::currency_exists($v)) {
 			self::$from_currency_code = $v;
