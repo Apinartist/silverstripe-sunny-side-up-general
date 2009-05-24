@@ -44,7 +44,7 @@ class AjaxOrder_controller extends Extension {
 		if($item) {
 			ShoppingCart::add_new_item(new Product_OrderItem($item));
 		}
-		$this->ajaxGetSimpleCart();
+		return $this->ajaxGetSimpleCart();
 	}
 
 	private function ajaxGetSimpleCart() {
@@ -56,7 +56,7 @@ class AjaxOrder_controller extends Extension {
 		if($item) {
 			ShoppingCart::remove_all_item($id);
 		}
-		$this->ajaxGetSimpleCart();
+		return $this->ajaxGetSimpleCart();
 	}
 
 	function getajaxcheckoutcart() {
