@@ -25,12 +25,17 @@ class AjaxOrder extends DataObjectDecorator {
 		return $this->owner->URLSegment."/removeitemwithajax/".$this->owner->ID.'/';
 	}
 
+
 }
 
 class AjaxOrder_controller extends Extension {
 
 	static $allowed_actions = array(
-		"additemwithajax"
+		"additemwithajax",
+		"removeitemwithajax",
+		"clearcompletecart",
+		"modifierformsubmit",
+		"getajaxcheckoutcart"
 	);
 
 	function additemwithajax() {
@@ -39,11 +44,11 @@ class AjaxOrder_controller extends Extension {
 		if($item) {
 			ShoppingCart::add_new_item(new Product_OrderItem($item));
 		}
-		return $this->owner->renderWith("AjaxCart");
+		$this->ajaxGetSimpleCart();
 	}
 
-	function ajaxGetCart() {
-		return $this->owner->renderWith("AjaxCart");
+	private function ajaxGetSimpleCart() {
+		return $this->owner->renderWith("AjaxSimpleCart");
 	}
 
 	function removeitemwithajax() {
@@ -51,10 +56,23 @@ class AjaxOrder_controller extends Extension {
 		if($item) {
 			ShoppingCart::remove_all_item($id);
 		}
-		return $this->owner->renderWith("AjaxCart");
+		$this->ajaxGetSimpleCart();
 	}
 
+	function getajaxcheckoutcart() {
+		return $this->owner->renderWith("AjaxCheckoutCart");
+	}
 
+	function AjaxOrder() {
+		if($orderID = intval(Director::urlParam('Action') + 0)) {
+			$order = DataObject::get_by_id('Order', $orderID);
+			if($order && $order->MemberID == Member::currentUserID()) {
+				return $order;
+			}
+		} else {
+			return ShoppingCart::current_order();
+		}
+	}
 
 
 	function clearcompletecart() {
@@ -67,13 +85,10 @@ class AjaxOrder_controller extends Extension {
 			unset($_SESSION);
 			ShoppingCart::clear();
 		}
-		$id = Director::urlParam("ID");
-		if(!$id) {
-			Director::redirect("home/clearcompletecart/1");
-		}
-		else {
-			return array();
-		}
+		die('<a href="/">click here to continue ...</a>');
 	}
 
+	function OrderFormWithoutShippingAddress() {
+		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
+	}
 }
