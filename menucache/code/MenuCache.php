@@ -43,7 +43,7 @@ class MenuCache extends DataObjectDecorator {
 		$urls = array();
 
 		// add current page
-		$urls[] = $this->Link();
+		$urls[] = $this->owner->Link();
 
 		// cache the RSS feed if comments are enabled
 		if ($this->ProvideComments) {
