@@ -55,7 +55,7 @@ class MenuCache extends DataObjectDecorator {
 
 	function pagesAffectedByChanges() {
 		$urls = $this->subPagesToCache();
-		if($p = $this->Parent) $urls = array_merge((array)$urls, (array)$p->subPagesToCache());
+		if($p = $this->owner->Parent()) $urls = array_merge((array)$urls, (array)$p->subPagesToCache());
 		return $urls;
 	}
 
