@@ -6,8 +6,8 @@ class GoogleMap extends ViewableData {
 
 	static $includesDone = false;// this is a hack to avoid having multiple includes
 	/* INFORMATION AROUND THE MAP */
-	protected static $usesSensor = true;
-		static function setUsesSensor($v) {self::$usesSensor = $v;}
+	protected static $UsesSensor = true;
+		static function setUsesSensor($v) {self::$UsesSensor = $v;}
 
 	protected static $DefaultTitle = "";
 		static function setDefaultTitle($v){self::$DefaultTitle = $v;}
@@ -260,7 +260,7 @@ class GoogleMap extends ViewableData {
 			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
 			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');
 			if(!$this->getShowStaticMapFirst()) {
-				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;&amp;sensor".self::$usesSensor."&amp;key=".GoogleMapAPIKey);
+				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;&amp;sensor".self::$UsesSensor."&amp;key=".GoogleMapAPIKey);
 				Requirements::javascript("googlemap/javascript/googleMaps.js");
 				$js .= 'var scriptsLoaded = true; jQuery(document).ready( function() { initiateGoogleMap();} );';
 			}
@@ -394,6 +394,46 @@ class GoogleMap extends ViewableData {
 		$this->dataPointsStaticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?'.$this->dataPointsStaticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$this->dataObjectTitle.'" />';
 		return true;
 	}
+
+	/*
+	* var ArrayOfLatitudeAndLongitude Array (Latitude" => 123, "Longitude" => 123, "Marker" => "red1");
+	* Marker is optional
+	*/
+
+	static function quick_static_map($ArrayOfLatitudeAndLongitude, $title) {
+		$staticMapHTML = '';
+		$count = 0;
+		if(self::$GoogleMapWidth > 512) { $staticMapWidth = 512;	}	else { $staticMapWidth = self::$GoogleMapWidth;	}
+		if(self::$GoogleMapHeight > 512) { $staticMapHeight = 512;	}	else { $staticMapHeight = self::$GoogleMapHeight;	}
+		$staticMapHTML = "size=".$staticMapWidth."x".$staticMapHeight;
+		if(count($ArrayOfLatitudeAndLongitude)) {
+			$staticMapHTML .= '&amp;markers=';
+			foreach($ArrayOfLatitudeAndLongitude as $row) {
+				if($count) {
+				 $staticMapHTML .= '|';
+				}
+				$center = round($row["Latitude"], 6).",".round($row["Longitude"], 6);
+				if(!$count) {
+					$defaultCenter = $center;
+				}
+				$staticMapHTML .= $center.",";
+				if(isset($row["Marker"])) {
+					$staticMapHTML .= $row["Marker"];
+				}
+				else {
+					$staticMapHTML .= self::$StaticIcon;
+				}
+				$count++;
+			}
+			if($count == 1) {
+				$staticMapHTML .= '&amp;center='.$defaultCenter.'&amp;zoom='.self::$DefaultZoom;
+			}
+		}
+		$staticMapHTML .= "&amp;".self::$StaticMapSettings;
+		$staticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?sensor='.self::$UsesSensor.'&amp;'.$staticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$title.'" />';
+		return $staticMapHTML;
+	}
+
 
 	/* OUTPUT JAVASCRIPT */
 	private function createJavascript() {
