@@ -430,7 +430,13 @@ class GoogleMap extends ViewableData {
 			}
 		}
 		$staticMapHTML .= "&amp;".self::$StaticMapSettings;
-		$staticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?sensor='.$this->showFalseOrTrue(self::$UsesSensor).'&amp;'.$staticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$title.'" />';
+		if(self::$UsesSensor) {
+			$UsesSensor = "true";
+		}
+		else {
+			$UsesSensor = "false";
+		}
+		$staticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.$staticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$title.'" />';
 		return $staticMapHTML;
 	}
 
