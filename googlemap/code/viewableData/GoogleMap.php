@@ -6,6 +6,9 @@ class GoogleMap extends ViewableData {
 
 	static $includesDone = false;// this is a hack to avoid having multiple includes
 	/* INFORMATION AROUND THE MAP */
+	protected static $usesSensor = true;
+		static function setUsesSensor($v) {self::$usesSensor = $v;}
+
 	protected static $DefaultTitle = "";
 		static function setDefaultTitle($v){self::$DefaultTitle = $v;}
 
@@ -257,7 +260,7 @@ class GoogleMap extends ViewableData {
 			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
 			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');
 			if(!$this->getShowStaticMapFirst()) {
-				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=".GoogleMapAPIKey);
+				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;&amp;sensor".self::$usesSensor."&amp;key=".GoogleMapAPIKey);
 				Requirements::javascript("googlemap/javascript/googleMaps.js");
 				$js .= 'var scriptsLoaded = true; jQuery(document).ready( function() { initiateGoogleMap();} );';
 			}

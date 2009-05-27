@@ -17,6 +17,9 @@ define("GoogleMapAPIKey", "abc");
 //add maps to all pages...
 DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
 
+//SENSOR - SOME CRAZY STUFF
+GoogleMap::usesSensor(true); // should be set to false!
+
 // MAP
 GoogleMap::setDefaultLatitude(12.0001);
 GoogleMap::setDefaultLongitude(133.2210);
