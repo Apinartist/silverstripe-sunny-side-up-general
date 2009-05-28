@@ -94,7 +94,7 @@ class ManyMonthsCalendar extends ViewableData {
 			user_error('Calendar should have a valid CSS name in the ManyMonthsCalendar Class', E_USER_ERROR);
 		}
 		$this->calendarName = $name;
-
+		
 		// Set day, month and year of calendar
 		$this->month = (0 == $month ) ?	date('n') : $month;
 		$this->year = (0 == $year) ? date('Y') : $year;
@@ -117,7 +117,7 @@ class ManyMonthsCalendar extends ViewableData {
 
 
 	public function addEvent($timeStamp, $title, $link = '') {
-		$this->events[$timeStamp][$this->cleanEventTitle($title)]] = array(
+		$this->events[$timeStamp][$this->cleanEventTitle($title)] = array(
 			'Title' => $title,
 			'Link' => $link
 		);
@@ -160,7 +160,7 @@ class ManyMonthsCalendar extends ViewableData {
 		$doSetDayNames = new DataObjectSet();
 		//day name
 		foreach(self::$day_names as $name) {
-			$doSetDayNames->push(new ArrayData(array(["DayName"] => $name)));
+			$doSetDayNames->push(new ArrayData(array("DayName" => $name)));
 		}
 		$calendarArray["DayNames"] = $doSetDayNames;
 
@@ -171,7 +171,7 @@ class ManyMonthsCalendar extends ViewableData {
 		// previous month
 		for ( $e = 1 ; $e <= $extraDaysToBeAddedFromPreviousMonth ; $e++ ) {
 			$position++;
-			$timeStamp = $this->makeTimeStamp("-" . intval($extraDaysToBeAddedFromPreviousMonth -$e) . " days"));
+			$timeStamp = $this->makeTimeStamp("-" . intval($extraDaysToBeAddedFromPreviousMonth -$e) . " days");
 			$doSetDates->push($this->getDateDataObject($position, $timeStamp, false));
 		}
 
@@ -179,7 +179,7 @@ class ManyMonthsCalendar extends ViewableData {
 		for ($i = 1 ; $i <= $this->daysInMonth ; $i++ ) {
 			$position++;
 			$timeStamp = $this->makeTimeStamp("+".($i-1)." days");
-			$doSetDates->push(this->getDateDataObject($position, $timeStamp));
+			$doSetDates->push($this->getDateDataObject($position, $timeStamp));
 		}
 
 		// next month
@@ -210,7 +210,7 @@ class ManyMonthsCalendar extends ViewableData {
 			}
 		}
 		$array["Events"] = $eventsDoSet;
-		if(($position % 7) == 0 && $position < ) {
+		if(($position % 7) == 0 /*&& $position < */) {
 			$array["LastDayOfTheWeek"] = true;
 		}
 		if($timeStamp == mktime(1,1,1,date('n'),date('j'),date('Y'))) {
@@ -242,5 +242,5 @@ class ManyMonthsCalendar extends ViewableData {
 		return ucwords(self::$month_names[$this->month-1]);
 	}
 
-
+	function forTemplate() {return $this->renderWith('ManyMonthsCalendar');}
 }
