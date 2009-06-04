@@ -111,9 +111,14 @@ class MenuCache extends DataObjectDecorator {
 
 class MenuCache_controller extends Extension {
 
-	static $allowed_actions = array("showcachedmenu","clearmenucache");
+	static $allowed_actions = array("showcachedmenu","clearmenucache","showuncachedmenu");
 
 	function showcachedmenu() {
+		return $this->owner->renderWith("UsedToCreateMenuCache");
+	}
+
+	function showuncachedmenu() {
+		$this->owner->clearmenucache();
 		return $this->owner->renderWith("UsedToCreateMenuCache");
 	}
 
