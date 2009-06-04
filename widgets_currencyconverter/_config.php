@@ -13,4 +13,5 @@
 //CurrencyConverterWidget::set_debug_mode(false);
 //CurrencyConverterWidget::set_from_currency_code("nzd");
 //CurrencyConverterWidget::set_to_currency_code("usd");
+//CurrencyConverterWidget::add_to_array_of_currencies_to_show("usd", "nzd", "eur");
 //===================---------------- END widgets_currencyconverter MODULE ----------------===================

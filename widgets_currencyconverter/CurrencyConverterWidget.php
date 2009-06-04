@@ -38,6 +38,23 @@ class CurrencyConverterWidget extends Widget {
 		self::$defaults["DefaultAmount"] = $v;
 	}
 
+	static function add_to_array_of_currencies_to_show($arrayOfCodes) {
+		if(is_array($arrayOfCodes)) {
+			foreach($arrayOfCodes as $code) {
+				if(3 == strlen($code)) {
+					self::$array_of_currencies_to_show[] = $code;
+				}
+			}
+		}
+		elseif(3 == strlen($arrayOfCodes)) {
+			self::$array_of_currencies_to_show[] = $arrayOfCodes;
+		}
+		else{
+			debug::show("add_to_array_of_currencies_to_show is not provided with right argument");
+		}
+	}
+
+	protected static $array_of_currencies_to_show = array();
 
 	protected static $currency_list = array(
 		"-0-" => "-- Main Currencies: --",
@@ -166,7 +183,6 @@ class CurrencyConverterWidget extends Widget {
 
 	protected $amount = 0;
 
-
 	// set once....
 
 	static function set_debug_mode($trueOrFalse) {
@@ -174,7 +190,15 @@ class CurrencyConverterWidget extends Widget {
 	}
 
 	static function get_currency_list() {
-		return self::$currency_list;
+		if(count(self::$array_of_currencies_to_show)) {
+			foreach(self::$array_of_currencies_to_show as $code) {
+				$array[$code] = self::$currency_list[$code];
+			}
+		}
+		else {
+			$array = self::$currency_list;
+		}
+		return $array;
 	}
 
 	static function set_from_currency_code($v) {
