@@ -2,49 +2,65 @@
 
 ;(function($) {
 	$(document).ready(function() {
-		ajaxCart.addAddLinks();
-		ajaxCart.addRemoveLinks();
+		$("body").addAddLinks();
+		$("body").addRemoveLinks();
+		alert("test");
 	});
+})(jQuery);
 
-	var ajaxCart = {
 
-		CartHolderID: "CartHolder",
+var ajaxCart = {
 
-		LoadingText: "updating cart ... ",
+	CartHolderID: "CartHolder",
 
-		BoughText: "Bought",
+	LoadingText: "updating cart ... ",
 
-		addAddLinks: function() {
-			$(".ajaxAdd").click(
-				function(){
-					var url = $(this).attr("href");
-					$(this).text(ajaxCart.LoadingText);
-					ajaxCart.loadAjax('CartHolder', url, this);
+	BoughText: "Bought",
 
-					return false;
-				}
-			);
-		},
+	UnconfirmedDelete: false,
 
-		addRemoveLinks: function () {
-			$(".removeLink").click(
-				function(){
+	ConfirmText: 'Are you sure you would like to remove this item from your cart?',
 
-					var url = $(this).attr("href");
-					var el = this;
-					$(el).parent("li").css("text-decoration", "line-through");
-					$.get(url, function(){ $(el).parent("li").fadeOut();});
-					return false;
-				}
-			);
-		},
-
-		loadAjax: function(loadIntoElID, URL, el) {
-			$("#" + loadIntoElID).text(ajaxCart.LoadingText);
-			$("#" + loadIntoElID).load(URL, {}, function() {$(el).text(ajaxCart.BoughText); ajaxCart.addRemoveLinks();});
-
-			return true;
-		}
+	loadAjax: function(loadIntoElID, URL, el) {
+		jQuery("#" + loadIntoElID).text(ajaxCart.LoadingText);
+		jQuery("#" + loadIntoElID).load(
+			URL,
+			{},
+			function() {
+				$(el).text(ajaxCart.BoughText);
+				$("#" + loadIntoElID).addRemoveLinks();
+			}
+		);
+		return true;
 	}
 
-})(jQuery);
+}
+
+jQuery.fn.extend({
+
+	addAddLinks: function() {
+		$(this).find(".ajaxAdd").click(
+			function(el){
+				var url = jQuery(this).attr("href");
+				jQuery(this).text(ajaxCart.LoadingText);
+				ajaxCart.loadAjax('CartHolder', url, this);
+				return false;
+			}
+		);
+	},
+
+	addRemoveLinks: function () {
+		$(this).find(".removeLink").click(
+			function(){
+				if(ajaxCart.UnconfirmedDelete || confirm(ajaxCart.ConfirmText)) {
+					var url = $(this).attr("href");
+					var el = this;
+					jQuery(el).parent("li").css("text-decoration", "line-through");
+					jQuery.get(url, function(){ $(el).parent("li").fadeOut();});
+				}
+				return false;
+			}
+		);
+	}
+
+});

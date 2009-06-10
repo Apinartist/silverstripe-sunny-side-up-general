@@ -3,6 +3,7 @@
 class AjaxOrder extends DataObjectDecorator {
 
 	function Cart() {
+		$this->addAjaxLinkRequirements();
 		HTTP::set_cache_age(0);
 		return ShoppingCart::current_order();
 	}
@@ -16,16 +17,18 @@ class AjaxOrder extends DataObjectDecorator {
 
 
 	function addLinkAjax() {
-		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+		$this->addAjaxLinkRequirements();
 		return $this->owner->URLSegment."/additemwithajax/".$this->owner->ID.'/';
 	}
 
 	function removeLinkAjax() {
-		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+		$this->addAjaxLinkRequirements();
 		return $this->owner->URLSegment."/removeitemwithajax/".$this->owner->ID.'/';
 	}
 
-
+	function addAjaxLinkRequirements() {
+		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+	}
 }
 
 class AjaxOrder_controller extends Extension {
@@ -35,7 +38,8 @@ class AjaxOrder_controller extends Extension {
 		"removeitemwithajax",
 		"clearcompletecart",
 		"modifierformsubmit",
-		"getajaxcheckoutcart"
+		"getajaxcheckoutcart",
+		"RecommendedProducts"
 	);
 
 	function additemwithajax() {

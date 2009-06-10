@@ -185,6 +185,9 @@ class PickUpOrDelivery_Form extends OrderModifierForm {
 		if(Director::is_ajax()) {
 			return $this->controller->renderWith("AjaxCheckoutCart");
 		}
+		else {
+			Director::redirect(CheckoutPage::find_link());
+		}
 		return;
 	}
 }
