@@ -37,7 +37,7 @@ initiate like this:
 
 jQuery.extend({
 
-	SilverstripeCollapsableMenu  : {
+	SilverstripeCollapsableMenu : {
 
 		mainULid: "#menu",
 
@@ -47,11 +47,16 @@ jQuery.extend({
 
 		Level1Class: "L1",
 
+		allwaysShowClass: "allwayShowMe",
+
+		currentULClass: "currentUL",
+
 		init: function(mainULid, allLinkPrepend, allLinkAppend) {
 
 			if(mainULid) {this.mainULid = mainULid;}
 			if(allLinkPrepend) {this.allLinkPrepend = allLinkPrepend;}
 			if(allLinkAppend) {this.allLinkAppend = allLinkAppend;}
+			jQuery("."+this.allwaysShowClass).addClass(this.currentULClass);
 			this.collapse(jQuery(this.mainULid));
 			jQuery(this.mainULid +" li a.toggle ").click(
 				function() {
@@ -91,11 +96,11 @@ jQuery.extend({
 							jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
 						}
 					}
-					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class) && !jQuery(this).hasClass("section")  && !jQuery(this).hasClass("current") && !jQuery(this).parent("ul").hasClass("currentUL")) {
+					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class) && !jQuery(this).hasClass("section")  && !jQuery(this).hasClass("current") && !jQuery(this).parent("ul").hasClass(jQuery.SilverstripeCollapsableMenu.currentULClass)) {
 						jQuery(this).parent("ul").hide();
 					}
-					else if(jQuery(this).hasClass("section")  || jQuery(this).hasClass("current") || jQuery(this).parent("ul").hasClass("currentUL")) {
-						jQuery(this).parent("ul").addClass("currentUL");
+					else if(jQuery(this).hasClass("section")  || jQuery(this).hasClass("current") || jQuery(this).parent("ul").hasClass(jQuery.SilverstripeCollapsableMenu.currentULClass)) {
+						jQuery(this).parent("ul").addClass(jQuery.SilverstripeCollapsableMenu.currentULClass);
 						jQuery(this).parent("ul").show();
 					}
 				}
