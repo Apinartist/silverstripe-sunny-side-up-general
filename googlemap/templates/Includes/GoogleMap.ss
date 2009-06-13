@@ -1,3 +1,5 @@
+<% if hasMap %>
+<div class="googleMapHolder">
 <% control GoogleMapController %>
 <% if getShowStaticMapFirst %>
 <div class="loadInteractiveMap">
@@ -62,3 +64,5 @@
 	<% if getStatusDivId %><div id="$getStatusDivId" class="MapExtraInformation"></div><% end_if %>
 </div>
 <% end_control %>
+</div>
+<% end_if %>
