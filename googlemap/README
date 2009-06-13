@@ -126,6 +126,7 @@ To Do PHP
 - lines
 - polygons
 - integrate with GIS model
+- automatically add map IF it has been added to the CMS
 - NO STATIC option
 - NO dynamic option
 - static maps not working
