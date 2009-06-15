@@ -25,7 +25,7 @@ c.       Copy all the commented code from googlemap/_config.php to mysite/_confi
 
 5.       The page type (lets call it “TestPage”)for which you want to add a location must contain in the controller class:
 
-a.       static $allowed_actions = array('showPagePointsMapXML' => true);
+a.       static $allowed_actions = array('showPagePointsMapXML');
 
 b.      public function init() {parent::init();$this->addMap("showPagePointsMapXML");}
 
