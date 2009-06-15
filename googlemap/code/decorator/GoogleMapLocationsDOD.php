@@ -401,6 +401,6 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 class GoogleMapLocationsDOD_Controller extends DataObjectDecorator {
 
-
+	static $allowed_actions = array('showPagePointsMapXML'); //added by Nicolaas!
 
 }
