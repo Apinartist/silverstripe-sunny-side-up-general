@@ -15,7 +15,7 @@
 define("GoogleMapAPIKey", "abc");
 
 //add maps to all pages...
-DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
+//DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
 //Object::add_extension('ContentController', 'GoogleMapLocationsDOD_Controller');
 
 //SENSOR - SOME CRAZY STUFF
