@@ -153,7 +153,6 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	function addUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
 		$this->initiateMap();
 		$v = $this->owner->URLSegment."/".$UpdateServerUrlAddPoint;
-		die($v);
 		$this->map->setUpdateServerUrlAddressSearchPoint($v);
 	}
 
@@ -401,6 +400,14 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 class GoogleMapLocationsDOD_Controller extends DataObjectDecorator {
 
-	static $allowed_actions = array('showPagePointsMapXML'); //added by Nicolaas!
+	static $allowed_actions = array(
+		'showPagePointsMapXML',
+		'turnOnStaticMaps',
+		'showPagePointsMapXML',
+		'showChildPointsMapXML',
+		'showEmptyMap',
+		'showCustomMapXML',
+		'updateMeXML',
+	);
 
 }
