@@ -407,7 +407,7 @@ class GoogleMapLocationsDOD_Controller extends DataObjectDecorator {
 		'showChildPointsMapXML',
 		'showEmptyMap',
 		'showCustomMapXML',
-		'updateMeXML',
+		'updateMeXML'
 	);
 
 }
