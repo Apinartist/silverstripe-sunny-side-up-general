@@ -26,7 +26,7 @@ class RecommendedProducts extends OrderModifier {
 // calculations ==================================
 
 	function LiveAmount() {
-		return 0;
+		return "";
 	}
 
 // display functions ==================================
@@ -37,12 +37,17 @@ class RecommendedProducts extends OrderModifier {
 	}
 
 	function TableTitle() {
-		"Recommended Products";
+		return "Recommended Products";
 	}
 
 	function CartTitle() {
 		return $this->TableTitle();
 	}
+
+	function CanRemove() {
+		return false;
+	}
+
 
 // database functions ==================================
 
@@ -52,17 +57,30 @@ class RecommendedProducts_Form extends Form {
 
 	private static $more_details_link_text = "product details ...";
 
+	private static $nothing_recommended_text = " ";
+
+	private static $something_recommended_text = "Recommended Additions";
+
+	private static $add_button_text = "Add Selected Items";
+
 	static function set_more_details_link_text($v) {self::$more_details_link_text = $v;}
 
+	static function set_nothing_recommended_text($v) {self::$nothing_recommended_text = $v;}
+
+	static function set_something_recommended_text($v) {self::$something_recommended_text = $v;}
+
+	static function set_add_button_text($v) {self::$add_button_text = $v;}
+
 	function __construct($controller, $name) {
-		Requirements::javascript("mysite/javascript/RecommendedProducts.js");
+		Requirements::javascript("ecommercextras/javascript/RecommendedProducts.js");
 		Requirements::themedCSS("RecommendedProducts");
 		$InCartIDArray = array();
 		$recommendedProductsIDArray = array();
 		$fieldsArray = array();
 		$items = ShoppingCart::get_items();
 		foreach($items as $item) {
-			$InCartIDArray[] = $item->Product()->ID;
+			$id = $item->Product()->ID;
+			$InCartIDArray[$id] = $id;
 		}
 		foreach($items as $item) {
 			//get recommended products
@@ -81,17 +99,17 @@ class RecommendedProducts_Form extends Form {
 			}
 		}
 		if(count($recommendedProductsIDArray)) {
-			$fieldsArray[] = new HeaderField("Recommended Products With Your Order");
+			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = DataObject::get_by_id("SiteTree", $ID);
 				//foreach product in cart get recommended products
 				$fieldsArray[] = new CheckboxField($product->URLSegment, $product->Title);
 				$fieldsArray[] = new LiteralField($product->URLSegment."-moreinfo", '<a href="'.$product->Link().'">'.self::$more_details_link_text.'</a>');
 			}
-			$actions = new FieldSet(new FormAction('processOrder', 'Add selected recommended products'));
+			$actions = new FieldSet(new FormAction('processOrder', self::$add_button_text));
 		}
 		else {
-			$fieldsArray[] = new HeaderField("There are no recommended products with this order.");
+			$fieldsArray[] = new HeaderField(self::$nothing_recommended_text);
 			$actions = new FieldSet();
 		}
 		$requiredFields = null;

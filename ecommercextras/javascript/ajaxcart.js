@@ -1,11 +1,12 @@
 /* add and remove using ajax... */
 
 ;(function($) {
-	$(document).ready(function() {
-		$("body").addAddLinks();
-		$("body").addRemoveLinks();
-		alert("test");
-	});
+	$(document).ready(
+		function() {
+			$("body").addAddLinks();
+			$("body").addRemoveLinks();
+		}
+	);
 })(jQuery);
 
 
@@ -27,8 +28,8 @@ var ajaxCart = {
 			URL,
 			{},
 			function() {
-				$(el).text(ajaxCart.BoughText);
-				$("#" + loadIntoElID).addRemoveLinks();
+				jQuery(el).text(ajaxCart.BoughText);
+				jQuery("#" + loadIntoElID).addRemoveLinks();
 			}
 		);
 		return true;
@@ -39,7 +40,7 @@ var ajaxCart = {
 jQuery.fn.extend({
 
 	addAddLinks: function() {
-		$(this).find(".ajaxAdd").click(
+		jQuery(this).find(".ajaxAdd").click(
 			function(el){
 				var url = jQuery(this).attr("href");
 				jQuery(this).text(ajaxCart.LoadingText);
@@ -50,13 +51,13 @@ jQuery.fn.extend({
 	},
 
 	addRemoveLinks: function () {
-		$(this).find(".removeLink").click(
+		jQuery(this).find(".removeLink").click(
 			function(){
 				if(ajaxCart.UnconfirmedDelete || confirm(ajaxCart.ConfirmText)) {
-					var url = $(this).attr("href");
+					var url = jQuery(this).attr("href");
 					var el = this;
 					jQuery(el).parent("li").css("text-decoration", "line-through");
-					jQuery.get(url, function(){ $(el).parent("li").fadeOut();});
+					jQuery.get(url, function(){ jQuery(el).parent("li").fadeOut();});
 				}
 				return false;
 			}

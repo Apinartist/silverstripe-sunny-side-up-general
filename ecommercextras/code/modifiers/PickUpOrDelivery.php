@@ -22,6 +22,8 @@ class PickUpOrDelivery extends OrderModifier {
 
 	protected static $pickup_options = array();
 
+	protected static $is_chargable = true;
+
 	/**
 	 * Set the tax information for a particular country.
 	 * By default, no tax is charged.
@@ -57,7 +59,11 @@ class PickUpOrDelivery extends OrderModifier {
 //form NOTE THEY ARE ALL STATIC ====================================
 
 	static function show_form() {
-		return true;
+		$items = ShoppingCart::get_items();
+		if(count($items)) {
+			return true;
+		}
+		return false;
 	}
 
 	static function get_form($controller) {
@@ -129,6 +135,9 @@ class PickUpOrDelivery extends OrderModifier {
 					$value = $currentOptionArray["Cost"];
 				}
 			}
+		}
+		else {
+			return 0;
 		}
 		if($isPercentage && $value != 0) {
 			$value = $value * $amount;

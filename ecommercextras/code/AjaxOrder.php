@@ -88,6 +88,7 @@ class AjaxOrder_controller extends Extension {
 			$_SESSION = array();
 			unset($_SESSION);
 			ShoppingCart::clear();
+			Session::set("ecommercextras.bonusitems", null);
 		}
 		die('<a href="/">click here to continue ...</a>');
 	}
