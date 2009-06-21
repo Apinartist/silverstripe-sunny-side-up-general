@@ -146,6 +146,10 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 // database functions ==================================
-
+	public function onBeforeWrite() {
+		parent::onBeforeWrite();
+		$this->Rate = $this->LiveRate();
+		$this->Name = $this->LiveName();
+	}
 }
 
