@@ -5,6 +5,11 @@
  * the product page / dataobject need to have a function BonusProductsForCart
  * which returns an array of IDs
  * @package ecommerce
+ * each time a bonus item is added, it is added to Session::set("ecommercextras.bonusitems", $arrayofitems);
+ * the following situations apply:
+ * 1. item has not been added and thus will be added and qty set
+ * 2. item has already been added and qty is updated
+ * 3. item should be removed because parent item is no longer in cart
  */
 class BonusProductModifier extends OrderModifier {
 

@@ -1,15 +1,9 @@
 <?php
 
-/**
- * Calculates the shipping cost of an order, by taking the products
- * and calculating the shipping weight, based on an array set in _config
- *
- * ASSUMPTION: The total order weight can be at maximum the last item
- * in the $shippingCosts array.
- *
- * @package ecommerce
+/** * TO BE COMPLETED
  */
-class AdditionalFieldsModifier extends OrderModifier {
-	static $db = array(	);	static function show_form() {		return true;	}	static $requiredFieldsArray = Array(	);	static $paymentChoice = array();
-	static $orderFormInstance = null;	static function addPaymentOption($name, $description) {		self::$paymentChoice[$name] = $description;	}	static function get_form($order) {		if(!isset(self::$orderFormInstance)) {			$CheckoutPage = DataObject::get_one("CheckoutPage");			$FieldSet = new FieldSet();			$FieldSet->push(new HeaderField("Delivery Details"));		}		return self::$orderFormInstance;	}	function ShowInTable() {		return false;	}	protected static $is_chargable = false;	function LiveAmount() {		return 0;	}	function TableTitle() {		return '';	}	public function onBeforeWrite() {		parent::onBeforeWrite();		foreach(self::$db as $fieldName=>$fieldType) {			if($fieldName == "DeliveryDate") {				$item = new Date("temp");				$item->setValue(Session::get("AdditionalFieldsModifier".$fieldName));				$this->$fieldName = $item->Format("Y-m-d");			}			else {				$this->$fieldName = Session::get("AdditionalFieldsModifier".$fieldName);			}			if(!$this->$fieldName && Session::get("AdditionalFieldsModifier".$fieldName)) {				$this->$fieldName = Session::get("AdditionalFieldsModifier".$fieldName);			}		}	}}
+class NewsletterSignup extends OrderModifier {
+	static $db = array(	);	static function show_form() {		return true;	}	static $requiredFieldsArray = Array(	);
+	static $orderFormInstance = null;	protected static $is_chargable = false;	static function get_form($controller) {		if(!isset(self::$orderFormInstance)) {			$fields = new FieldSet();			$regionList = self::getRegionList();			$fields->push($regionField = new CheckboxField('NewsletterSignup','I would like to sign-up for your newsletter', Session::get("NewsletterSignup")));			$validator = null;			$actions = new FieldSet(				new FormAction_WithoutLabel('processOrderModifier', 'Update Newsletter Selection')			);			self::$orderFormInstance = new NewsletterSignup_Form($controller, 'ModifierForm', $fields, $actions, $validator);		}		return self::$orderFormInstance;	}	function ShowInTable() {		return false;	}	function LiveAmount() {		return 0;	}	function TableTitle() {		return '';	}	public function onBeforeWrite() {		parent::onBeforeWrite();		foreach(self::$db as $fieldName=>$fieldType) {			if($fieldName == "DeliveryDate") {				$item = new Date("temp");				$item->setValue(Session::get("NewsletterSignup".$fieldName));				$this->$fieldName = $item->Format("Y-m-d");			}			else {				$this->$fieldName = Session::get("NewsletterSignup".$fieldName);			}			if(!$this->$fieldName && Session::get("NewsletterSignup".$fieldName)) {				$this->$fieldName = Session::get("NewsletterSignup".$fieldName);			}		}	}}
 
+class NewsletterSignup_Form extends form {	public function processOrderModifier($data, $form) {		$order = ShoppingCart::current_order();		$modifiers = $order->Modifiers();		foreach($modifiers as $modifier) {			if (get_class($modifier) == 'PickUpOrDelivery') {				Session::set("PickUpOrDeliveryOption", $data['PickupOrDeliveryType']);				$modifier->PickupOrDeliveryType = $data['PickupOrDeliveryType'];			}		}		Order::save_current_order();		if(Director::is_ajax()) {			return $this->controller->renderWith("AjaxCheckoutCart");		}		else {			Director::redirect(CheckoutPage::find_link());		}		return;	}}
