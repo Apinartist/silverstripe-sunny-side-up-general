@@ -1,7 +1,12 @@
 (function($){
 	$(document).ready(
 		function() {
-			$(".recommendedproducts").hide();
+			$(".recommendedproducts").livequery(
+				function() {
+					alert("recommendedproducts");
+					$(".recommendedproducts").hide();
+				}
+			);
 		}
 	);
 })(jQuery);

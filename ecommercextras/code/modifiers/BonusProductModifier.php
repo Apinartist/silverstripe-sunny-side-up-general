@@ -13,9 +13,11 @@
  */
 class BonusProductModifier extends OrderModifier {
 
-//settings ======================================
+// static variables \\\
 
-	static $db = array();
+	static $db = array(
+		'Name' => 'Text'
+	);
 
 	static $savings_calculated = false ;
 
@@ -23,8 +25,7 @@ class BonusProductModifier extends OrderModifier {
 
 	private static $title = "Bonus Product Savings";
 
-//form NOTE THEY ARE ALL STATIC ====================================
-
+// static functions \\\
 	static function show_form() {
 		return self::workoutSavings();
 	}
@@ -37,31 +38,47 @@ class BonusProductModifier extends OrderModifier {
 		self::$title = $v;
 	}
 
-// calculations ==================================
 
-	function LiveAmount() {
-		return self::workoutSavings();
-	}
-
-// display functions ==================================
-
+// display functions \\\
 	function CanRemove() {
 		return false;
 	}
 
-
-	function ShowInCart() {
+	function ShowInTable() {
 		return true;
 	}
 
+// inclusive / exclusive functions  \\\
+// table values \\\
+	function LiveAmount() {
+		return self::workoutSavings();
+	}
+
+	function TableValue() {
+		return "$".number_format(abs($this->Amount()), 2);
+	}
+
+
+// table titles \\\
+	function LiveName() {
+		self::$title;
+	}
+
+	function Name() {
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
+	}
+
 	function TableTitle() {
-		return self::$title;
+		return $this->Name();
 	}
 
-	function CartTitle() {
-		return $this->TableTitle();
-	}
 
+// calculations \\\
 	static function workoutSavings() {
 		if(!self::$savings_calculated) {
 			self::$is_chargable = false;
@@ -141,6 +158,7 @@ class BonusProductModifier extends OrderModifier {
 			}
 			$keys = array_keys($newBonusProductArray);
 			if(is_array($newBonusProductArray) && count($newBonusProductArray)) {
+				Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
 				Requirements::customScript("var BonusProductModifierArray = new Array(0,".implode(",", $keys).");");
 			}
@@ -150,10 +168,10 @@ class BonusProductModifier extends OrderModifier {
 		return self::$savings;
 	}
 
-// database functions ==================================
+
+// database functions \\\
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->Rate = $this->LiveRate();
 		$this->Name = $this->LiveName();
 	}
 }

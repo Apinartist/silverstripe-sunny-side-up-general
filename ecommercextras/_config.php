@@ -36,5 +36,9 @@
 
 // *** GST TAX MODIFIER
 //GSTTaxModifier::set_for_country($country = "NZ", $rate = "12.5", $name = "GST", $inclexcl = "inclusive");
+
+//NewsletterSignupModifier
+//NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
+
 //===================---------------- END ecommercextra MODULE ----------------===================
 

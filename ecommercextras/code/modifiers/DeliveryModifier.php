@@ -7,20 +7,21 @@
  */
 class DeliveryModifier extends OrderModifier {
 
+// static variables \\\
 	static $db = array(
-		'Rate' => 'Decimal',
+		'Rate' => 'Double',
 		'Name' => 'Text',
 	);
 
 	protected static $is_chargable = true;
 
+	protected static $minimum_amount;
 
-	static $minimum_amount;
+	protected static $percentage_rate;
 
-	static $percentage_rate;
+	protected static $description;
 
-	static $description;
-
+// static functions \\\
 	static function set_minimum_amount($amount) {
 		self::$minimum_amount = $amount + 0;
 	}
@@ -33,37 +34,61 @@ class DeliveryModifier extends OrderModifier {
 		self::$description = $description;
 	}
 
-	function Total () {
-		return $this->ID ? $this->Amount : $this->Charge(); //$this->Amount :
-	}
-  // Attributes Functions
-	function Rate() {
-		return $this->ID ? $this->Rate : $this->LiveRate();
+// display function \\\
+	function ShowInTable() {
+		return true;
 	}
 
-	function Name() {
-		return $this->ID ? $this->Name : $this->LiveName();
-	}
-
+// inclusive / exclusive functions  \\\
 	function IsExclusive() {
 		return $this->ID ? $this->TaxType == 'Exclusive' : $this->LiveIsExclusive();
 	}
 
-
+	function CanRemove () {
+		return false;
+	}
+// rate functions \\\
+	function Rate() {
+		return $this->ID ? $this->Rate : $this->LiveRate();
+	}
 	protected function LiveRate() {
 		return self::$percentage_rate;
 	}
 
-	protected function LiveName() {
-		return self::$description;
+// table value functions  \\\
+	function Total () {
+		return $this->ID ? $this->Amount : $this->Charge(); //$this->Amount :
 	}
 
 	function LiveAmount() {
 		return $this->Charge();
 	}
 
+	function TableValue() {
+		return "$".number_format(abs($this->Amount()), 2);
+	}
+
+// table title  \\\
+	protected function LiveName() {
+		return self::$description;
+	}
+
+	function Name() {
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
+	}
+
+	function TableTitle() {
+		return $this->Name();
+	}
 
 
+
+// calculations  \\\
 	function Charge() {
 		$SubTotalAmount = $this->SubTotalAmount();
 		$charge = $SubTotalAmount * $this->Rate();
@@ -78,24 +103,8 @@ class DeliveryModifier extends OrderModifier {
 		return $order->SubTotal();
 	}
 
-	// Display Functions
 
-	function ShowInTable() {
-		return $this->Rate();
-	}
-
-	/*
-	 * Precondition : Their is a rate
-	 */
-	function TableTitle() {
-		return $this->Name();
-	}
-
-	// Database Writing Function
-
-	/*
-	 * Precondition : The order item is not saved in the database yet
-	 */
+// database functions  \\\
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Rate = $this->LiveRate();
@@ -103,4 +112,3 @@ class DeliveryModifier extends OrderModifier {
 	}
 }
 
-?>

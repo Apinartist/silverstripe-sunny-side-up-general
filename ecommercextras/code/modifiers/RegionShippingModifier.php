@@ -10,16 +10,15 @@
  */
 class RegionShippingModifier extends OrderModifier {
 
+
+// static variables \\\
+
 	static $db = array(
-		'Region' => 'Text',
+		'Name' => 'Text',
 		'ShippingChargeType' => "Enum('Default,ForRegion')"
 	);
 
 	static $default_charge = 0;
-
-	static function set_default_charge($defaultCharge) {
-		self::$default_charge = $defaultCharge;
-	}
 
 	static $charges_by_region = array(
 		'RegionA' => 10,
@@ -27,6 +26,8 @@ class RegionShippingModifier extends OrderModifier {
 		'RegionC' => 30
 	);
 
+
+// static functions \\\
 	/**
 	 * Set shipping charges on a region by region basis.
 	 * For example, SimpleShippingModifier::set_charges_for_regions(array(
@@ -39,28 +40,20 @@ class RegionShippingModifier extends OrderModifier {
 		self::$charges_by_region = array_merge(self::$charges_by_region, $regionMap);
 	}
 
+	static function set_default_charge($defaultCharge) {
+		self::$default_charge = $defaultCharge;
+	}
+
+
 	static function getRegionList () {
 		$keys = array_keys(self::$charges_by_region);
 		return array_combine($keys,$keys);
 	}
 
-	/**
-	 * This determines whether the OrderModifierForm
-	 * is shown or not. {@link OrderModifier::get_form()}.
-	 *
-	 * @return boolean
-	 */
 	static function show_form() {
 		return true;
 	}
 
-	/**
-	 * This function returns a form that allows a user
-	 * to change the modifier to the order.
-	 *
-	 * @param Controller $controller $controller The controller
-	 * @return OrderModifierForm or subclass
-	 */
 	static function get_form($controller) {
 		Requirements::javascript("jsparty/jquery/jquery.js");
 		Requirements::javascript("mysite/javascript/RegionShippingModifier.js");
@@ -77,8 +70,15 @@ class RegionShippingModifier extends OrderModifier {
 		return new RegionShippingModifier_Form($controller, 'ModifierForm', $fields, $actions, $validator);
 	}
 
-	// Attributes Functions
+// display functions \\\
+	function ShowInTable() {
+		return true;
+	}
+	function CanRemove() {
+		function false;
+	}
 
+// other attributes: region \\\
 	function Region() {
 		if($this->Region) {
 			return $this->Region;
@@ -88,12 +88,12 @@ class RegionShippingModifier extends OrderModifier {
 		}
 	}
 
-	function IsDefaultCharge() {
-		return $this->ID ? $this->ShippingChargeType == 'Default' : $this->LiveIsDefaultCharge();
-	}
-
 	protected function LiveRegion() {
 		return $this->Region();
+	}
+// other attributes: default charge\\\
+	function IsDefaultCharge() {
+		return $this->ID ? $this->ShippingChargeType == 'Default' : $this->LiveIsDefaultCharge();
 	}
 
 	protected function LiveIsDefaultCharge() {
@@ -103,6 +103,7 @@ class RegionShippingModifier extends OrderModifier {
 	/**
 	 * Find the amount for the shipping on the shipping region for the order.
 	 */
+// table values \\\
 	function LiveAmount() {
 		if(!ShoppingCart::get_items()) {
 			return 0;
@@ -118,17 +119,12 @@ class RegionShippingModifier extends OrderModifier {
 		}
 	}
 
-	// Display Functions
-
-	function ShowInCart() {
-		return $this->Total() > 0;
+	function TableValue() {
+		return "$".number_format(abs($this->Amount()), 2);
 	}
 
-	/**
-	 * @TODO Add i18n entities to the text.
-	 * @return string
-	 */
-	function TableTitle() {
+//table titles \\\
+	function LiveName() {
 		if($this->Region()) {
 			$regionList = self::getRegionList();
 			return "Shipping to {$regionList[$this->Region()]}";
@@ -137,22 +133,24 @@ class RegionShippingModifier extends OrderModifier {
 		}
 	}
 
-	/**
-	 * @TODO Add i18n entities to the text.
-	 * @return string
-	 */
-	function CartTitle() {
-		return 'Shipping';
+	function Name() {
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
 	}
 
-	// Database Writing Function
+	function TableTitle() {
+		return $this->Name();
+	}
 
-	/*
-	 * Precondition : The order item is not saved in the database yet
-	 */
+
+// database function \\\
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-
+		$this->Name = $this->Region();
 		//$this->Region = $this->LiveRegion();
 		$this->ShippingChargeType = $this->LiveIsDefaultCharge() ? 'Default' : 'ForRegion';
 	}

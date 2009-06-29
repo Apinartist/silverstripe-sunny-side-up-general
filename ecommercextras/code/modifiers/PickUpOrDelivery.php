@@ -10,9 +10,11 @@
  */
 class PickUpOrDelivery extends OrderModifier {
 
-//settings ======================================
+//static variables \\\
 
 	static $db = array(
+		'Rate' => 'Double',
+		'Name' => 'Text',
 		"PickupOrDeliveryType" => "Varchar(255)"
 	);
 
@@ -36,6 +38,7 @@ class PickUpOrDelivery extends OrderModifier {
 	 * @param $isPercentage boolean if the cost is a percentage or a exact cost
 	 */
 
+//static functions  \\\
 
 	static function set_pickup_option($code, $name, $cost, $minimum, $maximum, $isPercentage) {
 		self::$pickup_options[$code] = array(
@@ -56,8 +59,6 @@ class PickUpOrDelivery extends OrderModifier {
 		self::$default_title = $v;
 	}
 
-//form NOTE THEY ARE ALL STATIC ====================================
-
 	static function show_form() {
 		$items = ShoppingCart::get_items();
 		if(count($items)) {
@@ -68,6 +69,7 @@ class PickUpOrDelivery extends OrderModifier {
 
 	static function get_form($controller) {
 		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
 		Requirements::javascript("ecommercextras/javascript/PickUpOrDelivery.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		$fields = new FieldSet();
@@ -89,13 +91,16 @@ class PickUpOrDelivery extends OrderModifier {
 		return $array;
 	}
 
-// current values and selections ==================================
-
-	protected function SubTotalAmount() {
-		$order = $this->Order();
-		return $order->SubTotal();
+//display  \\\
+	function ShowInTable() {
+		return true;
+	}
+	function CanRemove() {
+		return false;
 	}
 
+// inclusive / exclusive  \\\
+// other attribute: Pickup or Delivery Type \\\
 	function PickupOrDeliveryType() {
 		if($this->PickupOrDeliveryType) {
 			return $this->PickupOrDeliveryType;
@@ -115,9 +120,48 @@ class PickUpOrDelivery extends OrderModifier {
 		return false;
 	}
 
-// calculations ==================================
 
-	function LiveAmount() {
+// rate \\\
+// table values \\\
+	function TableValue() {
+		return "$".number_format(abs($this->Amount()), 2);
+	}
+
+	function LiveAmount () {
+		$this->Charge();
+	}
+
+// table titles  \\\
+	function LiveName() {
+		$array = $this->PickupOrDeliveryTypeArray();
+		if($array) {
+			return $array["Name"];
+		}
+		else {
+			return self::$default_title;
+		}
+	}
+
+	function Name() {
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
+	}
+
+	function TableTitle() {
+		return $this->Name();
+	}
+
+// calculations  \\\
+	protected function SubTotalAmount() {
+		$order = $this->Order();
+		return $order->SubTotal();
+	}
+
+	function Charge() {
 		$value = self::$default_amount;
 		$isPercentage = false;
 		if(ShoppingCart::get_items()) {
@@ -145,38 +189,10 @@ class PickUpOrDelivery extends OrderModifier {
 		return $value;
 	}
 
-// display functions ==================================
-
-
-	function ShowInCart() {
-		return $this->Total() != 0;
-	}
-
-	function TableTitle() {
-		$array = $this->PickupOrDeliveryTypeArray();
-		if($array) {
-			return $array["Name"];
-		}
-		else {
-			return self::$default_title;
-		}
-	}
-
-	function CartTitle() {
-		return $this->TableTitle();
-	}
-
-// database functions ==================================
-
-
+// database functions \\\
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-		if($optionArray = $this->PickupOrDeliveryTypeArray()) {
-			$this->PickupOrDeliveryType = $optionArray["Name"];
-		}
-		else {
-			$this->PickupOrDeliveryType = self::$default_title;
-		}
+		$this->Name = $this->LiveName();
 	}
 }
 

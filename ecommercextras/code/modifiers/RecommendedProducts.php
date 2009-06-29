@@ -8,13 +8,12 @@
  */
 class RecommendedProducts extends OrderModifier {
 
-//settings ======================================
+//static variables \\\
 
 	static $db = array();
 
 
-//form NOTE THEY ARE ALL STATIC ====================================
-
+// static functions \\\
 	static function show_form() {
 		return true;
 	}
@@ -23,25 +22,9 @@ class RecommendedProducts extends OrderModifier {
 		return new RecommendedProducts_Form($controller, 'RecommendedProducts');
 	}
 
-// calculations ==================================
-
-	function LiveAmount() {
-		return "";
-	}
-
-// display functions ==================================
-
-
-	function ShowInCart() {
+// display functions \\\
+	function ShowInTable() {
 		return false;
-	}
-
-	function TableTitle() {
-		return "Recommended Products";
-	}
-
-	function CartTitle() {
-		return $this->TableTitle();
 	}
 
 	function CanRemove() {
@@ -49,8 +32,36 @@ class RecommendedProducts extends OrderModifier {
 	}
 
 
-// database functions ==================================
+// table values \\\
+	function LiveAmount() {
+		return 0;
+	}
+	function TableValue() {
+		return "";
+	}
 
+//table titles \\\
+	function LiveName() {
+		return "Recommended Products";
+	}
+
+	function Name() {
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
+	}
+
+	function TableTitle() {
+		return $this->Name();
+	}
+
+// database functions \\\
+	public function onBeforeWrite() {
+		parent::onBeforeWrite();
+	}
 }
 
 class RecommendedProducts_Form extends Form {
@@ -72,6 +83,7 @@ class RecommendedProducts_Form extends Form {
 	static function set_add_button_text($v) {self::$add_button_text = $v;}
 
 	function __construct($controller, $name) {
+		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("ecommercextras/javascript/RecommendedProducts.js");
 		Requirements::themedCSS("RecommendedProducts");
 		$InCartIDArray = array();
@@ -144,5 +156,4 @@ class RecommendedProducts_Form extends Form {
 		}
 		return;
 	}
-
 }
