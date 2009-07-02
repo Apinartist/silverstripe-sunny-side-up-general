@@ -75,7 +75,7 @@ class RegionShippingModifier extends OrderModifier {
 		return true;
 	}
 	function CanRemove() {
-		function false;
+		return false;
 	}
 
 // other attributes: region \\\
