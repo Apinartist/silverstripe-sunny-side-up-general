@@ -19,7 +19,8 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	function __construct($controller, $name) {
 		parent::__construct($controller, $name);
 		$this->unsetActionByName("useDifferentShippingAddress");
-		$this->fields->addFieldToTab("", new CheckboxField("Newsletter", "Sign-up to Newsletter"));
+		$this->fields->addFieldToTab("", new CheckboxField("ENews", "Sign-up to e-news"));
+		$this->fields->addFieldToTab("", new CheckboxField("ProNewsletter", "Sign-up to pro-newsletter"));
 		if($message = $this->CustomErrors()) {
 			$this->fields->addFieldToTab("", new HeaderField("ErrorHeading", "Error!"));
 			$this->fields->addFieldToTab("", new LiteralField("ErrorMessage", '<div class="error">'.$message.'</div>'));
