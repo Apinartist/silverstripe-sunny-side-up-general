@@ -5,7 +5,6 @@ var BonusProductModifierArray = new Array();
 		function() {
 			$(".bonusproductmodifier").livequery(
 				function () {
-					alert("doing it");
 					BonusProductModifier.init();
 				}
 			);
