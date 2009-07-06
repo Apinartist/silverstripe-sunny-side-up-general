@@ -1,6 +1,8 @@
 <?php
 /**
  * Add a page to your site that allows you to view all the html that can be used in the typography section - if applied correctly.
+ *
+ * TO DO: add a testing sheet with a list of checks to be made (e.g. italics, bold, paragraphy) - done YES / NO, a date and a person who checked it (member).
  */
 
 
@@ -8,18 +10,18 @@ class TypographyTestPage extends Page {
 
 	static $icon = "typography/images/treeicons/TypographyTestPage";
 
-	static $auto_include = false;
+	protected static $auto_include = false;
 
 	static function setAutoInclude($value) {
 		self::$auto_include = $value;
 	}
 
 	static $defaults = array(
-	"URLSegment" => "typo",
-	"ShowInMenus" => false,
-	"ShowInSearch" => false,
-	"Title" => "Typography Test",
-	"Content" => '
+		"URLSegment" => "typo",
+		"ShowInMenus" => false,
+		"ShowInSearch" => false,
+		"Title" => "Typography Test",
+		"Content" => '
 
 <p>
 	Below is a variety of styles that you may use in your SilverStripe Content Management System.
@@ -118,6 +120,8 @@ class TypographyTestPage extends Page {
 	The table below can show the ten main colours for your site.
 	In order to do so, they must be specified by a coder in your typography.css file (using td.colour1{background-color: YourColour1Here;}, td.colour2{background-color: YourColour2Here;}, etc...).
 </p>
+<h1>Colour Blocks</h1>
+<p>The blocks below can help you identify the colours for the current website.</p>
 <table id="colourTable" summary="colour table">
 	<tbody>
 		<tr>
@@ -433,6 +437,8 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$array[] = "blue";
 		$array[] = "pink";
 		$array[] = "orange";
+		$errorField = new TextField($name = "ErrorField", $title = "Text Field Example");
+		$errorField->setError("there is an error", "required");
 		$form = new Form(
 			$controller = $this,
 			$name = "TestForm",
@@ -440,6 +446,8 @@ class TypographyTestPage_Controller extends Page_Controller {
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
 				new TextField($name = "TextField", $title = "Text Field Example"),
+				new HeaderField($name = "HeaderField2", $title = "Error Message", 2),
+				$errorField,
 				new TextareaField($name = "TextareaField", $title = "Textarea Field", 5, 5),
 				new EmailField("EmailField", "Email address"),
 				new HeaderField($name = "HeaderField2", $title = "HeaderField Level 2", 2),
