@@ -284,14 +284,14 @@ class CurrencyConverterWidget extends Widget {
 		}
 	}
 
-	static function get_exchanged_value($amount = 0) {
+	static function get_exchanged_value($amount = 0, $digits = 2) {
 		self::retrieveDefaults();
 		if(self::$debug) {echo "-- from ".self::$from_currency_code;}
 		if(self::$debug) {echo "-- to ".self::$to_currency_code;}
 		if(self::$debug) {echo "-- amount ".$amount;}
 		$rate = self::get_rate();
 		if(self::$debug) {echo "-- rate ".$rate;}
-		return strtoupper(self::$to_currency_code).' '.round(floatval($rate * $amount), 2);
+		return strtoupper(self::$to_currency_code).' '.round(floatval($rate * $amount), $digits);
 	}
 
 	private static function retrieveDefaults() {
