@@ -116,7 +116,15 @@ class RecommendedProducts_Form extends Form {
 				$product = DataObject::get_by_id("SiteTree", $ID);
 				//foreach product in cart get recommended products
 				$fieldsArray[] = new CheckboxField($product->URLSegment, $product->Title);
-				$fieldsArray[] = new LiteralField($product->URLSegment."-moreinfo", '<a href="'.$product->Link().'">'.self::$more_details_link_text.'</a>');
+				$imageID = $product->ImageID;
+				$secondPart = '';
+				if($product->ImageID > 0) {
+					$product->Image()->SetWidth(200);
+					$imageLink = $product->Image()->Filename;
+					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
+				}
+				$firstPart = '<span class="firstPart">'.self::$more_details_link_text.'</span>';
+				$fieldsArray[] = new LiteralField($product->URLSegment."-moreinfo", '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>');
 			}
 			$actions = new FieldSet(new FormAction('processOrder', self::$add_button_text));
 		}
