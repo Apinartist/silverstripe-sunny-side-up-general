@@ -123,8 +123,8 @@ class RecommendedProducts_Form extends Form {
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
-					$product->Image()->SetWidth(self::$image_width);
-					$imageLink = $product->Image()->Filename;
+					$resizedImage = $product->Image()->SetWidth(self::$image_width);
+					$imageLink = $resizedImage->Filename;
 					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 				}
 				$firstPart = '<span class="firstPart">'.self::$more_details_link_text.'</span>';
