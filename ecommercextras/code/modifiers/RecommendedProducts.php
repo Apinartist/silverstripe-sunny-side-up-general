@@ -9,9 +9,9 @@
 class RecommendedProducts extends OrderModifier {
 
 //static variables \\\
+	protected static $image_width = 100;
 
 	static $db = array();
-
 
 // static functions \\\
 	static function show_form() {
@@ -31,6 +31,10 @@ class RecommendedProducts extends OrderModifier {
 		return false;
 	}
 
+// custom values \\\
+	static function set_image_width($v) {
+		self::$image_width;
+	}
 
 // table values \\\
 	function LiveAmount() {
@@ -119,7 +123,7 @@ class RecommendedProducts_Form extends Form {
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
-					$product->Image()->SetWidth(200);
+					$product->Image()->SetWidth(self::$image_width);
 					$imageLink = $product->Image()->Filename;
 					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 				}
