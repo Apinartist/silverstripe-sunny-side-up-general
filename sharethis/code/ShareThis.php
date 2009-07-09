@@ -162,7 +162,7 @@ class ShareThis extends DataObjectDecorator {
 		if(self::$share_this_all_in_one) {
 			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
 			return '
-<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website" />
+<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
 <script type="text/javascript">
 	SHARETHIS.addEntry(
 		{
