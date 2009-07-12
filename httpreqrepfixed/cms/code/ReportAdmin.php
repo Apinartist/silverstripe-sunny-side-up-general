@@ -92,7 +92,7 @@ class ReportAdmin extends LeftAndMain {
 	/**
 	 * Show a report based on the URL query string.
 	 *
-	 * @param HTTPRequest $request The HTTP request object
+	 * @param SSHTTPRequest $request The HTTP request object
 	 */
 	public function show($request) {
 		$params = $request->allParams();

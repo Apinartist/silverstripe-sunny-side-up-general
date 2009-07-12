@@ -1076,10 +1076,10 @@ JS;
 				return FormResponse::respond();
 
 			} else {
-				return new HTTPResponse("SiteTree #$id not found", 400);
+				return new SSHTTPResponse("SiteTree #$id not found", 400);
 			}
 		} else {
-			return new HTTPResponse("Please pass an ID in the form content", 400);
+			return new SSHTTPResponse("Please pass an ID in the form content", 400);
 		}
 	}
 
