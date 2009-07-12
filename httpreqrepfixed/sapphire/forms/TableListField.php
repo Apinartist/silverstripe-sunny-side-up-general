@@ -910,7 +910,7 @@ JS
 		$fileName = "export-$now.csv";
 		
 		if($fileData = $this->generateExportFileData($numColumns, $numRows)){
-			return HTTPRequest::send_file($fileData, $fileName);
+			return SSHTTPRequest::send_file($fileData, $fileName);
 		}else{
 			user_error("No records found", E_USER_ERROR);
 		}

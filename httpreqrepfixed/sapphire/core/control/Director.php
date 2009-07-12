@@ -103,7 +103,7 @@ class Director {
 			}
 		}
 		
-		$req = new HTTPRequest(
+		$req = new SSHTTPRequest(
 			(isset($_SERVER['X-HTTP-Method-Override'])) ? $_SERVER['X-HTTP-Method-Override'] : $_SERVER['REQUEST_METHOD'],
 			$url, 
 			$_GET, 
@@ -203,7 +203,7 @@ class Director {
 		$_COOKIE = array();
 		$_SERVER['REQUEST_URI'] = Director::baseURL() . $urlWithQuerystring;
 
-		$req = new HTTPRequest($httpMethod, $url, $getVars, $postVars, $body);
+		$req = new SSHTTPRequest($httpMethod, $url, $getVars, $postVars, $body);
 		if($headers) foreach($headers as $k => $v) $req->addHeader($k, $v);
 		$result = Director::handleRequest($req, $session);
 		
@@ -226,11 +226,11 @@ class Director {
 	}
 		
 	/**
-	 * Handle an HTTP request, defined with a HTTPRequest object.
+	 * Handle an HTTP request, defined with a SSHTTPRequest object.
 	 *
 	 * @return HTTPResponse|string
 	 */
-	protected static function handleRequest(HTTPRequest $request, Session $session) {
+	protected static function handleRequest(SSHTTPRequest $request, Session $session) {
 		krsort(Director::$rules);
 
 		if(isset($_REQUEST['debug'])) Debug::show(Director::$rules);

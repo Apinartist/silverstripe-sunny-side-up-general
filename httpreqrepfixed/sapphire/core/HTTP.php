@@ -132,11 +132,11 @@ class HTTP {
 	 * Outputs appropriate header for downloading a file
 	 * exits() after the call, so that no further output is given.
 	 * 
-	 * @deprecated 2.3 Return a HTTPRequest::send_file() object instead
+	 * @deprecated 2.3 Return a SSHTTPRequest::send_file() object instead
 	 */
 	static function sendFileToBrowser($fileData, $fileName, $mimeType = false) {
-		user_error("HTTP::sendFileToBrowser() deprecated; return a HTTPRequest::send_file() object instead", E_USER_NOTICE);
-		HTTPRequest::send_file($fileData, $fileName, $mimeType)->output();
+		user_error("HTTP::sendFileToBrowser() deprecated; return a SSHTTPRequest::send_file() object instead", E_USER_NOTICE);
+		SSHTTPRequest::send_file($fileData, $fileName, $mimeType)->output();
 		exit(0);
 	}
 

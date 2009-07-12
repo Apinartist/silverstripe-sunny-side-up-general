@@ -17,7 +17,7 @@ class ModelAsControllerTest extends SapphireTest {
 		$page->publish('Stage', 'Live');
 		
 		$router   = new ModelAsController();
-		$request  = new HTTPRequest(
+		$request  = new SSHTTPRequest(
 			'GET', 'test-page/action/id/otherid'
 		);
 		$request->match('$URLSegment/$Action/$ID/$OtherID');

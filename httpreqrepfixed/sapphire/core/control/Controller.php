@@ -18,8 +18,8 @@ class Controller extends RequestHandler {
 	
 	/**
 	 * @var array $requestParams Contains all GET and POST parameters
-	 * passed to the current {@link HTTPRequest}.
-	 * @uses HTTPRequest->requestVars()
+	 * passed to the current {@link SSHTTPRequest}.
+	 * @uses SSHTTPRequest->requestVars()
 	 */
 	protected $requestParams;
 	
@@ -52,7 +52,7 @@ class Controller extends RequestHandler {
 	protected $response;
 	
 	/**
-	 * @var HTTPRequest $request The request object that the controller was called with.
+	 * @var SSHTTPRequest $request The request object that the controller was called with.
 	 * Set in {@link handleRequest()}. Useful to generate the {}
 	 */
 	protected $request;
@@ -98,9 +98,9 @@ class Controller extends RequestHandler {
 	 * If you are going to overload handleRequest, make sure that you start the method with $this->pushCurrent()
 	 * and end the method with $this->popCurrent().  Failure to do this will create weird session errors.
 	 * 
-	 * @param $request The {@link HTTPRequest} object that is responsible for distributing request parsing.
+	 * @param $request The {@link SSHTTPRequest} object that is responsible for distributing request parsing.
 	 */
-	function handleRequest(HTTPRequest $request) {
+	function handleRequest(SSHTTPRequest $request) {
 		if(!$request) user_error("Controller::handleRequest() not passed a request!", E_USER_ERROR);
 		
 		$this->pushCurrent();
@@ -202,7 +202,7 @@ class Controller extends RequestHandler {
 	 * Get the request with which this controller was called (if any).
 	 * Usually set in {@link handleRequest()}.
 	 *
-	 * @return HTTPRequest
+	 * @return SSHTTPRequest
 	 */
 	function getRequest() {
 		return $this->request;

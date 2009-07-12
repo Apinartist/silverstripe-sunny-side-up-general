@@ -429,7 +429,7 @@ class Security extends Controller {
 	 * Show the "password sent" page, after a user has requested
 	 * to reset their password.
 	 *
-	 * @param HTTPRequest $request The HTTPRequest for this action. 
+	 * @param SSHTTPRequest $request The SSHTTPRequest for this action. 
 	 * @return string Returns the "password sent" page as HTML code.
 	 */
 	public function passwordsent($request) {

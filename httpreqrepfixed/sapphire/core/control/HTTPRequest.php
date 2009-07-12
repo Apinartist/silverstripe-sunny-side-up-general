@@ -4,7 +4,7 @@
  * Represents a HTTP-request, including a URL that is tokenised for parsing, and a request method (GET/POST/PUT/DELETE).
  * This is used by {@link RequestHandler} objects to decide what to do.
  * 
- * The intention is that a single HTTPRequest object can be passed from one object to another, each object calling
+ * The intention is that a single SSHTTPRequest object can be passed from one object to another, each object calling
  * match() to get the information that they need out of the URL.  This is generally handled by 
  * {@link RequestHandler::handleRequest()}.
  * 
@@ -14,7 +14,7 @@
  * @package sapphire
  * @subpackage control
  */
-class HTTPRequest extends Object implements ArrayAccess {
+class SSHTTPRequest extends Object implements ArrayAccess {
 
 	/**
 	 * @var string $url
@@ -85,7 +85,7 @@ class HTTPRequest extends Object implements ArrayAccess {
 	protected $unshiftedButParsedParts = 0;
 	
 	/**
-	 * Construct a HTTPRequest from a URL relative to the site root.
+	 * Construct a SSHTTPRequest from a URL relative to the site root.
 	 */
 	function __construct($httpMethod, $url, $getVars = array(), $postVars = array(), $body = null) {
 		$this->httpMethod = strtoupper(self::detect_method($httpMethod, $postVars));

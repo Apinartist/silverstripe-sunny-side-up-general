@@ -6,7 +6,7 @@
  * Any RequestHandler object can be made responsible for handling its own segment of the URL namespace.
  * The {@link Director} begins the URL parsing process; it will parse the beginning of the URL to identify which
  * controller is being used.  It will then call {@link handleRequest()} on that Controller, passing it the parameters that it
- * parsed from the URL, and the {@link HTTPRequest} that contains the remainder of the URL to be parsed.
+ * parsed from the URL, and the {@link SSHTTPRequest} that contains the remainder of the URL to be parsed.
  *
  * You can use ?debug_request=1 to view information about the different components and rule matches for a specific URL.
  *
@@ -44,7 +44,7 @@ class RequestHandler extends ViewableData {
 	 * The default URL handling rules.  This specifies that the next component of the URL corresponds to a method to
 	 * be called on this RequestHandlingData object.
 	 *
-	 * The keys of this array are parse rules.  See {@link HTTPRequest::match()} for a description of the rules available.
+	 * The keys of this array are parse rules.  See {@link SSHTTPRequest::match()} for a description of the rules available.
 	 * 
 	 * The values of the array are the method to be called if the rule matches.  If this value starts with a '$', then the
 	 * named parameter of the parsed URL wil be used to determine the method name.
@@ -87,9 +87,9 @@ class RequestHandler extends ViewableData {
 	 * customise the controller.
 	 * 
 	 * @param $params The parameters taken from the parsed URL of the parent url handler
-	 * @param $request The {@link HTTPRequest} object that is reponsible for distributing URL parsing
-	 * @uses HTTPRequest
-	 * @uses HTTPRequest->match()
+	 * @param $request The {@link SSHTTPRequest} object that is reponsible for distributing URL parsing
+	 * @uses SSHTTPRequest
+	 * @uses SSHTTPRequest->match()
 	 * @return HTTPResponse|RequestHandler|string|array
 	 */
 	function handleRequest($request) {
@@ -229,9 +229,9 @@ class RequestHandler extends ViewableData {
 	}
 	
 	/**
-	 * Returns the HTTPRequest object that this controller is using.
+	 * Returns the SSHTTPRequest object that this controller is using.
 	 *
-	 * @return HTTPRequest
+	 * @return SSHTTPRequest
 	 */
 	function getRequest() {
 		return $this->request;

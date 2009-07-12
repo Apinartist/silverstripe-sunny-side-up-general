@@ -966,7 +966,7 @@ class SiteTree extends DataObject implements PermissionProvider,i18nEntityProvid
 			// only execute command if fields haven't been renamed to _obsolete_<fieldname> already by the task
 			if(array_key_exists('Viewers', $conn->fieldList('SiteTree'))) {
 				$task = new UpgradeSiteTreePermissionSchemaTask();
-				$task->run(new HTTPRequest('GET','/'));
+				$task->run(new SSHTTPRequest('GET','/'));
 			}
 		}
 	}
