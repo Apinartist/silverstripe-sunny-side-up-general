@@ -90,7 +90,7 @@ class RequestHandler extends ViewableData {
 	 * @param $request The {@link SSHTTPRequest} object that is reponsible for distributing URL parsing
 	 * @uses SSHTTPRequest
 	 * @uses SSHTTPRequest->match()
-	 * @return HTTPResponse|RequestHandler|string|array
+	 * @return SSHTTPResponse|RequestHandler|string|array
 	 */
 	function handleRequest($request) {
 		// $handlerClass is used to step up the class hierarchy to implement url_handlers inheritance
@@ -131,7 +131,7 @@ class RequestHandler extends ViewableData {
 						return $this->httpError(403, "Action '$action' isn't allowed on class $this->class");
 					}
 				
-					if($result instanceof HTTPResponse && $result->isError()) {
+					if($result instanceof SSHTTPResponse && $result->isError()) {
 						if(isset($_REQUEST['debug_request'])) Debug::message("Rule resulted in HTTP error; breaking");
 						return $result;
 					}
@@ -222,7 +222,7 @@ class RequestHandler extends ViewableData {
 	 * @todo This doesn't work properly right now. :-(
 	 */
 	function httpError($errorCode, $errorMessage = null) {
-		$r = new HTTPResponse();
+		$r = new SSHTTPResponse();
 		$r->setBody($errorMessage);
 		$r->setStatuscode($errorCode);
 		return $r;

@@ -28,7 +28,7 @@ class ModuleManager extends RequestHandler {
 	 * Usage: sake dev/modules/add ecommerce forum/tags/0.1
 	 */
 	function add() {
-		if(!Director::is_cli()) return new HTTPResponse('ModuleManager only currently works in command-line mode.', 403);	
+		if(!Director::is_cli()) return new SSHTTPResponse('ModuleManager only currently works in command-line mode.', 403);	
 
 		if(isset($_GET['args'])) {
 			$modules = $_GET['args'];
@@ -72,7 +72,7 @@ class ModuleManager extends RequestHandler {
 	 * Usage: sake dev/modules/remove ecommerce othermodule
 	 */
 	function remove() {
-		if(!Director::is_cli()) return new HTTPResponse('ModuleManager only currently works in command-line mode.', 403);	
+		if(!Director::is_cli()) return new SSHTTPResponse('ModuleManager only currently works in command-line mode.', 403);	
 
 		if(isset($_GET['args'])) {
 			$modules = $_GET['args'];

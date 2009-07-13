@@ -277,13 +277,13 @@ class HTTP {
 	/**
 	 * Add the appropriate caching headers to the response, including If-Modified-Since / 304 handling.
 	 *
-	 * @param HTTPResponse The HTTPResponse object to augment.  Omitted the argument or passing a string is deprecated; in these
+	 * @param SSHTTPResponse The SSHTTPResponse object to augment.  Omitted the argument or passing a string is deprecated; in these
 	 * cases, the headers are output directly.
 	 */
 	static function add_cache_headers($body = null) {
 		// Validate argument
-		if($body && !($body instanceof HTTPResponse)) {
-			user_error("HTTP::add_cache_headers() must be passed an HTTPResponse object", E_USER_WARNING);
+		if($body && !($body instanceof SSHTTPResponse)) {
+			user_error("HTTP::add_cache_headers() must be passed an SSHTTPResponse object", E_USER_WARNING);
 			$body = null;
 		}
 		
@@ -291,7 +291,7 @@ class HTTP {
 		// below.
 		if(Director::isDev()) return;
 		
-		// The headers have been sent and we don't have an HTTPResponse object to attach things to; no point in us trying.
+		// The headers have been sent and we don't have an SSHTTPResponse object to attach things to; no point in us trying.
 		if(headers_sent() && !$body) return;
 		
 		// Popuplate $responseHeaders with all the headers that we want to build 
@@ -335,7 +335,7 @@ class HTTP {
 			$responseHeaders['ETag'] = self::$etag;
 		}
 		
-		// Now that we've generated them, either output them or attach them to the HTTPResponse as appropriate
+		// Now that we've generated them, either output them or attach them to the SSHTTPResponse as appropriate
 		foreach($responseHeaders as $k => $v) {
 			if($body) $body->addHeader($k, $v);
 			else if(!headers_sent()) header("$k: $v");

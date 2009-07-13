@@ -1,11 +1,11 @@
 <?php
 /**
- * Represenets an HTTPResponse returned by a controller.
+ * Represenets an SSHTTPResponse returned by a controller.
  *
  * @package sapphire
  * @subpackage control
  */
-class HTTPResponse extends Object {
+class SSHTTPResponse extends Object {
 	protected static $status_codes = array(
 		100 => 'Continue',
 		101 => 'Switching Protocols',

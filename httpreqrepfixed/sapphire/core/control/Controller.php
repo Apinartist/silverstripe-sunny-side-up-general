@@ -46,7 +46,7 @@ class Controller extends RequestHandler {
 	protected $basicAuthEnabled = true;
 
 	/**
-	 * @var HTTPResponse $response The response object that the controller returns.
+	 * @var SSHTTPResponse $response The response object that the controller returns.
 	 * Set in {@link handleRequest()}.
 	 */
 	protected $response;
@@ -106,7 +106,7 @@ class Controller extends RequestHandler {
 		$this->pushCurrent();
 		$this->urlParams = $request->allParams();
 		$this->request = $request;
-		$this->response = new HTTPResponse();
+		$this->response = new SSHTTPResponse();
 
 		// Init
 		$this->baseInitCalled = false;	
@@ -120,8 +120,8 @@ class Controller extends RequestHandler {
 		}
 
 		$body = parent::handleRequest($request);
-		if($body instanceof HTTPResponse) {
-			if(isset($_REQUEST['debug_request'])) Debug::message("Request handler returned HTTPResponse object to $this->class controller; returning it without modification.");
+		if($body instanceof SSHTTPResponse) {
+			if(isset($_REQUEST['debug_request'])) Debug::message("Request handler returned SSHTTPResponse object to $this->class controller; returning it without modification.");
 			$this->response = $body;
 			
 		} else {
@@ -191,7 +191,7 @@ class Controller extends RequestHandler {
 	}
 	
 	/**
-	 * Returns the HTTPResponse object that this controller is building up.
+	 * Returns the SSHTTPResponse object that this controller is building up.
 	 * Can be used to set the status code and headers
 	 */
 	function getResponse() {
@@ -211,7 +211,7 @@ class Controller extends RequestHandler {
 	protected $baseInitCalled = false;
 
 	/**
-	 * Executes this controller, and return an {@link HTTPResponse} object with the result.
+	 * Executes this controller, and return an {@link SSHTTPResponse} object with the result.
 	 * 
 	 * This method first does a few set-up activities:
 	 *  - Push this controller ont to the controller stack - see {@link Controller::curr()} for information about this.
@@ -236,7 +236,7 @@ class Controller extends RequestHandler {
 	 * is the core goal; the Viewer can call methods on the controller to get the data it needs.
 	 * 
 	 * @param array $requestParams GET and POST variables.
-	 * @return HTTPResponse The response that this controller produces, including HTTP headers such as redirection info
+	 * @return SSHTTPResponse The response that this controller produces, including HTTP headers such as redirection info
 	 */
 	
 	/**

@@ -17,7 +17,7 @@ class ModelAsController extends Controller implements NestedController {
 
 		// If the basic database hasn't been created, then build it.
 		if(!DB::isActive() || !ClassInfo::hasTable('SiteTree')) {
-			$this->response = new HTTPResponse();
+			$this->response = new SSHTTPResponse();
 			$this->redirect("dev/build?returnURL=" . (isset($_GET['url']) ? urlencode($_GET['url']) : ''));
 			$this->popCurrent();
 			return $this->response;
@@ -54,7 +54,7 @@ class ModelAsController extends Controller implements NestedController {
 						(isset($this->urlParams['OtherID'])) ? $this->urlParams['OtherID'] : null
 					);
 
-					$response = new HTTPResponse();
+					$response = new SSHTTPResponse();
 					$response->redirect($url, 301);
 					return $response;
 				}
@@ -82,7 +82,7 @@ class ModelAsController extends Controller implements NestedController {
 			
 				return $controller;
 			} else {
-				return new HTTPResponse("The requested page couldn't be found.",404);
+				return new SSHTTPResponse("The requested page couldn't be found.",404);
 			}
 			
 		} else {

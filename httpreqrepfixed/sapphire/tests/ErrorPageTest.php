@@ -43,11 +43,11 @@ class ErrorPageTest extends FunctionalTest {
 		/* We have body text from the error page */
 		$this->assertNotNull($response->getBody(), 'We have body text from the error page');
 
-		/* Status code of the HTTPResponse for error page is "404" */
-		$this->assertEquals($response->getStatusCode(), '404', 'Status code of the HTTPResponse for error page is "404"');
+		/* Status code of the SSHTTPResponse for error page is "404" */
+		$this->assertEquals($response->getStatusCode(), '404', 'Status code of the SSHTTPResponse for error page is "404"');
 		
-		/* Status message of the HTTPResponse for error page is "Not Found" */
-		$this->assertEquals($response->getStatusDescription(), 'Not Found', 'Status message of the HTTResponse for error page is "Not found"');
+		/* Status message of the SSHTTPResponse for error page is "Not Found" */
+		$this->assertEquals($response->getStatusDescription(), 'Not Found', 'Status message of the SSHTTResponse for error page is "Not found"');
 	}
 	
 	function testBehaviourOfShowInMenuAndShowInSearchFlags() {

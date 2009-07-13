@@ -103,7 +103,7 @@ class TestSession {
 	}
 	
 	/**
-	 * Get the most recent response, as an HTTPResponse object
+	 * Get the most recent response, as an SSHTTPResponse object
 	 */
 	function lastResponse() {
 		return $this->lastResponse;
@@ -149,12 +149,12 @@ class TestSession {
 }
 
 /**
- * Wrapper around HTTPResponse to make it look like a SimpleHTTPResposne
+ * Wrapper around SSHTTPResponse to make it look like a SimpleHTTPResposne
  */
 class TestSession_STResponseWrapper {
 	private $response;
 
-	function __construct(HTTPResponse $response) {
+	function __construct(SSHTTPResponse $response) {
 		$this->response = $response;
 	}
 	

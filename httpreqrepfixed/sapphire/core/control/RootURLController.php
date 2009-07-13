@@ -32,7 +32,7 @@ class RootURLController extends Controller {
 
 		// If the basic database hasn't been created, then build it.
 		if(!DB::isActive() || !ClassInfo::hasTable('SiteTree')) {
-			$this->response = new HTTPResponse();
+			$this->response = new SSHTTPResponse();
 			$this->redirect("dev/build?returnURL=");
 			return $this->response;
 		}

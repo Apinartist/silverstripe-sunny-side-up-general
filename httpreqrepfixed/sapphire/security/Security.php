@@ -141,7 +141,7 @@ class Security extends Controller {
 	 */
 	static function permissionFailure($controller = null, $messageSet = null) {
 		if(Director::is_ajax()) {
-			$response = ($controller) ? $controller->getResponse() : new HTTPResponse();
+			$response = ($controller) ? $controller->getResponse() : new SSHTTPResponse();
 			$response->setStatusCode(403);
 			$response->setBody('NOTLOGGEDIN:');
 			return $response;
@@ -277,10 +277,10 @@ class Security extends Controller {
 		$eventResults = $this->extend('onBeforeSecurityLogin');
 		// If there was a redirection, return
 		if(Director::redirected_to()) return;
-		// If there was an HTTPResponse object returned, then return that
+		// If there was an SSHTTPResponse object returned, then return that
 		else if($eventResults) {
 			foreach($eventResults as $result) {
-				if($result instanceof HTTPResponse) return $result;
+				if($result instanceof SSHTTPResponse) return $result;
 			}
 		}
 		

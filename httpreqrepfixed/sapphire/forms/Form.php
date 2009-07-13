@@ -1133,7 +1133,7 @@ class Form extends RequestHandler {
 	
 	/**
 	 * Test a submission of this form.
-	 * @return HTTPResponse the response object that the handling controller produces.  You can interrogate this in your unit test.
+	 * @return SSHTTPResponse the response object that the handling controller produces.  You can interrogate this in your unit test.
 	 */
 	function testSubmission($action, $data) {
 		$data['action_' . $action] = true;
@@ -1146,7 +1146,7 @@ class Form extends RequestHandler {
 	
 	/**
 	 * Test an ajax submission of this form.
-	 * @return HTTPResponse the response object that the handling controller produces.  You can interrogate this in your unit test.
+	 * @return SSHTTPResponse the response object that the handling controller produces.  You can interrogate this in your unit test.
 	 */
 	function testAjaxSubmission($action, $data) {
 		$data['ajax'] = 1;

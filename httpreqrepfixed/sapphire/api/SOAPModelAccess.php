@@ -238,7 +238,7 @@ class SOAPModelAccess extends SapphireSoapServer {
 	}
 	
 	/**
-	 * @param HTTPResponse $response
+	 * @param SSHTTPResponse $response
 	 * @return string XML string containing the HTTP error message
 	 */
 	protected function getErrorMessage($response) {

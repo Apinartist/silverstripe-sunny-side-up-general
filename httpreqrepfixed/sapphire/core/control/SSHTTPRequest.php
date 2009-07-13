@@ -254,12 +254,12 @@ class SSHTTPRequest extends Object implements ArrayAccess {
 	function offsetUnset($offset) {}
 	
 	/**
-	 * Construct an HTTPResponse that will deliver a file to the client
+	 * Construct an SSHTTPResponse that will deliver a file to the client
 	 */
 	static function send_file($fileData, $fileName, $mimeType = null) {
 		if(!$mimeType) $mimeType = HTTP::getMimeType($fileName);
 
-		$response = new HTTPResponse($fileData);
+		$response = new SSHTTPResponse($fileData);
 		$response->addHeader("Content-Type", "$mimeType; name=\"" . addslashes($fileName) . "\"");
 		$response->addHeader("Content-disposition", "attachment; filename=" . addslashes($fileName));
 		$response->addHeader("Content-Length", strlen($fileData));

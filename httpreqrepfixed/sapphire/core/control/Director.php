@@ -72,7 +72,7 @@ class Director {
 	 * Process the given URL, creating the appropriate controller and executing it.
 	 * 
 	 * Request processing is handled as folows:
-	 *  - Director::direct() creates a new HTTPResponse object and passes this to Director::handleRequest().
+	 *  - Director::direct() creates a new SSHTTPResponse object and passes this to Director::handleRequest().
 	 *  - Director::handleRequest($request) checks each of the Director rules and identifies a controller to handle this 
 	 *    request.
 	 *  - Controller::handleRequest($request) is then called.  This will find a rule to handle the URL, and call the rule
@@ -123,17 +123,17 @@ class Director {
 
 		// Return code for a redirection request
 		if(is_string($result) && substr($result,0,9) == 'redirect:') {
-			$response = new HTTPResponse();
+			$response = new SSHTTPResponse();
 			$response->redirect(substr($result, 9));
 			$response->output();
 
 		// Handle a controller
 		} else if($result) {
-			if($result instanceof HTTPResponse) {
+			if($result instanceof SSHTTPResponse) {
 				$response = $result;
 				
 			} else {
-				$response = new HTTPResponse();
+				$response = new SSHTTPResponse();
 				$response->setBody($result);
 			}
 			
@@ -161,7 +161,7 @@ class Director {
 	 *  Overwritten by $postVars['_method'] if present.
 	 * @param string $body The HTTP body
 	 * @param array $headers HTTP headers with key-value pairs
-	 * @return HTTPResponse
+	 * @return SSHTTPResponse
 	 * 
 	 * @uses getControllerForURL() The rule-lookup logic is handled by this.
 	 * @uses Controller::run() Controller::run() handles the page logic for a Director::direct() call.
@@ -228,7 +228,7 @@ class Director {
 	/**
 	 * Handle an HTTP request, defined with a SSHTTPRequest object.
 	 *
-	 * @return HTTPResponse|string
+	 * @return SSHTTPResponse|string
 	 */
 	protected static function handleRequest(SSHTTPRequest $request, Session $session) {
 		krsort(Director::$rules);
