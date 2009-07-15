@@ -5,7 +5,7 @@
 
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
-//===================---------------- START sharethis MODULE ----------------===================
+//===================---------------- START simplestspam MODULE ----------------===================
 //SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
 //SimplestSpamField::set_question_and_answer("the colour of a banana is ...", "yellow");
-//===================---------------- END sharethis MODULE ----------------===================
+//===================---------------- END simplestspam MODULE ----------------===================
