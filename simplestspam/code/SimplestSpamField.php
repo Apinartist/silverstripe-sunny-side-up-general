@@ -10,9 +10,9 @@ class SimplestSpamField extends SpamProtectorField {
 	protected static $questions_and_answers = array();
 
 	protected static $default_questions_and_answers = array(
-		array("The capital of Italy is ...", "Rome"),
-		array("The highest mountain the the world is called Mount ...", "Everest"),
-		array("the capital of New Zealand is ...", "Wellington")
+		array("The English name for the capital of Italy is ... ", "Rome"),
+		array("The English name for the highest mountain the the world is Mount ... ", "Everest"),
+		array("The Maori name for New Zealand is ... (try Aotearoa)", "Aotearoa")
 	);
 
 	protected static $has_been_initialised = false;
