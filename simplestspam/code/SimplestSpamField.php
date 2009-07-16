@@ -15,10 +15,16 @@ class SimplestSpamField extends SpamProtectorField {
 		array("The Maori name for New Zealand is ... (try Aotearoa)", "Aotearoa")
 	);
 
+	protected $explanation_message = "This question is here to prevent spam.";
+
 	protected static $has_been_initialised = false;
 
 	static function set_question_and_answer($question, $answer) {
 		self::$questions_and_answers[] = array($question, $answer);
+	}
+
+	static function set_explanation_message($v) {
+		self::$explanation_message = $v;
 	}
 
 	protected function initialise() {
@@ -42,6 +48,10 @@ class SimplestSpamField extends SpamProtectorField {
 		$this->initialise();
 		$expected_question_answer_array = $this->getQuestionAnswerArray();
 		$Question = $expected_question_answer_array[0];
+		$Explanation = self::$explanation_message;
+		if($Explanation) {
+			$Explanation = "(".$Explanation.")";
+		}
 		$Title = $this->XML_val('Title');
 		$Message = $this->XML_val('Message');
 		$MessageType = $this->XML_val('MessageType');
@@ -51,7 +61,7 @@ class SimplestSpamField extends SpamProtectorField {
 		$Field = $this->XML_val('Field');
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		return <<<HTML
-<div id="$Name" class="field $Type $extraClass"><span class="spamquestion">{$Question}</span>{$Field}{$messageBlock}</div>
+<div id="$Name" class="field $Type $extraClass"><span class="spamquestion">{$Question} {$Explanation} </span>{$Field}{$messageBlock}</div>
 HTML;
 	}
 
