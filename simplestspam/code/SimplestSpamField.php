@@ -15,7 +15,7 @@ class SimplestSpamField extends SpamProtectorField {
 		array("The Maori name for New Zealand is ... (try Aotearoa)", "Aotearoa")
 	);
 
-	protected $explanation_message = "This question is here to prevent spam.";
+	protected static $explanation_message = "this question is here to prevent spam";
 
 	protected static $has_been_initialised = false;
 
@@ -31,8 +31,8 @@ class SimplestSpamField extends SpamProtectorField {
 		if(!count(self::$questions_and_answers)) {
 			self::$questions_and_answers = self::$default_questions_and_answers;
 		}
-		if(!self::$has_been_initialised && !isset($_REQUEST['SimplestSpam_challenge_field'])) {
-			$randomNumber = rand(0, count(self::$questions_and_answers));
+		if(!self::$has_been_initialised && !isset($_REQUEST['SimplestSpam_challenge_field']) && count(self::$questions_and_answers)) {
+			$randomNumber = rand(0, count(self::$questions_and_answers)-1);
 			Session::set("SimplestSpamQuestion", $randomNumber + 1); // adding one to make it easier to work out if anything has been entered, i.e. 0 could be nothing or first question
 			self::$has_been_initialised = true;
 		}
@@ -93,7 +93,7 @@ HTML;
 			Session::set("FormField.{$this->form->FormName()}.{$this->Name()}", trim($error));
 			$validator->validationError(
 				$this->name,
-				"Your last answer was incorrect, please try again....",
+				"Your last answer was incorrect, please try again ...",
 				"validation",
 				false
 			);
@@ -124,8 +124,7 @@ HTML;
 		else {
 			$error = "no question selection made";
 		}
-		user_error("SimplestSpamField::validate(): could not find answer (error: $error) - sorry, please try again'", E_USER_ERROR);
-		return array("What game to the all-blacks play?", "Rugby");
+		return array("Is this a spam entry - please answer no to submit", "no");
 	}
 
 
