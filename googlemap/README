@@ -27,7 +27,12 @@ c.       Copy all the commented code from googlemap/_config.php to mysite/_confi
 
 a.       static $allowed_actions = array('showPagePointsMapXML');
 
-b.      public function init() {parent::init();$this->addMap("showPagePointsMapXML");}
+b.      public function init() {
+					parent::init();
+					if($this->HasGeoInfo) { //only add when there are points added
+						$this->addMap("showPagePointsMapXML");
+					}
+				}
 
 6.       Run a dev/build
 
