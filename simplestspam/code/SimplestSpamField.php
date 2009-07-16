@@ -17,7 +17,7 @@ class SimplestSpamField extends SpamProtectorField {
 
 	protected static $explanation_message = "this question is here to prevent spam";
 
-	protected static $wrong_answer_message = "submission can not be made until you enter the anti-spam field correctly";
+	protected static $wrong_answer_message = "please check anti-spam field to proceed";
 
 	protected static $has_been_initialised = false;
 

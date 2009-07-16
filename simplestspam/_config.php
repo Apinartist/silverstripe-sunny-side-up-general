@@ -9,4 +9,5 @@
 //SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
 //SimplestSpamField::set_question_and_answer("the colour of a banana is ...", "yellow");
 //SimplestSpamField::set_explanation_message("this question is here to prevent spam");
+//SimplestSpamField::set_wrong_answer_message("please check anti-spam field to proceed");
 //===================---------------- END simplestspam MODULE ----------------===================
