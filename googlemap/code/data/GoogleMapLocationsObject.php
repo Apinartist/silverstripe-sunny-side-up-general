@@ -7,24 +7,27 @@
 
 class GoogleMapLocationsObject extends DataObject {
 
+	protected static $parent_point_counts = array();
+
 	static $db = array (
-				'PointType' =>'Enum("none, point, polyline, polygon", "point")',
-				'Accuracy' => 'Int',
-				'Latitude' => 'Double(12,7)',
-				'Longitude' => 'Double(12,7)',
-				'PointString' => 'Text',
-				'Address' => 'Text',
-				'FullAddress' => 'Text',
-				'CountryNameCode' => 'Varchar(3)',
-				'AdministrativeAreaName' => 'Varchar(255)',
-				'SubAdministrativeAreaName' => 'Varchar(255)',
-				'LocalityName' => 'Varchar(255)',
-				'ThoroughfareName' => 'Varchar(255)',
-				'PostalCodeNumber' => 'Varchar(30)',
-				'Manual' => 'Boolean',
-				//'GeoPointField' => 'GeoPoint',
-				//'GeoPolygonField' => 'GeoPolygon',
-				//'GeoLineString' => 'GeoLineString'
+		'PointType' =>'Enum("none, point, polyline, polygon", "point")',
+		'CustomPopUpWindowInfo' => "HTMLText",
+		'Accuracy' => 'Int',
+		'Latitude' => 'Double(12,7)',
+		'Longitude' => 'Double(12,7)',
+		'PointString' => 'Text',
+		'Address' => 'Text',
+		'FullAddress' => 'Text',
+		'CountryNameCode' => 'Varchar(3)',
+		'AdministrativeAreaName' => 'Varchar(255)',
+		'SubAdministrativeAreaName' => 'Varchar(255)',
+		'LocalityName' => 'Varchar(255)',
+		'ThoroughfareName' => 'Varchar(255)',
+		'PostalCodeNumber' => 'Varchar(30)',
+		'Manual' => 'Boolean',
+		//'GeoPointField' => 'GeoPoint',
+		//'GeoPolygonField' => 'GeoPolygon',
+		//'GeoLineString' => 'GeoLineString'
 	);
 
 	static $has_one = array (
@@ -64,6 +67,7 @@ class GoogleMapLocationsObject extends DataObject {
 	function  getCMSFields_forPopup($parentPageID) {
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
+			new HtmlEditorField('CustomPopUpWindowInfo', 'Leave Blank to Auto-complete the pop-up on the map', 3),
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID)
 		);
@@ -87,12 +91,26 @@ class GoogleMapLocationsObject extends DataObject {
 
 	function addParentData() {
 		$parent = $this->Parent();
-		$this->URLSegment = $parent->URLSegment;
-		$this->Title = $parent->MenuTitle;
-		$this->Name = $parent->MenuTitle;
 		$this->AjaxInfoWindowLink = $parent->AjaxInfoWindowLink();
+		$this->URLSegment = $parent->URLSegment;
 		$this->ParentClassName = $parent->ClassName;
 		$this->ParentData = $parent;
+		if(!isset(self::$parent_point_counts[$this->ParentID + 0])) {
+			$result = DB::query("Select Count(*) from `GoogleMapLocationsObject` where ParentID = ".$parent->ID);
+			$count = $result->value();
+			self::$parent_point_counts[$this->ParentID] = $count;
+		}
+		if(isset(self::$parent_point_counts[$this->ParentID + 0]) && self::$parent_point_counts[$this->ParentID + 0] == 1) {
+			$this->Title = $parent->Title;
+			$this->Name = $parent->Title;
+		}
+		else {
+			$this->Title = $this->Address;
+			$this->Name = $this->Address;
+		}
+		if(strlen($this->CustomPopUpWindowInfo) > 15) {
+			$this->AjaxInfoWindowLink = $this->CustomPopUpWindowInfo;
+		}
 	}
 
 	function complexTableFields() {

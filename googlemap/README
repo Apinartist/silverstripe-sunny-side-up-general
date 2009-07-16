@@ -8,42 +8,41 @@ ___________________________________
 STEP-BY-STEP (by alex.guez [at] gmail dot com)
 -----------------------------------
 
-1.       Get a Google Maps API Key : http://code.google.com/apis/maps/signup.html
+1.	Get a Google Maps API Key : http://code.google.com/apis/maps/signup.html
 
-2.       Put the googlemap folder into the base installation folder (attention : the folder name is case sensitive)
+2.	Put the googlemap folder into the base installation folder (attention : the folder name is case sensitive)
 
-3.       Add 2 lines in the mysite/_config.php :
+3.	Add 2 lines in the mysite/_config.php :
 
-a.       DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
+	a.	DataObject::add_extension('SiteTree', 'GoogleMapLocationsDOD');
 
-b.      define("GoogleMapAPIKey", "abc");
-        here the abc stands for the key you obtained at step 1.
+	b.	define("GoogleMapAPIKey", "abc"); ///here the abc stands for the key you obtained at step 1.
 
-c.       Copy all the commented code from googlemap/_config.php to mysite/_config.php and set values according to your needs
+	c.	Copy all the commented code from googlemap/_config.php to mysite/_config.php and set values according to your needs
 
-4.       Run a dev/build
+4.	Run a dev/build
 
-5.       The page type (lets call it “TestPage”)for which you want to add a location must contain in the controller class:
+5.	The page type (lets call it “TestPage”)for which you want to add a location must contain in the controller class:
 
-a.       static $allowed_actions = array('showPagePointsMapXML');
+	a.	static $allowed_actions = array('showPagePointsMapXML');
 
-b.      public function init() {
+	b.	public function init() {
 					parent::init();
 					if($this->HasGeoInfo) { //only add when there are points added
 						$this->addMap("showPagePointsMapXML");
 					}
 				}
 
-6.       Run a dev/build
+6.	Run a dev/build
 
-7.       Create a new page in the TestPage type
+7.	Create a new page in the TestPage type
 
-8.       Go tho the menu “Map”, add a full address, save&publish
+8.	Go tho the menu “Map”, add a full address, save&publish
 
-9.       Add in mysite/code/Page.php in the init function the code (for SS 2.3.1 as prototype is loaded by default, we need to load jquery):
-         Requirements::javascript('jsparty/jquery/jquery.js'); - NOT SURE IF THIS IS NEEDED
+9.	Add in mysite/code/Page.php in the init function the code (for SS 2.3.1 as prototype is loaded by default, we need to load jquery):
+		Requirements::javascript('jsparty/jquery/jquery.js'); - NOT SURE IF THIS IS NEEDED
 
-10.   Go to the front office and get to your new map
+10.	Find your template file and add the following: <% include GoogleMap %>
 
 ___________________________________
 KNOWN BUGS AND ISSUES
