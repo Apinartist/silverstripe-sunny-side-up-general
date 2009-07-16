@@ -17,6 +17,8 @@ class SimplestSpamField extends SpamProtectorField {
 
 	protected static $explanation_message = "this question is here to prevent spam";
 
+	protected static $wrong_answer_message = "submission can not be made until you enter the anti-spam field correctly";
+
 	protected static $has_been_initialised = false;
 
 	static function set_question_and_answer($question, $answer) {
@@ -25,6 +27,10 @@ class SimplestSpamField extends SpamProtectorField {
 
 	static function set_explanation_message($v) {
 		self::$explanation_message = $v;
+	}
+
+	static function set_wrong_answer_message($v) {
+		self::$wrong_answer_message = $v;
 	}
 
 	protected function initialise() {
@@ -73,7 +79,7 @@ HTML;
 		) {
 			$validator->validationError(
 				$this->name,
-				"Please answer the spam control question",
+				self::$wrong_answer_message,
 				"validation",
 				false
 			);
