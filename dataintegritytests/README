@@ -1,0 +1,12 @@
+###############################################
+Data Integrity Tests
+Pre 0.1 proof of concept
+###############################################
+
+This module allows you to do "quick" and "dirty" test
+to see if there are any obvious data problems; e.g:
+
+* pages with non-existing parents
+* pages that exist in sitetree_live, but not in sitetree_live
+* pages that exist in Page (or other classes), but not in SiteTree
+*
