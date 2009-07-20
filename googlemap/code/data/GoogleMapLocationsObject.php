@@ -72,7 +72,7 @@ class GoogleMapLocationsObject extends DataObject {
 			new HtmlEditorField('CustomPopUpWindowInfo', 'Leave Blank to auto-complete the pop-up information on the map', 3),
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID),
-			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload...')
+			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload to edit...)')
 		);
 		if($this->Manual) {
 			$fieldset->push(new HeaderField('Auto-completed (not required)', 2));
