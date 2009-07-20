@@ -71,7 +71,7 @@ class GoogleMapLocationsObject extends DataObject {
 			new HtmlEditorField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window', 3),
 			new TextField('CustomPopUpWindowInfo', 'Leave Blank to auto-complete the pop-up information on the map'),
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
-			new HiddenField('ParentID', 'ParentID', $parentPageID)
+			new HiddenField('ParentID', 'ParentID', $parentPageID),
 			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload...')
 		);
 		if($this->Manual) {
