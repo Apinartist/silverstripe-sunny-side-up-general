@@ -88,7 +88,7 @@ GoogleMap::setLngFormFieldId(""); //longitude form field to be updated on new ma
 // ADDRESS
 GoogleMap::setDefaultCountryCode(""); //default country code for address searches (to narrow searches to one country) - examples include US or NZ
 GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an address (e.g. New Zealand or United Kingdom)
-GoogleMap::setStyleSheetUrl("googleMap/css/mapDirections.css"); //style sheet to be used for formatting directions (e.g. googleMap/css/mapDirections.css)
+GoogleMap::setStyleSheetUrl("googleMap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googleMap/css/mapDirections.css)
 GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 
 */

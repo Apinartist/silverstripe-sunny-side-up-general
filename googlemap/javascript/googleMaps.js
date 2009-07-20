@@ -74,7 +74,7 @@ function loadMap() {
 				defaultCountryCode:"",
 				defaultAddressText:"",
 /* DIRECTIONS */
-				styleSheetUrl: "googleMap/css/mapDirections.css",
+				styleSheetUrl: "googlemap/css/googleMapDirections.css",
 				localeForResults: "en_NZ"
 			}
 		);
