@@ -11,7 +11,6 @@ class GoogleMapLocationsObject extends DataObject {
 
 	static $db = array (
 		'PointType' =>'Enum("none, point, polyline, polygon", "point")',
-		'CustomPopUpWindowInfo' => "HTMLText",
 		'Accuracy' => 'Int',
 		'Latitude' => 'Double(12,7)',
 		'Longitude' => 'Double(12,7)',
@@ -25,6 +24,8 @@ class GoogleMapLocationsObject extends DataObject {
 		'ThoroughfareName' => 'Varchar(255)',
 		'PostalCodeNumber' => 'Varchar(30)',
 		'Manual' => 'Boolean',
+		'CustomPopUpWindowInfo' => "HTMLText",
+		'CustomPopUpWindowTitle' => "Varchar(50)",
 		//'GeoPointField' => 'GeoPoint',
 		//'GeoPolygonField' => 'GeoPolygon',
 		//'GeoLineString' => 'GeoLineString'
@@ -67,22 +68,26 @@ class GoogleMapLocationsObject extends DataObject {
 	function  getCMSFields_forPopup($parentPageID) {
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
-			new HtmlEditorField('CustomPopUpWindowInfo', 'Leave Blank to Auto-complete the pop-up on the map', 3),
+			new HtmlEditorField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window', 3),
+			new TextField('CustomPopUpWindowInfo', 'Leave Blank to auto-complete the pop-up information on the map'),
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID)
+			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload...')
 		);
-		$fieldset->push(new HeaderField('Auto-completed (not required)', 2));
-		$fieldset->push(new TextField('Latitude', 'Latitude'));
-		$fieldset->push(new TextField('Longitude', 'Longitude'));
-		$fieldset->push(new TextField('PointString', 'PointString'));
-		$fieldset->push(new TextField('FullAddress', 'Found Address'));
-		$fieldset->push(new NumericField('Accuracy', 'Accuracy'));
-		$fieldset->push(new TextField('CountryNameCode', 'Country Name Code'));
-		$fieldset->push(new TextField('AdministrativeAreaName', 'Administrative Area Name'));
-		$fieldset->push(new TextField('SubAdministrativeAreaName', 'SubAdministrative Area Name'));
-		$fieldset->push(new TextField('LocalityName', 'Locality Name'));
-		$fieldset->push(new TextField('ThoroughfareName', 'Thoroughfare Name'));
-		$fieldset->push(new TextField('PostalCodeNumber', 'Postal Code Number'));
+		if($this->Manual) {
+			$fieldset->push(new HeaderField('Auto-completed (not required)', 2));
+			$fieldset->push(new TextField('Latitude', 'Latitude'));
+			$fieldset->push(new TextField('Longitude', 'Longitude'));
+			$fieldset->push(new TextField('PointString', 'PointString'));
+			$fieldset->push(new TextField('FullAddress', 'Found Address'));
+			$fieldset->push(new NumericField('Accuracy', 'Accuracy'));
+			$fieldset->push(new TextField('CountryNameCode', 'Country Name Code'));
+			$fieldset->push(new TextField('AdministrativeAreaName', 'Administrative Area Name'));
+			$fieldset->push(new TextField('SubAdministrativeAreaName', 'SubAdministrative Area Name'));
+			$fieldset->push(new TextField('LocalityName', 'Locality Name'));
+			$fieldset->push(new TextField('ThoroughfareName', 'Thoroughfare Name'));
+			$fieldset->push(new TextField('PostalCodeNumber', 'Postal Code Number'));
+		}
 				//'GeoPointField' => 'GeoPoint',
 					//'GeoPolygonField' => 'GeoPolygon',
 					//'GeoLineString' => 'GeoLineString'
