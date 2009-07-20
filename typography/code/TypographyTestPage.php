@@ -352,6 +352,7 @@ class TypographyTestPage extends Page {
 <p>
  below you can find an example of an indented paragraph:
 </p>
+<h1>block quote below...</h1>
 <blockquote>
  <p>
 	Ut vulputate ante.
