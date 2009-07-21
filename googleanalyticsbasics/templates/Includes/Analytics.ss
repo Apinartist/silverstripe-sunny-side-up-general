@@ -11,5 +11,5 @@
 	catch(err) {}
 </script>
 <% else %>
-<div style="background-color: yellow; height: 10px; color: red; clear: both; width: 100%; margin: 0; padding: 0; text-align: center;>this site is currently undergoing maintenance</div>
+<div style="background-color: yellow; height: 10px; color: red; clear: both; width: 100%; margin: 0; padding: 0; text-align: center;">this site is currently undergoing maintenance</div>
 <% end_if %>
