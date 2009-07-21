@@ -10,4 +10,7 @@
 		}
 		catch(err) {}
 	</script>
+<% else %>
+<!-- this site is currently under development and therefore the google analytics code is now beeing shown -->
+<div style="background-color: yellow; height: 10px; color: red; clear: both; width: 100%; margin: 0; padding: 0; text-align: center;>this site is currently undergoing maintenance</div>
 <% end_if %>
