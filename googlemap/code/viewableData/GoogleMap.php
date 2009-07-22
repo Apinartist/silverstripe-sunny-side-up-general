@@ -64,7 +64,7 @@ class GoogleMap extends ViewableData {
 	/* ICONS */
 	protected static $DefaultIconUrl = "";
 		static function setDefaultIconUrl($v) {self::$DefaultIconUrl = $v;}
-	protected static $IconFolder = "/googleMap/images/icons/";
+	protected static $IconFolder = "/googlemap/images/icons/";
 		static function setIconFolder($v) {self::$IconFolder = $v;}
 	protected static $IconWidth = 20;
 		static function setIconWidth($v) {self::$IconWidth = $v;}

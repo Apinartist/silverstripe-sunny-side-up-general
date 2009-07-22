@@ -25,7 +25,7 @@ function delayedMapStartup() {
 	jQuery("#map").text("Starting map....");
 	jQuery.ajax({
 		type: "GET",
-		url: absoluteBaseURL + "googleMap/javascript/googleMaps.js",
+		url: absoluteBaseURL + "googlemap/javascript/googleMaps.js",
 		success:
 			function() {
 				window.setTimeout(

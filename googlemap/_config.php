@@ -75,7 +75,7 @@ GoogleMap::setAddCurrentAddressFinder(false); //add a tab with the address finde
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
 GoogleMap::setPreloadImages(true); //pre-load marker images
 GoogleMap::setDefaultIconUrl(""); //default Icon Url
-GoogleMap::setIconFolder("googleMap/images/icons/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
+GoogleMap::setIconFolder("googlemap/images/icons/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
 GoogleMap::setIconWidth(20); //default icon width in pixels (e.g. 20)
 GoogleMap::setIconHeight(34); //default icon height in pixels (e.g. 34)
 GoogleMap::setIconExtension("png"); //default icon extension (e.g. png, gif or jpg)
@@ -88,7 +88,7 @@ GoogleMap::setLngFormFieldId(""); //longitude form field to be updated on new ma
 // ADDRESS
 GoogleMap::setDefaultCountryCode(""); //default country code for address searches (to narrow searches to one country) - examples include US or NZ
 GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an address (e.g. New Zealand or United Kingdom)
-GoogleMap::setStyleSheetUrl("googleMap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googleMap/css/mapDirections.css)
+GoogleMap::setStyleSheetUrl("googlemap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googlemap/css/mapDirections.css)
 GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 
 */
