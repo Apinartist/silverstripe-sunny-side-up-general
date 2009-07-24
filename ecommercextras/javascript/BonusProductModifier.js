@@ -30,6 +30,8 @@ var	BonusProductModifier = {
 
 	summaryTrClass: "bonusproductmodifier",
 
+	subTotalTdID: "Table_Order_SubTotal",
+
 	currencySign: "$",
 
 	version: 1,
@@ -64,9 +66,9 @@ var	BonusProductModifier = {
 			}
 			html += "</ul>";
 			jQuery("." + BonusProductModifier.summaryTrClass + " td:first").html(html);
-			var subTotal = BonusProductModifier.makeFloatFromString(jQuery("#Table_Order_SubTotal").text());
+			var subTotal = BonusProductModifier.makeFloatFromString(jQuery("#" + BonusProductModifier.subTotalTdID).text());
 			var newSubTotal = subTotal;
-			if(BonusProductModifierSaving > 0 && BonusProductModifierSaving < subTotal) {
+			if(BonusProductModifierSaving > 0 && BonusProductModifierSaving < subTotal && subTotal > 0) {
 				newSubTotal = subTotal - BonusProductModifierSaving;
 			}
 
@@ -104,10 +106,16 @@ var	BonusProductModifier = {
 
 	makeFloatFromString: function(v) {
 		var length = v.length;
-		BonusProductModifier.currencySign = str.substring(0,1)
-		var float = floatVal(str.substring(1,length - 1));
-		if(float > 0) {
-			return float;
+		BonusProductModifier.currencySign = v.substring(0,1);
+		var substring = v.substring(1,length - 1);
+		alert("sub: " + substring);
+		var floatValue = floatVal(substring);
+		alert("float: " + floatValue);
+		if(floatValue > 0) {
+			return floatValue;
+		}
+		else {
+			alert("could not calculate savings");
 		}
 	},
 
