@@ -109,7 +109,7 @@ var	BonusProductModifier = {
 		BonusProductModifier.currencySign = v.substring(0,1);
 		var substring = v.substring(1,length - 1);
 		alert("sub: " + substring);
-		var floatValue = floatVal(substring);
+		var floatValue = parseFloat(substring - 0);
 		alert("float: " + floatValue);
 		if(floatValue > 0) {
 			return floatValue;
