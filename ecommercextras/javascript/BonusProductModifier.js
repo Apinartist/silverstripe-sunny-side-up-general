@@ -5,7 +5,12 @@ var BonusProductModifierArray = new Array();
 		function() {
 			$(".bonusproductmodifier").livequery(
 				function () {
-					BonusProductModifier.init();
+					if(1 == BonusProductModifier.version) {
+						BonusProductModifier.init();
+					}
+					else {
+						BonusProductModifier.alternativeInit();
+					}
 				}
 			);
 		}
@@ -22,6 +27,8 @@ var	BonusProductModifier = {
 	},
 
 	description: "Bonus Products Savings",
+
+	version: 1,
 
 	items: new Array(),
 
@@ -54,6 +61,41 @@ var	BonusProductModifier = {
 			html += "</ul>";
 			jQuery(".bonusproductmodifier td:first").html(html);
 		}
+	},
+
+	alternativeInit: function() {
+		this.setList(BonusProductModifierArray);
+		if(this.list.length > 0) {
+			for(var i = 0; i <= this.list.length; i++) {
+				if(this.list[i] > 0) {
+					var trID = "#Table_Product_OrderItem_"+this.list[i];
+					jQuery(trID).each (
+						function() {
+							jQuery(this).contents().filter("td:first").text("$0.00");
+						}
+					);
+				}
+			}
+		}
+		if(BonusProductModifierArray.length > 0) {
+			var html = BonusProductModifier.description;
+			html += "<ul>";
+			for(var i = 0; i <= BonusProductModifier.items.length; i++) {
+				if(BonusProductModifier.items[i] != "undefined" && BonusProductModifier.items[i]) {
+					html += "<li>" + BonusProductModifier.items[i] + "</li>";
+				}
+			}
+			html += "</ul>";
+			jQuery(".bonusproductmodifier td:first").html(html);
+		}
+	},
+
+	makeFloatFromString: function(v) {
+		return 123;
+	},
+
+	makeStringfromFloat: function(v) {
+
 	}
 }
 

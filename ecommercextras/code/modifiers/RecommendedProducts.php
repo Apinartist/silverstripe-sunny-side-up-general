@@ -36,6 +36,10 @@ class RecommendedProducts extends OrderModifier {
 		self::$image_width;
 	}
 
+	static function get_image_width() {
+		return self::$image_width;
+	}
+
 // table values \\\
 	function LiveAmount() {
 		return 0;
@@ -123,7 +127,7 @@ class RecommendedProducts_Form extends Form {
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
-					$resizedImage = $product->Image()->SetWidth(self::$image_width);
+					$resizedImage = $product->Image()->SetWidth(RecommendedProducts::get_image_width());
 					$imageLink = $resizedImage->Filename;
 					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 				}
@@ -164,7 +168,7 @@ class RecommendedProducts_Form extends Form {
 			return $this->controller->renderWith("AjaxCheckoutCart");
 		}
 		else {
-			Director::redirect(CheckoutPage::find_link());
+			//Director::redirect(CheckoutPage::find_link());
 		}
 		return;
 	}

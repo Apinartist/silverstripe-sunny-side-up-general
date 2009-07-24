@@ -17,7 +17,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 
 	function __construct($controller, $name) {
-		parent::__construct($controller, $name);
+		$myForm = parent::__construct($controller, $name);
 		$this->unsetActionByName("useDifferentShippingAddress");
 		$this->fields->addFieldToTab("", new CheckboxField("ENews", "Sign-up to e-news"));
 		$this->fields->addFieldToTab("", new CheckboxField("ProNewsletter", "Sign-up to pro-newsletter"));
@@ -32,11 +32,41 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		if(self::$fixed_country_code) {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
+		$orderForm = new OrderForm($this, "OrderForm");
+		$data = $orderForm->getData();
+		$this->loadDataFrom($data);
 	}
+
 
 	function CustomErrors() {
 		$v = Session::get("FormInfo.OrderFormWithoutShippingAddress.formError.message").Session::get("FormInfo.OrderForm_OrderForm.formError.message");
 		return $v;
+	}
+
+	function setupFormErrors() {
+		//parent::setupFormErrors();
+		$errorInfo = Session::get("FormInfo.OrderForm_OrderForm");
+		if(isset($errorInfo['errors']) && is_array($errorInfo['errors'])) {
+			foreach($errorInfo['errors'] as $error) {
+				$field = $this->fields->dataFieldByName($error['fieldName']);
+
+				if(!$field) {
+					$errorInfo['message'] = $error['message'];
+					$errorInfo['type'] = $error['messageType'];
+				} else {
+					$field->setError($error['message'], $error['messageType']);
+				}
+			}
+
+			// load data in from previous submission upon error
+			if(isset($errorInfo['data'])) $this->loadDataFrom($errorInfo['data']);
+		}
+
+		if(isset($errorInfo['message']) && isset($errorInfo['type'])) {
+			$this->setMessage($errorInfo['message'], $errorInfo['type']);
+		}
+
+
 	}
 
 	/**
@@ -45,8 +75,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	 */
 
 	function processOrder($data, $form, $request) {
-
-		debug::show("starting process order");
 		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
 		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
 
@@ -74,7 +102,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			//Director::redirectBack();
 			//return false;
 		}
-		debug::show("done first part");
 		$member->write();
 		$member->logIn();
 
@@ -103,8 +130,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		if($result->isSuccess()) {
 			$order->sendReceipt();
 		}
-		debug::show("end of processing");
-		die();
 		Director::redirect($order->Link());
 		return true;
 	}
