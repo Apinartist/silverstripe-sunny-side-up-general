@@ -28,6 +28,8 @@ var	BonusProductModifier = {
 
 	description: "Bonus Products Savings",
 
+	summaryTrClass: "bonusproductmodifier",
+
 	version: 1,
 
 	items: new Array(),
@@ -59,7 +61,9 @@ var	BonusProductModifier = {
 				}
 			}
 			html += "</ul>";
-			jQuery(".bonusproductmodifier td:first").html(html);
+			jQuery("." + BonusProductModifier.summaryTrClass" td:first").html(html);
+			var value = jQuery("." + BonusProductModifier.summaryTrClass" td.right").text();
+			alert(value);
 		}
 	},
 

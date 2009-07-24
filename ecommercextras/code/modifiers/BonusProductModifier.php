@@ -161,6 +161,7 @@ class BonusProductModifier extends OrderModifier {
 				Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
 				Requirements::customScript("var BonusProductModifierArray = new Array(0,".implode(",", $keys).");");
+				Requirements::customScript("var BonusProductModifierSaving = "+self::$savings);
 			}
 			Session::set("ecommercextras.bonusitems", serialize($newBonusProductArray));
 			self::$savings_calculated = true;
