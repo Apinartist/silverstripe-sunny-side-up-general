@@ -71,9 +71,7 @@ var	BonusProductModifier = {
 			if(BonusProductModifierSaving > 0 && BonusProductModifierSaving < subTotal && subTotal > 0) {
 				newSubTotal = subTotal - BonusProductModifierSaving;
 			}
-
 			var value = jQuery("#Table_Order_SubTotal").text(BonusProductModifier.makeStringfromFloat(newSubTotal));
-
 		}
 	},
 
@@ -107,10 +105,8 @@ var	BonusProductModifier = {
 	makeFloatFromString: function(v) {
 		var length = v.length;
 		BonusProductModifier.currencySign = v.substring(0,1);
-		var substring = v.substring(1,length - 1);
-		alert("sub: " + substring);
-		var floatValue = parseFloat(substring - 0);
-		alert("float: " + floatValue);
+		var substring = v.substring(1,length);
+		var floatValue = parseFloat(substring.replace(",", ""));
 		if(floatValue > 0) {
 			return floatValue;
 		}
