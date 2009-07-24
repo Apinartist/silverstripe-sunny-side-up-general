@@ -71,7 +71,7 @@ var	BonusProductModifier = {
 			if(BonusProductModifierSaving > 0 && BonusProductModifierSaving < subTotal && subTotal > 0) {
 				newSubTotal = subTotal - BonusProductModifierSaving;
 			}
-			var value = jQuery("#Table_Order_SubTotal").text(BonusProductModifier.makeStringfromFloat(newSubTotal));
+			var value = jQuery("#Table_Order_SubTotal").text(BonusProductModifier.makeCurrencyfromFloat(newSubTotal));
 		}
 	},
 
