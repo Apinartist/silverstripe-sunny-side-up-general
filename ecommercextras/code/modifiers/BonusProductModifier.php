@@ -23,7 +23,7 @@ class BonusProductModifier extends OrderModifier {
 
 	static $savings = 0;
 
-	private static $title = "Bonus Product Savings";
+	private static $title = "Bonus Product(s)";
 
 // static functions \\\
 	static function show_form() {
