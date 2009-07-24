@@ -61,7 +61,6 @@ var	BonusProductModifier = {
 				}
 			}
 			html += "</ul>";
-			jQuery("." + BonusProductModifier.summaryTrClass" td:first").html(html);
 			var value = jQuery("." + BonusProductModifier.summaryTrClass + " td.right").text();
 			alert(value);
 		}
