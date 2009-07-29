@@ -31,7 +31,11 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 }
 
-class AjaxOrder_controller extends Extension {
+class AjaxOrder_Controller extends Extension {
+
+	protected static $product_classname = "Product";
+
+	protected static $order_item_classname = "Product_OrderItem";
 
 	static $allowed_actions = array(
 		"additemwithajax",
@@ -42,11 +46,22 @@ class AjaxOrder_controller extends Extension {
 		"RecommendedProducts"
 	);
 
+	static function set_order_item_classname($v){
+		self::$order_item_classname = $v;
+	}
+
+	static function set_product_classname($v){
+		self::$product_classname = $v;
+	}
+
 	function additemwithajax() {
 		$id = intval(Director::URLParam("ID"));
-		$item = DataObject::get_by_id("Product", $id);
-		if($item) {
-			ShoppingCart::add_new_item(new Product_OrderItem($item));
+		if($id) {
+			$item = DataObject::get_by_id(self::$product_classname, $id);
+			if($item) {
+				$orderItem = new self::$order_item_classname($item);
+				ShoppingCart::add_new_item($orderItem);
+			}
 		}
 		return $this->ajaxGetSimpleCart();
 	}
@@ -88,7 +103,8 @@ class AjaxOrder_controller extends Extension {
 			$_SESSION = array();
 			unset($_SESSION);
 			ShoppingCart::clear();
-			Session::set("ecommercextras.bonusitems", null);
+			$_SESSION = array();
+			unset($_SESSION);
 		}
 		die('<a href="/">click here to continue ...</a>');
 	}

@@ -19,23 +19,24 @@ class BonusProductModifier extends OrderModifier {
 		'Name' => 'Text'
 	);
 
-	static $savings_calculated = false ;
+	protected static $savings_calculated = false ;
 
-	static $savings = 0;
+	protected static $savings = 0;
 
-	private static $title = "Bonus Product(s)";
+	protected static $order_item_classname = "Product_OrderItem";
+
 
 // static functions \\\
+	static function set_order_item_classname($v) {
+		self::$order_item_classname = $v;
+	}
+
 	static function show_form() {
 		return self::workoutSavings();
 	}
 
 	static function get_form($controller) {
 		return false;
-	}
-
-	static function set_title($v) {
-		self::$title = $v;
 	}
 
 
@@ -45,7 +46,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 	function ShowInTable() {
-		return true;
+		return false;
 	}
 
 // inclusive / exclusive functions  \\\
@@ -76,6 +77,8 @@ class BonusProductModifier extends OrderModifier {
 	function TableTitle() {
 		return $this->Name();
 	}
+
+
 
 
 // calculations \\\
@@ -115,7 +118,9 @@ class BonusProductModifier extends OrderModifier {
 									$product = DataObject::get_by_id("SiteTree", $bonusItemID);
 									//foreach product in cart get recommended products
 									//debug::show("adding $product->Title as bonus product");
-									ShoppingCart::add_new_item(new Product_OrderItem($product));
+									$orderItem = new self::$order_item_classname($product);
+									$orderItem->setAlternativeUnitPrice(0.001);
+									ShoppingCart::add_new_item($orderItem);
 								}
 								if(array_key_exists($bonusItemID, $newBonusProductArray)) {
 									$quantity += $newBonusProductArray[$bonusItemID]["quantity"];
@@ -160,8 +165,8 @@ class BonusProductModifier extends OrderModifier {
 			if(is_array($newBonusProductArray) && count($newBonusProductArray)) {
 				Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
-				Requirements::customScript("var BonusProductModifierArray = new Array(0,".implode(",", $keys).");");
-				Requirements::customScript("var BonusProductModifierSaving = parseFloat(".self::$savings.");");
+				Requirements::customScript('BonusProductModifier.set_list(new Array(0, '.implode(",", $keys).'));');
+				Requirements::customScript('BonusProductModifier.set_order_item_classname("'.self::$order_item_classname.'");');
 			}
 			Session::set("ecommercextras.bonusitems", serialize($newBonusProductArray));
 			self::$savings_calculated = true;
