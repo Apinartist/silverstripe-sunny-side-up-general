@@ -7,7 +7,7 @@
  */
 class DeliveryModifier extends OrderModifier {
 
-// static variables \\\
+// 					 *** static variables
 	static $db = array(
 		'Rate' => 'Double',
 		'Name' => 'Text',
@@ -21,7 +21,7 @@ class DeliveryModifier extends OrderModifier {
 
 	protected static $description;
 
-// static functions \\\
+// 					 *** static functions
 	static function set_minimum_amount($amount) {
 		self::$minimum_amount = $amount + 0;
 	}
@@ -34,12 +34,12 @@ class DeliveryModifier extends OrderModifier {
 		self::$description = $description;
 	}
 
-// display function \\\
+// 					 *** display function
 	function ShowInTable() {
 		return true;
 	}
 
-// inclusive / exclusive functions  \\\
+// 					 *** inclusive / exclusive functions
 	function IsExclusive() {
 		return $this->ID ? $this->TaxType == 'Exclusive' : $this->LiveIsExclusive();
 	}
@@ -47,7 +47,7 @@ class DeliveryModifier extends OrderModifier {
 	function CanRemove () {
 		return false;
 	}
-// rate functions \\\
+// 					 *** rate functions
 	function Rate() {
 		return $this->ID ? $this->Rate : $this->LiveRate();
 	}
@@ -55,7 +55,7 @@ class DeliveryModifier extends OrderModifier {
 		return self::$percentage_rate;
 	}
 
-// table value functions  \\\
+// 					 *** table value functions
 	function Total () {
 		return $this->ID ? $this->Amount : $this->Charge(); //$this->Amount :
 	}
@@ -68,7 +68,7 @@ class DeliveryModifier extends OrderModifier {
 		return "$".number_format(abs($this->Amount()), 2);
 	}
 
-// table title  \\\
+// 					 *** table title
 	protected function LiveName() {
 		return self::$description;
 	}
@@ -88,7 +88,7 @@ class DeliveryModifier extends OrderModifier {
 
 
 
-// calculations  \\\
+// 					 *** calculations
 	function Charge() {
 		$SubTotalAmount = $this->SubTotalAmount();
 		$charge = $SubTotalAmount * $this->Rate();
@@ -104,7 +104,7 @@ class DeliveryModifier extends OrderModifier {
 	}
 
 
-// database functions  \\\
+// 					 *** database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Rate = $this->LiveRate();

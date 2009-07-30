@@ -11,7 +11,7 @@
 class RegionShippingModifier extends OrderModifier {
 
 
-// static variables \\\
+// 					 *** static variables
 
 	static $db = array(
 		'Name' => 'Text',
@@ -27,7 +27,7 @@ class RegionShippingModifier extends OrderModifier {
 	);
 
 
-// static functions \\\
+// 					 *** static functions
 	/**
 	 * Set shipping charges on a region by region basis.
 	 * For example, SimpleShippingModifier::set_charges_for_regions(array(
@@ -70,7 +70,7 @@ class RegionShippingModifier extends OrderModifier {
 		return new RegionShippingModifier_Form($controller, 'ModifierForm', $fields, $actions, $validator);
 	}
 
-// display functions \\\
+// 					 *** display functions
 	function ShowInTable() {
 		return true;
 	}
@@ -78,7 +78,7 @@ class RegionShippingModifier extends OrderModifier {
 		return false;
 	}
 
-// other attributes: region \\\
+// 					 *** other attributes: region
 	function Region() {
 		if($this->Region) {
 			return $this->Region;
@@ -91,7 +91,7 @@ class RegionShippingModifier extends OrderModifier {
 	protected function LiveRegion() {
 		return $this->Region();
 	}
-// other attributes: default charge\\\
+// 					 *** other attributes: default charge
 	function IsDefaultCharge() {
 		return $this->ID ? $this->ShippingChargeType == 'Default' : $this->LiveIsDefaultCharge();
 	}
@@ -103,7 +103,7 @@ class RegionShippingModifier extends OrderModifier {
 	/**
 	 * Find the amount for the shipping on the shipping region for the order.
 	 */
-// table values \\\
+// 					 *** table values
 	function LiveAmount() {
 		if(!ShoppingCart::get_items()) {
 			return 0;
@@ -123,7 +123,7 @@ class RegionShippingModifier extends OrderModifier {
 		return "$".number_format(abs($this->Amount()), 2);
 	}
 
-//table titles \\\
+// 					 *** table titles
 	function LiveName() {
 		if($this->Region()) {
 			$regionList = self::getRegionList();
@@ -147,7 +147,7 @@ class RegionShippingModifier extends OrderModifier {
 	}
 
 
-// database function \\\
+// 					 *** database function
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->Region();

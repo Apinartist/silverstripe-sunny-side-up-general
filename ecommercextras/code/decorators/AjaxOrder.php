@@ -27,7 +27,9 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 
 	function addAjaxLinkRequirements() {
-		Requirements::javascript("ecommercextras/javascript/ajaxcart.js");
+		Requirements::block("ecommerce/javascript/ecommerce.js");
+		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
+		Requirements::javascript("ecommercextras/javascript/AjaxOrder.js");
 	}
 }
 
@@ -113,3 +115,4 @@ class AjaxOrder_Controller extends Extension {
 		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
 	}
 }
+

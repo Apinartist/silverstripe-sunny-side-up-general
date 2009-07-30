@@ -13,11 +13,14 @@
  */
 class BonusProductModifier extends OrderModifier {
 
-// static variables \\\
+// 					 *** static variables
 
 	static $db = array(
-		'Name' => 'Text'
+		'Name' => 'Varchar(255)',
+		'SerializedProductArray' => 'Text'
 	);
+
+	protected static $title = "Bonus Products";
 
 	protected static $savings_calculated = false ;
 
@@ -25,14 +28,20 @@ class BonusProductModifier extends OrderModifier {
 
 	protected static $order_item_classname = "Product_OrderItem";
 
+	protected static $bonus_product_array = null;
 
-// static functions \\\
+// 					 *** static functions \\\
+
+	static function set_title($v) {
+		self::$title = $v;
+	}
+
 	static function set_order_item_classname($v) {
 		self::$order_item_classname = $v;
 	}
 
 	static function show_form() {
-		return self::workoutSavings();
+		return self::workout_savings();
 	}
 
 	static function get_form($controller) {
@@ -40,7 +49,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 
-// display functions \\\
+// 					 *** display functions
 	function CanRemove() {
 		return false;
 	}
@@ -49,10 +58,10 @@ class BonusProductModifier extends OrderModifier {
 		return false;
 	}
 
-// inclusive / exclusive functions  \\\
-// table values \\\
+// 					 *** inclusive / exclusive functions
+// 					 *** table values
 	function LiveAmount() {
-		return self::workoutSavings();
+		return self::workout_savings();
 	}
 
 	function TableValue() {
@@ -60,7 +69,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 
-// table titles \\\
+// 					 *** table titles
 	function LiveName() {
 		self::$title;
 	}
@@ -78,11 +87,20 @@ class BonusProductModifier extends OrderModifier {
 		return $this->Name();
 	}
 
+	static function get_bonus_product_array() {
+		if(!self::$bonus_product_array) {
+			if(1 == 2) { //$this->ID ??? can not be used here, but should be used one way or another
+				self::$bonus_product_array = unserialize($this->SerializedProductArray);
+			}
+			else {
+				self::$bonus_product_array = Session::get("ecommercextras.bonusitems");
+			}
+		}
+		return self::$bonus_product_array;
+	}
 
-
-
-// calculations \\\
-	static function workoutSavings() {
+// 					 *** calculations
+	static function workout_savings() {
 		if(!self::$savings_calculated) {
 			self::$is_chargable = false;
 			self::$savings = 0;
@@ -91,7 +109,7 @@ class BonusProductModifier extends OrderModifier {
 			$oldBonusProductArray = array();
 
 			//get ones already added
-			$serializedOldBonusProductArray= Session::get("ecommercextras.bonusitems");
+			$serializedOldBonusProductArray= self::get_bonus_product_array();
 			if(!$serializedOldBonusProductArray) {
 				$oldBonusProductArray = array();
 				//debug::show("old bonus products to not exist yet");
@@ -100,7 +118,6 @@ class BonusProductModifier extends OrderModifier {
 				$oldBonusProductArray = unserialize($serializedOldBonusProductArray);
 				//debug::show("already added bonus products: ".print_r($oldBonusProductArray, true));
 			}
-			//print_r($oldBonusProductArray);
 			// work out bonus products based on items added to cart
 			$items = ShoppingCart::get_items();
 			foreach($items as $itemIndex => $item) {
@@ -163,6 +180,7 @@ class BonusProductModifier extends OrderModifier {
 			}
 			$keys = array_keys($newBonusProductArray);
 			if(is_array($newBonusProductArray) && count($newBonusProductArray)) {
+				Requirements::javascript("jsparty/jquery/jquery.js");
 				Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
 				Requirements::customScript('BonusProductModifier.set_list(new Array(0, '.implode(",", $keys).'));');
@@ -175,10 +193,20 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 
-// database functions \\\
+// 					 *** database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->LiveName();
+		$this->Savings = self::workout_savings();
+		$this->SerializedProductArray = serialize(self::get_bonus_product_array());
 	}
+
+	function updateForAjax(array &$js) {
+		$amount = $this->Charge();
+		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $amount);
+		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
+		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
+	}
+
 }
 

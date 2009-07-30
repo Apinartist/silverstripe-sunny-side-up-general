@@ -6,23 +6,23 @@
  * which returns an array of IDs
  * @package ecommerce
  */
-class RecommendedProducts extends OrderModifier {
+class RecommendedProductsModifier extends OrderModifier {
 
-//static variables \\\
+// 					 *** static variables
 	protected static $image_width = 100;
 
 	static $db = array();
 
-// static functions \\\
+// 					 *** static functions
 	static function show_form() {
 		return true;
 	}
 
 	static function get_form($controller) {
-		return new RecommendedProducts_Form($controller, 'RecommendedProducts');
+		return new RecommendedProductsModifier_Form($controller, 'RecommendedProducts');
 	}
 
-// display functions \\\
+// 					 *** display functions
 	function ShowInTable() {
 		return false;
 	}
@@ -31,7 +31,7 @@ class RecommendedProducts extends OrderModifier {
 		return false;
 	}
 
-// custom values \\\
+// 					 *** custom values
 	static function set_image_width($v) {
 		self::$image_width;
 	}
@@ -40,7 +40,7 @@ class RecommendedProducts extends OrderModifier {
 		return self::$image_width;
 	}
 
-// table values \\\
+// 					 *** table values
 	function LiveAmount() {
 		return 0;
 	}
@@ -48,7 +48,7 @@ class RecommendedProducts extends OrderModifier {
 		return "";
 	}
 
-//table titles \\\
+// 					 *** table titles
 	function LiveName() {
 		return "Recommended Products";
 	}
@@ -66,13 +66,13 @@ class RecommendedProducts extends OrderModifier {
 		return $this->Name();
 	}
 
-// database functions \\\
+// 					 ***  database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 	}
 }
 
-class RecommendedProducts_Form extends Form {
+class RecommendedProductsModifier_Form extends Form {
 
 	private static $more_details_link_text = "product details ...";
 
@@ -91,9 +91,6 @@ class RecommendedProducts_Form extends Form {
 	static function set_add_button_text($v) {self::$add_button_text = $v;}
 
 	function __construct($controller, $name) {
-		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript("ecommercextras/javascript/RecommendedProducts.js");
-		Requirements::themedCSS("RecommendedProducts");
 		$InCartIDArray = array();
 		$recommendedProductsIDArray = array();
 		$fieldsArray = array();
@@ -119,6 +116,10 @@ class RecommendedProducts_Form extends Form {
 			}
 		}
 		if(count($recommendedProductsIDArray)) {
+			Requirements::javascript("jsparty/jquery/jquery.js");
+			Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
+			Requirements::javascript("ecommercextras/javascript/RecommendedProductsModifier.js");
+			Requirements::themedCSS("RecommendedProducts");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = DataObject::get_by_id("SiteTree", $ID);
@@ -127,7 +128,7 @@ class RecommendedProducts_Form extends Form {
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
-					$resizedImage = $product->Image()->SetWidth(RecommendedProducts::get_image_width());
+					$resizedImage = $product->Image()->SetWidth(RecommendedProductsModifier::get_image_width());
 					$imageLink = $resizedImage->Filename;
 					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 				}
@@ -168,7 +169,7 @@ class RecommendedProducts_Form extends Form {
 			return $this->controller->renderWith("AjaxCheckoutCart");
 		}
 		else {
-			//Director::redirect(CheckoutPage::find_link());
+			Director::redirect(CheckoutPage::find_link());
 		}
 		return;
 	}
