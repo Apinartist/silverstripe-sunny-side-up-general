@@ -19,6 +19,8 @@ class SimplestSpamField extends SpamProtectorField {
 
 	protected static $wrong_answer_message = "please check anti-spam field to proceed";
 
+	protected static $form_wrong_answer_message = "Submission was NOT successful. Please check anti-spam field.";
+
 	protected static $has_been_initialised = false;
 
 	static function set_question_and_answer($question, $answer) {
@@ -30,8 +32,13 @@ class SimplestSpamField extends SpamProtectorField {
 	}
 
 	static function set_wrong_answer_message($v) {
+		self::$form_wrong_answer_message = $v;
+	}
+
+	static function set_form_wrong_answer_message($v) {
 		self::$wrong_answer_message = $v;
 	}
+
 
 	protected function initialise() {
 		if(!count(self::$questions_and_answers)) {
@@ -99,10 +106,11 @@ HTML;
 			Session::set("FormField.{$this->form->FormName()}.{$this->Name()}", trim($error));
 			$validator->validationError(
 				$this->name,
-				"Your last answer was incorrect, please try again ...",
+				self::$wrong_answer_message,
 				"validation",
 				false
 			);
+			$this->form->sessionMessage(self::$form_wrong_answer_message, "bad");
 			return false;
 		}
 
