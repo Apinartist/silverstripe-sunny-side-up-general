@@ -113,11 +113,12 @@ class GoogleMapLocationsObject extends DataObject {
 			$this->Title = $this->Address;
 			$this->Name = $this->Address;
 		}
-		if(strlen($this->CustomPopUpWindowInfo) > 15) {
-			$this->AjaxInfoWindowLink = $this->CustomPopUpWindowInfo;
+		if(strlen($this->CustomPopUpWindowInfo) > 3) {
+			$this->AjaxInfoWindowLink = '<p>'.$this->CustomPopUpWindowInfo.'</p>';
 		}
-		if($this->CustomPopUpWindowTitle) {
-			$this->Title = $this->CustomPopUpWindowInfo;
+		if($this->CustomPopUpWindowTitle	) {
+			$this->Title = $this->CustomPopUpWindowTitle;
+			$this->Name = $this->CustomPopUpWindowTitle;
 		}
 	}
 

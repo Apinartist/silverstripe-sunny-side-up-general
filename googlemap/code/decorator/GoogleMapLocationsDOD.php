@@ -200,13 +200,15 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	public function showPagePointsMapXML() {
 		$data = DataObject::get("GoogleMapLocationsObject", "ParentID = ".$this->owner->ID);
 		if($data) {
-			if(count($data) > 1) {
+			if($data->count() > 1) {
 				$s = "s";
 			}
 			else {
 			 $s = "";
 			}
-			return $this->makeXMLData(null, $data, "Location".$s." for ".$this->owner->Title, "Location.".$s." for ".$this->owner->Title);
+			//$title = "Location$s for ... ".$this->owner->Title;
+			$title = $this->owner->Title;
+			return $this->makeXMLData(null, $data, $title, $title);
 		}
 	}
 
