@@ -68,8 +68,8 @@ class GoogleMapLocationsObject extends DataObject {
 	function  getCMSFields_forPopup($parentPageID) {
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
-			new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window', 3),
-			new TextField('CustomPopUpWindowInfo', 'Leave Blank to auto-complete the pop-up information on the map', 3),
+			new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
+			new TextField('CustomPopUpWindowInfo', 'Custom Description for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID),
 			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload to edit...)')

@@ -9,8 +9,6 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START googlemap MODULE ----------------===================
-
-
 /*
 define("GoogleMapAPIKey", "abc");
 
@@ -90,7 +88,5 @@ GoogleMap::setDefaultCountryCode(""); //default country code for address searche
 GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an address (e.g. New Zealand or United Kingdom)
 GoogleMap::setStyleSheetUrl("googlemap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googlemap/css/mapDirections.css)
 GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
-
 */
-
 //===================---------------- END googlemap MODULE ----------------===================
