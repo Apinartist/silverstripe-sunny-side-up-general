@@ -290,13 +290,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$this->DebugString = $this->debugMessage;
 	}
 
-	function updateForAjax(array &$js) {
-		$amount = $this->Charge();
-		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $amount);
-		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
-		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
-	}
-
 }
 
 class PickUpOrDeliveryModifier_Form extends OrderModifierForm {

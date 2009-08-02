@@ -201,12 +201,6 @@ class BonusProductModifier extends OrderModifier {
 		$this->SerializedProductArray = serialize(self::get_bonus_product_array());
 	}
 
-	function updateForAjax(array &$js) {
-		$amount = $this->Charge();
-		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $amount);
-		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
-		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
-	}
 
 }
 
