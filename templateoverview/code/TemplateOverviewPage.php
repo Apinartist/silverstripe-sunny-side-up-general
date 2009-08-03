@@ -108,7 +108,6 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
 							$object = $this->createPageObject($obj, $count++, $className);
-							$obj->TemplateOverviewDescription = $this->getTemplateOverviewDescription($className);
 							$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 						}
 					}
@@ -125,6 +124,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 						$count = 0;
 					}
 					$object = $this->createPageObject($obj, $count, $className);
+					$object->TemplateOverviewDescription = $this->getTemplateOverviewDescription($className);
 					$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 				}
 			}
@@ -140,10 +140,11 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 	}
 
 	public function getTemplateOverviewDescription($className) {
-		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'"');
+		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'" AND ParentID = '.$this->ID);
 		if(!$obj) {
 			$obj = new TemplateOverviewDescription();
 			$obj->ClassNameLink = $className;
+			$obj->ParentID = $this->ID;
 			$obj->write();
 		}
 		return $obj;
