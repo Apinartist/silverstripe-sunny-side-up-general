@@ -66,7 +66,7 @@ class MenuCache extends DataObjectDecorator {
 		if(isset($_GET["flush"])) {
 			$this->clearmenucache();
 		}
-		if(!$this->owner->MenuCache || Director::isDev()) {
+		if(!$this->owner->MenuCache) {
 			$response = Director::test($this->owner->URLSegment."/showcachedmenu/");
 			if(is_object($response)) {
 				$content = $response->getBody();
