@@ -102,10 +102,10 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 	function clearmenucache () {
-		$sql = 'Update SiteTree_Live Set MenuCache = ""';
-		DB::query($sql);
+		$sql = 'Update SiteTree_Live Set MenuCache = ""'; 		DB::query($sql);
+		$sql = 'Update SiteTree Set MenuCache = ""'; 		DB::query($sql);
+		$sql = 'Update SiteTree_versions Set MenuCache = ""';		DB::query($sql);
 		return array();
-		die("menu cache has been cleared");
 	}
 
 }
