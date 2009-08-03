@@ -30,6 +30,22 @@ class TemplateOverviewPage extends Page {
 		return !DataObject::get("SiteTree", 'ClassName = "TemplateOverviewPage"');
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$tablefield = new HasManyComplexTableField(
+			$controller = $this,
+			$name = 'TemplateOverviewDescriptions',
+			$sourceClass = 'TemplateOverviewDescription',
+			null,
+			$detailFormFields = 'getCMSFields_forPopup',
+			$sourceFilter = "`ParentID` = ".$this->ID,
+			$sourceSort = "`ClassNameLink` ASC"
+			//$sourceJoin = null
+		);
+		$fields->addFieldToTab('Root.Content.Advertisements', $tablefield);
+		return $fields;
+	}
+
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(self::$auto_include) {
