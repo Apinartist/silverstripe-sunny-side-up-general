@@ -129,8 +129,13 @@ class RecommendedProductsModifier_Form extends Form {
 				$secondPart = '';
 				if($product->ImageID > 0) {
 					$resizedImage = $product->Image()->SetWidth(RecommendedProductsModifier::get_image_width());
-					$imageLink = $resizedImage->Filename;
-					$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
+					if(is_object($resizedImage) && $resizedImage) {
+						$imageLink = $resizedImage->Filename;
+						$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
+					}
+					else {
+						$secondPart = '<span class="secondPart">[no image available for '.$product->Title.']</span>';
+					}
 				}
 				$firstPart = '<span class="firstPart">'.self::$more_details_link_text.'</span>';
 				$fieldsArray[] = new LiteralField($product->URLSegment."-moreinfo", '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>');
