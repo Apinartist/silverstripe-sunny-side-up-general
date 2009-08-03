@@ -22,6 +22,10 @@ class TemplateOverviewPage extends Page {
 		"MenuTitle" => "Template overview",
 	);
 
+	static $has_many = array(
+		"TemplateOverviewDescriptions" => "TemplateOverviewDescription"
+	)
+
 	public function canCreate() {
 		return !DataObject::get("SiteTree", 'ClassName = "TemplateOverviewPage"');
 	}
@@ -88,6 +92,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 					if(is_object($objects) && $objects->count()) {
 						foreach($objects as $obj) {
 							$object = $this->createPageObject($obj, $count++, $className);
+							$obj->TemplateOverviewDescription = $this->getTemplateOverviewDescription($className);
 							$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 						}
 					}
@@ -116,6 +121,16 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 			}
 		}
 		return $doSet;
+	}
+
+	public function getTemplateOverviewDescription($className) {
+		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'"');
+		if(!$obj) {
+			$obj = new TemplateOverviewDescription();
+			$obj->ClassNameLink = $className;
+			$obj->write();
+		}
+		return $obj;
 	}
 
 	public function TotalCount () {
