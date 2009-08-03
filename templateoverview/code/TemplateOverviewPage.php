@@ -42,7 +42,7 @@ class TemplateOverviewPage extends Page {
 			$sourceSort = "`ClassNameLink` ASC"
 			//$sourceJoin = null
 		);
-		$fields->addFieldToTab('Root.Content.Advertisements', $tablefield);
+		$fields->addFieldToTab('Root.Content.Descriptions', $tablefield);
 		return $fields;
 	}
 
