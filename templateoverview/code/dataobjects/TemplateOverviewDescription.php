@@ -35,7 +35,7 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $default_sort = 'ClassNameLink ASC';
 
-	static onBeforeWrite() {
+	function onBeforeWrite() {
 		if(!$this->ParentID) {
 			if($page = DataObject::get_one("TemplateOverviewPage")) {
 				$this->ParentID = $page->ID;
