@@ -24,7 +24,7 @@ class TemplateOverviewPage extends Page {
 
 	static $has_many = array(
 		"TemplateOverviewDescriptions" => "TemplateOverviewDescription"
-	)
+	);
 
 	public function canCreate() {
 		return !DataObject::get("SiteTree", 'ClassName = "TemplateOverviewPage"');
