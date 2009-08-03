@@ -92,7 +92,6 @@ class MenuCache extends DataObjectDecorator {
 		$rep[2] = "";
 		$html = preg_replace($pat, $rep, $html);
 		$html = trim($html);
-		die($html);
 		return addslashes($html);
 	}
 
