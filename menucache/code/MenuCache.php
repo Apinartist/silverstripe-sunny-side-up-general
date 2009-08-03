@@ -92,6 +92,7 @@ class MenuCache extends DataObjectDecorator {
 		$rep[2] = "";
 		$html = preg_replace($pat, $rep, $html);
 		$html = trim($html);
+		die($html);
 		return addslashes($html);
 	}
 
@@ -105,6 +106,7 @@ class MenuCache extends DataObjectDecorator {
 		$sql = 'Update SiteTree_Live Set MenuCache = ""';
 		DB::query($sql);
 		return array();
+		die("menu cache has been cleared");
 	}
 
 }
