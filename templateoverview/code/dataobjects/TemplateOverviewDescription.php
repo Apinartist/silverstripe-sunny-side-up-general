@@ -25,9 +25,9 @@ class TemplateOverviewDescription extends DataObject {
 	}
 
 
-	static $searchable_fields = array('Description', 'ClassNameLink');
+	static $searchable_fields = array('ClassNameLink');
 
-	static $summary_fields = array('Description', 'ClassNameLink');
+	static $summary_fields = array('ClassNameLink', 'Description');
 
 	static $singular_name = 'Template Description';
 
