@@ -74,7 +74,13 @@ class SimplestSpamField extends SpamProtectorField {
 		$Field = $this->XML_val('Field');
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		return <<<HTML
-<div id="$Name" class="field $Type $extraClass"><label class="left spamquestion">{$Question} {$Explanation} </span>{$Field}{$messageBlock}</div>
+<div id="$Name" class="field $Type $extraClass">
+	<label class="left spamquestion">{$Question} </label>
+	<div class="middleColumn">
+		{$Field}
+		<label class="required">{$Explanation} {$messageBlock}</label>
+	</div>
+</div>
 HTML;
 	}
 
