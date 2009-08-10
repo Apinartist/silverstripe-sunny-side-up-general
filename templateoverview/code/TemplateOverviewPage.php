@@ -16,8 +16,8 @@ class TemplateOverviewPage extends Page {
 
 	static $defaults = array(
 		"URLSegment" => "templates",
-		"ShowInMenus" => false,
-		"ShowInSearch" => false,
+		"ShowInMenus" => 0,
+		"ShowInSearch" => 0,
 		"Title" => "Template overview (internal use only)",
 		"MenuTitle" => "Template overview",
 	);
