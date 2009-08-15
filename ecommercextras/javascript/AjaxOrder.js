@@ -22,7 +22,7 @@ var AjaxOrder = {
 
 	LoadingText: "updating cart ... ",
 
-	BoughText: "Bought",
+	BoughText: "In Cart",
 
 	UnconfirmedDelete: false,
 
