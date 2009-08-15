@@ -61,14 +61,15 @@ class TypographyTestPage_Controller extends Page_Controller {
 	}
 
 	public function index() {
+		/*
 		$response = Director::test("/".$this->URLSegment."/typographyhtml/");
 		if(is_object($response)) {
 			$this->Content = $response->getBody();
 		}
-		die($response->getBody());
-		$this->Content .= '<p>end...</p>';
+		*/
+		$this->Content = $this->renderWith("TypographySample");
+		$this->Content .= "end";
 		return array();
-
 	}
 
 	function Form() {
