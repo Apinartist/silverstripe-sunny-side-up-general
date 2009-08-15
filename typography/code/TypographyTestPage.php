@@ -65,6 +65,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 		if(is_object($response)) {
 			$this->Content = $response->getBody();
 		}
+		$this->Content .= '<p>end...</p>';
 		return array();
 
 	}
