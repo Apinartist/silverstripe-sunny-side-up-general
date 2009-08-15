@@ -50,17 +50,23 @@ class TypographyTestPage extends Page {
 
 class TypographyTestPage_Controller extends Page_Controller {
 
-	static $allowed_actions = array("typographyhtml");
+	static $allowed_actions = array("typographyhtml", "test");
 
 
 	function init() {
 		parent::init();
+
+		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript('typography/javascript/typography.js');
+	}
+
+	public function index() {
 		$response = Director::test($this->URLSegment."/typographyhtml/");
 		if(is_object($response)) {
 			$this->Content = $response->getBody();
 		}
-		Requirements::javascript("jsparty/jquery/jquery.js");
-		Requirements::javascript('typography/javascript/typography.js');
+		return array();
+
 	}
 
 	function Form() {
