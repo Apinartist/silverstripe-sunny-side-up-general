@@ -3,9 +3,10 @@
 class ManageablePriceOrderItem extends Product_OrderItem {
 
 	protected $_unitPriceAlternative;
+	protected $_usesAlternativePrice;
 
 	static $db = array(
-		'UnitPrice' => 'Currency',
+		'UsesAlternativePrice' => 'Boolean',
 		'UnitPriceAlternative' => 'Currency'
 	);
 
@@ -19,6 +20,7 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 
 	public function setAlternativeUnitPrice($price) {
 		$this->_unitPriceAlternative = $price;
+		$this->_usesAlternativePrice = true;
 	}
 
 	public function Product($current = false) {
@@ -34,23 +36,20 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 
 	function UnitPrice() {
 		//check current record
-		if($this->_unitPriceAlternative) {
-			debug::show(1);
+		if($this->_usesAlternativePrice) {
 			return $this->_unitPriceAlternative;
 		}
-		elseif($this->UnitPriceAlternative) {
-			debug::show(2);
+		elseif($this->UsesAlternativePrice) {
 			return $this->UnitPriceAlternative;
 		}
 		else {
-			debug::show(3);
 			return $this->Product()->Price;
 		}
 	}
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->UnitPrice = $this->UnitPrice();
+		$this->UsesAlternativePrice = $this->_usesAlternativePrice;
 		$this->UnitPriceAlternative = $this->_unitPriceAlternative;
 	}
 
