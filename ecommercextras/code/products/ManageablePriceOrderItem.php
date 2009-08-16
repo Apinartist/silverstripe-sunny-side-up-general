@@ -5,6 +5,7 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 	protected $_unitPriceAlternative;
 
 	static $db = array(
+		'UnitPrice' => 'Currency',
 		'UnitPriceAlternative' => 'Currency'
 	);
 
@@ -21,8 +22,14 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 	}
 
 	public function Product($current = false) {
-		if($current) return DataObject::get_by_id('Product', $this->_productID);
-		else return Versioned::get_version('Product', $this->_productID, $this->_productVersion);
+		if($current) {
+			$product = DataObject::get_by_id('Product', $this->_productID);
+		}
+		else  {
+			return $product = Versioned::get_version('Product', $this->_productID, $this->_productVersion);
+		}
+		$product->Price = $this->UnitPrice();
+		return $product;
 	}
 
 	function UnitPrice() {
