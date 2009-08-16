@@ -195,7 +195,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 						// no need to charge, order is big enough
 						debug::show("min".$currentOptionArray["MinimumOrderAmountForZeroRate"]);
 						debug::show("amount".$amount);
-						if(floatval($currentOptionArray["MinimumOrderAmountForZeroRate"]) < float($amount)) {
+						if(floatval($currentOptionArray["MinimumOrderAmountForZeroRate"]) < floatval($amount)) {
 							debug::show("ok");
 							self::$worked_out_charges =  0;
 							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$worked_out_charges;
