@@ -193,10 +193,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					$currentOptionArray = $this->PickupOrDeliveryTypeArray();
 					if( is_array($currentOptionArray)) {
 						// no need to charge, order is big enough
-						debug::show("min".$currentOptionArray["MinimumOrderAmountForZeroRate"]);
-						debug::show("amount".$amount);
 						if(floatval($currentOptionArray["MinimumOrderAmountForZeroRate"]) < floatval($amount)) {
-							debug::show("ok");
 							self::$worked_out_charges =  0;
 							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$worked_out_charges;
 						}
@@ -216,16 +213,16 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 								self::$worked_out_charges += $currentOptionArray["FixedCost"];
 								$this->debugMessage .= "<hr />fixed".self::$worked_out_charges;
 							}
-						}
-						//is it enough?
-						if(self::$worked_out_charges < $currentOptionArray["MinimumDeliveryCharge"]) {
-							self::$worked_out_charges = $currentOptionArray["MinimumDeliveryCharge"];
-							$this->debugMessage .= "<hr />too little".self::$worked_out_charges;
-						}
-						// is it too much
-						if(self::$worked_out_charges > $currentOptionArray["MaximumDeliveryCharge"]) {
-							self::$worked_out_charges = $currentOptionArray["MaximumDeliveryCharge"];
-							$this->debugMessage .= "<hr />too much".self::$worked_out_charges;
+							//is it enough?
+							if(self::$worked_out_charges < $currentOptionArray["MinimumDeliveryCharge"]) {
+								self::$worked_out_charges = $currentOptionArray["MinimumDeliveryCharge"];
+								$this->debugMessage .= "<hr />too little".self::$worked_out_charges;
+							}
+							// is it too much
+							if(self::$worked_out_charges > $currentOptionArray["MaximumDeliveryCharge"]) {
+								self::$worked_out_charges = $currentOptionArray["MaximumDeliveryCharge"];
+								$this->debugMessage .= "<hr />too much".self::$worked_out_charges;
+							}
 						}
 					}
 					else {
