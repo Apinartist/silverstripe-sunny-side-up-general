@@ -136,10 +136,10 @@ class GSTTaxModifier extends OrderModifier {
 // 					 *** title function
 	function Name() {
 		if( $this->ID) {
-			$this->Name;
+			return $this->Name;
 		}
 		else {
-			$this->LiveName();
+			return $this->LiveName();
 		}
 	}
 
