@@ -193,7 +193,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					$currentOptionArray = $this->PickupOrDeliveryTypeArray();
 					if( is_array($currentOptionArray)) {
 						// no need to charge, order is big enough
-						debug::show("min".currentOptionArray["MinimumOrderAmountForZeroRate"]);
+						debug::show("min".$currentOptionArray["MinimumOrderAmountForZeroRate"]);
 						debug::show("amount".$amount);
 						if($currentOptionArray["MinimumOrderAmountForZeroRate"] < $amount) {
 							self::$worked_out_charges =  0;
