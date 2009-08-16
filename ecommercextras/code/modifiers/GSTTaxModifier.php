@@ -135,7 +135,12 @@ class GSTTaxModifier extends OrderModifier {
 
 // 					 *** title function
 	function Name() {
-		return $this->ID ? $this->Name : $this->LiveName();
+		if( $this->ID) {
+			$this->Name
+		}
+		else {
+			$this->LiveName();
+		}
 	}
 
 	protected function LiveName() {
@@ -159,7 +164,7 @@ class GSTTaxModifier extends OrderModifier {
 		else {
 			$end = ' (included in the above price) ';
 		}
-		$end .= ' - sale going to: '.$countryCode;
+		$end .= ' - country code applicable to sale: '.$countryCode;
 		return $start.$name.$end;
 	}
 
@@ -201,12 +206,13 @@ class GSTTaxModifier extends OrderModifier {
 		$this->Country = $this->LiveCountry();
 		$this->Rate = $this->LiveRate();
 		$this->TableValue = $this->TableValue();
+		$this->Name = $this->LiveName();
 		$this->TaxType = $this->LiveIsExclusive() ? 'Exclusive' : 'Inclusive';
 		$this->DebugString = $this->debugMessage;
 	}
 
 
-// ajax  NEED IT\\\
+// ajax  NEED TO OVERRIDE THE STANDARD ONE..
 	function updateForAjax(array &$js) {
 		$amount = $this->Charge();
 		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $amount);

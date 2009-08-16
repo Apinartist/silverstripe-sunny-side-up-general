@@ -13,6 +13,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 // 					 *** static variables
 
 	static $db = array(
+		"Name" => "Text",
 		"PickupOrDeliveryType" => "Varchar(255)",
 		"TotalWeight" => "Double",
 		"SerializedCalculationArray" => "Text",
@@ -284,6 +285,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 // 					 *** database functions
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
+		$this->Name = $this->LiveName();
 		$this->PickupOrDeliveryType = $this->PickupOrDeliveryType();
 		$this->TotalWeight = $this->totalWeight();
 		$this->SerializedCalculationArray = serialize($this->PickupOrDeliveryTypeArray());
