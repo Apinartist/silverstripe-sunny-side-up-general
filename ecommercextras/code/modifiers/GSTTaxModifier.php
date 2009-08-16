@@ -109,7 +109,7 @@ class GSTTaxModifier extends OrderModifier {
 		$countryCode = $this->LiveCountry();
 		$this->debugMessage .= "<hr />country code: ".$countryCode;
 		if(isset(self::$rates_by_country[$countryCode])) {
-			//$this->debugMessage .= "<hr />using rate: ".self::$rates_by_country[$countryCode];
+			$this->debugMessage .= "<hr />using rate: ".self::$rates_by_country[$countryCode];
 			return self::$rates_by_country[$countryCode];
 		}
 		else {
@@ -159,6 +159,7 @@ class GSTTaxModifier extends OrderModifier {
 		else {
 			$end = ' (included in the above price) ';
 		}
+		$end .= ' - sale going to: '.$countryCode;
 		return $start.$name.$end;
 	}
 
