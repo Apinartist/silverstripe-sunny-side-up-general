@@ -30,19 +30,15 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 		else  {
 			return $product = Versioned::get_version('Product', $this->_productID, $this->_productVersion);
 		}
-		$product->Price = $this->UnitPrice();
 		return $product;
 	}
 
 	function UnitPrice() {
 		//check current record
-		print_r($this);
-		debug::show($this->UsesAlternativePrice);
-		debug::show($this->UnitPriceAlternative);
 		if($this->_usesAlternativePrice) {
 			return $this->_unitPriceAlternative;
 		}
-		elseif($this->UsesAlternativePrice && $this->ID) {
+		elseif($this->UsesAlternativePrice) {
 			return $this->UnitPriceAlternative;
 		}
 		else {
