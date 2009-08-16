@@ -36,6 +36,8 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 
 	function UnitPrice() {
 		//check current record
+		debug::show($this->UsesAlternativePrice);
+		debug::show($this->UnitPriceAlternative);
 		if($this->_usesAlternativePrice) {
 			return $this->_unitPriceAlternative;
 		}
