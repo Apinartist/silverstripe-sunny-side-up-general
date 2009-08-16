@@ -39,7 +39,7 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 		if($this->_usesAlternativePrice) {
 			return $this->_unitPriceAlternative;
 		}
-		elseif($this->UsesAlternativePrice) {
+		elseif($this->UsesAlternativePrice && $this->ID) {
 			return $this->UnitPriceAlternative;
 		}
 		else {
