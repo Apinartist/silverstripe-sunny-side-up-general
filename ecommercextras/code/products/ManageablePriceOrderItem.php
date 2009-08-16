@@ -2,8 +2,9 @@
 
 class ManageablePriceOrderItem extends Product_OrderItem {
 
-	protected $_unitPriceAlternative;
 	protected $_usesAlternativePrice;
+
+	protected $_unitPriceAlternative;
 
 	static $db = array(
 		'UsesAlternativePrice' => 'Boolean',
@@ -14,9 +15,18 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 		'Product' => 'Product'
 	);
 
-	public function __construct($product = null, $quantity = 1) {
-		print_r($product);
- 		parent::__construct($product, $quantity);
+	public function __construct($object = null, $quantity = 1) {
+		// Case 1: Constructed by getting OrderItem from DB
+		if(is_array($object)) {
+			$this->_usesAlternativePrice = $object['UsesAlternativePrice'];
+			$this->_unitPriceAlternative = $object['UnitPriceAlternative'];
+		}
+		// Case 2: Constructed in memory
+		if(is_object($object)) {
+			$this->_usesAlternativePrice = $object->UsesAlternativePrice;
+			$this->_unitPriceAlternative = $object->UnitPriceAlternative;
+		}
+ 		parent::__construct($object, $quantity);
 	}
 
 	public function setAlternativeUnitPrice($price) {
@@ -35,9 +45,6 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 	}
 
 	function UnitPrice() {
-		print_r($this);
-		debug::show($this->UsesAlternativePrice);
-		debug::show($this->UnitPriceAlternative);
 		//check current record
 		if($this->_usesAlternativePrice) {
 			return $this->_unitPriceAlternative;
