@@ -15,6 +15,7 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 	);
 
 	public function __construct($product = null, $quantity = 1) {
+		print_r($product);
  		parent::__construct($product, $quantity);
 	}
 
