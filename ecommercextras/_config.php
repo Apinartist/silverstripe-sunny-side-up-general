@@ -32,9 +32,10 @@
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");
 //RecommendedProductsModifier_Form::set_something_recommended_text("Recommended Additions");
 //RecommendedProductsModifier_Form::set_add_button_text("Add Selected Items");
+//RecommendedProductsModifier_Form::set_order_item_classname("Product_OrderItem");
 
 // *** BONUS PROCUCTS
-//BonusProductModifier::set_order_item_classname("ManageablePriceOrderItem");
+//BonusProductModifier::set_order_item_classname("Product_OrderItem");
 
 // *** GST TAX MODIFIER
 //GSTTaxModifier::set_for_country($country = "NZ", $rate = "12.5", $name = "GST", $inclexcl = "inclusive");

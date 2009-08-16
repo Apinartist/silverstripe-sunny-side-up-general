@@ -74,13 +74,17 @@ class RecommendedProductsModifier extends OrderModifier {
 
 class RecommendedProductsModifier_Form extends Form {
 
-	private static $more_details_link_text = "product details ...";
+	protected  static $more_details_link_text = "product details ...";
 
-	private static $nothing_recommended_text = " ";
+	protected  static $nothing_recommended_text = " ";
 
-	private static $something_recommended_text = "Recommended Additions";
+	protected  static $something_recommended_text = "Recommended Additions";
 
-	private static $add_button_text = "Add Selected Items";
+	protected  static $add_button_text = "Add Selected Items";
+
+
+	protected static $order_item_classname = "Product_OrderItem";
+
 
 	static function set_more_details_link_text($v) {self::$more_details_link_text = $v;}
 
@@ -89,6 +93,8 @@ class RecommendedProductsModifier_Form extends Form {
 	static function set_something_recommended_text($v) {self::$something_recommended_text = $v;}
 
 	static function set_add_button_text($v) {self::$add_button_text = $v;}
+
+	static function set_order_item_classname($v) {self::$order_item_classname = $v;}
 
 	function __construct($controller, $name) {
 		$InCartIDArray = array();
@@ -167,7 +173,7 @@ class RecommendedProductsModifier_Form extends Form {
 		if(is_array($URLSegments) && count($URLSegments)) {
 			$itemsToAdd = DataObject::get("Product", 'URLSegment IN ("'.implode('","', $URLSegments).'")');
 			foreach($itemsToAdd as $item) {
-				ShoppingCart::add_new_item(new Product_OrderItem($item));
+				ShoppingCart::add_new_item(new self::$order_item_classname($item));
 			}
 		}
 		if(Director::is_ajax()) {

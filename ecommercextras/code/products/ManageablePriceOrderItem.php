@@ -33,6 +33,7 @@ class ManageablePriceOrderItem extends Product_OrderItem {
 	}
 
 	function UnitPrice() {
+		return 11111;
 		//check current record
 		if($this->_unitPriceAlternative) {
 			return $this->_unitPriceAlternative;
