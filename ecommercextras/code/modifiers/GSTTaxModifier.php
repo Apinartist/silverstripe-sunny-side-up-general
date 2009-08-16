@@ -95,7 +95,6 @@ class GSTTaxModifier extends OrderModifier {
 
 	protected function LiveCountry() {
 		if(!self::$current_country_code) {
-			debug::show(EcommerceRole::findCountry());
 			self::$current_country_code = EcommerceRole::findCountry();
 		}
 		return self::$current_country_code;
