@@ -10,6 +10,9 @@
  * 1. item has not been added and thus will be added and qty set
  * 2. item has already been added and qty is updated
  * 3. item should be removed because parent item is no longer in cart
+ * REQUIRES: ManageablePriceOrderItem from this module,
+ * or another Product_OrderItem extension that has the function
+ * "setAlternativeUnitPrice" for setting the bonus price.
  */
 class BonusProductModifier extends OrderModifier {
 
@@ -26,13 +29,13 @@ class BonusProductModifier extends OrderModifier {
 
 	protected static $savings = 0;
 
-	protected static $order_item_classname = "Product_OrderItem";
+	protected static $order_item_classname = "ManageablePriceOrderItem";
 
 	protected static $bonus_product_array = null;
 
 	protected static $bonus_price = 0;
 
-// 					 *** static functions \\\
+// 					 *** static functions
 
 	static function set_title($v) {
 		self::$title = $v;
