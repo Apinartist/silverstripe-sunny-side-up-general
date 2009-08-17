@@ -16,6 +16,21 @@ Documentation
 Provides extra functionality for the SS ecommerce
 code base.
 
+DECORATORS:
+
+AjaxOrder: this is one of the core files of this module that
+allows you to add ajax functionality for adding and deleting
+from cart. It also has function for deleting all cookie-nised
+content, which can be useful for testing purposes.
+TO DO:
+* move the testing stuff to its own decorator.
+* provide more html snippets for ajax stuff
+
+
+
+
+
+
 
 Installation Instructions
 -----------------------------------------------
