@@ -38,7 +38,39 @@ MODIFIERS
 BonusProductModifier: allows you to add products to cart at a reduced
 or zero price.
 
+GSTTaxModifier: makes working with GST easier.  TO DO: create
+report that shows GST takings per day, month, etc...
 
+NewsletterSignupModifier: allows you to add a tickbox in the checkout page
+for customers to sign-up for your newsletter.  TO DO: actually
+save the data with the member.
+
+PickUpOrDeliveryModifier: allows for a wide range of pick-up /
+delivery option with associated pricing. It does NOT relete to the
+country chosen in the member field "country".  Instead, you can make
+a dropdown of options (e.g. nationwide delivery, delivery to europe,
+pick-up from store or whatever).
+
+RecommendedProductsModifier: allows you to recommend products as
+accessories to other products (i.e. as recommended products) and
+show those products on the checkout page.
+
+PAYMENT
+
+DirectCreditPayment: the option for people who want to pay into
+a bank account rather than cheque payment.
+
+PRODUCTS
+
+ManageablePriceOrderItem: this class extends Product_OrderItem,
+allowing you to change the price of a product when it is being
+added to the cart.  This class is required by BonusProductModifier.
+
+REPORTS:
+
+SearchableOrderReport: this is for the report section of the CMS.
+It gives you another report that helps you search for orders.
+TO DO: make it work!!!!!!
 
 
 

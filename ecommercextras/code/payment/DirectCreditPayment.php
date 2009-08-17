@@ -19,7 +19,6 @@ class DirectCreditPayment extends Payment {
 
 	function getPaymentFormFields() {
 		return new FieldSet(
-			// retrieve DirectCredit content from the DirectCreditContent() method on this class
 			new HiddenField("DirectCredit", "DirectCredit", 0)
 		);
 	}
