@@ -26,6 +26,19 @@ TO DO:
 * move the testing stuff to its own decorator.
 * provide more html snippets for ajax stuff
 
+FORMS:
+
+OrderFormWithoutShippingAddress: pretty much self-explainatory.
+It takes the standard OrderForm and changes it after it has been
+built.  We do it this way to allow easy ecommerce modules
+upgrades without having to hack the core.
+
+MODIFIERS
+
+BonusProductModifier: allows you to add products to cart at a reduced
+or zero price.
+
+
 
 
 

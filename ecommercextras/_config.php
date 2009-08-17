@@ -12,11 +12,22 @@
 // *** EXTENSIONS
 //DataObject::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
-//Order::set_modifiers(array('RecommendedProducts','BonusProductModifier', 'PickUpOrDelivery','GSTTaxModifier'));
+//Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier'));
 
 // *** PICK UP OR DELIVERY
 // can set one or more pickup options.
-//PickUpOrDeliveryModifier::set_pickup_option($code = "pickup", $name = "Pick-Up", $minimumDeliveryCharge = 0, $maximumDeliveryCharge = 999999999, $minimumOrderAmountForZeroRate = 999999999, $weightMultiplier =  0 , $percentage = 0.2, $fixedCost = 0);
+//PickUpOrDeliveryModifier::set_pickup_option(
+/*
+		$code = "pickup",
+		$name = "Pick-Up",
+		$minimumDeliveryCharge = 0,
+		$maximumDeliveryCharge = 999999999,
+		$minimumOrderAmountForZeroRate = 999999999,
+		$weightMultiplier =  0 ,
+		$percentage = 0.2,
+		$fixedCost = 0
+	);
+*/
 //PickUpOrDeliveryModifier::set_default_amount(10);
 //PickUpOrDeliveryModifier::set_default_title("New Zealand Delivery");
 //PickUpOrDeliveryModifier_Form::set_ajaxcart_template_name("AjaxCheckoutCart");
@@ -30,6 +41,7 @@
 
 // *** BONUS PROCUCTS
 //BonusProductModifier::set_order_item_classname("Product_OrderItem");
+//BonusProductModifier::set_bonus_price(0);
 
 // *** GST TAX MODIFIER
 //GSTTaxModifier::set_for_country($country = "NZ", $rate = "12.5", $name = "GST", $inclexcl = "inclusive");

@@ -30,6 +30,8 @@ class BonusProductModifier extends OrderModifier {
 
 	protected static $bonus_product_array = null;
 
+	protected static $bonus_price = 0;
+
 // 					 *** static functions \\\
 
 	static function set_title($v) {
@@ -40,6 +42,10 @@ class BonusProductModifier extends OrderModifier {
 		self::$order_item_classname = $v;
 	}
 
+	static function set_bonus_price($v) {
+		self::$bonus_price = $v;
+	}
+
 	static function show_form() {
 		return self::workout_savings();
 	}
@@ -47,7 +53,6 @@ class BonusProductModifier extends OrderModifier {
 	static function get_form($controller) {
 		return false;
 	}
-
 
 // 					 *** display functions
 	function CanRemove() {
@@ -136,7 +141,7 @@ class BonusProductModifier extends OrderModifier {
 									//foreach product in cart get recommended products
 									//debug::show("adding $product->Title as bonus product");
 									$orderItem = new self::$order_item_classname($product);
-									$orderItem->setAlternativeUnitPrice(0.001);
+									$orderItem->setAlternativeUnitPrice(self::$bonus_price);
 									ShoppingCart::add_new_item($orderItem);
 								}
 								if(array_key_exists($bonusItemID, $newBonusProductArray)) {
