@@ -16,6 +16,9 @@ Documentation
 Provides extra functionality for the SS ecommerce
 code base.
 
+The list below provides an overview of what is available.
+Please also have a look at the code itself before installing.
+
 DECORATORS:
 
 AjaxOrder: this is one of the core files of this module that
@@ -33,7 +36,7 @@ It takes the standard OrderForm and changes it after it has been
 built.  We do it this way to allow easy ecommerce modules
 upgrades without having to hack the core.
 
-MODIFIERS
+MODIFIERS:
 
 BonusProductModifier: allows you to add products to cart at a reduced
 or zero price.
@@ -55,12 +58,12 @@ RecommendedProductsModifier: allows you to recommend products as
 accessories to other products (i.e. as recommended products) and
 show those products on the checkout page.
 
-PAYMENT
+PAYMENT:
 
 DirectCreditPayment: the option for people who want to pay into
 a bank account rather than cheque payment.
 
-PRODUCTS
+PRODUCTS:
 
 ManageablePriceOrderItem: this class extends Product_OrderItem,
 allowing you to change the price of a product when it is being
