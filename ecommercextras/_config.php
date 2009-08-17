@@ -52,7 +52,7 @@
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
 
 // *** Ajax Order
-//AjaxOrder_Controller::set_order_item_classname("ManageablePriceOrderItem");
+//AjaxOrder_Controller::set_order_item_classname("Product_OrderItem");
 //AjaxOrder_Controller::set_product_classname("Product");
 
 //===================---------------- END ecommercextra MODULE ----------------===================
