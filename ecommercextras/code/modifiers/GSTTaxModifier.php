@@ -47,9 +47,9 @@ class GSTTaxModifier extends OrderModifier {
 		self::$names_by_country[$country] = $name;
 		self::$rates_by_country[$country] = $rate;
 		switch($inclexcl) {
-			case 'Inclusive' : self::$excl_by_country[$country] = false; break;
-			case 'Exclusive' : self::$excl_by_country[$country] = true; break;
-			default: user_error("GSTTaxModifier::set_for_country - bad argument '$inclexcl' for \$inclexl.  Must be 'inclusive' or 'exclusive'.", E_USER_ERROR);
+			case 'Inclusive' || 'inclusive' : self::$excl_by_country[$country] = false; break;
+			case 'Exclusive' || 'exclusive' : self::$excl_by_country[$country] = true; break;
+			default: user_error("GSTTaxModifier::set_for_country - bad argument '$inclexcl' for \$inclexl.  Must be 'Inclusive' or 'Exclusive'.", E_USER_ERROR);
 		}
 	}
 
