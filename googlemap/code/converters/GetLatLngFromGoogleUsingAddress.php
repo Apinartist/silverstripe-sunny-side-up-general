@@ -72,8 +72,8 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 
 	public static function get_geocode_obj($q) {
 
-		if(!GoogleMapAPIKey) {
-			user_error('GetLatLngFromGoogleUsingAddress::get_geocode_obj() needs a valid Google Maps API Key', E_USER_ERROR);
+		if(!defined("GoogleMapAPIKey")) {
+			user_error('Please define a valid Google Maps API Key: GoogleMapAPIKey', E_USER_ERROR);
 		}
 
 		if(empty($q)) return false;
