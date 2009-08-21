@@ -6,6 +6,21 @@
 	Each start of a new section will tell you what to look for.
 	Make sure to also check for the within paragraph formatting:
 </p>
+<p>
+	Paragraph Number 2: Below is a variety of styles that you may use in your SilverStripe Content Management System.
+	The styles should look the same (or similar) in your Content Management System as they do on this page.
+	Below, each special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
+	Each start of a new section will tell you what to look for.
+	Make sure to also check for the within paragraph formatting:
+</p>
+<p>
+	Paragraph Number 3: Below is a variety of styles that you may use in your SilverStripe Content Management System.
+	The styles should look the same (or similar) in your Content Management System as they do on this page.
+	Below, each special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
+	Each start of a new section will tell you what to look for.
+	Make sure to also check for the within paragraph formatting:
+</p>
+<h3>bold, italic, underline, and links</h3>
 <ul>
 	<li><strong>bold 1</strong>, <b>bold 2</b></li>
 	<li><u>underlined</u></li>
