@@ -1,4 +1,3 @@
-<% include BasicContent %>
 <% if ShowThankYouMessage %>
 <div id="CampaignMonitorSignupPageThankYou" class="CampaignMonitorSignupPageDiv">
 $ThankYouMessage
