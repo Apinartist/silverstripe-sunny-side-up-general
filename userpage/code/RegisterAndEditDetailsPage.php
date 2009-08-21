@@ -62,7 +62,7 @@ class RegisterAndEditDetailsPage extends Page {
 	}
 
 	public function canCreate() {
-		return !DataObject::get_one("RegisterAndEditDetailsPage");
+		return !DataObject::get_one("SiteTree", 'ClassName ="RegisterAndEditDetailsPage"');
 	}
 
 	public function canDelete() {
@@ -89,9 +89,8 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 
 	function index() {
 		if(isset($_GET["ajax"])) {
-			return $this->renderWith(array("Thickbox", "RegisterPage"));
+			return $this->renderWith(array("Thickbox", "RegisterAndEditDetailsPage"));
 		}
-
 		return array();
 	}
 
