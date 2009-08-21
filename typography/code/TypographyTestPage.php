@@ -43,6 +43,9 @@ class TypographyTestPage extends Page {
 				Database::alteration_message("TypographyTestPage","created");
 			}
 		}
+		if($page = DataObject::get_one("SiteTree", 'ClassName <> "TypographyTestPage" AND URLSegment = "typo"')
+			Database::alteration_message("WARNING: there is a page called typo - this is usually reserved for TypographyTestPage - but the page called typo is not a TypographyTestPage, but rather a ".$page->ClassName,"deleted");
+		}
 	}
 
 
