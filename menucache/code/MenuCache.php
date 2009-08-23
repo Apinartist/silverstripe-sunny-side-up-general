@@ -146,7 +146,7 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 	function clearmenucache () {
-		foreach(self:$tables_to_clear as $table) {
+		foreach(self::$tables_to_clear as $table) {
 			foreach(self::$fields as $field) {
 				$sql = 'Update `'.$table.'` Set `'.$field.'` = ""';
 				DB::query($sql);
