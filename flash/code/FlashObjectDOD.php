@@ -4,7 +4,7 @@
 	@ see http://www.swffix.org/swfobject/generator/
 */
 
-class FlashObjectDOD extends DataObjectDecorator {
+class FlashObjectDOD extends SiteTreeDecorator {
 
 	function extraDBFields(){
 		return array(
