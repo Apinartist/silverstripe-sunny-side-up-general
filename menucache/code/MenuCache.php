@@ -161,17 +161,13 @@ class MenuCache_controller extends Extension {
 
 	static $allowed_actions = array("showcachedfield","clearmenucache","showuncachedmenu");
 
-	function showcachedfield($actions) {
-		$fieldNumber = $actions["ID"];
+	function showcachedfield($httpRequest) {
+		$fieldNumber = $httpRequest->allParams["ID"];
 		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
 
-	function showuncachedmenu($actions) {
-		print_r($actions);
-		echo "<hr />";
-		print_r($factions);
-		die();
-		$fieldNumber = $actions["ID"];
+	function showuncachedmenu($httpRequest) {
+		$fieldNumber = $httpRequest->allParams["ID"];
 		$this->owner->clearmenucache();
 		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
