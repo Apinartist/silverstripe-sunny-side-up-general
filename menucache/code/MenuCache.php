@@ -96,13 +96,13 @@ class MenuCache extends DataObjectDecorator {
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 
 
-	function CachedSection($fieldNumber) {
+	function CachedField($fieldNumber) {
 		$fieldName = self::fieldMaker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearmenucache();
 		}
 		if(isset(self::$fields[$fieldNumber])) {
-			user_error("$fieldName is not a field that can be cached", E_USER_NOTICE);
+			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
@@ -115,10 +115,10 @@ class MenuCache extends DataObjectDecorator {
 				}
 				$sql = 'Update `SiteTree_Live` Set `$fieldName` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
-				return "-----------------------------##--------------------".$content;
+				return "-----------------------------#1#--------------------".$content;
 			}
 			else {
-				return $this->owner->$fieldName;
+				return "-----------------------------#2#--------------------".$this->owner->$fieldName;
 			}
 		}
 
