@@ -29,9 +29,11 @@ class MenuCache extends DataObjectDecorator {
 			"DoNotCacheMenu" => "Boolean",
 			"CacheEntirePage" => "Boolean"
 		);
+		/*
 		foreach(self::$fields as $key => $field) {
 			$dbArray[self::fieldMaker($key)]  = "HTMLText";
 		}
+		*/
 		return array(
 			'db' =>  array(
 				$dbArray
