@@ -8,8 +8,8 @@ class MenuCache extends DataObjectDecorator {
 
 	protected static $fields = array(
 		0 => "Header",
-		2 => "Menu",
-		1 => "Footer"
+		1 => "Menu",
+		2 => "Footer"
 	);
 
 	static function set_fields($array) {
