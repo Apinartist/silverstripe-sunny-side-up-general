@@ -26,10 +26,11 @@ class MenuCache extends DataObjectDecorator {
 
 	function extraDBFields(){
 		$dbArray = array(
-			"DoNotMenuCache" => "Boolean"
+			"DoNotCacheMenu" => "Boolean",
+			"CacheEntirePage" => "Boolean"
 		);
 		foreach(self::$fields as $key => $field) {
-			$dbArray[$this->fieldMaker($key)]  = "HTMLText"
+			$dbArray[$this->fieldMaker($key)]  = "HTMLText";
 		}
 		return array(
 			'db' =>  array(
@@ -38,7 +39,11 @@ class MenuCache extends DataObjectDecorator {
 		);
 	}
 
-
+	function updateCMSFields(FieldSet &$fields) {
+		$fields->addFieldToTab("Root.Caching", new CheckboxField("DoNotCacheMenu","Do Not Cache Menu"));
+		$fields->addFieldToTab("Root.Caching", new CheckboxField("CacheEntirePage","Cache the entire page"));
+		return $fields;
+	}
 
 	//------------------ static publisher ------------------ ------------------ ------------------ ------------------
 	/**
@@ -101,7 +106,7 @@ class MenuCache extends DataObjectDecorator {
 			user_error("$fieldName is not a field that can be cached", E_USER_NOTICE);
 		}
 		else {
-			if(!$this->owner->$fieldName && !$this->owner->DoNotMenuCache) {
+			if(!$this->owner->$fieldName && !$this->owner->DoNotCacheMenu) {
 				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldNumber);
 				if(is_object($response)) {
 					$content = $response->getBody();
