@@ -26,8 +26,7 @@ class MenuCache extends DataObjectDecorator {
 
 	function extraDBFields(){
 		$dbArray = array(
-			"DoNotCacheMenu" => "Boolean",
-			"CacheEntirePage" => "Boolean"
+			"DoNotCacheMenu" => "Boolean"
 		);
 		foreach(self::$fields as $key => $field) {
 			$dbArray[self::fieldMaker($key)]  = "HTMLText";

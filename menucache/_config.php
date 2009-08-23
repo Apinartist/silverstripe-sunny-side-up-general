@@ -11,5 +11,6 @@
 //-- static publishing --
 //Object::add_extension("SiteTree", "FilesystemPublisher('cache/', 'php')");
 //MenuCache::add_class_name_to_cache("HomePage");
+//MenuCache::set_fields("Header", "Menu", "Footer");
 //===================---------------- START metatags MODULE ----------------===================
 
