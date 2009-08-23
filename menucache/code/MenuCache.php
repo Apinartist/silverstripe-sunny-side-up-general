@@ -97,7 +97,7 @@ class MenuCache extends DataObjectDecorator {
 	function CachedField($fieldNumber) {
 		$fieldName = self::fieldMaker($fieldNumber);
 		if(isset($_GET["flush"])) {
-			$this->clearmenucache();
+			$this->clearfieldcache();
 		}
 		if(!isset(self::$fields[$fieldNumber])) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
@@ -138,11 +138,11 @@ class MenuCache extends DataObjectDecorator {
 
 
 	function onBeforeWrite() {
-		$this->clearmenucache();
+		$this->clearfieldcache();
 		parent::onBeforeWrite();
 	}
 
-	function clearmenucache () {
+	function clearfieldcache () {
 		foreach(self::$tables_to_clear as $table) {
 			foreach(self::$fields as $key => $field) {
 				$fieldName = self::fieldMaker($key);
@@ -157,7 +157,7 @@ class MenuCache extends DataObjectDecorator {
 
 class MenuCache_controller extends Extension {
 
-	static $allowed_actions = array("showcachedfield","clearmenucache","showuncachedmenu");
+	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
 
 	function showcachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
@@ -166,7 +166,7 @@ class MenuCache_controller extends Extension {
 
 	function showuncachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
-		$this->owner->clearmenucache();
+		$this->owner->clearfieldcache();
 		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
 
