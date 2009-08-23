@@ -101,7 +101,7 @@ class MenuCache extends DataObjectDecorator {
 		if(isset($_GET["flush"])) {
 			$this->clearmenucache();
 		}
-		if(isset(self::$fields[$fieldNumber])) {
+		if(!isset(self::$fields[$fieldNumber])) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
