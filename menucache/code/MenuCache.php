@@ -32,7 +32,6 @@ class MenuCache extends DataObjectDecorator {
 		foreach(self::$fields as $key => $field) {
 			$dbArray[self::fieldMaker($key)]  = "HTMLText";
 		}
-		print_r($dbArray);
 		return array(
 			'db' =>  array(
 				$dbArray
