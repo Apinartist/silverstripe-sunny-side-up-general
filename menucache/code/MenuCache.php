@@ -9,7 +9,7 @@ class MenuCache extends DataObjectDecorator {
 	protected static $fields = array(
 		0 => "Header",
 		2 => "Menu",
-		1 => "Footer",
+		1 => "Footer"
 	);
 
 	static function set_fields($array) {
@@ -32,6 +32,7 @@ class MenuCache extends DataObjectDecorator {
 		foreach(self::$fields as $key => $field) {
 			$dbArray[self::fieldMaker($key)]  = "HTMLText";
 		}
+		die($dbArray);
 		return array(
 			'db' =>  array(
 				$dbArray
