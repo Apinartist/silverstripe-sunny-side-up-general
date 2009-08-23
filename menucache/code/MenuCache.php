@@ -162,13 +162,13 @@ class MenuCache_controller extends Extension {
 
 	function showcachedfield($actions) {
 		$fieldNumber = $actions["ID"];
-		return $this->owner->renderWith('UsedToCreate'.$fieldNumber.'Cache');
+		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
 
 	function showuncachedmenu($actions) {
 		$fieldNumber = $actions["ID"];
 		$this->owner->clearmenucache();
-		return $this->owner->renderWith('UsedToCreate'.$fieldNumber.'Cache');
+		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
 
 
