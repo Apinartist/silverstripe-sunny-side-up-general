@@ -29,7 +29,7 @@ class MenuCache extends DataObjectDecorator {
 			"DoNotMenuCache" => "Boolean"
 		);
 		foreach(self::$fields as $key => $field) {
-			$dbArray[$this->fieldMaker($key)]  => "HTMLText"
+			$dbArray[$this->fieldMaker($key)]  = "HTMLText"
 		}
 		return array(
 			'db' =>  array(
