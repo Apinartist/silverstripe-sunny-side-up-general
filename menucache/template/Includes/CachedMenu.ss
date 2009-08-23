@@ -1,1 +1,0 @@
-please add this file CachedMenu to your themed folder with your usual menu in it.
