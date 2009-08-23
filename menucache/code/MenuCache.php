@@ -42,7 +42,6 @@ class MenuCache extends DataObjectDecorator {
 
 	function updateCMSFields(FieldSet &$fields) {
 		$fields->addFieldToTab("Root.Caching", new CheckboxField("DoNotCacheMenu","Do Not Cache Menu"));
-		$fields->addFieldToTab("Root.Caching", new CheckboxField("CacheEntirePage","Cache the entire page"));
 		return $fields;
 	}
 
