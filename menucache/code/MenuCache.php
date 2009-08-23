@@ -115,10 +115,10 @@ class MenuCache extends DataObjectDecorator {
 				}
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
-				return "-----------------------------#1#--------------------".$content;
+				return $content;
 			}
 			else {
-				return "-----------------------------#2#--------------------".$this->owner->$fieldName;
+				return $this->owner->$fieldName;
 			}
 		}
 
