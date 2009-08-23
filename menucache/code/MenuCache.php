@@ -30,13 +30,17 @@ class MenuCache extends DataObjectDecorator {
 			"CacheEntirePage" => "Boolean"
 		);
 		foreach(self::$fields as $key => $field) {
-			$dbArray[$this->fieldMaker($key)]  = "HTMLText";
+			$dbArray[self::fieldMaker($key)]  = "HTMLText";
 		}
 		return array(
 			'db' =>  array(
 				$dbArray
 			)
 		);
+	}
+
+	protected static function fieldMaker($fieldNumber) {
+		return "CachedSection".$fieldNumber;
 	}
 
 	function updateCMSFields(FieldSet &$fields) {
@@ -93,12 +97,9 @@ class MenuCache extends DataObjectDecorator {
 
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 
-	protected function fieldMaker($fieldNumber) {
-		return "CachedSection".$fieldNumber;
-	}
 
 	function CachedSection($fieldNumber) {
-		$fieldName = fieldMaker($fieldNumber);
+		$fieldName = self::fieldMaker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearmenucache();
 		}
