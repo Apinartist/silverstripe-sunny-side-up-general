@@ -105,7 +105,7 @@ class MenuCache extends DataObjectDecorator {
 			user_error("$fieldName is not a field that can be cached", E_USER_NOTICE);
 		}
 		else {
-			if(!$this->owner->$fieldName && !$this->owner->DoNotCacheMenu) {
+			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldNumber);
 				if(is_object($response)) {
 					$content = $response->getBody();
@@ -115,7 +115,7 @@ class MenuCache extends DataObjectDecorator {
 				}
 				$sql = 'Update `SiteTree_Live` Set `$fieldName` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
-				return $content;
+				return "-----------------------------##--------------------".$content;
 			}
 			else {
 				return $this->owner->$fieldName;
