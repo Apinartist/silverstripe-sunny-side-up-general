@@ -187,7 +187,10 @@ class MenuCache_controller extends Extension {
 		$fieldNumber = $httpRequest->param("ID");
 		if(99 == $fieldNumber) {
 			$className = $this->owner->ClassName;
-			return $this->owner->renderWith($className, "Page");
+			if("Page" == $className) {
+				$className = "PageCached";
+			}
+			return $this->owner->renderWith($className);
 		}
 		else {
 			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);

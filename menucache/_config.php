@@ -13,5 +13,6 @@
 //MenuCache::add_class_name_to_cache("HomePage");
 //-- field caching --
 //MenuCache::set_fields(array("Header", "Menu", "Footer", "LayoutSection"));
+//MenuCache::set_layout_field(3);
 //===================---------------- START metatags MODULE ----------------===================
 
