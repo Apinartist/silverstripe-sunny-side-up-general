@@ -84,7 +84,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
 				new TextField($name = "TextField", $title = "Text Field Example"),
-				new HeaderField($name = "HeaderField2", $title = "Error Message", 2),
+				new HeaderField($name = "HeaderField2", $title = "Error Message Should Display Below", 2),
 				$errorField,
 				new TextareaField($name = "TextareaField", $title = "Textarea Field", 5, 5),
 				new EmailField("EmailField", "Email address"),
@@ -92,9 +92,11 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
 				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$array),
 				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$array),
+				new CheckboxGroupField($name = "CheckboxSetField",$title = "Checkbox Group Field",$array),
 				new HeaderField($name = "HeaderField3", $title = "HeaderField Level 3", 3),
 				new NumericField($name = "NumericField", $title = "Numeric Field "),
 				new DateField($name = "DateField", $title = "Date Field"),
+				new FileField($name = "FileField", $title = "Upload File"),
 				new CheckboxField($name = "CheckboxField", $title = "Checkbox Field")
 			),
 			$actions = new FieldSet(
