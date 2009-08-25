@@ -119,7 +119,7 @@ class CurrencyConverterWidget extends Widget {
 "svc"=>"el salvador colon",
 "eek"=>"estonian kroon",
 "etb"=>"ethiopian birr",
-"eur"=>"euro",
+"eur"=>"European Union euro",
 "fkp"=>"falkland islands pound",
 "fjd"=>"fiji dollar",
 "fim"=>"finnish markka",
