@@ -171,15 +171,16 @@ class MenuCache_controller extends Extension {
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
 
 	function showcachedfield($httpRequest) {
-		return $this->returnHTML();
+		return $this->returnHTML($httpRequest);
 	}
 
 	function showuncachedfield($httpRequest) {
 		$this->owner->clearfieldcache();
-		return $this->returnHTML();
+		return $this->returnHTML($httpRequest);
 	}
 
-	private function returnHTML() {
+	private function returnHTML($httpRequest) {
+		print_r($httpRequest);
 		$fieldNumber = $httpRequest->param("ID");
 		if(99 == $fieldNumber) {
 			$className1 = $this->owner->ClassName;
