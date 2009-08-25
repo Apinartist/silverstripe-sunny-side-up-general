@@ -104,6 +104,22 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	private $debugMessage = "";
+
+	function __construct() {
+		parent::__construct();
+		if($this->getOption()) {
+			if(count(self::$pickup_options)) {
+				$i = 0;
+				foreach(self::$pickup_options as $key => $option) {
+					if($i > 0) {
+						break;
+					}
+					$this->setOption(self::$pickup_options);
+					$i++;
+				}
+			}
+	}
+
 // 					 *** display
 	function ShowInTable() {
 		return true;
@@ -292,6 +308,21 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$this->DebugString = $this->debugMessage;
 	}
 
+	function setOption($type) {
+		Session::set("PickUpOrDeliveryOption", $type);
+		$this->PickupOrDeliveryType = $type;
+	}
+
+	function getOption() {
+		$a = Session::get("PickUpOrDeliveryOption");
+		$b = $this->PickupOrDeliveryType;
+		if($a || $b) {
+			return true;
+		}
+		return false;
+	}
+
+
 }
 
 class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
@@ -308,8 +339,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		$modifiers = $order->Modifiers();
 		foreach($modifiers as $modifier) {
 			if (get_class($modifier) == 'PickUpOrDeliveryModifier') {
-				Session::set("PickUpOrDeliveryOption", $data['PickupOrDeliveryType']);
-				$modifier->PickupOrDeliveryType = $data['PickupOrDeliveryType'];
+				$modifier->setOption($data['PickupOrDeliveryType']);
 			}
 		}
 		Order::save_current_order();
