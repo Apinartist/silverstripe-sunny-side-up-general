@@ -168,6 +168,9 @@ class MenuCache_controller extends Extension {
 	function showuncachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
 		$this->owner->clearfieldcache();
+		if($fieldNumber == 3) {
+			return $this->owner->renderWith('HomePage');
+		}
 		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
 
