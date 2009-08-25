@@ -28,7 +28,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$this->unsetActionByName("useDifferentShippingAddress");
 
 		//add extra fields
-		foreach($extra_fields as $fieldCombo) {
+		foreach(self::$extra_fields as $fieldCombo) {
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
 		}
 
