@@ -36,15 +36,15 @@ var AjaxOrder = {
 
 	set_LoadingText: function(v) {
 		this.LoadingText = v;
-	}
+	},
 
 	set_BoughtText: function(v) {
 		this.LoadingText = v;
-	}
+	},
 
 	set_ConfirmDeleteText: function(v) {
 		this.ConfirmDeleteText = v;
-	}
+	},
 
 	loadAjax: function(loadIntoElID, URL, el) {
 		jQuery("#" + loadIntoElID).text(AjaxOrder.LoadingText);
