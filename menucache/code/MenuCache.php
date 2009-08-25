@@ -17,6 +17,12 @@ class MenuCache extends DataObjectDecorator {
 		self::$fields = $array;
 	}
 
+	protected static $layout_field = 3;
+
+	static function set_layout_field($number) {
+		self::$layout_field = $number;
+	}
+
 	protected static $class_names_to_cache = array();
 
 	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
@@ -105,7 +111,11 @@ class MenuCache extends DataObjectDecorator {
 		}
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
-				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldNumber);
+				$fieldID = $fieldNumber;
+				if($fieldNumber == self::$layout_field) {
+					$fieldID = 99;
+				}
+				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldID);
 				if(is_object($response)) {
 					$content = $response->getBody();
 				}
@@ -161,18 +171,24 @@ class MenuCache_controller extends Extension {
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
 
 	function showcachedfield($httpRequest) {
-		$fieldNumber = $httpRequest->param("ID");
-		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
+		return $this->returnHTML();
 	}
 
 	function showuncachedfield($httpRequest) {
-		$fieldNumber = $httpRequest->param("ID");
 		$this->owner->clearfieldcache();
-		if($fieldNumber == 3) {
-			return $this->owner->renderWith('HomePage');
+		return $this->returnHTML();
+	}
+
+	private function returnHTML() {
+		$fieldNumber = $httpRequest->param("ID");
+		if(99 == $fieldNumber) {
+			$className1 = $this->owner->ClassName;
+			$className2 = $this->owner->dataRecord->ClassName;
+			debug::show($className1);
+			debug::show($className2);
+			return $this->owner->renderWith($this->owner->ClassName, "Page");
 		}
 		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
 	}
-
 
 }
