@@ -49,9 +49,9 @@ class AjaxOrder extends DataObjectDecorator {
 		Requirements::block("ecommerce/javascript/ecommerce.js");
 		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("ecommercextras/javascript/AjaxOrder.js");
-		if(self::$loading_cart_text) {Requirements::customScript('AjaxOrder.set_LoadingText("'.addslashes(self::$loading_cart_text.'")');}
-		if(self::$in_cart_text) {Requirements::customScript('AjaxOrder.set_InCartText("'.addslashes(self::$in_cart_text.'")');}
-		if(self::$confirm_delete_text) {Requirements::customScript('AjaxOrder.set_ConfirmDeleteText("'.addslashes(self::$confirm_delete_text.'")');}
+		if(self::$loading_cart_text) {Requirements::customScript('AjaxOrder.set_LoadingText("'.Convert::raw2js(self::$loading_cart_text).'")');}
+		if(self::$in_cart_text) {Requirements::customScript('AjaxOrder.set_InCartText("'.Convert::raw2js(self::$in_cart_text).'")');}
+		if(self::$confirm_delete_text) {Requirements::customScript('AjaxOrder.set_ConfirmDeleteText("'.Convert::raw2js(self::$confirm_delete_text).'")');}
 	}
 }
 
