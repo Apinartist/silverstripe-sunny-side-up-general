@@ -315,7 +315,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	function getOption() {
-		return $this->PickUpOrDeliveryType()
+		return $this->PickUpOrDeliveryType();
 	}
 
 
