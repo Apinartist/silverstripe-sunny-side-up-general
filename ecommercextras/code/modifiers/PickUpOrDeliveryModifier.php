@@ -114,7 +114,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					if($i > 0) {
 						break;
 					}
-					$this->setOption(self::$pickup_options);
+					$this->setOption(self::$pickup_options["code"]);
 					$i++;
 				}
 			}

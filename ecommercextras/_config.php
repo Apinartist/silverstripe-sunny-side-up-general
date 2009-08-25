@@ -14,6 +14,12 @@
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
 //Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier'));
 
+//ORDER FORM WITHOUT SHIPPING ADDRESS
+//OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");
+//OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");
+
+
+
 // *** PICK UP OR DELIVERY
 // can set one or more pickup options.
 //PickUpOrDeliveryModifier::set_pickup_option(
