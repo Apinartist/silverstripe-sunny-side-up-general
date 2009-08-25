@@ -180,16 +180,14 @@ class MenuCache_controller extends Extension {
 	}
 
 	private function returnHTML($httpRequest) {
-		print_r($httpRequest);
 		$fieldNumber = $httpRequest->param("ID");
 		if(99 == $fieldNumber) {
-			$className1 = $this->owner->ClassName;
-			$className2 = $this->owner->dataRecord->ClassName;
-			debug::show($className1);
-			debug::show($className2);
-			return $this->owner->renderWith($this->owner->ClassName, "Page");
+			$className = $this->owner->ClassName;
+			return $this->owner->renderWith($className, "Page");
 		}
-		return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
+		else {
+			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
+		}
 	}
 
 }
