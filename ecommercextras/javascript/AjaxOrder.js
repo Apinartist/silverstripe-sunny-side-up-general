@@ -38,7 +38,7 @@ var AjaxOrder = {
 		this.LoadingText = v;
 	},
 
-	set_BoughtText: function(v) {
+	set_InCartText: function(v) {
 		this.LoadingText = v;
 	},
 
