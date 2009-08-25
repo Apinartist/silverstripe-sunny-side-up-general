@@ -118,6 +118,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					$i++;
 				}
 			}
+		}
 	}
 
 // 					 *** display
