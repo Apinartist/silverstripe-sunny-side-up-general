@@ -39,7 +39,7 @@ var AjaxOrder = {
 	},
 
 	set_InCartText: function(v) {
-		this.LoadingText = v;
+		this.InCartText = v;
 	},
 
 	set_ConfirmDeleteText: function(v) {
