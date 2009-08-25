@@ -102,6 +102,9 @@ class MenuCache extends DataObjectDecorator {
 
 
 	function CachedField($fieldNumber) {
+		if(99 == $fieldNumber) {
+			$fieldNumber = self::$layout_field;
+		}
 		$fieldName = self::fieldMaker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearfieldcache();
