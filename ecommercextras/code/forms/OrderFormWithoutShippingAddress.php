@@ -11,21 +11,39 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	protected static $fixed_country_code;
 
+	protected static $extra_fields = array();
+
 	static function set_fixed_country_code($v) {
 		self::$fixed_country_code = $v;
 	}
 
+	static function add_extra_field($tabName, $field) {
+		self::$extra_fields[] = array("TabName" =>$tabName, "FieldObject" => $field);
+	}
 
 	function __construct($controller, $name) {
 		$myForm = parent::__construct($controller, $name);
+
+		//stop people adding different shipping address
 		$this->unsetActionByName("useDifferentShippingAddress");
-		$this->fields->addFieldToTab("", new CheckboxField("ENews", "Sign-up to e-news"));
-		$this->fields->addFieldToTab("", new CheckboxField("ProNewsletter", "Sign-up to pro-newsletter"));
+
+		//add extra fields
+		foreach($extra_fields as $fieldCombo) {
+			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
+		}
+
+		//replace field for address
+		$this->fields->replaceField("Address", new TextField("Address", "Delivery Address (no Postal Box)"));
+		$this->fields->replaceField("AddressLine2", new TextField("AddressLine2", "Postal Code"));
+
+		// fix errors
 		if($message = $this->CustomErrors()) {
 			$this->fields->addFieldToTab("", new HeaderField("ErrorHeading", "Error!"));
 			$this->fields->addFieldToTab("", new LiteralField("ErrorMessage", '<div class="error">'.$message.'</div>'));
 		}
-		$this->resetField("Country", "NZ");
+
+		//$this->resetField("Country", "NZ");
+
 		Requirements::customscript('
 			jQuery("#OrderFormWithoutShippingAddress_OrderForm_action_useDifferentShippingAddress").hide();
 		');
