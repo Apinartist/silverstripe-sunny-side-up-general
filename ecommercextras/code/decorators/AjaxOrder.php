@@ -8,7 +8,7 @@ class AjaxOrder extends DataObjectDecorator {
 
 	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
 
-	static function set_loading_cart_message($v) {
+	static function set_loading_cart_text($v) {
 		self::$loading_cart_text = $v;
 	}
 
