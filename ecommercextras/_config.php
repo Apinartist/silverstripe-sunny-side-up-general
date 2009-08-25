@@ -58,8 +58,14 @@
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
 
 // *** Ajax Order
+
+//AjaxOrder::set_loading_cart_text("Loading Cart");
+//AjaxOrder::set_in_cart_text("In Cart");
+//AjaxOrder::set_confirm_delete_text("Are you sure you want to delete this item?");
 //AjaxOrder_Controller::set_order_item_classname("Product_OrderItem");
 //AjaxOrder_Controller::set_product_classname("Product");
+//AjaxOrder_Controller::set_product_classname("Product");
+
 
 //===================---------------- END ecommercextra MODULE ----------------===================
 

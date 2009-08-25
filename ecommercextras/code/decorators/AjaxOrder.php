@@ -2,6 +2,25 @@
 
 class AjaxOrder extends DataObjectDecorator {
 
+	protected static $loading_cart_text = "Loading Cart ...";
+
+	protected static $in_cart_text = "In Cart";
+
+	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
+
+	static function set_loading_cart_message($v) {
+		self::$loading_cart_text = $v;
+	}
+
+	static function set_in_cart_text($v) {
+		self::$in_cart_text = $v;
+	}
+
+	static function set_confirm_delete_text($v) {
+		self::$confirm_delete_text = $v;
+	}
+
+
 	function Cart() {
 		$this->addAjaxLinkRequirements();
 		HTTP::set_cache_age(0);
@@ -30,6 +49,9 @@ class AjaxOrder extends DataObjectDecorator {
 		Requirements::block("ecommerce/javascript/ecommerce.js");
 		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("ecommercextras/javascript/AjaxOrder.js");
+		if(self::$loading_cart_text) {Requirements::customScript('AjaxOrder.set_LoadingText("'.addslashes(self::$loading_cart_text.'")');}
+		if(self::$in_cart_text) {Requirements::customScript('AjaxOrder.set_InCartText("'.addslashes(self::$in_cart_text.'")');}
+		if(self::$confirm_delete_text) {Requirements::customScript('AjaxOrder.set_ConfirmDeleteText("'.addslashes(self::$confirm_delete_text.'")');}
 	}
 }
 

@@ -22,17 +22,29 @@ var AjaxOrder = {
 
 	LoadingText: "updating cart ... ",
 
-	BoughText: "In Cart",
+	InCartText: "In Cart",
 
 	UnconfirmedDelete: false,
 
 	updatedDivID: "InformationTable",
 
-	ConfirmText: 'Are you sure you would like to remove this item from your cart?',
+	ConfirmDeleteText: 'Are you sure you would like to remove this item from your cart?',
 
 	countryQueryDone: false,
 
 	tableTotalID:  "Table_Order_Total",
+
+	set_LoadingText: function(v) {
+		this.LoadingText = v;
+	}
+
+	set_BoughtText: function(v) {
+		this.LoadingText = v;
+	}
+
+	set_ConfirmDeleteText: function(v) {
+		this.ConfirmDeleteText = v;
+	}
 
 	loadAjax: function(loadIntoElID, URL, el) {
 		jQuery("#" + loadIntoElID).text(AjaxOrder.LoadingText);
@@ -40,7 +52,7 @@ var AjaxOrder = {
 			URL,
 			{},
 			function() {
-				jQuery(el).text(AjaxOrder.BoughText);
+				jQuery(el).text(AjaxOrder.InCartText);
 				jQuery("#" + loadIntoElID).addRemoveLinks();
 			}
 		);
@@ -126,7 +138,7 @@ jQuery.fn.extend({
 	addRemoveLinks: function () {
 		jQuery(this).find(".removeLink").click(
 			function(){
-				if(AjaxOrder.UnconfirmedDelete || confirm(AjaxOrder.ConfirmText)) {
+				if(AjaxOrder.UnconfirmedDelete || confirm(AjaxOrder.ConfirmDeleteText)) {
 					var url = jQuery(this).attr("href");
 					var el = this;
 					jQuery(el).parent("li").css("text-decoration", "line-through");
