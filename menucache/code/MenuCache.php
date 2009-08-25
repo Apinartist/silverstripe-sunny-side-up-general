@@ -9,7 +9,8 @@ class MenuCache extends DataObjectDecorator {
 	protected static $fields = array(
 		0 => "Header",
 		1 => "Menu",
-		2 => "Footer"
+		2 => "Footer",
+		3 => "LayoutSection",
 	);
 
 	static function set_fields($array) {
