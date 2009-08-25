@@ -175,11 +175,15 @@ class MenuCache_controller extends Extension {
 
 	function showcachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
-		echo $this->owner->CachedField($fieldNumber);
+		return $this->returnHTML($httpRequest);
 	}
 
 	function showuncachedfield($httpRequest) {
 		$this->owner->clearfieldcache();
+		return $this->returnHTML($httpRequest);
+	}
+
+	private function returnHTML($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
 		if(99 == $fieldNumber) {
 			$className = $this->owner->ClassName;
