@@ -114,7 +114,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					if($i > 0) {
 						break;
 					}
-					$this->setOption(self::$pickup_options["code"]);
+					$this->setOption(self::$option["code"]);
 					$i++;
 				}
 			}
@@ -315,12 +315,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	function getOption() {
-		$a = Session::get("PickUpOrDeliveryOption");
-		$b = $this->PickupOrDeliveryType;
-		if($a || $b) {
-			return true;
-		}
-		return false;
+		return $this->PickUpOrDeliveryType()
 	}
 
 
