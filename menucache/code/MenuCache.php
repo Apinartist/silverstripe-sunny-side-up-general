@@ -124,7 +124,7 @@ class MenuCache extends DataObjectDecorator {
 				}
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
-				return $content;
+				return "<!-- should be cached in $fieldName START -->".$content."<!-- should be cached in $fieldName END -->";
 			}
 			else {
 				return $this->owner->$fieldName;
@@ -171,7 +171,7 @@ class MenuCache_controller extends Extension {
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
 
 	function showcachedfield($httpRequest) {
-		return $this->returnHTML($httpRequest);
+		echo $this->owner->CachedField();
 	}
 
 	function showuncachedfield($httpRequest) {
