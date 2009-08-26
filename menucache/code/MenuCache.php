@@ -130,7 +130,7 @@ class MenuCache extends DataObjectDecorator {
 				return "<!-- should be cached in $fieldName START -->".$content."<!-- should be cached in $fieldName END -->";
 			}
 			else {
-				return $this->owner->$fieldName;
+				return "<!-- from cached field: $fieldName START -->".$this->owner->$fieldName."<!-- from cached field: $fieldName END -->".;
 			}
 		}
 
