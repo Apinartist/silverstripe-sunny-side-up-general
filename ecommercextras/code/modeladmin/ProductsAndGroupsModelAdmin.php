@@ -7,8 +7,8 @@ class ProductsAndGroupsModelAdmin extends ModelAdmin {
 		self::$managed_models = $array;
 	}
 
-	public static $url_segment = 'ecommerce';
+	public static $url_segment = 'products';
 
-	public static $menu_title = 'Ecommerce';
+	public static $menu_title = 'Products';
 
 }
