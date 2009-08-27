@@ -66,6 +66,9 @@
 //AjaxOrder_Controller::set_product_classname("Product");
 //AjaxOrder_Controller::set_product_classname("Product");
 
+// *** Model Admin
+
+//ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup");
 
 //===================---------------- END ecommercextra MODULE ----------------===================
 
