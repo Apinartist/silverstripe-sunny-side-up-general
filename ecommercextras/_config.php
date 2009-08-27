@@ -68,7 +68,7 @@
 
 // *** Model Admin
 
-//ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup");
+//ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
 
 //===================---------------- END ecommercextra MODULE ----------------===================
 
