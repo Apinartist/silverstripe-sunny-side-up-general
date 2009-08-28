@@ -303,7 +303,7 @@ class GoogleMap extends ViewableData {
 
 	/* turns 0 into false and 1 into true */
 	private function showFalseOrTrue($v) {
-		if($v) {
+		if($v && $v != "false") {
 			return "true";
 		}
 		else{

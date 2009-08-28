@@ -148,6 +148,16 @@ class GoogleMapLocationsObject extends DataObject {
 			}
 		}
 	}
+
+	function findGooglePointsAndWriteIfFound() {
+		$this->findGooglePoints(true);
+		if($this->FullAddress && $this->Longitude && $this->Latitude) {
+			$this->write();
+			return true;
+		}
+		return false;
+	}
+
 	function findGooglePoints($doNotWrite) {
 		if($this) {
 			if(!$this->Manual && ( (!$this->Latitude || !$this->Longitude) || ($this->Latitude && $this->Longitude && !$this->Address) ) ) {
