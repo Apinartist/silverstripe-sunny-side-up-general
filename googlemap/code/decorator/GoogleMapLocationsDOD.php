@@ -72,7 +72,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function hasMap() {
-		if($this->map && $this->owner->HasGeoInfo) {
+		if($this->map) {
 			return true;
 		}
 		else {
