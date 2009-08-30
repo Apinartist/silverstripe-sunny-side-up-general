@@ -119,7 +119,7 @@ class MenuCache extends DataObjectDecorator {
 					$fieldID = 99;
 				}
 				if($this->owner->URLSegment == "Security") {
-					return $this->LoginForm();
+					return $this->owner->LoginForm();
 				}
 				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldID);
 				if(is_object($response)) {
