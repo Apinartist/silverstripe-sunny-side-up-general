@@ -1,0 +1,15 @@
+
+body {
+ padding: 0; margin: 0; height: 100%;
+ font-size: 62.5%;
+ background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
+}
+#content {
+ padding: 67px 220px 0px 210px;
+}
+#menu {
+ position: fixed; bottom: 0px; right: 0px; width: 100%;
+ background-color: #808383;list-style: none;
+}
+
+.clear {clear: both;}
