@@ -23,9 +23,9 @@ LeftAndMain::set_loading_image("themes/main/images/logo.gif");
 //===================---------------- START metatags MODULE ----------------===================
 DataObject::add_extension('SiteTree', 'MetaTagger');
 Object::add_extension('ContentController', 'MetaTagger_Controller');
-MetaTagger::$country = "New Zealand";
-MetaTagger::$copyright = 'owner';
-MetaTagger::$design = 'www.sunnysideup.co.nz';
-MetaTagger::$project = 'mysite';
-MetaTagger::$coding = "www.sunnysideup.co.nz";
+MetaTagger::set_country ( "New Zealand");
+MetaTagger::set_copyright  ('owner');
+MetaTagger::set_design ('www.sunnysideup.co.nz');
+MetaTagger::set_project ('mysite');
+MetaTagger::set_coding ("www.sunnysideup.co.nz");
 //===================---------------- END metatags MODULE ----------------===================
