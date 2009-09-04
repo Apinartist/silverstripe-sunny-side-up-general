@@ -163,25 +163,20 @@ class ShareThis extends SiteTreeDecorator {
 			*/
 
 	public function ShareAll() {
-		if($this->IncludeShareAll()) {
-			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
-			return '
+		$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
+		return '
 <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
 <script type="text/javascript">
-	SHARETHIS.addEntry(
-		{
-			title:"'.urldecode($this->pageTitle).'",
-			summary:"'.urldecode($this->pageTitle).'",
-			url:"'.urldecode($this->pageIcon).'",
-			icon:"'.urldecode($this->pageURL).'"
-		},
-		{button:true}
-	);
+SHARETHIS.addEntry(
+	{
+		title:"'.urldecode($this->pageTitle).'",
+		summary:"'.urldecode($this->pageTitle).'",
+		url:"'.urldecode($this->pageIcon).'",
+		icon:"'.urldecode($this->pageURL).'"
+	},
+	{button:true}
+);
 </script>';
-		}
-		else {
-			return false;
-		}
 	}
 
 	private function bookmarks() {
