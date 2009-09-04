@@ -1,5 +1,5 @@
 #Nav {
- position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none; height: 2.7em;
+ position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none; height: 3.3em;
 }
 #Nav li {
  display: block; padding: 0.77em 1.7em; float: right; list-style: none;
