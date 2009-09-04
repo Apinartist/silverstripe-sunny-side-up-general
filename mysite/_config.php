@@ -75,6 +75,5 @@ SimplestSpamField::set_wrong_answer_message("please check anti-spam field to pro
 //===================---------------- END simplestspam MODULE ----------------===================
 
 //===================---------------- START templateoverview MODULE ----------------===================
-TemplateOverviewPage::set_auto_include(true);
 DataObject::add_extension('SiteTree', 'TemplateOverviewDOD');
 //===================---------------- END templateoverview MODULE ----------------===================
