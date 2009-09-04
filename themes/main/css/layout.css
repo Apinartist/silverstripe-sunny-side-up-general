@@ -14,5 +14,10 @@ body {
 		width: 200px; float: right;
 	}
 
+	#shareThisUL {
+		position: absolute;
+		right: 12px;
+		top: 12px;
+	}
 
 .clear {clear: both;}
