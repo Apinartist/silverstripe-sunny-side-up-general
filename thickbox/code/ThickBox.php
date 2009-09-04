@@ -13,7 +13,7 @@ class ThickBox extends Object {
 		Requirements::block('thickbox/css/thickbox.css');
 	}
 
-	static function setAlternativeLoadingImage($location) {
+	static function setAlternativeLoadingImage($location = "thickbox/images/loading.gif") {
 		Requirements::customScript('var tb_pathToImage = "'.$location.'";');
 	}
 
