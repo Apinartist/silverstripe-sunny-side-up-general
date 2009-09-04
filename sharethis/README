@@ -27,3 +27,12 @@ Thank you
 This module is heavily based on the original
 SS ShareThis module.
 
+TO DO
+-----------------------------------------------
+* make statics protected
+* deal with legacy issues
+* sharethis all adds twice!
+
+
+
+
