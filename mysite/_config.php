@@ -20,6 +20,12 @@ LeftAndMain::setApplicationName("Sunny Side Up Test Website");
 LeftAndMain::set_loading_image("themes/main/images/logo.gif");
 
 
+//===================---------------- START googleAnalyticsbasics MODULE ----------------===================
+DataObject::add_extension('SiteTree', 'GoogleAnalytics');
+GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
+//===================---------------- END googleAnalyticsbasics MODULE ----------------===================
+
+
 //===================---------------- START metatags MODULE ----------------===================
 DataObject::add_extension('SiteTree', 'MetaTagAutomation');
 Object::add_extension('ContentController', 'MetaTagAutomation_controller');
@@ -50,13 +56,6 @@ MetaTagAutomation_controller::set_combine_css_files_into_one(0);
 MetaTagAutomation_controller::set_combine_js_files_into_one(0);
 //===================---------------- END metatags MODULE ----------------===================
 
-
-//===================---------------- START googleAnalyticsbasics MODULE ----------------===================
-DataObject::add_extension('SiteTree', 'GoogleAnalytics');
-GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
-//===================---------------- END googleAnalyticsbasics MODULE ----------------===================
-
-
 //===================---------------- START sharethis MODULE ----------------===================
 DataObject::add_extension('SiteTree', 'ShareThis');
 ShareThis::$EnabledIcons = Array("email", "print", "google", "facebook", "favourites");
@@ -67,3 +66,15 @@ ShareThis::set_always_include (true);
 ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
 //===================---------------- END sharethis MODULE ----------------===================
 
+
+//===================---------------- START simplestspam MODULE ----------------===================
+SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
+SimplestSpamField::set_question_and_answer("Sunny Side Up is based in what country ...", "New Zealand");
+SimplestSpamField::set_explanation_message("this question is here to prevent spam");
+SimplestSpamField::set_wrong_answer_message("please check anti-spam field to proceed");
+//===================---------------- END simplestspam MODULE ----------------===================
+
+//===================---------------- START templateoverview MODULE ----------------===================
+TemplateOverviewPage::set_auto_include(true);
+DataObject::add_extension('SiteTree', 'TemplateOverviewDOD');
+//===================---------------- END templateoverview MODULE ----------------===================
