@@ -1,29 +1,20 @@
 <?php
-/**
-* Class : TextSearch
-*
-* @author  :  MA Razzaque Rupom <rupom_315@yahoo.com>, <rupom.bd@gmail.com>
-*             Moderator, phpResource Group(http://groups.yahoo.com/group/phpresource/)
-*             URL: http://rupom.wordpress.com
-*
-* @version :  1.0
-* Date     :  06/25/2006
-* Purpose  :  Searching and replacing text within files of specified path
-*/
 
+class MySQLDump extends DatabaseAdmin {
+	function change_names() {
+		$path = "/projects/rupom/Recent_FDD/Very_Imps"; //setting search path
+		$logFile = "/projects/rupom/test_search/searchResult.txt"; //setting log file
 
-$path = "/projects/rupom/Recent_FDD/Very_Imps"; //setting search path
-$logFile = "/projects/rupom/test_search/searchResult.txt"; //setting log file
-
-$obj = new TextSearch();
-$obj->setExtensions(array('php')); //setting extensions to search files within
-$obj->addExtension('js');//adding an extension to search within
-$obj->setSearchKey('HTTPRequest');
-$obj->setReplacementKey('SSHTTPRequeset');//setting replacement text if you want to replace matches with that
-$obj->startSearching($path);//starting search
-$obj->showLog();//showing log
-$obj->writeLogToFile($logFile); //writting result to log file
-
+		$obj = new TextSearch();
+		$obj->setExtensions(array('php')); //setting extensions to search files within
+		$obj->addExtension('js');//adding an extension to search within
+		$obj->setSearchKey('HTTPRequest');
+		$obj->setReplacementKey('SSHTTPRequeset');//setting replacement text if you want to replace matches with that
+		$obj->startSearching($path);//starting search
+		$obj->showLog();//showing log
+		$obj->writeLogToFile($logFile); //writting result to log file
+	}
+}
 
 
 /**
