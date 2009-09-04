@@ -1,1 +1,3 @@
-#Nav {display: none;}
+@media print {
+	#Nav {display: none;}
+}
