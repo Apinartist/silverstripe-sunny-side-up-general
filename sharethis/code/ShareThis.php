@@ -19,14 +19,14 @@ class ShareThis extends DataObjectDecorator {
 	* Boolean that determines whether icons are transparent or not.
 	* @var boolean
 	*/
-	static $IconTransparent = false;
+	protected static $IconTransparent = false;
 
 	/**
 	* Boolean that determines whether to show the title of the site next to
 	* the icon.
 	* @var boolean
 	*/
-	static $ShowTitle = true;
+	protected static $ShowTitle = true;
 
 	/**
 	* Sets the enabled icons list. May contain any of the following:
@@ -35,7 +35,7 @@ class ShareThis extends DataObjectDecorator {
 	* Example: ShareIcons::$EnabledIcons = array('digg', 'delicious');
 	* @var array
 	*/
-	static $EnabledIcons = array();
+	protected static $EnabledIcons = array();
 
 	/**
 	* Allows you to specify alternate images for each of the icons. Will be
@@ -43,20 +43,20 @@ class ShareThis extends DataObjectDecorator {
 	* used, it won't try to get transparent/non-transparent images.
 	* @var array
 	*/
-	static $alternate_icons = array();
+	protected static $alternate_icons = array();
 
 	/**
 	* Include on all pages by default
 	* @var boolean
 	*/
-	static $include_by_default = false;
+	protected static $include_by_default = false;
 
 	/**
 	* Include on all pages (NO field required)
 	* @var boolean
 	*/
 
-	static $share_this_all_in_one = false;
+	protected static $share_this_all_in_one = false;
 
 	static $always_include = true;
 
@@ -149,6 +149,10 @@ class ShareThis extends DataObjectDecorator {
 		return $doSet;
 	}
 
+	public function IncludeShareAll() {
+		return self::$share_this_all_in_one;
+	}
+
 			/*
 				summary: (required) utf-8 string, defaults to document.title
 				content: (optional) utf-8 string, defaults to null
@@ -159,7 +163,7 @@ class ShareThis extends DataObjectDecorator {
 			*/
 
 	public function ShareAll() {
-		if(self::$share_this_all_in_one) {
+		if($this->IncludeShareAll()) {
 			$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
 			return '
 <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
