@@ -11,6 +11,7 @@
  		<div id="Layout">
 			$Layout
 		</div>
+		<% include ShareThis %>
 	</div>
 </div>
 </div>
