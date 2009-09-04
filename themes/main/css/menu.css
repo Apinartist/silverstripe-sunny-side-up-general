@@ -1,10 +1,9 @@
 #Nav {
- position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none; height: 2em;
+ position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none; height: 2.7em;
 }
 #Nav li {
- display: block; padding: 0.27em 1em 0.27em 1em; float: right; margin: 0px;
- list-style: none;
+ display: block; padding: 0.77em 1.7em; float: right; list-style: none;
 }
-#Nav li a {font-size: 1.7em;}
+#Nav li a {font-size: 1.9em;}
 #Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
 #Nav li a:hover,#Nav li.current a ,#Nav li.section a {color: #FFCC33;}
