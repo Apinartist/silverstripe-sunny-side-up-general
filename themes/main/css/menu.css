@@ -4,6 +4,6 @@
 			#Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
 			#Nav li a:hover,#Nav li.current a ,#Nav li.section a {color: #FFCC33;}
 	#Nav #SubNav {position: fixed; bottom: 4.1em; left: 0pt; background-color: #BFC1C1; width: 100%; font-size: 0.8em; height: 2.0em;}
-		#SubNav li a:hover,#SubNav li.current a ,#SubNav li.section a {color: #808383;}
-		#SubNav li a:hover,#SubNav li.current a ,#SubNav li.section a {color: #000;}
+		#Nav #SubNav li a:hover,#Nav #SubNav li.current a ,#Nav #SubNav li.section a {color: #808383;}
+		#Nav #SubNav li a:hover,#Nav #SubNav li.current a ,#Nav #SubNav li.section a {color: #000;}
 	#Nav #SubNav #SubSubNav {position: fixed; bottom: 6.3em; left: 0pt; background-color: #BFC1C1; width: 100%; font-size: 0.7em; height: 1.9em;}
