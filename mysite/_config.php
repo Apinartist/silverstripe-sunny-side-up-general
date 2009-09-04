@@ -20,6 +20,10 @@ LeftAndMain::setApplicationName("Sunny Side Up Test Website");
 LeftAndMain::set_loading_image("themes/main/images/logo.gif");
 
 
+//===================---------------- START blog MODULE ----------------===================
+BlogEntry::allow_wysiwyg_editing();
+//===================---------------- END blog MODULE ----------------===================
+
 //===================---------------- START googleAnalyticsbasics MODULE ----------------===================
 DataObject::add_extension('SiteTree', 'GoogleAnalytics');
 GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
