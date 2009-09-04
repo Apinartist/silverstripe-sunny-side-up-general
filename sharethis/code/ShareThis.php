@@ -12,21 +12,21 @@
 	*/
 
 
-class ShareThis extends DataObjectDecorator {
+class ShareThis extends SiteTreeDecorator {
 
 
 	/**
 	* Boolean that determines whether icons are transparent or not.
 	* @var boolean
 	*/
-	protected static $IconTransparent = false;
+	static $IconTransparent = false;//LEGACY
 
 	/**
 	* Boolean that determines whether to show the title of the site next to
 	* the icon.
 	* @var boolean
 	*/
-	protected static $ShowTitle = true;
+	static $ShowTitle = true;//LEGACY
 
 	/**
 	* Sets the enabled icons list. May contain any of the following:
@@ -35,7 +35,7 @@ class ShareThis extends DataObjectDecorator {
 	* Example: ShareIcons::$EnabledIcons = array('digg', 'delicious');
 	* @var array
 	*/
-	protected static $EnabledIcons = array();
+	static $EnabledIcons = array(); //LEGACY
 
 	/**
 	* Allows you to specify alternate images for each of the icons. Will be
