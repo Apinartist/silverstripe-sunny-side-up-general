@@ -3,15 +3,7 @@
 	<% if Children %> <% if LinkOrSection = section %>
 	<ul id="SubNav">
 		<% control Children %>
-		<li class="$FirstLast $LinkingMode"><a href="$Link">$MenuTitle</a>
-			<% if Children %><% if LinkOrSection = section %>
-			<ul id="SubSubNav">
-				<% control Children %>
-				<li class="$FirstLast $LinkingMode"><a href="$Link">$MenuTitle</a></li>
-				<% end_control %>
-			</ul>
-			<% end_if %><% end_if %>
-		</li>
+		<li class="$FirstLast $LinkingMode"><a href="$Link">$MenuTitle</a></li>
 		<% end_control %>
 	</ul>
 	<% end_if %> <% end_if %>
