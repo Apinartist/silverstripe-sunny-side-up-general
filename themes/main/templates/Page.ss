@@ -8,7 +8,7 @@
 <div id="Wrapper">
 	<div id="Container">
 		<% include Navigation %>
- 		<div id="Layout">
+ 		<div id="Layout" class="typography">
 			$Layout
 		</div>
 		<% include ShareThis %>

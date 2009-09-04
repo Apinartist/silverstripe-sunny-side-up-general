@@ -7,7 +7,7 @@ body {
 	font-size: 62.5%;
 	background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 }
-#content {
+#Layout {
  padding: 67px 220px 0px 210px;
 }
 #menu {
