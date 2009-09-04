@@ -13,6 +13,7 @@ class Page_Controller extends ContentController {
 
 	public function init() {
 		parent::init();
+		$this->addBasicMetatagRequirements();
 	}
 
 	function SearchForm() {
