@@ -8,7 +8,6 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 	static $default_parent = "BrowseCountriesPage";
 	static $can_be_root = false;
 	//static $need_permission =";
-	//static $hide_ancestor =";
 	static $hide_ancestor = true;
 
 	static $db = array(

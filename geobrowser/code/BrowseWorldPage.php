@@ -10,7 +10,6 @@ class BrowseWorldPage extends BrowseAbstractPage {
 	//static $default_parent = null;
 	//static $can_be_root = true;
 	//static $need_permission = null;
-	//static $hide_ancestor = null;
 	static $hide_ancestor = true;
 
 	static $db = array(

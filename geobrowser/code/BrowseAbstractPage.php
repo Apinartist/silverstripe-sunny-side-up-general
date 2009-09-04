@@ -8,7 +8,7 @@ class BrowseAbstractPage extends Page {
 	//static $default_parent = "BrowseRegionsPage";
 	//static $can_be_root = false;
 	//static $need_permission =";
-	//static $hide_ancestor =";
+	static $hide_ancestor ="false";
 
 	static $db = array(
 		"CreateChildren" => "Boolean",
