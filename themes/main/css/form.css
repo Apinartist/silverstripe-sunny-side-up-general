@@ -1,0 +1,21 @@
+.typography form{padding: 1em 0; clear:right;}
+	.typography fieldset{}
+
+	.typography label.FormHeading{display: block; font-size: 1.2em; color: #1884CF; font-weight: bold; margin-bottom: 1em;}
+
+	.typography .field{width: 100%; padding-bottom: 10px; overflow: auto;}
+		.typography label.left{float: left; display: block; font-size: 1em; width: 120px; padding-top: 8px;}
+			.typography .dropdown label.left{padding-bottom: 3px;}
+			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
+		.typography .middleColumn, .typography .Actions{display: block; margin-left: 120px;}
+			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #abacae; width: 220px; padding: 3px;}
+			.typography .middleColumn textarea{font-size: 1.2em; font-family: Arial, Verdana, sans-serif;}
+				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #7b94b4;}
+				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #0a8dd1;}
+			.typography .message{font-size: 0.86em; color: #971717;}
+
+		.typography .middleColumn .radio, .typography .middleColumn .checkbox,
+		.typography .middleColumn .radio:hover, .typography .middleColumn .checkbox:hover,
+		.typography .middleColumn .radio:focus, .typography .middleColumn .checkbox:focus{border: 0;}
+
+	.typography .radio, .typography .checkbox{width: auto!important;}

@@ -1,6 +1,6 @@
-#menu li {
+#Nav li {
  display: block; padding: 0.27em 1em 0.27em 1em; float: right; margin: 0px;
  list-style: none;
 }
-#menu li a:link, #menu li a:visited {color: #fff;}
-#menu li a:hover,#menu li a.ms:link,#menu li a.ms:visited  {color: #FFCC33;}
+#Nav li a:link, #Nav li a:visited {color: #fff;}
+#Nav li a:hover,#Nav li a.ms:link,#Nav li a.ms:visited  {color: #FFCC33;}

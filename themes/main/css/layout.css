@@ -1,8 +1,11 @@
+#HiddenTextItems {display: block; font-size: 0px; text-indent: -9999px; line-height: 0;}
 
+html{font-size: 100%;}
 body {
- padding: 0; margin: 0; height: 100%;
- font-size: 62.5%;
- background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
+	background: #4d4636; font-size: 62.5%; font-family: 'ms trebuchet', Verdana, Arial, Verdana, sans-serif;
+	height: 100%;
+	font-size: 62.5%;
+	background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 }
 #content {
  padding: 67px 220px 0px 210px;
