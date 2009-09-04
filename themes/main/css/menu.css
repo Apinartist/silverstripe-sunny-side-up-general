@@ -1,3 +1,6 @@
+#Nav {
+ position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none;
+}
 #Nav li {
  display: block; padding: 0.27em 1em 0.27em 1em; float: right; margin: 0px;
  list-style: none;
