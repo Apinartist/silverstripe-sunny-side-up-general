@@ -10,8 +10,8 @@
 		<% include Navigation %>
  		<div id="Layout" class="typography">
 			$Layout
+			<% include ShareThis %>
 		</div>
-		<% include ShareThis %>
 	</div>
 </div>
 <% include Analytics %>
