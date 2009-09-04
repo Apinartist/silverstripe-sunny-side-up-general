@@ -3,7 +3,8 @@
 }
 
 #shareThisUL li{
-	display:inline;
+	float: right;
+	width: auto;
 }
 #shareThisUL li img{
 	padding-right : 3px;
