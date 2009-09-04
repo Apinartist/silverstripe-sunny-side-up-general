@@ -1,6 +1,6 @@
 <ul id="Nav">
 <% control Menu(1) %>
-<li class="$LinkingMode level1"><span class="sifrReplace"><a class="$LinkingMode level1" href="$Link" title="<% if Children %>Open the $Title.XML section <% else %>Go to the $Title.XML page<% end_if %>">$MenuTitle</a></span>
+<li class="$LinkingMode level1"><span><a class="$LinkingMode level1" href="$Link" title="<% if Children %>Open the $Title.XML section <% else %>Go to the $Title.XML page<% end_if %>">$MenuTitle</a></span>
 	<% if Children %> <% if LinkOrSection = section %>
 	<ul class="SubNav">
 		<% control Children %>
