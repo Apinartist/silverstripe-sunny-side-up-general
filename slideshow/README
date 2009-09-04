@@ -1,0 +1,30 @@
+###############################################
+SlideShow
+Pre 0.1 proof of concept
+###############################################
+
+Developer
+-----------------------------------------------
+Nicolaas Francken [at] sunnysideup.co.nz
+
+Requirements
+-----------------------------------------------
+SilverStripe 2.3.0 or greater.
+
+Documentation
+-----------------------------------------------
+
+Installation Instructions
+-----------------------------------------------
+1. Find out how to add modules to SS and add module as per usual.
+2. copy configurations from this module's _config.php file
+into mysite/_config.php file and edit settings as required.
+NB. the idea is not to edit the module, but instead customise it
+in your mysite folder at all so that you can upgrade it later.
+
+Thank you
+-----------------------------------------------
+This module is is basically an implementation of
+a jQuery libary only so all credit to the original
+libary.
+
