@@ -1,5 +1,5 @@
-#Nav, #Subnav, #SubSubNav {position: fixed; left: 0; width: 100%; height: 3.3em;}
-#Nav {bottom: 0px; right: 0px; background-color: #808383;height: 3.3em;}
+#Nav, #Subnav, #SubSubNav {position: fixed; right: 0; width: 100%; height: 3.3em;}
+#Nav {bottom: 0px; background-color: #808383;}
 	#Nav li {padding: 0.77em 1.7em; float: right; list-style: none;}
 		#Nav li a {font-size: 1.9em;color: #fff; text-decoration: none;}
 			#Nav li a:hover, #Nav li.current a, #Nav li.section a {color: #FFCC33;}

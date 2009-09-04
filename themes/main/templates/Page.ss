@@ -8,6 +8,7 @@
 <div id="Wrapper">
 	<div id="Container">
 		<% include Navigation %>
+		<% include Sidebar %>
  		<div id="Layout" class="typography">
 			$Layout
 		</div>
