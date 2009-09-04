@@ -1,9 +1,6 @@
-#Nav {
- position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;list-style: none; height: 3.3em;
-}
-#Nav li {
- display: block; padding: 0.77em 1.7em; float: right; list-style: none;
-}
-#Nav li a {font-size: 1.9em;}
-#Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
-#Nav li a:hover,#Nav li.current a ,#Nav li.section a {color: #FFCC33;}
+#Nav {position: fixed; bottom: 0px; right: 0px; width: 100%; background-color: #808383;height: 3.3em;}
+	#Nav li {display: block; padding: 0.77em 1.7em; float: right; list-style: none;}
+		#Nav li a {font-size: 1.9em;}
+			#Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
+			#Nav li a:hover,#Nav li.current a ,#Nav li.section a {color: #FFCC33;}
+	#Nav #SubNav {position: fixed; bottom: 3.3em; background-color: #BFC1C1; width: 100%; left: 0pt; font-size: 0.8em;}
