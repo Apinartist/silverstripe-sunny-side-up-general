@@ -3,7 +3,9 @@ class ProductsAndGroupsModelAdmin extends ModelAdmin {
 
 	public static $record_controller_class = "ModelAdminRecordControllerForSiteTreeObjects";
 
-	public static function set_managed_models($array) {
+	protected static $managed_models = array("Product", "ProductGroup");
+
+	public static function set_managed_models(array $array) {
 		self::$managed_models = $array;
 	}
 
