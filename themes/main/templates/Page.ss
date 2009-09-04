@@ -14,7 +14,6 @@
 		<% include ShareThis %>
 	</div>
 </div>
-</div>
 <% include Analytics %>
 </body>
 </html>
