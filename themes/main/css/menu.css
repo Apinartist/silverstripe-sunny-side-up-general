@@ -5,6 +5,6 @@
  display: block; padding: 0.27em 1em 0.27em 1em; float: right; margin: 0px;
  list-style: none;
 }
+#Nav li a {font-size: 1.7em;}
 #Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
-#Nav li a:link, #Nav li a:visited {color: #fff; text-decoration: none;}
-#Nav li a:hover,#Nav li a.ms:link,#Nav li a.ms:visited  {color: #FFCC33;}
+#Nav li a:hover,#Nav li.current a ,#Nav li.section a {color: #FFCC33;}

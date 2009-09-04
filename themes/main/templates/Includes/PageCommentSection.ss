@@ -1,1 +1,0 @@
-<div id="Comments">$PageComments</div>

@@ -2,14 +2,17 @@
 
 html{font-size: 100%;}
 body {
-	background: #4d4636; font-size: 62.5%; font-family: 'ms trebuchet', Verdana, Arial, Verdana, sans-serif;
+	font-family: Trebuchet MS,Tahoma,Arial,Verdana,helvetica,Sans-Serif;
 	height: 100%;
 	font-size: 62.5%;
 	background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 }
 #Layout {
- padding: 67px 220px 0px 210px;
+	padding: 67px 270px 0px 210px;
 }
+	#SidebarSection {
+		width: 200px; float: right;
+	}
 
 
 .clear {clear: both;}

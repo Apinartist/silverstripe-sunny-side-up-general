@@ -1,3 +1,3 @@
-<div class="form">
+<div class="MainFormSection">
 $Form
 </div>
