@@ -306,8 +306,6 @@
 	Nunc interdum.
 </p>
 <h6>fancy numbered lists</h6>
-<h1>Lorem Ipsum</h1>
-<h2>Dolor sit amet, consectetuer adipiscing elit.</h2>
 <ol>
 <dl>
 <li><dt>Ut auctor libero vel justo.</dt>
