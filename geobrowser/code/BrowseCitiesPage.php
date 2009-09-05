@@ -79,9 +79,6 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 		return false;
 	}
 
-	public function canCreate() {
-		return DataObject::get_one(self::$default_parent);
-	}
 
 	public function GeoLevelName() {
 		return "Cities";
