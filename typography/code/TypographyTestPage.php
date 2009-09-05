@@ -92,7 +92,6 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
 				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$array),
 				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$array),
-				new CheckboxGroupField($name = "CheckboxSetField",$title = "Checkbox Group Field",$array),
 				new HeaderField($name = "HeaderField3", $title = "HeaderField Level 3", 3),
 				new NumericField($name = "NumericField", $title = "Numeric Field "),
 				new DateField($name = "DateField", $title = "Date Field"),
