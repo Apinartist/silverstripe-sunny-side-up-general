@@ -240,6 +240,21 @@
 					<li>
 						Sed id ante in nisi faucibus tristique.
 						Suspendisse laoreet.
+						<ul>
+							<li>
+								Donec scelerisque augue non orci.
+							</li>
+							<li>
+								Donec porttitor.
+								Morbi et sapien.
+							</li>
+							<li>
+								Cras lacinia elit nec libero.
+							</li>
+							<li>
+								Suspendisse laoreet.
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</li>
@@ -290,6 +305,19 @@
 	Integer pulvinar cursus dolor.
 	Nunc interdum.
 </p>
+<h6>fancy numbered lists</h6>
+<h1>Lorem Ipsum</h1>
+<h2>Dolor sit amet, consectetuer adipiscing elit.</h2>
+<ol>
+<dl>
+<li><dt>Ut auctor libero vel justo.</dt>
+<dd>Cras vel ipsum a magna luctus laoreet. Nullam et arcu. Phasellus pede enim, fringilla non, egestas et, vulputate sit amet, nisi. Vivamus dapibus tristique eros. Donec facilisis varius nulla. Morbi non turpis.</dd></li>
+<li><dt>Duis quam leo, dapibus vel, pulvinar vitae, tristique pretium, metus.</dt>
+<dd>Morbi lorem dolor, tincidunt a, ultricies non, pharetra aliquet, ante. Nulla ut mauris vel tellus porttitor ultricies. Morbi scelerisque. Nullam viverra. Phasellus sollicitudin diam ac enim. Nulla quam est, congue nec, pharetra in, laoreet vulputate, sem. Nullam sed orci. Morbi rutrum, mi facilisis hendrerit semper, magna diam porttitor dolor, in auctor nisi ipsum eget dolor. Praesent sodales aliquet magna. Nulla dapibus ligula et diam. Fusce et arcu. Quisque non enim.</dd></li>
+<li><dt>Pellentesque eros urna, suscipit vitae, fringilla sed, gravida in, eros.</dt>
+<dd>Aliquam erat volutpat. Nunc hendrerit, ante malesuada ornare imperdiet, ipsum lectus vestibulum mi, vitae congue erat enim sit amet pede. Nulla facilisi. Vestibulum nonummy pede a magna. Praesent mollis nulla tincidunt metus. Proin metus magna, lacinia in, lobortis at, auctor quis, urna. Donec commodo nisi in pede. In hac habitasse platea dictumst.</dd></li>
+</dl>
+</ol>
 
 <h3>example of heading 3</h3>
 <p>
@@ -314,6 +342,48 @@
 	<li>
 		In feugiat consectetuer lectus.
 		Cras lacinia elit nec libero.
+		<ul>
+			<li>
+				In feugiat consectetuer lectus.
+				Cras lacinia elit nec libero.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				In consectetuer lectus.
+				Cras nec libero.
+				<ul>
+					<li>
+						In feugiat consectetuer lectus.
+						Cras lacinia elit nec libero.
+						<ul>
+							<li>
+								In feugiat consectetuer lectus.
+								Cras lacinia elit nec libero.
+							</li>
+						</ul>
+						<ul>
+							<li>
+								In feugiat consectetuer lectus.
+								Cras lacinia elit nec libero.
+							</li>
+						</ul>
+						<ul>
+							<li>
+								In feugiat consectetuer lectus.
+								Cras lacinia elit nec libero.
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						In feugiat consectetuer lectus.
+						Cras lacinia elit nec libero.
+					</li>
+				</ul>
+			</li>
+		</ul>
 	</li>
 	<li>
 		Sed id ante in nisi faucibus tristique.
