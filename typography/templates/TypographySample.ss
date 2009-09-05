@@ -1,4 +1,4 @@
-
+<hr />
 <p>
 	Below is a variety of styles that you may use in your SilverStripe Content Management System.
 	The styles should look the same (or similar) in your Content Management System as they do on this page.
@@ -125,16 +125,6 @@
 			<td class="colourCell colour5">&nbsp;</td>
 			<td class="colourCell colour6">&nbsp;</td>
 		</tr>
-		<tr>
-			<td class="colourCell colour7">&nbsp;</td>
-			<td class="colourCell colour8">&nbsp;</td>
-			<td class="colourCell colour9">&nbsp;</td>
-		</tr>
-		<tr>
-			<td class="colourCell colour10">&nbsp;</td>
-			<td class="colourCell colour11">&nbsp;</td>
-			<td class="colourCell colour12">&nbsp;</td>
-		</tr>
 	</tbody>
 </table>
 <h1>example of heading 1</h1>
@@ -209,53 +199,75 @@
 		Donec scelerisque augue non orci.
 		<ul>
 			<li>
-			Cras luctus fringilla lorem.
-			Donec scelerisque augue non orci.
+				Cras luctus fringilla lorem.
+				Donec scelerisque augue non orci.
 			</li>
 			<li>
-			Phasellus felis nunc, mollis nec, laoreet a, facilisis a, dui.
-			Vivamus venenatis malesuada tortor.
-			Curabitur aliquam sapien ac risus.
-			Integer elementum.
-			Vestibulum ornare felis sed quam.
-			Donec tempor scelerisque nisi.
-			Nulla facilisi.
-			Donec porttitor.
-			Morbi et sapien.
+				Phasellus felis nunc, mollis nec, laoreet a, facilisis a, dui.
+				Vivamus venenatis malesuada tortor.
+				Curabitur aliquam sapien ac risus.
+				Integer elementum.
+				Vestibulum ornare felis sed quam.
+				Donec tempor scelerisque nisi.
+				Nulla facilisi.
+				Donec porttitor.
+				Morbi et sapien.
+				<ul>
+					<li>
+						Cras luctus fringilla lorem.
+						Donec scelerisque augue non orci.
+					</li>
+					<li>
+						Phasellus felis nunc, mollis nec, laoreet a, facilisis a, dui.
+						Vivamus venenatis malesuada tortor.
+						Curabitur aliquam sapien ac risus.
+						Integer elementum.
+						Vestibulum ornare felis sed quam.
+						Donec tempor scelerisque nisi.
+						Nulla facilisi.
+						Donec porttitor.
+						Morbi et sapien.
+					</li>
+					<li>
+						In feugiat consectetuer lectus.
+						Cras lacinia elit nec libero.
+					</li>
+					<li>
+						Sed id ante in nisi faucibus tristique.
+						Suspendisse laoreet.
+					</li>
+				</ul>
 			</li>
 			<li>
-			In feugiat consectetuer lectus.
-			Cras lacinia elit nec libero.
+				In feugiat consectetuer lectus.
+				Cras lacinia elit nec libero.
 			</li>
 			<li>
-			Sed id ante in nisi faucibus tristique.
-			Suspendisse laoreet.
+				Sed id ante in nisi faucibus tristique.
+				Suspendisse laoreet.
 			</li>
 		</ul>
 	</li>
 	<li>
-	Phasellus felis nunc, mollis nec, laoreet a, facilisis a, dui.
-	Vivamus venenatis malesuada tortor.
-	Curabitur aliquam sapien ac risus.
-	Integer elementum.
-	Vestibulum ornare felis sed quam.
-	Donec tempor scelerisque nisi.
-	Nulla facilisi.
-	Donec porttitor.
-	Morbi et sapien.
+		Phasellus felis nunc, mollis nec, laoreet a, facilisis a, dui.
+		Vivamus venenatis malesuada tortor.
+		Curabitur aliquam sapien ac risus.
+		Integer elementum.
+		Vestibulum ornare felis sed quam.
+		Donec tempor scelerisque nisi.
+		Nulla facilisi.
+		Donec porttitor.
+		Morbi et sapien.
 	</li>
 	<li>
-	In feugiat consectetuer lectus.
-	Cras lacinia elit nec libero.
+		In feugiat consectetuer lectus.
+		Cras lacinia elit nec libero.
 	</li>
 	<li>
-	Sed id ante in nisi faucibus tristique.
-	Suspendisse laoreet.
+		Sed id ante in nisi faucibus tristique.
+		Suspendisse laoreet.
 	</li>
 </ul>
-
-
-
 <p>
 	In in purus eget mauris fringilla placerat.
 	Proin pellentesque fermentum dui.
@@ -368,17 +380,34 @@
 	<br /> New Zealand
 	<br />
 </address>
-
+<pre>Here is an example of the pre-formatted tag.  This is used for things like computer code and recipes.</pre>
 <p>
-	Here is a list of terms
+	Donec mollis, libero et porttitor imperdiet, est lorem pulvinar libero, id commodo quam mi vitae elit.
+	Quisque ac odio id ante semper tincidunt.
+	Quisque ultrices eros egestas augue.
+	Sed augue purus, sagittis et, bibendum quis, tincidunt ut, risus.
+	Ut gravida sodales nisi.
+	Morbi pede.
 </p>
-<p>
-	below you can find an example of an indented paragraph:
-</p>
-<h1>block quote below...</h1>
+<h1>block quote below (for a larger quote)...</h1>
 <blockquote>
 	<p>
+		Ut vulputate ante.
+		Maecenas nec est.
+		Nullam id leo in sapien commodo hendrerit.
+		Nam tincidunt augue quis neque.
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+		Nulla lobortis. In ante nunc, consequat non, placerat vel, auctor ac, magna.
+		In eget mi.
+		Sed hendrerit.
+		Integer fringilla, metus in adipiscing venenatis, nisi metus scelerisque magna, id fringilla dolor diam ac ligula.
+		Nulla consequat nunc id sem.
+	</p>
+</blockquote>
+<h1>and here is some quoted text (for a smaller quote)</h1>
+<p>
 	Ut vulputate ante.
+	<q>Quote goes here</q>
 	Maecenas nec est.
 	Nullam id leo in sapien commodo hendrerit.
 	Nam tincidunt augue quis neque.
@@ -386,10 +415,12 @@
 	Nulla lobortis. In ante nunc, consequat non, placerat vel, auctor ac, magna.
 	In eget mi.
 	Sed hendrerit.
+	<q>Another quote here...</q>
 	Integer fringilla, metus in adipiscing venenatis, nisi metus scelerisque magna, id fringilla dolor diam ac ligula.
 	Nulla consequat nunc id sem.
-	</p>
+</p>
 </blockquote>
+
 
 <h6>example of heading 6</h6>
 <p style="text-align: center;">
@@ -412,12 +443,31 @@
 	Nullam sed tortor.
 	Aenean tellus est, bibendum non, fringilla in, eleifend vitae, erat.
 </p>
-<h1>
-	<b>
-	<u>
-		<i>
-		Note that this page is NOT shown in any searches or menus.
-		</i>
-	</u>
-	</b>
-</h1>
+<h6>example of heading 6</h6>
+<p style="text-align: rigth;">
+	Here is an example of a right-aligned paragraph.
+	Duis libero enim, dapibus sed, iaculis et, rutrum ac, metus.
+	Donec convallis molestie risus.
+	Etiam ut diam at tellus consequat euismod.
+	Nullam odio tortor, cursus quis, interdum eu, faucibus quis, enim.
+	Suspendisse eros mi, porta sit amet, luctus a, malesuada non, ligula.
+	Nam velit lectus, ultrices id, vestibulum id, malesuada id, lectus.
+	Aliquam erat.
+	Etiam facilisis.
+	Vivamus lorem lectus, fringilla at, rutrum vel, suscipit non, velit.
+	Nullam lorem neque, suscipit ac, faucibus ut, dictum a, enim.
+	Phasellus vestibulum augue et tellus.
+	Suspendisse sollicitudin sem vitae magna.
+	Sed dignissim nisi eget odio.
+	Nullam massa.
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+	Nullam sed tortor.
+	Aenean tellus est, bibendum non, fringilla in, eleifend vitae, erat.
+</p>
+<h1>heading 1</h1>
+<h2>heading 2</h2>
+<h3>heading 3</h3>
+<h4>heading 4</h4>
+<h5>heading 5</h5>
+<h6>heading 6</h6>
+<hr />
