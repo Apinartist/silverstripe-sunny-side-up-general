@@ -498,7 +498,7 @@
 
 
 <h6>example of heading 6</h6>
-<p style="text-align: center;">
+<p style="text-align: center!important;">
 	Here is an example of a centered paragraph.
 	Duis libero enim, dapibus sed, iaculis et, rutrum ac, metus.
 	Donec convallis molestie risus.
@@ -519,7 +519,7 @@
 	Aenean tellus est, bibendum non, fringilla in, eleifend vitae, erat.
 </p>
 <h6>example of heading 6</h6>
-<p style="text-align: rigth;">
+<p style="text-align: right!important;">
 	Here is an example of a right-aligned paragraph.
 	Duis libero enim, dapibus sed, iaculis et, rutrum ac, metus.
 	Donec convallis molestie risus.
