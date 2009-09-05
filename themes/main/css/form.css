@@ -16,7 +16,7 @@
 			.typography .middleColumn li{list-style: none!important;}
 				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #7b94b4;}
 				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #0a8dd1;}
-			.typography .message{font-size: 1em; color: red; background-color: yellow; display: block; margin-left: 120px; width: 228px; padding: 0.7em 0; text-align: center;}
+
 		.typography .middleColumn .radio, .typography .middleColumn .checkbox,
 		.typography .middleColumn .radio:hover, .typography .middleColumn .checkbox:hover,
 		.typography .middleColumn .radio:focus, .typography .middleColumn .checkbox:focus{border: 0;}
@@ -24,6 +24,8 @@
 		.typography .Actions{}
 			.typography .Actions input {background-color: pink; color: brown; padding: 0.3em; font-weight: bold;}
 				.typography .Actions input:hover {background-color: brown; color: black; border: 3px solid sienna; color: white;}
+
+		.typography .message{font-size: 1em; font-weight: bold; color: red; background-color: yellow; display: block; margin-left: 120px; width: 228px; padding: 0.7em 0; text-align: center;}
 
 	.typography .radio, .typography .checkbox{width: auto!important;}
 
