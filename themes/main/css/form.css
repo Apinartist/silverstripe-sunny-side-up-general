@@ -22,8 +22,8 @@
 		.typography .middleColumn .radio:focus, .typography .middleColumn .checkbox:focus{border: 0;}
 
 		.typography .Actions{}
-			.typography .Actions input {background-color: pink; color: brown; padding: 0.3em; }
-				.typography .Actions input:hover {background-color: brown; color: black; border: 3px solid sienna;}
+			.typography .Actions input {background-color: pink; color: brown; padding: 0.3em; font-weight: bold;}
+				.typography .Actions input:hover {background-color: brown; color: black; border: 3px solid sienna; color: white;}
 
 	.typography .radio, .typography .checkbox{width: auto!important;}
 
