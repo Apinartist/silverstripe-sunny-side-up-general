@@ -2,14 +2,6 @@
 
 class BrowseAbstractPage extends Page {
 
-	//static $icon = "geobrowser/images/treeicons/BrowseCitiesPage ";
-	//static $allowed_children = array("Countries");
-	//static $default_child = "";
-	//static $default_parent = "BrowseRegionsPage";
-	//static $can_be_root = false;
-	//static $need_permission =";
-	static $hide_ancestor ="false";
-
 	static $db = array(
 		"CreateChildren" => "Boolean",
 		"CreateAllChildren" => "Boolean",
@@ -20,7 +12,12 @@ class BrowseAbstractPage extends Page {
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
 	public function canCreate() {
-		return false;
+		if("BrowseAbstractPage" == $this->ClassName) {
+			return false;
+		}
+		else {
+			return DataObject::get_one("SiteTree", '`ClassName` = "'.self::$default_parent.'"');
+		}
 	}
 
 	public function GeoLevelName() {

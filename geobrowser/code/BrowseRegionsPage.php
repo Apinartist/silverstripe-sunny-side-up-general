@@ -3,12 +3,14 @@
 class BrowseRegionsPage extends BrowseAbstractPage {
 
 	static $icon = "geobrowser/images/treeicons/BrowseRegionsPage";
+
 	static $allowed_children = array("BrowseCitiesPage");
+
 	static $default_child = "BrowseCitiesPage";
+
 	static $default_parent = "BrowseCountriesPage";
+
 	static $can_be_root = false;
-	//static $need_permission =";
-	static $hide_ancestor = true;
 
 	static $db = array(
 		"Code" => "Varchar(8)",
@@ -17,7 +19,7 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
 	public function canCreate() {
-		return !DataObject::get_one(self::$default_parent);
+		return parent::canCreate();
 	}
 
 	public function GeoLevelName() {
@@ -30,6 +32,9 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 
 	public function allowBrowseChildren() {
 		if(DataObject::get_one("BrowseWorldPage")->LevelOfDetail > $this->GeoLevelNumber()) {
+			return true;
+		}
+		elseif("BrowseWorldPage" == $this->ClassName) {
 			return true;
 		}
 		else {

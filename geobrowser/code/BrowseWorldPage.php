@@ -5,12 +5,10 @@
 class BrowseWorldPage extends BrowseAbstractPage {
 
 	static $icon = "geobrowser/images/treeicons/BrowseWorldPage";
+
 	static $allowed_children = array("BrowseContinentsPage");
+
 	static $default_child = "BrowseContinentsPage";
-	//static $default_parent = null;
-	//static $can_be_root = true;
-	//static $need_permission = null;
-	static $hide_ancestor = true;
 
 	static $db = array(
 		"LevelOfDetail" => "Int",
@@ -31,7 +29,7 @@ class BrowseWorldPage extends BrowseAbstractPage {
 	);
 
 	public function canCreate() {
-		return !DataObject::get_one(get_class($this));
+		return parent::canCreate();
 	}
 
 	public function getCMSFields() {

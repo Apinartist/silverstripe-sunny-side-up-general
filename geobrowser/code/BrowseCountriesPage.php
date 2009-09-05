@@ -3,12 +3,13 @@
 class BrowseCountriesPage extends BrowseAbstractPage {
 
 	static $icon = "geobrowser/images/treeicons/BrowseCountriesPage";
+
 	static $allowed_children = array("BrowseRegionsPage");
+
 	static $default_child = "BrowseRegionsPage";
+
 	static $default_parent = "BrowseContinentsPage";
 	static $can_be_root = false;
-	//static $need_permission =";
-	static $hide_ancestor = true;
 
 	static $db = array(
 		"Country" => "Varchar(50)" ,
@@ -25,9 +26,8 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
-
 	public function canCreate() {
-		return DataObject::get_one(self::$default_parent);
+		return parent::canCreate();
 	}
 
 	public function GeoLevelName() {

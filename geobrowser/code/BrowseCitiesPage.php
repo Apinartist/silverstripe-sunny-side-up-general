@@ -3,12 +3,10 @@
 class BrowseCitiesPage extends BrowseAbstractPage {
 
 	static $icon = "geobrowser/images/treeicons/BrowseCitiesPage";
-	//static $allowed_children = array("");
-	static $default_child = "";
+
 	static $default_parent = "BrowseRegionsPage";
+
 	static $can_be_root = false;
-	//static $need_permission =";
-	static $hide_ancestor = true;
 
 	static $db = array(
 		"Latitude" => "Double",
@@ -17,6 +15,10 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 		"County" => "Varchar(25)",
 		"Code" => "Varchar(4)",
 	);
+
+	public function canCreate() {
+		return parent::canCreate();
+	}
 
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
