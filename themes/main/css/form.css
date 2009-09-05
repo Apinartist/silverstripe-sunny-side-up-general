@@ -8,14 +8,20 @@
 			.typography .dropdown label.left{padding-bottom: 3px;}
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 		.typography .middleColumn, .typography .Actions{display: block; margin-left: 120px;}
+			.typography .middleColumn, .typography .Actions input {background-color: pink; color: brown; padding: 0.3em; }
+				.typography .middleColumn, .typography .Actions input:hover {background-color: brown; color: black; border: 3px solid sienna;}
 			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #abacae; width: 220px; padding: 3px;}
 			.typography .middleColumn textarea{font-size: 1.2em; font-family: Arial, Verdana, sans-serif;}
+			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important;}
+			.typography .middleColumn li{list-style: none!important;}
 				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #7b94b4;}
 				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #0a8dd1;}
-			.typography .message{font-size: 0.86em; color: #971717;}
+			.typography .message{font-size: 1em; color: red; background-color: yellow; display: block; margin-left: 120px; width: 220px;}
 
 		.typography .middleColumn .radio, .typography .middleColumn .checkbox,
 		.typography .middleColumn .radio:hover, .typography .middleColumn .checkbox:hover,
 		.typography .middleColumn .radio:focus, .typography .middleColumn .checkbox:focus{border: 0;}
 
 	.typography .radio, .typography .checkbox{width: auto!important;}
+
+	.typography p.checkbox {margin-left: 120px;}
