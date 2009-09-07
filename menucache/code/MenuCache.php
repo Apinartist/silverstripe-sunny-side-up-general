@@ -11,6 +11,7 @@ class MenuCache extends DataObjectDecorator {
 		1 => "Menu",
 		2 => "Footer",
 		3 => "LayoutSection",
+		4 => "other",
 	);
 
 	static function set_fields($array) {
