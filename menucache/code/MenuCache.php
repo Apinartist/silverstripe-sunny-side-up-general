@@ -14,7 +14,7 @@ class MenuCache extends DataObjectDecorator {
 		4 => "other",
 	);
 
-	static function set_fields($array) {
+	static function set_fields(array $array) {
 		self::$fields = $array;
 	}
 
