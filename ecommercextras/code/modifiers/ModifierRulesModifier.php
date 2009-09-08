@@ -38,7 +38,6 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	static function get_form($controller) {
-		$this->applyRules();
 		return false;
 	}
 
@@ -60,6 +59,7 @@ class ModifierRulesModifier extends OrderModifier {
 // 					 *** inclusive / exclusive functions
 // 					 *** table values
 	function LiveAmount() {
+		$this->applyRules();
 		return 0;
 	}
 
@@ -119,7 +119,7 @@ class ModifierRulesModifier extends OrderModifier {
 		return implode(",", $rulesToBeApplied);
 	}
 
-	function getValueFromClass($classObject, $functionName) {
+	protected function getValueFromClass($classObject, $functionName) {
 		echo "applying rules";
 		//static method: DOES NOT WORK
 		if(method_exists($classObject->class,$functionName)) {
@@ -140,7 +140,7 @@ class ModifierRulesModifier extends OrderModifier {
 		return "";
 	}
 
-	function setValueInClass($classObject, $functionName, $value) {
+	protected function setValueInClass($classObject, $functionName, $value) {
 		//NOTE: property_exists allows to check for static variables, but only available from PHP 5.3
 		die("applying rules");
 		if(method_exists($classObject->class,$functionName)) {
