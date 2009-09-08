@@ -121,14 +121,14 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	protected function getValueFromClass($classObject, $functionName) {
+		//method
+		if(method_exists($classObject,$functionName)) {
+			return $classObject->$functionName();
+		}
 		//static method: DOES NOT WORK
-		if(method_exists($classObject->ClassName,$functionName)) {
+		elseif(method_exists($classObject->ClassName,$functionName)) {
 			eval("return {$classObject->ClassName}::{$functionName}();");
 			die("not implemented A $classObject->ClassName::$functionName"); //return $classObject::$functionName();
-		}
-		//method
-		elseif(method_exists($classObject,$functionName)) {
-			return $classObject->$functionName();
 		}
 		//variable
 		elseif($classObject->$functionName) {
@@ -143,20 +143,25 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	protected function setValueInClass($classObject, $functionName, $value) {
-		//NOTE: property_exists allows to check for static variables, but only available from PHP 5.3
-		if(method_exists($classObject->class,$functionName)) {
-
-			die("not implemented C"); //$classObject::$functionName($value);
+		//method
+		if(method_exists($classObject,$functionName)) {
+			return $classObject->$functionName($value);
 		}
-		elseif(method_exists($classObject,$functionName)) {
-			$classObject->$functionName($value);
+		//static method: DOES NOT WORK
+		elseif(method_exists($classObject->ClassName,$functionName)) {
+			eval("return {$classObject->ClassName}::{$functionName}($value);");
+			die("not implemented A $classObject->ClassName::$functionName"); //return $classObject::$functionName();
 		}
+		//variable
 		elseif($classObject->$functionName) {
-			$classObject->$functionName = $value;
+			return $classObject->$functionName = $value;
 		}
+		//static variable
 		else {
-			die("not implemented D"); //$classObject::$functionName = $value;
+			eval("return {$classObject->ClassName}::{$functionName} = $value;");
+			die("not implemented B"); //$classObject::$functionName;
 		}
+		return "";
 	}
 
 
