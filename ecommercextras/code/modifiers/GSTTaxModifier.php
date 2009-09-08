@@ -61,6 +61,11 @@ class GSTTaxModifier extends OrderModifier {
 		self::$default_rate = $v;
 	}
 
+	static function override_country($countryCode) {
+		self::$current_country_code = $countryCode;
+		Session::set("GSTTaxModifier_CountryCode", $countryCode);
+	}
+
 // 					 *** debug
 	var $debugMessage = '';
 
@@ -94,6 +99,9 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 	protected function LiveCountry() {
+		if($fixeCode = Session::get("GSTTaxModifier_CountryCode")) {
+			self::$current_country_code = $fixeCode;
+		}
 		if(!self::$current_country_code) {
 			self::$current_country_code = EcommerceRole::findCountry();
 		}
