@@ -110,7 +110,7 @@ class ModifierRulesModifier extends OrderModifier {
 				}
 			}
 		}
-		if(count($rulesToBeApplied)) {
+		if(is_array($rulesToBeApplied) && count($rulesToBeApplied)) {
 			foreach($modifierArray as $modifier) {
 				foreach($rulesToBeApplied as $ruleNumberToApply) {
 					$rule = self::$rule_array[$ruleNumberToApply];
@@ -121,7 +121,7 @@ class ModifierRulesModifier extends OrderModifier {
 			}
 			$rulesImploded = implode(",", $rulesToBeApplied);
 			$this->debugMessage .= "rules: ".$rulesImploded;
-			return implode($rulesImploded);
+			return $rulesImploded;
 		}
 		return "";
 	}
