@@ -114,7 +114,7 @@ class ModifierRulesModifier extends OrderModifier {
 				foreach($rulesToBeApplied as $ruleNumberToApply) {
 					$rule = self::$rule_array[$ruleNumberToApply];
 					if($modifier->class == $rule["NameModifierB"]) {
-						self::setValueInClass($modifier, $rule['FunctionOrVariableNameB'], $rule["valueB"]);
+						self::setValueInClass($modifier, $rule['FunctionOrVariableNameB'], $rule["ValueB"]);
 					}
 				}
 			}
