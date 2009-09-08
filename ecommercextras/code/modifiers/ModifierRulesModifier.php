@@ -90,7 +90,6 @@ class ModifierRulesModifier extends OrderModifier {
 
 // 					 *** calculations
 	protected function applyRules() {
-		die("applyiing rules");
 		$rulesToBeApplied = Array();
 		$modifierArray = ShoppingCart::get_modifiers();
 		//go through all the modifiers
@@ -98,7 +97,8 @@ class ModifierRulesModifier extends OrderModifier {
 			//go through all the rules
 			foreach(self::$rule_array as $key => $rule) {
 				//does modifier match rule
-				if($modifier->class == $rule["NameModifierA"]) {
+				debug::show($modifier->ClassName);
+				if($modifier->ClassName == $rule["NameModifierA"]) {
 					//get value from A
 					$valueA = self::getValueFromClass($modifier, $rule["FunctionOrVariableNameA"]);
 					//does value A match the rule conditional value
@@ -121,7 +121,6 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	protected function getValueFromClass($classObject, $functionName) {
-		echo "applying rules";
 		//static method: DOES NOT WORK
 		if(method_exists($classObject->class,$functionName)) {
 			die("not implemented A"); //return $classObject::$functionName();
@@ -143,7 +142,6 @@ class ModifierRulesModifier extends OrderModifier {
 
 	protected function setValueInClass($classObject, $functionName, $value) {
 		//NOTE: property_exists allows to check for static variables, but only available from PHP 5.3
-		die("applying rules");
 		if(method_exists($classObject->class,$functionName)) {
 			die("not implemented C"); //$classObject::$functionName($value);
 		}
