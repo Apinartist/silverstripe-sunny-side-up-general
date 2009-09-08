@@ -101,7 +101,7 @@ class ModifierRulesModifier extends OrderModifier {
 					//get value from A
 					$valueA = self::getValueFromClass($modifier, $rule["FunctionOrVariableNameA"]);
 					//does value A match the rule conditional value
-					$debug::show("value is: $valueA");
+					debug::show("value is: $valueA");
 					if( (is_array($rule["ValueOrValueArrayA"]) && in_array($valueA, $rule["ValueOrValueArrayA"]) ) || ($valueA == $rule["ValueOrValueArrayA"])) {
 						//add rules
 						$rulesToBeApplied[$key] = $key;
