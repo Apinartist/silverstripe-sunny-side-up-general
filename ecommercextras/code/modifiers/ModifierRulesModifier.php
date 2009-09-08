@@ -129,6 +129,7 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	function getValueFromClass($classObject, $functionName) {
+		echo "applying rules";
 		//static method: DOES NOT WORK
 		if(method_exists($classObject->class,$functionName)) {
 			die("not implemented A"); //return $classObject::$functionName();
@@ -149,7 +150,8 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	function setValueInClass($classObject, $functionName, $value) {
-	//NOTE: property_exists allows to check for static variables, but only available from PHP 5.3
+		//NOTE: property_exists allows to check for static variables, but only available from PHP 5.3
+		die("applying rules");
 		if(method_exists($classObject->class,$functionName)) {
 			die("not implemented C"); //$classObject::$functionName($value);
 		}
