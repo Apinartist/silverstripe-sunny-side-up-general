@@ -94,7 +94,6 @@ class ModifierRulesModifier extends OrderModifier {
 		$modifierArray = ShoppingCart::get_modifiers();
 		//go through all the modifiers
 		foreach($modifierArray as $modifier) {
-			debug::show("modifier");
 			//go through all the rules
 			foreach(self::$rule_array as $key => $rule) {
 				//does modifier match rule
@@ -143,21 +142,26 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	protected function setValueInClass($classObject, $functionName, $value) {
+		debug::show("trying {$classObject->ClassName} :: $functionName setting it to $value");
 		//method
 		if(method_exists($classObject,$functionName)) {
+			debug::show("applying rule to  method");
 			return $classObject->$functionName($value);
 		}
 		//static method: DOES NOT WORK
 		elseif(method_exists($classObject->ClassName,$functionName)) {
+			debug::show("applying rule to  static method");
 			eval("return {$classObject->ClassName}::{$functionName}($value);");
 			die("not implemented A $classObject->ClassName::$functionName"); //return $classObject::$functionName();
 		}
 		//variable
 		elseif($classObject->$functionName) {
+			debug::show("applying rule to variable");
 			return $classObject->$functionName = $value;
 		}
 		//static variable
 		else {
+			debug::show("applying rule to static variale ");
 			eval("return {$classObject->ClassName}::{$functionName} = $value;");
 			die("not implemented B"); //$classObject::$functionName;
 		}
