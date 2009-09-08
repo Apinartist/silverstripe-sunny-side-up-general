@@ -98,8 +98,9 @@ class ModifierRulesModifier extends OrderModifier {
 			debug::show("modifier");
 			//go through all the rules
 			foreach(self::$rule_array as $key => $rule) {
+				debug::show("rule");
 				//does modifier match rule
-				debug::show($modifier->ClassName);
+				debug::show($modifier->class);
 				if($modifier->ClassName == $rule["NameModifierA"]) {
 					//get value from A
 					$valueA = self::getValueFromClass($modifier, $rule["FunctionOrVariableNameA"]);
