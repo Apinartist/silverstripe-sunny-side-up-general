@@ -90,6 +90,7 @@ class ModifierRulesModifier extends OrderModifier {
 
 // 					 *** calculations
 	protected function applyRules() {
+		debug::show("applying rules");
 		$rulesToBeApplied = Array();
 		$modifierArray = ShoppingCart::get_modifiers();
 		//go through all the modifiers
