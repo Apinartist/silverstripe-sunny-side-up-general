@@ -79,7 +79,7 @@ class BonusProductModifier extends OrderModifier {
 
 // 					 *** table titles
 	function LiveName() {
-		self::$title;
+		return self::$title;
 	}
 
 	function Name() {

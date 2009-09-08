@@ -54,8 +54,19 @@
 //GSTTaxModifier::set_default_rate(0);
 //GSTTaxModifier::set_default_is_exclusive(0);
 
-//NewsletterSignupModifier
+// *** NewsletterSignupModifier
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
+
+// *** Modifier Rules Modifier
+// ModifierRulesModifier::set_rule(
+/*
+		$nameModifierA = "PickUpOrDeliveryModifier",
+		$functionOrVariableNameA "PickupOrDeliveryType",
+		$valueA = array("NZ"),
+		$nameModifierB = "GSTTaxModifier",
+		$functionOrVariableNameB = "override_country",
+		$valueB = "NZ"
+	);
 
 // *** Ajax Order
 
