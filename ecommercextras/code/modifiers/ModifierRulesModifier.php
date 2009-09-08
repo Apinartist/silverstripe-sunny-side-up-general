@@ -125,7 +125,7 @@ class ModifierRulesModifier extends OrderModifier {
 				}
 			}
 		}
-		return implode(","$rulesToBeApplied);
+		return implode(",", $rulesToBeApplied);
 	}
 
 	function getValueFromClass($classObject, $functionName) {
