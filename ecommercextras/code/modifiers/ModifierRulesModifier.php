@@ -120,9 +120,10 @@ class ModifierRulesModifier extends OrderModifier {
 				}
 			}
 			$rulesImploded = implode(",", $rulesToBeApplied);
+			$this->debugMessage .= "rules: ".$rulesImploded;
+			return implode($rulesImploded);
 		}
-		$this->debugMessage .= "rules: ".$rulesImploded;
-		return implode(",", $rulesToBeApplied);
+		return "";
 	}
 
 	protected function getValueFromClass($classObject, $functionName) {
