@@ -23,7 +23,7 @@ class ModifierRulesModifier extends OrderModifier {
 // 					 *** static functions
 
 	static function set_rule($nameModifierA, $functionOrVariableNameA, $valueOrValueArrayA, $nameModifierB, $functionOrVariableNameB, $valueB) {
-		$rule_array[] = array(
+		self::$rule_array[] = array(
 			"NameModifierA" => $nameModifierA,
 			"FunctionOrVariableNameA" => $functionOrVariableNameA,
 			"ValueOrValueArrayA" => $valueOrValueArrayA,
