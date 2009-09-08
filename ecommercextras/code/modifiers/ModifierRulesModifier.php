@@ -95,6 +95,7 @@ class ModifierRulesModifier extends OrderModifier {
 		$modifierArray = ShoppingCart::get_modifiers();
 		//go through all the modifiers
 		foreach($modifierArray as $modifier) {
+			debug::show("modifier");
 			//go through all the rules
 			foreach(self::$rule_array as $key => $rule) {
 				//does modifier match rule
