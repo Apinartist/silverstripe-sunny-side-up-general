@@ -15,7 +15,7 @@ class ModifierRulesModifier extends OrderModifier {
 
 	public static $db = array(
 		'Name' => 'Varchar(255)',
-		'RulesApplied' => 'Varchar(255)'
+		'RulesApplied' => 'Varchar(255)',
 		'DebugMessage' => 'Text'
 	);
 
