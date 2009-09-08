@@ -108,18 +108,22 @@ class ModifierRulesModifier extends OrderModifier {
 				}
 			}
 		}
-		foreach($modifierArray as $modifier) {
-			foreach($rulesToBeApplied as $ruleNumberToApply) {
-				$rule = self::$rule_array[$ruleNumberToApply];
-				if($modifier->class == $rule["NameModifierB"]) {
-					self::setValueInClass($modifier, $rule['FunctionOrVariableNameB'], $rule["valueB"]);
+		if(count($rulesToBeApplied)) {
+			foreach($modifierArray as $modifier) {
+				foreach($rulesToBeApplied as $ruleNumberToApply) {
+					$rule = self::$rule_array[$ruleNumberToApply];
+					if($modifier->class == $rule["NameModifierB"]) {
+						self::setValueInClass($modifier, $rule['FunctionOrVariableNameB'], $rule["valueB"]);
+					}
 				}
 			}
 		}
+		debug::show(implode(",", $rulesToBeApplied));
 		return implode(",", $rulesToBeApplied);
 	}
 
 	protected function getValueFromClass($classObject, $functionName) {
+		debug::show("Getting Value for {$classObject->ClassName} :: $functionName");
 		//method
 		if(method_exists($classObject,$functionName)) {
 			return $classObject->$functionName();
