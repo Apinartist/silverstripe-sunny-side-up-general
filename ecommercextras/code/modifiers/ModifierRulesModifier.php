@@ -44,7 +44,7 @@ class ModifierRulesModifier extends OrderModifier {
 
 	function __construct() {
 		parent::__construct();
-		$this->applyRules();
+		//$this->applyRules();
 	}
 
 
@@ -79,15 +79,6 @@ class ModifierRulesModifier extends OrderModifier {
 		}
 		else {
 			return $this->LiveName();
-		}
-	}
-
-	function Description() {
-		if($this->ID) {
-			return $this->Description;
-		}
-		else {
-			return $this->applyRules();
 		}
 	}
 
