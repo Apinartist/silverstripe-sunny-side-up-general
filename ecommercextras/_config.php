@@ -67,6 +67,7 @@
 		$functionOrVariableNameB = "override_country",
 		$valueB = "NZ"
 	);
+*/
 
 // *** Ajax Order
 
