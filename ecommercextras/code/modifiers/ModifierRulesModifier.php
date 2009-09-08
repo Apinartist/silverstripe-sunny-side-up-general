@@ -126,6 +126,7 @@ class ModifierRulesModifier extends OrderModifier {
 	protected function getValueFromClass($classObject, $functionName) {
 		debug::show("Getting Value for {$classObject->ClassName} :: $functionName");
 		//method
+		debug::show($classObject->PickupOrDeliveryType());
 		if(method_exists($classObject,$functionName)) {
 			return $classObject->$functionName();
 		}
