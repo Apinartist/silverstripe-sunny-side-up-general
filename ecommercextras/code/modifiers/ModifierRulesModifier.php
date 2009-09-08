@@ -97,6 +97,7 @@ class ModifierRulesModifier extends OrderModifier {
 		foreach($modifierArray as $modifier) {
 			debug::show("modifier");
 			//go through all the rules
+			print_r(self::$rule_array);
 			foreach(self::$rule_array as $key => $rule) {
 				debug::show("rule");
 				//does modifier match rule
