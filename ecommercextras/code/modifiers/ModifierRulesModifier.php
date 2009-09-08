@@ -16,6 +16,7 @@ class ModifierRulesModifier extends OrderModifier {
 	public static $db = array(
 		'Name' => 'Varchar(255)',
 		'RulesApplied' => 'Varchar(255)'
+		'DebugMessage' => 'Text'
 	);
 
 	protected static $rule_array = array();
@@ -101,7 +102,7 @@ class ModifierRulesModifier extends OrderModifier {
 					//get value from A
 					$valueA = self::getValueFromClass($modifier, $rule["FunctionOrVariableNameA"]);
 					//does value A match the rule conditional value
-					debug::show("value is: $valueA");
+					$this->debugMessage .="value is: $valueA";
 					if( (is_array($rule["ValueOrValueArrayA"]) && in_array($valueA, $rule["ValueOrValueArrayA"]) ) || ($valueA == $rule["ValueOrValueArrayA"])) {
 						//add rules
 						$rulesToBeApplied[$key] = $key;
@@ -118,15 +119,16 @@ class ModifierRulesModifier extends OrderModifier {
 					}
 				}
 			}
+			$rulesImploded = implode(",", $rulesToBeApplied);
 		}
-		debug::show(implode(",", $rulesToBeApplied));
+		$this->debugMessage .= "rules: ".$rulesImploded;
 		return implode(",", $rulesToBeApplied);
 	}
 
 	protected function getValueFromClass($classObject, $functionName) {
-		debug::show("Getting Value for {$classObject->ClassName} :: $functionName");
+		$this->debugMessage .="Getting Value for {$classObject->ClassName} :: $functionName";
 		//method
-		debug::show($classObject->PickupOrDeliveryType());
+		$this->debugMessage .=$classObject->PickupOrDeliveryType();
 		if(method_exists($classObject,$functionName)) {
 			return $classObject->$functionName();
 		}
@@ -148,26 +150,26 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	protected function setValueInClass($classObject, $functionName, $value) {
-		debug::show("trying {$classObject->ClassName} :: $functionName setting it to $value");
+		$this->debugMessage .="trying {$classObject->ClassName} :: $functionName setting it to $value";
 		//method
 		if(method_exists($classObject,$functionName)) {
-			debug::show("applying rule to  method");
+			$this->debugMessage .="applying rule to  method";
 			return $classObject->$functionName($value);
 		}
 		//static method: DOES NOT WORK
 		elseif(method_exists($classObject->ClassName,$functionName)) {
-			debug::show("applying rule to  static method");
+			$this->debugMessage .="applying rule to  static method";
 			eval("return {$classObject->ClassName}::{$functionName}($value);");
 			die("not implemented A $classObject->ClassName::$functionName"); //return $classObject::$functionName();
 		}
 		//variable
 		elseif($classObject->$functionName) {
-			debug::show("applying rule to variable");
+			$this->debugMessage .="applying rule to variable";
 			return $classObject->$functionName = $value;
 		}
 		//static variable
 		else {
-			debug::show("applying rule to static variale ");
+			$this->debugMessage .="applying rule to static variale ";
 			eval("return {$classObject->ClassName}::{$functionName} = $value;");
 			die("not implemented B"); //$classObject::$functionName;
 		}
