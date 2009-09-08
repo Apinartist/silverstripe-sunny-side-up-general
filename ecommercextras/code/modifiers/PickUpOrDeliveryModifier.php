@@ -136,7 +136,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			return Session::get("PickUpOrDeliveryOption");
+			if($v = Session::get("PickUpOrDeliveryOption")) {
+				return $v;
+			}
+			else {
+				$firstArray = array_shift(self::$pickup_options);
+				return $firstArray["Code"];
+			}
 		}
 	}
 
