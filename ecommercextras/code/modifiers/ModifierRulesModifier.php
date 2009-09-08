@@ -134,7 +134,7 @@ class ModifierRulesModifier extends OrderModifier {
 			die("not implemented A"); //return $classObject::$functionName();
 		}
 		//method
-		elseif(method_exists($classObject,$functionName))
+		elseif(method_exists($classObject,$functionName)) {
 			return $classObject->$functionName();
 		}
 		//variable
@@ -153,7 +153,7 @@ class ModifierRulesModifier extends OrderModifier {
 		if(method_exists($classObject->class,$functionName)) {
 			die("not implemented C"); //$classObject::$functionName($value);
 		}
-		elseif(method_exists($classObject,$functionName))
+		elseif(method_exists($classObject,$functionName)) {
 			$classObject->$functionName($value);
 		}
 		elseif($classObject->$functionName) {
