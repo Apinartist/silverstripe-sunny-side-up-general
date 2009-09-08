@@ -38,13 +38,13 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	static function get_form($controller) {
-		self::applyRules();
+		$this->applyRules();
 		return false;
 	}
 
 	function __construct() {
 		parent::__construct();
-		self::
+		$this->applyRules();
 	}
 
 
@@ -168,7 +168,7 @@ class ModifierRulesModifier extends OrderModifier {
 // 					 *** database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->RulesApplied = self::applyRules();
+		$this->RulesApplied = $this->applyRules();
 		$this->Name = $this->LiveName();
 	}
 }
