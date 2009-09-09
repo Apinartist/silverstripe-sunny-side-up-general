@@ -122,7 +122,7 @@ class SecurePayTechPayment extends Payment {
 	 */
 
 	function getPaymentFormFields() {
-		$site_currency = Order::site_currency();
+		$site_currency = Payment::site_currency();
 		$paymentsList = '<div style="vertical-align: middle;">';
 		foreach(self::$credit_cards as $name => $image) {
 			$paymentsList .= '<img src="' . $image . '" alt="' . $name . '"/>';
