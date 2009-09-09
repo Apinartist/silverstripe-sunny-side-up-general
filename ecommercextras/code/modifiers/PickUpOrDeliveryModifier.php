@@ -262,7 +262,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			self::$worked_out_charges_done = true;
 		}
 		$this->debugMessage .= "<hr />final score: ".self::$worked_out_charges;
-		echo Session::get("PickUpOrDeliveryOption");
+		echo "---265".Session::get("PickUpOrDeliveryOption");
 		return self::$worked_out_charges;
 
 	}
@@ -342,8 +342,9 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		$modifiers = $order->Modifiers();
 		foreach($modifiers as $modifier) {
 			if (get_class($modifier) == 'PickUpOrDeliveryModifier') {
-				echo "setting option";
+				echo "---345"."setting option";
 				$modifier->setOption($data['PickupOrDeliveryType']);
+				echo "---347".Session::get("PickupOrDeliveryType"]);
 				$modifier->write();
 			}
 		}
