@@ -50,7 +50,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 // 					 *** static functions
 
 	static function set_pickup_option($code = "pickup", $name = "Pick-Up", $minimumDeliveryCharge = 0, $maximumDeliveryCharge = 999999999, $minimumOrderAmountForZeroRate = 999999999, $weightMultiplier =  0 , $percentage = 0, $fixedCost = 0) {
-		print_r($this);
 		self::$pickup_options[$code] = array(
 			"Code" => $code,
 			"Name" => $name,
@@ -133,18 +132,20 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 // 					 *** inclusive / exclusive
 // 					 *** other attribute: Pickup or Delivery Type
 	function PickupOrDeliveryType() {
+		if($v = Session::get("PickUpOrDeliveryOption")) {
+			return $v;
+		}
 		if($this->PickupOrDeliveryType) {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			if($v = Session::get("PickUpOrDeliveryOption")) {
-				return $v;
-			}
-			else {
-				$firstArray = array_shift(self::$pickup_options);
-				return $firstArray["Code"];
-			}
+			$firstArray = array_shift(self::$pickup_options);
+			return $firstArray["Code"];
 		}
+	}
+
+	function LivePickupOrDeliveryType() {
+		return $this->PickupOrDeliveryType();
 	}
 
 	function PickupOrDeliveryTypeArray() {
@@ -311,7 +312,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->LiveName();
-		$this->PickupOrDeliveryType = Session::get("PickUpOrDeliveryOption") ? Session::get("PickUpOrDeliveryOption")  : $this->PickupOrDeliveryType();
+		$this->PickupOrDeliveryType = $this->LivePickupOrDeliveryType();
 		$this->TotalWeight = $this->totalWeight();
 		$this->SerializedCalculationArray = serialize($this->PickupOrDeliveryTypeArray());
 		$this->DebugString = $this->debugMessage;
@@ -348,7 +349,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 				echo "---348".$modifier->PickupOrDeliveryType;
 			}
 		}
-		//Order::save_current_order();
+		Order::save_current_order();
 		if(Director::is_ajax()) {
 			return $this->controller->renderWith(self::$ajaxcart_template_name);
 		}
