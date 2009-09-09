@@ -139,7 +139,7 @@ class RecommendedProductsModifier_Form extends Form {
 					}
 				}
 				$pricePart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
-				$title = '<a href="'.$product->Link().'">'.$product->Title.'</a>'.$pricePart.$imagePart.'</div>';
+				$title = '<a href="'.$product->Link().'">'.$product->Title.'</a>'.$pricePart.$imagePart.'';
 				$newField = new CheckboxField($product->URLSegment, $title);
 				$fieldsArray[] = $newField;
 			}
