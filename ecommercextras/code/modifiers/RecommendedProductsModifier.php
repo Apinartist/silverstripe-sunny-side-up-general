@@ -140,7 +140,7 @@ class RecommendedProductsModifier_Form extends Form {
 					}
 				}
 				$firstPart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
-				$newField->setRightTitle = '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>'
+				$newField->setRightTitle = '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>';
 				$fieldsArray[] = $newField;
 			}
 			$actions = new FieldSet(new FormAction('processOrder', self::$add_button_text));
