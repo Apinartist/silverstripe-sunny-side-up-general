@@ -310,7 +310,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->LiveName();
-		$this->PickupOrDeliveryType = $this->PickupOrDeliveryType();
+		$this->PickupOrDeliveryType = Session::get("PickUpOrDeliveryOption") ? Session::get("PickUpOrDeliveryOption")  : $this->PickupOrDeliveryType();
 		$this->TotalWeight = $this->totalWeight();
 		$this->SerializedCalculationArray = serialize($this->PickupOrDeliveryTypeArray());
 		$this->DebugString = $this->debugMessage;
