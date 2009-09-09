@@ -126,7 +126,6 @@ class RecommendedProductsModifier_Form extends Form {
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = DataObject::get_by_id("SiteTree", $ID);
 				//foreach product in cart get recommended products
-				$newField = new CheckboxField($product->URLSegment, "");
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
@@ -140,7 +139,8 @@ class RecommendedProductsModifier_Form extends Form {
 					}
 				}
 				$firstPart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
-				$newField->setRightTitle('<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>');
+				$title = '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>';
+				$newField = new CheckboxField($product->URLSegment, $title);
 				$fieldsArray[] = $newField;
 			}
 			$actions = new FieldSet(new FormAction('processOrder', self::$add_button_text));
