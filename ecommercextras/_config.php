@@ -17,6 +17,7 @@
 //ORDER FORM WITHOUT SHIPPING ADDRESS
 //OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");
 //OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");
+//OrderFormWithoutShippingAddress::set_postal_code_url("http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder");
 
 
 

@@ -13,12 +13,18 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	protected static $extra_fields = array();
 
+	protected static $postal_code_url = "";
+
 	static function set_fixed_country_code($v) {
 		self::$fixed_country_code = $v;
 	}
 
 	static function add_extra_field($tabName, $field) {
 		self::$extra_fields[] = array("TabName" =>$tabName, "FieldObject" => $field);
+	}
+
+	static function set_postal_code_url($v) {
+		self::$postal_code_url = $v;
 	}
 
 	function __construct($controller, $name) {
@@ -31,10 +37,13 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		foreach(self::$extra_fields as $fieldCombo) {
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
 		}
-
+		$PostalCodeField = new TextField("AddressLine2", "Postal Code");
+		if(self::$postal_code_url) {
+			$PostalCodeField->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">check here</a>');
+		}
 		//replace field for address
 		$this->fields->replaceField("Address", new TextField("Address", "Delivery Address (no Postal Box)"));
-		$this->fields->replaceField("AddressLine2", new TextField("AddressLine2", "Postal Code"));
+		$this->fields->replaceField("AddressLine2", $PostalCodeField);
 
 		// fix errors
 		if($message = $this->CustomErrors()) {
