@@ -50,6 +50,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 // 					 *** static functions
 
 	static function set_pickup_option($code = "pickup", $name = "Pick-Up", $minimumDeliveryCharge = 0, $maximumDeliveryCharge = 999999999, $minimumOrderAmountForZeroRate = 999999999, $weightMultiplier =  0 , $percentage = 0, $fixedCost = 0) {
+		print_r($this);
 		self::$pickup_options[$code] = array(
 			"Code" => $code,
 			"Name" => $name,
@@ -342,9 +343,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		$modifiers = $order->Modifiers();
 		foreach($modifiers as $modifier) {
 			if (get_class($modifier) == 'PickUpOrDeliveryModifier') {
-				echo "---345"."setting option";
 				$modifier->setOption($data['PickupOrDeliveryType']);
-				echo "---347".Session::get("PickUpOrDeliveryOption");
 				$modifier->write();
 			}
 		}
