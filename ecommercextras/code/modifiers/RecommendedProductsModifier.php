@@ -74,19 +74,15 @@ class RecommendedProductsModifier extends OrderModifier {
 
 class RecommendedProductsModifier_Form extends Form {
 
-	protected  static $more_details_link_text = "product details ...";
-
 	protected  static $nothing_recommended_text = " ";
 
 	protected  static $something_recommended_text = "Recommended Additions";
 
 	protected  static $add_button_text = "Add Selected Items";
 
-
 	protected static $order_item_classname = "Product_OrderItem";
 
-
-	static function set_more_details_link_text($v) {self::$more_details_link_text = $v;}
+	private static $site_currency = '';
 
 	static function set_nothing_recommended_text($v) {self::$nothing_recommended_text = $v;}
 
@@ -130,7 +126,7 @@ class RecommendedProductsModifier_Form extends Form {
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = DataObject::get_by_id("SiteTree", $ID);
 				//foreach product in cart get recommended products
-				$fieldsArray[] = new CheckboxField($product->URLSegment, $product->Title);
+				$newField = new CheckboxField($product->URLSegment, "");
 				$imageID = $product->ImageID;
 				$secondPart = '';
 				if($product->ImageID > 0) {
@@ -143,8 +139,9 @@ class RecommendedProductsModifier_Form extends Form {
 						$secondPart = '<span class="secondPart">[no image available for '.$product->Title.']</span>';
 					}
 				}
-				$firstPart = '<span class="firstPart">'.self::$more_details_link_text.'</span>';
-				$fieldsArray[] = new LiteralField($product->URLSegment."-moreinfo", '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>');
+				$firstPart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
+				$newField->setRightTitle = '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>'
+				$fieldsArray[] = $newField;
 			}
 			$actions = new FieldSet(new FormAction('processOrder', self::$add_button_text));
 		}
@@ -183,5 +180,14 @@ class RecommendedProductsModifier_Form extends Form {
 			Director::redirect(CheckoutPage::find_link());
 		}
 		return;
+	}
+
+	private function getCurrency() {
+		if(!self::$site_currency) {
+			if(class_exists('Payment')) {
+				self::$site_currency = Payment::site_currency();
+			}
+		}
+		return self::$site_currency;
 	}
 }

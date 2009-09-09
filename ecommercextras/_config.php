@@ -40,7 +40,6 @@
 //PickUpOrDeliveryModifier_Form::set_ajaxcart_template_name("AjaxCheckoutCart");
 
 // *** RECOMMENDED PROCUCTS
-//RecommendedProductsModifier_Form::set_more_details_link_text("see details");
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");
 //RecommendedProductsModifier_Form::set_something_recommended_text("Recommended Additions");
 //RecommendedProductsModifier_Form::set_add_button_text("Add Selected Items");
