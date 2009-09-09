@@ -132,14 +132,14 @@ class RecommendedProductsModifier_Form extends Form {
 					$resizedImage = $product->Image()->SetWidth(RecommendedProductsModifier::get_image_width());
 					if(is_object($resizedImage) && $resizedImage) {
 						$imageLink = $resizedImage->Filename;
-						$secondPart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
+						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 					}
 					else {
-						$secondPart = '<span class="secondPart">[no image available for '.$product->Title.']</span>';
+						$imagePart = '<span class="secondPart">[no image available for '.$product->Title.']</span>';
 					}
 				}
-				$firstPart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
-				$title = '<div class="RecommendProductSection"><a href="'.$product->Link().'">'.$firstPart.$secondPart.'</a></div>';
+				$pricePart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
+				$title = '<a href="'.$product->Link().'">'.$product->Title.'</a>'.$pricePart.$imagePart.'</div>';
 				$newField = new CheckboxField($product->URLSegment, $title);
 				$fieldsArray[] = $newField;
 			}
