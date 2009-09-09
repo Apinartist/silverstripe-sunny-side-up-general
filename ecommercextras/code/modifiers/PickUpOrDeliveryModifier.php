@@ -344,7 +344,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 				$modifier->setOption($data['PickupOrDeliveryType']);
 			}
 		}
-		Order::save_current_order();
+		//Order::save_current_order();
 		if(Director::is_ajax()) {
 			return $this->controller->renderWith(self::$ajaxcart_template_name);
 		}
