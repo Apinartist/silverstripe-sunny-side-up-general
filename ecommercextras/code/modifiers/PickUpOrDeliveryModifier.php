@@ -345,7 +345,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 			if (get_class($modifier) == 'PickUpOrDeliveryModifier') {
 				$modifier->setOption($data['PickupOrDeliveryType']);
 				$modifier->write();
-				echo $modifier->PickupOrDeliveryType;
+				echo "---348".$modifier->PickupOrDeliveryType;
 			}
 		}
 		//Order::save_current_order();
