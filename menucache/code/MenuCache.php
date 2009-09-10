@@ -132,7 +132,7 @@ class MenuCache_controller extends Extension {
 		if(isset($_GET["flush"])) {
 			$this->clearfieldcache();
 		}
-		if(!isset(MenuCache::fields_exists($fieldNumber))) {
+		if(!(MenuCache::fields_exists($fieldNumber))) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
