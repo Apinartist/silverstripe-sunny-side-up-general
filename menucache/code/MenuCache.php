@@ -19,6 +19,7 @@ class MenuCache extends DataObjectDecorator {
 	static function set_fields(array $array) {self::$fields = $array;}
 	static function get_fields() {return self::$fields;}
 
+	/* sets the cache number used for getting the "$Layout" of the individual page */
 	protected static $layout_field = 3;
 	static function set_layout_field($number) {self::$layout_field = $number;}
 	static function get_layout_field() {return self::$layout_field;}
@@ -112,12 +113,12 @@ class MenuCache_controller extends Extension {
 
 
 	protected function getHtml($fieldNumber) {
-		if(99 == $fieldNumber) {
+		if(MenuCache::get_layout_field() == $fieldNumber) {
 			$className = $this->owner->ClassName;
 			if("Page" == $className) {
 				$className = "PageCached";
 			}
-			return $this->owner->renderWith($className);
+			die($this->owner->renderWith($className));
 		}
 		else {
 			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
@@ -138,9 +139,6 @@ class MenuCache_controller extends Extension {
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($fieldNumber == MenuCache::get_layout_field()) {
-					$fieldID = 99;
-				}
 				if($this->owner->URLSegment == "Security") {
 					return '';
 				}
