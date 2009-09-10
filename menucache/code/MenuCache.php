@@ -114,10 +114,11 @@ class MenuCache_controller extends Extension {
 
 	protected function getHtml($fieldNumber) {
 		if(MenuCache::get_layout_field() == $fieldNumber) {
-			$className = $this->owner->ClassName;
+			$className = $this->owner->dataRecord->ClassName;
 			if("Page" == $className) {
 				$className = "PageCached";
 			}
+			echo "---";
 			die($this->owner->renderWith($className));
 		}
 		else {
@@ -126,9 +127,6 @@ class MenuCache_controller extends Extension {
 	}
 
 	function CachedField($fieldNumber) {
-		if(99 == $fieldNumber) {
-			$fieldNumber = MenuCache::get_layout_field();
-		}
 		$fieldName = MenuCache::field_maker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearfieldcache();
