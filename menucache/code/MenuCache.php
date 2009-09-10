@@ -2,6 +2,9 @@
 
 class MenuCache extends DataObjectDecorator {
 
+	protected static $class_names_to_cache = array();
+	static function add_class_name_to_cache($className) {self::$class_names_to_cache[] = $className;}
+
 	/**
 	* fields are typicall header, menu, footer
 	*/
@@ -13,39 +16,34 @@ class MenuCache extends DataObjectDecorator {
 		3 => "LayoutSection",
 		4 => "other",
 	);
-
-	static function set_fields(array $array) {
-		self::$fields = $array;
-	}
+	static function set_fields(array $array) {self::$fields = $array;}
+	static function get_fields() {return self::$fields;}
 
 	protected static $layout_field = 3;
-
-	static function set_layout_field($number) {
-		self::$layout_field = $number;
-	}
-
-	protected static $class_names_to_cache = array();
-
-	static function add_class_name_to_cache($className) {
-		self::$class_names_to_cache[] = $className;
-	}
+	static function set_layout_field($number) {self::$layout_field = $number;}
+	static function get_layout_field() {return self::$layout_field;}
 
 	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
+	static function get_tables_to_clear() {return self::$tables_to_clear;}
 
 	function extraDBFields(){
 		$dbArray = array(
 			"DoNotCacheMenu" => "Boolean"
 		);
 		foreach(self::$fields as $key => $field) {
-			$dbArray[self::fieldMaker($key)]  = "HTMLText";
+			$dbArray[self::field_maker($key)]  = "HTMLText";
 		}
 		return array(
 			'db' =>  $dbArray
 		);
 	}
 
-	protected static function fieldMaker($fieldNumber) {
+	public static function field_maker($fieldNumber) {
 		return "CachedSection".$fieldNumber;
+	}
+
+	public static function fields_exists($number) {
+		return (isset(self::$fields[$number]]));
 	}
 
 	function updateCMSFields(FieldSet &$fields) {
@@ -128,19 +126,19 @@ class MenuCache_controller extends Extension {
 
 	function CachedField($fieldNumber) {
 		if(99 == $fieldNumber) {
-			$fieldNumber = MenuCache::$layout_field;
+			$fieldNumber = MenuCache::get_layout_field();
 		}
-		$fieldName = MenuCache::fieldMaker($fieldNumber);
+		$fieldName = MenuCache::field_maker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearfieldcache();
 		}
-		if(!isset(MenuCache::$fields[$fieldNumber])) {
+		if(!isset(MenuCache::fields_exists($fieldNumber))) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($fieldNumber == MenuCache::$layout_field) {
+				if($fieldNumber == MenuCache::get_layout_field()) {
 					$fieldID = 99;
 				}
 				if($this->owner->URLSegment == "Security") {
@@ -176,9 +174,9 @@ class MenuCache_controller extends Extension {
 
 
 	function clearfieldcache () {
-		foreach(MenuCache::$tables_to_clear as $table) {
-			foreach(MenuCache::$fields as $key => $field) {
-				$fieldName = MenuCache::fieldMaker($key);
+		foreach(MenuCache::get_tables_to_clear() as $table) {
+			foreach(MenuCache::get_fields() as $key => $field) {
+				$fieldName = MenuCache::field_maker($key);
 				$sql = 'Update `'.$table.'` Set `'.$fieldName.'` = ""';
 				DB::query($sql);
 			}
