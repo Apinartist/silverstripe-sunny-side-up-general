@@ -134,7 +134,7 @@ class MenuCache extends DataObjectDecorator {
 				if($this->owner->URLSegment == "Security") {
 					return '';
 				}
-				$content = self::get_html($fieldNumber);
+				$content = $this->get_html($fieldNumber);
 				echo "getting cache";
 				die($content);
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
