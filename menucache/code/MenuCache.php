@@ -136,21 +136,21 @@ class MenuCache_controller extends Extension {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
-			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
+			if(!$this->owner->$fieldName || $this->owner->dataRecord->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($this->owner->URLSegment == "Security") {
+				if($this->owner->dataRecord->URLSegment == "Security") {
 					return '';
 				}
 				$content = $this->getHtml($fieldNumber);
-				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
+				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->dataRecord->ID.' LIMIT 1';
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
 			}
 			else {
-				return "<!-- from cached field: $fieldName START -->".$this->owner->$fieldName."<!-- from cached field: $fieldName END -->";
+				return "<!-- from cached field: $fieldName START -->".$this->owner->dataRecord->$fieldName."<!-- from cached field: $fieldName END -->";
 			}
 		}
-
+		return $this->owner->$fieldName;
 	}
 
 
