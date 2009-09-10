@@ -26,11 +26,25 @@ class MenuCache extends DataObjectDecorator {
 
 	protected static $class_names_to_cache = array();
 
-	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
-
 	static function add_class_name_to_cache($className) {
 		self::$class_names_to_cache[] = $className;
 	}
+
+	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
+
+	static function get_html($fieldNumber) {
+		if(99 == $fieldNumber) {
+			$className = $this->owner->ClassName;
+			if("Page" == $className) {
+				$className = "PageCached";
+			}
+			return $this->owner->renderWith($className);
+		}
+		else {
+			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
+		}
+	}
+
 
 	function extraDBFields(){
 		$dbArray = array(
@@ -122,7 +136,7 @@ class MenuCache extends DataObjectDecorator {
 				if($this->owner->URLSegment == "Security") {
 					return '';
 				}
-				$response = Director::test($this->owner->URLSegment."/showcachedfield/".$fieldID);
+				$response = self::get_html($fieldNumber);
 				if(is_object($response)) {
 					$content = $response->getBody();
 				}
@@ -131,7 +145,7 @@ class MenuCache extends DataObjectDecorator {
 				}
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
-				return "<!-- should be cached in $fieldName START -->".$content."<!-- should be cached in $fieldName END -->";
+				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
 			}
 			else {
 				return "<!-- from cached field: $fieldName START -->".$this->owner->$fieldName."<!-- from cached field: $fieldName END -->";
@@ -179,26 +193,13 @@ class MenuCache_controller extends Extension {
 
 	function showcachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
-		return $this->returnHTML($httpRequest);
+		return $this->returnHTML($fieldNumber);
 	}
 
 	function showuncachedfield($httpRequest) {
 		$this->owner->clearfieldcache();
-		return $this->returnHTML($httpRequest);
-	}
-
-	private function returnHTML($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
-		if(99 == $fieldNumber) {
-			$className = $this->owner->ClassName;
-			if("Page" == $className) {
-				$className = "PageCached";
-			}
-			return $this->owner->renderWith($className);
-		}
-		else {
-			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
-		}
+		return $this->returnHTML($fieldNumber);
 	}
 
 }
