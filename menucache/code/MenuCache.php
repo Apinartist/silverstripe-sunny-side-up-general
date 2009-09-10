@@ -97,20 +97,35 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 
-	function onBeforeWrite() {
-		$this->clearfieldcache();
-		parent::onBeforeWrite();
+	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
+
+	function clearfieldcache () {
+		$fieldsToClear = array();
+		foreach(self::get_fields() as $key => $field) {
+			$fieldName = self::field_maker($key);
+			$fieldsToClear[] = '`'.$fieldName.'` = ""'
+		}
+		if(count($fieldToClear)) {
+			foreach(self::get_tables_to_clear() as $table) {
+				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
+				DB::query($sql);
+			}
+		}
+		return array();
 	}
 
 
-	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
+	function onBeforeWrite() {
+
+		parent::onBeforeWrite();
+	}
+
 
 }
 
 class MenuCache_controller extends Extension {
 
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
-
 
 	protected function getHtml($fieldNumber) {
 		if(MenuCache::get_layout_field() == $fieldNumber) {
@@ -128,7 +143,7 @@ class MenuCache_controller extends Extension {
 	function CachedField($fieldNumber) {
 		$fieldName = MenuCache::field_maker($fieldNumber);
 		if(isset($_GET["flush"])) {
-			$this->clearfieldcache();
+			$this->owner->clearfieldcache();
 		}
 		if(!(MenuCache::fields_exists($fieldNumber))) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
@@ -164,16 +179,6 @@ class MenuCache_controller extends Extension {
 	}
 
 
-	function clearfieldcache () {
-		foreach(MenuCache::get_tables_to_clear() as $table) {
-			foreach(MenuCache::get_fields() as $key => $field) {
-				$fieldName = MenuCache::field_maker($key);
-				$sql = 'Update `'.$table.'` Set `'.$fieldName.'` = ""';
-				DB::query($sql);
-			}
-		}
-		return array();
-	}
 
 	function showcachedfield($httpRequest) {
 		$fieldNumber = $httpRequest->param("ID");
@@ -181,7 +186,7 @@ class MenuCache_controller extends Extension {
 	}
 
 	function showuncachedfield($httpRequest) {
-		$this->clearfieldcache();
+		$this->owner->clearfieldcache();
 		return $this->showcachedfield($httpRequest);
 	}
 
