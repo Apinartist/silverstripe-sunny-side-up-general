@@ -136,13 +136,9 @@ class MenuCache extends DataObjectDecorator {
 				if($this->owner->URLSegment == "Security") {
 					return '';
 				}
-				$response = self::get_html($fieldNumber);
-				if(is_object($response)) {
-					$content = $response->getBody();
-				}
-				else {
-					$content = $response . '';
-				}
+				$content = self::get_html($fieldNumber);
+				echo "getting cache";
+				die($content);
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
