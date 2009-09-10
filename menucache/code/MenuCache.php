@@ -98,8 +98,20 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 
+	function onBeforeWrite() {
+		$this->clearfieldcache();
+		parent::onBeforeWrite();
+	}
+
 
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
+
+}
+
+class MenuCache_controller extends Extension {
+
+	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
+
 
 	protected function getHtml($fieldNumber) {
 		if(99 == $fieldNumber) {
@@ -163,11 +175,6 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 
-	function onBeforeWrite() {
-		$this->clearfieldcache();
-		parent::onBeforeWrite();
-	}
-
 	function clearfieldcache () {
 		foreach(self::$tables_to_clear as $table) {
 			foreach(self::$fields as $key => $field) {
@@ -189,13 +196,6 @@ class MenuCache extends DataObjectDecorator {
 		$fieldNumber = $httpRequest->param("ID");
 		return $this->getHtml($fieldNumber);
 	}
-
-}
-
-class MenuCache_controller extends Extension {
-
-	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
-
 
 
 }
