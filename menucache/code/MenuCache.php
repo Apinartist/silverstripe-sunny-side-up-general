@@ -32,20 +32,6 @@ class MenuCache extends DataObjectDecorator {
 
 	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
 
-	static function get_html($fieldNumber) {
-		if(99 == $fieldNumber) {
-			$className = $this->owner->ClassName;
-			if("Page" == $className) {
-				$className = "PageCached";
-			}
-			return $this->owner->renderWith($className);
-		}
-		else {
-			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
-		}
-	}
-
-
 	function extraDBFields(){
 		$dbArray = array(
 			"DoNotCacheMenu" => "Boolean"
@@ -115,6 +101,18 @@ class MenuCache extends DataObjectDecorator {
 
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 
+	protected function getHtml($fieldNumber) {
+		if(99 == $fieldNumber) {
+			$className = $this->owner->ClassName;
+			if("Page" == $className) {
+				$className = "PageCached";
+			}
+			return $this->owner->renderWith($className);
+		}
+		else {
+			return $this->owner->renderWith('UsedToCreateCache'.$fieldNumber);
+		}
+	}
 
 	function CachedField($fieldNumber) {
 		if(99 == $fieldNumber) {
@@ -181,21 +179,23 @@ class MenuCache extends DataObjectDecorator {
 		return array();
 	}
 
+	function showcachedfield($httpRequest) {
+		$fieldNumber = $httpRequest->param("ID");
+		return $this->getHtml($fieldNumber);
+	}
+
+	function showuncachedfield($httpRequest) {
+		$this->owner->clearfieldcache();
+		$fieldNumber = $httpRequest->param("ID");
+		return $this->getHtml($fieldNumber);
+	}
+
 }
 
 class MenuCache_controller extends Extension {
 
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield");
 
-	function showcachedfield($httpRequest) {
-		$fieldNumber = $httpRequest->param("ID");
-		return $this->returnHTML($fieldNumber);
-	}
 
-	function showuncachedfield($httpRequest) {
-		$this->owner->clearfieldcache();
-		$fieldNumber = $httpRequest->param("ID");
-		return $this->returnHTML($fieldNumber);
-	}
 
 }
