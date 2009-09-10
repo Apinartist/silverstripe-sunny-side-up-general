@@ -115,7 +115,7 @@ class MenuCache_controller extends Extension {
 	protected function getHtml($fieldNumber) {
 		echo $fieldNumber;
 		if(MenuCache::get_layout_field() == $fieldNumber) {
-			$className = $this->owner->dataRecord->ClassName;
+			$className = $this->owner->ClassName;
 			if("Page" == $className) {
 				$className = "PageCached";
 			}
@@ -136,23 +136,21 @@ class MenuCache_controller extends Extension {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
-			if(!$this->owner->$fieldName || $this->owner->dataRecord->DoNotCacheMenu) {
+			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($this->owner->dataRecord->URLSegment == "Security") {
+				if($this->owner->URLSegment == "Security") {
 					return '';
 				}
 				$content = $this->getHtml($fieldNumber);
-				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->dataRecord->ID.' LIMIT 1';
+				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
 			}
 			else {
-				return "<!-- from cached field: $fieldName START -->".$this->owner->dataRecord->$fieldName."<!-- from cached field: $fieldName END -->";
+				return "<!-- from cached field: $fieldName START -->".$this->owner->$fieldName."<!-- from cached field: $fieldName END -->";
 			}
 		}
-		return $this->owner->$fieldName;
 	}
-
 
 
 	private function compressAndPrepareHTML($html) {
@@ -185,9 +183,8 @@ class MenuCache_controller extends Extension {
 	}
 
 	function showuncachedfield($httpRequest) {
-		$this->owner->clearfieldcache();
-		$fieldNumber = $httpRequest->param("ID");
-		return $this->getHtml($fieldNumber);
+		$this->clearfieldcache();
+		return $this->showcachedfield($httpRequest);
 	}
 
 
