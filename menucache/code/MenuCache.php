@@ -128,19 +128,19 @@ class MenuCache_controller extends Extension {
 
 	function CachedField($fieldNumber) {
 		if(99 == $fieldNumber) {
-			$fieldNumber = self::$layout_field;
+			$fieldNumber = MenuCache::$layout_field;
 		}
-		$fieldName = self::fieldMaker($fieldNumber);
+		$fieldName = MenuCache::fieldMaker($fieldNumber);
 		if(isset($_GET["flush"])) {
 			$this->clearfieldcache();
 		}
-		if(!isset(self::$fields[$fieldNumber])) {
+		if(!isset(MenuCache::$fields[$fieldNumber])) {
 			user_error("$fieldName is not a field that can be cached", E_USER_ERROR);
 		}
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($fieldNumber == self::$layout_field) {
+				if($fieldNumber == MenuCache::$layout_field) {
 					$fieldID = 99;
 				}
 				if($this->owner->URLSegment == "Security") {
@@ -176,9 +176,9 @@ class MenuCache_controller extends Extension {
 
 
 	function clearfieldcache () {
-		foreach(self::$tables_to_clear as $table) {
-			foreach(self::$fields as $key => $field) {
-				$fieldName = self::fieldMaker($key);
+		foreach(MenuCache::$tables_to_clear as $table) {
+			foreach(MenuCache::$fields as $key => $field) {
+				$fieldName = MenuCache::fieldMaker($key);
 				$sql = 'Update `'.$table.'` Set `'.$fieldName.'` = ""';
 				DB::query($sql);
 			}
