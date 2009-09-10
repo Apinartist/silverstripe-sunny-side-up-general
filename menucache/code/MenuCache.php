@@ -113,7 +113,7 @@ class MenuCache_controller extends Extension {
 
 
 	protected function getHtml($fieldNumber) {
-		echo $fieldNumber
+		echo $fieldNumber;
 		if(MenuCache::get_layout_field() == $fieldNumber) {
 			$className = $this->owner->dataRecord->ClassName;
 			if("Page" == $className) {
