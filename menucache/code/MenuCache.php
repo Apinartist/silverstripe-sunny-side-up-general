@@ -43,7 +43,7 @@ class MenuCache extends DataObjectDecorator {
 	}
 
 	public static function fields_exists($number) {
-		return (isset(self::$fields[$number]]));
+		return (isset(self::$fields[$number]));
 	}
 
 	function updateCMSFields(FieldSet &$fields) {
