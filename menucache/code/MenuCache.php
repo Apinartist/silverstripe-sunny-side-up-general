@@ -145,8 +145,6 @@ class MenuCache_controller extends Extension {
 					return '';
 				}
 				$content = $this->getHtml($fieldNumber);
-				echo "getting cache";
-				die($content);
 				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
