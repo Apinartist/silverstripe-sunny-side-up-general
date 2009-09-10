@@ -105,7 +105,7 @@ class MenuCache extends DataObjectDecorator {
 			$fieldName = self::field_maker($key);
 			$fieldsToClear[] = '`'.$fieldName.'` = ""';
 		}
-		if(count($fieldToClear)) {
+		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
 				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
 				DB::query($sql);
