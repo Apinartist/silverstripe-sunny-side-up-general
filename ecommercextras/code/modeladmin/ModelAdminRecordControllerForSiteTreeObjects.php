@@ -27,6 +27,9 @@ class ModelAdminRecordControllerForSiteTreeObjects extends ModelAdmin_RecordCont
 		$form->unsetActionByName("action_save");
 		$form->unsetActionByName("action_publish");
 		//$form->unsetActionByName("action_doSave"); - USEFUL TO KEEP
+		$actions = $form->Actions();
+		$actions->push(new FormAction("doGoto", "go to page"));
+		$form->setActions($actions);
 		return $form;
 	}
 
@@ -40,6 +43,10 @@ class ModelAdminRecordControllerForSiteTreeObjects extends ModelAdmin_RecordCont
 		} else {
 			Director::redirectBack();
 		}
+	}
+
+	function doGoto($data, $form, $request) {
+		Director::redirect($this->currentRecord->Link());
 	}
 
 
