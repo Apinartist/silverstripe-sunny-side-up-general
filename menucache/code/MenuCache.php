@@ -99,7 +99,7 @@ class MenuCache extends DataObjectDecorator {
 
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 
-	function clearfieldcache () {
+	function clearfieldcache ($showoutput = false) {
 		$fieldsToClear = array();
 		foreach(self::get_fields() as $key => $field) {
 			$fieldName = self::field_maker($key);
@@ -108,6 +108,9 @@ class MenuCache extends DataObjectDecorator {
 		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
 				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
+				if($showoutput) {
+					debug::show($sql);
+				}
 				DB::query($sql);
 			}
 		}
@@ -191,9 +194,7 @@ class MenuCache_controller extends Extension {
 	}
 
 	function clearallfieldcaches($httpRequest = null) {
-		echo "a";
-		$this->owner->clearfieldcache();
-		echo "";
+		$this->owner->clearfieldcache(true);
 		return 'fields have been cleared, <a href="/">click to continue...</a>';
 	}
 
