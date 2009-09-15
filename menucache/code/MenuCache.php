@@ -191,7 +191,9 @@ class MenuCache_controller extends Extension {
 	}
 
 	function clearfieldcache($httpRequest = null) {
+		echo "a";
 		$this->owner->clearfieldcache();
+		echo "b";
 		return 'fields have been cleared, <a href="/">click to continue...</a>';
 	}
 
