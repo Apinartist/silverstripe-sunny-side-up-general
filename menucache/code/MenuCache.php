@@ -192,7 +192,7 @@ class MenuCache_controller extends Extension {
 
 	function clearfieldcache($httpRequest = null) {
 		$this->owner->clearfieldcache();
-		die('fields have been cleared, <a href="/">click to continue...</a>');
+		return 'fields have been cleared, <a href="/">click to continue...</a>';
 	}
 
 
