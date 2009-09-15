@@ -2,12 +2,14 @@
 
 
 /**
-* allows you to check rules like this
-* if(Modifier A::variable = ... set Modifier B::variable to ...)
-* variables can also be function
-* it checks for the function first and then does the variable
-*
-*/
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description:  allows you to check rules like this
+ * if(Modifier A::variable = ... set Modifier B::variable to ...)
+ * variables can also be function
+ * it checks for the function first and then does the variable
+ */
 
 class ModifierRulesModifier extends OrderModifier {
 
@@ -129,7 +131,7 @@ class ModifierRulesModifier extends OrderModifier {
 	protected function getValueFromClass($classObject, $functionName) {
 		$this->debugMessage .="Getting Value for {$classObject->ClassName} :: $functionName";
 		//method
-		$this->debugMessage .=$classObject->PickupOrDeliveryType();
+		$this->debugMessage .= $classObject->$functionName();
 		if(method_exists($classObject,$functionName)) {
 			return $classObject->$functionName();
 		}

@@ -1,10 +1,12 @@
 <?php
 
 /**
- * adds one or more bonus products
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description: adds one or more bonus products
  * the product page / dataobject need to have a function BonusProductsForCart
  * which returns an array of IDs
- * @package ecommerce
  * each time a bonus item is added, it is added to Session::set("ecommercextras.bonusitems", $arrayofitems);
  * the following situations apply:
  * 1. item has not been added and thus will be added and qty set
@@ -188,7 +190,6 @@ class BonusProductModifier extends OrderModifier {
 			}
 			$keys = array_keys($newBonusProductArray);
 			if(is_array($newBonusProductArray) && count($newBonusProductArray)) {
-				Requirements::javascript("jsparty/jquery/jquery.js");
 				Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
 				Requirements::customScript('BonusProductModifier.set_list(new Array(0, '.implode(",", $keys).'));');

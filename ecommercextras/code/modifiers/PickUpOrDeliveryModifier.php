@@ -1,12 +1,12 @@
 <?php
 
 /**
- * PickUpOrDelivery
- * Shipping calculation scheme based on SimpleShippingModifier.
- * It lets you set fixed shipping* costs, or a fixed
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description: Shipping calculation scheme based on SimpleShippingModifier.
+ * It lets you set fixed shipping costs, or a fixed
  * cost for each region you're delivering to.
- *
- * @package ecommerce
  */
 class PickUpOrDeliveryModifier extends OrderModifier {
 
@@ -21,9 +21,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	);
 
-	protected static $default_amount = 100;
-
-	protected static $default_title = "Pickup Or Delivery Option Not Selected";
+	protected static $default_code = "codehere";
 
 	protected static $pickup_options = array();
 
@@ -31,9 +29,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	protected static $total_weight = 0;
 
-	protected static $worked_out_charges = 0;
+	protected static $actual_charges = 0;
 
-	protected static $worked_out_charges_done = false;
+	protected static $calculations_done = false;
 
 	/**
 	 * Set the tax information for a particular country.
@@ -62,12 +60,8 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		);
 	}
 
-	static function set_default_amount($v) {
-		self::$default_amount = $v;
-	}
-
-	static function set_default_title($v) {
-		self::$default_title = $v;
+	static function set_default_code($v) {
+		self::$default_code = $v;
 	}
 
 	static function show_form() {
@@ -79,9 +73,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	static function get_form($controller) {
-		Requirements::javascript("jsparty/jquery/jquery.js");
-		Requirements::javascript("ecommercextras/javascript/AjaxOrder.js");
-		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		$fields = new FieldSet();
@@ -107,18 +98,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	function __construct() {
 		parent::__construct();
-		if($this->getOption()) {
-			if(count(self::$pickup_options)) {
-				$i = 0;
-				foreach(self::$pickup_options as $key => $option) {
-					if($i > 0) {
-						break;
-					}
-					$this->setOption($option["Code"]);
-					$i++;
-				}
-			}
-		}
 	}
 
 // 					 *** display
@@ -131,21 +110,24 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 // 					 *** inclusive / exclusive
 // 					 *** other attribute: Pickup or Delivery Type
-	function PickupOrDeliveryType() {
-		if($v = Session::get("PickUpOrDeliveryOption")) {
+	function LivePickupOrDeliveryType() {
+		if($v = Session::get("LivePickupOrDeliveryOption")) {
 			return $v;
 		}
 		if($this->PickupOrDeliveryType) {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			$firstArray = array_shift(self::$pickup_options);
-			return $firstArray["Code"];
+			if(isset(self::$pickup_options[self::$default_code])) {
+				$array = self::$pickup_options[self::$default_code];
+			}
+			else {
+				$array = current(self::$pickup_options);
+			}
+			$code = $array["Code"];
+			$this->setOption($code);
+			return $code;
 		}
-	}
-
-	function LivePickupOrDeliveryType() {
-		return $this->PickupOrDeliveryType();
 	}
 
 	function PickupOrDeliveryTypeArray() {
@@ -155,7 +137,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				return $array;
 			}
 		}
-		$currentOption = $this->PickupOrDeliveryType();
+		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
 			if(isset(self::$pickup_options[$currentOption])) {
 				return self::$pickup_options[$currentOption];
@@ -181,9 +163,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		if($array) {
 			return $array["Name"];
 		}
-		else {
-			return self::$default_title;
-		}
 	}
 
 	function Name() {
@@ -207,12 +186,12 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	function Charge() {
 		$amount = 0;
-		if(!self::$worked_out_charges_done) {
-			self::$worked_out_charges = self::$default_amount;
+		if(!self::$calculations_done) {
+			self::$actual_charges = 0;
 			if(ShoppingCart::get_items()) {
 				$amount = $this->SubTotalAmount();
 				if(($amount-0) == 0){
-					self::$worked_out_charges = 0;
+					self::$actual_charges = 0;
 					$this->debugMessage .= "<hr />sub total amount is 0";
 				}
 				else {
@@ -220,34 +199,34 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					if( is_array($currentOptionArray)) {
 						// no need to charge, order is big enough
 						if(floatval($currentOptionArray["MinimumOrderAmountForZeroRate"]) < floatval($amount)) {
-							self::$worked_out_charges =  0;
-							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$worked_out_charges;
+							self::$actual_charges =  0;
+							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$actual_charges;
 						}
 						else {
 							// add weight based shipping
 							if($this->totalWeight() && $currentOptionArray["weightMultiplier"] ) {
-								self::$worked_out_charges += $this->totalWeight() * $currentOptionArray["weightMultiplier"];
-								$this->debugMessage .= "<hr />weight".self::$worked_out_charges;
+								self::$actual_charges += $this->totalWeight() * $currentOptionArray["weightMultiplier"];
+								$this->debugMessage .= "<hr />weight".self::$actual_charges;
 							}
 							// add percentage
 							if($currentOptionArray["Percentage"]) {
-								self::$worked_out_charges += $amount * $currentOptionArray["Percentage"];
-								$this->debugMessage .= "<hr />percentage".self::$worked_out_charges;
+								self::$actual_charges += $amount * $currentOptionArray["Percentage"];
+								$this->debugMessage .= "<hr />percentage".self::$actual_charges;
 							}
 							// add fixed price
 							if($currentOptionArray["FixedCost"]) {
-								self::$worked_out_charges += $currentOptionArray["FixedCost"];
-								$this->debugMessage .= "<hr />fixed".self::$worked_out_charges;
+								self::$actual_charges += $currentOptionArray["FixedCost"];
+								$this->debugMessage .= "<hr />fixed".self::$actual_charges;
 							}
 							//is it enough?
-							if(self::$worked_out_charges < $currentOptionArray["MinimumDeliveryCharge"]) {
-								self::$worked_out_charges = $currentOptionArray["MinimumDeliveryCharge"];
-								$this->debugMessage .= "<hr />too little".self::$worked_out_charges;
+							if(self::$actual_charges < $currentOptionArray["MinimumDeliveryCharge"]) {
+								self::$actual_charges = $currentOptionArray["MinimumDeliveryCharge"];
+								$this->debugMessage .= "<hr />too little".self::$actual_charges;
 							}
 							// is it too much
-							if(self::$worked_out_charges > $currentOptionArray["MaximumDeliveryCharge"]) {
-								self::$worked_out_charges = $currentOptionArray["MaximumDeliveryCharge"];
-								$this->debugMessage .= "<hr />too much".self::$worked_out_charges;
+							if(self::$actual_charges > $currentOptionArray["MaximumDeliveryCharge"]) {
+								self::$actual_charges = $currentOptionArray["MaximumDeliveryCharge"];
+								$this->debugMessage .= "<hr />too much".self::$actual_charges;
 							}
 						}
 					}
@@ -258,13 +237,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				}
 			}
 			else {
-				self::$worked_out_charges = 0;
+				self::$actual_charges = 0;
 				$this->debugMessage .= "<hr />no action";
 			}
-			self::$worked_out_charges_done = true;
+			self::$calculations_done = true;
 		}
-		$this->debugMessage .= "<hr />final score: ".self::$worked_out_charges;
-		return self::$worked_out_charges;
+		$this->debugMessage .= "<hr />final score: ".self::$actual_charges;
+		return self::$actual_charges;
 
 	}
 
@@ -274,13 +253,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			$this->debugMessage .= "<hr />value from database";
 			return $this->Amount;
 		}
-		elseif(self::$worked_out_charges_done) {
+		elseif(self::$calculations_done) {
 			$this->debugMessage .= "<hr />working out amount";
 			return $this->LiveAmount();
 		}
 		else {
 			$this->debugMessage .= "<hr />default amount";
-			return self::$default_amount;
+			return 0;
 		}
 	}
 
@@ -303,7 +282,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				}
 			}
 		}
-		self::$worked_out_charges_done = true;
+		self::$calculations_done = true;
 		return self::$total_weight;
 	}
 
@@ -318,12 +297,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	function setOption($type) {
-		Session::set("PickUpOrDeliveryOption", $type);
+		//Session::set("testme", "abc");
+		Session::set("LivePickupOrDeliveryOption", $type);
 		$this->PickupOrDeliveryType = $type;
 	}
 
 	function getOption() {
-		return $this->PickUpOrDeliveryType();
+		return $this->LivePickUpOrDeliveryType();
 	}
 
 
@@ -349,7 +329,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		}
 		Order::save_current_order();
 		if(Director::is_ajax()) {
-			return $this->controller->renderWith(self::$ajaxcart_template_name);
+			return ShoppingCartExtension_Controller::modifier_json_code();
 		}
 		else {
 			Director::redirect(CheckoutPage::find_link());

@@ -35,8 +35,7 @@
 		$fixedCost = 0
 	);
 */
-//PickUpOrDeliveryModifier::set_default_amount(10);
-//PickUpOrDeliveryModifier::set_default_title("New Zealand Delivery");
+//PickUpOrDeliveryModifier::set_default_code("pickup");
 //PickUpOrDeliveryModifier_Form::set_ajaxcart_template_name("AjaxCheckoutCart");
 
 // *** RECOMMENDED PROCUCTS

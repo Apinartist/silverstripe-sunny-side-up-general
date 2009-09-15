@@ -1,10 +1,12 @@
 <?php
 
 /**
- * shows a list of recommended products
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description: shows a list of recommended products
  * the product page / dataobject need to have a function RecommendedProductsForCart
  * which returns an array of IDs
- * @package ecommerce
  */
 class RecommendedProductsModifier extends OrderModifier {
 
@@ -118,8 +120,6 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(count($recommendedProductsIDArray)) {
-			Requirements::javascript("jsparty/jquery/jquery.js");
-			Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 			Requirements::javascript("ecommercextras/javascript/RecommendedProductsModifier.js");
 			Requirements::themedCSS("RecommendedProducts");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);

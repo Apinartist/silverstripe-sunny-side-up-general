@@ -1,8 +1,11 @@
 <?php
 
-/*
-IsExclusive -> LiveIsExclusive
-*/
+/**
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description: allows adding  GST sales tax to order
+ */
 
 class GSTTaxModifier extends OrderModifier {
 

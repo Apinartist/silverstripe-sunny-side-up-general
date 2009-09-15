@@ -1,4 +1,11 @@
 <?php
+/**
+* @author Nicolaas [at] sunnysideup.co.nz
+* @package: ecommerce
+* @sub-package: ecommercextras
+* @description: main class for ecommercextras that kicks things into place.
+*/
+
 
 class AjaxOrder extends DataObjectDecorator {
 
@@ -8,32 +15,37 @@ class AjaxOrder extends DataObjectDecorator {
 
 	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
 
-	static function set_loading_cart_text($v) {
+	private static $added_ajax_links = false;
+
+	public static function set_loading_cart_text($v) {
 		self::$loading_cart_text = $v;
 	}
 
-	static function set_in_cart_text($v) {
+	public static function set_in_cart_text($v) {
 		self::$in_cart_text = $v;
 	}
 
-	static function set_confirm_delete_text($v) {
+	public static function set_confirm_delete_text($v) {
 		self::$confirm_delete_text = $v;
 	}
 
+	public function can($member) {
+		$this->addAjaxLinkRequirements();
+	}
 
-	function Cart() {
+	public function Cart() {
 		$this->addAjaxLinkRequirements();
 		HTTP::set_cache_age(0);
 		return ShoppingCart::current_order();
 	}
-	function IsCheckoutPage() {
+
+	public function IsCheckoutPage() {
 		return ("CheckoutPage" == $this->owner->ClassName);
 	}
 
-	function CheckoutLink() {
+	public function CheckoutLink() {
 		return CheckoutPage::find_link();
 	}
-
 
 	function addLinkAjax() {
 		$this->addAjaxLinkRequirements();
@@ -46,26 +58,34 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 
 	function addAjaxLinkRequirements() {
-		Requirements::block("ecommerce/javascript/ecommerce.js");
-		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript("ecommercextras/javascript/AjaxOrder.js");
-		if(self::$loading_cart_text) {
-			Requirements::customScript(
-				'jQuery(document).ready(function() {AjaxOrder.set_LoadingText("'.Convert::raw2js(self::$loading_cart_text).'")});',
-				"AjaxOrder_set_LoadingText"
-			);
-		}
-		if(self::$in_cart_text) {
-			Requirements::customScript(
-				'jQuery(document).ready(function() {AjaxOrder.set_InCartText("'.Convert::raw2js(self::$in_cart_text).'")});',
-				"AjaxOrder_set_InCartText"
-			);
-		}
-		if(self::$confirm_delete_text) {
-			Requirements::customScript(
-				'jQuery(document).ready(function() {AjaxOrder.set_ConfirmDeleteText("'.Convert::raw2js(self::$confirm_delete_text).'")});',
-				"AjaxOrder_set_ConfirmDeleteText"
-			);
+		if(!self::$added_ajax_links) {
+			Requirements::block("ecommerce/javascript/ecommerce.js");
+			Requirements::themedCSS("EcommerceXtras");
+			if($this->IsCheckoutPage()) {
+				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
+			}
+			else {
+				Requirements::javascript("ecommercextras/javascript/AjaxCart.js");
+				if(self::$loading_cart_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_LoadingText("'.Convert::raw2js(self::$loading_cart_text).'")});',
+						"AjaxOrder_set_LoadingText"
+					);
+				}
+				if(self::$in_cart_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_InCartText("'.Convert::raw2js(self::$in_cart_text).'")});',
+						"AjaxOrder_set_InCartText"
+					);
+				}
+				if(self::$confirm_delete_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_ConfirmDeleteText("'.Convert::raw2js(self::$confirm_delete_text).'")});',
+						"AjaxOrder_set_ConfirmDeleteText"
+					);
+				}
+			}
+			self::$added_ajax_links = true;
 		}
 	}
 }
@@ -124,7 +144,7 @@ class AjaxOrder_Controller extends Extension {
 	function AjaxOrder() {
 		if($orderID = intval(Director::urlParam('Action') + 0)) {
 			$order = DataObject::get_by_id('Order', $orderID);
-			if($order && $order->MemberID == Member::currentUserID()) {
+			if($order && ($order->MemberID == Member::currentUserID())) {
 				return $order;
 			}
 		} else {
@@ -145,11 +165,12 @@ class AjaxOrder_Controller extends Extension {
 			$_SESSION = array();
 			unset($_SESSION);
 		}
-		die('<a href="/">click here to continue ...</a>');
+		die('<a href="/">Shopping cart has been removed, click here to continue ...</a>');
 	}
 
 	function OrderFormWithoutShippingAddress() {
 		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
 	}
+
 }
 
