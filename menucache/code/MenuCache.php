@@ -180,17 +180,17 @@ class MenuCache_controller extends Extension {
 
 
 
-	function showcachedfield($httpRequest) {
+	function showcachedfield($httpRequest = null) {
 		$fieldNumber = $httpRequest->param("ID");
 		return $this->getHtml($fieldNumber);
 	}
 
-	function showuncachedfield($httpRequest) {
+	function showuncachedfield($httpRequest = null) {
 		$this->owner->clearfieldcache();
 		return $this->showcachedfield($httpRequest);
 	}
 
-	function clearfieldcache($httpRequest) {
+	function clearfieldcache($httpRequest = null) {
 		$this->owner->clearfieldcache();
 		die('fields have been cleared, <a href="/">click to continue...</a>');
 	}
