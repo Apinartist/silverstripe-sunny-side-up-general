@@ -18,7 +18,7 @@ class WebPortfolioItem extends DataObject {
 		"NotPubliclyAvailable" => "Boolean",
 		"Favourites" => "Boolean",
 		"Notes" => "Varchar(255)",
-		"Client" => "Varchar(255)"
+		"Client" => "Varchar(255)",
 		"ScreenshotTaken" => "Date"
 	);
 
