@@ -51,5 +51,11 @@ class WebPortfolioPage extends Page {
 
 class WebPortfolioPage_Controller extends Page_Controller {
 
+	function init() {
+		parent::init();
+		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript("webportfolio/javascript/webportfolio.js");
+		Requirements::themedCSS("WebPortfolioPage");
+	}
 
 }

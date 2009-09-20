@@ -19,11 +19,12 @@ class WebPortfolioItem extends DataObject {
 		"Favourites" => "Boolean",
 		"Notes" => "Varchar(255)",
 		"Client" => "Varchar(255)"
+		"ScreenshotTaken" => "Date"
 	);
 
 	static $has_one = array(
 		"Agent" => "WebPortfolioAgent",
-		"Image" => "Image"
+		"Screenshot" => "Image"
 	);
 
 	static $many_many (

@@ -36,4 +36,12 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 
 	public static $plural_name = "What We Did Descriptors";
 
+	function Link() {
+		$link = '';
+		if($page = DataObject::get_one("WebPortfolioPage")) {
+			$link .= $page->Link().'show/'.$page->generateURLSegment($this->Name);
+		}
+		return $link;
+	}
+
 }
