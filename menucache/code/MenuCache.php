@@ -145,7 +145,7 @@ class MenuCache_controller extends Extension {
 
 	function CachedField($fieldNumber) {
 		$fieldName = MenuCache::field_maker($fieldNumber);
-		if(isset($_GET["flush"])) {
+		if(isset($_REQUEST["flush"])) {
 			$this->owner->clearfieldcache();
 		}
 		if(!(MenuCache::fields_exists($fieldNumber))) {
