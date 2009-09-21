@@ -27,7 +27,7 @@ class WebPortfolioItem extends DataObject {
 		"Screenshot" => "Image"
 	);
 
-	static $many_many (
+	static $many_many = array(
 		"WhatWeDid" => "WebPortfolioWhatWeDidDescriptor"
 	);
 
@@ -44,12 +44,12 @@ class WebPortfolioItem extends DataObject {
 		"Client",
 		"NoLongerActive",
 		"NotPubliclyAvailable",
-		"Favourites"
+		"Favourites",
 		"Agent.Name"
 	);
 
 	public static $summary_fields = array(
-		"WebAddress"
+		"WebAddress",
 		"Client"
 	);
 

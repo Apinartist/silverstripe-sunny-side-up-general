@@ -24,9 +24,6 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 		"SortNumber"
 	);
 
-	public static $field_labels = array(
-	);
-
 	public static $summary_fields = array(
 		"Name",
 		"SortNumber"
@@ -39,7 +36,7 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 	function Link() {
 		$link = '';
 		if($page = DataObject::get_one("WebPortfolioPage")) {
-			$link .= $page->Link().'show/'.$page->generateURLSegment($this->Name);
+			$link = $page->Link().'show/'.$page->generateURLSegment($this->Name);
 		}
 		return $link;
 	}

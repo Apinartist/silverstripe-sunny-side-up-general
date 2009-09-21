@@ -12,12 +12,6 @@ class WebPortfolioAgent extends DataObject {
 		"AgentWebAddress" => "Varchar(255)"
 	);
 
-	public static $casting = array();
-
-	public static $indexes = array(
-		"Code" => true
-	);
-
 	public static $has_many = array(
 		"WebPortfolioItem" => "WebPortfolioItem"
 	);
@@ -28,7 +22,6 @@ class WebPortfolioAgent extends DataObject {
 		"Name" => "PartialMatchFilter",
 		"AgentWebAddress"
 	);
-
 
 	public static $singular_name = "Web Portfolio Agent";
 

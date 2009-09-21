@@ -33,7 +33,7 @@ class WebPortfolioPage extends Page {
 				$sourceFilter = "`PortfolioItem`.`ParentID` = ".$this->ID,
 				$sourceSort = "",
 				$sourceJoin = ""
-			);
+			)
 		);
 		return $fields;
 	}
