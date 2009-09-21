@@ -17,15 +17,9 @@ class WebQuote extends DataObject {
 		"DeadLine" => "Text"
 	);
 
-	public static $casting = array();
-
 	public static $indexes = array(
 		"Name" => true
 	);
-
-	public static $defaults = array();
-
-	public static $default_records = array();
 
 	public static $has_one = array(
 		"CurrencyConversion" => "WebQuoteCurrencyConversion",
@@ -36,18 +30,9 @@ class WebQuote extends DataObject {
 		"Parent" => "WebQuotePage"
 	);
 
-	public static $has_many = null;
-
 	public static $many_many = array(
 		"SalesItem" => "WebQuoteSalesItem"
 	);
-
-	public static $many_many_extraFields = null;
-
-	public static $belongs_many_many = null;
-
-	public static $default_sort = "Code";
-
 
 	public static $searchable_fields = array(
 		"Code",
@@ -74,7 +59,7 @@ class WebQuote extends DataObject {
 
 	public function onBeforeWrite() {
 		if(!$this->ParentID) {
-			if($parent = DataObject::get_one("WebQuotePage");
+			if($parent = DataObject::get_one("WebQuotePage")) {
 				$this->ParentID = $parent->ID;
 			}
 		}

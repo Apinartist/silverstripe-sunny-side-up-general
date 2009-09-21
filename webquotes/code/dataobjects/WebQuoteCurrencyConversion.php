@@ -14,8 +14,6 @@ class WebQuoteCurrencyConversion extends DataObject {
 		"Multiplier" => "Double(4,4)"
 	);
 
-	public static $casting = array();
-
 	public static $indexes = array(
 		"Code" => true
 	);
@@ -29,18 +27,7 @@ class WebQuoteCurrencyConversion extends DataObject {
 		array("Code" => "nzd", "Name" => "New Zealand Dollar", "DefaultValue" => 1)
 	);
 
-	public static $has_one = null;
-
-	public static $has_many = null;
-
-	public static $many_many = null;
-
-	public static $many_many_extraFields = null;
-
-	public static $belongs_many_many = null;
-
 	public static $default_sort = "Code";
-
 
 	public static $searchable_fields = array(
 		"Code",

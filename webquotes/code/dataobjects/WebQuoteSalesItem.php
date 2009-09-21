@@ -16,8 +16,6 @@ class WebQuoteSalesItem extends DataObject {
 		"ExampleURL" => "Varchar(255)"
 	);
 
-	public static $casting = array();
-
 	public static $indexes = array(
 		"Name" => true
 	);
@@ -26,21 +24,13 @@ class WebQuoteSalesItem extends DataObject {
 		"TimeBased" => 0
 	);
 
-	public static $default_records = array();
-
 	public static $has_one = array(
 		"DesignAspect" => "WebQuoteDesignAspect",
 		"SalesGroup" => "WebQuoteSalesGroup"
 	);
 
-	public static $has_many = null;
-
-	public static $many_many = null;
-
-	public static $many_many_extraFields = null;
-
 	public static $belongs_many_many = array(
-		"Template" => "WebQuoteTemplate"
+		"Template" => "WebQuoteTemplate",
 		"Quote" => "WebQuoteTemplate"
 	);
 
@@ -51,9 +41,6 @@ class WebQuoteSalesItem extends DataObject {
 		"Cost",
 		"TimeBased",
 		"ExampleURL"
-	);
-
-	public static $field_labels = array(
 	);
 
 	public static $summary_fields = array(

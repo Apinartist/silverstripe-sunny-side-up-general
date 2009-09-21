@@ -5,7 +5,7 @@
  * @sub-package Webquote
  */
 
-class QuotePage extends Page {
+class WebQuotePage extends Page {
 
 	static $icon = "webquote/images/treeicons/QuotePage";
 
@@ -31,7 +31,7 @@ class QuotePage extends Page {
 				$sourceFilter = "`WebQuote`.`ParentID` = ".$this->ID,
 				$sourceSort = "",
 				$sourceJoin = ""
-			);
+			)
 		);
 		return $fields;
 	}
@@ -88,7 +88,7 @@ class QuotePage_Controller extends Page_Controller {
 
 }
 
-
+/*
 	var $costPlan, $currencyPlan, $timePlan, $codeOption, $designOption, $templatePlan, $groupPlan, $d;
 	var $personalised = 0;
 	var $houseIntro;
@@ -281,3 +281,5 @@ class QuotePage_Controller extends Page_Controller {
 		}
 		return $js;
 	}
+
+*/

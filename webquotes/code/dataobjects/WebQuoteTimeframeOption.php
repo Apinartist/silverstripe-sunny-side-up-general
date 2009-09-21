@@ -12,8 +12,6 @@ class WebQuoteTimeframeOption extends DataObject {
 		"Multiplier" => "Double(4,4)"
 	);
 
-	public static $casting = array();
-
 	public static $indexes = array(
 		"Multiplier" => true
 	);
@@ -25,25 +23,10 @@ class WebQuoteTimeframeOption extends DataObject {
 	public static $default_records = array(
 		array("Name" => "Normal", "Multiplier" => 1),
 		array("Name" => "Urgent", "Multiplier" => 1.7)
+		array("Name" => "Rush", "Multiplier" => 2.7)
 	);
-
-	public static $has_one = null;
-
-	public static $has_many = null;
-
-	public static $many_many = null;
-
-	public static $many_many_extraFields = null;
-
-	public static $belongs_many_many = null;
 
 	public static $default_sort = "Multiplier";
-
-	public static $searchable_fields = array(
-	);
-
-	public static $field_labels = array(
-	);
 
 	public static $summary_fields = array(
 		"Name",
