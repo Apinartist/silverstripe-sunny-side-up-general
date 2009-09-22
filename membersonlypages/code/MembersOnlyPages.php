@@ -74,6 +74,7 @@ class MembersOnlyPage_Controller extends Page_Controller {
 
 	public function init() {
 		parent::init();
+		Requirements::themedCSS("MembersOnlyPage");
 	}
 
 
