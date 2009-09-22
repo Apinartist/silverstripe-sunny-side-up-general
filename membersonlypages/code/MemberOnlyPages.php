@@ -2,7 +2,7 @@
 
 class MembersOnlyPage extends Page {
 
-	static $add_action = 'Intranet Page';
+	static $add_action = 'Members Only Page';
 
 	static $icon = 'mysite/images/treeicons/MembersOnlyPage';
 
@@ -10,9 +10,9 @@ class MembersOnlyPage extends Page {
 
 	static $allowed_children = array("MembersOnlyPage");
 
-	protected static $group_code = "intranet-members";
+	protected static $group_code = "secured-page-members";
 
-	protected static $group_name = "intranet members";
+	protected static $group_name = "secured-page members";
 
 	protected static $permission_code = "INTRANET_USERS";
 
@@ -41,7 +41,7 @@ class MembersOnlyPage extends Page {
 	}
 
 	public function ShowInMenus() {
-		return $this->getShowInMenus();
+		return $this->canView();
 	}
 
 	public function getShowInSearch() {
@@ -49,12 +49,12 @@ class MembersOnlyPage extends Page {
 	}
 
 	public function ShowInSearch() {
-		return $this->getShowInMenus();
+		return $this->canView();
 	}
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!$intranetGroup = DataObject::get_one("Group", "Code = 'intranet-members'")) {
+		if(!$intranetGroup = DataObject::get_one("Group", "Code = '".self::$group_code."'")) {
 			$group = new Group();
 			$group->Code = self::$group_code;
 			$group->Title = self::$group_name;
@@ -65,15 +65,6 @@ class MembersOnlyPage extends Page {
 		}
 		else if(DB::query("SELECT * FROM Permission WHERE `GroupID` = '".$intranetGroup->ID."' AND `Code` LIKE '".self::$permission_code."'")->numRecords() == 0 ) {
 			Permission::grant($intranetGroup->ID, self::$permission_code);
-		}
-		if(!DataObject::get_one("MembersOnlyPage", "`ParentID` < 1")) {
-			$intranetholder = new MembersOnlyPage();
-			$intranetholder->Title = "Intranet";
-			$intranetholder->URLSegment = "Intranet";
-			$intranetholder->Content = "<p>Welcome to your Intranet</p>";
-			$intranetholder->Status = "Published";
-			$intranetholder->write();
-			$intranetholder->publish("Stage", "Live");
 		}
 	}
 
