@@ -4,17 +4,17 @@
 		<% if SiteMapPages %><a href="#" class="siteMapPageExpander" rel="$ID"><img src="/sitemap/images/plusMinus.gif" /></a> <% end_if %>
 		<a href="$Link">$Title</a>
 		<% if SiteMapPages %><% control SiteMapPages %>
-		<ul id="list{$ID}">
+		<ul id="sublist{$ID}">
 			<li class="$FirstLast SiteMapLevel2">
 				<% if SiteMapPages %><a href="#" class="siteMapPageExpander" rel="$ID"><img src="/sitemap/images/plusMinus.gif" /></a> <% end_if %>
 				<a href="$Link">$Title</a>
 				<% if SiteMapPages %><% control SiteMapPages %>
-				<ul>
+				<ul id="sublist{$ID}">
 					<li class="$FirstLast SiteMapLevel3">
 						<% if SiteMapPages %><a href="#" class="siteMapPageExpander" rel="$ID"><img src="/sitemap/images/plusMinus.gif" /></a> <% end_if %>
 						<a href="$Link">$Title</a>
 						<% if SiteMapPages %><% control SiteMapPages %>
-						<ul>
+						<ul id="sublist{$ID}">
 							<li class="$FirstLast SiteMapLevel4">
 								<% if SiteMapPages %><a href="#" class="siteMapPageExpander" rel="$ID"><img src="/sitemap/images/plusMinus.gif" /></a> <% end_if %>
 								<a href="$Link">$Title</a>

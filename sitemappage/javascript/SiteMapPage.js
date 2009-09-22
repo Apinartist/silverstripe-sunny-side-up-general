@@ -19,20 +19,27 @@
 
 		expanderASelector: "a.siteMapPageExpander",
 
+		expandedClass: "SiteMapNodeExpanded",
+
+		implodedClass: "SiteMapNodeImploded",
+
+		idSelectorPrepend: '#sublist',
+
 		init: function() {
 			$(sitemappage.outerUlSelector + ' ul').hide();
 			$(sitemappage.expanderASelector).click(
 				function() {
 					var id = $(this).attr('rel');
-					if($(this).hasClass("SiteMapNodeExpanded")) {
-						$('#list' + id).hide('slow');
-						$(this).removeClass("SiteMapNodeExpanded");
-						$(this).addClass("SiteMapNodeCompacted");
+					var idSelector ==  sitemappage.idSelectorPrepend + id;
+					if($(this).hasClass(sitemappage.expandedClass) && $(idSelector).length > 0) {
+						$(idSelector).hide('slow');
+						$(this).removeClass(sitemappage.expandedClass);
+						$(this).addClass(sitemappage.implodedClass);
 					}
 					else {
-						$('#list' + id).show('slow');
-						$(this).removeClass("SiteMapNodeCompacted");
-						$(this).addClass("SiteMapNodeExpanded");
+						$(idSelector).show('slow');
+						$(this).removeClass(sitemappage.implodedClass);
+						$(this).addClass(sitemappage.expandedClass);
 					}
 				}
 			);
