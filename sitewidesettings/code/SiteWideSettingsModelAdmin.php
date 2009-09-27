@@ -1,17 +1,19 @@
 <?php
 
 /**
-* @author Nicolaas Francken
-*
-*
-*
-**/
+ * @author Nicolaas Francken
+ *
+ *
+ *
+ **/
 
-class SiteWideSettings extends ModelAdmin {
+class SiteWideSettingsModelAdmin extends ModelAdmin {
 
-	public static $managed_models = array("SiteWideSettings", "SiteTree");
+	public static $managed_models = array(
+		"SiteWideSettings"
+	);
 
-	public static $url_segment = 'sitewidesettings';
+	public static $url_segment = 'sws';
 
 	public static $menu_title = 'Settings';
 

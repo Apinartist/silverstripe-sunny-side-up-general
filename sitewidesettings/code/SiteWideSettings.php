@@ -1,42 +1,47 @@
 <?php
 
 /**
-* @author Nicolaas Francken
-*
-*
-*
-**/
+ * @author Nicolaas [at] sunnysideup . co .nz
+ *
+ *
+ *
+ **/
 
 class SiteWideSettings extends DataObject {
 
 	static $db = array();
-	static $has_one = array();
-
-	/* no idea why we need all this */
-	static $url_base = "sitewidesettings";
-	static $url_segment;
-	static $url_rule;
-	static $url_priority;
-	static $menu_priority;
+	static $has_one = array(
+		"WhoLastUpdateIt" => "Member"
+	);
 
 
-	function url_base() {
-		return self::$url_base;
-	}
 
-	function canCreate($member) {
+	function canCreate($member = null) {
 		return !DataObject::get("SiteWideSettings");
 	}
 
-	function canDelete($member) {
+	function canDelete($member = null) {
 		return false;
 	}
 
-	function RequiredFields() {
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
 		if($this->canCreate()) {
 			$obj = new SiteWideSettings();
 			$obj->write();
 		}
+	}
+
+	function onBeforeWrite() {
+		$currentMemberID = Member::CurrentUserID();
+		if($currentMemberID) {
+			$this->WhoLastUpdateItID = $currentMemberID;
+			parent::onBeforeWrite();
+		}
+		else {
+			return true;
+		}
+
 	}
 
 }
