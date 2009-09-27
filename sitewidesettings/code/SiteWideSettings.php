@@ -11,15 +11,18 @@ class SiteWideSettings extends DataObject {
 
 	static $db = array();
 	static $has_one = array();
-	static $has_many = array();
-	static $indexes = array();
-	static $defaults = array();
-	static $has_many = array();
-	static $many_many = array();
-	static $belongs_many_many = array();
-	static $many_many_extraFields = array();
-	static $searchable_fields = array();
 
+	/* no idea why we need all this */
+	static $url_base = "sitewidesettings";
+	static $url_segment;
+	static $url_rule;
+	static $url_priority;
+	static $menu_priority;
+
+
+	function url_base() {
+		return self::$url_base;
+	}
 
 	function canCreate($member) {
 		return !DataObject::get("SiteWideSettings");
@@ -27,6 +30,13 @@ class SiteWideSettings extends DataObject {
 
 	function canDelete($member) {
 		return false;
+	}
+
+	function RequiredFields() {
+		if($this->canCreate()) {
+			$obj = new SiteWideSettings();
+			$obj->write();
+		}
 	}
 
 }
