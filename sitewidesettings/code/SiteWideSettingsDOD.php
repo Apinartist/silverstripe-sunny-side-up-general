@@ -19,5 +19,6 @@ class SiteWideSettingsDOD extends DataObjectDecorator {
 		return self::$extra_statics;
 	}
 
-
+	function updateCMSFields(FieldSet &$fields) {
+	}
 }
