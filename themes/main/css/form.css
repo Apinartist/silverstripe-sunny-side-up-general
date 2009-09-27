@@ -30,3 +30,4 @@
 	.typography .radio, .typography .checkbox{width: auto!important;}
 
 	.typography p.checkbox {margin-left: 120px;}
+	.typography .confirmedpassword .middleColumn {margin-left: 0px;}
