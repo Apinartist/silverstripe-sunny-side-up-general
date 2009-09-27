@@ -14,7 +14,7 @@
 //FlashObject::set_default_div_id("FlashObject");
 
 //may set - allows you to add one flash file to each page with title and alternative content
-//DataObject::add_extension('SiteTree', 'FlashObjectDOD');
+//SiteTreeDecorator::add_extension('SiteTree', 'FlashObjectDOD');
 
 //basics
 //FlashObject::set_default_external_flash_file("");
