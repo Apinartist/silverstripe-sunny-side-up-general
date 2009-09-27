@@ -36,12 +36,8 @@ class SiteWideSettings extends DataObject {
 		$currentMemberID = Member::CurrentUserID();
 		if($currentMemberID) {
 			$this->WhoLastUpdateItID = $currentMemberID;
-			parent::onBeforeWrite();
 		}
-		else {
-			return true;
-		}
-
+		parent::onBeforeWrite();
 	}
 
 }
