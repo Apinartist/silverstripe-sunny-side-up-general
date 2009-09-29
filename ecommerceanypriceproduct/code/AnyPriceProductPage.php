@@ -14,15 +14,17 @@ class AnyPriceProductPage extends Product {
 
 	public static $db = array(
 		"AmountFieldLabel" => "Varchar(255)",
-		"ActionFieldLabel" => "Varchar(255)"
-	)
+		"ActionFieldLabel" => "Varchar(255)",
+		"MinimumAmount" => "Decimal(9,2)",
+		"MaximumAmount" => "Decimal(9,2)"
+	);
 
 	public static $defaults = array(
-		'AllowPurchase' => true
+		'AllowPurchase' => true,
 		'Price' => 0
 	);
 
-	static $add_action = 'a Product With Adjustable Price';
+	static $add_action = 'Product With Adjustable Price';
 
 	static $icon = 'ecommerceanypriceproduct/images/treeicons/AnyPriceProductPage';
 
@@ -36,8 +38,10 @@ class AnyPriceProductPage extends Product {
 		$fields->addFieldsToTab(
 			"Root.Content.AddAmountForm",
 			array(
-				new TextField("AmountFieldLabel", "Amount Field Label (what amount would you like to pay?)")
-				new TextField("ActionFieldlabel", "Action Field Label (e.g. pay entered amount now)")
+				new TextField("AmountFieldLabel", "Amount Field Label (what amount would you like to pay?)"),
+				new TextField("ActionFieldlabel", "Action Field Label (e.g. pay entered amount now)"),
+				new CurrencyField("MinimumAmount", "Minimum Amount"),
+				new CurrencyField("MaximumAmount", "Maximum Amount")
 			)
 
 		);
@@ -53,7 +57,7 @@ class AnyPriceProductPage extends Product {
 
 
 		// Flags for this product which affect it's behaviour on the site
-		$fields->removeFieldsToTab(
+		$fields->removeFieldsFromTab(
 			'Root.Content.Main',
 			array(
 				'FeaturedProduct'
@@ -74,13 +78,14 @@ class AnyPriceProductPage extends Product {
 	 * @return boolean
 	 */
 	function AllowPurchase() {
-		return $this->AllowPurchase ;
+		return false ;
 	}
+
 
 
 }
 
-class Product_Controller extends Page_Controller {
+class AnyPriceProductPage_Controller extends Product_Controller {
 
 	function init() {
 		parent::init();
@@ -92,22 +97,48 @@ class Product_Controller extends Page_Controller {
 		);
 
 		$actions = new FieldSet(
-			new ActionField("doAddNewPriceForm", $this->ActionFieldLabel)
+			new FormAction("doAddNewPriceForm", $this->ActionFieldLabel)
 		);
 
+		$requiredFields = new RequiredFields(array("Amount"));
 		return new Form(
-			$controller = $this
+			$controller = $this,
 			$name = "AddNewPriceForm",
-			$fields
-			$actions
+			$fields,
+			$actions,
 			$requiredFields
 		);
 	}
 
 	function doAddNewPriceForm($data, $form) {
-		print_r($form);
-		print_r($data);
+		$amount = floatval($data["Amount"]);
+		if($amount < $this->MinimimAmount) {
+			die("minimum amount is ....");
+		}
+		$alreadyExistingVariations = DataObject::get_one("ProductVariation", "`ProductID` = ".$this->ID." AND `Price` = ".$amount);
+		//create new one if needed
+		if(!$alreadyExistingVariations) {
+			Currency::setCurrencySymbol(Payment::site_currency());
+			$titleDescriptor = new Currency("titleDescriptor");
+			$titleDescriptor->setValue($amount);
+			$obj = new ProductVariation();
+			$obj->Title = "Payment for: ".$titleDescriptor->Nice();
+			$obj->Price = $amount;
+			$obj->ProductID = $this->ID;
+			$obj->writeToStage("Stage");
+			// line below does not work - suspected bug in Sapphire Versioning System
+			//$componentSet->add($obj);
+		}
+		//check if we have one now
+		$ourVariation = DataObject::get_one("ProductVariation", "`ProductID` = ".$this->ID." AND `Price` = ".$amount);
+		if($ourVariation) {
+			ShoppingCart::add_new_item(new ProductVariation_OrderItem($ourVariation));
+		}
+		else {
+			die("no count");
+		}
+		Director::redirectBack();
+		return;
 	}
-
 
 }

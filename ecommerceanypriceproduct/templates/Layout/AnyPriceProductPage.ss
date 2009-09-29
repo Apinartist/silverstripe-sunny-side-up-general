@@ -1,4 +1,4 @@
 $Content
-$AddNewPriceForm
 $Form
+$AddNewPriceForm
 $PageComments
