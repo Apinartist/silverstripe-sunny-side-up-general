@@ -439,7 +439,7 @@ class GoogleMap extends ViewableData {
 		if(self::$save_static_map_locally) {
 			$fileName = str_replace(array('&', '|', ',', '=', ';'), array('', '', '', '', ''), $staticMapURL);
 			$length = strlen($fileName);
-			$fileName = "_sGMap".substr($fileName, 0, 35)."_".$length.".gif";
+			$fileName = "_sGMap".substr($fileName, 60, 55)."_".$length.".gif";
 			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file(str_replace('&amp;', '&', $fullStaticMapURL), $fileName);
 		}
 		return '<img class="staticGoogleMap" src="'.$fullStaticMapURL.'" alt="map: '.$title.'" />';
