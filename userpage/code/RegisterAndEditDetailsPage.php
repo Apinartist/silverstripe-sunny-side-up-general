@@ -122,7 +122,6 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		if($memberFormFields = Member::getMemberFormFields()) {
 			$fields->merge($memberFormFields);
 		}
-		$fields->push(new HeaderField("Login Details", 3));
 		$fields->push($passwordField);
 
 		$requiredFieldList = array(
