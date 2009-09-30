@@ -129,6 +129,8 @@ class GoogleMap extends ViewableData {
 		static function setLatFormFieldId($v) {self::$LatFormFieldId = $v;}
 	protected static $LngFormFieldId = "";
 		static function setLngFormFieldId($v) {self::$LngFormFieldId = $v;}
+	protected static $save_static_map_locally = false;
+		static function set_save_static_map_locally($v) {self::$save_static_map_locally = $v;}
 
 /* ADDRESS FINDER */
 	protected static $AddAddressFinder = true;
@@ -391,7 +393,12 @@ class GoogleMap extends ViewableData {
 				"&amp;zoom=".self::$DefaultZoom;
 		}
 		$this->dataPointsStaticMapHTML .= "&amp;".self::$StaticMapSettings;
-		$this->dataPointsStaticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?'.$this->dataPointsStaticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$this->dataObjectTitle.'" />';
+		$fullStaticMapURL = 'http://maps.google.com/staticmap?'.$this->dataPointsStaticMapHTML.'&amp;key='.GoogleMapAPIKey;
+		if(self::$save_static_map_locally) {
+			$fileName = str_replace(array("&", "|", ","), array("-", "_", "."), $this->dataPointStaticMapHTML);
+			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file($fullStaticMapURL, $fileName);
+		}
+		$this->dataPointsStaticMapHTML = '<img class="staticGoogleMap" src="'.$fullStaticMapURL.'" alt="map picture for '.$this->dataObjectTitle.'" />';
 		return true;
 	}
 

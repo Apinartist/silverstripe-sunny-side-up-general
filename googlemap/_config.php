@@ -37,6 +37,7 @@ GoogleMap::setShowStaticMapFirst(0); //if set to 1, the map will load as a pictu
 //max size is 512pixels
 GoogleMap::setStaticMapSettings("maptype=terrain"); //
 GoogleMap::setStaticIcon("red1");
+GoogleMap::set_save_static_map_locally(false);
 	//# {color} (optional) specifies a color from the set {black, brown, green, purple, yellow, blue, gray, orange, red, white}.
 	//# {alphanumeric-character} (optional) specifies a single lowercase alphanumeric character from the set {a-z, 0-9}. Note that default and mid sized
 
