@@ -2,10 +2,10 @@
 
 class StaticMapSaverForHTTPS extends Object {
 
-	proctected static $save_dir = "assets";
+	protected static $save_dir = "assets";
 		static function set_save_dir($v) { self::$save_dir = $v;}
 
-	proctected static $overwrite = false;
+	protected static $overwrite = false;
 		static function set_overwrite($v) { self::$overwrite = $v;}
 
 	function convert_to_local_file($url, $filename) {
