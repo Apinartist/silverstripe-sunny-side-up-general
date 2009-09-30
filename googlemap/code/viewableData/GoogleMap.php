@@ -430,14 +430,13 @@ class GoogleMap extends ViewableData {
 	}
 
 	private static function make_static_map_url_into_image($staticMapURL, $title) {
+		$fullStaticMapURL  = '';
+		$UsesSensor = "false";
 		if(self::$UsesSensor) {
 			$UsesSensor = "true";
 		}
-		else {
-			$UsesSensor = "false";
-		}
-		$fullStaticMapURL .= 'http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'$amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
-		if(self::$save_static_map_locally || 1 == 1) {
+		$fullStaticMapURL = 'http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'$amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
+		if(self::$save_static_map_locally) {
 			$fileName = str_replace(array("&", "|", ",", "="), array("-", "_", ".", "-"), $staticMapURL);
 			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file($fullStaticMapURL, $fileName);
 		}
