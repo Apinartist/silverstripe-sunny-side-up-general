@@ -101,12 +101,12 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$member = Member::currentUser();
 		$fields = new FieldSet();
 		$passwordField = new ConfirmedPasswordField("Password", "Password");
-		$name = $member->FirstName;
-		if($member->FirstName && $member->Surname) {
-			$name .= ' ';
-		}
-		$name .= $member->Surname;
 		if($member) {
+			$name = $member->FirstName;
+			if($member->FirstName && $member->Surname) {
+				$name .= ' ';
+			}
+			$name .= $member->Surname;
 			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus LoggedIn">You are currently logged-in as '.$name.'. Click <a href="Security/logout">here</a> to log-out or log-in as someone else.</p>');
 			if($member && $member->Password != '') {
 				$passwordField->setCanBeEmpty(true);
