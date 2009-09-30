@@ -101,15 +101,20 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$member = Member::currentUser();
 		$fields = new FieldSet();
 		$passwordField = new ConfirmedPasswordField("Password", "Password");
+		$name = $member->FirstName;
+		if($member->FirstName && $member->Surname) {
+			$name .= ' ';
+		}
+		$name .= $member->Surname;
 		if($member) {
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good">You are currently logged in as '. $member->FirstName . ' ' . $member->Surname . '. Click <a href="Security/logout" title="Click here to log out">here</a> to log out.</p>');
+			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus LoggedIn">You are currently logged-in as '.$name.'. Click <a href="Security/logout">here</a> to log-out or log-in as someone else.</p>');
 			if($member && $member->Password != '') {
 				$passwordField->setCanBeEmpty(true);
 			}
 			$actions = new FieldSet(new FormAction("submit", "Update your details"));
 		}
 		else {
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good">You are currently not logged in. Click <a href="Security/login" title="Click here to log out" class="thickbox">here</a> to log-in.</p>');
+			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. Click <a href="Security/login">here</a> to log-in.</p>');
 			$actions = new FieldSet(new FormAction("submit", "Register"));
 		}
 		$fields->push($logoutField);
@@ -145,11 +150,10 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		if(!$member) {
 			$newPerson = true;
 			$member = new Member();
-			$form->sessionMessage('Thank you. You have been registered.', 'good');
+			$form->sessionMessage($this->WelcomeTitle, 'good');
 		}
 		else {
-			$form->sessionMessage('Your details have been saved', 'good');
-
+			$form->sessionMessage($this->ThankYouTitle, 'good');
 		}
 		$form->saveInto($member);
 		$member->write();
