@@ -114,12 +114,8 @@ class GoogleMap extends ViewableData {
 		static function setDefaultZoom($v) {self::$DefaultZoom = $v;}
 	protected static $ShowStaticMapFirst = 0;
 		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v;}
-		public function getShowStaticMapFirst() {
-			if(!self::$ShowStaticMapFirst || (isset($_SESSION["staticMapsOff"]) && $_SESSION["staticMapsOff"]) ) {
-				return false;
-			}
-			return true;
-		}
+		public function getShowStaticMapFirst() {if(!self::$ShowStaticMapFirst || (isset($_SESSION["staticMapsOff"]) && $_SESSION["staticMapsOff"]) ) {return false;} return true;}
+
 	/* STATIC MAP */
 	protected static $StaticMapSettings = "maptype=roadmap";
 		static function setStaticMapSettings($v) {self::$StaticMapSettings = $v;}
@@ -392,13 +388,7 @@ class GoogleMap extends ViewableData {
 				"&amp;center=".self::$DefaultLatitude.",".self::$DefaultLongitude.
 				"&amp;zoom=".self::$DefaultZoom;
 		}
-		$this->dataPointsStaticMapHTML .= "&amp;".self::$StaticMapSettings;
-		$fullStaticMapURL = 'http://maps.google.com/staticmap?'.$this->dataPointsStaticMapHTML.'&amp;key='.GoogleMapAPIKey;
-		if(self::$save_static_map_locally || 1 == 1) {
-			$fileName = str_replace(array("&", "|", ","), array("-", "_", "."), $this->dataPointStaticMapHTML);
-			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file($fullStaticMapURL, $fileName);
-		}
-		$this->dataPointsStaticMapHTML = '<img class="staticGoogleMap" src="'.$fullStaticMapURL.'" alt="map picture for '.$this->dataObjectTitle.'" />';
+		$this->dataPointsStaticMapHTML = $this->makeStaticMapURLIntoImage($this->dataPointsStaticMapHTML, $this->dataObjectTitle);
 		return true;
 	}
 
@@ -408,45 +398,51 @@ class GoogleMap extends ViewableData {
 	*/
 
 	static function quick_static_map($ArrayOfLatitudeAndLongitude, $title) {
-		$staticMapHTML = '';
+		$staticMapURL = '';
 		$count = 0;
 		if(self::$GoogleMapWidth > 512) { $staticMapWidth = 512;	}	else { $staticMapWidth = self::$GoogleMapWidth;	}
 		if(self::$GoogleMapHeight > 512) { $staticMapHeight = 512;	}	else { $staticMapHeight = self::$GoogleMapHeight;	}
-		$staticMapHTML = "size=".$staticMapWidth."x".$staticMapHeight;
+		$staticMapURL = "size=".$staticMapWidth."x".$staticMapHeight;
 		if(count($ArrayOfLatitudeAndLongitude)) {
-			$staticMapHTML .= '&amp;markers=';
+			$staticMapURL .= '&amp;markers=';
 			foreach($ArrayOfLatitudeAndLongitude as $row) {
 				if($count) {
-				 $staticMapHTML .= '|';
+				 $staticMapURL .= '|';
 				}
 				$center = round($row["Latitude"], 6).",".round($row["Longitude"], 6);
 				if(!$count) {
 					$defaultCenter = $center;
 				}
-				$staticMapHTML .= $center.",";
+				$staticMapURL .= $center.",";
 				if(isset($row["Marker"])) {
-					$staticMapHTML .= $row["Marker"];
+					$staticMapURL .= $row["Marker"];
 				}
 				else {
-					$staticMapHTML .= self::$StaticIcon;
+					$staticMapURL .= self::$StaticIcon;
 				}
 				$count++;
 			}
 			if($count == 1) {
-				$staticMapHTML .= '&amp;center='.$defaultCenter.'&amp;zoom='.self::$DefaultZoom;
+				$staticMapURL .= '&amp;center='.$defaultCenter.'&amp;zoom='.self::$DefaultZoom;
 			}
 		}
-		$staticMapHTML .= "&amp;".self::$StaticMapSettings;
+		return $this->makeStaticMapURLIntoImage($staticMapURL, $title);
+	}
+
+	private function makeStaticMapURLIntoImage($staticMapURL, $title) {
 		if(self::$UsesSensor) {
 			$UsesSensor = "true";
 		}
 		else {
 			$UsesSensor = "false";
 		}
-		$staticMapHTML = '<img class="staticGoogleMap" src="http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.$staticMapHTML.'&amp;key='.GoogleMapAPIKey.'" alt="map picture for '.$title.'" />';
-		return $staticMapHTML;
+		$fullStaticMapURL .= 'http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'$amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
+		if(self::$save_static_map_locally || 1 == 1) {
+			$fileName = str_replace(array("&", "|", ",", "="), array("-", "_", ".", "-"), $staticMapURL);
+			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file($fullStaticMapURL, $fileName);
+		}
+		return '<img class="staticGoogleMap" src="'.$fullStaticMapURL.'" alt="map: '.$title.'" />';
 	}
-
 
 	/* OUTPUT JAVASCRIPT */
 	private function createJavascript() {
