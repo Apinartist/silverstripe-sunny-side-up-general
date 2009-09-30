@@ -394,7 +394,7 @@ class GoogleMap extends ViewableData {
 		}
 		$this->dataPointsStaticMapHTML .= "&amp;".self::$StaticMapSettings;
 		$fullStaticMapURL = 'http://maps.google.com/staticmap?'.$this->dataPointsStaticMapHTML.'&amp;key='.GoogleMapAPIKey;
-		if(self::$save_static_map_locally) {
+		if(self::$save_static_map_locally || 1 == 1) {
 			$fileName = str_replace(array("&", "|", ","), array("-", "_", "."), $this->dataPointStaticMapHTML);
 			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file($fullStaticMapURL, $fileName);
 		}
