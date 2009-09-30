@@ -9,7 +9,7 @@
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 
 	.typography .field{width: 100%; padding-bottom: 10px; overflow: auto;}
-		.typography .middleColumn, .typography .Actions{display: block; margin-left: 120px;}
+		.typography .middleColumn, .typography .Actions, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 120px;}
 			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #B5AB8B; width: 220px; padding: 3px;}
 			.typography .middleColumn textarea{font-size: 1.2em; font-family: Arial, Verdana, sans-serif;}
 			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important;}
@@ -29,5 +29,6 @@
 
 	.typography .radio, .typography .checkbox{width: auto!important;}
 
-	.typography p.checkbox {margin-left: 120px;}
+/* exceptions */
 	.typography .confirmedpassword .middleColumn {margin-left: 0px;}
+	.typography .confirmedpassword .middleColumn .middleColumn {margin-left: 120px;}
