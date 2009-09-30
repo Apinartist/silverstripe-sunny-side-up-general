@@ -388,7 +388,7 @@ class GoogleMap extends ViewableData {
 				"&amp;center=".self::$DefaultLatitude.",".self::$DefaultLongitude.
 				"&amp;zoom=".self::$DefaultZoom;
 		}
-		$this->dataPointsStaticMapHTML = $this->makeStaticMapURLIntoImage($this->dataPointsStaticMapHTML, $this->dataObjectTitle);
+		$this->dataPointsStaticMapHTML = self::make_static_map_url_into_image($this->dataPointsStaticMapHTML, $this->dataObjectTitle);
 		return true;
 	}
 
@@ -426,10 +426,10 @@ class GoogleMap extends ViewableData {
 				$staticMapURL .= '&amp;center='.$defaultCenter.'&amp;zoom='.self::$DefaultZoom;
 			}
 		}
-		return $this->makeStaticMapURLIntoImage($staticMapURL, $title);
+		return self::make_static_map_url_into_image($staticMapURL, $title);
 	}
 
-	private function makeStaticMapURLIntoImage($staticMapURL, $title) {
+	private static function make_static_map_url_into_image($staticMapURL, $title) {
 		if(self::$UsesSensor) {
 			$UsesSensor = "true";
 		}
