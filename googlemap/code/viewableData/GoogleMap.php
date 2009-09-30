@@ -438,7 +438,8 @@ class GoogleMap extends ViewableData {
 		$fullStaticMapURL = 'http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'&amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
 		if(self::$save_static_map_locally) {
 			$fileName = str_replace(array('&', '|', ',', '=', ';'), array('', '', '', '', ''), $staticMapURL);
-			$fileName = substr(strlen($fileName).$fileName, 0, 35);
+			$length = strlen($fileName);
+			$fileName = "_sGMap".substr($fileName, 0, 35)."_".$length.".gif";
 			$fullStaticMapURL = StaticMapSaverForHTTPS::convert_to_local_file(str_replace('&amp;', '&', $fullStaticMapURL), $fileName);
 		}
 		return '<img class="staticGoogleMap" src="'.$fullStaticMapURL.'" alt="map: '.$title.'" />';
