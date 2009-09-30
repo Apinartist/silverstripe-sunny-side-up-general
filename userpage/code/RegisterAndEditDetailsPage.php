@@ -114,7 +114,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			$actions = new FieldSet(new FormAction("submit", "Update your details"));
 		}
 		else {
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. Click <a href="Security/login">here</a> to log-in.</p>');
+			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. Click <a href="Security/login?BackURL='.$this->Link().'">here</a> to log-in.</p>');
 			$actions = new FieldSet(new FormAction("submit", "Register"));
 		}
 		$fields->push($logoutField);
