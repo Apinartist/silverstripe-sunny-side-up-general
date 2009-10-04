@@ -49,16 +49,6 @@ class DOBField extends CalendarDateField {
 		$tabIndex1 = $this->getTabIndexHTML(1);
 		$tabIndex2 = $this->getTabIndexHTML(2);
 
-		$js = <<<JS
-;(function(jQuery) {
-	jQuery(document).ready(
-		function() {
-			DOBField.dobStepThrough();
-		}
-	);
-})(jQuery);
-JS;
-		Requirements::customScript($jsFunc, 'func_validateDOB');
 		Requirements::javascript("formextensions/javascript/DOBField.js");
 		return <<<HTML
 			<div class="dmycalendardate">

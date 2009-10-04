@@ -1,58 +1,63 @@
+;(function(jQuery) {
+	jQuery(document).ready(
+		function() {
+			DOBField.dobStepThrough();
+			alert("go");
+		}
+	);
+	var DOBField = {
 
-var DOBField = {
+		dobInputSelector: ".dobfield input",
 
-	ccInputSelector: ".DOCardField input",
+		nextFieldSelector: "",
 
-	nextFieldSelector: "",
+		activeFieldClass: "activeDOBItem",
 
-	activeFieldClass: "activeCreditCardItem",
+		set_nextFieldSelector: function(v) {
+			this.nextFieldSelector = v;
+		},
 
-	set_nextFieldSelector: function(v) {
-		this.nextFieldSelector = v;
-	},
-
-	dobStepThrough: function() {
-		jQuery(DOBField.ccInputSelector).each(
-			function() {
-				jQuery(this).keyup(
-					function () {
-						var entry = jQuery(this).val();
-						var next = false;
-						if(4 == entry.length) {
-							var next = true;
-							var number = 0
-							switch(jQuery(this).attr("name")) {
-								case "DOBNumber[0]":
-									break;
-								case "DOBNumber[1]":
-									number = 1;
-									break;
-								case "DOBNumber[2]":
-									number = 2;
-									break;
-								default:
-									alert("error");
-							}
-						}
-						else {
-							next = false;
-						}
-						var currentName = "DOBNumber["+number+"]";
-						if(next) {
-							if(3 == number) {
-								jQuery(DOBField.nextFieldSelector).focus();
+		dobStepThrough: function() {
+			jQuery(DOBField.dobInputSelector).each(
+				function() {
+					jQuery(this).keyup(
+						function () {
+							var entry = jQuery(this).val();
+							var next = false;
+							if(2 == entry.length) {
+								var next = "Month";
+								var name = "Day";
+								switch(jQuery(this).attr("name")) {
+									case "DOB[Day]":
+										number = "Month";
+										break;
+									case "DOB[Month]":
+										number = "Month";
+										next = "Year";
+										break;
+									case "DOB[Year]":
+										number = "Year";
+										break;
+									default:
+										alert("error");
+								}
 							}
 							else {
-								nextName = "DOBNumber["+parseInt(number+1)+"]";
+								next = false;
+							}
+							var currentName = "DOBNumber["+number+"]";
+							if(next) {
+								nextName = "DOB["+next+"]";
 								jQuery("input[name='" + nextName + "']").focus();
-								jQuery(DOBField.ccInputSelector).removeClass(DOBField.activeFieldClass);
-								jQuery(DOBField.ccInputSelector+"[name='" + nextName + "']").addClass(DOBField.activeFieldClass);
+								jQuery(DOBField.dobInputSelector).removeClass(DOBField.activeFieldClass);
+								jQuery(DOBField.dobInputSelector+"[name='" + nextName + "']").addClass(DOBField.activeFieldClass);
 							}
 						}
-					}
-				);
-			}
-		);
+					);
+				}
+			);
+		}
 	}
-}
-JS
+
+})(jQuery);
+
