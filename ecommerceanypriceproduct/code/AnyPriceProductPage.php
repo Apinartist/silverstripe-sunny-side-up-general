@@ -137,7 +137,10 @@ class AnyPriceProductPage_Controller extends Product_Controller {
 		else {
 			die("no count");
 		}
-		Director::redirectBack();
+		$checkoutPage = DataObject::get_one("CheckoutPage");
+		if($checkoutPage) {
+			Director::redirect($checkoutPage->Link());
+		}
 		return;
 	}
 
