@@ -2,7 +2,6 @@
 	jQuery(document).ready(
 		function() {
 			DOBField.dobStepThrough();
-			alert("go");
 		}
 	);
 	var DOBField = {
@@ -22,35 +21,42 @@
 				function() {
 					jQuery(this).keyup(
 						function () {
-							var entry = jQuery(this).val();
-							var next = false;
-							if(2 == entry.length) {
-								var next = "Month";
-								var name = "Day";
+							var next = '';
+							var name = '';
+							var maxLength = jQuery(this).attr("maxlength")-0;
+							if(jQuery(this).val().length == maxLength) {
 								switch(jQuery(this).attr("name")) {
 									case "DOB[Day]":
-										number = "Month";
+										name = "Day";
+										next = "Month";
 										break;
 									case "DOB[Month]":
-										number = "Month";
+										name = "Month";
 										next = "Year";
 										break;
 									case "DOB[Year]":
 										number = "Year";
+										next = "end";
 										break;
 									default:
 										alert("error");
 								}
-							}
-							else {
-								next = false;
-							}
-							var currentName = "DOBNumber["+number+"]";
-							if(next) {
-								nextName = "DOB["+next+"]";
-								jQuery("input[name='" + nextName + "']").focus();
-								jQuery(DOBField.dobInputSelector).removeClass(DOBField.activeFieldClass);
-								jQuery(DOBField.dobInputSelector+"[name='" + nextName + "']").addClass(DOBField.activeFieldClass);
+								if(next) {
+									jQuery(DOBField.dobInputSelector).removeClass(DOBField.activeFieldClass);
+									if("end" == next) {
+										var fields = jQuery(this).parents("fieldset").find('button,input,textarea,select');
+										var index = fields.index( this );
+										if ( index > -1 && ( index + 1 ) < fields.length ) {
+											fields.eq( index + 1 ).focus();
+										}
+									}
+									else {
+										nextName = "DOB[" + next + "]";
+										jQuery("input[name='" + nextName + "']").focus();
+										jQuery(DOBField.dobInputSelector+"[name='" + nextName + "']").addClass(DOBField.activeFieldClass);
+
+									}
+								}
 							}
 						}
 					);
@@ -59,5 +65,13 @@
 		}
 	}
 
+	jQuery.fn.focusNextInputField = function() {
+		return this.each(
+			function() {
+				return false;
+			}
+		);
+	}
 })(jQuery);
+
 
