@@ -6,11 +6,8 @@
  **/
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
-//===================---------------- START widgets_latestpagesvisited MODULE ----------------===================
-//SiteTreeDecorator::add_extension('SiteTree', 'LatestPagesVisited');
-//Object::add_extension('ContentController', 'LatestPagesVisited_Controller');
-//LatestPagesVisitedWidget::setNumberOfPagesBack(7);
-//===================---------------- END widgets_latestpagesvisited MODULE ----------------===================
+//===================---------------- START widgets_latestblogentries MODULE ----------------===================
+//===================---------------- END widgets_latestblogentries MODULE ----------------===================
 
 
 

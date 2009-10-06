@@ -1,5 +1,5 @@
 ###############################################
-widgets last pages visited
+Lastest Blog Entries
 ###############################################
 
 Maintainer Contact
@@ -13,13 +13,12 @@ SS 2.3+
 
 Documentation
 -----------------------------------------------
-includes a widget "last pages visited" and a
-page with the same information
+shows the latest blog entries
 
 
 Installation Instructions
 -----------------------------------------------
-1. Find out how to add modules to SS and add module as per usual.
+1. Find out how to add widgets to SS and add widget as per usual.
 2. copy configurations from this module's _config.php file
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module, but instead customise it
