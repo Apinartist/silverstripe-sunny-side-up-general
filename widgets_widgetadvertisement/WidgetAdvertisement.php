@@ -9,7 +9,7 @@ class WidgetAdvertisement extends Widget {
 	);
 
 	static $has_one = array(
-		"Image" => "Image"
+		"Logo" => "Image"
 	);
 
 	static $has_many = array();
@@ -27,10 +27,9 @@ class WidgetAdvertisement extends Widget {
 	static $description = 'Adds a simple image + link (advertisement) to your widget area.';
 
 	function getCMSFields() {
-		$source = DataObject::get("SiteTree");
 		return new FieldSet(
 			new TextField("Hyperlink","Hyperlink (e.g. http://www.sunnysideup.co.nz)"),
-			new ImageField("Image","Image / Picture / Logo")
+			new ImageField("Logo","Image / Picture / Logo")
 		);
 	}
 
