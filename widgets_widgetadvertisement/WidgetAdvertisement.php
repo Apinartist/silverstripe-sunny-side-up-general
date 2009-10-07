@@ -4,16 +4,12 @@
  */
 class WidgetAdvertisement extends Widget {
 
-	static $db = array();
+	static $db = array(
+		"Hyperlink" => "Varchar(255)"
+	);
 
 	static $has_one = array(
-		"QuickLink1" => "SiteTree",
-		"QuickLink2" => "SiteTree",
-		"QuickLink3" => "SiteTree",
-		"QuickLink4" => "SiteTree",
-		"QuickLink5" => "SiteTree",
-		"QuickLink6" => "SiteTree",
-		"QuickLink7" => "SiteTree"
+		"Image" => "Image"
 	);
 
 	static $has_many = array();
@@ -24,41 +20,19 @@ class WidgetAdvertisement extends Widget {
 
 	static $defaults = array();
 
-	static $title = 'Quick Links';
+	static $title = '';
 
-	static $cmsTitle = 'Quick Links';
+	static $cmsTitle = 'Advertisement';
 
-	static $description = 'Adds a customisable list of links.';
+	static $description = 'Adds a simple image + link (advertisement) to your widget area.';
 
 	function getCMSFields() {
 		$source = DataObject::get("SiteTree");
-		$optionArray = array();
-		if($source) foreach( $source as $page ) {
-			$optionArray[$page->ID] = $page->MenuTitle;
-		}
 		return new FieldSet(
-			new DropdownField("QuickLink1ID","First Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink2ID","Second Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink3ID","Third Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink4ID","Fourth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink5ID","Fifth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink6ID","Sixth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink7ID","Seventh Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---")
+			new TextField("Hyperlink","Hyperlink (e.g. http://www.sunnysideup.co.nz)"),
+			new ImageField("Image","Image / Picture / Logo")
 		);
 	}
 
-	function Links() {
-		Requirements::themedCSS("quicklinks");
-		$dos = new DataObjectSet();
-		for($i = 1; $i < 8; $i++) {
-			$fieldname = "QuickLink".$i."ID";
-			if($this->$fieldname > 0) {
-				if($page = DataObject::get_by_id("SiteTree", $this->$fieldname - 0)) {
-					$dos->push($page);
-				}
-			}
-		}
-		return $dos;
-	}
 
 }
