@@ -21,9 +21,9 @@
 								<% if SiteMapPages %><% control SiteMapPages %>
 								<ul><li class="$FirstLast SiteMapLevel5"><a href="$Link">$Title</a></li></ul>
 								<% end_control %><% end_if %>
-							<li><% end_control %>
+							</li><% end_control %>
 						</ul><% end_if %>
-					<li><% end_control %>
+					</li><% end_control %>
 				</ul><% end_if %>
 			</li><% end_control %>
 		</ul><% end_if %>

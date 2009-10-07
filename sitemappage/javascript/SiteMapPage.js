@@ -15,7 +15,7 @@
 
 	var sitemappage = {
 
-		outerUlSelector: "ul#SiteMapHolder",
+		outerUlSelector: "ul#SiteMap",
 
 		expanderASelector: "a.siteMapPageExpander",
 
@@ -26,11 +26,12 @@
 		idSelectorPrepend: '#sublist',
 
 		init: function() {
+			alert("go")
 			$(sitemappage.outerUlSelector + ' ul').hide();
 			$(sitemappage.expanderASelector).click(
 				function() {
 					var id = $(this).attr('rel');
-					var idSelector ==  sitemappage.idSelectorPrepend + id;
+					var idSelector = sitemappage.idSelectorPrepend + id;
 					if($(this).hasClass(sitemappage.expandedClass) && $(idSelector).length > 0) {
 						$(idSelector).hide('slow');
 						$(this).removeClass(sitemappage.expandedClass);

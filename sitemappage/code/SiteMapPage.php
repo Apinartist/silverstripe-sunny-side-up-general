@@ -25,7 +25,7 @@ class SiteMapPage_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
-		Requirements::javascript('sitemap/javascript/sitemap.js');
+		Requirements::javascript('sitemappage/javascript/SiteMapPage.js');
 		Requirements::themedCSS('SiteMapPage');
 	}
 
