@@ -35,7 +35,7 @@ class LatestBlogEntries extends Widget {
 	}
 
 	function Links() {
-		Requirements::themedCSS("latestblogentries");
+		Requirements::themedCSS("widgets_latestblogentries");
 		return DataObject::get("BlogEntry", null, "`Created` DESC", null, $this->NumberOfItems);
 	}
 
