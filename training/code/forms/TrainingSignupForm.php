@@ -32,6 +32,18 @@ class TrainingSignupForm extends Form {
 			"Email",
 			"Password"
 		);
+		if($this->Options) {
+			$array = array();
+			$explodedOptions = explode("," $this->Options);
+			foreach($explodedOptions as $option) {
+				$option = trim(Convert::raw2attr($option));
+				$array[Convert::raw2attr($option)] = $option;
+			}
+			if(count($array) ) {
+				$fields->push(new DropdownField("SelectedOption", "Select Option", $array));
+			}
+		}
+		$fields->push(new TextField("BookingCode", "Booking Code (if any)"));
 		parent::__construct($controller, $name, $fields, $actions, $requiredFields);
 		$this->loadNonBlankDataFrom($member);
 		return $this;
@@ -67,6 +79,36 @@ class TrainingSignupForm extends Form {
 
 	}
 
+/*
+
+I don't think saveInto can deal with saving many_many relations
+currently, unless your Post class has a customised method called
+saveCategories($data) in which you simply add the code like this:
+
+$this->Categories->add($item, $extraFields),
+where $item should be the category's ID (you can get it from $data),
+depending on how your Form is stuctured, your $extraFields should be
+either from $data, or assigned from backend by you before you call
+saveInto in doPostForm or before you call $this->Categories->add
+saveCetegories.
+
+The name of saving many_many relation (here refer to saveCategories)
+must bond with your field name, ie, if your field is called:
+new DropdownField('GoneWithWind',"Category", $catOptions), the save
+method must name as saveGoneWithWind().
+
+if PrimeCategory need to be also submitted from from, your your can
+get CategoryID and PrimeCategory in an array from $data, try this:
+new DropdownField('Categories[CetegoryID]',"Category", $catOptions),
+new CheckboxField('Categories[PrimeCategory]', "Prime Category?"),
+The $data[Categories] submitted from from is a array.
+
+In addition, dropdown field is not supposed to simulate many_many
+relation, CheckboxSetField is aim to submit multiple IDs from a form
+(maybe you have you special consideration here?). If this is the case,
+$this->Categories->add need to change to $this->Categories-
+
+*/
 
 
 }
