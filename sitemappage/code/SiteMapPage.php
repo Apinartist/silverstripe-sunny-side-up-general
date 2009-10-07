@@ -19,11 +19,6 @@ class SiteMapPage extends Page {
 		return $fields;
 	}
 
-	function SiteMapPages() {
-		return DataObject::get("SiteMap", '`ShowInMenus` = 1 AND `ShowInSearch` = 1 AND `ParentID` = '.$this->ID.' AND ClassName <> "SiteMapPage"');
-	}
-
-
 }
 
 class SiteMapPage_Controller extends Page_Controller {
