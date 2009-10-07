@@ -33,8 +33,8 @@ class TrainingHolder_Controller extends Page_Controller {
 		$sqlResults = DB::query("
 			SELECT DISTINCT MONTH(`Date`) AS `Month`, YEAR(`Date`) AS `Year`
 			FROM `SiteTree$suffix` NATURAL JOIN `TrainingPage$suffix`
-			WHERE `ParentID` = ".$this->ID."
-			ORDER BY `Year` DESC, `Month` DESC;"
+			WHERE `ParentID` = ".$this->ID." AND `Date` > CONVERT_TZ(now(),'+00:00','+13:00')
+			ORDER BY `Year` DESC, `Month` ASC;"
 		);
 
 		if($sqlResults) foreach($sqlResults as $sqlResult) {
