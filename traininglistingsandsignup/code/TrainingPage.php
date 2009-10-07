@@ -11,7 +11,7 @@ class TrainingPage extends Page {
 		"Price" => "Currency",
 		"IsOpenForBookings" => "Boolean",
 		"PlacesAvailable" => "Int",
-		"PeopleSignedUp" => "Int",
+		"PeopleSignedUpElseWhere" => "Int",
 		"MoreInformation" => "HTMLText",
 		"Options" => "Text"
 	);
@@ -44,10 +44,14 @@ class TrainingPage extends Page {
 		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new CurrencyField("Price"));
 		$fields->addFieldToTab("Root.Content.MoreInformation", new FileIFrameField("DownloadFile","Download File"));
 		$fields->addFieldToTab("Root.Content.MoreInformation", new HTMLEditorField("MoreInformation","More Information", 12));
-		$fields->addFieldToTab("Root.Content.Bookings", new TextareaField("Options", "Options available (separate by comma) - if any (e.g. venues)"));
 		$fields->addFieldToTab("Root.Content.Bookings", new CheckboxField("IsOpenForBookings", "Is Open For Bookings"));
+		$fields->addFieldToTab("Root.Content.Bookings", new HeaderField("ActualPlacesAvailableHeader", "Actual Places Available: ".$this->ActualPlacesAvailable(), 3));
+		$fields->addFieldToTab("Root.Content.Bookings", new LiteralField("ActualPlacesAvailableData", "Calculated as: Places Available [-] Minus People Signed up elsewhere [-] Minus People Signed up through this Website)"));
 		$fields->addFieldToTab("Root.Content.Bookings", new NumericField("PlacesAvailable", "Places Available"));
-		$fields->addFieldToTab("Root.Content.Bookings", new NumericField("PeopleSignedUp","People Signed Up (excluding the ones signed up on this website)"));
+		$fields->addFieldToTab("Root.Content.Bookings", new NumericField("PeopleSignedUpElseWhere","People Signed Up Else Where (thus excluding the ones signed up on this website)"));
+		$fields->addFieldToTab("Root.Content.Bookings", new HeaderField("FormAdditions", "Form Additions", 3));
+		$fields->addFieldToTab("Root.Content.Bookings", new TextareaField("Options", "Options available (separate by comma) - if any (e.g. venues)", 3));
+		$fields->addFieldToTab("Root.Content.Bookings", new HeaderField("Current Registrations", "Current Registrations", 3));
 		$fields->addFieldToTab(
 			"Root.Content.Bookings",
 			$this->MemberField()
@@ -71,9 +75,9 @@ class TrainingPage extends Page {
 		return $memberField;
 	}
 
-	function addAttendee($member) {
+	function addAttendee($member, $extraFields = null) {
 		$existingMembers = $this->Attendees();
-		$existingMembers->add($member);
+		$existingMembers->add($member, $extraFields);
 	}
 
 	function DifferentEndDate() {
@@ -90,16 +94,25 @@ class TrainingPage extends Page {
 		}
 	}
 
+	function ActualPlacesAvailable() {
+		return intval($this->PlacesAvailable - $this->PeopleSignedUpElseWhere - $this->Attendees('`TrainingPageID` = '.$this->ID)->count());
+	}
+
 }
 
 class TrainingPage_Controller extends Page_Controller {
 
 	function SignUpForm() {
 
-		$form = new TrainingSignupForm($this, "SignUpForm", "Sign-Up for ".$this->Title);
-		if("thankyou" == Director::URLParam("Action")) {
+		if(
+			!$this->IsOpenForBookings ||
+			"thankyou" == Director::URLParam("Action") ||
+			$this->MemberAlreadySignedUp() ||
+			$this->ActualPlacesAvailable() < 1
+		) {
 			return false;
 		}
+		$form = new TrainingSignupForm($this, "SignUpForm", "Sign-Up for ".$this->Title);
 		return $form;
 	}
 
@@ -108,5 +121,15 @@ class TrainingPage_Controller extends Page_Controller {
 		$this->Content = "We will be in touch soon";
 		return array();
 	}
+
+	function MemberAlreadySignedUp() {
+		if($id = Member::currentUserID()) {
+			if($this->Attendees("`MemberID` = ".$id.' AND `TrainingPageID` = '.$this->ID)->count()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }

@@ -32,12 +32,12 @@ class TrainingSignupForm extends Form {
 			"Email",
 			"Password"
 		);
-		if($this->Options) {
+		if($controller->Options) {
 			$array = array();
-			$explodedOptions = explode("," $this->Options);
+			$explodedOptions = explode(",", $controller->Options);
 			foreach($explodedOptions as $option) {
-				$option = trim(Convert::raw2attr($option));
-				$array[Convert::raw2attr($option)] = $option;
+				$option = trim(Convert::raw2att($option));
+				$array[$option] = $option;
 			}
 			if(count($array) ) {
 				$fields->push(new DropdownField("SelectedOption", "Select Option", $array));
@@ -73,7 +73,14 @@ class TrainingSignupForm extends Form {
 
 		$member->update($data);
 		$member->write();
-		$this->controller->addAttendee($member);
+		$arrayExtraFields = array();
+		if(isset($data["SelectedOption"])) {
+			$arrayExtraFields["SelectedOption"] = $data["SelectedOption"];
+		}
+		if(isset($data["BookingCode"])) {
+			$arrayExtraFields["BookingCode"] = $data["BookingCode"];
+		}
+		$this->controller->addAttendee($member, $arrayExtraFields);
 		Director::redirect($this->controller->Link()."thankyou");
 		return;
 
