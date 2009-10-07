@@ -1,6 +1,6 @@
 <?php
 
-class GoogleAnalytics extends DataObjectDecorator {
+class GoogleAnalytics extends SiteTreeDecorator {
 
 	static $googleAnalyticsCode;
 
