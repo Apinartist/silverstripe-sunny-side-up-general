@@ -48,7 +48,7 @@ class QuickLinks extends Widget {
 	}
 
 	function Links() {
-		Requirements::themedCSS("quicklinks");
+		Requirements::themedCSS("widgets_quicklinks");
 		$dos = new DataObjectSet();
 		for($i = 1; $i < 8; $i++) {
 			$fieldname = "QuickLink".$i."ID";
