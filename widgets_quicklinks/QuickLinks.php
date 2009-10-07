@@ -32,18 +32,18 @@ class QuickLinks extends Widget {
 
 	function getCMSFields() {
 		$source = DataObject::get("SiteTree");
-		$optionArray = array();
+		$optionArray = $source->toDropDownMap($index = 'ID', $titleField = 'Title', "--- select page ---", $sort = "Sort");
 		if($source) foreach( $source as $page ) {
 			$optionArray[$page->ID] = $page->MenuTitle;
 		}
 		return new FieldSet(
-			new DropdownField("QuickLink1ID","First Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink2ID","Second Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink3ID","Third Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink4ID","Fourth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink5ID","Fifth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink6ID","Sixth Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---"),
-			new DropdownField("QuickLink7ID","Seventh Link",$optionArray, $value = "", $form = null, $emptyString = "--- select page ---")
+			new DropdownField("QuickLink1ID","First Link",$optionArray),
+			new DropdownField("QuickLink2ID","Second Link",$optionArray),
+			new DropdownField("QuickLink3ID","Third Link",$optionArray),
+			new DropdownField("QuickLink4ID","Fourth Link",$optionArray),
+			new DropdownField("QuickLink5ID","Fifth Link",$optionArray),
+			new DropdownField("QuickLink6ID","Sixth Link",$optionArray),
+			new DropdownField("QuickLink7ID","Seventh Link",$optionArray)
 		);
 	}
 
