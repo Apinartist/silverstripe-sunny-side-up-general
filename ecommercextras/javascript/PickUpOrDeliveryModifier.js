@@ -15,6 +15,8 @@ var	PickUpOrDeliveryModifier = {
 
 	loadingClass: "loading",
 
+	actionsClass: "Actions",
+
 	init: function() {
 		var options = {
 			beforeSubmit:  PickUpOrDeliveryModifier.showRequest,  // pre-submit callback

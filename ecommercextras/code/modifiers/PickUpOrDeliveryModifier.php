@@ -21,7 +21,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	);
 
-	protected static $default_code = "codehere";
+	protected static $default_code = "";
+	static function set_default_code($v) {self::$default_code = $v;}
+
 
 	protected static $pickup_options = array();
 
@@ -60,9 +62,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		);
 	}
 
-	static function set_default_code($v) {
-		self::$default_code = $v;
-	}
 
 	static function show_form() {
 		$items = ShoppingCart::get_items();
@@ -75,10 +74,19 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	static function get_form($controller) {
 		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+
+		if($defaultValue = Session::get("PickUpOrDeliveryOption")) {
+			$defaultValue = $v;
+		}
+		else {
+			$defaultValue = self::$default_code;
+		}
+
 		$fields = new FieldSet();
 		$options = self::getOptionListForDropDown();
 		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', 'Pick-up / Deliver'));
-		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, Session::get("PickUpOrDeliveryOption")));
+
+		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue, $form = null, $emptyOption = "--- pick option ---"));
 		$validator = null;
 		$actions = new FieldSet(
 			new FormAction_WithoutLabel('processOrderModifier', 'Update Pickup / Delivery Option')

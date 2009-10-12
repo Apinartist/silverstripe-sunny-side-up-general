@@ -1,11 +1,8 @@
 <?php
 /**
- * An extension to {@link SSReport} that allows a user
- * to view all Order instances in the system that
- * are not printed. {@link UnprintedOrderReport->getReportField()}
- * outlines the logic for what orders are considered to be "unprinted".
  *
- * @package ecommerce
+ * @package ecommercextras
+ * @author nicolaas[at]sunnysideup.co.nz
  */
 class SearchableOrderReport extends SSReport {
 
@@ -24,14 +21,17 @@ class SearchableOrderReport extends SSReport {
 
 
 	function getCMSFields() {
+		Requirements::javascript("ecommercextras/javascript/SearchableOrderReport.js");
+		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+		Requirements::customScript('var SearchableOrderReportURL = "'.Director::baseURL()."SearchableOrderReport_Handler".'/submit/";', 'SearchableOrderReport_Handler');
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Report", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)), "Orders");
-		$fields->addFieldToTab("Root.Report", new EmailField("Email", "Email"), "Orders");
-		$fields->addFieldToTab("Root.Report", new NumericField("Value", "Value"), "Orders");
-		$fields->addFieldToTab("Root.Report", new CalendarDateField("StartDate", "Start Date"), "Orders");
-		$fields->addFieldToTab("Root.Report", new CalendarDateField("EndDate", "End Date"), "Orders");
-		$fields->addFieldToTab("Root.Report", new FormAction('doSearch', 'Start Search'), "Orders");
-		$fields->addFieldToTab("Root.Report", new FormAction('clearSearch', 'Clear Search'), "Orders");
+		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
+		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
+		$fields->addFieldToTab("Root.Search", new NumericField("Value", "Value"));
+		$fields->addFieldToTab("Root.Search", new CalendarDateField("StartDate", "Start Date"));
+		$fields->addFieldToTab("Root.Search", new CalendarDateField("EndDate", "End Date"));
+		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Start Search'));
+		$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
 		return $fields;
 	}
 
@@ -40,6 +40,10 @@ class SearchableOrderReport extends SSReport {
 		die("ok");
 		Session::set("SearchableOrderReport.wherePhrase", $where);
 		Director::redirectBack();
+	}
+
+	function EditForm() {
+		die("ok2");
 	}
 
 
@@ -89,4 +93,12 @@ class SearchableOrderReport extends SSReport {
 	}
 
 }
-?>
+
+
+class SearchableOrderReport_Handler extends Controller {
+
+	function submit() {
+		return "okiii";
+	}
+
+}

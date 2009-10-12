@@ -81,5 +81,11 @@
 
 //ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
 
+// *** reports
+
+Director::addRules(50, array(
+	'SearchableOrderReport_Handler/$Action/$ID' => 'SearchableOrderReport_Handler',
+));
+
 //===================---------------- END ecommercextra MODULE ----------------===================
 
