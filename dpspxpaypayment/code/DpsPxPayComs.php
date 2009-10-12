@@ -60,7 +60,7 @@ class DpsPxPayComs {
 
 	function __construct() {
 		if(!self::$alternative_thirdparty_folder) {
-			self::$alternative_thirdparty_folder = 'dpspxpaypayment/code/thirdparty';
+			self::$alternative_thirdparty_folder = Director::baseFolder().'/dpspxpaypayment/code/thirdparty';
 		}
 		require_once(self::$alternative_thirdparty_folder."/PxPay_Curl.inc.php");
 		if(!self::$pxpay_url)            {user_error("error in DpsPxPayComs::__construct, self::$pxpay_url not set. ", E_USER_WARNING);}
@@ -87,15 +87,15 @@ class DpsPxPayComs {
 		#Set PxPay properties
 		if($this->MerchantReference) {$request->setMerchantReference($this->MerchantReference);}  else { user_error("error in DpsPxPayComs::startPaymentProcess, MerchantReference not set. ", E_USER_WARNING);}
 		if($this->AmountInput)       {$request->setAmountInput($this->AmountInput);}              else { user_error("error in DpsPxPayComs::startPaymentProcess, AmountInput not set. ", E_USER_WARNING);}
-		if($this->TxnData1)          {$request->setTxnData1($this->TxnData1);}                    else { user_error("error in DpsPxPayComs::startPaymentProcess, Address1 not set. ", E_USER_WARNING);}
-		if($this->TxnData2)          {$request->setTxnData2($this->TxnData2);}                    else { user_error("error in DpsPxPayComs::startPaymentProcess, Address2 not set. ", E_USER_WARNING);}
-		if($this->TxnData3)          {$request->setTxnData3($this->TxnData3);}                    else { user_error("error in DpsPxPayComs::startPaymentProcess, Address3 not set. ", E_USER_WARNING);}
+		if($this->TxnData1)          {$request->setTxnData1($this->TxnData1);}
+		if($this->TxnData2)          {$request->setTxnData2($this->TxnData2);}
+		if($this->TxnData3)          {$request->setTxnData3($this->TxnData3);}
 		if($this->TxnType)           {$request->setTxnType($this->TxnType);}                      else { user_error("error in DpsPxPayComs::startPaymentProcess, TxnType not set. ", E_USER_WARNING);}
 		if($this->CurrencyInput)     {$request->setCurrencyInput($this->CurrencyInput);}          else { user_error("error in DpsPxPayComs::startPaymentProcess, CurrencyInput not set. ", E_USER_WARNING);}
-		if($this->EmailAddress)      {$request->setEmailAddress($this->EmailAddress);}            else { user_error("error in DpsPxPayComs::startPaymentProcess, EmailAddress not set. ", E_USER_WARNING);}
+		if($this->EmailAddress)      {$request->setEmailAddress($this->EmailAddress);}
 		if($this->UrlFail)           {$request->setUrlFail($this->UrlFail);	}                     else { user_error("error in DpsPxPayComs::startPaymentProcess, UrlFail not set. ", E_USER_WARNING);}
 		if($this->UrlSuccess)        {$request->setUrlSuccess($this->UrlSuccess);}                else { user_error("error in DpsPxPayComs::startPaymentProcess, UrlSuccess not set. ", E_USER_WARNING);}
-		if($this->TxnId)             {$request->setTxnId($this->TxnId);}                          else { user_error("error in DpsPxPayComs::startPaymentProcess, TxnId not set. ", E_USER_WARNING);}
+		if($this->TxnId)             {$request->setTxnId($this->TxnId);}
 
 		/* TODO:
 		$request->setEnableAddBillCard($EnableAddBillCard);
@@ -143,6 +143,8 @@ class DpsPxPayComs {
 	 * $MerchantReference = $resonseObject->getMerchantReference();
 	 * $ResponseText      = $resonseObject->getResponseText();
 	 * $TxnMac            = $resonseObject->getTxnMac(); # An indication as to the uniqueness of a card used in relation to others
+	 *
+	 * also see: https://www.paymentexpress.com/technical_resources/ecommerce_hosted/error_codes.html
 	 **/
 
 	function processRequestAndReturnResultsAsObject() {

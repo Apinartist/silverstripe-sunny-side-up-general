@@ -68,29 +68,30 @@ class DpsPxPayPayment extends Payment {
 		}
 		$fields = new FieldSet(
 			new LiteralField('DPSInfo', $privacyLink),
-			new LiteralField('DPSPaymentsList', $paymentsList),
+			new LiteralField('DPSPaymentsList', $paymentsList)
 		);
 		return $fields;
 	}
 
-
+	function getPaymentFormRequirements() {
+		return array();
+	}
 	function processPayment($data, $form) {
-		$this->
-		// 2) Payment Informations
+
 		$commsObject = new DpsPxPayComs();
 
 		/**
 		* order details
 		**/
 		$commsObject->setTxnType('Purchase');
-		$commsObject->setMerchantReference($v);
-		$commsObject->setAmountInput($v);
+		$commsObject->setMerchantReference($this->ID);
+		$commsObject->setAmountInput($this->Order()->_TotalOutstanding());
 		$commsObject->setCurrencyInput($this->Currency);
 		/**
 		* details of the redirection
 		**/
-		$commsObject->setUrlFail($v);
-		$commsObject->setUrlSuccess($v);
+		$commsObject->setUrlFail(DpsPxPayPayment_Handler::absolute_complete_link());
+		$commsObject->setUrlSuccess(DpsPxPayPayment_Handler::absolute_complete_link());
 
 		//redirect
 		$commsObject->startPaymentProcess();
@@ -105,7 +106,11 @@ class DpsPxPayPayment_Handler extends Controller {
 	static $url_segment = 'dpspxpaypayment';
 
 	static function complete_link() {
-		return self::$url_segment . '/complete';
+		return self::$url_segment . '/paid/';
+	}
+
+	static function absolute_complete_link() {
+		return Director::AbsoluteURL(self::complete_link());
 	}
 
 	/**
@@ -117,35 +122,23 @@ class DpsPxPayPayment_Handler extends Controller {
 
 		$commsObject = new DpsPxPayComs();
 		$response = $commsObject->processRequestAndReturnResultsAsObject();
-		if($_REQUEST['callbackPW'] == WorldpayPayment::$callback_password) {
-			$paymentID = $_REQUEST['MC_paymentID'];
-			if(is_numeric($paymentID)) {
-				if($payment = DataObject::get_by_id('WorldpayPayment', $paymentID)) {
-					if($_REQUEST['transStatus'] == "Y")	$payment->Status = 'Success';
-					else $payment->Status = 'Failure';
-					$paymentID = $_REQUEST['MC_paymentID'];
-					$payment = DataObject::get_by_id('WorldpayPayment', $paymentID);
-					if(1 == $response->getSuccess() ) {
-						$payment->Status = 'Success';
-					}
-					else {
-						$payment->Status = 'Failure';
-					}
-					if($DpsTxnRef = $response->getDpsTxnRef()) $this->TxnRef = $DpsTxnRef;
-					if($ResponseText = $response->getResponseText()) $this->Message = $ResponseText;
-					$payment->write();
-					$payment->redirectToOrder();
-				}
-				else USER_ERROR("CheckoutPage::OrderConfirmed - There is no Payment object for this order object (Order ID ".$orderID.")", E_USER_WARNING);
+		if($payment = DataObject::get_by_id('DpsPxPayPayment', $response->getMerchantReference())) {
+			if(1 == $response->getSuccess()) {
+				$payment->Status = 'Success';
 			}
-			else USER_ERROR('CheckoutPage::OrderConfirmed - Order ID is NOT numeric', E_USER_WARNING);
+			else {
+				$payment->Status = 'Failure';
+			}
+			if($DpsTxnRef = $response->getDpsTxnRef()) $this->TxnRef = $DpsTxnRef;
+			if($ResponseText = $response->getResponseText()) $this->Message = $ResponseText;
+			$payment->write();
+			$payment->redirectToOrder();
 		}
-		else USER_ERROR("CheckoutPage::OrderConfirmed - Order error - password failed" ,E_USER_WARNING);
+		else {
+			USER_ERROR("could not find payment with matching ID", E_USER_WARNING);
+		}
 		return;
 	}
 
-	function complete() {
-
-	}
 
 }
