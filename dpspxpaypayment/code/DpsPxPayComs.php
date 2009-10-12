@@ -7,13 +7,13 @@ class DpsPxPayComs {
 
 	/**
 	* seller details - are always the same
-	* can be set like this DpsPxPayPayment_communicator::set_pxpay_userid("blabla"); in _config file.
+	* can be set like this DpsPxPayComs::set_pxpay_userid("blabla"); in _config file.
 	**/
   protected static $pxpay_url    = "https://www.paymentexpress.com/pxpay/pxaccess.aspx";
 		static function set_pxpay_url($v)                       {self::$pxpay_url = $v;}
-	protected static $pxpay_userid = "UserId HERE";
+	protected static $pxpay_userid = "";
 		static function set_pxpay_userid($v)                    {self::$pxpay_userid = $v;}
-	protected static $pxpay_encryption_key =  "Encryptionkey HERE";
+	protected static $pxpay_encryption_key =  "";
 		static function set_pxpay_encryption_key($v)            {self::$pxpay_encryption_key = $v;}
 	protected static $alternative_thirdparty_folder =  "";
 		static function set_alternative_thirdparty_folder($v)    {self::$alternative_thirdparty_folder = $v;}
@@ -59,12 +59,10 @@ class DpsPxPayComs {
 	protected $PxPayObject = null;
 
 	function __construct() {
-		if(self::$alternative_thirdparty_folder) {
-			require_once(self::$alternative_thirdparty_folder."/PxPay_Curl.inc.php");
+		if(!self::$alternative_thirdparty_folder) {
+			self::$alternative_thirdparty_folder = 'dpspxpaypayment/code/thirdparty';
 		}
-		else {
-			require_once("dpspxpaypayment/code/thirdparty/PxPay_Curl.inc.php");
-		}
+		require_once(self::$alternative_thirdparty_folder."/PxPay_Curl.inc.php");
 		if(!self::$pxpay_url)            {user_error("error in DpsPxPayComs::__construct, self::$pxpay_url not set. ", E_USER_WARNING);}
 		if(!self::$pxpay_userid)         {user_error("error in DpsPxPayComs::__construct, self::$pxpay_userid not set. ", E_USER_WARNING);}
 		if(!self::$pxpay_encryption_key) {user_error("error in DpsPxPayComs::__construct, self::$pxpay_encryption_key not set. ", E_USER_WARNING);}
