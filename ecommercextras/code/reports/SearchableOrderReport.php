@@ -31,14 +31,13 @@ class SearchableOrderReport extends SSReport {
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("StartDate", "Start Date"));
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("EndDate", "End Date"));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Start Search'));
-		$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
 		return $fields;
 	}
 
 
 	function doSearch($data, $form) {
 		die("ok");
-		Session::set("SearchableOrderReport.wherePhrase", $where);
+
 		Director::redirectBack();
 	}
 
@@ -66,7 +65,7 @@ class SearchableOrderReport extends SSReport {
 		// text in them, which would be automatically queried if we didn't specify
 		// a custom query.
 		$wherePhrase = Session::get("SearchableOrderReport.wherePhrase");
-		$query = singleton('Order')->buildSQL('Order.Printed = 0', 'Order.Created DESC');
+		$query = singleton('Order')->buildSQL(Session::get("SearchableOrderReport.wherePhrase"), 'Order.Created DESC');
 		$query->groupby[] = 'Order.Created';
 		$table->setCustomQuery($query);
 
@@ -98,7 +97,9 @@ class SearchableOrderReport extends SSReport {
 class SearchableOrderReport_Handler extends Controller {
 
 	function submit() {
-		return "okiii";
+		$where = 'Member.Email = "nfrancken@gmail.com"';
+		Session::set("SearchableOrderReport.wherePhrase", $where);
+		return "ok";
 	}
 
 }
