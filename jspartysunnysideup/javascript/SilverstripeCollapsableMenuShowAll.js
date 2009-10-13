@@ -47,7 +47,7 @@ jQuery.extend({
 
 		Level1Class: "L1",
 
-		allwaysShowClass: "allwayShowMe",
+		allwaysShowClass: "allwaysShowMe",
 
 		currentULClass: "currentUL",
 
