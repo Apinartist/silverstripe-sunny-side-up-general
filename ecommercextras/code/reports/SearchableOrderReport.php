@@ -32,9 +32,8 @@ class SearchableOrderReport extends SalesReport {
 	}
 
 	function processform() {
-		$var = $_REQUEST
 		$where = array();
-		foreach($vars as $key => $value) {
+		foreach($_REQUEST as $key => $value) {
 			$value = Convert::raw2sql($value);
 			switch($key) {
 				case "OrderID":
