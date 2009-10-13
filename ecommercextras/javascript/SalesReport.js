@@ -40,7 +40,6 @@
 			// var formElement = jqForm[0];
 
 			//alert('About to submit: \n\n' + queryString);
-			var
 			for (var i=0; i < formData.length; i++) {
 				if ("ID" == formData[i].name) {
 					SalesReport.reportID = formData[i].value
