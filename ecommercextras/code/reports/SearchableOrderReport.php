@@ -23,7 +23,7 @@ class SearchableOrderReport extends SalesReport {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
-			$this->description = "Current Search: ".$humanWhere;
+			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
 		}
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
