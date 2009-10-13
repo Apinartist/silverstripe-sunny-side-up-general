@@ -39,8 +39,13 @@
 			// var formElement = jqForm[0];
 
 			alert('About to submit: \n\n' + queryString);
-			var form = jqForm[0];
-			options.url = options.url + form.ID.value;
+
+			for (var i=0; i < formData.length; i++) {
+				if ("ID" == formData[i].name) {
+					options.url = options.url + formData[i].value;
+				}
+			}
+			alert(options.url);
 			// here we could return false to prevent the form from being submitted;
 			// returning anything other than false will allow the form submit to continue
 			return true;
