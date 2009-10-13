@@ -35,30 +35,31 @@ class SearchableOrderReport extends SalesReport {
 		$where = array();
 		foreach($_REQUEST as $key => $value) {
 			$value = Convert::raw2sql($value);
-			switch($key) {
-				case "OrderID":
-					$where[] = " `Order`.`ID` = ".intval($value);
-					break;
-				case "Email":
-					$where[] = " `Member`.`Email` = ".$value;
-					break;
-				case "FirstName":
-					$where[] = " `Member`.`FirstName` = ".$value;
-					break;
-				case "Surname":
-					$where[] = " `Member`.`Surname` = ".$value;
-					break;
-				case "Status":
-					foreach($value as $item) {
-						$where[] = ' `Order`.`Status` = "'.$item.'"';
-					}
-					break;
-				default:
-				 break;
+			if($value) {
+				switch($key) {
+					case "OrderID":
+						$where[] = ' `Order`.`ID` = '.intval($value);
+						break;
+					case "Email":
+						$where[] = ' `Member`.`Email` = "'.$value.'"';
+						break;
+					case "FirstName":
+						$where[] = ' `Member`.`FirstName` = "'.$value.'"';
+						break;
+					case "Surname":
+						$where[] = ' `Member`.`Surname` = "'.$value.'"';
+						break;
+					case "Status":
+						foreach($value as $item) {
+							$where[] = ' `Order`.`Status` = "'.$item.'"';
+						}
+						break;
+					default:
+					 break;
+				}
 			}
 		}
 		Session::set("SearchableOrderReport.where", implode(" OR ", $where));
-		print_r($where);
 		return "ok";
 	}
 
