@@ -22,6 +22,10 @@ class SearchableOrderReport extends SalesReport {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
+			$this->description = "Current Search: ".$humanWhere;
+			$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
+		}
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
@@ -33,25 +37,31 @@ class SearchableOrderReport extends SalesReport {
 
 	function processform() {
 		$where = array();
+		$humanWhere = array();
 		foreach($_REQUEST as $key => $value) {
 			$value = Convert::raw2sql($value);
 			if($value) {
 				switch($key) {
 					case "OrderID":
 						$where[] = ' `Order`.`ID` = '.intval($value);
+						$humanWhere[] = ' OrderID equals '.intval($value);
 						break;
 					case "Email":
 						$where[] = ' `Member`.`Email` = "'.$value.'"';
+						$humanWhere[] = ' Customer Email equals "'.$value.'"';
 						break;
 					case "FirstName":
-						$where[] = ' `Member`.`FirstName` = "'.$value.'"';
+						$where[] = ' `Member`.`FirstName` LIKE "%'.$value.'%"';
+						$humanWhere[] = ' Customer First Name equals '.$value.'"';
 						break;
 					case "Surname":
-						$where[] = ' `Member`.`Surname` = "'.$value.'"';
+						$where[] = ' `Member`.`Surname` LIKE "%'.$value.'%"';
+						$humanWhere[] = ' Customer Surname equals "'.$value.'"';
 						break;
 					case "Status":
 						foreach($value as $item) {
 							$where[] = ' `Order`.`Status` = "'.$item.'"';
+							$humanWhere[] = ' Order Status equals "'.$item.'"';
 						}
 						break;
 					default:
@@ -60,6 +70,7 @@ class SearchableOrderReport extends SalesReport {
 			}
 		}
 		Session::set("SearchableOrderReport.where", implode(" OR ", $where));
+		Session::set("SearchableOrderReport.humanWhere", implode(", ", $humanWhere));
 		return "ok";
 	}
 
@@ -70,6 +81,9 @@ class SearchableOrderReport extends SalesReport {
 		return $query;
 	}
 
+	function filterDescription() {
+
+	}
 
 }
 
