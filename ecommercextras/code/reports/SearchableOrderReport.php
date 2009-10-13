@@ -23,16 +23,43 @@ class SearchableOrderReport extends SalesReport {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
+		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
-		$fields->addFieldToTab("Root.Search", new NumericField("Value", "Value"));
-		$fields->addFieldToTab("Root.Search", new CalendarDateField("StartDate", "Start Date"));
-		$fields->addFieldToTab("Root.Search", new CalendarDateField("EndDate", "End Date"));
+		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
+		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Start Search'));
 		return $fields;
 	}
 
 	function processform() {
-		print_r($_REQUEST);
+		$var = $_REQUEST
+		$where = array();
+		foreach($vars as $key => $value) {
+			$value = Convert::raw2sql($value);
+			switch($key) {
+				case "OrderID":
+					$where[] = " `Order`.`ID` = ".intval($value);
+					break;
+				case "Email":
+					$where[] = " `Member`.`Email` = ".$value;
+					break;
+				case "FirstName":
+					$where[] = " `Member`.`FirstName` = ".$value;
+					break;
+				case "Surname":
+					$where[] = " `Member`.`Surname` = ".$value;
+					break;
+				case "Status":
+					foreach($value as $item) {
+						$where[] = ' `Order`.`Status` = "'.$item.'"';
+					}
+					break;
+				default:
+				 break;
+			}
+		}
+		Session::set("SearchableOrderReport.where", implode(" OR ", $where);
+		print_r($where);
 		return "ok";
 	}
 
