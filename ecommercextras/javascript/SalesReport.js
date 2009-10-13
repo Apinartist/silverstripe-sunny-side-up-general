@@ -13,6 +13,7 @@
 
 	var SalesReport = {
 
+		reportID: "",
 
 		formID: "Form_EditForm",
 
@@ -38,23 +39,25 @@
 			// DOM element for the form do this:
 			// var formElement = jqForm[0];
 
-			alert('About to submit: \n\n' + queryString);
-
+			//alert('About to submit: \n\n' + queryString);
+			var
 			for (var i=0; i < formData.length; i++) {
 				if ("ID" == formData[i].name) {
-					options.url = options.url + formData[i].value;
+					SalesReport.reportID = formData[i].value
 				}
 			}
-			alert(options.url);
+			//alert(options.url);
 			// here we could return false to prevent the form from being submitted;
 			// returning anything other than false will allow the form submit to continue
+			options.url = options.url + SalesReport.reportID;
+
 			return true;
 	},
 
 		// post-submit callback
 		showResponse: function (responseText, statusText)  {
 			if("ok" == responseText) {
-				$("li#SalesReport a").click();
+				$("li#" +SalesReport.reportID+ " a").click();
 			}
 			else {
 				alert("sorry could not apply filter");

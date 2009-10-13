@@ -32,7 +32,7 @@ class SearchableOrderReport extends SalesReport {
 	}
 
 	function processform() {
-
+		return "ok";
 	}
 
 	function getCustomQuery() {
