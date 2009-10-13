@@ -57,7 +57,7 @@ class SearchableOrderReport extends SalesReport {
 				 break;
 			}
 		}
-		Session::set("SearchableOrderReport.where", implode(" OR ", $where);
+		Session::set("SearchableOrderReport.where", implode(" OR ", $where));
 		print_r($where);
 		return "ok";
 	}
