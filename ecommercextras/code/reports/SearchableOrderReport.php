@@ -31,6 +31,18 @@ class SearchableOrderReport extends SalesReport {
 		return $fields;
 	}
 
+	function processform() {
+
+	}
+
+	function getCustomQuery() {
+			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+		$query = singleton('Order')->buildSQL('', 'Order.Created DESC');
+		$query->groupby[] = 'Order.Created';
+		return $query;
+	}
+
+
 }
 
 
