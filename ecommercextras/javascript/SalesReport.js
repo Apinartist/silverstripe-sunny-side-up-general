@@ -1,7 +1,5 @@
 /**
-* Note: can not do ajax query, because it changes the recommended products
-* reload page if products have been added
-*
+*@author nicolaas[at]sunnysideup . co . nz
 *
 **/
 
@@ -9,11 +7,11 @@
 
 	$(document).ready(
 		function() {
-			SearchableOrderReport.init();
+			SalesReport.init();
 		}
 	);
 
-	var SearchableOrderReport = {
+	var SalesReport = {
 
 
 		formID: "Form_EditForm",
@@ -23,11 +21,11 @@
 
 		init: function() {
 			var options = {
-				beforeSubmit:  SearchableOrderReport.showRequest,  // pre-submit callback
-				success: SearchableOrderReport.showResponse,  // post-submit callback
-				url: SearchableOrderReportURL
+				beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
+				success: SalesReport.showResponse,  // post-submit callback
+				url: SalesReportURL
 			};
-			jQuery('#' + SearchableOrderReport.formID).ajaxForm(options);
+			jQuery('#' + SalesReport.formID).ajaxForm(options);
 		},
 
 	// pre-submit callback
@@ -50,7 +48,7 @@
 		// post-submit callback
 		showResponse: function (responseText, statusText)  {
 			if("ok" == responseText) {
-				$("li#SearchableOrderReport a").click();
+				$("li#SalesReport a").click();
 			}
 			else {
 				alert("sorry could not apply filter");

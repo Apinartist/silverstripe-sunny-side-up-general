@@ -4,7 +4,7 @@
  * @package ecommercextras
  * @author nicolaas[at]sunnysideup.co.nz
  */
-class SearchableOrderReport extends OrderReport {
+class SearchableOrderReport extends SalesReport {
 
 	protected $title = 'Searchable Orders';
 
@@ -21,9 +21,6 @@ class SearchableOrderReport extends OrderReport {
 
 
 	function getCMSFields() {
-		Requirements::javascript("ecommercextras/javascript/SearchableOrderReport.js");
-		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
-		Requirements::customScript('var SearchableOrderReportURL = "'.Director::baseURL()."SearchableOrderReport_Handler".'/submit/";', 'SearchableOrderReport_Handler');
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
@@ -37,12 +34,3 @@ class SearchableOrderReport extends OrderReport {
 }
 
 
-class SearchableOrderReport_Handler extends Controller {
-
-	function submit() {
-		$where = 'Member.Email = "nfrancken@gmail.com"';
-		Session::set("SearchableOrderReport.wherePhrase", $where);
-		return "ok";
-	}
-
-}

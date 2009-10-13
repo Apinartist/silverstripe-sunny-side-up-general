@@ -44,11 +44,11 @@ class SalesAdmin extends ReportAdmin {
 	 */
 	public function Reports() {
 		$processedReports = array();
-		$subClasses = ClassInfo::subclassesFor('OrderReport');
+		$subClasses = ClassInfo::subclassesFor('SalesReport');
 
 		if($subClasses) {
 			foreach($subClasses as $subClass) {
-				if($subClass != 'OrderReport') {
+				if($subClass != 'SalesReport') {
 					$processedReports[] = new $subClass();
 				}
 			}

@@ -5,7 +5,7 @@
  *
  * @package ecommerce
  */
-class OrderReport extends SSReport {
+class SalesReport extends SSReport {
 
 	protected $title = 'All orders';
 
@@ -20,6 +20,9 @@ class OrderReport extends SSReport {
 	 * @return ComplexTableField
 	 */
 	function getReportField() {
+		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
+		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/";', 'SalesReport_Handler');
 		// Get the fields used for the table columns
 		$fields = Order::$table_overview_fields;
 
@@ -63,7 +66,7 @@ class OrderReport extends SSReport {
 	}
 
 	function getCustomQuery() {
-		if("OrderReport" == $this->class) {
+		if("SalesReport" == $this->class) {
 			user_error('Please implement getCustomQuery() on ' . $this->class, E_USER_ERROR);
 		}
 		else {
@@ -74,5 +77,15 @@ class OrderReport extends SSReport {
 		}
 	}
 
+
+}
+
+class SalesReport_Handler extends Controller {
+
+	function submit() {
+		$where = 'Member.Email = "nfrancken@gmail.com"';
+		Session::set("SearchableOrderReport.wherePhrase", $where);
+		return "ok";
+	}
 
 }
