@@ -23,7 +23,7 @@ class SearchableOrderReport extends SalesReport {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
-			$fields->replaceField("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
+			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
 			$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
 		}
