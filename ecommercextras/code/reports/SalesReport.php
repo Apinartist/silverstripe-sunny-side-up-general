@@ -91,8 +91,9 @@ class SalesReport extends SSReport {
 class SalesReport_Handler extends Controller {
 
 	function processform() {
-		$class = Director::URLParam("ID");
-		$object = new $class;
+		$ClassName = Director::URLParam("ID");
+		echo $ClassName;
+		$object = new $ClassName;
 		$object->processform();
 	}
 
