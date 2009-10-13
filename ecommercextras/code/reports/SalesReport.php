@@ -22,7 +22,7 @@ class SalesReport extends SSReport {
 	function getReportField() {
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
-		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/";', 'SalesReport_Handler');
+		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/processform/";', 'SalesReport_Handler');
 		// Get the fields used for the table columns
 		$fields = Order::$table_overview_fields;
 
@@ -77,15 +77,23 @@ class SalesReport extends SSReport {
 		}
 	}
 
+	function processform() {
+		if("SalesReport" == $this->class) {
+			user_error('Please implement processform() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			die($_REQUEST);
+		}
+	}
 
 }
 
 class SalesReport_Handler extends Controller {
 
-	function submit() {
-		$where = 'Member.Email = "nfrancken@gmail.com"';
-		Session::set("SearchableOrderReport.wherePhrase", $where);
-		return "ok";
+	function processform() {
+		$class = Director::URLParam("ID");
+		$object = new $class;
+		$object->processform();
 	}
 
 }
