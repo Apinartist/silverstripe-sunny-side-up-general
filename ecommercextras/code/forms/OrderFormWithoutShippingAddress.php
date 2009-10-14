@@ -31,7 +31,9 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 		//stop people adding different shipping address
 		$this->unsetActionByName("useDifferentShippingAddress");
-
+		$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>'), "FirstName");
+		$this->fields->removeFieldFromTab("RightOrder", "Membership Details");
+		$this->fields->removeFieldFromTab("RightOrder", "MemberInfo");
 		//add extra fields
 		foreach(self::$extra_fields as $fieldCombo) {
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);

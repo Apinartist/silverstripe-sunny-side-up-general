@@ -53,10 +53,10 @@
 //GSTTaxModifier::set_default_rate(0);
 //GSTTaxModifier::set_default_is_exclusive(0);
 
-// *** NewsletterSignupModifier
+// *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
 
-// *** Modifier Rules Modifier
+// *** MODIFIER RULES MODIFIER
 // ModifierRulesModifier::set_rule(
 /*
 		$nameModifierA = "PickUpOrDeliveryModifier",
@@ -68,7 +68,7 @@
 	);
 */
 
-// *** Ajax Order
+// *** AJAX ORDER
 
 //AjaxOrder::set_loading_cart_text("Loading Cart");
 //AjaxOrder::set_in_cart_text("In Cart");
@@ -77,12 +77,11 @@
 //AjaxOrder_Controller::set_product_classname("Product");
 //AjaxOrder_Controller::set_product_classname("Product");
 
-// *** Model Admin
+// *** MODEL ADMIN
 
 //ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
 
-// *** reports
-
+// *** REPORTS
 Director::addRules(50, array(
 	'SearchableOrderReport_Handler/$Action/$ID' => 'SearchableOrderReport_Handler',
 ));
