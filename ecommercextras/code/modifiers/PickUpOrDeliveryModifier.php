@@ -104,9 +104,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	private $debugMessage = "";
 
-	function __construct() {
-		parent::__construct();
-	}
 
 // 					 *** display
 	function ShowInTable() {
@@ -267,7 +264,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		}
 		else {
 			$this->debugMessage .= "<hr />default amount";
-			return 0;
+			return $this->Charge();
 		}
 	}
 
@@ -346,6 +343,3 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 	}
 }
 
-class PickUpOrDeliveryModifier_DataObject extends DataObject {
-
-}

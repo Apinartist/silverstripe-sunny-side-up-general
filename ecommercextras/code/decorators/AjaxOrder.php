@@ -102,6 +102,7 @@ class AjaxOrder_Controller extends Extension {
 		"clearcompletecart",
 		"modifierformsubmit",
 		"getajaxcheckoutcart",
+		"getorderdetailsforadmin",
 		"RecommendedProducts"
 	);
 
@@ -170,6 +171,17 @@ class AjaxOrder_Controller extends Extension {
 
 	function OrderFormWithoutShippingAddress() {
 		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
+	}
+
+	function getorderdetailsforadmin() {
+		$m = Member::currentUser();
+		if($m) {
+			if($m->isAdmin()) {
+				$orderID = intval(Director::URLParam("ID"));
+				$dos = DataObject::get('OrderModifier', "`OrderID` = '$orderID'");
+				print_r($dos);
+			}
+		}
 	}
 
 }

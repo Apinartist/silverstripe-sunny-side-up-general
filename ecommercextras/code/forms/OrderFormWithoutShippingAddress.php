@@ -27,11 +27,17 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	}
 
 	function __construct($controller, $name) {
+
+		Requirements::javascript('ecommercextras/javascript/OrderFormWithoutShippingAddress.js');
+
 		$myForm = parent::__construct($controller, $name);
 
 		//stop people adding different shipping address
 		$this->unsetActionByName("useDifferentShippingAddress");
-		$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>'), "FirstName");
+		$member = Member::currentMember();
+		if(!$member || !$member->ID || $member->Password == '') {
+			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>'), "FirstName");
+		}
 		$this->fields->removeFieldFromTab("RightOrder", "Membership Details");
 		$this->fields->removeFieldFromTab("RightOrder", "MemberInfo");
 		//add extra fields
@@ -54,9 +60,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 		//$this->resetField("Country", "NZ");
 
-		Requirements::customScript('
-			jQuery("#OrderFormWithoutShippingAddress_OrderForm_action_useDifferentShippingAddress").hide();
-		');
 		if(self::$fixed_country_code) {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
