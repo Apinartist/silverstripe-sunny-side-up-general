@@ -39,7 +39,7 @@ class AnyPriceProductPage extends Product {
 			"Root.Content.AddAmountForm",
 			array(
 				new TextField("AmountFieldLabel", "Amount Field Label (what amount would you like to pay?)"),
-				new TextField("ActionFieldlabel", "Action Field Label (e.g. pay entered amount now)"),
+				new TextField("ActionFieldLabel", "Action Field Label (e.g. pay entered amount now)"),
 				new CurrencyField("MinimumAmount", "Minimum Amount"),
 				new CurrencyField("MaximumAmount", "Maximum Amount")
 			)
