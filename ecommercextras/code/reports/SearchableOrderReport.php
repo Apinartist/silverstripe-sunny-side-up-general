@@ -32,7 +32,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
-		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Start Search'));
+		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
 		return $fields;
 	}
 
