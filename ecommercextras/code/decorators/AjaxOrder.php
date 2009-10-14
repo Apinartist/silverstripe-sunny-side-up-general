@@ -180,6 +180,7 @@ class AjaxOrder_Controller extends Extension {
 				$orderID = intval(Director::URLParam("ID"));
 				$dos = DataObject::get('OrderModifier', "`OrderID` = '$orderID'");
 				print_r($dos);
+
 			}
 		}
 	}
