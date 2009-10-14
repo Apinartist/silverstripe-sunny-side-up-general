@@ -86,6 +86,9 @@ class GSTTaxModifier extends OrderModifier {
 		return $this->ID ? $this->TaxType == 'Exclusive' : $this->LiveIsExclusive();
 	}
 
+	/*
+	* returns boolean value true / false
+	*/
 	protected function LiveIsExclusive() {
 		$countryCode = $this->LiveCountry();
 		if(isset(self::$excl_by_country[$countryCode])) {
@@ -191,7 +194,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * If tax is inclusive, then this will be 0
 	 */
 	function AddedCharge() {
-		return $this->IsExclusive() ? $this->Charge() : 0;
+		return 11; //$this->IsExclusive() ? $this->Charge() : 0;
 	}
 
 	/**
