@@ -194,7 +194,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * If tax is inclusive, then this will be 0
 	 */
 	function AddedCharge() {
-		return 11; //$this->IsExclusive() ? $this->Charge() : 0;
+		return $this->IsExclusive() ? $this->Charge() : 0;
 	}
 
 	/**
