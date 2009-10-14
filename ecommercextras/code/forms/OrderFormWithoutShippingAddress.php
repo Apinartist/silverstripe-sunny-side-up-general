@@ -1,11 +1,10 @@
 <?php
  /**
-  * Order form that allows a user to purchase their
-  * order items on the
+	* @author Nicolaas [at] sunnysideup.co.nz
   *
   * @see CheckoutPage
   *
-  * @package ecommerce
+  * @package ecommercextras
   */
 class OrderFormWithoutShippingAddress extends OrderForm {
 
@@ -53,14 +52,14 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 		//$this->resetField("Country", "NZ");
 
-		Requirements::customscript('
+		Requirements::customScript('
 			jQuery("#OrderFormWithoutShippingAddress_OrderForm_action_useDifferentShippingAddress").hide();
 		');
 		if(self::$fixed_country_code) {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
-		$orderForm = new OrderForm($this, "OrderForm");
-		$data = $orderForm->getData();
+		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
+		$data = $this->getData();
 		$this->loadDataFrom($data);
 	}
 

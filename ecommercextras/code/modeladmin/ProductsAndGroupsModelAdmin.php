@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @author Nicolaas [at] sunnysideup.co.nz
+ **/
+
 class ProductsAndGroupsModelAdmin extends ModelAdmin {
 
 	public static $record_controller_class = "ModelAdminRecordControllerForSiteTreeObjects";

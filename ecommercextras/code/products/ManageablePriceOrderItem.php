@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @author Nicolaas [at] sunnysideup.co.nz
+ */
+
 class ManageablePriceOrderItem extends Product_OrderItem {
 
 	protected $_usesAlternativePrice;

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *
+ *@author Nicolaas [at] sunnysideup.co.nz
+ *
+ **/
 
 class ShoppingCartExtension extends ShoppingCart {
 

@@ -2,6 +2,7 @@
 /**
  * This class replaces the actions in modeladmin for loading pages into modeladmin
  * the "doSave" function saves and publishes
+ * @author Nicolaas [at] sunnysideup.co.nz
  * @package ecommercextras
  * @subpackage modeladmin
  */

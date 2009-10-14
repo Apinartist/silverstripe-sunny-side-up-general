@@ -1,6 +1,6 @@
 <?php
 
-/** * TO BE COMPLETED
+/** * TO BE COMPLETED * @author Nicolaas [at] sunnysideup.co.nz
  */
 class NewsletterSignupModifier extends OrderModifier {
 	static $db = array(		"NewsletterSignup" => "Boolean"	);	static function show_form() {		return true;	}	static $requiredFieldsArray = Array(	);

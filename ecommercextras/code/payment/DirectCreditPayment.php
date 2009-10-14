@@ -2,7 +2,7 @@
 
 /**
  * Payment object representing a DirectCredit payment.
- *
+ * @author Nicolaas [at] sunnysideup.co.nz
  * @package payment
  */
 class DirectCreditPayment extends Payment {

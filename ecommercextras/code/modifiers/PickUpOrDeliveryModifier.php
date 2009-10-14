@@ -345,3 +345,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		return;
 	}
 }
+
+class PickUpOrDeliveryModifier_DataObject extends DataObject {
+
+}

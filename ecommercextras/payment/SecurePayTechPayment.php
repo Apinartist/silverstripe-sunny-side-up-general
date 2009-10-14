@@ -1,11 +1,7 @@
 <?php
 
 /**
- * @todo getPaymentFormFields : SPTInfo need to display the Paymark logo if merchant approved rather than the SPT logo below
- * @package ecommerce
- */
-
-/**
+ * @author Nicolaas [at] sunnysideup.co.nz
  * Sub-class of Payment that supports SecurePayTech as its payment processor
  **/
 
