@@ -137,7 +137,15 @@ class GSTTaxModifier extends OrderModifier {
 // note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
 	function getAmount() {
-		return 9999999999;
+		if($this->IsExclusive()) {
+			if($this->ID) {
+				return $this->Amount;
+			}
+			else {
+				return $this->LiveAmount();
+			}
+		}
+		return 0;
 	}
 
 	function LiveAmount() {
