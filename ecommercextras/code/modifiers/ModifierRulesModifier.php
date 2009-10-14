@@ -44,10 +44,6 @@ class ModifierRulesModifier extends OrderModifier {
 		return false;
 	}
 
-	function __construct() {
-		parent::__construct();
-		//$this->applyRules();
-	}
 
 
 // 					 *** display functions
