@@ -50,6 +50,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
 		if($this->AlternativeMenuTitle) {$this->MetaTitle = $this->AlternativeMenuTitle;}
 		if($this->AlternativeMetaTitle) {$this->MetaTitle = $this->AlternativeMetaTitle;}
+		$this->Content = $this->ThankYouMessage;
 		return array();
 	}
 
