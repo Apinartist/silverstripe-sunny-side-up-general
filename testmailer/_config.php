@@ -6,6 +6,7 @@
 
 //===================---------------- start testemail ----------------===================
 /*
+$protocolAndHost = Director::protocolAndHost();
 $devsitearray = array("http://localhost");
 if(in_array($protocolAndHost, $devsitearray)) {
 	Email::set_mailer("TestMailer");

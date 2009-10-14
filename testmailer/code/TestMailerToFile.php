@@ -5,7 +5,7 @@
  * @subpackage email
  */
 
-class TestMailer extends Mailer  {
+class TestMailerToFile extends Mailer  {
 
 	protected static $file_to_write_to = "assets/emails.txt"
 		static function set_file_to_write_to ($v) {self::$file_to_write_to = $v;}
