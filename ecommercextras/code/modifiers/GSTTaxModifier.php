@@ -203,6 +203,8 @@ class GSTTaxModifier extends OrderModifier {
 	function Charge() {
 		// Exclusive is easy
 		// Inclusive is harder. For instance, with GST the tax amount is 1/9 of the inclusive price, not 1/8
+		echo $this->ID;
+		echo $this->TaxType;
 		return $this->TaxableAmount() * ($this->IsExclusive() ? $this->Rate() : (1 - (1 / (1 + $this->Rate()))));
 	}
 
