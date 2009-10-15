@@ -12,10 +12,12 @@
 //SiteTreeDecorator::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
 //Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier'));
-
 //DataObjectDecorator::add_extension('Order', 'OrderDecorator');
 
-//ORDER FORM WITHOUT SHIPPING ADDRESS
+// *** ORDER ADDITIONS
+//OrderDecorator::set_order_id_start_number(9999);
+
+// *** ORDER FORM WITHOUT SHIPPING ADDRESS
 //OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");
 //OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");
 //OrderFormWithoutShippingAddress::set_postal_code_url("http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder");

@@ -29,6 +29,7 @@ class SearchableOrderReport extends SalesReport {
 		}
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
+		$fields->addFieldToTab("Root.Search", new CalendarDateField("Before", "Before..."));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));

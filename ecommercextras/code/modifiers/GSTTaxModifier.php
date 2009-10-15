@@ -200,7 +200,9 @@ class GSTTaxModifier extends OrderModifier {
 		else {
 			$end = ' (included in the above price) ';
 		}
-		$end .= ' - country code applicable to sale: '.$countryCode;
+		if($countryName = Geoip::countryCode2name($countryCode)) {
+			$end .= ' - based on a sale to: '.$countryName;
+		}
 		return $start.$name.$end;
 	}
 

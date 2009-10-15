@@ -2,8 +2,26 @@
 
 class OrderDecorator extends DataObjectDecorator {
 
+ 	private static $order_id_start_number = 0;
+		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
 
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$number = intval(self::$order_id_start_number);
 
+		if($number) {
+			$count = DB::query("SELECT COUNT( ID ) FROM `Order` ")->value();
+		 	if($count > 0) {
+				$currentMax = DB::Query("SELECT MAX( ID ) FROM `Order`")->value();
+				if($number > $currentMax) {
+					DB::query("ALTER TABLE `Order`  AUTO_INCREMENT = $number ROW_FORMAT = DYNAMIC ");
+			 		DataBase::alteration_message("Change OrderID start number to ".$number, "created");
+				}
+			}
+		}
+	}
 }
+
+
 

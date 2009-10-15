@@ -18,6 +18,7 @@ class SalesReport extends SSReport {
 	 * @return ComplexTableField
 	 */
 	function getReportField() {
+		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
 		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/processform/";', 'SalesReport_Handler');
@@ -26,7 +27,7 @@ class SalesReport extends SSReport {
 
 		// Add some fields specific to this report
 		$fields['Invoice'] = '';
-		$fields['Print'] = '';
+		$fields['PackingSlip'] = '';
 
 		$table = new TableListField(
 			'Orders',
@@ -44,8 +45,8 @@ class SalesReport extends SSReport {
 		// Set the links to the Invoice and Print fields allowing a user to view
 		// another template for viewing an Order instance
 		$table->setFieldFormatting(array(
-			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\">Invoice</a>',
-			'Print' => '<a target=\"_blank\" href=\"OrderReport_Popup/index/$ID?print=1\">Print</a>'
+			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
+			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>'
 		));
 
 		$table->setFieldCasting(array(

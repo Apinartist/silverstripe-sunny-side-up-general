@@ -21,6 +21,7 @@
 
 
 		init: function() {
+			SalesReport.initiatePopUps();
 			var options = {
 				beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
 				success: SalesReport.showResponse,  // post-submit callback
@@ -29,7 +30,7 @@
 			jQuery('#' + SalesReport.formID).ajaxForm(options);
 		},
 
-	// pre-submit callback
+		// pre-submit callback
 		showRequest: function (formData, jqForm, options) {
 			for (var i=0; i < formData.length; i++) {
 				if ("ID" == formData[i].name) {
@@ -38,18 +39,34 @@
 			}
 			options.url = options.url + SalesReport.reportID;
 			return true;
-	},
+		},
 
 		// post-submit callback
 		showResponse: function (responseText, statusText)  {
 			if("ok" == responseText) {
 				$("li#" +SalesReport.reportID+ " a").click();
+				$("a#tab-Root_Report").click();
 			}
 			else {
 				alert("sorry could not apply filter");
 			}
+		},
+
+		initiatePopUps: function() {
+			$(".makeIntoPopUp").livequery('click',
+				function(event) {
+					day = new Date();
+					id = day.getTime();
+					url = $(this).attr("href");
+					window.open(url, id, 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=1,resizable=1,width=770,height=800,left = 0,top = 0');
+					return false;
+				}
+			);
 		}
 	}
 
 })(jQuery);
+
+
+
 
