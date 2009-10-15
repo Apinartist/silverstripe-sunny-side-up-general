@@ -36,6 +36,10 @@ It takes the standard OrderForm and changes it after it has been
 built.  We do it this way to allow easy ecommerce modules
 upgrades without having to hack the core.
 
+TO DO:
+* make it even more flexible
+* make sure that values are retained if bad data is entered
+
 MODIFIERS:
 
 BonusProductModifier: allows you to add products to cart at a reduced
@@ -58,10 +62,16 @@ RecommendedProductsModifier: allows you to recommend products as
 accessories to other products (i.e. as recommended products) and
 show those products on the checkout page.
 
+ModifierRulesModifier:  allows you to check rules like this
+> if(Modifier A::variable = ... set Modifier B::variable to ...)
+> variables can also be functions (for both getting and setting)
+> it checks for the function first and then does the variable
+
 PAYMENT:
 
 DirectCreditPayment: the option for people who want to pay into
 a bank account rather than cheque payment.
+TO DO: move to a payment module
 
 PRODUCTS:
 
@@ -72,8 +82,11 @@ added to the cart.  This class is required by BonusProductModifier.
 REPORTS:
 
 SearchableOrderReport: this is for the report section of the CMS.
+Ideally, you would actually remove the report section and show
+the sales menu item instead.
 It gives you another report that helps you search for orders.
-TO DO: make it work!!!!!!
+TO DO: show sexier reports.
+
 
 
 
