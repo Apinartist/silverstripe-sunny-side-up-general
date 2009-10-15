@@ -5,6 +5,12 @@
  * @package: ecommerce
  * @sub-package: ecommercextras
  * @description: allows adding  GST sales tax to order
+ *
+ * NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE ::
+ * @important: in the order templates, change as follows:
+ * FROM: <td id="$TableTotalID" class="price"><% if IsChargable %>$Amount.Nice<% else %>-$Amount.Nice<% end_if %></td>
+ * TO: <td id="$TableTotalID" class="price">$TableValue</td>
+ *
  */
 
 class GSTTaxModifier extends OrderModifier {
@@ -110,6 +116,9 @@ class GSTTaxModifier extends OrderModifier {
 		}
 		if(!self::$current_country_code) {
 			self::$current_country_code = EcommerceRole::findCountry();
+			if(!self::$current_country_code) {
+				self::$current_country_code = current(array_keys(self::$names_by_country));
+			}
 		}
 		return self::$current_country_code;
 	}

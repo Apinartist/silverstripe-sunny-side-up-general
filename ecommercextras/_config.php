@@ -2,7 +2,6 @@
 
 
 /**
-* developed by www.sunnysideup.co.nz
 * @author Nicolaas modules [at] sunnysideup.co.nz
 *
 **/
@@ -87,4 +86,9 @@ Director::addRules(50, array(
 ));
 
 //===================---------------- END ecommercextra MODULE ----------------===================
-
+/*
+ * NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE ::
+ * @important: in the order templates, change as follows:
+ * FROM: <td id="$TableTotalID" class="price"><% if IsChargable %>$Amount.Nice<% else %>-$Amount.Nice<% end_if %></td>
+ * TO: <td id="$TableTotalID" class="price">$TableValue</td>
+ **/
