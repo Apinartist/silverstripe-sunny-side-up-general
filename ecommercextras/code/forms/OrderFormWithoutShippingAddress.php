@@ -44,13 +44,27 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		foreach(self::$extra_fields as $fieldCombo) {
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
 		}
-		$PostalCodeField = new TextField("AddressLine2", "Postal Code");
-		if(self::$postal_code_url) {
-			$PostalCodeField->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">check here</a>');
-		}
 		//replace field for address
-		$this->fields->replaceField("Address", new TextField("Address", "Delivery Address (no Postal Box)"));
-		$this->fields->replaceField("AddressLine2", $PostalCodeField);
+		$this->fields->dataFieldByName("City")->setRightTitle("GO HOME");
+
+		foreach($this->fields->dataFields() as $i => $child) {
+			if(is_object($child)){
+				$name = $child->Name();
+				switch ($name) {
+					case "Address":
+						$child->setTitle('Delivery Address (no Postal Box)');
+						break;
+					case "AddressLine2":
+						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">check here</a>');
+						$child->setTitle('Postal Code');
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		//$this->fields->replaceField("Address", new TextField("Address", "Delivery Address (no Postal Box)"));
+		//$this->fields->replaceField("AddressLine2", $PostalCodeField);
 
 		// fix errors
 		if($message = $this->CustomErrors()) {
@@ -106,6 +120,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	 */
 
 	function processOrder($data, $form, $request) {
+
 		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
 		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
 

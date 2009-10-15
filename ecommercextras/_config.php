@@ -13,6 +13,8 @@
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
 //Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier'));
 
+//DataObjectDecorator::add_extension('Order', 'OrderDecorator');
+
 //ORDER FORM WITHOUT SHIPPING ADDRESS
 //OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");
 //OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");

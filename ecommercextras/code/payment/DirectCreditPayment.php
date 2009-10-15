@@ -7,12 +7,21 @@
  */
 class DirectCreditPayment extends Payment {
 
+	protected static $custom_message_for_direct_credit = "";
+		static function set_custom_message_for_direct_credit($v) {self::$custom_message_for_direct_credit = $v;}
+
 	/**
 	 * Process the DirectCredit payment method
 	 */
 	function processPayment($data, $form) {
 		$this->Status = 'Pending';
-		$this->Message = '<p class="warningMessage">' . _t('DirectCreditPayment.MESSAGE', 'Payment accepted via Direct Credit. Please note : products will not be shipped until payment has been received.') . '</p>';
+		if(!self::$custom_message_for_direct_credit) {
+			$page = DataObject::get_one("CheckoutPage");
+			if($page) {
+				self::$custom_message_for_direct_credit = $page->ChequeMessage;
+			}
+		}
+		$this->Message = '<p class="warningMessage">'.self::$custom_message_for_direct_credit.'</p>';
 		$this->write();
 		return new Payment_Success();
 	}
