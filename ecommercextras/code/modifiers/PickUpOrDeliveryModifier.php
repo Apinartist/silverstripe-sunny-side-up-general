@@ -74,6 +74,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	static function get_form($controller) {
 		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 
 		if($defaultValue = Session::get("PickUpOrDeliveryOption")) {
 			$defaultValue = $v;
