@@ -37,7 +37,7 @@ class BonusProductModifier extends OrderModifier {
 
 	protected static $bonus_price = 0;
 
-// 					 *** static functions
+//-------------------------------------------------------------------- *** static functions
 
 	static function set_title($v) {
 		self::$title = $v;

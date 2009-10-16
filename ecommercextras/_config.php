@@ -26,20 +26,6 @@
 
 // *** PICK UP OR DELIVERY
 // can set one or more pickup options.
-//PickUpOrDeliveryModifier::set_pickup_option(
-/*
-		$code = "pickup",
-		$name = "Pick-Up",
-		$minimumDeliveryCharge = 0,
-		$maximumDeliveryCharge = 999999999,
-		$minimumOrderAmountForZeroRate = 999999999,
-		$weightMultiplier =  0 ,
-		$percentage = 0.2,
-		$fixedCost = 0
-	);
-*/
-//PickUpOrDeliveryModifier::set_default_code("pickup");
-//PickUpOrDeliveryModifier_Form::set_ajaxcart_template_name("AjaxCheckoutCart");
 
 // *** RECOMMENDED PROCUCTS
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");

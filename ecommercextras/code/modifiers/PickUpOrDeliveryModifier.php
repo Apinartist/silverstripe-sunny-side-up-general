@@ -16,16 +16,10 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		"Name" => "Text",
 		"PickupOrDeliveryType" => "Varchar(255)",
 		"TotalWeight" => "Double",
-		"SerializedCalculationArray" => "Text",
+		"SerializedCalculationObject" => "Text",
 		'DebugString' => 'HTMLText'
 
 	);
-
-	protected static $default_code = "";
-	static function set_default_code($v) {self::$default_code = $v;}
-
-
-	protected static $pickup_options = array();
 
 	protected static $is_chargable = true;
 
@@ -35,32 +29,8 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	protected static $calculations_done = false;
 
-	/**
-	 * Set the tax information for a particular country.
-	 * By default, no tax is charged.
-	 *
-	 * @param $code string internal code - should be alphanumeric only - no spaces!
-	 * @param $name string external description
-	 * @param $code float percentage of exact cost (e.g. 3.40) for delivery
-	 * @param $minimum float mininum to allow this option for this order (i.e. only deliver orders to South Island if they are over $100
-	 * @param $maximum float maximum order total for applying charge (i.e. if south island order is over 1000 then waive it)
-	 * @param $isPercentage boolean if the cost is a percentage or a exact cost
-	 */
-
 //--------------------------------------------------------------------*** static functions
 
-	static function set_pickup_option($code = "pickup", $name = "Pick-Up", $minimumDeliveryCharge = 0, $maximumDeliveryCharge = 999999999, $minimumOrderAmountForZeroRate = 999999999, $weightMultiplier =  0 , $percentage = 0, $fixedCost = 0) {
-		self::$pickup_options[$code] = array(
-			"Code" => $code,
-			"Name" => $name,
-			"MinimumDeliveryCharge" => $minimumDeliveryCharge,
-			"MaximumDeliveryCharge" => $maximumDeliveryCharge,
-			"MinimumOrderAmountForZeroRate" => $minimumOrderAmountForZeroRate,
-			"WeightMultiplier" => $weightMultiplier,
-			"Percentage" => $percentage,
-			"FixedCost" => $fixedCost
-		);
-	}
 
 
 	static function show_form() {
@@ -80,7 +50,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			$defaultValue = $v;
 		}
 		else {
-			$defaultValue = self::$default_code;
+			$defaultValue = DataObject::get_one("PickUpOrDeliveryModifierData", "`IsDefault` = 1");
 		}
 
 		$fields = new FieldSet();
@@ -97,14 +67,16 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	private static function getOptionListForDropDown() {
 		$array = array();
-		foreach(self::$pickup_options as $option) {
-			$array[$option["Code"]] = $option["Name"];
+		$options = DataObject::get("PickUpOrDeliveryModifierData");
+		foreach(options as $option) {
+			$array[$option->Code] = $option[$option->Name];
 		}
 		return $array;
 	}
 
-	private $debugMessage = "";
+//-------------------------------------------------------------------- *** internal variables
 
+	protected $debugMessage = "";
 
 //-------------------------------------------------------------------- *** display
 	function ShowInTable() {
@@ -123,30 +95,23 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			if(isset(self::$pickup_options[self::$default_code])) {
-				$array = self::$pickup_options[self::$default_code];
-			}
-			else {
-				$array = current(self::$pickup_options);
-			}
-			$code = $array["Code"];
+			$option = DataObject::get_one("`PickUpOrDeliveryModifierData`", $filter = "", $cache = true, $orderby = "`IsDefault` Desc");
+			$code = $option->Code;
 			$this->setOption($code);
 			return $code;
 		}
 	}
 
-	function PickupOrDeliveryTypeArray() {
+	function PickupOrDeliveryTypeObject() {
 		if($this->ID) {
-			$array = unserialize($this->SerializedCalculationArray);
-			if(is_array($array)) {
-				return $array;
+			$object = unserialize($this->SerializedCalculationObject);
+			if(is_object($object)) {
+				return $object;
 			}
 		}
 		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
-			if(isset(self::$pickup_options[$currentOption])) {
-				return self::$pickup_options[$currentOption];
-			}
+			DataObject::get_one("PickUpOrDeliveryModifierData", $filter = '`Code` = "'.$currentOption.'"');
 		}
 		return false;
 	}
@@ -161,11 +126,11 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		return $this->Charge();
 	}
 
-// 					 *** table titles
+//--------------------------------------------------------------------*** table titles
 	function LiveName() {
-		$array = $this->PickupOrDeliveryTypeArray();
-		if($array) {
-			return $array["Name"];
+		$obj = $this->PickupOrDeliveryTypeObject();
+		if(is_object($obj)) {
+			return $obj->Name;
 		}
 	}
 
@@ -199,37 +164,37 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					$this->debugMessage .= "<hr />sub total amount is 0";
 				}
 				else {
-					$currentOptionArray = $this->PickupOrDeliveryTypeArray();
-					if( is_array($currentOptionArray)) {
+					$obj = $this->PickupOrDeliveryTypeObject();
+					if( is_object($obj)) {
 						// no need to charge, order is big enough
-						if(floatval($currentOptionArray["MinimumOrderAmountForZeroRate"]) < floatval($amount)) {
+						if(floatval($obj->MinimumOrderAmountForZeroRate) < floatval($amount)) {
 							self::$actual_charges =  0;
 							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$actual_charges;
 						}
 						else {
 							// add weight based shipping
-							if($this->totalWeight() && $currentOptionArray["weightMultiplier"] ) {
-								self::$actual_charges += $this->totalWeight() * $currentOptionArray["weightMultiplier"];
+							if($this->totalWeight() && $obj->weightMultiplier ) {
+								self::$actual_charges += $this->totalWeight() * $obj->weightMultiplier;
 								$this->debugMessage .= "<hr />weight".self::$actual_charges;
 							}
 							// add percentage
-							if($currentOptionArray["Percentage"]) {
-								self::$actual_charges += $amount * $currentOptionArray["Percentage"];
+							if($obj->Percentage) {
+								self::$actual_charges += $amount * $obj->Percentage;
 								$this->debugMessage .= "<hr />percentage".self::$actual_charges;
 							}
 							// add fixed price
-							if($currentOptionArray["FixedCost"]) {
-								self::$actual_charges += $currentOptionArray["FixedCost"];
+							if($obj->FixedCost) {
+								self::$actual_charges += $obj->FixedCost;
 								$this->debugMessage .= "<hr />fixed".self::$actual_charges;
 							}
 							//is it enough?
-							if(self::$actual_charges < $currentOptionArray["MinimumDeliveryCharge"]) {
-								self::$actual_charges = $currentOptionArray["MinimumDeliveryCharge"];
+							if(self::$actual_charges < $obj->MinimumDeliveryCharge) {
+								self::$actual_charges = $obj->MinimumDeliveryCharge;
 								$this->debugMessage .= "<hr />too little".self::$actual_charges;
 							}
 							// is it too much
-							if(self::$actual_charges > $currentOptionArray["MaximumDeliveryCharge"]) {
-								self::$actual_charges = $currentOptionArray["MaximumDeliveryCharge"];
+							if(self::$actual_charges > $obj->MaximumDeliveryCharge) {
+								self::$actual_charges = $obj->MaximumDeliveryCharge;
 								$this->debugMessage .= "<hr />too much".self::$actual_charges;
 							}
 						}
@@ -296,7 +261,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$this->Name = $this->LiveName();
 		$this->PickupOrDeliveryType = $this->LivePickupOrDeliveryType();
 		$this->TotalWeight = $this->totalWeight();
-		$this->SerializedCalculationArray = serialize($this->PickupOrDeliveryTypeArray());
+		$this->SerializedCalculationObject = serialize($this->PickupOrDeliveryTypeObject());
 		$this->DebugString = $this->debugMessage;
 	}
 
@@ -317,12 +282,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 
-	protected static $ajaxcart_template_name = "AjaxCheckoutCart";
-
-	static function set_ajaxcart_template_name($v) {
-		self::$ajaxcart_template_name = $v;
-	}
-
 
 	public function processOrderModifier($data, $form) {
 		$order = ShoppingCart::current_order();
@@ -342,10 +301,5 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		}
 		return;
 	}
-}
-
-class PickUpOrDeliveryModifier_data extends DataObject {
-
-
 }
 
