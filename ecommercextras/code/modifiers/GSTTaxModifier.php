@@ -37,11 +37,11 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected static $default_name = "Goods and Services Tax (GST)";
 
-	protected static $exclusive_explanation = " (excluded from the above price) "
+	protected static $exclusive_explanation = " (excluded from the above price) ";
 
-	protected static $inclusive_explanation = " (included in the above price) "
+	protected static $inclusive_explanation = " (included in the above price) ";
 
-	protected static $based_on_country_note = " - based on a sale to: "
+	protected static $based_on_country_note = " - based on a sale to: ";
 
 	private static $current_country_code = "";
 
