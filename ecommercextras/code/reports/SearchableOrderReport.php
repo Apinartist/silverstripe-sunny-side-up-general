@@ -48,6 +48,12 @@ class SearchableOrderReport extends SalesReport {
 						$where[] = ' `Order`.`ID` = '.intval($value);
 						$humanWhere[] = ' OrderID equals '.intval($value);
 						break;
+					case "Before":
+						$d = new Date("date");
+						$d->setValue($value);
+						$where[] = ' `Order`.`Created` < "'.$d->format("Y-m-d").'"';
+						$humanWhere[] = ' Order before '.$d->long();
+						break;
 					case "Email":
 						$where[] = ' `Member`.`Email` = "'.$value.'"';
 						$humanWhere[] = ' Customer Email equals "'.$value.'"';

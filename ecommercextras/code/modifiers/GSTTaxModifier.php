@@ -13,9 +13,9 @@
  *
  */
 
-class GSTTaxModifier extends OrderModifier {
+class GSTTaxModifier extends TaxModifier {
 
-// 					 *** static variables
+//-------------------------------------------------------------------- *** static variables
 	static $db = array(
 		'Country' => 'Text',
 		'Rate' => 'Double',
@@ -37,9 +37,15 @@ class GSTTaxModifier extends OrderModifier {
 
 	protected static $default_name = "Goods and Services Tax (GST)";
 
+	protected static $exclusive_explanation = " (excluded from the above price) "
+
+	protected static $inclusive_explanation = " (included in the above price) "
+
+	protected static $based_on_country_note = " - based on a sale to: "
+
 	private static $current_country_code = "";
 
-// 					 *** static functions
+//-------------------------------------------------------------------- *** static functions
 
 	/**
 	 * Set the tax information for a particular country.
@@ -52,7 +58,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * 						"exclusive" if tax should be added to the order total.
 	 */
 
-	static function set_for_country($country = "NZ", $rate = 0.125, $name = "GST", $inclexcl = "Inclusive") {
+	static function set_for_country($country = "NZ", $rate = 0.125, $name = "GST", $inclexcl = "Inclusive", $PriceSuffix = "") {
 		self::$names_by_country[$country] = $name;
 		self::$rates_by_country[$country] = $rate;
 		switch($inclexcl) {
@@ -62,23 +68,22 @@ class GSTTaxModifier extends OrderModifier {
 		}
 	}
 
-	static function set_default_is_exclusive($boolean) {
-		self::$default_is_exclusive = $boolean;
-	}
-
-	static function set_default_rate($v) {
-		self::$default_rate = $v;
-	}
+	static function set_default_is_exclusive($boolean) {self::$default_is_exclusive = $boolean;}
+	static function set_default_rate($v) {self::$default_rate = $v;}
+	static function set_default_name($v) {self::$default_name = $v;}
+	static function set_exclusive_explanation($v) {self::$exclusive_explanation = $v;}
+	static function set_inclusive_explanation($v) {self::$inclusive_explanation = $v;}
+	static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
 
 	static function override_country($countryCode) {
 		self::$current_country_code = $countryCode;
 		Session::set("GSTTaxModifier_CountryCode", $countryCode);
 	}
 
-// 					 *** debug
-	var $debugMessage = '';
+// -------------------------------------------------------------------- *** internal variables
+	protected $debugMessage = '';
 
-// 					 *** display functions
+// -------------------------------------------------------------------- *** display functions
 	function CanRemove() {
 		return false;
 	}
@@ -87,11 +92,7 @@ class GSTTaxModifier extends OrderModifier {
 		return true;
 	}
 
-// 					 *** inclusive / exclusive function
-	function IsExclusive() {
-		return $this->ID ? $this->TaxType == 'Exclusive' : $this->LiveIsExclusive();
-	}
-
+// -------------------------------------------------------------------- *** inclusive / exclusive function
 	/*
 	* returns boolean value true / false
 	*/
@@ -105,10 +106,7 @@ class GSTTaxModifier extends OrderModifier {
 		}
 	}
 
-// 					 *** other attribute functions: country
-	function Country() {
-		return $this->ID ? $this->Country : $this->LiveCountry();
-	}
+//--------------------------------------------------------------------*** other attribute functions: country
 
 	protected function LiveCountry() {
 		if($fixeCode = Session::get("GSTTaxModifier_CountryCode")) {
@@ -123,10 +121,7 @@ class GSTTaxModifier extends OrderModifier {
 		return self::$current_country_code;
 	}
 
-// 					 *** rates functions
-	function Rate() {
-		return $this->ID ? $this->Rate : $this->LiveRate();
-	}
+//--------------------------------------------------------------------*** rates functions
 
 	protected function LiveRate() {
 		$countryCode = $this->LiveCountry();
@@ -142,7 +137,7 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 
-// 					 *** table value functions
+//-------------------------------------------------------------------- *** table value functions
 // note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
 	function getAmount() {
@@ -157,10 +152,6 @@ class GSTTaxModifier extends OrderModifier {
 		return 0;
 	}
 
-	function LiveAmount() {
-		return $this->AddedCharge();
-	}
-
 	function TableAmount() {
 		return $this->Charge();
 	}
@@ -169,15 +160,7 @@ class GSTTaxModifier extends OrderModifier {
 		return "$".number_format(abs($this->Charge()), 2);
 	}
 
-// 					 *** title function
-	function Name() {
-		if( $this->ID) {
-			return $this->Name;
-		}
-		else {
-			return $this->LiveName();
-		}
-	}
+//-------------------------------------------------------------------- *** title function
 
 	protected function LiveName() {
 		$countryCode = $this->LiveCountry();
@@ -195,13 +178,13 @@ class GSTTaxModifier extends OrderModifier {
 			$start = number_format($this->Rate() * 100, 2) . '% ';
 		}
 		if( $this->IsExclusive() || ! $rate) {
-			$end = '';
+			$end = self::$exclusive_explanation;
 		}
 		else {
-			$end = ' (included in the above price) ';
+			$end = self::$inclusive_explanation;
 		}
-		if($countryName = Geoip::countryCode2name($countryCode)) {
-			$end .= ' - based on a sale to: '.$countryName;
+		if($countryName = Geoip::countryCode2name($countryCode) && self::$based_on_country_note) {
+			$end .= self::$based_on_country_note.$countryName;
 		}
 		return $start.$name.$end;
 	}
@@ -212,23 +195,9 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 
-// 					 *** calculations
-	/**
-	 * Get the tax amount that needs to be added to the given order.
-	 * If tax is inclusive, then this will be 0
-	 */
-	function AddedCharge() {
-		return $this->IsExclusive() ? $this->Charge() : 0;
-	}
+// -------------------------------------------------------------------- *** calculations
 
-	/**
-	 * Get the tax amount on the given order.
-	 */
-	function Charge() {
-		// Exclusive is easy
-		// Inclusive is harder. For instance, with GST the tax amount is 1/9 of the inclusive price, not 1/8
-		return $this->TaxableAmount() * ($this->IsExclusive() ? $this->Rate() : (1 - (1 / (1 + $this->Rate()))));
-	}
+
 
 	function TaxableAmount() {
 		$order = $this->Order();
@@ -237,7 +206,7 @@ class GSTTaxModifier extends OrderModifier {
 
 
 
-// 					 *** database
+// -------------------------------------------------------------------- *** database
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Amount = $this->Charge();
@@ -259,4 +228,16 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

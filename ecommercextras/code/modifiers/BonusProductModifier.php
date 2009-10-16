@@ -18,7 +18,7 @@
  */
 class BonusProductModifier extends OrderModifier {
 
-// 					 *** static variables
+//--------------------------------------------------------------------*** static variables
 
 	static $db = array(
 		'Name' => 'Varchar(255)',
@@ -59,7 +59,7 @@ class BonusProductModifier extends OrderModifier {
 		return false;
 	}
 
-// 					 *** display functions
+//-------------------------------------------------------------------- *** display functions
 	function CanRemove() {
 		return false;
 	}
@@ -68,8 +68,8 @@ class BonusProductModifier extends OrderModifier {
 		return false;
 	}
 
-// 					 *** inclusive / exclusive functions
-// 					 *** table values
+
+//--------------------------------------------------------------------*** table values
 	function LiveAmount() {
 		return self::workout_savings();
 	}
@@ -79,7 +79,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 
-// 					 *** table titles
+//--------------------------------------------------------------------*** table titles
 	function LiveName() {
 		return self::$title;
 	}
@@ -109,7 +109,7 @@ class BonusProductModifier extends OrderModifier {
 		return self::$bonus_product_array;
 	}
 
-// 					 *** calculations
+//-------------------------------------------------------------------- *** calculations
 	static function workout_savings() {
 		if(!self::$savings_calculated) {
 			self::$is_chargable = false;
@@ -202,7 +202,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 
-// 					 *** database functions
+//--------------------------------------------------------------------*** database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->LiveName();

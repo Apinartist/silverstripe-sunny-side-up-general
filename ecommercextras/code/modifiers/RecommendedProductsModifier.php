@@ -10,12 +10,12 @@
  */
 class RecommendedProductsModifier extends OrderModifier {
 
-// 					 *** static variables
+//--------------------------------------------------------------------  *** static variables
 	protected static $image_width = 100;
 
 	static $db = array();
 
-// 					 *** static functions
+//--------------------------------------------------------------------  *** static functions
 	static function show_form() {
 		return true;
 	}
@@ -24,7 +24,11 @@ class RecommendedProductsModifier extends OrderModifier {
 		return new RecommendedProductsModifier_Form($controller, 'RecommendedProducts');
 	}
 
-// 					 *** display functions
+	static function set_image_width($v) {self::$image_width;}
+
+	static function get_image_width() {return self::$image_width;}
+
+//-------------------------------------------------------------------- *** display functions
 	function ShowInTable() {
 		return false;
 	}
@@ -33,16 +37,8 @@ class RecommendedProductsModifier extends OrderModifier {
 		return false;
 	}
 
-// 					 *** custom values
-	static function set_image_width($v) {
-		self::$image_width;
-	}
 
-	static function get_image_width() {
-		return self::$image_width;
-	}
-
-// 					 *** table values
+// -------------------------------------------------------------------- *** table values
 	function LiveAmount() {
 		return 0;
 	}
@@ -50,7 +46,7 @@ class RecommendedProductsModifier extends OrderModifier {
 		return "";
 	}
 
-// 					 *** table titles
+//-------------------------------------------------------------------- *** table titles
 	function LiveName() {
 		return "Recommended Products";
 	}
@@ -68,7 +64,7 @@ class RecommendedProductsModifier extends OrderModifier {
 		return $this->Name();
 	}
 
-// 					 ***  database functions
+//-------------------------------------------------------------------- ***  database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 	}

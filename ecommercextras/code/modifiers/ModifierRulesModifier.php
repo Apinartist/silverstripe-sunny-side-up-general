@@ -13,7 +13,7 @@
 
 class ModifierRulesModifier extends OrderModifier {
 
-// 					 *** static variables
+// --------------------------------------------------------------------*** static variables
 
 	public static $db = array(
 		'Name' => 'Varchar(255)',
@@ -23,7 +23,7 @@ class ModifierRulesModifier extends OrderModifier {
 
 	protected static $rule_array = array();
 
-// 					 *** static functions
+// --------------------------------------------------------------------*** static functions
 
 	static function set_rule($nameModifierA, $functionOrVariableNameA, $valueOrValueArrayA, $nameModifierB, $functionOrVariableNameB, $valueB) {
 		self::$rule_array[] = array(
@@ -46,7 +46,7 @@ class ModifierRulesModifier extends OrderModifier {
 
 
 
-// 					 *** display functions
+//--------------------------------------------------------------------*** display functions
 	function CanRemove() {
 		return false;
 	}
@@ -55,8 +55,7 @@ class ModifierRulesModifier extends OrderModifier {
 		return false;
 	}
 
-// 					 *** inclusive / exclusive functions
-// 					 *** table values
+// -------------------------------------------------------------------- *** table values
 	function LiveAmount() {
 		$this->applyRules();
 		return 0;
@@ -67,7 +66,7 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 
-// 					 *** table titles
+//--------------------------------------------------------------------*** table titles
 	function LiveName() {
 		return "";
 	}
@@ -87,7 +86,7 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 
-// 					 *** calculations
+//--------------------------------------------------------------------*** calculations
 	protected function applyRules() {
 		$rulesToBeApplied = Array();
 		$modifierArray = ShoppingCart::get_modifiers();
@@ -176,7 +175,7 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 
-// 					 *** database functions
+//-------------------------------------------------------------------- *** database functions
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->RulesApplied = $this->applyRules();

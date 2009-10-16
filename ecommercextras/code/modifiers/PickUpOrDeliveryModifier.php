@@ -10,7 +10,7 @@
  */
 class PickUpOrDeliveryModifier extends OrderModifier {
 
-// 					 *** static variables
+//--------------------------------------------------------------------*** static variables
 
 	static $db = array(
 		"Name" => "Text",
@@ -47,7 +47,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	 * @param $isPercentage boolean if the cost is a percentage or a exact cost
 	 */
 
-// 					 *** static functions
+//--------------------------------------------------------------------*** static functions
 
 	static function set_pickup_option($code = "pickup", $name = "Pick-Up", $minimumDeliveryCharge = 0, $maximumDeliveryCharge = 999999999, $minimumOrderAmountForZeroRate = 999999999, $weightMultiplier =  0 , $percentage = 0, $fixedCost = 0) {
 		self::$pickup_options[$code] = array(
@@ -106,7 +106,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	private $debugMessage = "";
 
 
-// 					 *** display
+//-------------------------------------------------------------------- *** display
 	function ShowInTable() {
 		return true;
 	}
@@ -114,8 +114,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		return false;
 	}
 
-// 					 *** inclusive / exclusive
-// 					 *** other attribute: Pickup or Delivery Type
+// --------------------------------------------------------------------*** other attribute: Pickup or Delivery Type
 	function LivePickupOrDeliveryType() {
 		if($v = Session::get("LivePickupOrDeliveryOption")) {
 			return $v;
@@ -153,8 +152,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 
-// 					 *** rate
-// 					 *** table values
+//-------------------------------------------------------------------- *** table values
 	function TableValue() {
 		return "$".number_format(abs($this->Amount()), 2);
 	}
@@ -184,7 +182,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		return $this->Name();
 	}
 
-// 					 *** calculations
+//-------------------------------------------------------------------- *** calculations
 	protected function SubTotalAmount() {
 		$order = $this->Order();
 		return $order->SubTotal();
@@ -292,7 +290,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		return self::$total_weight;
 	}
 
-// 					 *** database functions
+//-------------------------------------------------------------------- *** database functions
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Name = $this->LiveName();
@@ -301,6 +299,8 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$this->SerializedCalculationArray = serialize($this->PickupOrDeliveryTypeArray());
 		$this->DebugString = $this->debugMessage;
 	}
+
+//-------------------------------------------------------------------- *** getter and setters
 
 	function setOption($type) {
 		//Session::set("testme", "abc");
@@ -342,5 +342,10 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		}
 		return;
 	}
+}
+
+function class PickUpOrDeliveryModifier_data extends DataObject {
+
+
 }
 
