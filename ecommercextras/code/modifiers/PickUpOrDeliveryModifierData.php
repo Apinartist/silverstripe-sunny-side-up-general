@@ -19,7 +19,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		"FixedCost" => "Currency",
 	);
 
-	public static $many_many = array(
+	public static $has_many = array(
 		"CountryMustBe" => "PickUpOrDeliveryModifierDataCountry",
 		"CountryCanNotBe" => "PickUpOrDeliveryModifierDataCountry"
 	);
