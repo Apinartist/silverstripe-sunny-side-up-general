@@ -50,14 +50,14 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			$defaultValue = $v;
 		}
 		else {
-			$defaultValue = DataObject::get_one("PickUpOrDeliveryModifierData", "`IsDefault` = 1");
+			$defaultValue = PickUpOrDeliveryModifierData::default_object()->ID;
 		}
 
 		$fields = new FieldSet();
 		$options = self::getOptionListForDropDown();
 		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', 'Pick-up / Deliver'));
 
-		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue, $form = null, $emptyOption = "--- pick option ---"));
+		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue);
 		$validator = null;
 		$actions = new FieldSet(
 			new FormAction_WithoutLabel('processOrderModifier', 'Update Pickup / Delivery Option')
@@ -100,7 +100,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			$option = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "", $cache = true, $orderby = "`IsDefault` Desc");
+			$option = PickUpOrDeliveryModifierData::default_object();
 			$code = $option->Code;
 			$this->setOption($code);
 			return $code;

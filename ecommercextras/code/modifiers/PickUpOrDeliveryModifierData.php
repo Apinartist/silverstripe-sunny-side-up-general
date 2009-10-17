@@ -43,12 +43,13 @@ class PickUpOrDeliveryModifierData extends DataObject {
 
 	public static $defaults = array(
 		"Code" => "deliverycode",
-		"MinimumDeliveryCharge" => 0,
-		"MaximumDeliveryCharge" => 99999,
-		"MinimumOrderAmountForZeroRate" => 99999,
+		"Code" => "Home Delivery",
+		"MinimumDeliveryCharge" => 10,
+		"MaximumDeliveryCharge" => 9999999,
+		"MinimumOrderAmountForZeroRate" => 9999999,
 		"WeightMultiplier" => 0,
 		"Percentage" => 0,
-		"FixedCost" => 0
+		"FixedCost" => 10
 	);
 
 	public static $summary_fields = array(
@@ -60,6 +61,18 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	public static $singular_name = "Delivery / Pick-up Option";
 
 	public static $plural_name = "Delivery / Pick-up Options";
+
+	static function default_object() {
+		if($obj = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "IsDefault = 1")) {
+
+		}
+		else {
+			$obj = new PickUpOrDeliveryModifierData();
+			$obj->IsDefault = 1;
+			$obj->write();
+			return $obj;
+		}
+	}
 
 	function onBeforeWrite() {
 		// no other record but current one is not default
