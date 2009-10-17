@@ -74,7 +74,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			}
 		}
 		else {
-			$array[0] = "No options available";
+			$array[0] = "No pick-up or delivery options available";
 		}
 		return $array;
 	}
