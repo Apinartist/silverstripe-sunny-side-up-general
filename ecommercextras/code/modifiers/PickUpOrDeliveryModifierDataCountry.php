@@ -18,6 +18,11 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 
 	static $default_sort = "Name";
 
+	static $belongs_many_many = array(
+		"CountryMustBeLink" => "PickUpOrDeliveryModifierData",
+		"CountryCanNotBeLink" => "PickUpOrDeliveryModifierData"
+	);
+
 	public static $singular_name = "Country";
 
 	public static $plural_name = "Countries";
