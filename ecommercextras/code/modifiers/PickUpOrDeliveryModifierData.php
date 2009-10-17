@@ -16,9 +16,13 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		"MinimumOrderAmountForZeroRate" => "Currency",
 		"WeightMultiplier" => "Double",
 		"Percentage" => "Double",
-		"FixedCost" => "Currency"
+		"FixedCost" => "Currency",
 	);
 
+	public $has_many = array(
+		"CountryMustBe" => "PickUpOrDeliveryModifierDataCountry",
+		"CountryCanNotBe" => "PickUpOrDeliveryModifierDataCountry"
+	);
 
 	public static $indexes = array(
 		"Code" => true
@@ -38,7 +42,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		"MinimumOrderAmountForZeroRate" => "Min. for 0 rate",
 		"WeightMultiplier" => "WeightMultiplier per kg.",
 		"Percentage" => "Percentage",
-		"FixedCost" =>  "Fixed Cost"
+		"FixedCost" =>  "Fixed Cost",
 	);
 
 	public static $defaults = array(
