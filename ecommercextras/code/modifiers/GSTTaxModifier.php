@@ -183,8 +183,9 @@ class GSTTaxModifier extends TaxModifier {
 		else {
 			$end = self::$inclusive_explanation;
 		}
-		if($countryName = Geoip::countryCode2name($countryCode) && self::$based_on_country_note) {
-			$end .= self::$based_on_country_note.$countryName;
+		$countryName = Geoip::countryCode2name($countryCode);
+		if(self::$based_on_country_note && $countryName) {
+			$end .= self::$based_on_country_note.Geoip::countryCode2name($countryCode);
 		}
 		return $start.$name.$end;
 	}
