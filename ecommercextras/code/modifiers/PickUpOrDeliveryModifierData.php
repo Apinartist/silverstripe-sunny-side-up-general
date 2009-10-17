@@ -98,8 +98,8 @@ class PickUpOrDeliveryModifierData extends DataObject {
 SELECT `PickUpOrDeliveryModifierDataCountry`. * , `PickUpOrDeliveryModifierDataCountry`.ID, if( `PickUpOrDeliveryModifierDataCountry`.ClassName, `PickUpOrDeliveryModifierDataCountry`.ClassName, "PickUpOrDeliveryModifierDataCountry" ) AS RecordClassName, IF( `PickUpOrDeliveryModifierDataID` IS NULL , 0, 1 ) AS Checked
 FROM `PickUpOrDeliveryModifierDataCountry`
 LEFT JOIN `PickUpOrDeliveryModifierData_AvailableInCountries` ON ( `PickUpOrDeliveryModifierDataCountry`.`ID` = `PickUpOrDeliveryModifierDataCountryID`
-AND `PickUpOrDeliveryModifierDataID` ='.$this->ID.' )';
-		)
+AND `PickUpOrDeliveryModifierDataID` ='.$this->ID.' )'
+		);
 		return $field;
 	}
 
