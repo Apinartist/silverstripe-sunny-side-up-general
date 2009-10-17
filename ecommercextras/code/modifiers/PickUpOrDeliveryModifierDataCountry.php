@@ -29,7 +29,7 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(!DataObject::get("PickUpOrDeliveryModifierDataCountry")) {
-			$array = Geoip::getgetCountryDropDown();
+			$array = Geoip::getCountryDropDown();
 			foreach($array as $key => $value) {
 				$obj = new PickUpOrDeliveryModifierDataCountry();
 				$obj->Code = $key;
