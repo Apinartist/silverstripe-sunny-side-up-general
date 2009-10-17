@@ -80,7 +80,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->push(new TextField("test"));
+		$fields->replaceField("CountryMustBe", new TextField("xxx"));
 		return $fields;
 	}
 
