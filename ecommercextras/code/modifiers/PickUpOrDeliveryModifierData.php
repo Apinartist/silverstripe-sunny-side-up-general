@@ -63,8 +63,8 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	public static $plural_name = "Delivery / Pick-up Options";
 
 	static function default_object() {
-		if($obj = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "IsDefault = 1")) {
-
+		if($obj = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "`IsDefault` = 1")) {
+			return $obj;
 		}
 		else {
 			$obj = new PickUpOrDeliveryModifierData();
