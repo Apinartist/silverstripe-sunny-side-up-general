@@ -16,6 +16,10 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 		"Code" => "True"
 	);
 
+	static $belongs_many_many = array(
+		"PickUpOrDeliveryModifierData" => "PickUpOrDeliveryModifierData"
+	);
+
 	public static $singular_name = "Country";
 
 	public static $plural_name = "Countries";
