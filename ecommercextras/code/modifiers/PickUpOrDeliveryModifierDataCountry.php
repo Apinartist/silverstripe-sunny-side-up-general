@@ -19,7 +19,7 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 	static $default_sort = "Name";
 
 	static $belongs_many_many = array(
-		"PickUpOrDeliveryModifierData" => "PickUpOrDeliveryModifierData"
+		"BelongsToField" => "PickUpOrDeliveryModifierData"
 	);
 
 	public static $singular_name = "Country";
@@ -34,6 +34,7 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 				$obj = new PickUpOrDeliveryModifierDataCountry();
 				$obj->Code = $key;
 				$obj->Name = $value;
+				$obj->write();
 			}
 		}
 	}
