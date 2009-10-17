@@ -78,6 +78,13 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		}
 	}
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->push(new TextField("test"));
+		return $fields;
+	}
+
+
 	function onBeforeWrite() {
 		// no other record but current one is not default
 		if(!$this->IsDefault && !DataObject::get_one("PickUpOrDeliveryModifierData", "`ID` <> ".intval($this->ID))) {

@@ -27,13 +27,6 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 
 	public static $plural_name = "Countries";
 
-
-	function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->push(new TextField("test"));
-		return $fields;
-	}
-
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(!DataObject::get("PickUpOrDeliveryModifierDataCountry")) {
