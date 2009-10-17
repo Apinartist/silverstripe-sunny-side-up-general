@@ -68,8 +68,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	private static function getOptionListForDropDown() {
 		$array = array();
 		$options = DataObject::get("PickUpOrDeliveryModifierData");
-		foreach($options as $option) {
-			$array[$option->Code] = $option[$option->Name];
+		if($options) {
+			foreach($options as $option) {
+				$array[$option->Code] = $array[$option->Name];
+			}
+		}
+		else {
+			$array[0] = "No options available";
 		}
 		return $array;
 	}
