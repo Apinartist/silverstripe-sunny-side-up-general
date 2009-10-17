@@ -16,6 +16,8 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 		"Code" => "True"
 	);
 
+	static $default_sort = "Name";
+
 	static $belongs_many_many = array(
 		"PickUpOrDeliveryModifierData" => "PickUpOrDeliveryModifierData"
 	);
