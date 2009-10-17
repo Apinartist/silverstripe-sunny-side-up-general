@@ -100,7 +100,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			$option = DataObject::get_one("`PickUpOrDeliveryModifierData`", $filter = "", $cache = true, $orderby = "`IsDefault` Desc");
+			$option = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "", $cache = true, $orderby = "`IsDefault` Desc");
 			$code = $option->Code;
 			$this->setOption($code);
 			return $code;
