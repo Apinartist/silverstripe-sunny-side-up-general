@@ -10,7 +10,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	static $db = array(
 		"IsDefault" => "Boolean",
 		"Code" => "Varchar(25)",
-		"Name" => "Varchar(25)",
+		"Name" => "Varchar(175)",
 		"MinimumDeliveryCharge" => "Currency",
 		"MaximumDeliveryCharge" => "Currency",
 		"MinimumOrderAmountForZeroRate" => "Currency",
