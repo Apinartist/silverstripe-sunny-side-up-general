@@ -13,7 +13,7 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 	);
 
 	static $indexes = array(
-		"Code" => "True"
+		"Code" => true
 	);
 
 	static $default_sort = "Name";
