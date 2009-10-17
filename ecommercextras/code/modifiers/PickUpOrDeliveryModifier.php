@@ -57,7 +57,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$options = self::getOptionListForDropDown();
 		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', 'Pick-up / Deliver'));
 
-		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue);
+		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue));
 		$validator = null;
 		$actions = new FieldSet(
 			new FormAction_WithoutLabel('processOrderModifier', 'Update Pickup / Delivery Option')
