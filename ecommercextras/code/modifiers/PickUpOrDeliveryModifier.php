@@ -70,7 +70,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$options = DataObject::get("PickUpOrDeliveryModifierData");
 		if($options) {
 			foreach($options as $option) {
-				$array[$option->Code] = $array[$option->Name];
+				$array[$option->Code] = $option->Name;
 			}
 		}
 		else {
