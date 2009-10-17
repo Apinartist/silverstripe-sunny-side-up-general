@@ -94,7 +94,12 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		);
 		$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
 		$field->setPageSize(250);
-		debug::show($field->getQuery());
+		$field->setCustomQuery('
+SELECT `PickUpOrDeliveryModifierDataCountry`. * , `PickUpOrDeliveryModifierDataCountry`.ID, if( `PickUpOrDeliveryModifierDataCountry`.ClassName, `PickUpOrDeliveryModifierDataCountry`.ClassName, 'PickUpOrDeliveryModifierDataCountry' ) AS RecordClassName, IF( `PickUpOrDeliveryModifierDataID` IS NULL , 0, 1 ) AS Checked
+FROM `PickUpOrDeliveryModifierDataCountry`
+LEFT JOIN `PickUpOrDeliveryModifierData_AvailableInCountries` ON ( `PickUpOrDeliveryModifierDataCountry`.`ID` = `PickUpOrDeliveryModifierDataCountryID`
+AND `PickUpOrDeliveryModifierDataID` ='.$this->ID.' )';
+		)
 		return $field;
 	}
 
