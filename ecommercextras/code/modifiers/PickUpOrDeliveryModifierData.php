@@ -94,6 +94,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		);
 		$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
 		$field->setPageSize(250);
+		debug::show($field->getQuery());
 		return $field;
 	}
 
