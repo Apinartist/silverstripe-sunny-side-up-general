@@ -79,7 +79,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->replaceField("CountryMustBe", new TextField("xxx"));
+		$fields->replaceField("CountryMustBe", $this->createManyManyComplexTableField());
 		return $fields;
 	}
 
