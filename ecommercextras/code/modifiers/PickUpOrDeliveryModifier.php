@@ -217,6 +217,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			self::$calculations_done = true;
 		}
 		$this->debugMessage .= "<hr />final score: ".self::$actual_charges;
+		if(isset($_GET["debug"])) {
+			debug::show($this->debugMessage);
+		}
 		return self::$actual_charges;
 
 	}
