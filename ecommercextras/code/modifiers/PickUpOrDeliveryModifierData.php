@@ -20,8 +20,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	);
 
 	public static $many_many = array(
-		"CountryMustBe" => "PickUpOrDeliveryModifierDataCountry",
-		"CountryCanNotBe" => "PickUpOrDeliveryModifierDataCountry"
+		"AvailableInCountries" => "PickUpOrDeliveryModifierDataCountry",
 	);
 
 	public static $indexes = array(
@@ -82,6 +81,20 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("CountryMustBe", new TextField("xxx"));
 		return $fields;
+	}
+
+	private function createManyManyComplexTableField() {
+		$field = new ManyManyComplexTableField(
+			$this,
+			'AvailableInCountries',
+			'PickUpOrDeliveryModifierDataCountry',
+			array(
+				'Name' => 'Name',
+			)
+		);
+		$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
+		$field->setPageSize(250);
+		return $field;
 	}
 
 
