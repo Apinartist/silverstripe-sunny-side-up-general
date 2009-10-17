@@ -116,9 +116,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		}
 		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
-			DataObject::get_one("PickUpOrDeliveryModifierData", $filter = '`Code` = "'.$currentOption.'"');
+			return DataObject::get_one("PickUpOrDeliveryModifierData", $filter = '`Code` = "'.$currentOption.'"');
 		}
-		return false;
+		user_error("could not retrieve Pickup Or Delivery Type", E_USER_ERROR);
 	}
 
 
@@ -160,6 +160,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	function Charge() {
 		$amount = 0;
+		$obj = $this->PickupOrDeliveryTypeObject();
 		if(!self::$calculations_done) {
 			self::$actual_charges = 0;
 			if(ShoppingCart::get_items()) {
@@ -169,7 +170,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					$this->debugMessage .= "<hr />sub total amount is 0";
 				}
 				else {
-					$obj = $this->PickupOrDeliveryTypeObject();
 					if( is_object($obj)) {
 						// no need to charge, order is big enough
 						if(floatval($obj->MinimumOrderAmountForZeroRate) < floatval($amount)) {
