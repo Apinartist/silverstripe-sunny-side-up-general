@@ -5,7 +5,7 @@
  *
  **/
 
-class PickUpOrDeliveryModifierData extends DataObject {
+class PickUpOrDeliveryModifierOptions extends DataObject {
 
 	static $db = array(
 		"IsDefault" => "Boolean",
@@ -20,7 +20,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	);
 
 	public static $many_many = array(
-		"AvailableInCountries" => "PickUpOrDeliveryModifierDataCountry",
+		"AvailableInCountries" => "PickUpOrDeliveryModifierOptionsCountry",
 	);
 
 	public static $indexes = array(
@@ -66,11 +66,11 @@ class PickUpOrDeliveryModifierData extends DataObject {
 	public static $plural_name = "Delivery / Pick-up Options";
 
 	static function default_object() {
-		if($obj = DataObject::get_one("PickUpOrDeliveryModifierData", $filter = "`IsDefault` = 1")) {
+		if($obj = DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = "`IsDefault` = 1")) {
 			return $obj;
 		}
 		else {
-			$obj = new PickUpOrDeliveryModifierData();
+			$obj = new PickUpOrDeliveryModifierOptions();
 			$obj->IsDefault = 1;
 			$obj->write();
 			return $obj;
@@ -79,7 +79,7 @@ class PickUpOrDeliveryModifierData extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->replaceField("CountryMustBe", $this->createManyManyComplexTableField());
+		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
 		return $fields;
 	}
 
@@ -87,40 +87,32 @@ class PickUpOrDeliveryModifierData extends DataObject {
 		$field = new ManyManyComplexTableField(
 			$this,
 			'AvailableInCountries',
-			'PickUpOrDeliveryModifierDataCountry',
+			'PickUpOrDeliveryModifierOptionsCountry',
 			array(
 				'Name' => 'Name',
 			)
 		);
 		$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
 		$field->setPageSize(250);
-		$field->setCustomQuery('
-SELECT `PickUpOrDeliveryModifierDataCountry`. * , `PickUpOrDeliveryModifierDataCountry`.ID, if( `PickUpOrDeliveryModifierDataCountry`.ClassName, `PickUpOrDeliveryModifierDataCountry`.ClassName, 'PickUpOrDeliveryModifierDataCountry' ) AS RecordClassName, IF( `PickUpOrDeliveryModifierDataID` IS NULL , 0, 1 ) AS Checked
-FROM `PickUpOrDeliveryModifierDataCountry`
-LEFT JOIN `PickUpOrDeliveryModifierData_AvailableInCountries` ON ( `PickUpOrDeliveryModifierDataCountry`.`ID` = `PickUpOrDeliveryModifierDataCountryID`
-AND `PickUpOrDeliveryModifierDataID` ='.$this->ID.' )';
-
-
-		)
 		return $field;
 	}
 
 
 	function onBeforeWrite() {
 		// no other record but current one is not default
-		if(!$this->IsDefault && !DataObject::get_one("PickUpOrDeliveryModifierData", "`ID` <> ".intval($this->ID))) {
+		if(!$this->IsDefault && !DataObject::get_one("PickUpOrDeliveryModifierOptions", "`ID` <> ".intval($this->ID))) {
 			$this->IsDefault = 1;
 		}
 		//current default -> reset others
 		elseif($this->IsDefault) {
-			DB::query('UPDATE `PickUpOrDeliveryModifierData` SET `IsDefault` = 0 WHERE `ID` <> '.intval($this->ID).';');
+			DB::query('UPDATE `PickUpOrDeliveryModifierOptions` SET `IsDefault` = 0 WHERE `ID` <> '.intval($this->ID).';');
 		}
 		$i = 0;
 		if(!$this->Code) {
 			$this->Code = self::$defaults["Code"];
 		}
 		$baseCode = $this->Code;
-		while($other = DataObject::get_one("PickUpOrDeliveryModifierData", '`Code` = "'.$this->Code.'" AND `ID` <> '.$this->ID)){
+		while($other = DataObject::get_one("PickUpOrDeliveryModifierOptions", '`Code` = "'.$this->Code.'" AND `ID` <> '.$this->ID)){
 			$this->Code = $baseCode.'_'.$i;
 		}
 		parent::onBeforeWrite();

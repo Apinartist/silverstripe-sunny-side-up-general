@@ -5,7 +5,7 @@
  *
  **/
 
-class PickUpOrDeliveryModifierDataCountry extends DataObject {
+class PickUpOrDeliveryModifierOptionsCountry extends DataObject {
 
 	static $db = array(
 		"Code" => "Varchar(3)",
@@ -19,8 +19,7 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 	static $default_sort = "Name";
 
 	static $belongs_many_many = array(
-		"CountryMustBeLink" => "PickUpOrDeliveryModifierData",
-		"CountryCanNotBeLink" => "PickUpOrDeliveryModifierData"
+		"AvailableInCountries" => "PickUpOrDeliveryModifierOptions"
 	);
 
 	public static $singular_name = "Country";
@@ -29,10 +28,10 @@ class PickUpOrDeliveryModifierDataCountry extends DataObject {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!DataObject::get("PickUpOrDeliveryModifierDataCountry")) {
+		if(!DataObject::get("PickUpOrDeliveryModifierOptions")) {
 			$array = Geoip::getCountryDropDown();
 			foreach($array as $key => $value) {
-				$obj = new PickUpOrDeliveryModifierDataCountry();
+				$obj = new PickUpOrDeliveryModifierOptions();
 				$obj->Code = $key;
 				$obj->Name = $value;
 				$obj->write();

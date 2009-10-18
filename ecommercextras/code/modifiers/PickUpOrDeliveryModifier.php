@@ -50,7 +50,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			$defaultValue = $v;
 		}
 		else {
-			$defaultValue = PickUpOrDeliveryModifierData::default_object()->ID;
+			$defaultValue = PickUpOrDeliveryModifierOptions::default_object()->ID;
 		}
 
 		$fields = new FieldSet();
@@ -67,7 +67,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	private static function getOptionListForDropDown() {
 		$array = array();
-		$options = DataObject::get("PickUpOrDeliveryModifierData");
+		$options = DataObject::get("PickUpOrDeliveryModifierOptions");
 		if($options) {
 			foreach($options as $option) {
 				$array[$option->Code] = $option->Name;
@@ -100,7 +100,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			return $this->PickupOrDeliveryType;
 		}
 		else {
-			$option = PickUpOrDeliveryModifierData::default_object();
+			$option = PickUpOrDeliveryModifierOptions::default_object();
 			$code = $option->Code;
 			$this->setOption($code);
 			return $code;
@@ -116,7 +116,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		}
 		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
-			return DataObject::get_one("PickUpOrDeliveryModifierData", $filter = '`Code` = "'.$currentOption.'"');
+			return DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = '`Code` = "'.$currentOption.'"');
 		}
 		user_error("could not retrieve Pickup Or Delivery Type", E_USER_ERROR);
 	}
