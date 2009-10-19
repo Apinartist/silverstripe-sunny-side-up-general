@@ -92,7 +92,7 @@ class SearchableOrderReport extends SalesReport {
 						}
 						break;
 					case "HasMinimumPayment":
-						$where[] = ' RealPayments > '.intval($value);
+						$where[] = ' SUM(`Payment`.`Amount`) > '.intval($value);
 						$humanWhere[] = ' Real Payment of at least '.$this->currencyFormat($value);
 						break;
 					case "HasMaximumPayment":
@@ -113,7 +113,7 @@ class SearchableOrderReport extends SalesReport {
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 		$query = singleton('Order')->buildSQL(Session::get("SearchableOrderReport.where"), 'Order.Created DESC', "", $join = " INNER JOIN Member on Member.ID = Order.MemberID");
 		$query->groupby[] = 'Order.Created';
-		$query->select[] = 'SUM(`Payment`.`Amount`) AS RealPayments';
+		$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
 		$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
 		return $query;
 	}
