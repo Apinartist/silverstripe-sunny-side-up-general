@@ -111,8 +111,7 @@ class SearchableOrderReport extends SalesReport {
 
 	function getCustomQuery() {
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
-		$query = singleton('Order')->buildSQL(Session::get("SearchableOrderReport.where"), 'Order.Created DESC', "", $join = " INNER JOIN Member on Member.ID = Order.MemberID");
-		$query->groupby[] = 'Order.Created';
+		$query = singleton('Order')->buildSQL(Session::get("SearchableOrderReport.where"), '`Order`.`Created` DESC', "", $join = " INNER JOIN Member on Member.ID = Order.MemberID");
 		$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
 		$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
 		return $query;
