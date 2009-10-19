@@ -48,6 +48,13 @@
 // *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
 
+// *** NEWSLETTER SIGNUP MODIFIER
+//BlockCountriesModifier::set_must_include_country_codes(array("NZ"));
+//BlockCountriesModifier::set_must_not_country_codes(array("AU"));
+//BlockCountriesModifier::set_sorry_message_start("Sorry, sales to");
+//BlockCountriesModifier::set_sorry_message_start("are not allowed");
+//BlockCountriesModifier::set_your_country_description_default("your country")
+
 // *** MODIFIER RULES MODIFIER
 // ModifierRulesModifier::set_rule(
 /*

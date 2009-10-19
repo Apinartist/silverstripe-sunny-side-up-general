@@ -5,10 +5,8 @@
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce
  * @sub-package: ecommercextras
- * @description:  allows you to check rules like this
- * if(Modifier A::variable = ... set Modifier B::variable to ...)
- * variables can also be function
- * it checks for the function first and then does the variable
+ * @description:  allows you to block certain / allow certain countries
+ * make sure to theme css
  */
 
 class BlockCountriesModifier extends OrderModifier {
@@ -26,11 +24,14 @@ class BlockCountriesModifier extends OrderModifier {
 	protected static $must_not_country_codes = array();
 		static function set_must_not_country_codes(array $array) {self::$must_not_country_codes = $array;}
 
-	protected static $sorry_message_start = "Sorry, but sales to."
+	protected static $sorry_message_start = "Sorry, but sales to"
 		static function set_sorry_message_start($string) {self::$sorry_message_start = $string;}
 
 	protected static $sorry_message_end = "are not available."
 		static function set_sorry_message_start($string) {self::$sorry_message_start = $string;}
+
+	protected static $your_country_description_default = "your country"
+		static function set_your_country_description_default($string) {self::$your_country_description_default = $string;}
 
 // --------------------------------------------------------------------*** static functions
 
@@ -43,10 +44,10 @@ class BlockCountriesModifier extends OrderModifier {
 		return false;
 	}
 
-
-
 //--------------------------------------------------------------------*** variables
+
 	protected $messsage = '';
+
 //--------------------------------------------------------------------*** display functions
 
 	function CanRemove() {
@@ -108,15 +109,17 @@ class BlockCountriesModifier extends OrderModifier {
 		if($stop) {
 			$this->Error = 1;
 			$this->CountryCode = $countryCode;
-			$this->message = self::$sorry_message_start.Geoip::countryCode2name($countryCode).self::$sorry_message_end;
+			$countryName = Geoip::countryCode2name($countryCode);
+			if(!$countryName) {
+				$countryName = self::$your_country_description_default;
+			}
+			$this->message = self::$sorry_message_start." ".$countryName." ".self::$sorry_message_end;
+			Requirements::themedCSS("BlockCountriesModifier");
 		}
 	}
 
 	function onBeforeWrite() {
 		$this->checkCountry();
-		if($this->Error) {
-			die($this->message);
-		}
 		parent::onBeforeWrite();
 	}
 
