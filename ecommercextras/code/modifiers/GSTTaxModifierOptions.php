@@ -60,15 +60,6 @@ class GSTTaxModifierOptions extends DataObject {
 		if($this->ID && DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$this->CountryCode.'" AND `ID` <> '.$this->ID)) {
 			die("can not save two taxes for one country!");
 		}
-		if(!$this->Code) {
-			die("Tax must have a code");
-		}
-		if(!$this->Name) {
-			die("Tax must have a name");
-		}
-		if(!$this->Rate) {
-			die("Tax must have a rate greater than 0 (usually something like 0.12)");
-		}
 		parent::onBeforeWrite();
 	}
 }
