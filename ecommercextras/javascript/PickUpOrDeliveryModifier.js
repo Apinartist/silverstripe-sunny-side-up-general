@@ -11,11 +11,17 @@ var	PickUpOrDeliveryModifier = {
 
 	formID: "PickUpOrDeliveryModifier_Form_ModifierForm",
 
-	dropDownIDappendix: "_PickupOrDeliveryType",
+	DropdownIDappendix: "_PickupOrDeliveryType",
 
 	loadingClass: "loading",
 
 	actionsClass: "Actions",
+
+	countryDropdownSelector: "select.ajaxCountryField",
+
+	notSelectedText: "-- not selected --",
+
+	availableCountries: new Array(),
 
 	init: function() {
 		var options = {
@@ -25,8 +31,10 @@ var	PickUpOrDeliveryModifier = {
 		};
 		jQuery('#' + PickUpOrDeliveryModifier.formID).ajaxForm(options);
 		jQuery("#" + PickUpOrDeliveryModifier.formID + " ." + PickUpOrDeliveryModifier.actionsClass).hide();
-		jQuery("#" + PickUpOrDeliveryModifier.formID+ PickUpOrDeliveryModifier.dropDownIDappendix).change(
+		PickUpOrDeliveryModifier.updateCountryList();
+		jQuery("#" + PickUpOrDeliveryModifier.formID+ PickUpOrDeliveryModifier.DropdownIDappendix).change(
 			function() {
+				PickUpOrDeliveryModifier.updateCountryList();
 				jQuery("#" + PickUpOrDeliveryModifier.formID).submit();
 			}
 		);
@@ -44,6 +52,44 @@ var	PickUpOrDeliveryModifier = {
 		//jQuery("#" + PickUpOrDeliveryModifier.updatedDivID).css("height", "auto");
 		jQuery("#" + PickUpOrDeliveryModifier.formID).removeClass(PickUpOrDeliveryModifier.loadingClass);
 		AjaxCheckout.setChanges(responseText);
+	},
+
+	addAvailableCountriesItem: function(index, countriesArray) {
+		PickUpOrDeliveryModifier.availableCountries[index] = countriesArray;
+	},
+
+	updateCountryList: function() {
+		var currentIndex = jQuery("#" + PickUpOrDeliveryModifier.formID+ PickUpOrDeliveryModifier.DropdownIDappendix).val();
+		var acceptableOptions = PickUpOrDeliveryModifier.availableCountries[currentIndex];
+		if(acceptableOptions.length < 1) {
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").show();
+		}
+		else {
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").hide();
+		}
+		var hasValidValue = false;
+		for(i=0;i<acceptableOptions.length;i++) {
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option[value='" + acceptableOptions[i] + "']").show();
+			if(jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val() == acceptableOptions[i]) {
+				hasValidValue = true;
+			}
+		}
+		if(hasValidValue) {
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").hide();
+		}
+		else {
+			if(jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").length < 1) {
+				jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).prepend('<option class="nothingSelected" value="0">'+PickUpOrDeliveryModifier.notSelectedText+'</option>');
+			}
+			else {
+				jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").show();
+			}
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val("0");
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
+		}
+
 	}
+
+
 }
 

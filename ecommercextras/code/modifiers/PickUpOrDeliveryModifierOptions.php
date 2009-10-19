@@ -24,6 +24,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	);
 
 	public static $indexes = array(
+		"IsDefault" => true,
 		"Code" => true
 	);
 
@@ -38,10 +39,10 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"Name" => "Long Name",
 		"MinimumDeliveryCharge" => "Minimum",
 		"MaximumDeliveryCharge" => "Maximum",
-		"MinimumOrderAmountForZeroRate" => "Min. for 0 rate",
-		"WeightMultiplier" => "WeightMultiplier per kg.",
-		"Percentage" => "Percentage",
-		"FixedCost" =>  "Fixed Cost",
+		"MinimumOrderAmountForZeroRate" => "Minimum for 0 rate (i.e. if the total order is over ... then there is no fee for this option)",
+		"WeightMultiplier" => "WeightMultiplier per kg. (works out weight of order (make sure products have weight) and multiplies with this number to work out charge for this option)",
+		"Percentage" => "Percentage of total order cost as charge for this option",
+		"FixedCost" =>  "This option has a fixed cost (e.g. always $10)"
 	);
 
 	public static $defaults = array(
@@ -77,6 +78,19 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		}
 	}
 
+	static function get_all_as_country_array() {
+		$array = array();
+		$Options = DataObject::get("PickUpOrDeliveryModifierOptions");
+		foreach($Options as $option) {
+			if($countries = $option->AvailableInCountries()) {
+				foreach($countries as $country) {
+					$array[$option->Code][] = $country->Code;
+				}
+			}
+		}
+		return $array;
+	}
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
@@ -84,16 +98,30 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	}
 
 	private function createManyManyComplexTableField() {
-		$field = new ManyManyComplexTableField(
-			$this,
-			'AvailableInCountries',
-			'PickUpOrDeliveryModifierOptionsCountry',
-			array(
-				'Name' => 'Name',
-			)
-		);
-		$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
-		$field->setPageSize(250);
+		$title = '';
+		if(class_exists("MultiSelectField")) {
+			$array = DataObject::get("PickUpOrDeliveryModifierOptionsCountry")->toDropdownMap('ID','Title');
+			//$name, $title = "", $source = array(), $value = "", $form = null
+			$field = new MultiSelectField(
+				'AvailableInCountries',
+				'This option is available in...',
+				$array
+			);
+		}
+		else {
+			// $controller,  $name,  $sourceClass, [ $fieldList = null], [ $detailFormFields = null], [ $sourceFilter = ""], [ $sourceSort = ""], [ $sourceJoin = ""]
+			$field = new ManyManyComplexTableField(
+				$this,
+				'AvailableInCountries',
+				'PickUpOrDeliveryModifierOptionsCountry',
+				array('Name' => 'Name'),
+				null,
+				null,
+				"`Checked` DESC, `Name` ASC"
+			);
+			$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
+			$field->setPageSize(250);
+		}
 		return $field;
 	}
 
@@ -107,6 +135,8 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		elseif($this->IsDefault) {
 			DB::query('UPDATE `PickUpOrDeliveryModifierOptions` SET `IsDefault` = 0 WHERE `ID` <> '.intval($this->ID).';');
 		}
+		$this->Code = eregi_replace("[^[:alnum:]]", " ", $this->Code );
+		$this->Code = trim(eregi_replace(" +", "", $this->Code));
 		$i = 0;
 		if(!$this->Code) {
 			$this->Code = self::$defaults["Code"];

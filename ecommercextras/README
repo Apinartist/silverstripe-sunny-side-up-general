@@ -58,6 +58,7 @@ country chosen in the member field "country".  Instead, you can make
 a dropdown of options (e.g. nationwide delivery, delivery to europe,
 pick-up from store or whatever).
 
+
 RecommendedProductsModifier: allows you to recommend products as
 accessories to other products (i.e. as recommended products) and
 show those products on the checkout page.

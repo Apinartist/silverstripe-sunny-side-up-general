@@ -42,17 +42,24 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	static function get_form($controller) {
-		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
-
-		if($defaultValue = Session::get("PickUpOrDeliveryOption")) {
-			$defaultValue = $v;
+		AjaxOrder::include_basic_module_requirements();
+		Requirements::block("ecommerce/javascript/ecommerce.js");
+		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
+		$array = PickUpOrDeliveryModifierOptions::get_all_as_country_array();
+		if($array && is_array($array) && count($array)) {
+			$js = '';
+			foreach($array as $key => $option) {
+				if($option && is_array($option) && count($option)) {
+					$js .= 'PickUpOrDeliveryModifier.addAvailableCountriesItem("'.$key.'",new Array("'.implode('","', $option).'")); ';
+				}
+			}
+			if($js) {
+				Requirements::customScript($js);
+			}
 		}
-		else {
-			$defaultValue = PickUpOrDeliveryModifierOptions::default_object()->ID;
-		}
-
+		$defaultValue = self::get_option();
 		$fields = new FieldSet();
 		$options = self::getOptionListForDropDown();
 		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', 'Pick-up / Deliver'));
@@ -63,6 +70,16 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			new FormAction_WithoutLabel('processOrderModifier', 'Update Pickup / Delivery Option')
 		);
 		return new PickUpOrDeliveryModifier_Form($controller, 'ModifierForm', $fields, $actions, $validator);
+	}
+
+	private static function get_option() {
+		$order = ShoppingCart::current_order();
+		$modifiers = $order->Modifiers();
+		foreach($modifiers as $modifier) {
+			if (get_class($modifier) == 'PickUpOrDeliveryModifier') {
+				return $modifier->getOption();
+			}
+		}
 	}
 
 	private static function getOptionListForDropDown() {

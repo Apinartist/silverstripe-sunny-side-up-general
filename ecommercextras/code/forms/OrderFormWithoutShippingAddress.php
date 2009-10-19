@@ -45,7 +45,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
 		}
 		//replace field for address
-		$this->fields->dataFieldByName("City")->setRightTitle("GO HOME");
 
 		foreach($this->fields->dataFields() as $i => $child) {
 			if(is_object($child)){

@@ -25,6 +25,11 @@ class AjaxOrder extends DataObjectDecorator {
 		self::$in_cart_text = $v;
 	}
 
+	public static function include_basic_module_requirements() {
+		Requirements::block("ecommerce/javascript/ecommerce.js");
+		Requirements::themedCSS("EcommerceXtras");
+	}
+
 	public static function set_confirm_delete_text($v) {
 		self::$confirm_delete_text = $v;
 	}
@@ -58,9 +63,8 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 
 	function addAjaxLinkRequirements() {
+		self::include_basic_module_requirements();
 		if(!self::$added_ajax_links) {
-			Requirements::block("ecommerce/javascript/ecommerce.js");
-			Requirements::themedCSS("EcommerceXtras");
 			if($this->IsCheckoutPage()) {
 				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 			}

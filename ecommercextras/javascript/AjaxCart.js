@@ -15,7 +15,7 @@ var AjaxCart = {
 
 	LoadingText: "updating cart ... ",
 
-	LoadingClass: "loading ... ",
+	LoadingClass: "loading",
 
 	InCartText: "In Cart",
 

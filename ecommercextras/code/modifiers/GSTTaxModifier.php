@@ -21,59 +21,33 @@ class GSTTaxModifier extends TaxModifier {
 		'Rate' => 'Double',
 		'TableValue' => 'Double',
 		'Name' => 'Text',
-		'TaxType' => "Enum('Exclusive,Inclusive')",
+		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
 		'DebugString' => 'HTMLText'
 	);
 
-	protected static $names_by_country = array("NZ" => "GST");
+	protected static $default_country_code = "NZ";
+		static function set_default_country_code($v) {self::$default_country_code = $v;}
 
-	protected static $rates_by_country = array("NZ" => 0.125);
-
-	protected static $excl_by_country = array("NZ" => "Inclusive");
-
-	protected static $default_is_exclusive = false;
-
-	protected static $default_rate = 0.125;
-
-	protected static $default_name = "Goods and Services Tax (GST)";
-
-	protected static $exclusive_explanation = " (excluded from the above price) ";
+	protected static $exclusive_explanation = " (added to the above price) ";
+		static function set_exclusive_explanation($v) {self::$exclusive_explanation = $v;}
 
 	protected static $inclusive_explanation = " (included in the above price) ";
+		static function set_inclusive_explanation($v) {self::$inclusive_explanation = $v;}
 
 	protected static $based_on_country_note = " - based on a sale to: ";
+		static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
+
+	protected static $no_tax_description = "tax-exempt";
+		static function set_no_tax_description($v) {self::$no_tax_description = $v;}
 
 	private static $current_country_code = "";
 
+
+
+
+
+
 //-------------------------------------------------------------------- *** static functions
-
-	/**
-	 * Set the tax information for a particular country.
-	 * By default, no tax is charged.
-	 *
-	 * @param $country string The two-letter country code
-	 * @param $rate float The tax rate, eg, 0.125 = 12.5%
-	 * @param $name string The name to give to the tax, eg, "GST"
-	 * @param $inclexcl string "inclusive" if the prices are tax-inclusive.
-	 * 						"exclusive" if tax should be added to the order total.
-	 */
-
-	static function set_for_country($country = "NZ", $rate = 0.125, $name = "GST", $inclexcl = "Inclusive", $PriceSuffix = "") {
-		self::$names_by_country[$country] = $name;
-		self::$rates_by_country[$country] = $rate;
-		switch($inclexcl) {
-			case 'Inclusive' || 'inclusive' : self::$excl_by_country[$country] = false; break;
-			case 'Exclusive' || 'exclusive' : self::$excl_by_country[$country] = true; break;
-			default: user_error("GSTTaxModifier::set_for_country - bad argument '$inclexcl' for \$inclexl.  Must be 'Inclusive' or 'Exclusive'.", E_USER_ERROR);
-		}
-	}
-
-	static function set_default_is_exclusive($boolean) {self::$default_is_exclusive = $boolean;}
-	static function set_default_rate($v) {self::$default_rate = $v;}
-	static function set_default_name($v) {self::$default_name = $v;}
-	static function set_exclusive_explanation($v) {self::$exclusive_explanation = $v;}
-	static function set_inclusive_explanation($v) {self::$inclusive_explanation = $v;}
-	static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
 
 	static function override_country($countryCode) {
 		self::$current_country_code = $countryCode;
@@ -81,6 +55,7 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 // -------------------------------------------------------------------- *** internal variables
+
 	protected $debugMessage = '';
 
 // -------------------------------------------------------------------- *** display functions
@@ -98,11 +73,11 @@ class GSTTaxModifier extends TaxModifier {
 	*/
 	protected function LiveIsExclusive() {
 		$countryCode = $this->LiveCountry();
-		if(isset(self::$excl_by_country[$countryCode])) {
-			return self::$excl_by_country[$countryCode];
+		if($obj = $this->LiveTaxObject()) {
+			$obj->InclusiveOrExclusive;
 		}
 		else {
-			return self::$default_is_exclusive;
+			return false;
 		}
 	}
 
@@ -110,29 +85,43 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveCountry() {
 		if($fixeCode = Session::get("GSTTaxModifier_CountryCode")) {
+			die("session");
 			self::$current_country_code = $fixeCode;
 		}
 		if(!self::$current_country_code) {
-			self::$current_country_code = EcommerceRole::findCountry();
+			self::$current_country_code = parent::LiveCountry();
 			if(!self::$current_country_code) {
-				self::$current_country_code = current(array_keys(self::$names_by_country));
+				self::$current_country_code = ShoppingCart::get_country();
+				if(!self::$current_country_code)
+				self::$current_country_code	 = self::$default_country_code;
 			}
 		}
+		$this->debugMessage = "<hr />Live Country Code: ".self::$current_country_code;
 		return self::$current_country_code;
+	}
+
+	function LiveTaxObject() {
+		if($countryCode = $this->LiveCountry()) {
+			$this->debugMessage = "<hr />There is a current live tax object";
+			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
+		}
+		else {
+			$this->debugMessage = "There is no current live tax object";
+		}
 	}
 
 //--------------------------------------------------------------------*** rates functions
 
 	protected function LiveRate() {
-		$countryCode = $this->LiveCountry();
-		$this->debugMessage .= "<hr />country code: ".$countryCode;
-		if(isset(self::$rates_by_country[$countryCode])) {
-			$this->debugMessage .= "<hr />using rate: ".self::$rates_by_country[$countryCode];
-			return self::$rates_by_country[$countryCode];
+		$taxObject = $this->LiveTaxObject();
+
+		if($taxObject) {
+			$this->debugMessage .= "<hr />using rate: ".$taxObject->Rate;
+			return $taxObject->Rate;
 		}
 		else {
-			$this->debugMessage .= "<hr />using default rate: ".self::$default_rate;
-			return self::$default_rate;
+			$this->debugMessage .= "<hr />no rate found: ";
+			return 0;
 		}
 	}
 
@@ -163,31 +152,40 @@ class GSTTaxModifier extends TaxModifier {
 //-------------------------------------------------------------------- *** title function
 
 	protected function LiveName() {
-		$countryCode = $this->LiveCountry();
-		$rate = $this->Rate();
 		$start = '';
 		$name = '';
 		$end = '';
-		if(isset(self::$names_by_country[$countryCode])) {
-			$name = self::$names_by_country[$countryCode];
+		$taxObject = $this->LiveTaxObject();
+		if($taxObject) {
+			$name = $taxObject->Name;
+			if($rate = $this->Rate()) {
+				$startString = number_format($this->Rate() * 100, 2) . '% ';
+			}
+			if( $this->IsExclusive()) {
+				$endString = self::$exclusive_explanation;
+			}
+			else {
+				$endString = self::$inclusive_explanation;
+			}
+			$countryName = Geoip::countryCode2name($taxObject->CountryCode);
+			if(self::$based_on_country_note && $countryName) {
+				$endString .= self::$based_on_country_note.$countryName;
+			}
+			if(isset($_REQUEST["debug"])) {
+				echo $this->debugMessage;
+			}
+			if($name && $rate) {
+				$value = $startString.$name.$endString;
+			}
 		}
 		else {
-			$name = self::$default_name;
+			$value = self::$no_tax_description;
+			$countryName = Geoip::countryCode2name($this->LiveCountry());
+			if(self::$based_on_country_note && $countryName) {
+				$value .= self::$based_on_country_note.$countryName;
+			}
 		}
-		if($rate) {
-			$start = number_format($this->Rate() * 100, 2) . '% ';
-		}
-		if( $this->IsExclusive() || ! $rate) {
-			$end = self::$exclusive_explanation;
-		}
-		else {
-			$end = self::$inclusive_explanation;
-		}
-		$countryName = Geoip::countryCode2name($countryCode);
-		if(self::$based_on_country_note && $countryName) {
-			$end .= self::$based_on_country_note.Geoip::countryCode2name($countryCode);
-		}
-		return $start.$name.$end;
+		return $value;
 	}
 
 
@@ -222,8 +220,7 @@ class GSTTaxModifier extends TaxModifier {
 
 // ajax  NEED TO OVERRIDE THE STANDARD ONE..
 	function updateForAjax(array &$js) {
-		$amount = $this->Charge();
-		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $amount);
+		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $this->Charge());
 		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
 		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
 	}

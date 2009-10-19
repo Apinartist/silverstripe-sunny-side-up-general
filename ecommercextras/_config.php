@@ -26,6 +26,7 @@
 
 // *** PICK UP OR DELIVERY
 // can set one or more pickup options.
+//NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
 
 // *** RECOMMENDED PROCUCTS
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");
@@ -38,9 +39,11 @@
 //BonusProductModifier::set_bonus_price(0);
 
 // *** GST TAX MODIFIER
-//GSTTaxModifier::set_for_country($country = "NZ", $rate = "12.5", $name = "GST", $inclexcl = "inclusive");
-//GSTTaxModifier::set_default_rate(0);
-//GSTTaxModifier::set_default_is_exclusive(0);
+//GSTTaxModifier::set_default_country_code("NZ");
+//GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
+//GSTTaxModifier::set_inclusive_explanation(" (included in prices above)");
+//GSTTaxModifier::set_based_on_country_note(" - based on a sale to: ");
+//GSTTaxModifier::set_no_tax_description("tax-exempt");
 
 // *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
