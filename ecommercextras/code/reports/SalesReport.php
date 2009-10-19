@@ -7,6 +7,8 @@ class SalesReport extends SSReport {
 
 	protected $title = 'All orders';
 
+	protected static $sales_array = array();
+
 	protected $description = 'Show all orders in the system.';
 
 	/**
@@ -77,33 +79,37 @@ class SalesReport extends SSReport {
 	}
 
 	protected function statistic($type) {
-		$data = $this->getCustomQuery()->execute();
-		if($data) {
-			$array = array();
-			foreach($data as $row) {
-				$obj = DataObject::get_by_id("Order", $row["ID"]);
-				$array[] = $obj->Total;
+		if(!count(self::$sales_array)) {
+			$data = $this->getCustomQuery()->execute();
+			if($data) {
+				$array = array();
+				foreach($data as $row) {
+					$obj = DataObject::get_by_id("Order", $row["ID"]);
+					$self::$sales_array[] = $obj->Total;
+				}
 			}
+		}
+		if(count(self::$sales_array)) {
 			switch($type) {
 				case "sum":
-					return array_sum($array);
+					return array_sum(self::$sales_array);
 					break;
 				case "avg":
-					return array_sum($array) / count($array);
+					return array_sum(self::$sales_array) / count(self::$sales_array);
 					break;
 				case "min":
 					asort($array);
-					foreach($array as $item) {return $item;}
+					foreach(self::$sales_array as $item) {return $item;}
 					break;
 				case "max":
 					arsort($array);
-					foreach($array as $item) {return $item;}
+					foreach(self::$sales_array as $item) {return $item;}
 					break;
 				default:
 					user_error("Wrong statistic type speficied in SalesReport::statistic", E_USER_ERROR);
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	function processform() {
