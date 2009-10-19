@@ -92,6 +92,9 @@ class SalesReport extends SSReport {
 		}
 		if(count(self::$sales_array)) {
 			switch($type) {
+				case "count":
+					return count(self::$sales_array);
+					break;
 				case "sum":
 					return array_sum(self::$sales_array);
 					break;

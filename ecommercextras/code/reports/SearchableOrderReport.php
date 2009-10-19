@@ -22,6 +22,7 @@ class SearchableOrderReport extends SalesReport {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$stats[] = "Count: ".$this->currencyFormat($this->statistic("count"));
 		$stats[] = "Sum: ".$this->currencyFormat($this->statistic("sum"));
 		$stats[] = "Avg: ".$this->currencyFormat($this->statistic("avg"));
 		$stats[] = "Min: ".$this->currencyFormat($this->statistic("min"));
