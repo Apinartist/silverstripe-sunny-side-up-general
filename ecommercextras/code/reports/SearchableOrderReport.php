@@ -92,16 +92,12 @@ class SearchableOrderReport extends SalesReport {
 						}
 						break;
 					case "HasMinimumPayment":
-						if($value) {
-							$subWhere[] = ' `RealPayments` > '.$value;
-							$humanWhere[] = ' Real Payment of at least '.$this->currencyFormat($value);
-						}
+						$where[] = ' `RealPayments` > '.intval($value);
+						$humanWhere[] = ' Real Payment of at least '.$this->currencyFormat($value);
 						break;
 					case "HasMaximumPayment":
-						if($value) {
-							$subWhere[] = ' `RealPayments` < '.$value;
-							$humanWhere[] = ' Real Payment of no more than '.$this->currencyFormat($value);
-						}
+						$where[] = ' `RealPayments` < '.intval($value);
+						$humanWhere[] = ' Real Payment of no more than '.$this->currencyFormat($value);
 						break;
 					default:
 					 break;
