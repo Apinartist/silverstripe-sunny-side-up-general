@@ -42,7 +42,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"MinimumOrderAmountForZeroRate" => "Minimum for 0 rate (i.e. if the total order is over ... then there is no fee for this option)",
 		"WeightMultiplier" => "WeightMultiplier per kg. (works out weight of order (make sure products have weight) and multiplies with this number to work out charge for this option)",
 		"Percentage" => "Percentage of total order cost as charge for this option",
-		"FixedCost" =>  "This option has a fixed cost (e.g. always $10)"
+		"FixedCost" =>  "This option has a fixed cost (e.g. always 10 dollars)"
 	);
 
 	public static $defaults = array(
