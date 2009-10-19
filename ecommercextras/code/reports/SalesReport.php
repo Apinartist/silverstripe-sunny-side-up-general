@@ -76,6 +76,36 @@ class SalesReport extends SSReport {
 		}
 	}
 
+	protected function statistic($type) {
+		$data = $this->getCustomQuery();
+		if($data) {
+			$array = array();
+			foreach($data as $row) {
+				print_r($row);
+				$array[] = $row["Amount"];
+			}
+			switch($type) {
+				case "sum":
+					return array_sum($array);
+					break;
+				case "avg":
+					return array_sum($array) / count($array);
+					break;
+				case "min":
+					asort($array);
+					foreach($array as $item) {return $item;}
+					break;
+				case "max":
+					arsort($array);
+					foreach($array as $item) {return $item;}
+					break;
+				default:
+					user_error("Wrong statistic type speficied in SalesReport::statistic", E_USER_ERROR);
+			}
+		}
+		return 0;
+	}
+
 	function processform() {
 		if("SalesReport" == $this->class) {
 			user_error('Please implement processform() on ' . $this->class, E_USER_ERROR);

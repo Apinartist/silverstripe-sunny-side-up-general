@@ -22,6 +22,11 @@ class SearchableOrderReport extends SalesReport {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$stats[] = "Sum: ".$this->currencyFormat($this->statistic("sum"));
+		$stats[] = "Avg: ".$this->currencyFormat($this->statistic("avg"));
+		$stats[] = "Min: ".$this->currencyFormat($this->statistic("min"));
+		$stats[] = "Max: ".$this->currencyFormat($this->statistic("max"));
+		$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
 			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
@@ -29,7 +34,8 @@ class SearchableOrderReport extends SalesReport {
 		}
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", singleton('Order')->dbObject('Status')->enumValues(true)));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
-		$fields->addFieldToTab("Root.Search", new CalendarDateField("Before", "Before..."));
+		$fields->addFieldToTab("Root.Search", new CalendarDateField("From", "From..."));
+		$fields->addFieldToTab("Root.Search", new CalendarDateField("Until", "Until..."));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
@@ -48,11 +54,17 @@ class SearchableOrderReport extends SalesReport {
 						$where[] = ' `Order`.`ID` = '.intval($value);
 						$humanWhere[] = ' OrderID equals '.intval($value);
 						break;
-					case "Before":
+					case "From":
 						$d = new Date("date");
 						$d->setValue($value);
-						$where[] = ' `Order`.`Created` < "'.$d->format("Y-m-d").'"';
-						$humanWhere[] = ' Order before '.$d->long();
+						$where[] = ' `Order`.`Created` <= "'.$d->format("Y-m-d").'"';
+						$humanWhere[] = ' Order after or on '.$d->long();
+						break;
+					case "Until":
+						$d = new Date("date");
+						$d->setValue($value);
+						$where[] = ' `Order`.`Created` >= "'.$d->format("Y-m-d").'"';
+						$humanWhere[] = ' Order before or on '.$d->long();
 						break;
 					case "Email":
 						$where[] = ' `Member`.`Email` = "'.$value.'"';
@@ -89,8 +101,10 @@ class SearchableOrderReport extends SalesReport {
 		return $query;
 	}
 
-	function filterDescription() {
-
+	protected function currencyFormat($v) {
+		$c = new Currency("date");
+		$c->setValue($v);
+		return $c->Nice();
 	}
 
 }
