@@ -40,6 +40,8 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
+		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
+		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
 		return $fields;
 	}
@@ -87,6 +89,18 @@ class SearchableOrderReport extends SalesReport {
 						}
 						if(count($subWhere)) {
 							$where[] = implode(" OR ", $subWhere);
+						}
+						break;
+					case "HasMinimumPayment":
+						if($value) {
+							$subWhere[] = ' `RealPayments` > '.$value;
+							$humanWhere[] = ' Real Payment of at least '.$this->currencyFormat($value);
+						}
+						break;
+					case "HasMaximumPayment":
+						if($value) {
+							$subWhere[] = ' `RealPayments` < '.$value;
+							$humanWhere[] = ' Real Payment of no more than '.$this->currencyFormat($value);
 						}
 						break;
 					default:
