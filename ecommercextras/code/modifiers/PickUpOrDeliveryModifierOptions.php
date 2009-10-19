@@ -120,6 +120,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 				"`Checked` DESC, `Name` ASC"
 			);
 			$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
+			$field->Actions = array();
 			$field->setPageSize(250);
 		}
 		return $field;
