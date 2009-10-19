@@ -77,12 +77,12 @@ class SalesReport extends SSReport {
 	}
 
 	protected function statistic($type) {
-		$data = $this->getCustomQuery();
+		$data = $this->getCustomQuery()->execute();
 		if($data) {
 			$array = array();
 			foreach($data as $row) {
 				print_r($row);
-				$array[] = $row["Amount"];
+				$array[] = $row->Amount;
 			}
 			switch($type) {
 				case "sum":
