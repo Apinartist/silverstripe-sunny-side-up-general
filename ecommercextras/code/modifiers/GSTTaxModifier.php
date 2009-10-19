@@ -167,25 +167,25 @@ class GSTTaxModifier extends TaxModifier {
 			else {
 				$endString = self::$inclusive_explanation;
 			}
-			$countryName = Geoip::countryCode2name($taxObject->CountryCode);
-			if(self::$based_on_country_note && $countryName) {
-				$endString .= self::$based_on_country_note.$countryName;
-			}
+			$countryCode = $taxObject->CountryCode;
 			if(isset($_REQUEST["debug"])) {
 				echo $this->debugMessage;
 			}
 			if($name && $rate) {
-				$value = $startString.$name.$endString;
+				$finalString = $startString.$name.$endString;
 			}
 		}
 		else {
-			$value = self::$no_tax_description;
-			$countryName = Geoip::countryCode2name($this->LiveCountry());
-			if(self::$based_on_country_note && $countryName) {
-				$value .= self::$based_on_country_note.$countryName;
+			$finalString = self::$no_tax_description;
+			$countryCode = $this->LiveCountry();
+		}
+		if($countryCode && $finalString) {
+			$countryName = Geoip::countryCode2name();
+			if(self::$based_on_country_note && $countryName  && $countryCode != self::$default_country_code) {
+				$finalString .= self::$based_on_country_note.$countryName;
 			}
 		}
-		return $value;
+		return $finalString;
 	}
 
 
