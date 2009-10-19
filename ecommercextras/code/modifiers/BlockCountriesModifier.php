@@ -11,14 +11,14 @@
  * it checks for the function first and then does the variable
  */
 
-class ModifierRulesModifier extends OrderModifier {
+class BlockCountriesModifier extends OrderModifier {
 
 // --------------------------------------------------------------------*** static variables
 
 	public static $db = array(
+		"Error" => "Boolean",
+		"CountryCode" => "Varchar(2)"
 	);
-
-	protected static $rule_array = array();
 
 	protected static $must_include_country_codes = array();
 		static function set_must_include_country_codes(array $array) {self::$must_include_country_codes = $array;}
@@ -45,29 +45,33 @@ class ModifierRulesModifier extends OrderModifier {
 
 
 
+//--------------------------------------------------------------------*** variables
+	protected $messsage = '';
 //--------------------------------------------------------------------*** display functions
+
 	function CanRemove() {
 		return false;
 	}
 
 	function ShowInTable() {
-		return false;
+		$this->checkCountry();
+		return $this->Error;
 	}
 
 // -------------------------------------------------------------------- *** table values
 	function LiveAmount() {
 		$this->checkCountry();
-		return 9999999999;
+		return 0;
 	}
 
 	function TableValue() {
-		return "";
+		return 0;
 	}
 
 
 //--------------------------------------------------------------------*** table titles
 	function LiveName() {
-		return "";
+ 		$this->messsage;
 	}
 
 	function Name() {
@@ -102,10 +106,19 @@ class ModifierRulesModifier extends OrderModifier {
 			}
 		}
 		if($stop) {
-
+			$this->Error = 1;
+			$this->CountryCode = $countryCode;
+			$this->message = self::$sorry_message_start.Geoip::countryCode2name($countryCode).self::$sorry_message_end;
 		}
 	}
 
+	function onBeforeWrite() {
+		$this->checkCountry();
+		if($this->Error) {
+			die($this->message);
+		}
+		parent::onBeforeWrite();
+	}
 
 
 
