@@ -60,7 +60,7 @@ class SalesReport extends SSReport {
 			'export',
 			'delete',
 		));
-
+		$table->setPageSize(250);
 		return $table;
 	}
 
@@ -81,8 +81,8 @@ class SalesReport extends SSReport {
 		if($data) {
 			$array = array();
 			foreach($data as $row) {
-				print_r($row);
-				$array[] = $row->Amount;
+				$obj = DataObject::get_by_id("Order", $array{"ID"]);
+				$array[] = $obj->Total;
 			}
 			switch($type) {
 				case "sum":
