@@ -180,7 +180,7 @@ class GSTTaxModifier extends TaxModifier {
 			$countryCode = $this->LiveCountry();
 		}
 		if($countryCode && $finalString) {
-			$countryName = Geoip::countryCode2name();
+			$countryName = Geoip::countryCode2name($countryCode);
 			if(self::$based_on_country_note && $countryName  && $countryCode != self::$default_country_code) {
 				$finalString .= self::$based_on_country_note.$countryName;
 			}
