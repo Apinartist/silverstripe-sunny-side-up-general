@@ -105,22 +105,18 @@ class SearchableOrderReport extends SalesReport {
 				}
 			}
 		}
-		Session::set("SearchableOrderReport.having", $having);
-		Session::set("SearchableOrderReport.where",$where);
+		Session::set("SearchableOrderReport.having", implode(" AND ", $having));
+		Session::set("SearchableOrderReport.where",implode(" AND", $where));
 		Session::set("SearchableOrderReport.humanWhere", implode(", ", $humanWhere));
 		return "ok";
 	}
 
 	function getCustomQuery() {
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
-		$query = singleton('Order')->buildSQL(implode(" AND ",Session::get("SearchableOrderReport.where")), '`Order`.`Created` DESC', "", $join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`");
+		$query = singleton('Order')->buildSQL(Session::get("SearchableOrderReport.where"), '`Order`.`Created` DESC', "", $join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`");
 		$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
-		if($havingArray = Session::set("SearchableOrderReport.having")) {
-			if(is_array($havingArray) && count($havingArray)) {
-				foreach($havingArray as $having) {
-					$query->having($having);
-				}
-			}
+		if($having = Session::set("SearchableOrderReport.having")) {
+			$query->having($having);
 		}
 		$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
 		return $query;
