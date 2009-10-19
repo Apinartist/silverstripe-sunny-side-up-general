@@ -84,9 +84,7 @@ class SalesReport extends SSReport {
 			if($data) {
 				$array = array();
 				foreach($data as $row) {
-					print_r($data);
-					$obj = DataObject::get_by_id("Order", $row["ID"]);
-					self::$sales_array[] = $obj->totalPayment;
+					self::$sales_array[] = $row["RealPayments"];
 				}
 			}
 		}
@@ -99,11 +97,11 @@ class SalesReport extends SSReport {
 					return array_sum(self::$sales_array) / count(self::$sales_array);
 					break;
 				case "min":
-					asort($array);
+					asort(self::$sales_array);
 					foreach(self::$sales_array as $item) {return $item;}
 					break;
 				case "max":
-					arsort($array);
+					arsort(self::$sales_array);
 					foreach(self::$sales_array as $item) {return $item;}
 					break;
 				default:
