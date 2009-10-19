@@ -89,7 +89,7 @@ class SearchableOrderReport extends SalesReport {
 				}
 			}
 		}
-		Session::set("SearchableOrderReport.where", implode(" OR ", $where));
+		Session::set("SearchableOrderReport.where", implode(" AND ", $where));
 		Session::set("SearchableOrderReport.humanWhere", implode(", ", $humanWhere));
 		return "ok";
 	}
