@@ -84,7 +84,9 @@ class SalesReport extends SSReport {
 			if($data) {
 				$array = array();
 				foreach($data as $row) {
-					self::$sales_array[] = $row["RealPayments"];
+					if($row["RealPayments"]) {
+						self::$sales_array[] = $row["RealPayments"];
+					}
 				}
 			}
 		}
