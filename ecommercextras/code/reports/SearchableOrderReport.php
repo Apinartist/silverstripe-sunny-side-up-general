@@ -27,7 +27,7 @@ class SearchableOrderReport extends SalesReport {
 		$stats[] = "Avg: ".$this->currencyFormat($this->statistic("avg"));
 		$stats[] = "Min: ".$this->currencyFormat($this->statistic("min"));
 		$stats[] = "Max: ".$this->currencyFormat($this->statistic("max"));
-		$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
+		$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<h2>Payment Statistics</h2><ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
 			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
