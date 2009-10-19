@@ -81,7 +81,7 @@ class SalesReport extends SSReport {
 		if($data) {
 			$array = array();
 			foreach($data as $row) {
-				$obj = DataObject::get_by_id("Order", $array["ID"]);
+				$obj = DataObject::get_by_id("Order", $row["ID"]);
 				$array[] = $obj->Total;
 			}
 			switch($type) {
