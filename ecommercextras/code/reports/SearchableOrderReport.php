@@ -79,9 +79,13 @@ class SearchableOrderReport extends SalesReport {
 						$humanWhere[] = ' Customer Surname equals "'.$value.'"';
 						break;
 					case "Status":
+						$subWhere = array();
 						foreach($value as $item) {
-							$where[] = ' `Order`.`Status` = "'.$item.'"';
+							$subWhere[] = ' `Order`.`Status` = "'.$item.'"';
 							$humanWhere[] = ' Order Status equals "'.$item.'"';
+						}
+						if(count($subWhere)) {
+							$where[] = implode(" OR ", $subWhere);
 						}
 						break;
 					default:
