@@ -84,8 +84,9 @@ class SalesReport extends SSReport {
 			if($data) {
 				$array = array();
 				foreach($data as $row) {
+					print_r($data);
 					$obj = DataObject::get_by_id("Order", $row["ID"]);
-					$self::$sales_array[] = $obj->Total;
+					self::$sales_array[] = $obj->totalPayment;
 				}
 			}
 		}
