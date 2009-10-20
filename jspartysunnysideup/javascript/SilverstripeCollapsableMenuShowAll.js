@@ -93,7 +93,7 @@ jQuery.extend({
 						if (addShowAllLink) {
 							var name = jQuery(this).children("a").text();
 							var link = jQuery(this).children("a").attr("href");
-							jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
+							//jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
 						}
 					}
 					if(!jQuery(this).hasClass(jQuery.SilverstripeCollapsableMenu.Level1Class) && !jQuery(this).hasClass("section")  && !jQuery(this).hasClass("current") && !jQuery(this).parent("ul").hasClass(jQuery.SilverstripeCollapsableMenu.currentULClass)) {
