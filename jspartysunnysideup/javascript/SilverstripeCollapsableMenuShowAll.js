@@ -91,8 +91,8 @@ jQuery.extend({
 
 						}
 						if (addShowAllLink) {
-							var name = jQuery(this).children("a").text();
-							var link = jQuery(this).children("a").attr("href");
+							//var name = jQuery(this).children("a").text();
+							//var link = jQuery(this).children("a").attr("href");
 							//jQuery(this).children("ul").prepend('<li><a href="' + link + '" class="SCMAllLink">'+jQuery.SilverstripeCollapsableMenu.allLinkPrepend + name + jQuery.SilverstripeCollapsableMenu.allLinkAppend+'</a></li>');
 						}
 					}
