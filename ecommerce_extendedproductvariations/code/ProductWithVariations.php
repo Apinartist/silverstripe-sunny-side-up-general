@@ -36,7 +36,7 @@ class ProductWithVariations extends Product {
 		$singleton = singleton('ExtendedProductVariation');
 		$query = $singleton->buildVersionSQL("`ProductID` = '{$this->ID}'");
 		$variations = $singleton->buildDataObjectSet($query->execute());
-		$filter = $variations ? "`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ID` < '0'";
+		$filter = $variations ? "`ExtendedProductVariation`.`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ExtendedProductVariation`.`ID` < '0'";
 		//$filter = "`ProductID` = '{$this->ID}'";
 
 		$tableField = new HasManyComplexTableField(
@@ -72,7 +72,7 @@ class ProductWithVariations extends Product {
 
 }
 
-class ProductWithVariations extends Product_Controller {
+class ProductWithVariations_Controller extends Product_Controller {
 
 	function init() {
 		parent::init();
