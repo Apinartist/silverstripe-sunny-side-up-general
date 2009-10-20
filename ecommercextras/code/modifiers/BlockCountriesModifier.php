@@ -24,13 +24,13 @@ class BlockCountriesModifier extends OrderModifier {
 	protected static $must_not_country_codes = array();
 		static function set_must_not_country_codes(array $array) {self::$must_not_country_codes = $array;}
 
-	protected static $sorry_message_start = "Sorry, but sales to"
+	protected static $sorry_message_start = "Sorry, but sales to";
 		static function set_sorry_message_start($string) {self::$sorry_message_start = $string;}
 
-	protected static $sorry_message_end = "are not available."
-		static function set_sorry_message_start($string) {self::$sorry_message_start = $string;}
+	protected static $sorry_message_end = "are not available.";
+		static function set_sorry_message_end($string) {self::$sorry_message_start = $string;}
 
-	protected static $your_country_description_default = "your country"
+	protected static $your_country_description_default = "your country";
 		static function set_your_country_description_default($string) {self::$your_country_description_default = $string;}
 
 // --------------------------------------------------------------------*** static functions

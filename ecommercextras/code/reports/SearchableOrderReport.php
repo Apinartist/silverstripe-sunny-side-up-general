@@ -41,7 +41,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
-		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Minimum Payment of ..."));
+		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
 		return $fields;
 	}
