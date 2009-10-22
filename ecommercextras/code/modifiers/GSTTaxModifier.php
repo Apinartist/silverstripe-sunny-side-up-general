@@ -85,7 +85,6 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveCountry() {
 		if($fixeCode = Session::get("GSTTaxModifier_CountryCode")) {
-			die("session");
 			self::$current_country_code = $fixeCode;
 		}
 		if(!self::$current_country_code) {
