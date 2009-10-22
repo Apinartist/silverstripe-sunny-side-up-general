@@ -66,7 +66,7 @@
 			);
 		},
 
-		initiateStatusUpdates() {
+		initiateStatusUpdates: function() {
 			$(".statusDropdownChange").each(
 				function() {
 					var defaultValue = $(this).text();
