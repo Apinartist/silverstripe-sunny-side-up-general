@@ -23,6 +23,7 @@
 
 		init: function() {
 			SalesReport.initiatePopUps();
+			SalesReport.initiateStatusUpdates();
 			var options = {
 				beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
 				success: SalesReport.showResponse,  // post-submit callback
@@ -66,16 +67,26 @@
 		},
 
 		initiateStatusUpdates() {
-			var $("TEMPStatus select").html();
 			$(".statusDropdownChange").each(
 				function() {
-
-
+					var defaultValue = $(this).text();
+					var id = $(this).attr("rel");
+					var html = '<select name="statusUpdate" onchange="SalesReport.updateStatusDropdown('+id+')" >';
+					for(i=0;i<SalesReport.dropdownStatusArray.length;i++){
+						var selected = '';
+						if(defaultValue == SalesReport.dropdownStatusArray[i]) {
+							selected = ' selected="selected"';
+						}
+						html += '<option value="'+SalesReport.dropdownStatusArray[i]+'"'+selected+'>'+SalesReport.dropdownStatusArray[i]+'</option>';
+					}
+					html += '</select>';
+					$(this).html(html);
 				}
 			);
+		},
 
-
-
+		updateStatusDropdown: function(id) {
+			alert(id);
 		}
 	}
 
