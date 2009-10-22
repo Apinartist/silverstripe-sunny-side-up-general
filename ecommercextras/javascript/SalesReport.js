@@ -19,6 +19,7 @@
 
 		loadingClass: "loading",
 
+		dropdownStatusArray: new Array(),
 
 		init: function() {
 			SalesReport.initiatePopUps();
@@ -62,6 +63,18 @@
 					return false;
 				}
 			);
+		},
+		initiateStatusUpdates() {
+			var $("TEMPStatus select").html();
+			$(".statusDropdownChange").each(
+				function() {
+
+
+				}
+			);
+
+
+
 		}
 	}
 
