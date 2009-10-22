@@ -27,7 +27,13 @@ var SalesReport = {
 
 	init: function() {
 		SalesReport.initiatePopUps();
-		SalesReport.initiateStatusUpdates();
+		$('.statusDropdownChange').livequery(
+			'click',
+			function(event) {
+				SalesReport.initiateStatusUpdates();
+        return false;
+    	}
+		);
 		var options = {
 			beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
 			success: SalesReport.showResponse,  // post-submit callback
