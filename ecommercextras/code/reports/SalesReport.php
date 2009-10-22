@@ -160,7 +160,7 @@ class SalesReport_Handler extends Controller {
 				$order->write();
 				$orderlog = new OrderStatusLog();
 				$orderlog->OrderID = $order->ID;
-				$orderLog->Status "Status changed from ".$oldStatus." to ".$newStatus.".";
+				$orderLog->Status = "Status changed from ".$oldStatus." to ".$newStatus.".";
 				$orderlog->write();
 			}
 			else {
