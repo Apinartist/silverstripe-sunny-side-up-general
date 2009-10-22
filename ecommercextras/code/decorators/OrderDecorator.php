@@ -13,15 +13,7 @@ class OrderDecorator extends DataObjectDecorator {
 		);
 	}
 
-	function getMemberSummary() {
-		return "A".$this->_MemberSummary();
-	}
-
 	function MemberSummary() {
-		return "B".$this->_MemberSummary();
-	}
-
-	function _MemberSummary() {
 		$m = $this->owner->Member();
 		if($m) {
 			return $m->FirstName.' '.$m->Surname.' ('.$m->Email.')';
