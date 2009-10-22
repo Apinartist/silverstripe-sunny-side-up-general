@@ -93,8 +93,7 @@ var SalesReport = {
 					html += '<option value="'+SalesReport.dropdownStatusArray[i]+'"'+selected+'>'+SalesReport.dropdownStatusArray[i]+'</option>';
 				}
 				html += '</select>';
-				jQuery(this).next("span").html(html);
-				jQuery(this).text("&nbsp;");
+				jQuery(this).replaceWith(html);
 			}
 		);
 	},
