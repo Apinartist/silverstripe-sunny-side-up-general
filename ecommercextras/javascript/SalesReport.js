@@ -99,12 +99,13 @@ var SalesReport = {
 	},
 
 	updateStatusDropdown: function(id) {
-		var value = jQuery("select[name='statusUpdate"+id+"']").val();
+		var myControlSelector = "select[name='statusUpdate"+id+"']"
+		var value = jQuery(myControlSelector).val();
 		jQuery.ajax({
-			url: SalesReportURL+"/setstatus/"+id+"/"+value,
+			url: SalesReportURL+"setstatus/"+id+"/"+value,
 			cache: false,
 			success: function(html){
-				jQuery(this).append(html);
+				jQuery(myControlSelector).next("span.outcome").text(html);
 			}
 		});
 
