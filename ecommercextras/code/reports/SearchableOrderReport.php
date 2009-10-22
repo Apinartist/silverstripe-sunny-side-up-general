@@ -25,7 +25,7 @@ class SearchableOrderReport extends SalesReport {
 		$list = singleton('Order')->dbObject('Status')->enumValues(true);
 		$js = '';
 		foreach($list as $row) {
-			$js .= 'SalesReport.dropdownStatusArray['.$row["ID"].'] = "'.$row["Title"].'"'
+			$js .= 'SalesReport.dropdownStatusArray['.$row["ID"].'] = "'.$row["Title"].'"';
 		}
 		Requirements::customScript($js);
 		$stats[] = "Count: ".$this->statistic("count");
