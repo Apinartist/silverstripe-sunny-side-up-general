@@ -101,11 +101,13 @@ var SalesReport = {
 	updateStatusDropdown: function(id) {
 		var myControlSelector = "select[name='statusUpdate"+id+"']"
 		var value = jQuery(myControlSelector).val();
+		jQuery(myControlSelector).next("span.outcome").text("processing").fadeIn(500);
 		jQuery.ajax({
 			url: SalesReportURL+"setstatus/"+id+"/"+value,
 			cache: false,
 			success: function(html){
 				jQuery(myControlSelector).next("span.outcome").text(html);
+				jQuery(myControlSelector).next("span.outcome").fadeOut(3000);
 			}
 		});
 
