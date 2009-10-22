@@ -48,8 +48,8 @@ class SalesReport extends SSReport {
 		// another template for viewing an Order instance
 		$table->setFieldFormatting(array(
 			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
-			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>'
-			'ChangeStatus' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>'
+			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>',
+			'ChangeStatus' => '<a href=\"SalesReport_Handler/getstatusoptions/$ID\" class=\"makeIntoPopUp\">update status</a>'
 		));
 
 		$table->setFieldCasting(array(
