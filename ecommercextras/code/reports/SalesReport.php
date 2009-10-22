@@ -36,8 +36,6 @@ class SalesReport extends SSReport {
 		$fields = Order::$table_overview_fields;
 
 		// Add some fields specific to this report
-		$fields['RealPayments'] = '';
-		$fields['TotalOutstanding'] = '';
 		$fields['Invoice'] = '';
 		$fields['PackingSlip'] = '';
 		$fields['ChangeStatus'] = '';
@@ -58,8 +56,6 @@ class SalesReport extends SSReport {
 		// Set the links to the Invoice and Print fields allowing a user to view
 		// another template for viewing an Order instance
 		$table->setFieldFormatting(array(
-			'RealPayments' => '$RealPayments',
-			'TotalOutstanding' => '$_TotalOutstanding',
 			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
 			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>',
 			'ChangeStatus' => '<a href=\"#\" class=\"statusDropdownChange\" rel=\"$ID\">$Status</a>'
