@@ -37,7 +37,7 @@ var SalesReport = {
 		var options = {
 			beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
 			success: SalesReport.showResponse,  // post-submit callback
-			url: SalesReportURL + "processform/";
+			url: SalesReportURL + "processform/"
 		};
 		jQuery('#' + SalesReport.formID).ajaxForm(options);
 	},
