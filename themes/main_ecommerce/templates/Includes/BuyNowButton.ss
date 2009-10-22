@@ -1,0 +1,1 @@
+<li class="buyNow"><a class="ajaxAdd" href="$addLinkAjax"><% if IsInCart %>In cart<% else %>Buy Now<% end_if %></a></li>
