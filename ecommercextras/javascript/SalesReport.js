@@ -86,7 +86,14 @@
 		},
 
 		updateStatusDropdown: function(id) {
-			alert(id);
+			$.ajax({
+				url: SalesReportURL+"/set/"+id,
+				cache: false,
+				success: function(html){
+					$(this).append(html);
+				}
+			});
+
 		}
 	}
 
