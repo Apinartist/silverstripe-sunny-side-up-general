@@ -49,6 +49,7 @@ class SalesReport extends SSReport {
 		$table->setFieldFormatting(array(
 			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
 			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>'
+			'ChangeStatus' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>'
 		));
 
 		$table->setFieldCasting(array(
@@ -133,6 +134,14 @@ class SalesReport_Handler extends Controller {
 		$ClassName = Director::URLParam("ID");
 		$object = new $ClassName;
 		return $object->processform();
+	}
+
+	function getstatusoptions() {
+		die("works");
+	}
+
+	function setstatusoptions() {
+
 	}
 
 }
