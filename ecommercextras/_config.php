@@ -82,7 +82,7 @@
 
 // *** REPORTS
 Director::addRules(50, array(
-	'SalesReport_Handler/$Action/$ID' => 'SalesReport_Handler',
+	'SalesReport_Handler//$Action/$ID' => 'SalesReport_Handler',
 ));
 
 //===================---------------- END ecommercextra MODULE ----------------===================
