@@ -147,7 +147,29 @@ class SalesReport_Handler extends Controller {
 
 
 	function setstatus() {
-		return "done";
+		$id = $this->urlParams['ID'];
+		if(!is_numeric($id)) {
+			return "could not update order status";
+		}
+		$order = DataObject::get_by_id('Order', $id);
+		if($order) {
+			$oldStatus = $order->Status;
+			$newStatus = $this->urlParams['OtherID'];
+			if($oldStatus != $newStatus) {
+				$order->Status = $newStatus;
+				$order->write();
+				$orderlog = new OrderStatusLog();
+				$orderlog->OrderID = $order->ID;
+				$orderLog->Status "Status changed from ".$oldStatus." to ".$newStatus.".";
+				$orderlog->write();
+			}
+			else {
+				return "no change";
+			}
+		}
+		else {
+			return "order not found";
+		}
+		return "updated successfully";
 	}
-
 }

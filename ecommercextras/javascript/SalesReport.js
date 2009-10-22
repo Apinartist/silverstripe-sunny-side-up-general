@@ -84,7 +84,7 @@ var SalesReport = {
 			function() {
 				var defaultValue = jQuery(this).text();
 				var id = jQuery(this).attr("rel");
-				var html = '<select name="statusUpdate" onchange="SalesReport.updateStatusDropdown('+id+')" >';
+				var html = '<select name="statusUpdate'+id+'" onchange="SalesReport.updateStatusDropdown('+id+')" >';
 				for(i=0;i<SalesReport.dropdownStatusArray.length;i++){
 					var selected = '';
 					if(defaultValue == SalesReport.dropdownStatusArray[i]) {
@@ -99,8 +99,9 @@ var SalesReport = {
 	},
 
 	updateStatusDropdown: function(id) {
+		var value = jQuery("select[name='statusUpdate"+id+"']").val();
 		jQuery.ajax({
-			url: SalesReportURL+"/setstatusoptions/"+id,
+			url: SalesReportURL+"/setstatus/"+id+"/"+value,
 			cache: false,
 			success: function(html){
 				jQuery(this).append(html);
