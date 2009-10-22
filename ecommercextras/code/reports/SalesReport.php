@@ -30,6 +30,7 @@ class SalesReport extends SSReport {
 		// Add some fields specific to this report
 		$fields['Invoice'] = '';
 		$fields['PackingSlip'] = '';
+		$fields['ChangeStatus'] = '';
 
 		$table = new TableListField(
 			'Orders',
