@@ -28,8 +28,7 @@ class SalesReport extends SSReport {
 		$js = '';
 		foreach($list as $key => $value) {
 			if($key && $value) {
-				$js .= '
-					SalesReport.dropdownStatusArray[] = "'.$value.'";';
+				$js .= 'SalesReport.addStatus("'.$value.'");';
 			}
 		}
 		Requirements::customScript($js);

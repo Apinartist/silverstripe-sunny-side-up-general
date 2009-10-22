@@ -32,6 +32,9 @@
 			jQuery('#' + SalesReport.formID).ajaxForm(options);
 		},
 
+		addStatus:function(v) {
+			this.dropdownStatusArray[this.dropdownStatusArray.length] = v;
+		}
 		// pre-submit callback
 		showRequest: function (formData, jqForm, options) {
 			for (var i=0; i < formData.length; i++) {
