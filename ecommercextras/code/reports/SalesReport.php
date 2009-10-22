@@ -26,6 +26,8 @@ class SalesReport extends SSReport {
 		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/processform/";', 'SalesReport_Handler');
 		$list = singleton('Order')->dbObject('Status')->enumValues(true);
 		$js = '';
+		print_r($list);
+		die("");
 		foreach($list as $row) {
 			print_r($row);
 			$js .= 'SalesReport.dropdownStatusArray['.$row["ID"].'] = "'.$row["Title"].'"';
