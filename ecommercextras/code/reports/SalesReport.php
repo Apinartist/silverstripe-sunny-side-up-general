@@ -62,7 +62,7 @@ class SalesReport extends SSReport {
 		));
 
 		$table->setFieldCasting(array(
-			'Created' => 'Date->Long',
+			'Created' => 'Date',
 			'Total' => 'Currency->Nice'
 		));
 
