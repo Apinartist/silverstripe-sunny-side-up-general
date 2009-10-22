@@ -24,6 +24,13 @@ class SalesReport extends SSReport {
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
 		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/processform/";', 'SalesReport_Handler');
+		$list = singleton('Order')->dbObject('Status')->enumValues(true);
+		$js = '';
+		foreach($list as $row) {
+			print_r($row);
+			$js .= 'SalesReport.dropdownStatusArray['.$row["ID"].'] = "'.$row["Title"].'"';
+		}
+		Requirements::customScript($js);
 		// Get the fields used for the table columns
 		$fields = Order::$table_overview_fields;
 
