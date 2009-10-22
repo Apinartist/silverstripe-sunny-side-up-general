@@ -37,7 +37,7 @@ var SalesReport = {
 		var options = {
 			beforeSubmit:  SalesReport.showRequest,  // pre-submit callback
 			success: SalesReport.showResponse,  // post-submit callback
-			url: SalesReportURL
+			url: SalesReportURL + "processform/";
 		};
 		jQuery('#' + SalesReport.formID).ajaxForm(options);
 	},
@@ -100,7 +100,7 @@ var SalesReport = {
 
 	updateStatusDropdown: function(id) {
 		jQuery.ajax({
-			url: SalesReportURL+"/set/"+id,
+			url: SalesReportURL+"/setstatusoptions/"+id,
 			cache: false,
 			success: function(html){
 				jQuery(this).append(html);

@@ -23,7 +23,7 @@ class SalesReport extends SSReport {
 		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
-		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/processform/";', 'SalesReport_Handler');
+		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/";', 'SalesReport_Handler_Base_URL');
 		$list = singleton('Order')->dbObject('Status')->enumValues(true);
 		$js = '';
 		foreach($list as $key => $value) {
@@ -31,7 +31,7 @@ class SalesReport extends SSReport {
 				$js .= 'SalesReport.addStatus("'.$value.'");';
 			}
 		}
-		Requirements::customScript($js);
+		Requirements::customScript($js, "SalesReport_Handler_OrderStatusList");
 		// Get the fields used for the table columns
 		$fields = Order::$table_overview_fields;
 
@@ -145,12 +145,9 @@ class SalesReport_Handler extends Controller {
 		return $object->processform();
 	}
 
-	function getstatusoptions() {
-		die("works");
-	}
 
-	function setstatusoptions() {
-
+	function setstatus() {
+		return "done";
 	}
 
 }
