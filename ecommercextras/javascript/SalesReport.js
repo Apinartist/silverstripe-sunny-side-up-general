@@ -64,6 +64,7 @@
 				}
 			);
 		},
+
 		initiateStatusUpdates() {
 			var $("TEMPStatus select").html();
 			$(".statusDropdownChange").each(
