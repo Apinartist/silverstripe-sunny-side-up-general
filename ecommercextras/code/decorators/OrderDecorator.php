@@ -13,6 +13,14 @@ class OrderDecorator extends DataObjectDecorator {
 		);
 	}
 
+	function getMemberSummary() {
+		return $this->_MemberSummary();
+	}
+
+	function MemberSummary() {
+		return $this->_MemberSummary();
+	}
+
 	function _MemberSummary() {
 		$m = $this->Member();
 		if($m) {
