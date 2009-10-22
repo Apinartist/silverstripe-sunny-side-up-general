@@ -27,7 +27,7 @@ var SalesReport = {
 
 	init: function() {
 		SalesReport.initiatePopUps();
-		$('.statusDropdownChange').livequery(
+		jQuery('.statusDropdownChange').livequery(
 			'click',
 			function(event) {
 				SalesReport.initiateStatusUpdates();
