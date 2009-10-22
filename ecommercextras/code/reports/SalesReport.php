@@ -58,7 +58,7 @@ class SalesReport extends SSReport {
 		$table->setFieldFormatting(array(
 			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
 			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>',
-			'ChangeStatus' => '<a href=\"#\" class=\"statusDropdownChange\" rel=\"$ID\">$Status</a><span class="outcome"></span>'
+			'ChangeStatus' => '<a href=\"#\" class=\"statusDropdownChange\" rel=\"$ID\">$Status</a><span class=\"outcome\"></span>'
 		));
 
 		$table->setFieldCasting(array(
