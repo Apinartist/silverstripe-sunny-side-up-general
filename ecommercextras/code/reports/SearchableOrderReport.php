@@ -113,10 +113,15 @@ class SearchableOrderReport extends SalesReport {
 
 	function getCustomQuery() {
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+		$where = Session::get("SearchableOrderReport.where");
+		if(trim($where)) {
+		 $where = " ( $where ) AND ";
+		}
+		$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` IS NULL)';
 		$query = singleton('Order')->buildSQL(
-			$where = Session::get("SearchableOrderReport.where").' AND (`Payment`.`Status` = "Success" OR `Payment`.`Status` IS NULL)	',
+			$where,
 			$sort = '`Order`.`Created` DESC',
-			"",
+			$limit = "",
 			$join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`"
 		);
 		$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
