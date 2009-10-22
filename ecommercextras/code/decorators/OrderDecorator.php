@@ -5,6 +5,20 @@ class OrderDecorator extends DataObjectDecorator {
  	private static $order_id_start_number = 0;
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
+	function extraStatics() {
+		return array(
+			'casting' => array(
+				'MemberSummary' => 'Text',
+			)
+		);
+	}
+
+	function _MemberSummary() {
+		$m = $this->Member();
+		if($m) {
+			return $m->FirstName.' '.$m->Surname.' ('.$m->Email.')';
+		}
+	}
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
