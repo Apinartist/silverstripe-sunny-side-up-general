@@ -14,6 +14,16 @@ Geoip::$default_country_code = "NZ";
 ContentNegotiator::disable();
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
+$protocolAndHost = Director::protocolAndHost();
+
+//===================---------------- start testemail ----------------===================
+$devsitearray = array("http://localhost");
+if(in_array($protocolAndHost, $devsitearray)) {
+	Email::set_mailer("TestMailer");
+}
+unset($devsitearray);
+unset($protocolAndHost);
+//===================---------------- end testemail ----------------===================
 
 /* CMS */
 LeftAndMain::setApplicationName("Sunny Side Up Test Website");
