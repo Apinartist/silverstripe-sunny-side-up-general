@@ -21,7 +21,8 @@ class OrderDecorator extends DataObjectDecorator {
  	private static $order_id_start_number = 0;
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
-	static function check_data_integrity_for_orders() {
+	public static function check_data_integrity_for_orders() {
+		echo "start";
 		$list = singleton('Order')->dbObject('Status')->enumValues(false);
 		print_r($list);
 		$firstOption = current($list);
