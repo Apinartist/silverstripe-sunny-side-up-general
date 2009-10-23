@@ -9,32 +9,11 @@
 
 class OrderDecorator extends DataObjectDecorator {
 
-	protected static $order_status_option_string = '';
-	protected static $order_status_option_default = '';
-	private static $has_alternative_status_options = false;
-		public static function set_alternative_status_options($optionstring, $default) {
-			die("ok");
-			self::$order_status_option_string = $optionstring;
-			self::$order_status_option_default = $default;
-			self::$has_alternative_status_options = true;
-		}
-
  	private static $order_id_start_number = 0;
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
 	public static function get_order_status_options() {
-		$newArray = array();
-		if(self::$order_status_option_string) {
-			$array = explode(",",self::$order_status_option_string);
-			if(is_array($array) && count($array)) {
-				foreach($array as $key => $value) {
-					$newArray[$value] = $value;
-				}
-			}
-		}
-		if(!count($newArray)) {
-			$newArray = singleton('Order')->dbObject('Status')->enumValues(false);
-		}
+		$newArray = singleton('Order')->dbObject('Status')->enumValues(false);
 		return $newArray;
 	}
 
@@ -50,17 +29,7 @@ class OrderDecorator extends DataObjectDecorator {
 	}
 
 	function extraStatics() {
-		$db = array();
-		if(self::$has_alternative_status_options) {
-			echo "A".self::$order_status_option_string;
-			$db['Status'] = 'Enum("'.self::$order_status_option_string.'","'.self::$order_status_option_default.'")';
-			$db['Test'] = 'Boolean';
-		}
-		else {
-			echo "B".self::$order_status_option_string;
-		}
 		return array(
-			"db" => $db,
 			'casting' => array(
 				'MemberSummary' => 'Text',
 			)
