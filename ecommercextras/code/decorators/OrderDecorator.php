@@ -22,6 +22,8 @@ class OrderDecorator extends DataObjectDecorator {
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
 	public static function get_order_status_options() {
+		print_r(singleton('Order')->dbObject('Status')->enumValues(false));
+		die();
 		if(self::$order_status_option_string) {
 			$array = explode(self::$order_status_option_string);
 			foreach($array as $key => $value) {
