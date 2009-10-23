@@ -5,7 +5,7 @@
  */
 class SalesReport extends SSReport {
 
-	protected $title = 'All orders';
+	protected $title = 'All Orders';
 
 	protected static $sales_array = array();
 
@@ -70,7 +70,6 @@ class SalesReport extends SSReport {
 			'edit',
 			'show',
 			'export',
-			'delete',
 		));
 		$table->setPageSize(250);
 		return $table;
@@ -170,6 +169,6 @@ class SalesReport_Handler extends Controller {
 		else {
 			return "order not found";
 		}
-		return "updated to".$newStatus;
+		return "updated to ".$newStatus;
 	}
 }
