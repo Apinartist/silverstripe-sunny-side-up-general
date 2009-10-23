@@ -33,7 +33,7 @@ class SalesReport extends SSReport {
 			'IP',
 			'ProxyIP',
 			'paymentID'
-		)
+		);
 		$table = new TableListField(
 			'Payments',
 			'Payment',
