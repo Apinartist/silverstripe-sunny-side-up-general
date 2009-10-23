@@ -22,9 +22,11 @@ class OrderDecorator extends DataObjectDecorator {
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
 	static function check_data_integrity_for_orders() {
-		$badOrders = DataObject::get("Order", 'Status = ""');
 		$list = singleton('Order')->dbObject('Status')->enumValues(false);
+		print_r($list);
 		$firstOption = current($list);
+		$badOrders = DataObject::get("Order", 'Status = ""');
+		print_r($badOrders);
 		foreach($badOrders as $order) {
 			$order->Status = $firstOption;
 			$order->write();
