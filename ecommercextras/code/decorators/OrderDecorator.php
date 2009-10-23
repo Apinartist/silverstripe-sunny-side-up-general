@@ -13,6 +13,7 @@ class OrderDecorator extends DataObjectDecorator {
 	protected static $order_status_option_default = '';
 	private static $has_alternative_status_options = false;
 		public static function set_alternative_status_options($optionstring, $default) {
+			die("ok");
 			self::$order_status_option_string = $optionstring;
 			self::$order_status_option_default = $default;
 			self::$has_alternative_status_options = true;
