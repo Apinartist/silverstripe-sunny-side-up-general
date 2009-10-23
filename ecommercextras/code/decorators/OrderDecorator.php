@@ -25,7 +25,7 @@ class OrderDecorator extends DataObjectDecorator {
 		if(self::$order_status_option_string) {
 			$array = explode(self::$order_status_option_string);
 			foreach($array as $key => $value) {
-				$newArray[$value] = $value
+				$newArray[$value] = $value;
 			}
 		}
 		else {
