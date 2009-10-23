@@ -41,7 +41,7 @@ class PaymentsReport extends SSReport {
 		);
 
 
-		$table->setCustomQuery($this->getCustomQuery());
+		//$table->setCustomQuery($this->getCustomQuery());
 
 		$table->setFieldFormatting(array());
 
