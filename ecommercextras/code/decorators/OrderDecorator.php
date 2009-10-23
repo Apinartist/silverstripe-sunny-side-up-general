@@ -1,5 +1,12 @@
 <?php
 
+/**
+ *@author nicolaas [at] sunnysideup.co.nz
+ *@package ecommerce
+ *@subpackage ecommercextras
+ *@description adds extra functionality to the Order Class
+ **/
+
 class OrderDecorator extends DataObjectDecorator {
 
 	protected static $order_status_option_string = '';
