@@ -24,7 +24,7 @@ class SalesReport extends SSReport {
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
 		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/";', 'SalesReport_Handler_Base_URL');
-		$list = singleton('Order')->dbObject('Status')->enumValues(true);
+		$list = OrderDecorator::get_order_status_options();
 		$js = '';
 		foreach($list as $key => $value) {
 			if($key && $value) {
