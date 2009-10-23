@@ -3,7 +3,7 @@
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package ecommercextras
  */
-class SalesReport extends SSReport {
+class PaymentsReport extends SSReport {
 
 	protected $title = 'All Payments';
 
