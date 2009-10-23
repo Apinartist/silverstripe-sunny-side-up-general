@@ -24,7 +24,7 @@ class OrderDecorator extends DataObjectDecorator {
 	public static function get_order_status_options() {
 		$newArray = array();
 		if(self::$order_status_option_string) {
-			$array = explode(","self::$order_status_option_string);
+			$array = explode(",",self::$order_status_option_string);
 			if(is_array($array) && count($array)) {
 				foreach($array as $key => $value) {
 					$newArray[$value] = $value;
