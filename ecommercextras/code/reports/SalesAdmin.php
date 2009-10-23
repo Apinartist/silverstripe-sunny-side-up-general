@@ -44,17 +44,7 @@ class SalesAdmin extends ReportAdmin {
 				}
 			}
 		}
-
-
-		$subClasses = ClassInfo::subclassesFor('PaymentsReport');
-
-		if($subClasses) {
-			foreach($subClasses as $subClass) {
-				$processedReports[] = new $subClass();
-			}
-		}
-
-
+		$processedReports[] = new PaymentsReport();
 		$reports = new DataObjectSet($processedReports);
 
 		return $reports;
