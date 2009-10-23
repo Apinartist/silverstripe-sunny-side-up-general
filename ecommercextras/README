@@ -109,3 +109,25 @@ mysite folder and delete the rest of this module.
 
 
 
+
+tips
+-----------------------------------------------------------
+
+how to change order status options:
+
+create class in your mysite folder like this
+
+class OrderDecoratorCustom extends DataObjectDecorator {
+
+	function extraStatics() {
+		return array(
+			'db' => array(
+				'Status' => 'Enum("New,ConfirmingPayment,QueryForCustomer,ProductsOnOrder,Dispatching,CustomerReceiving,Completed,MemberCancelled,AdminCancelled","New")',
+			)
+		);
+	}
+}
+
+and then add the following to your _config.php file:
+
+DataObjectDecorator::add_extension('Order', 'OrderDecoratorCustom');
