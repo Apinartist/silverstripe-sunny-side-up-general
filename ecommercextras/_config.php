@@ -15,14 +15,15 @@
 //DataObjectDecorator::add_extension('Order', 'OrderDecorator');
 
 // *** ORDER ADDITIONS
-//OrderDecorator::set_order_id_start_number(9999);
+//OrderDecorator::set_order_id_start_number(1000);
+//OrderDecorator::set_alternative_status_options("New,InProcess,Completed,Cancelled", "New");
+//dont forget to adjust
+//Order::paid_status::set_alternative_status_options(array("Completed"));
 
 // *** ORDER FORM WITHOUT SHIPPING ADDRESS
 //OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");
 //OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");
 //OrderFormWithoutShippingAddress::set_postal_code_url("http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder");
-
-
 
 // *** PICK UP OR DELIVERY
 // can set one or more pickup options.
