@@ -47,7 +47,8 @@ class PaymentsReport extends SSReport {
 
 		$table->setFieldCasting(array(
 			'Created' => 'Date',
-			'Amount' => 'Currency->Nice'
+			'Amount' => 'Currency->Nice',
+			'Message' => 'HTMLText'
 		));
 
 		$table->setPermissions(array(
