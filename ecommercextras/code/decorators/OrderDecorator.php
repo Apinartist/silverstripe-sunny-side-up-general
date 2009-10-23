@@ -12,7 +12,7 @@ class OrderDecorator extends DataObjectDecorator {
 	function extraStatics() {
 		return array(
 			'db' => array(
-					'Status' => "Enum('Unpaid,Query,Paid,Processing,Sent,Complete,AdminCancelled,MemberCancelled','Unpaid')",
+				'Status' => "Enum('New,UnclearedPayment,NeedCustomerReply,ProductsOnOrder,Dispatching,Sent,Completed,AdminCancelled,MemberCancelled','New')",
 			),
 			'casting' => array(
 				'MemberSummary' => 'Text',
