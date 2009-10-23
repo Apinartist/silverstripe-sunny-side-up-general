@@ -25,14 +25,14 @@ class PaymentsReport extends SSReport {
 		Requirements::javascript("ecommercextras/javascript/PaymentsReport.js");
 		Requirements::customScript('var PaymentsReportURL = "'.Director::baseURL()."PaymentsReport_Handler".'/";', 'PaymentsReport_Handler_Base_URL');
 		$fields = array(
-			'Created',
-			'Status',
-			'Amount',
-			'Currency',
-			'Message',
-			'IP',
-			'ProxyIP',
-			'OrderID'
+			'Created' => "Created",
+			'Status' => "Status",
+			'Amount' => "Amount",
+			'Currency' => "Currency",
+			'Message' => "Message",
+			'IP' => "IP",
+			'ProxyIP' => "ProxyIP",
+			'OrderID' => "OrderID"
 		);
 		$table = new TableListField(
 			'Payments',
