@@ -50,13 +50,13 @@ class OrderDecorator extends DataObjectDecorator {
 
 	function extraStatics() {
 		$db = array();
-		echo "choice";
-		echo self::$order_status_option_string;
-
 		if(self::$has_alternative_status_options) {
-			echo "doing it";
+			echo "A".self::$order_status_option_string;
 			$db['Status'] = 'Enum("'.self::$order_status_option_string.'","'.self::$order_status_option_default.'")';
 			$db['Test'] = 'Boolean';
+		}
+		else {
+			echo "B".self::$order_status_option_string;
 		}
 		return array(
 			"db" => $db,
