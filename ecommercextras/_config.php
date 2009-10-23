@@ -17,8 +17,7 @@
 // *** ORDER ADDITIONS
 //OrderDecorator::set_order_id_start_number(1000);
 //OrderDecorator::set_alternative_status_options("New,InProcess,Completed,Cancelled", "New");
-//dont forget to adjust Order::$paid_status values!
-//Order::$paid_status(array("Completed"));
+
 
 // *** ORDER FORM WITHOUT SHIPPING ADDRESS
 //OrderFormWithoutShippingAddress::add_extra_field("tabName", new TextField("ExampleName");

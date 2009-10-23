@@ -7,7 +7,8 @@ RECOMMENDATIONS FOR CURRENT ECOMMERCE:
 5. the order status "query" is unclear.  has the person paid
 6. the order status "paid" should be determined by whether a payment is record, NOT just an order status, this will also remove the need for Order::$paid_status
 7. separate the order status from the payment status, as this is confusing (e.g. an order can be sent without having be paid, an order can be paid, but not available, etc...)
-
+8. get rid of IsProcessing, IsSent and other functions like this, as they make it hard to customise the status of an order
+9. get rid of variable $paid_status
 
 
 
