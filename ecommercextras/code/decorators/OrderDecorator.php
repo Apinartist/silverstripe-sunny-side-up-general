@@ -2,11 +2,18 @@
 
 class OrderDecorator extends DataObjectDecorator {
 
+	public static function set_alternative_status_options() {
+
+	}
+
  	private static $order_id_start_number = 0;
 		static function set_order_id_start_number($number) {self::$order_id_start_number = $number;}
 
 	function extraStatics() {
 		return array(
+			'db' => array(
+					'Status' => "Enum('Unpaid,Query,Paid,Processing,Sent,Complete,AdminCancelled,MemberCancelled','Unpaid')",
+			),
 			'casting' => array(
 				'MemberSummary' => 'Text',
 			)
