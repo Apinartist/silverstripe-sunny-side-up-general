@@ -29,7 +29,6 @@ class PaymentsReport extends SSReport {
 			'Status' => "Status",
 			'Amount' => "Amount",
 			'Currency' => "Currency",
-			'Message' => "Message",
 			'IP' => "IP",
 			'ProxyIP' => "ProxyIP",
 			'OrderID' => "OrderID"
@@ -48,7 +47,6 @@ class PaymentsReport extends SSReport {
 		$table->setFieldCasting(array(
 			'Created' => 'Date',
 			'Amount' => 'Currency->Nice',
-			'Message' => 'HTMLText'
 		));
 
 		$table->setPermissions(array(
