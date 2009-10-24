@@ -123,7 +123,7 @@ class RecommendedProductsModifier_Form extends Form {
 				$product = DataObject::get_by_id("SiteTree", $ID);
 				//foreach product in cart get recommended products
 				$imageID = $product->ImageID;
-				$secondPart = '';
+				$imagePart = '';
 				if($product->ImageID > 0) {
 					$resizedImage = $product->Image()->SetWidth(RecommendedProductsModifier::get_image_width());
 					if(is_object($resizedImage) && $resizedImage) {
