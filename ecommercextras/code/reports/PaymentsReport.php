@@ -37,19 +37,9 @@ class PaymentsReport extends SSReport {
 			'Payments',
 			'Payment',
 			$fields,
-			$fieldTypes = null,
-			$filterField = null,
-			$sourceFilter = null,
-			$editExisting = true,
-			$sourceSort = "`Payment`.`Created` DESC",
-			$sourceJoin = null
 		);
-
-
-		//$table->setCustomQuery($this->getCustomQuery());
-
-		$table->setFieldFormatting(array());
-
+		$payments = DataObject::get("Payments", "", "Created DESC");
+		$table->setCustomSourceItems($payments)
 		$table->setFieldCasting(array(
 			'Created' => 'Date',
 			'Amount' => 'Currency->Nice',
