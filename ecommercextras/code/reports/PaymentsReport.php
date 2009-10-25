@@ -38,7 +38,7 @@ class PaymentsReport extends SSReport {
 			'Payment',
 			$fields
 		);
-		$payments = DataObject::get("Payments", "", "Created DESC");
+		$payments = DataObject::get("Payment", "", "Created DESC");
 		$table->setCustomSourceItems($payments);
 		$table->setFieldCasting(array(
 			'Created' => 'Date',
