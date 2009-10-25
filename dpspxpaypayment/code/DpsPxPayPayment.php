@@ -77,7 +77,9 @@ class DpsPxPayPayment extends Payment {
 		return array();
 	}
 	function processPayment($data, $form) {
-
+		print_r($data);
+		print_r($form);
+		die();
 		$commsObject = new DpsPxPayComs();
 
 		/**
