@@ -85,7 +85,7 @@ class DpsPxPayPayment extends Payment {
 		**/
 		$commsObject->setTxnType('Purchase');
 		$commsObject->setMerchantReference($this->ID);
-		$commsObject->setAmountInput($this->Order()->_TotalOutstanding());
+		$commsObject->setAmountInput($data["Amount"]);
 		$commsObject->setCurrencyInput($this->Currency);
 		/**
 		* details of the redirection
@@ -113,13 +113,7 @@ class DpsPxPayPayment_Handler extends Controller {
 		return Director::AbsoluteURL(self::complete_link());
 	}
 
-	/**
-	 * Get the Order object to modify, check security that it's the object you want to modify based
-	 * off Worldpay confirmation, update the Order object to show complete and Payment object to show
-	 * that it was received. Finally, send a receipt to the buyer to show these details.
-	 */
 	function paid() {
-
 		$commsObject = new DpsPxPayComs();
 		$response = $commsObject->processRequestAndReturnResultsAsObject();
 		if($payment = DataObject::get_by_id('DpsPxPayPayment', $response->getMerchantReference())) {
