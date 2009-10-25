@@ -36,9 +36,8 @@ class PaymentsReport extends SSReport {
 		$table = new TableListField(
 			'Payments',
 			'Payment',
-			$fields
-
-			$fieldTypes
+			$fields,
+			$fieldTypes = null,
 			$filterField = null,
 			$sourceFilter = null,
 			$editExisting = true,
