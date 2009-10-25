@@ -123,8 +123,8 @@ class DpsPxPayPayment_Handler extends Controller {
 			else {
 				$payment->Status = 'Failure';
 			}
-			if($DpsTxnRef = $response->getDpsTxnRef()) $this->TxnRef = $DpsTxnRef;
-			if($ResponseText = $response->getResponseText()) $this->Message = $ResponseText;
+			if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
+			if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
 			$payment->write();
 			$payment->redirectToOrder();
 		}
