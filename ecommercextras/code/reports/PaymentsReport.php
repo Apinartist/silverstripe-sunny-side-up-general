@@ -36,7 +36,7 @@ class PaymentsReport extends SSReport {
 		$table = new TableListField(
 			'Payments',
 			'Payment',
-			$fields,
+			$fields
 		);
 		$payments = DataObject::get("Payments", "", "Created DESC");
 		$table->setCustomSourceItems($payments)
