@@ -37,6 +37,13 @@ class PaymentsReport extends SSReport {
 			'Payments',
 			'Payment',
 			$fields
+
+			$fieldTypes
+			$filterField = null,
+			$sourceFilter = null,
+			$editExisting = true,
+			$sourceSort = "`Payment`.`Created` DESC",
+			$sourceJoin = null
 		);
 
 
