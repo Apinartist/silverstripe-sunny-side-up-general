@@ -77,9 +77,6 @@ class DpsPxPayPayment extends Payment {
 		return array();
 	}
 	function processPayment($data, $form) {
-		print_r($data);
-		print_r($form);
-		die();
 		$commsObject = new DpsPxPayComs();
 
 		/**
@@ -87,7 +84,8 @@ class DpsPxPayPayment extends Payment {
 		**/
 		$commsObject->setTxnType('Purchase');
 		$commsObject->setMerchantReference($this->ID);
-		$commsObject->setAmountInput($data["Amount"]);
+		//replace any character that is NOT [0-9] or dot (.)
+		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $data["Amount"])));
 		$commsObject->setCurrencyInput($this->Currency);
 		/**
 		* details of the redirection
