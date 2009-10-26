@@ -11,5 +11,14 @@
 	catch(err) {}
 </script>
 <% else %>
-<div style="background-color: yellow; height: 100px; color: red; clear: both; width: 100%; margin: 0; padding: 0; text-align: center;">this site is currently undergoing maintenance</div>
+<div style="background-color: yellow; height: 100px; color: red; clear: both; width: 100%; margin: 0; padding: 10px; text-align: center;">
+Please note: this site is currently undergoing maintenance.
+<% if CurrentMember %>Welcome Back, $CurrentMember.FirstName.
+	<% if CurrentMember.IsAdmin %>
+	Please <a href="/admin/show/$ID">edit this page in CMS.</a>
+	<% end_if  %>
+<% else  %>
+	You are not logged-in.
+<% end_if  %>
+</div>
 <% end_if %>
