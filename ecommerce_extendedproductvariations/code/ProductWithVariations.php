@@ -2,44 +2,86 @@
 /**
  * @author nicolaas [at] sunnysideup.co.nz
  * @package ecommerce
+ * @sub-package ecommerce_productvariation
+ * Extends Product
+ * links to ProductVariationGroups to shwo what the product should have available
+ * even if you do not sell the product without variation (i.e. you only sell red jersye and not jersey)
+ * then still add a price as this will be the default price for the jersey variations
+ * DEBUG RESET: TRUNCATE TABLE `extendedproductvariationoption_extendedproductvariations`  ;TRUNCATE `productvariation` ; TRUNCATE `productvariation_live` ;
  */
 class ProductWithVariations extends Product {
 
+	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
+
+	static $many_many = array(
+		"ExtendedProductVariationGroups" => "ExtendedProductVariationGroup"
+	);
+
 	static $hide_ancestor = "Product";
 
+	static $add_action = 'a Product with variations';
+
 	public static $defaults = array(
-		'AllowPurchase' => false
+		'AllowPurchase' => true
 	);
 
 	public static $casting = array();
 
 
-	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-
-		// Standard product detail fields
-		$fields->removeFieldFromTab('Root.Content.Main', "AllowPurchase");
+		$fields->removeByName("Variations");
 		$fields->addFieldsToTab(
-			'Root.Content.Variations',
-			array(
-				new HeaderField(_t('Product.VARIATIONSSET', 'This product has the following variations set')),
-				new LiteralField('VariationsNote', '<p class="message good">If this product has active variations, the price of the product will be the price of the variation added by the member to the shopping cart.</p>'),
+			"Root.Content",
+			new tab(
+				"Variations",
+				new LiteralField(
+					"DefaultVariationGroupsExplanation",
+					"<p>Selecting groups below will automatically add its options as product variations to this product.</p>"
+				),
+				$this->getExtendedProductVariationGroupsTable(),
+				new LiteralField(
+					"VariationsExplanation",
+					"<p>Below is a list of actual variations available for this product.  If a price is listed then the product can be sold.</p>"
+				),
 				$this->getVariationsTable()
 			)
 		);
 		return $fields;
 	}
 
+	function getExtendedProductVariationGroupsTable() {
+		/*
+		$ExtendedProductVariationGroupArray = DataObject::get("ExtendedProductVariationGroup")->toDropdownMap('ID','Name');
+		new MultiSelectField(
+			'ExtendedProductVariationGroups',
+			'automatically add options from the following option groups ...',
+			$ExtendedProductVariationGroupArray
+		)
+		*/
+		$field = new ManyManyComplexTableField(
+			$this,
+			'ExtendedProductVariationGroups',
+			'ExtendedProductVariationGroup',
+			array('Name' => 'Name'),
+			null,
+			null,
+			"`Checked` DESC, `Name` ASC"
+		);
+		$field->setPermissions(array());
+		$field->pageSize = 1000;
+		return $field;
+
+	}
+
 	function getVariationsTable() {
 		$singleton = singleton('ExtendedProductVariation');
 		$query = $singleton->buildVersionSQL("`ProductID` = '{$this->ID}'");
 		$variations = $singleton->buildDataObjectSet($query->execute());
-		$filter = $variations ? "`ExtendedProductVariation`.`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ExtendedProductVariation`.`ID` < '0'";
+		$filter = $variations ? "`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ID` < '0'";
 		//$filter = "`ProductID` = '{$this->ID}'";
 
-		$tableField = new HasManyComplexTableField(
+		$field = new HasManyComplexTableField(
 			$this,
 			'Variations',
 			'ExtendedProductVariation',
@@ -51,23 +93,104 @@ class ProductWithVariations extends Product {
 			$filter
 		);
 
-		if(method_exists($tableField, 'setRelationAutoSetting')) {
-			$tableField->setRelationAutoSetting(true);
+		if(method_exists($field, 'setRelationAutoSetting')) {
+			$field->setRelationAutoSetting(true);
 		}
-
-		return $tableField;
+		//$field->setPermissions(array("view", "edit"));
+		$field->pageSize = 1000;
+		return $field;
 	}
 
-	function AllowPurchase() {
-		return false;
+	function onBeforeWrite() {
+
+		$combinations = $this->ExtendedProductVariationGroups();
+		$groupsDataObject = new DataObjectSet();
+		if($combinations) {
+			foreach($combinations as $combination) {
+				$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
+				$groupsDataObject->push($group);
+				$options = $group->ExtendedProductVariationOptions();
+				if($options && $group->IncludeOptionsAsSoleProductVariations) {
+					foreach($options as $option) {
+						$optionsDos = new DataObjectSet();
+						$optionsDos->push($option);
+						$this->createExtendedProductVariations($optionsDos);
+					}
+				}
+			}
+		}
+		$obj = new ExtendedProductVariationOptionComboMaker();
+		$obj->addGroups($groupsDataObject);
+		$array = $obj->finalise();
+		if(is_array($array) && count($array)) {
+			foreach($array as $IDlist) {
+				$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
+				$this->createExtendedProductVariations($optionsDos);
+			}
+		}
+		parent::onBeforeWrite();
 	}
 
-	/**
-	 * When the ecommerce module is first installed, and db/build
-	 * is invoked, create some default records in the database.
-	 */
+	protected function createExtendedProductVariations($optionsDos) {
+		//does it exist?
+		$title = '';
+		if(1 == $option->count()) {
+			$title = $option->Name;
+		}
+		elseif($option->count() > 1) {
+			foreach($optionsDos as $option) {
+				$title .= $option->FullName();
+			}
+		}
+		if($title) {
+			$obj = ExtendedProductVariation::does_not_exist_yet($title, $optionsDos, $this->ID);
+			if($obj instanceOf ExtendedProductVariation) {
+				$obj->Title = $title;
+			}
+			elseif($obj) {
+				//create title
+				//create Extended Product Variation
+				$obj = new ExtendedProductVariation();
+				$obj->Title = $title;
+				$obj->Price = $this->Price;
+				$obj->ProductID = $this->ID;
+			}
+			if($obj) {
+				$obj->write();
+				//links Extend Product Variation to Options
+				$variationDos = new DataObjectSet();
+				$variationDos->push($obj);
+				foreach($optionsDos as $option) {
+					$option->addExtendedProductVariations($variationDos);
+					$this->addExtendedProductVariation($variationDos);
+				}
+			}
+		}
+	}
+
+	function addExtendedProductVariation($ExtendedProductVariations) {
+    $existingExtendedProductVariations = $this->Variations();
+    // method 1: Add many by iteration
+    foreach($ExtendedProductVariations as $variations) {
+      $existingExtendedProductVariations->add($variations);
+    }
+	}
+
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		//delete example product pages
+		$pages = DataObject::get("Product", '`URLSegment` = "example-product" OR `URLSegment` = "example-product-2"');
+		if($pages) {
+			if(2 == $pages->count() ) {
+				foreach($pages as $page) {
+					$id = $page->ID;
+					$stageRecord = Versioned::get_one_by_stage('SiteTree', 'Stage', "SiteTree.ID = $id");
+					if ($stageRecord) $stageRecord->delete();
+					$liveRecord = Versioned::get_one_by_stage('SiteTree', 'Live', "SiteTree_Live.ID = $id");
+					if ($liveRecord) $liveRecord->delete();
+				}
+			}
+		}
 	}
 
 }
@@ -78,23 +201,74 @@ class ProductWithVariations_Controller extends Product_Controller {
 		parent::init();
 	}
 
-	function addVariation() {
-		if($this->AllowPurchase && $this->urlParams['ID']) {
-			$variation = DataObject::get_one(
-				'ExtendedProductVariation',
-				sprintf(
-					"`ID` = %d AND `ProductID` = %d",
-					(int)$this->urlParams['ID'],
-					(int)$this->ID
-				)
-			);
+	function addVariation($data, $form) {
+		if(isset($data["CurrentVariation"])) {
+			$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
 			if($variation) {
 				if($variation->AllowPurchase()) {
 					ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
-					if(!$this->isAjax()) Director::redirectBack();
+					if(!$this->isAjax()) {
+						Session::set("ProductVariationsFormMessage", "Added to cart.");
+						Director::redirectBack();
+						return;
+					}
 				}
 			}
 		}
+		Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
+	}
+
+	public function ProductVariationsForm() {
+		if($variationsAvailable = $this->VariationsAvailable()) {
+			$selectFields = new FieldSet();
+			$groups = $this->ExtendedProductVariationGroups();
+			if($groups) {
+				foreach($groups as $group) {
+					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
+					if($options) {
+						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $options->toDropDownMap("ID", "Name", null, "Name")));
+					}
+				}
+			}
+
+			$selectFieldsGp = new CompositeField($selectFields);
+			$selectFieldsGp->setID("ExtendedProductVariationDropdowns");
+			$fieldSet = new FieldSet($selectFieldsGp);
+			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", $variationsAvailable->toDropDownMap("ID", "Title", "--not selected--", "Title" )));
+			$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
+			if($msg = Session::get("ProductVariationsFormMessage")) {
+				$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
+				Session::set("ProductVariationsFormMessage", "");
+			}
+			$action = new FormAction($action = "addVariation",$title = "Add To Cart");
+			return new Form(
+				$controller = $this,
+				$name = "ProductVariationsForm",
+				$fields = $fieldSet,
+				$actions = new FieldSet($action)
+			);
+		}
+	}
+
+	public function VariationsAvailable() {
+		$items = array();
+		$variations = DataObject::get("ExtendedProductVariation", "Price > 0 AND ProductID = ".$this->ID);
+		$js = '';
+		if($variations) {
+			foreach($variations as $number => $variation) {
+				$options = $variation->ExtendedProductVariationOptions();
+				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
+				foreach($options as $option) {
+					$optionArray[$option->ParentID] = $option->ID;
+					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
+				}
+				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$variation->Price."';\r\n";
+				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
+			}
+		}
+		Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations.js");
+		Requirements::customScript($js,'ProductWithVariationsArray');
+		return $variations;
 	}
 
 }

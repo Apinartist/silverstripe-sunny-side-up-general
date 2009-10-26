@@ -1,13 +1,16 @@
 <?php
+/**
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package ecommerce
+ * @sub-package ecommerce_productvariation
+ * manages the default options for product variations
+ */
 
 class ExtendedProductVariationAdmin extends ModelAdmin {
 
 	public static $managed_models = array(
-		'ExtendedProductVariation1',
-		'ExtendedProductVariation2',
-		'ExtendedProductVariation3',
-		'ExtendedProductVariation4',
-		'ExtendedProductVariation5'
+		'ExtendedProductVariationGroup',
+		'ExtendedProductVariationOption'
 	);
 
 	static $url_segment = 'productvariations'; // will be linked as /admin/products
