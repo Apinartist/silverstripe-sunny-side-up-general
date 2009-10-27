@@ -44,6 +44,15 @@ class AjaxOrder extends DataObjectDecorator {
 		return ShoppingCart::current_order();
 	}
 
+	public function NumItemsInCart() {
+		if($cart = $this->Cart()) {
+			if($items = $cart->Items()) {
+				return $items->count();
+			}
+		}
+		return 0;
+	}
+
 	public function IsCheckoutPage() {
 		return ("CheckoutPage" == $this->owner->ClassName);
 	}

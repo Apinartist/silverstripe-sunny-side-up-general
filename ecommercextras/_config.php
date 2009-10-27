@@ -2,9 +2,9 @@
 
 
 /**
-* @author Nicolaas modules [at] sunnysideup.co.nz
-*
-**/
+ * @author Nicolaas modules [at] sunnysideup.co.nz
+ *
+ **/
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START ecommercextra MODULE ----------------===================
@@ -48,7 +48,7 @@
 // *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
 
-// *** NEWSLETTER SIGNUP MODIFIER
+// *** BLOCK COUNTRIES MODIFIER
 //BlockCountriesModifier::set_must_include_country_codes(array("NZ"));
 //BlockCountriesModifier::set_must_not_country_codes(array("AU"));
 //BlockCountriesModifier::set_sorry_message_start("Sorry, sales to");
@@ -56,28 +56,25 @@
 //BlockCountriesModifier::set_your_country_description_default("your country")
 
 // *** MODIFIER RULES MODIFIER
-// ModifierRulesModifier::set_rule(
 /*
-		$nameModifierA = "PickUpOrDeliveryModifier",
-		$functionOrVariableNameA "PickupOrDeliveryType",
-		$valueA = array("NZ"),
-		$nameModifierB = "GSTTaxModifier",
-		$functionOrVariableNameB = "override_country",
-		$valueB = "NZ"
-	);
+ModifierRulesModifier::set_rule(
+	$nameModifierA = "PickUpOrDeliveryModifier",
+	$functionOrVariableNameA "PickupOrDeliveryType",
+	$valueA = array("NZ"),
+	$nameModifierB = "GSTTaxModifier",
+	$functionOrVariableNameB = "override_country",
+	$valueB = "NZ"
+);
 */
 
 // *** AJAX ORDER
-
 //AjaxOrder::set_loading_cart_text("Loading Cart");
 //AjaxOrder::set_in_cart_text("In Cart");
 //AjaxOrder::set_confirm_delete_text("Are you sure you want to delete this item?");
 //AjaxOrder_Controller::set_order_item_classname("Product_OrderItem");
 //AjaxOrder_Controller::set_product_classname("Product");
-//AjaxOrder_Controller::set_product_classname("Product");
 
 // *** MODEL ADMIN
-
 //ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
 
 // *** REPORTS
