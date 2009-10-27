@@ -57,6 +57,10 @@ class AjaxOrder extends DataObjectDecorator {
 		return ("CheckoutPage" == $this->owner->ClassName);
 	}
 
+	public function AccountPage() {
+		return DataObject::get_one("AccountPage");
+	}
+
 	public function CheckoutLink() {
 		return CheckoutPage::find_link();
 	}
