@@ -35,7 +35,7 @@ class ExtendedProductVariationGroup extends DataObject {
 	);
 
 	public static $belongs_many_many = array(
-		"ProductWithVariations" => "ProductWithVariations"
+		"ProductWithVariations" => "SiteTree"
 	);
 
 	public static $default_sort = "`Name` ASC";

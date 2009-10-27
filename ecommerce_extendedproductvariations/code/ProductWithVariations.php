@@ -13,10 +13,6 @@ class ProductWithVariations extends Product {
 
 	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
 
-	static $many_many = array(
-		"ExtendedProductVariationGroups" => "ExtendedProductVariationGroup"
-	);
-
 	static $hide_ancestor = "Product";
 
 	static $add_action = 'a Product with variations';
@@ -27,56 +23,21 @@ class ProductWithVariations extends Product {
 
 	public static $casting = array();
 
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Variations");
-		$fields->addFieldsToTab(
-			"Root.Content",
-			new tab(
-				"Variations",
-				new LiteralField(
-					"DefaultVariationGroupsExplanation",
-					"<p>Selecting groups below will automatically add its options as product variations to this product.</p>"
-				),
-				$this->getExtendedProductVariationGroupsTable(),
-				new LiteralField(
-					"VariationsExplanation",
-					"<p>Below is a list of actual variations available for this product.  If a price is listed then the product can be sold.</p>"
-				),
-				$this->getVariationsTable()
-			)
-		);
+		$tab = new tab("ProductVariations");
+		$tab->push(new LiteralField("VariationsExplanation","<p>Below is a list of actual variations available for this product.  If a price is listed then the product can be sold.</p>"));
+		$tab->push($this->getVariationsTable());
+		$fields->addFieldsToTab("Root.Content",$tab);
 		return $fields;
 	}
 
-	function getExtendedProductVariationGroupsTable() {
-		/*
-		$ExtendedProductVariationGroupArray = DataObject::get("ExtendedProductVariationGroup")->toDropdownMap('ID','Name');
-		new MultiSelectField(
-			'ExtendedProductVariationGroups',
-			'automatically add options from the following option groups ...',
-			$ExtendedProductVariationGroupArray
-		)
-		*/
-		$field = new ManyManyComplexTableField(
-			$this,
-			'ExtendedProductVariationGroups',
-			'ExtendedProductVariationGroup',
-			array('Name' => 'Name'),
-			null,
-			null,
-			"`Checked` DESC, `Name` ASC"
-		);
-		$field->setPermissions(array());
-		$field->pageSize = 1000;
-		return $field;
 
-	}
 
 	function getVariationsTable() {
 		$singleton = singleton('ExtendedProductVariation');
-		$query = $singleton->buildVersionSQL("`ProductID` = '{$this->ID}'");
+		$query = $singleton->buildVersionSQL("`ProductID` = ".$this->ID);
 		$variations = $singleton->buildDataObjectSet($query->execute());
 		$filter = $variations ? "`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ID` < '0'";
 		//$filter = "`ProductID` = '{$this->ID}'";
@@ -92,7 +53,6 @@ class ProductWithVariations extends Product {
 			'getCMSFields_forPopup',
 			$filter
 		);
-
 		if(method_exists($field, 'setRelationAutoSetting')) {
 			$field->setRelationAutoSetting(true);
 		}
@@ -102,10 +62,9 @@ class ProductWithVariations extends Product {
 	}
 
 	function onBeforeWrite() {
-
-		$combinations = $this->ExtendedProductVariationGroups();
-		$groupsDataObject = new DataObjectSet();
+		$combinations = $this->getParentExtendedProductVariationGroups();
 		if($combinations) {
+			$groupsDataObject = new DataObjectSet();
 			foreach($combinations as $combination) {
 				$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
 				$groupsDataObject->push($group);
@@ -118,14 +77,14 @@ class ProductWithVariations extends Product {
 					}
 				}
 			}
-		}
-		$obj = new ExtendedProductVariationOptionComboMaker();
-		$obj->addGroups($groupsDataObject);
-		$array = $obj->finalise();
-		if(is_array($array) && count($array)) {
-			foreach($array as $IDlist) {
-				$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
-				$this->createExtendedProductVariations($optionsDos);
+			$obj = new ExtendedProductVariationOptionComboMaker();
+			$obj->addGroups($groupsDataObject);
+			$array = $obj->finalise();
+			if(is_array($array) && count($array)) {
+				foreach($array as $IDlist) {
+					$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
+					$this->createExtendedProductVariations($optionsDos);
+				}
 			}
 		}
 		parent::onBeforeWrite();
@@ -134,16 +93,18 @@ class ProductWithVariations extends Product {
 	protected function createExtendedProductVariations($optionsDos) {
 		//does it exist?
 		$title = '';
-		if(1 == $option->count()) {
-			$title = $option->Name;
+		if(1 == $optionsDos->count()) {
+			foreach($optionsDos as $option) {
+				$title = $option->ShorterName();
+			}
 		}
-		elseif($option->count() > 1) {
+		elseif($optionsDos->count() > 1) {
 			foreach($optionsDos as $option) {
 				$title .= $option->FullName();
 			}
 		}
 		if($title) {
-			$obj = ExtendedProductVariation::does_not_exist_yet($title, $optionsDos, $this->ID);
+			$obj = ExtendedProductVariation::return_existing_or_create_new($title, $optionsDos, $this->ID);
 			if($obj instanceOf ExtendedProductVariation) {
 				$obj->Title = $title;
 			}

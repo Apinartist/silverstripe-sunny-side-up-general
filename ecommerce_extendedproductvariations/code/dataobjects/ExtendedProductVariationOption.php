@@ -82,6 +82,16 @@ class ExtendedProductVariationOption extends DataObject {
 		return $v;
 	}
 
+	function ShorterName() {
+		$group = DataObject::get_by_id("ExtendedProductVariationGroup", $this->ParentID);
+		$v = '';
+		if($group->IncludeGroupTitleInVariationTitle) {
+			$v .= $group->Title.': ';
+		}
+		$v .= $this->Name;
+		return $v;
+	}
+
 	public function onBeforeWrite() {
 		if(!$this->ParentID) {
 			$this->ParentID = DataObject::get_one("ExtendedProductVariationGroup")->ID;

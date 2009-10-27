@@ -32,14 +32,16 @@ class ExtendedProductVariationOptionComboMaker extends Object {
 	}
 
 	function meltOptions($number = 0, $startIDString = '') {
-		foreach($this->fullArray[$number] as $option) {
-			$next = $number + 1;
-			if(isset($this->fullArray[$next])) {
-				$option .= ",";
-				$this->meltOptions($next, $startIDString.$option);
-			}
-			else {
-				$this->optionArray[] = $startIDString.$option;
+		if(count($this->fullArray)) {
+			foreach($this->fullArray[$number] as $option) {
+				$next = $number + 1;
+				if(isset($this->fullArray[$next])) {
+					$option .= ",";
+					$this->meltOptions($next, $startIDString.$option);
+				}
+				else {
+					$this->optionArray[] = $startIDString.$option;
+				}
 			}
 		}
 	}

@@ -31,45 +31,42 @@ class ExtendedProductVariation extends ProductVariation {
 		return new FieldSet($fields);
 	}
 
-	static function does_not_exist_yet($title, $optionsDos, $productID) {
-		if(DataObject::get_one("ExtendedProductVariation", '`ProductID` = '.$productID.' AND `Title` = "'.$title.'"')) {
-			return false;
+	static function return_existing_or_create_new($title, $optionsDos, $productID) {
+		if($obj = DataObject::get_one("ExtendedProductVariation", '`ProductID` = '.$productID.' AND `Title` = "'.$title.'"')) {
+			return $obj;
 		}
 		//look for it ...
 		$checkArray = array();
 		foreach($optionsDos as $option) {
-			$checkArray[] = $option->ID;
+			$checkArray[$option->ID] = $option->ID;
 		}
-		$exists = false;
 		$EPVs = DataObject::get("ExtendedProductVariation", '`ProductID` = '.$productID);
 		if($EPVs) {
 			foreach($EPVs as $EPV) {
+				$canExist = true;
 				$array = array();
 				foreach($EPV->ExtendedProductVariationOptions() as $option) {
-					$array[] = $option->ID;
+					$array[$option->ID] = $option->ID;
 				}
-				if($array == $checkArray) {
-					$exists = true;
-					break;
+				if(count($array) == count($checkArray)) {
+					foreach($array as $key => $value) {
+						if(!isset($checkArray[$key])) {
+							$canExist = false;
+						}
+						elseif($checkArray[$key] != $value) {
+							$canExist = false;
+						}
+					}
+				}
+				else {
+					$canExist = false;
+				}
+				if($canExist == true) {
+					return $EPV;
 				}
 			}
 		}
-		foreach($optionsDos as $key => $option) {
-			if(0 == $key) {
-				$innerJoin[] = "`ExtendedProductVariationOption_ExtendedProductVariations` AS T".$key;
-			}
-			else {
-				$innerJoin[] = "INNER JOIN ExtendedProductVariationOption_ExtendedProductVariations AS T".$key." ON T0.`ExtendedProductVariationID` = T".$key.".`ExtendedProductVariationID`";
-			}
-			$innerJoin[] = "INNER JOIN ProductVariation AS Pv".$key." ON T".$key.".`ExtendedProductVariationID` = Pv".$key.".`ID`";
-			$whereArray[] = "T".$key.".ExtendedProductVariationOptionID = ".$option->ID." AND Pv".$key.".`ProductID` = ".$productID;
-		}
-		$sql = '
-			SELECT COUNT(T0.`ID`)
-			FROM '.implode(" ",$innerJoin).'
-			WHERE  '.implode(" AND ", $whereArray).';';
-		$data = db::query($sql);
-		$data->value() > 0 ? false:true;
+		return new ExtendedProductVariation();
 	}
 
 	function getPrice() {
