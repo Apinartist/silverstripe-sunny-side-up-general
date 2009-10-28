@@ -10,11 +10,14 @@ class MembersOnlyPage extends Page {
 
 	static $allowed_children = array("MembersOnlyPage");
 
-	protected static $group_code = "secured-page-members";
+	protected static $group_code = "intranet-users";
+		static function set_group_code($v) {self::$group_code = $v;}
 
-	protected static $group_name = "secured-page members";
+	protected static $group_name = "intranet users";
+		static function set_group_name($v) {self::$group_name = $v;}
 
 	protected static $permission_code = "INTRANET_USERS";
+		static function set_permission_code($v) {self::$permission_code = $v;}
 
 	static $defaults = array(
 		"ProvideComments" => 1,
