@@ -25,8 +25,8 @@ in your mysite folder at all so that you can upgrade it later.
 
 Usage Overview
 -----------------------------------------------
-This is a one-stop shop for a user to
-sign-in, update details, etc...
+This is a one-stop shop for a user to register,
+sign-in, update details, log-out, and log back in.
 
 
 Thank you
