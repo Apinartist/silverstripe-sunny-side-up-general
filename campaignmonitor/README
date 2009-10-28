@@ -15,7 +15,12 @@ Documentation
 -----------------------------------------------
 This module allows you to add a html snippet from
 Campaign Monitor or similar, adding a newsletter
-signup form.
+signup form. It also provides you with a return URL
+that you can provide to your third-party newsletter
+application.
+
+Future versions may implement a link to the Members table,
+adding the newsletter subscriber to the Member table.
 
 Installation Instructions
 -----------------------------------------------

@@ -11,9 +11,30 @@ Requirements
 -----------------------------------------------
 Ecommerce
 SilverStripe 2.3.0 or greater.
+Silverstripe Ecommerce
 
 Documentation
 -----------------------------------------------
+
+This module allows you to add product variations
+(e.g. colour, size, sex) to ecommerce products.
+It also provides a method in doing so efficiently,
+by allowing you to specifiy default combinations
+in parent pages.
+The way this works is that you specify what
+option groups should be available in child product pages
+(e.g. colour and size) and when you save the product,
+it will automatically create all the combinations (e.g.
+red S, red M, red L, blue S, blue M, etc...) for the
+product.
+
+To do
+-----------------------------------------------
+LOTS!
+create a checkbox that allows you to choose
+IF combinations should be created when saving
+a product.
+
 
 Installation Instructions
 -----------------------------------------------

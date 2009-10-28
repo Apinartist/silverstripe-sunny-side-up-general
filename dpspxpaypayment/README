@@ -10,36 +10,14 @@ Nicolaas [at] sunnysideup.co.nz
 Requirements
 -----------------------------------------------
 SilverStripe 2.3.0 or greater.
-Silverstripe Ecommerce
+Silverstripe Payments
 
 Documentation
 -----------------------------------------------
-This module adds products to your ecommerce that
-have variations.  You can have up to five variations, e.g.
-
-1. colour
-2. size
-3. sex
-4. version
-5. model
-
-*** List Combo System ***
-The way it works is that you maintain up to five lists.
-These lists are then combined into all possible variations
-and these are added to all products.
-This saves you from having to enter them for each product.
-However, you will have to enter a price for the variation,
-in order to activate it.
-
-*** front-end dropdowns ***
-The code also provides for up to five dropdowns that you
-can place in your templates.  Together, these dropdowns
-determine the final choice (using JS) of product.
-Product Variations can only be added to cart once all aspects of the
-variation have been determined.
-Any change in dropdown will update the other dropdowns with available
-choices. In this way, you will never end up with an impossible choice.
-You can also opt get all the variations in one dropdown.
+This module add the DPS PxPay Post Payment method.
+See
+http://www.paymentexpress.com/technical_resources/ecommerce_hosted/pxpay.html
+for more information.
 
 
 

@@ -12,9 +12,16 @@ RECOMMENDATIONS FOR CURRENT ECOMMERCE:
 
 
 
+
 Other ideas:
 
 SETUP ADDITIONAL MODULE: PRODUCT VARIATIONS....
 * extends Product
 * example of product variations
 * product variation manager
+
+
+MOVE SOME OF THE GENERIC FUNCTIONS TO AJAXORDER DECORATOR:
+
+TaxInfo
+Currency
