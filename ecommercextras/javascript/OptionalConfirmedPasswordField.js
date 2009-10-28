@@ -1,4 +1,10 @@
-/* add and remove using ajax... */
+/*
+ *@author nicolaas[at]sunnysideup.co.nz
+ *
+ **/
+
+
+
 
 ;(function($) {
 	$(document).ready(
