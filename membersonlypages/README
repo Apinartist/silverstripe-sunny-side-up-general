@@ -9,14 +9,17 @@ Nicolaas Francken [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
-SilverStripe 2.3.2 or greater.
-spamprotection module from SS
+SilverStripe 2.3
 
 Documentation
 -----------------------------------------------
-
+This helps you create a section of "Members Only"
+pages.
 
 Installation Instructions
 -----------------------------------------------
 1. Find out how to add modules to SS and add module as per usual.
-2. Check out how Spam Protector Module works and follow instructions there....
+2. copy configurations from this module's _config.php file
+into mysite/_config.php file and edit settings as required.
+NB. the idea is not to edit the module, but instead customise it
+in your mysite folder at all so that you can upgrade it later.
