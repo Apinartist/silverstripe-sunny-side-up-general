@@ -159,8 +159,8 @@ class SalesReport_Handler extends Controller {
 				$order->write();
 				$orderlog = new OrderStatusLog();
 				$orderlog->OrderID = $order->ID;
-				$orderLog->Status = "Status changed from ".$oldStatus." to ".$newStatus.".";
-				$orderLog->Note = "Status changed from ".$oldStatus." to ".$newStatus.".";
+				$orderlog->Status = "Status changed from ".$oldStatus." to ".$newStatus.".";
+				$orderlog->Note = "Status changed from ".$oldStatus." to ".$newStatus.".";
 				$orderlog->write();
 			}
 			else {
