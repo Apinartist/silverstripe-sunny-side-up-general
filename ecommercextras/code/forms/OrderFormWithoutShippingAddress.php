@@ -37,7 +37,13 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$member = Member::currentMember();
 		if(!$member || !$member->ID || $member->Password == '') {
 			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>'), "FirstName");
+			//improve password field
+			$passwordField = new OptionalConfirmedPasswordField('Password', 'Password', '', null, true);
+			$passwordField->minLength = 6;
+			$passwordField->showOnClickTitle = "add password now";
+			$this->fields->replaceField("Password", $passwordField);
 		}
+
 		$this->fields->removeFieldFromTab("RightOrder", "Membership Details");
 		$this->fields->removeFieldFromTab("RightOrder", "MemberInfo");
 		//add extra fields

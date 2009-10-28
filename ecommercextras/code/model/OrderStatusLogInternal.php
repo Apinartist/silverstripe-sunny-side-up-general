@@ -9,16 +9,13 @@
  *
  **/
 
-class DispatchLog extends DataObject {
+class OrderStatusLogInternal extends DataObject {
 
 
 	public static $db = array(
-		'From' => 'Varchar(255)',
-		'Using' => 'Varchar(255)',
-		'TicketNumber' => 'Varchar(255)',
 		'Notes' => 'Text',
-
 	);
+
 
 	public static $has_one = array(
 		'Author' => 'Member',
