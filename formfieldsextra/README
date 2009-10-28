@@ -1,5 +1,5 @@
 ###############################################
-Form Extensions
+Form Field Extras
 Pre 0.1 proof of concept
 ###############################################
 
@@ -17,7 +17,6 @@ Documentation
 Includes the following fields:
 
 * colour selector
-* day
 * date of birth
 * font selector
 * rating field (cool slider)
@@ -25,4 +24,8 @@ Includes the following fields:
 
 Installation Instructions
 -----------------------------------------------
-1. copy the fields of interest into mysite/code/fields folder
+1. Find out how to add modules to SS and add module as per usual.
+2. copy configurations from this module's _config.php file
+into mysite/_config.php file and edit settings as required.
+NB. the idea is not to edit the module, but instead customise it
+in your mysite folder at all so that you can upgrade it later.
