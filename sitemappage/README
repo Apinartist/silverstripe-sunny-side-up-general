@@ -9,12 +9,13 @@ Nicolaas Francken [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
-SilverStripe 2.3.2 or greater.
+SilverStripe 2.3+
 
 
 Documentation
 -----------------------------------------------
-
+Adds a basic sitemap page to your site with plenty
+of customistation options (themed CSS).
 
 Installation Instructions
 -----------------------------------------------
