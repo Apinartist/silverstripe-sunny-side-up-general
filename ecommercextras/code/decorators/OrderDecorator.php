@@ -30,6 +30,9 @@ class OrderDecorator extends DataObjectDecorator {
 
 	function extraStatics() {
 		return array(
+			'db' => array(
+				"CustomerOrderNote" => "Text"
+			),
 			'has_many' => array(
 				"OrderStatusLogInternal" => "OrderStatusLogInternal"
 			),

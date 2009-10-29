@@ -82,6 +82,9 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		if(self::$fixed_country_code) {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
+
+		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note'), "Country");
+
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();
 		$this->loadDataFrom($data);
