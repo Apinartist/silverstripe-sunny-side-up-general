@@ -5,7 +5,7 @@
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package payment
  */
-class DirectCreditPayment extends Payment {
+class DirectCreditPayment extends ChequePayment {
 
 	protected static $custom_message_for_direct_credit = "";
 		static function set_custom_message_for_direct_credit($v) {self::$custom_message_for_direct_credit = $v;}
