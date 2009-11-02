@@ -35,7 +35,7 @@ var OptionalConfirmedPasswordField = {
 
 		);
 		jQuery(".showOnClick a").click();
-		jQuery(".showOnClickContainer input").attr("value", this.passwordgenerator(7, false));
+		jQuery("#PasswordGroup input").attr("value", this.passwordgenerator(7, false));
 	},
 
 	passwordgenerator: function (length, special) {
