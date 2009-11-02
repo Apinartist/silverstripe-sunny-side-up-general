@@ -42,7 +42,8 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			//$passwordField->minLength = 6;
 			//$passwordField->showOnClickTitle = "add password now";
 			//$this->fields->replaceField("Password", $passwordField);
-
+			Requirements::javascript('ecommercextras/javascript/OptionalConfirmedPasswordField.js');
+			Requirements::block(SAPPHIRE_DIR . '/javascript/ConfirmedPasswordField.js');
 		}
 
 		$this->fields->removeFieldFromTab("RightOrder", "Membership Details");
@@ -63,12 +64,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 					case "AddressLine2":
 						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">check here</a>');
 						$child->setTitle('Postal Code');
-						break;
-					case "Password":
-						Requirements::javascript('ecommercextras/javascript/OptionalConfirmedPasswordField.js');
-						Requirements::block(SAPPHIRE_DIR . '/javascript/ConfirmedPasswordField.js');
-						$child->minLength = 6;
-						$child->showOnClickTitle = "add password now";
 						break;
 					default:
 						break;
