@@ -68,13 +68,15 @@ var	PickUpOrDeliveryModifier = {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").hide();
 		}
 		var hasValidValue = false;
+		var currentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val()
 		for(i=0;i<acceptableOptions.length;i++) {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option[value='" + acceptableOptions[i] + "']").show();
-			if(jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val() == acceptableOptions[i]) {
+			if(currentCountryValue == acceptableOptions[i]) {
 				hasValidValue = true;
 			}
 		}
 		if(acceptableOptions.length == 1) {
+			alert("only one option");
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val(acceptableOptions[i]);
 			hasValidValue = true;
 		}
