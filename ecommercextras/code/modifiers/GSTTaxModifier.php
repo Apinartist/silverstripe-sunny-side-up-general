@@ -84,15 +84,16 @@ class GSTTaxModifier extends TaxModifier {
 //--------------------------------------------------------------------*** other attribute functions: country
 
 	protected function LiveCountry() {
-		if($fixeCode = Session::get("GSTTaxModifier_CountryCode")) {
-			self::$current_country_code = $fixeCode;
+		if($fixedCode = Session::get("GSTTaxModifier_CountryCode")) {
+			self::$current_country_code = $fixedCode;
 		}
 		if(!self::$current_country_code) {
 			self::$current_country_code = parent::LiveCountry();
 			if(!self::$current_country_code) {
 				self::$current_country_code = ShoppingCart::get_country();
-				if(!self::$current_country_code)
-				self::$current_country_code	 = self::$default_country_code;
+				if(!self::$current_country_code) {
+					self::$current_country_code	 = self::$default_country_code;
+				}
 			}
 		}
 		$this->debugMessage = "<hr />Live Country Code: ".self::$current_country_code;
@@ -167,9 +168,6 @@ class GSTTaxModifier extends TaxModifier {
 				$endString = self::$inclusive_explanation;
 			}
 			$countryCode = $taxObject->CountryCode;
-			if(isset($_REQUEST["debug"])) {
-				echo $this->debugMessage;
-			}
 			if($name && $rate) {
 				$finalString = $startString.$name.$endString;
 			}
@@ -183,6 +181,9 @@ class GSTTaxModifier extends TaxModifier {
 			if(self::$based_on_country_note && $countryName  && $countryCode != self::$default_country_code) {
 				$finalString .= self::$based_on_country_note.$countryName;
 			}
+		}
+		if(isset($_REQUEST["debug"])) {
+			echo $this->debugMessage;
 		}
 		return $finalString;
 	}
