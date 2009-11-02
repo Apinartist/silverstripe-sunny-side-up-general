@@ -90,11 +90,11 @@ class GSTTaxModifier extends TaxModifier {
 			self::$current_country_code = $fixedCode;
 		}
 		if(!self::$current_country_code) {
-			self::$current_country_code = parent::LiveCountry();
-			$this->debugMessage .= "<hr />using parent::LiveCountry country for country";
+			$this->debugMessage .= "<hr />using shopping cart for country";
+			self::$current_country_code = ShoppingCart::get_country();
 			if(!self::$current_country_code) {
-				$this->debugMessage .= "<hr />using shopping cart for country";
-				self::$current_country_code = ShoppingCart::get_country();
+				self::$current_country_code = parent::LiveCountry();
+				$this->debugMessage .= "<hr />using parent::LiveCountry country for country";
 				if(!self::$current_country_code) {
 					$this->debugMessage .= "<hr />using default country for cart";
 					self::$current_country_code	 = self::$default_country_code;
