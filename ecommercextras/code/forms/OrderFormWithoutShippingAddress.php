@@ -12,7 +12,8 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	protected static $extra_fields = array();
 
-	protected static $postal_code_url = "";
+	protected static $postal_code_url = "http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder";
+	protected static $postal_code_label = "postcode finder click here";
 
 	static function set_fixed_country_code($v) {
 		self::$fixed_country_code = $v;
@@ -24,6 +25,10 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	static function set_postal_code_url($v) {
 		self::$postal_code_url = $v;
+	}
+
+	static function set_postal_code_label($v) {
+		self::$postal_code_label = $v;
 	}
 
 	function __construct($controller, $name) {
@@ -62,7 +67,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 						$child->setTitle('Delivery Address (no Postal Box)');
 						break;
 					case "AddressLine2":
-						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">check here</a>');
+						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">'.self::$postal_code_label.'</a>');
 						$child->setTitle('Postal Code');
 						break;
 					default:
