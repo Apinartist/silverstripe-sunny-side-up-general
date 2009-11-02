@@ -51,7 +51,7 @@ class GSTTaxModifier extends TaxModifier {
 
 	static function override_country($countryCode) {
 		self::$current_country_code = $countryCode;
-		$this->debugMessage .= "OVERRIDING COUNTRY CODE";
+		$this->debugMessage .= "<hr />OVERRIDING COUNTRY CODE";
 		Session::set("GSTTaxModifier_CountryCode", $countryCode);
 	}
 
@@ -86,32 +86,32 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveCountry() {
 		if($fixedCode = Session::get("GSTTaxModifier_CountryCode")) {
-			$this->debugMessage .= "taking session value for country code";
+			$this->debugMessage .= "<hr />taking session value for country code";
 			self::$current_country_code = $fixedCode;
 		}
 		if(!self::$current_country_code) {
 			self::$current_country_code = parent::LiveCountry();
-			$this->debugMessage .= "using parent::LiveCountry country for country";
+			$this->debugMessage .= "<hr />using parent::LiveCountry country for country";
 			if(!self::$current_country_code) {
-				$this->debugMessage .= "using shopping cart for country";
+				$this->debugMessage .= "<hr />using shopping cart for country";
 				self::$current_country_code = ShoppingCart::get_country();
 				if(!self::$current_country_code) {
-					$this->debugMessage .= "using default country for cart";
+					$this->debugMessage .= "<hr />using default country for cart";
 					self::$current_country_code	 = self::$default_country_code;
 				}
 			}
 		}
-		$this->debugMessage = "<hr />Live Country Code: ".self::$current_country_code;
+		$this->debugMessage .= "<hr />Live Country Code: ".self::$current_country_code;
 		return self::$current_country_code;
 	}
 
 	function LiveTaxObject() {
 		if($countryCode = $this->LiveCountry()) {
-			$this->debugMessage = "<hr />There is a current live tax object";
+			$this->debugMessage .= "<hr />There is a current live tax object";
 			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
 		}
 		else {
-			$this->debugMessage = "There is no current live tax object";
+			$this->debugMessage .= "<hr />There is no current live tax object";
 		}
 	}
 
