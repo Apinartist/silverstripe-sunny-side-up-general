@@ -51,6 +51,7 @@ class GSTTaxModifier extends TaxModifier {
 
 	static function override_country($countryCode) {
 		self::$current_country_code = $countryCode;
+		$this->debugMessage .= "OVERRIDING COUNTRY CODE";
 		Session::set("GSTTaxModifier_CountryCode", $countryCode);
 	}
 
@@ -85,13 +86,17 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveCountry() {
 		if($fixedCode = Session::get("GSTTaxModifier_CountryCode")) {
+			$this->debugMessage .= "taking session value for country code";
 			self::$current_country_code = $fixedCode;
 		}
 		if(!self::$current_country_code) {
 			self::$current_country_code = parent::LiveCountry();
+			$this->debugMessage .= "using parent::LiveCountry country for country";
 			if(!self::$current_country_code) {
+				$this->debugMessage .= "using shopping cart for country";
 				self::$current_country_code = ShoppingCart::get_country();
 				if(!self::$current_country_code) {
+					$this->debugMessage .= "using default country for cart";
 					self::$current_country_code	 = self::$default_country_code;
 				}
 			}
@@ -114,7 +119,6 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveRate() {
 		$taxObject = $this->LiveTaxObject();
-
 		if($taxObject) {
 			$this->debugMessage .= "<hr />using rate: ".$taxObject->Rate;
 			return $taxObject->Rate;
@@ -146,6 +150,9 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function TableValue() {
+		if(isset($_REQUEST["debug"])) {
+			echo $this->debugMessage;
+		}
 		return "$".number_format(abs($this->Charge()), 2);
 	}
 
@@ -181,9 +188,6 @@ class GSTTaxModifier extends TaxModifier {
 			if(self::$based_on_country_note && $countryName  && $countryCode != self::$default_country_code) {
 				$finalString .= self::$based_on_country_note.$countryName;
 			}
-		}
-		if(isset($_REQUEST["debug"])) {
-			echo $this->debugMessage;
 		}
 		return $finalString;
 	}
