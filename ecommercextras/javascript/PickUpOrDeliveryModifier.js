@@ -60,6 +60,7 @@ var	PickUpOrDeliveryModifier = {
 
 	updateCountryList: function() {
 		var currentIndex = jQuery("#" + PickUpOrDeliveryModifier.formID+ PickUpOrDeliveryModifier.DropdownIDappendix).val();
+		var currentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val();
 		var acceptableOptions = PickUpOrDeliveryModifier.availableCountries[currentIndex];
 		if(acceptableOptions.length < 1) {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").show();
@@ -68,7 +69,7 @@ var	PickUpOrDeliveryModifier = {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").hide();
 		}
 		var hasValidValue = false;
-		var currentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val()
+
 		for(i=0;i<acceptableOptions.length;i++) {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option[value='" + acceptableOptions[i] + "']").show();
 			if(currentCountryValue == acceptableOptions[i]) {
@@ -76,8 +77,7 @@ var	PickUpOrDeliveryModifier = {
 			}
 		}
 		if(acceptableOptions.length == 1) {
-			alert("only one option"+acceptableOptions[0]);
-			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val(acceptableOptions[i]);
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val(acceptableOptions[0]);
 			hasValidValue = true;
 		}
 		if(hasValidValue) {
@@ -92,7 +92,10 @@ var	PickUpOrDeliveryModifier = {
 			}
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val("-");
 		}
-		jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
+		var newCurrentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val();
+		if(currentCountryValue != newCurrentCountryValue) {
+			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
+		}
 	}
 
 
