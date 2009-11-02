@@ -76,7 +76,7 @@ var	PickUpOrDeliveryModifier = {
 			}
 		}
 		if(acceptableOptions.length == 1) {
-			alert("only one option"+acceptableOptions[i]);
+			alert("only one option"+acceptableOptions[0]);
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val(acceptableOptions[i]);
 			hasValidValue = true;
 		}
