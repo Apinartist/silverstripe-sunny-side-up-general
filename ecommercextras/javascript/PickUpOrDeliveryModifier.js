@@ -92,10 +92,7 @@ var	PickUpOrDeliveryModifier = {
 			}
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val("-");
 		}
-		var newCurrentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val();
-		if(currentCountryValue != newCurrentCountryValue) {
-			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
-		}
+		jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
 	}
 
 
