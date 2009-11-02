@@ -13,7 +13,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	protected static $extra_fields = array();
 
 	protected static $postal_code_url = "http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder";
-	protected static $postal_code_label = "postcode finder click here";
+	protected static $postal_code_label = "find postcode";
 
 	static function set_fixed_country_code($v) {
 		self::$fixed_country_code = $v;
@@ -90,7 +90,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
 
-		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note'), "Country");
+		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note'));
 
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();
