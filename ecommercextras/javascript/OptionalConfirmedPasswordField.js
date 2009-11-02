@@ -58,7 +58,6 @@ var OptionalConfirmedPasswordField = {
 		}
 		return password;
 	}
-}
 
 }
 
