@@ -203,5 +203,32 @@ class AjaxOrder_Controller extends Extension {
 		}
 	}
 
+	protected function testEmail($emailClass = 'Order_ReceiptEmail') {
+		if($m = Member::currentUser()) {
+			if($m->isAdmin()) {
+				$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
+				$order = DataObject::get_by_id("Order", intval(Director::URLParam("ID")));
+				$to = $order->Member()->Email;
+				$subject = self::$receipt_subject ? self::$receipt_subject : "Shop Sale Information #$order->ID";
+
+				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
+
+				$email = new $emailClass();
+				$email->setFrom($from);
+				$email->setTo($to);
+				$email->setSubject($subject);
+				$email->populateTemplate(
+					array(
+						'PurchaseCompleteMessage' => $purchaseCompleteMessage,
+						'Order' => $order
+					)
+				);
+				$email->debug();
+				die("end");
+			}
+		}
+		return array();
+	}
+
 }
 
