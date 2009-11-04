@@ -220,6 +220,7 @@ class AjaxOrder_Controller extends Extension {
 							$c = $emailClass = $c;
 						}
 					}
+					Requirements::clear();
 					$email = new $emailClass();
 					$email->setFrom($from);
 					$email->setTo($to);
