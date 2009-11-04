@@ -13,7 +13,7 @@
 </ul>
 <% if Order %>
 	<% control Order %>
-		<% include Order_Content %>
+		<% include OrderInformation %>
 	<% end_control %>
 <% else %>
 	<% if LastOrders %>
