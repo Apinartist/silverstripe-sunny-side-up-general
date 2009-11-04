@@ -132,7 +132,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	function processOrder($data, $form, $request) {
 		print_r($data);
-
+		die();
 		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
 		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
 
@@ -164,7 +164,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$member->logIn();
 
 		// Create new Order from shopping cart, discard cart contents in session
-		print_r($data);
 		$order->CustomerOrderNote = Convert::raw2sql($data["CustomerOrderNote"]);
 		$order = ShoppingCart::save_current_order();
 		ShoppingCart::clear();
