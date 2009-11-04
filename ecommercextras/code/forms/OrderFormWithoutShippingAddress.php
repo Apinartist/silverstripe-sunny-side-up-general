@@ -91,11 +91,5 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$this->loadDataFrom($data);
 	}
 
-
-
-
-
-
-
 }
 
