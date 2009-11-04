@@ -115,7 +115,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 		return array();
 	}
 
-	function order($request) {
+	function showorder($request) {
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
 
