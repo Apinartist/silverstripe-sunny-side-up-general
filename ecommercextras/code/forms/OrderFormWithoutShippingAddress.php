@@ -90,7 +90,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
 
-		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note'));
+		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note / Question'));
 
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();
@@ -167,6 +167,8 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$member->logIn();
 
 		// Create new Order from shopping cart, discard cart contents in session
+		print_r($data);
+		$order->CustomerOrderNote = Convert::raw2sql($data["CustomerOrderNote"]);
 		$order = ShoppingCart::save_current_order();
 		ShoppingCart::clear();
 
