@@ -171,7 +171,7 @@ class AjaxOrder_Controller extends Extension {
 
 
 	function OrderFormWithoutShippingAddress() {
-		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
+		return new OrderFormWithoutShippingAddress($this->owner, 'OrderFormWithoutShippingAddress');
 	}
 
 }
