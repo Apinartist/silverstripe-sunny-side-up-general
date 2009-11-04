@@ -207,10 +207,10 @@ class AjaxOrder_Controller extends Extension {
 	function testorderreceipt($emailClass = 'Order_ReceiptEmail') {
 		if($m = Member::currentUser()) {
 			if($m->isAdmin()) {
-				$from = Order::get_receipt_email() ? Order::get_receipt_email() : Email::getAdminEmail();
+				$from = Email::getAdminEmail() . " NOTE - THIS IS A GUESS VALUE ONLY";
 				$order = DataObject::get_by_id("Order", intval(Director::URLParam("ID")));
 				$to = $order->Member()->Email;
-				$subject = Order::get_receipt_subject() ? Order::get_receipt_subject() : "Shop Sale Information #$order->ID";
+				$subject = "Shop Sale Information #$order->ID - TEST SUBJECT ONLY!";
 
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
 
