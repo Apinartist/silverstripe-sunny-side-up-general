@@ -78,12 +78,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		//$this->fields->replaceField("Address", new TextField("Address", "Delivery Address (no Postal Box)"));
 		//$this->fields->replaceField("AddressLine2", $PostalCodeField);
 
-		// fix errors
-		if($message = $this->CustomErrors()) {
-			$this->fields->addFieldToTab("", new HeaderField("ErrorHeading", "Error!"));
-			$this->fields->addFieldToTab("", new LiteralField("ErrorMessage", '<div class="error">'.$message.'</div>'));
-		}
-
 		//$this->resetField("Country", "NZ");
 
 		if(self::$fixed_country_code) {
