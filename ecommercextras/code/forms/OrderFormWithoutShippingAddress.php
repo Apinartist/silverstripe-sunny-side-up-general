@@ -129,12 +129,9 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 	}
 
-	/**
-	 * Disable the validator when the action clicked is to use a different shipping address
-	 * or use the member shipping address.
-	 */
 
 	function processOrder($data, $form, $request) {
+		print_r($data);
 
 		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
 		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
