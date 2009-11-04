@@ -95,6 +95,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();
 		$this->loadDataFrom($data);
+		//$this->setFormAction($this->URLSegment."/OrderFormWithoutShippingAddress/");
 	}
 
 
