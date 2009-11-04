@@ -81,7 +81,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 			}
 		}
 		if($orderID) {
-			$order = DataObject::get_by_id("Order", $orderID));
+			$order = DataObject::get_by_id("Order", $orderID);
 			if($order) {
 				$from = Email::getAdminEmail() . " NOTE - THIS IS A GUESS VALUE ONLY";
 				$to = $order->Member()->Email;
