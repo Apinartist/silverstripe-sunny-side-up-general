@@ -119,7 +119,8 @@ class AjaxOrder_Controller extends Extension {
 		"modifierformsubmit",
 		"getajaxcheckoutcart",
 		"RecommendedProducts",
-		"ModifierForm"
+		"ModifierForm",
+		"OrderFormWithoutShippingAddress"
 	);
 
 	static function set_order_item_classname($v){
