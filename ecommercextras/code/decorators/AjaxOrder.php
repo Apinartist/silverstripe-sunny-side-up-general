@@ -210,7 +210,7 @@ class AjaxOrder_Controller extends Extension {
 				$from = Order::$receipt_email ? Order::$receipt_email : Email::getAdminEmail();
 				$order = DataObject::get_by_id("Order", intval(Director::URLParam("ID")));
 				$to = $order->Member()->Email;
-				$subject = Order::$receipt_subject ? Order::$receipt_subject : "Shop Sale Information #$order->ID";
+				$subject = Order::get_receipt_email() ? Order::get_receipt_email() : "Shop Sale Information #$order->ID";
 
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
 

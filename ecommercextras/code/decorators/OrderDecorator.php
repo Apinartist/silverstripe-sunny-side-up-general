@@ -66,6 +66,11 @@ class OrderDecorator extends DataObjectDecorator {
 			}
 		}
 	}
+
+	static function get_receipt_email() {
+		return $this->owner::$receipt_email
+	}
+
 }
 
 
