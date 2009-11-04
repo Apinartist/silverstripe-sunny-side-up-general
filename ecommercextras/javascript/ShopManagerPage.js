@@ -42,7 +42,7 @@ var ShopManagerPage = {
 		);
 		jQuery(this.showHideNextSelector).click(
 			function() {
-				jQuery(this).parent().next().toggleSlide();
+				jQuery(this).parent().next().slideToggle();
 			}
 		);
 		jQuery(this.showHideNextSelector).click();
