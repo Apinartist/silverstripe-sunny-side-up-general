@@ -116,11 +116,8 @@ class AjaxOrder_Controller extends Extension {
 	static $allowed_actions = array(
 		"additemwithajax",
 		"removeitemwithajax",
-		"clearcompletecart",
 		"modifierformsubmit",
 		"getajaxcheckoutcart",
-		"getorderdetailsforadmin",
-		"testorderreceipt",
 		"RecommendedProducts",
 		"ModifierForm"
 	);
@@ -173,79 +170,8 @@ class AjaxOrder_Controller extends Extension {
 	}
 
 
-	function clearcompletecart() {
-		ShoppingCart::clear();
-		if($m = Member::currentUser()) {
-			$m->logout();
-		}
-		for($i = 0; $i < 5; $i++) {
-			$_SESSION = array();
-			unset($_SESSION);
-			ShoppingCart::clear();
-			$_SESSION = array();
-			unset($_SESSION);
-		}
-		die('<a href="/">Shopping cart has been removed, click here to continue ...</a>');
-	}
-
 	function OrderFormWithoutShippingAddress() {
 		return new OrderFormWithoutShippingAddress($this->owner, 'OrderForm');
-	}
-
-	function getorderdetailsforadmin() {
-		$m = Member::currentUser();
-		if($m) {
-			if($m->isAdmin()) {
-				$orderID = intval(Director::URLParam("ID"));
-				$dos = DataObject::get('OrderModifier', "`OrderID` = '$orderID'");
-				print_r($dos);
-
-			}
-		}
-	}
-
-	function testorderreceipt() {
-		if($m = Member::currentUser()) {
-			if($m->isAdmin()) {
-				$from = Email::getAdminEmail() . " NOTE - THIS IS A GUESS VALUE ONLY";
-				$order = DataObject::get_by_id("Order", intval(Director::URLParam("ID")));
-				if($order) {
-					$to = $order->Member()->Email;
-					$subject = "Shop Sale Information #$order->ID - TEST SUBJECT ONLY!";
-
-					$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
-					$emailClass = 'Order_ReceiptEmail';
-					if($c = Director::URLParam("OtherID")) {
-						if(class_exists($c)) {
-							$c = $emailClass = $c;
-						}
-					}
-					$email = new $emailClass();
-					$email->setFrom($from);
-					$email->setTo($to);
-					$email->setSubject($subject);
-					$email->populateTemplate(
-						array(
-							'PurchaseCompleteMessage' => $purchaseCompleteMessage,
-							'Order' => $order
-						)
-					);
-					Requirements::clear();
-
-					$v = $email->debug();
-					print_r($v);
-					die("end");
-				}
-			}
-			else {
-				die("you need to be logged-in as administrator to view draft emails");
-			}
-		}
-		else {
-			die("you need to be logged-in to view draft emails");
-		}
-
-		return array();
 	}
 
 }

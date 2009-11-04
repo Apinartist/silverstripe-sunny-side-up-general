@@ -21,6 +21,10 @@ var ShopManagerPage = {
 
 	inputSelector: "#ShopManagerPageOrderID",
 
+	orderListSelector: "#ShopManagerPageLastOrders",
+
+	showHideNextSelector: "p.showHideNext a",
+
 	init: function () {
 		jQuery(ShopManagerPage.linkSelectors).click(
 			function() {
@@ -35,7 +39,13 @@ var ShopManagerPage = {
 				}
 
 			}
-		)
+		);
+		jQuery(this.showHideNextSelector).click(
+			function() {
+				jQuery(this).parent().next().toggleSlide();
+			}
+		);
+		jQuery(this.showHideNextSelector).click();
 	}
 
 }

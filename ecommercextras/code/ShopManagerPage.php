@@ -49,6 +49,10 @@ class ShopManagerPage_Controller extends Page_Controller {
 		return DataObject::get_one("AccountPage");
 	}
 
+	function LastOrders() {
+		return DataObject::get("Order", "", "Created DESC", "", "0, 250");
+	}
+
 	function clearcompletecart() {
 		ShoppingCart::clear();
 		if($m = Member::currentUser()) {

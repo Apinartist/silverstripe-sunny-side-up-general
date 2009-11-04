@@ -8,6 +8,13 @@
 </ul>
 
 <h3>Other options</h3>
-<ul>
+<ul id="ShopManagerPageOtherOptions">
 	<li><a href="$Link/clearcompletecart">clear complete cart</a> - useful if you want to pretend to be a new customer to the site</li>
 </ul>
+<% if LastOrders %>
+<h3>Last Orders</h3>
+<p class="showHideNext"><a href="#">show now</a></p>
+<ul id="ShopManagerPageLastOrders">
+	<% control LastOrders %><li>#$ID, $Created.Nice, $Status, $Member.Firstname $Member.Surname, $Member.Email</li><% end_control %>
+</ul>
+<% end_if %>
