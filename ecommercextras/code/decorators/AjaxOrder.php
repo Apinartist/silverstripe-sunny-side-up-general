@@ -205,30 +205,43 @@ class AjaxOrder_Controller extends Extension {
 	}
 
 	function testorderreceipt() {
-		$emailClass = 'Order_ReceiptEmail';
 		if($m = Member::currentUser()) {
 			if($m->isAdmin()) {
 				$from = Email::getAdminEmail() . " NOTE - THIS IS A GUESS VALUE ONLY";
 				$order = DataObject::get_by_id("Order", intval(Director::URLParam("ID")));
-				$to = $order->Member()->Email;
-				$subject = "Shop Sale Information #$order->ID - TEST SUBJECT ONLY!";
+				if($order) {
+					$to = $order->Member()->Email;
+					$subject = "Shop Sale Information #$order->ID - TEST SUBJECT ONLY!";
 
-				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
-
-				$email = new $emailClass();
-				$email->setFrom($from);
-				$email->setTo($to);
-				$email->setSubject($subject);
-				$email->populateTemplate(
-					array(
-						'PurchaseCompleteMessage' => $purchaseCompleteMessage,
-						'Order' => $order
-					)
-				);
-				$email->debug();
-				die("end");
+					$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
+					$emailClass = 'Order_ReceiptEmail';
+					if($c = Director::URLParam("OtherID")) {
+						if(class_exists($c)) {
+							$c = $emailClass = $c;
+						}
+					}
+					$email = new $emailClass();
+					$email->setFrom($from);
+					$email->setTo($to);
+					$email->setSubject($subject);
+					$email->populateTemplate(
+						array(
+							'PurchaseCompleteMessage' => $purchaseCompleteMessage,
+							'Order' => $order
+						)
+					);
+					echo $email->debug();
+					die("end");
+				}
+			}
+			else {
+				die("you need to be logged-in as administrator to view draft emails");
 			}
 		}
+		else {
+			die("you need to be logged-in to view draft emails");
+		}
+
 		return array();
 	}
 
