@@ -10,7 +10,7 @@ RECOMMENDATIONS FOR CURRENT ECOMMERCE:
 8. get rid of IsProcessing, IsSent and other functions like this, as they make it hard to customise the status of an order
 9. get rid of variable $paid_status
 
-
+10. add get_receipt_email to Order for email testing purposes
 
 
 Other ideas:
