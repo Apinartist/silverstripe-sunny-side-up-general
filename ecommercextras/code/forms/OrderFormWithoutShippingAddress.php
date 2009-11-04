@@ -19,10 +19,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		self::$fixed_country_code = $v;
 	}
 
-	static function add_extra_field($tabName, $field) {
-		self::$extra_fields[] = array("TabName" =>$tabName, "FieldObject" => $field);
-	}
-
 	static function set_postal_code_url($v) {
 		self::$postal_code_url = $v;
 	}
@@ -35,7 +31,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 		Requirements::javascript('ecommercextras/javascript/OrderFormWithoutShippingAddress.js');
 
-		$myForm = parent::__construct($controller, $name);
+		parent::__construct($controller, $name);
 
 		//stop people adding different shipping address
 		$this->unsetActionByName("useDifferentShippingAddress");
