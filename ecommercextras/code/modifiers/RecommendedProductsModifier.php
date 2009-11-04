@@ -131,7 +131,7 @@ class RecommendedProductsModifier_Form extends Form {
 						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
 					}
 					else {
-						$imagePart = '<span class="secondPart">[no image available for '.$product->Title.']</span>';
+						$imagePart = '<span class="secondPart noImage">[no image available for '.$product->Title.']</span>';
 					}
 				}
 				$pricePart = '<span class="firstPart">'.$this->getCurrency().$product->Price.'</span>';
