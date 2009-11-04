@@ -109,7 +109,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 
 				$v = $email->debug();
 				print_r( $v );
-				die('------------------------------------------------- end, <a href="/'.$this->Link.'">click to continue</a> -------------------------------------------------');
+				die('------------------------------------------------- end, <a href="/'.$this->Link().'">click to continue</a> -------------------------------------------------');
 			}
 		}
 		else {
