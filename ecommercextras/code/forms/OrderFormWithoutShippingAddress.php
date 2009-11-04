@@ -15,6 +15,10 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	protected static $postal_code_url = "http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder";
 	protected static $postal_code_label = "find postcode";
 
+	static function add_extra_field($tabName, $field) {
+		self::$extra_fields[] = array("TabName" =>$tabName, "FieldObject" => $field);
+	}
+
 	static function set_fixed_country_code($v) {
 		self::$fixed_country_code = $v;
 	}
