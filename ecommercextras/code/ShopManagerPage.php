@@ -68,8 +68,9 @@ class ShopManagerPage_Controller extends Page_Controller {
 	function getorderdetailsforadmin() {
 		$orderID = intval(Director::URLParam("ID"));
 		$dos = DataObject::get('OrderModifier', "`OrderID` = '$orderID'");
-		print_r($dos);
-		die('------------------------------------------------- end, <a href="'.$this->Link.'">click to continue</a> -------------------------------------------------');
+		$v = print_r($dos);
+		$this->Content = $v;
+		return array();
 	}
 
 	function testorderreceipt() {
@@ -107,11 +108,12 @@ class ShopManagerPage_Controller extends Page_Controller {
 				Requirements::clear();
 
 				$v = $email->debug();
-				print_r($v);
-				die('------------------------------------------------- end, <a href="'.$this->Link.'">click to continue</a> -------------------------------------------------');
+				$this->Content = $v;
 			}
 		}
-		debug::show("no order found");
+		else {
+			$this->Content = "<h1>NO ORDER FOUND!</h1>";
+		}
 		return array();
 	}
 

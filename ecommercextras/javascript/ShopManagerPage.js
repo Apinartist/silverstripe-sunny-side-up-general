@@ -35,6 +35,7 @@ var ShopManagerPage = {
 				}
 				else {
 					alert("please enter an order number first");
+					jQuery(ShopManagerPage.inputSelector).focus();
 					return false;
 				}
 
