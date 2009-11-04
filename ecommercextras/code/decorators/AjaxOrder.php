@@ -120,6 +120,7 @@ class AjaxOrder_Controller extends Extension {
 		"modifierformsubmit",
 		"getajaxcheckoutcart",
 		"getorderdetailsforadmin",
+		"testorderreceipt",
 		"RecommendedProducts",
 		"ModifierForm"
 	);
@@ -203,7 +204,7 @@ class AjaxOrder_Controller extends Extension {
 		}
 	}
 
-	protected function testEmail($emailClass = 'Order_ReceiptEmail') {
+	function testorderreceipt($emailClass = 'Order_ReceiptEmail') {
 		if($m = Member::currentUser()) {
 			if($m->isAdmin()) {
 				$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
