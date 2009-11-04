@@ -33,12 +33,21 @@ class ShopManagerPage_Controller extends Page_Controller {
 				Enter your credentials below and we will send you right along.'));
 			return;
 		}
+		Requirements::themedCSS("ShopManagerPage");
+		Requirements::javascript("ecommercextras/javascript/ShopManagerPage.js");
 	}
 
 	protected $fns = array(
 		"clearcompletecart" => "Clear Complete Cart, Login and Browse History"
-
 	)
+
+	function CheckoutPage() {
+		return DataObject::get_one("CheckoutPage");
+	}
+
+	function AccountPage() {
+		return DataObject::get_one("AccountPage");
+	}
 
 	function clearcompletecart() {
 		ShoppingCart::clear();
