@@ -231,7 +231,10 @@ class AjaxOrder_Controller extends Extension {
 							'Order' => $order
 						)
 					);
-					echo $email->debug();
+					Requirements::clear();
+
+					$v = $email->debug();
+					print_r($v);
 					die("end");
 				}
 			}
