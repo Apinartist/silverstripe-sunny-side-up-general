@@ -28,10 +28,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 		parent::init();
 		// Only administrators can run this method
 		if(!Permission::check("ADMIN")) {
-			Security::permissionFailure($this,
-				_t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it.
-				Enter your credentials below and we will send you right along.'));
-			return;
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
 		Requirements::themedCSS("ShopManagerPage");
 		Requirements::javascript("ecommercextras/javascript/ShopManagerPage.js");
