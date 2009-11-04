@@ -108,7 +108,8 @@ class ShopManagerPage_Controller extends Page_Controller {
 				Requirements::clear();
 
 				$v = $email->debug();
-				$this->Content = $v;
+				print_r( $v );
+				die('------------------------------------------------- end, <a href="/'.$this->Link.'">click to continue</a> -------------------------------------------------');
 			}
 		}
 		else {
