@@ -69,7 +69,13 @@ class OrderDecorator extends DataObjectDecorator {
 
 	// we need to
 	static function get_receipt_email() {
-		return self::$receipt_email;
+		//return self::$receipt_email;
+		return "FROM email address is not available in test!";
+	}
+
+	static function get_receipt_subject() {
+		//return self::$receipt_subject;
+		return "SUBJECT not is available in test";
 	}
 
 }
