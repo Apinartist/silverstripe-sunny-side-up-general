@@ -73,7 +73,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 	}
 
 	function testorderreceipt() {
-		$orderID = intval(Director::URLParam("ID");
+		$orderID = intval(Director::URLParam("ID"));
 		if(!$orderID) {
 			$o = DataObject::get_one("Order", "", "Created DESC");
 			if($o) {
