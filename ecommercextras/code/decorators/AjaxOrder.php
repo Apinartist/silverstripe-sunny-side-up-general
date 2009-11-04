@@ -214,7 +214,7 @@ class AjaxOrder_Controller extends Extension {
 
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
 
-				$email = new $emailClass("GET");
+				$email = new $emailClass("GET", $this->owner->URLSegment);
 				$email->setFrom($from);
 				$email->setTo($to);
 				$email->setSubject($subject);
