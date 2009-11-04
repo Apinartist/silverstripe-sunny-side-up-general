@@ -95,45 +95,11 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();
 		$this->loadDataFrom($data);
-		//$this->setFormAction($this->URLSegment."/OrderFormWithoutShippingAddress/");
 	}
 
-
-	function CustomErrors() {
-		$v = Session::get("FormInfo.OrderFormWithoutShippingAddress.formError.message").Session::get("FormInfo.OrderForm_OrderForm.formError.message");
-		return $v;
-	}
-
-	function setupFormErrors() {
-		//parent::setupFormErrors();
-		$errorInfo = Session::get("FormInfo.OrderForm_OrderForm");
-		if(isset($errorInfo['errors']) && is_array($errorInfo['errors'])) {
-			foreach($errorInfo['errors'] as $error) {
-				$field = $this->fields->dataFieldByName($error['fieldName']);
-
-				if(!$field) {
-					$errorInfo['message'] = $error['message'];
-					$errorInfo['type'] = $error['messageType'];
-				} else {
-					$field->setError($error['message'], $error['messageType']);
-				}
-			}
-
-			// load data in from previous submission upon error
-			if(isset($errorInfo['data'])) $this->loadDataFrom($errorInfo['data']);
-		}
-
-		if(isset($errorInfo['message']) && isset($errorInfo['type'])) {
-			$this->setMessage($errorInfo['message'], $errorInfo['type']);
-		}
-
-
-	}
 
 
 	function processOrder($data, $form, $request) {
-		print_r($data);
-		die();
 		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
 		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
 
