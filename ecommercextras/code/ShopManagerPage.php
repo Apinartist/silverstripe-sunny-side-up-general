@@ -37,10 +37,6 @@ class ShopManagerPage_Controller extends Page_Controller {
 		Requirements::javascript("ecommercextras/javascript/ShopManagerPage.js");
 	}
 
-	protected $fns = array(
-		"clearcompletecart" => "Clear Complete Cart, Login and Browse History"
-	)
-
 	function CheckoutPage() {
 		return DataObject::get_one("CheckoutPage");
 	}
