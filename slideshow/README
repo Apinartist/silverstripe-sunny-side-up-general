@@ -13,7 +13,14 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-Allows you to add add a slideshow to any page.
+A basic slideshow module that can work out of the box,
+but also has a lot of customisation options.
+It allows you to add a folder / a bunch of images to any
+page in your CMS and, if you have included the
+SlideShow template, it will show a small slideshow
+(first image shows, fades out, second image fades in, and so on).
+If anything, it can be a useful "base" module to
+extend into something more fancy.
 
 
 Installation Instructions
