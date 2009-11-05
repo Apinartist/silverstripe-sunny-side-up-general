@@ -112,10 +112,12 @@ class ExtendedProductVariationGroup extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$groups = DataObject::get("ExtendedProductVariationGroup");
-		if(!$groups->count()) {
-			$g = new ExtendedProductVariationGroup();
-			$g->Name = "Default Group";
-			$g->write();
+		if($groups) {
+			if(!$groups->count()) {
+				$g = new ExtendedProductVariationGroup();
+				$g->Name = "Default Group";
+				$g->write();
+			}
 		}
 	}
 
