@@ -1,11 +1,11 @@
 ###############################################
-SlideShow
+Slide Show
 Pre 0.1 proof of concept
 ###############################################
 
 Developer
 -----------------------------------------------
-Nicolaas Francken [at] sunnysideup.co.nz
+Nicolaas [at] sunnysideup.co.nz
 
 Requirements
 -----------------------------------------------
@@ -13,6 +13,8 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
+Allows you to add add a slideshow to any page.
+
 
 Installation Instructions
 -----------------------------------------------
@@ -21,10 +23,11 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module, but instead customise it
 in your mysite folder at all so that you can upgrade it later.
+3. add <% include SlideShowSection %> to your template
 
-Thank you
------------------------------------------------
-This module is is basically an implementation of
-a jQuery libary only so all credit to the original
-libary.
+CUSTOMISATION:
 
+there are two things you can do to customise
+
+1. you can theme the templates
+2. you can opt for an alternative JS files (see _config for more information)
