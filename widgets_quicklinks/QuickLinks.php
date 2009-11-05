@@ -36,6 +36,7 @@ class QuickLinks extends Widget {
 		if($source) foreach( $source as $page ) {
 			$optionArray[$page->ID] = $page->MenuTitle;
 		}
+		$emptyString = "--- select page ---";
 		return new FieldSet(
 			new DropdownField("QuickLink1ID","First Link",$optionArray),
 			new DropdownField("QuickLink2ID","Second Link",$optionArray),
