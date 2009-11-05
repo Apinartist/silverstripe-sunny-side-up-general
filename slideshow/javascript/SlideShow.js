@@ -1,13 +1,14 @@
 ;(function($) {
 	$(document).ready(
 		function() {
+			$("#SlidesForShow .slidesForShowSlide").css("visibility",  "visible");
 			$("#SlidesForShow").cycle(
 				{
 					fx:    'fade',
 					sync:   1,
 					timeout: 7000,
 					speed: 2000,
-					pager:  '#SlideShowPreviousNext',
+					pager:  '#SlidesForShowPreviousNext',
 					pagerAnchorBuilder: function(idx, slide) {
 						return '<a href="#">&nbsp;</a>';
 					}
