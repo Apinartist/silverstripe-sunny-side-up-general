@@ -45,7 +45,8 @@
 //MinMaxModifier::set_min_field("MinQuantity");
 //MinMaxModifier::set_max_field("MaxQuantity");
 //MinMaxModifier::set_default_min_quantity(1);
-//MinMaxModifier::set_default_max_quantity(1);
+//MinMaxModifier::set_default_max_quantity(99);
+//MinMaxModifier::set_adjustment_message = "Quantities have been adjusted as follows: ";
 
 
 // *** GST TAX MODIFIER

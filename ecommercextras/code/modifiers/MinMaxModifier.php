@@ -4,7 +4,7 @@
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce
  * @sub-package: ecommercextras
- * @description: makes sure that a product does not have a max / min value.
+ * @description: makes sure that a product quantity in cart stays between a min and a max
  */
 class MinMaxModifier extends OrderModifier {
 
