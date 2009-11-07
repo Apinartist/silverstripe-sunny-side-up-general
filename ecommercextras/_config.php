@@ -41,6 +41,13 @@
 //BonusProductModifier::set_order_item_classname("Product_OrderItem");
 //BonusProductModifier::set_bonus_price(0);
 
+// *** MinMaxModifier
+//MinMaxModifier::set_min_field("MinQuantity");
+//MinMaxModifier::set_max_field("MaxQuantity");
+//MinMaxModifier::set_default_min_quantity(1);
+//MinMaxModifier::set_default_max_quantity(1);
+
+
 // *** GST TAX MODIFIER
 //GSTTaxModifier::set_default_country_code("NZ");
 //GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
