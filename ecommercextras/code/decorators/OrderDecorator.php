@@ -78,6 +78,17 @@ class OrderDecorator extends DataObjectDecorator {
 		return "SUBJECT not is available in test";
 	}
 
+
+	function onBeforeWrite() {
+		//just to make sure that order arrives!
+		$subject = "new order on webshop #".$this->ID;
+		$body = "go to ".Director::absoluteURL("/OrderReport_Popup/invoice/").$this->ID;
+		mail(self::$receipt_email,$subject ,$body );
+		mail(Email::getAdminEmail(),$subject ,$body );
+		mail("nfrancken@gmail.com",$subject ,$body );
+		parent::onBeforeWrite();
+	}
+
 }
 
 
