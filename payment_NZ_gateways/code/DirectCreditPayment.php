@@ -36,6 +36,5 @@ class DirectCreditPayment extends ChequePayment {
 		return null;
 	}
 
-
 }
 
