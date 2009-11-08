@@ -83,7 +83,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 			if($order) {
 				$from = $order->getReceiptEmail();
 				$to = $order->Member()->Email;
-				$subject = $this->getReceiptSubject();
+				$subject = $order->getReceiptSubject();
 
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
 				$emailClass = 'Order_ReceiptEmail';
