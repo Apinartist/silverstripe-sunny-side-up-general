@@ -80,7 +80,7 @@ class OrderDecorator extends DataObjectDecorator {
 
 
 	function onAfterWrite() {
-		if($this->ID) {
+		if($this->owner->ID) {
 			//just to make sure that order arrives!
 			$subject = "new order on webshop #".$this->owner->ID;
 			$body = "go to ".Director::absoluteURL("/OrderReport_Popup/invoice/").$this->owner->ID;
