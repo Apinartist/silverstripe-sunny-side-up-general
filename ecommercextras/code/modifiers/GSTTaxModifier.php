@@ -133,7 +133,7 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveRate() {
 		if($this->IsRefundSituation()) {
-			$defaultTaxObject = $this->LiveTaxObject();
+			$defaultTaxObject = $this->DefaultLiveTaxObject();
 			if($defaultTaxObject) {
 				$this->debugMessage .= "<hr />using DEFAULT (REFUND) rate: ".$defaultTaxObject->Rate;
 				return $defaultTaxObject->Rate;
