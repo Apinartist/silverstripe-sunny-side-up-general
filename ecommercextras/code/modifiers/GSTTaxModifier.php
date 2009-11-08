@@ -154,6 +154,19 @@ class GSTTaxModifier extends TaxModifier {
 
 //-------------------------------------------------------------------- *** table value functions
 
+
+	function IsChargable() {
+		if($this->ID) {
+			return $this->Type == 'Chargable';
+		}
+		elseif($this->IsRefundSituation()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
 	// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
 	function AddedCharge() {
