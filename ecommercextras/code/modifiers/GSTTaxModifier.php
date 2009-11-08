@@ -154,16 +154,18 @@ class GSTTaxModifier extends TaxModifier {
 
 //-------------------------------------------------------------------- *** table value functions
 
-
 	function IsChargable() {
-		if($this->ID) {
-			return $this->Type == 'Chargable';
-		}
-		elseif($this->IsRefundSituation()) {
-			return false;
+		if($this->IsRefundSituation()) {
+			$this->Type = "Deductable";
+			self::$is_chargable = false;
 		}
 		else {
-			return true;
+			if($this->ID) {
+				return $this->Type == 'Chargable';
+			}
+			else {
+				$this->stat('is_chargable');
+			}
 		}
 	}
 
@@ -284,6 +286,8 @@ class GSTTaxModifier extends TaxModifier {
 		$this->Name = $this->LiveName();
 		$this->TaxType = $this->LiveIsExclusive() ? 'Exclusive' : 'Inclusive';
 		$this->DebugString = $this->debugMessage;
+		$this->Type = $this->IsChargable();
+
 	}
 
 	// ajax NEED TO OVERRIDE THE STANDARD ONE.
