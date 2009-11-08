@@ -188,7 +188,7 @@ class GSTTaxModifier extends TaxModifier {
 	function getAmount() {
 		if($this->IsExclusive() || $this->IsRefundSituation()) {
 			if($this->ID) {
-				return $this->Amount();
+				return $this->getField("Amount");
 			}
 			else {
 				return $this->LiveAmount();
