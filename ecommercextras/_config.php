@@ -55,6 +55,7 @@
 //GSTTaxModifier::set_inclusive_explanation(" (included in prices above)");
 //GSTTaxModifier::set_based_on_country_note(" - based on a sale to: ");
 //GSTTaxModifier::set_no_tax_description("tax-exempt");
+//GSTTaxModifier::set_refund_title("Tax Deductions");
 
 // *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");

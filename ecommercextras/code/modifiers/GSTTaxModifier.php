@@ -45,11 +45,6 @@ class GSTTaxModifier extends TaxModifier {
 
 	private static $current_country_code = "";
 
-
-
-
-
-
 //-------------------------------------------------------------------- *** static functions
 
 	static function override_country($countryCode) {
