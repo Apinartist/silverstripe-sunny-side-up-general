@@ -133,10 +133,6 @@ class GSTTaxModifier extends TaxModifier {
 //-------------------------------------------------------------------- *** table value functions
 // note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
-	function AddedCharge() {
-		return $this->IsExclusive() ? $this->Charge() : $this->deductableCharge();
-	}
-
 	function getAmount() {
 		if($this->IsExclusive()) {
 			if($this->ID) {
@@ -145,9 +141,6 @@ class GSTTaxModifier extends TaxModifier {
 			else {
 				return $this->LiveAmount();
 			}
-		}
-		else {
-			return $this->deductableCharge();
 		}
 		return 0;
 	}
@@ -161,16 +154,6 @@ class GSTTaxModifier extends TaxModifier {
 			echo $this->debugMessage;
 		}
 		return "$".number_format(abs($this->Charge()), 2);
-	}
-
-	function deductableCharge() {
-		//HORRIBLE HACK TO GET GST INCLUSIVE WORKING WITHIN NZ
-		if($this->Country() != "NZ") {
-			return (-1 * $this->TaxableAmount() * (1/9));
-		}
-		else {
-			return 0;
-		}
 	}
 
 //-------------------------------------------------------------------- *** title function
