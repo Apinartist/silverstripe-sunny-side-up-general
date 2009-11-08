@@ -178,7 +178,7 @@ class GSTTaxModifier extends TaxModifier {
 
 	function AddedCharge() {
 		if($this->IsRefundSituation()) {
-			$this->Charge();
+			return $this->Charge();
 		}
 		else {
 			return $this->IsExclusive() ? $this->Charge() : 0;
@@ -195,7 +195,7 @@ class GSTTaxModifier extends TaxModifier {
 			}
 		}
 		else {
-			return 999999999;
+			return 0;
 		}
 	}
 
