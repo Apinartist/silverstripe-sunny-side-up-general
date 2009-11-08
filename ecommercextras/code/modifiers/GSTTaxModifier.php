@@ -165,7 +165,7 @@ class GSTTaxModifier extends TaxModifier {
 	function deductableCharge() {
 		//HORRIBLE HACK TO GET GST INCLUSIVE WORKING WITHIN NZ
 		if($this->Country() != "NZ") {
-			return (-1 * $this->TaxableAmount() * $rate);
+			return (-1 * $this->TaxableAmount() * (1/9));
 		}
 	}
 
