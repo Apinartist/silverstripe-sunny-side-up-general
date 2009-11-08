@@ -53,6 +53,10 @@ class AjaxOrder extends DataObjectDecorator {
 		return 0;
 	}
 
+	public function MoreThanOneItemInCart() {
+		return $this->NumItemsInCart > 1;
+	}
+
 	public function IsCheckoutPage() {
 		return ("CheckoutPage" == $this->owner->ClassName);
 	}
