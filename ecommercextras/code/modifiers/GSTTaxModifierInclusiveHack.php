@@ -29,7 +29,7 @@ class GSTTaxModifierInclusiveHack extends GSTTaxModifier {
 			return "GST Reduction (based on sales outside New Zealand)";
 		}
 		else {
-			return "&nbsp;";
+			return "do not show'";
 		}
 	}
 

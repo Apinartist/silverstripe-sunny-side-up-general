@@ -15,7 +15,7 @@
 
 class GSTTaxModifier extends TaxModifier {
 
-//-------------------------------------------------------------------- *** static variables
+	//-------------------------------------------------------------------- *** static variables
 	static $db = array(
 		'Country' => 'Text',
 		'Rate' => 'Double',
@@ -36,6 +36,9 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected static $based_on_country_note = " - based on a sale to: ";
 		static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
+
+	protected static $refund_title = "Tax Reduction"
+		static function set_refund_title($v) {self::$refund_title = $v;}
 
 	protected static $no_tax_description = "tax-exempt";
 		static function set_no_tax_description($v) {self::$no_tax_description = $v;}
@@ -115,26 +118,55 @@ class GSTTaxModifier extends TaxModifier {
 		}
 	}
 
+	function DefaultLiveTaxObject() {
+		$defaultCountryCode = GSTTaxModifierOptions::$defaults["CountryCode"]
+		if($defaultCountryCode) {
+			$this->debugMessage .= "<hr />There is a current live DEFAULT tax object";
+			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
+		}
+		else {
+			$this->debugMessage .= "<hr />There is no current live DEFAULT tax object";
+		}
+	}
+
 //--------------------------------------------------------------------*** rates functions
 
 	protected function LiveRate() {
-		$taxObject = $this->LiveTaxObject();
-		if($taxObject) {
-			$this->debugMessage .= "<hr />using rate: ".$taxObject->Rate;
-			return $taxObject->Rate;
+		if($this->IsRefundSituation()) {
+			if($this->LiveCountry()  != "NZ") {
+				return floatval(1/9);
+			}
+			return 0;
 		}
 		else {
-			$this->debugMessage .= "<hr />no rate found: ";
-			return 0;
+			$taxObject = $this->LiveTaxObject();
+			if($taxObject) {
+				$this->debugMessage .= "<hr />using rate: ".$taxObject->Rate;
+				return $taxObject->Rate;
+			}
+			else {
+				$this->debugMessage .= "<hr />no rate found: ";
+				return 0;
+			}
 		}
 	}
 
 
 //-------------------------------------------------------------------- *** table value functions
-// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
+
+	// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
+
+	function AddedCharge() {
+		if($this->IsRefundSituation()) {
+			$this->Charge();
+		}
+		else {
+			return $this->IsExclusive() ? $this->Charge() : 0;
+		}
+	}
 
 	function getAmount() {
-		if($this->IsExclusive()) {
+		if($this->IsExclusive() || $this->IsRefundSituation()) {
 			if($this->ID) {
 				return $this->Amount;
 			}
@@ -142,7 +174,9 @@ class GSTTaxModifier extends TaxModifier {
 				return $this->LiveAmount();
 			}
 		}
-		return 0;
+		else {
+			return 0;
+		}
 	}
 
 	function TableAmount() {
@@ -159,29 +193,35 @@ class GSTTaxModifier extends TaxModifier {
 //-------------------------------------------------------------------- *** title function
 
 	protected function LiveName() {
-		$start = '';
-		$name = '';
-		$end = '';
-		$taxObject = $this->LiveTaxObject();
-		if($taxObject) {
-			$name = $taxObject->Name;
-			if($rate = $this->Rate()) {
-				$startString = number_format($this->Rate() * 100, 2) . '% ';
-			}
-			if( $this->IsExclusive()) {
-				$endString = self::$exclusive_explanation;
-			}
-			else {
-				$endString = self::$inclusive_explanation;
-			}
-			$countryCode = $taxObject->CountryCode;
-			if($name && $rate) {
-				$finalString = $startString.$name.$endString;
-			}
+		if($this->IsRefundSituation()) {
+			$finalString = self::$refund_title;
+			$countryCode = $this->LiveCountry();
 		}
 		else {
-			$finalString = self::$no_tax_description;
-			$countryCode = $this->LiveCountry();
+			$start = '';
+			$name = '';
+			$end = '';
+			$taxObject = $this->LiveTaxObject();
+			if($taxObject) {
+				$name = $taxObject->Name;
+				if($rate = $this->Rate()) {
+					$startString = number_format($this->Rate() * 100, 2) . '% ';
+				}
+				if( $this->IsExclusive()) {
+					$endString = self::$exclusive_explanation;
+				}
+				else {
+					$endString = self::$inclusive_explanation;
+				}
+				$countryCode = $taxObject->CountryCode;
+				if($name && $rate) {
+					$finalString = $startString.$name.$endString;
+				}
+			}
+			else {
+				$finalString = self::$no_tax_description;
+				$countryCode = $this->LiveCountry();
+			}
 		}
 		if($countryCode && $finalString) {
 			$countryName = Geoip::countryCode2name($countryCode);
@@ -207,7 +247,18 @@ class GSTTaxModifier extends TaxModifier {
 		return $order->SubTotal() + $order->ModifiersSubTotal(array("GSTTaxModifier"));
 	}
 
-
+	//this occurs when there is no country match and the rate is inclusive
+	protected function IsRefundSituation() {
+		if(!$this->LiveTaxObject()) {
+			if($this->DefaultLiveTaxObject()) {
+				if(!$this->LiveIsExclusive) {
+					//IMPORTANT
+					self::$is_chargable = false;
+					return true;
+				}
+			}
+		}
+	}
 
 // -------------------------------------------------------------------- *** database
 	public function onBeforeWrite() {
@@ -221,13 +272,13 @@ class GSTTaxModifier extends TaxModifier {
 		$this->DebugString = $this->debugMessage;
 	}
 
-
-// ajax  NEED TO OVERRIDE THE STANDARD ONE..
+	// ajax NEED TO OVERRIDE THE STANDARD ONE.
 	function updateForAjax(array &$js) {
 		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $this->Charge());
 		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
 		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
 	}
+
 }
 
 
