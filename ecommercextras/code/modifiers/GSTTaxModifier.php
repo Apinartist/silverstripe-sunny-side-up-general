@@ -119,7 +119,7 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function DefaultLiveTaxObject() {
-		$defaultCountryCode = GSTTaxModifierOptions::$defaults["CountryCode"]
+		$defaultCountryCode = GSTTaxModifierOptions::$defaults["CountryCode"];
 		if($defaultCountryCode) {
 			$this->debugMessage .= "<hr />There is a current live DEFAULT tax object";
 			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
