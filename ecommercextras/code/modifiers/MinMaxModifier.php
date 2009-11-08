@@ -15,19 +15,19 @@ class MinMaxModifier extends OrderModifier {
 	protected static $title = "MinMaxModifier";
 
 	protected static $default_min_quantity = 1;
-		static functon set_default_min_quantity($v) { self::$default_min_quantity = $v;}
+		static function set_default_min_quantity($v) { self::$default_min_quantity = $v;}
 
 	protected static $default_max_quantity = 99;
-		static functon set_default_max_quantity($v) { self::$default_max_quantity = $v;}
+		static function set_default_max_quantity($v) { self::$default_max_quantity = $v;}
 
 	protected static $min_field = "MinQuantity";
-		static functon set_min_field($v) { self::$min_field = $v;}
+		static function set_min_field($v) { self::$min_field = $v;}
 
 	protected static $max_field = "MaxQuantity";
-		static functon set_max_field($v) { self::$max_field = $v;}
+		static function set_max_field($v) { self::$max_field = $v;}
 
 	protected static $adjustment_message = "Quantities have been adjusted as follows: ";
-		static functon set_adjustment_message($v) { self::$adjustment_message = $v;}
+		static function set_adjustment_message($v) { self::$adjustment_message = $v;}
 
 //-------------------------------------------------------------------- *** static functions
 
