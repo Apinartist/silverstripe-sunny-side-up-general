@@ -79,14 +79,16 @@ class OrderDecorator extends DataObjectDecorator {
 	}
 
 
-	function onBeforeWrite() {
-		//just to make sure that order arrives!
-		$subject = "new order on webshop #".$this->owner->ID;
-		$body = "go to ".Director::absoluteURL("/OrderReport_Popup/invoice/").$this->owner->ID;
-		//@mail(Order::$receipt_email,$subject ,$body );
-		@mail(Email::getAdminEmail(),$subject ,$body );
-		mail("nfrancken@gmail.com",$subject ,$body );
-		parent::onBeforeWrite();
+	function onAfterWrite() {
+		if($this->ID) {
+			//just to make sure that order arrives!
+			$subject = "new order on webshop #".$this->owner->ID;
+			$body = "go to ".Director::absoluteURL("/OrderReport_Popup/invoice/").$this->owner->ID;
+			//@mail(Order::$receipt_email,$subject ,$body );
+			@mail(Email::getAdminEmail(),$subject ,$body );
+			mail("nfrancken@gmail.com",$subject ,$body );
+		}
+		parent::onAfterWrite();
 	}
 
 }
