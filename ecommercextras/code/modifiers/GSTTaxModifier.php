@@ -133,10 +133,15 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function LiveRate() {
 		if($this->IsRefundSituation()) {
-			if($this->LiveCountry()  != "NZ") {
-				return floatval(1/9);
+			$defaultTaxObject = $this->LiveTaxObject();
+			if($defaultTaxObject) {
+				$this->debugMessage .= "<hr />using DEFAULT (REFUND) rate: ".$defaultTaxObject->Rate;
+				return $defaultTaxObject->Rate;
 			}
-			return 0;
+			else {
+				$this->debugMessage .= "<hr />no DEFAULT (REFUND) rate found: ";
+				return 0;
+			}
 		}
 		else {
 			$taxObject = $this->LiveTaxObject();
@@ -190,7 +195,7 @@ class GSTTaxModifier extends TaxModifier {
 			}
 		}
 		else {
-			return 0;
+			return 999999999;
 		}
 	}
 
