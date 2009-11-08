@@ -65,7 +65,7 @@
 //BlockCountriesModifier::set_must_not_country_codes(array("AU"));
 //BlockCountriesModifier::set_sorry_message_start("Sorry, sales to");
 //BlockCountriesModifier::set_sorry_message_end("are not allowed");
-//BlockCountriesModifier::set_your_country_description_default("your country")
+//BlockCountriesModifier::set_your_country_description_default("your country");
 
 // *** MODIFIER RULES MODIFIER
 /*
@@ -100,4 +100,5 @@ Director::addRules(50, array(
  * @important: in the order templates, change as follows:
  * FROM: <td id="$TableTotalID" class="price"><% if IsChargable %>$Amount.Nice<% else %>-$Amount.Nice<% end_if %></td>
  * TO: <td id="$TableTotalID" class="price">$TableValue</td>
+ * IN: OrderInformation_Editable.ss, Order_Content.ss
  **/
