@@ -68,12 +68,12 @@ class OrderDecorator extends DataObjectDecorator {
 	}
 
 	// we need to
-	static function get_receipt_email() {
+	function getReceiptEmail() {
 		//return self::$receipt_email;
 		return $this->owner-stat("receipt_email");
 	}
 
-	static function get_receipt_subject() {
+	function getReceiptSubject() {
 		//return self::$receipt_subject;
 		return $this->owner-stat("receipt_subject");
 	}
