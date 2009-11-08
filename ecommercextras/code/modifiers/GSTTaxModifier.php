@@ -37,7 +37,7 @@ class GSTTaxModifier extends TaxModifier {
 	protected static $based_on_country_note = " - based on a sale to: ";
 		static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
 
-	protected static $refund_title = "Tax Reduction"
+	protected static $refund_title = "Tax Reduction";
 		static function set_refund_title($v) {self::$refund_title = $v;}
 
 	protected static $no_tax_description = "tax-exempt";
