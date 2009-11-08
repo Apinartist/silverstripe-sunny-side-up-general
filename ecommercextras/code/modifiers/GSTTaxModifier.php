@@ -253,6 +253,7 @@ class GSTTaxModifier extends TaxModifier {
 			if($this->DefaultLiveTaxObject()) {
 				if(!$this->LiveIsExclusive) {
 					//IMPORTANT
+					$this->debugMessage .= "<hr />IS REFUND SITUATION";
 					self::$is_chargable = false;
 					return true;
 				}
