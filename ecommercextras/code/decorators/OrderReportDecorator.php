@@ -9,17 +9,11 @@
 
 class OrderReportDecorator extends Extension {
 
-	function canView($member) {
-		die("bend");
-		return false;
+	function __construct() {
+		if(!Permission::check("ADMIN")) {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+		}
 	}
 
-	function can($member) {
-		die("gend");
-	}
-
-	function index($member) {
-		die("gend");
-	}
 
 }
