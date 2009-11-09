@@ -9,7 +9,10 @@
 
 class OrderReportDecorator extends Extension {
 
-	function __construct() {
+	function canView($member) {
+		if($member) {
+			return $member->isAdmin();
+		}
 		$isAdmin = false;
 		$m = Member::currentUser();
 		if($m) {
