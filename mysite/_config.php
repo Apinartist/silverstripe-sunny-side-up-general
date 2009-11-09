@@ -28,7 +28,7 @@ unset($protocolAndHost);
 /* CMS */
 LeftAndMain::setApplicationName("Sunny Side Up Test Website");
 LeftAndMain::set_loading_image("themes/main/images/logo.gif");
-ModelAdmin::set_page_length(10);
+ModelAdmin::set_page_length(100);
 
 //===================---------------- START blog MODULE ----------------===================
 BlogEntry::allow_wysiwyg_editing();
