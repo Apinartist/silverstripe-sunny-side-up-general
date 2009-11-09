@@ -16,6 +16,7 @@ class OrderReportDecorator extends Extension {
 		$isAdmin = false;
 		$m = Member::currentUser();
 		print_r($m);
+		die();
 		if($m) {
 			$IsAdmin = $m->isAdmin();
 		}
