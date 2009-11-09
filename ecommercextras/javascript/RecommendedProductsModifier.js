@@ -40,7 +40,7 @@ var RecommendedProductsModifier = {
 		RecommendedProductsModifier.anyBoxTicked = false;
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").each(
 			function() {
-				if("checked" == jQuery(this).attr("checked") || "1" == jQuery(this).attr("value")) {
+				if(jQuery(this).is(':checked')) {
 					RecommendedProductsModifier.anyBoxTicked = true;
 				}
 			}
