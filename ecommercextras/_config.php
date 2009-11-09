@@ -8,6 +8,10 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START ecommercextra MODULE ----------------===================
+// *** HACKS
+//Object::add_extension('OrderReport', 'OrderReportDecorator');
+
+
 // *** EXTENSIONS
 //SiteTreeDecorator::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
