@@ -9,10 +9,6 @@
 
 class OrderReportDecorator extends Extension {
 
-	function __construct() {
-		die("end");
-	}
-
 	function canView($member) {
 		die("bend");
 		return false;
