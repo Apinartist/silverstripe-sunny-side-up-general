@@ -107,6 +107,7 @@ class DpsPxPayPayment extends Payment {
 			$page->Logo = '<img src="' . self::$logo . '" alt="Payments powered by DPS"/>';
 			$page->Form = $this->DPSForm($url);
 			$controller = new ContentController($page);
+			Requirements::clear();
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			return new Payment_Processing($controller->renderWith('PaymentProcessingPage'));
 		}
