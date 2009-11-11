@@ -109,12 +109,16 @@ class DpsPxPayPayment extends Payment {
 			$controller = new ContentController($page);
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			$form = $controller->renderWith('PaymentProcessingPage');
-			print_r($form);
-			die("doing it");
 			return new Payment_Processing($form);
 		}
 		else {
-			die("payment failure");
+			$page = new Page();
+			$page->Title = 'Sorry, DPS can not be contacted at the moment ...';
+			$page->Logo = 'Sorry, an error has occured in contacting the Payment Processing Provider, please try again in a few minutes...';
+			$page->Form = $this->DPSForm($url);
+			$controller = new ContentController($page);
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+			$form = $controller->renderWith('PaymentProcessingPage');
 			return new Payment_Failure("Sorry, payment can not be processed at present - the DPS Payment Processing Provider is not available!");
 		}
 	}
