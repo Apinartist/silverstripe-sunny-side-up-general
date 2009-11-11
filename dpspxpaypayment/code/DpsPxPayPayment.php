@@ -109,6 +109,7 @@ class DpsPxPayPayment extends Payment {
 			$controller = new ContentController($page);
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			print_r($controller->renderWith('PaymentProcessingPage'));
+			die("end");
 			return new Payment_Processing($controller->renderWith('PaymentProcessingPage'));
 		}
 		else {
