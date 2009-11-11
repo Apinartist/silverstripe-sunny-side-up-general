@@ -123,12 +123,12 @@ class DpsPxPayPayment extends Payment {
 	}
 
 	function DPSForm($url) {
-		die($url);
 		return <<<HTML
 			<form id="PaymentForm" method="post" action="$url"></form>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery("#PaymentForm").submit();
+					var url = jQuery("#PaymentForm").attr("action");
+					window.location(url);
 				});
 			</script>
 HTML;
