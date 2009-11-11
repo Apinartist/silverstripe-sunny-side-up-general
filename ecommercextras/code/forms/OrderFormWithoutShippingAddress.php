@@ -93,64 +93,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	}
 
 	function processOrder($data, $form, $request) {
-
-		$paymentClass = (!empty($data['PaymentMethod'])) ? $data['PaymentMethod'] : null;
-		$payment = class_exists($paymentClass) ? new $paymentClass() : null;
-
-		if(!($payment && $payment instanceof Payment)) {
-			user_error(get_class($payment) . ' is not a valid Payment object!', E_USER_ERROR);
-		}
-
-		if(!ShoppingCart::has_items()) {
-			$form->sessionMessage('Please add some items to your cart', 'bad');
-	   	Director::redirectBack();
-	   	return false;
-		}
-
-		// Create new OR update logged in {@link Member} record
-		$member = EcommerceRole::createOrMerge($data);
-		if(!$member) {
-			$form->sessionMessage(
-				_t(
-					'OrderForm.MEMBEREXISTS', 'Sorry, a member already exists with that email address.
-					If this is your email address, please log in first before placing your order.'
-				),
-				'bad'
-			);
-
-			//Director::redirectBack();
-			//return false;
-		}
-		$member->write();
-		$member->logIn();
-
-		// Create new Order from shopping cart, discard cart contents in session
-		$order = ShoppingCart::save_current_order();
-		ShoppingCart::clear();
-
-		// Write new record {@link Order} to database
-		$form->saveInto($order);
-		$order->write();
-
-		// Save payment data from form and process payment
-		$form->saveInto($payment);
-		$payment->OrderID = $order->ID;
-		$payment->Amount = $order->Total();
-		$payment->write();
-
-		// Process payment, get the result back
-		$result = $payment->processPayment($data, $form);
-
-		// isProcessing(): Long payment process redirected to another website (PayPal, Worldpay)
-		if($result->isProcessing()) {
-			return $result->getValue();
-		}
-
-		if($result->isSuccess()) {
-			$order->sendReceipt();
-		}
-		Director::redirect($order->Link());
-		return true;
+		parent::processOrder($data, $form, $request);
 	}
 
 }
