@@ -82,13 +82,14 @@ class MinMaxModifier extends OrderModifier {
 			$maxFieldName = self::$max_field;
 			$items = ShoppingCart::get_items();
 			$i = 0;
+
 			foreach($items as $itemIndex => $item) {
 
 				if($item) {
 					$product = $item->Product();
 
 					if($quantity = $item->getQuantity()) {
-						//
+						$newQuantity = 0;
 						if($minFieldName) {
 							if($quantity < $product->$minFieldName) {
 								$newQuantity = $product->$minFieldName;
@@ -109,7 +110,7 @@ class MinMaxModifier extends OrderModifier {
 								$newQuantity = self::$default_max_quantity;
 							}
 						}
-						if($newQuantity != $quantity) {
+						if($newQuantity != $quantity && $newQuantity) {
 							ShoppingCart::set_quantity_item($product->ID, $newQuantity);
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
