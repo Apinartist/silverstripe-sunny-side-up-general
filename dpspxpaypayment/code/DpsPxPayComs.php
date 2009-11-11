@@ -113,8 +113,8 @@ class DpsPxPayComs {
 		$url = $response->get_element_text("URI");
 		$valid = $response->get_attribute("valid");
 
-		 #Redirect to payment page
-		 header("Location: ".$url);
+		#Redirect to payment page
+		return $url;
 	}
 
 
