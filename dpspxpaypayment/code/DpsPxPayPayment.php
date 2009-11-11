@@ -96,7 +96,9 @@ class DpsPxPayPayment extends Payment {
 		/**
 		* process payment data (check if it is OK and go forward if it is...
 		**/
-		$url = urlencode($commsObject->startPaymentProcess());
+		$url = $commsObject->startPaymentProcess();
+		$url = str_replace("&", "&amp;", $url);
+		$url = str_replace("&amp;&amp;", "&amp;", $url);
 
 		if($url) {
 			/**
@@ -104,11 +106,11 @@ class DpsPxPayPayment extends Payment {
 			**/
 			$page = new Page();
 			$page->Title = 'Redirection to DPS...';
-			$page->Logo = '<img src="/' . self::$logo . '" alt="Payments powered by DPS"/>';
+			$page->Logo = '<img src="' . self::$logo . '" alt="Payments powered by DPS"/>';
 			$page->Form = $this->DPSForm($url);
 			$controller = new ContentController($page);
 			Requirements::clear();
-			Requirements::javascript("/".THIRDPARTY_DIR . '/jquery/jquery.js');
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			return new Payment_Processing($controller->renderWith('PaymentProcessingPage'));
 		}
 		else {
@@ -127,9 +129,7 @@ class DpsPxPayPayment extends Payment {
 			<form id="PaymentForm" method="post" action="$url"></form>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery("base").removeAttr("href");
-					var url = jQuery("#PaymentForm").attr("action");
-					window.location = url;
+					jQuery("#PaymentForm").submit();
 				});
 			</script>
 HTML;
