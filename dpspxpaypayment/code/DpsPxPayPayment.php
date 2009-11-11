@@ -93,22 +93,27 @@ class DpsPxPayPayment extends Payment {
 		$commsObject->setUrlFail(DpsPxPayPayment_Handler::absolute_complete_link());
 		$commsObject->setUrlSuccess(DpsPxPayPayment_Handler::absolute_complete_link());
 
-		//redirect
+		/**
+		* process payment data (check if it is OK and go forward if it is...
+		**/
 		$url = $commsObject->startPaymentProcess();
-		$page = new Page();
 
-		$page->Title = 'Redirection to DPS...';
-		$page->Logo = '<img src="' . self::$logo . '" alt="Payments powered by WorldPay"/>';
-		$page->Form = $this->DPSForm();
-
-		$controller = new Page_Controller($page);
-
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-
-		$form = $controller->renderWith('PaymentProcessingPage');
-
-		return new Payment_Processing($form);
-		return;
+		if($url) {
+			/**
+			* build redirection page
+			**/
+			$page = new Page();
+			$page->Title = 'Redirection to DPS...';
+			$page->Logo = '<img src="' . self::$logo . '" alt="Payments powered by DPS"/>';
+			$page->Form = $this->DPSForm($url);
+			$controller = new Page_Controller($page);
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+			$form = $controller->renderWith('PaymentProcessingPage');
+			return new Payment_Processing($form);
+		}
+		else {
+			return new Payment_Failure();
+		}
 	}
 
 	function DPSForm($url) {
