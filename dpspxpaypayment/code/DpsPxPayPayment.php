@@ -128,7 +128,7 @@ class DpsPxPayPayment extends Payment {
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
 					var url = jQuery("#PaymentForm").attr("action");
-					window.location(url);
+					window.location = url;
 				});
 			</script>
 HTML;
