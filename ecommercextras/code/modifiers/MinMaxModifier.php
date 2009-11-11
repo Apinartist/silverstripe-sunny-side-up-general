@@ -109,7 +109,6 @@ class MinMaxModifier extends OrderModifier {
 								$newQuantity = self::$default_max_quantity;
 							}
 						}
-						$product = DataObject::get_by_id("SiteTree", $bonusItemID);
 						if($newQuantity != $quantity) {
 							ShoppingCart::set_quantity_item($product->ID, $newQuantity);
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
