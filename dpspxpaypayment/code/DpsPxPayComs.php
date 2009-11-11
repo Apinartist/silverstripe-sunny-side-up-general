@@ -75,7 +75,7 @@ class DpsPxPayComs {
 	}
 
 	/*
-	 * This function formats data into a request and redirects to the Payments Page.
+	 * This function formats data into a request and returns redirection URL
 	 * NOTE: you will need to set all the variables prior to running this.
 	 * e.g. $myDPSPxPayComsObject->setMerchantReference("myreferenceHere");
 	 **/
