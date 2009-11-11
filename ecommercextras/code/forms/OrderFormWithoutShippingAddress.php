@@ -93,7 +93,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 	}
 
 	function processOrder($data, $form, $request) {
-		parent::processOrder($data, $form, $request);
+		return parent::processOrder($data, $form, $request);
 	}
 
 }
