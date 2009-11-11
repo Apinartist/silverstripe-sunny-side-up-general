@@ -96,7 +96,7 @@ class DpsPxPayPayment extends Payment {
 		/**
 		* process payment data (check if it is OK and go forward if it is...
 		**/
-		$url = $commsObject->startPaymentProcess();
+		$url = urlencode($commsObject->startPaymentProcess());
 
 		if($url) {
 			/**
