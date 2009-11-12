@@ -29,12 +29,14 @@ ProductWithVariations = {
 
 	priceSelector: "#ExtendedProductVariationPrice",
 
+	hiddenCurrentVariationDiv: "#CurrentVariation",
+
 	hiddenCurrentVariationSelector: "#Form_ProductVariationsForm_CurrentVariation",
 
 	NotAvailableText: "Sorry, selection is not available",
 
 	init: function() {
-		jQuery(this.hiddenCurrentVariationSelector).attr("disabled", "disabled");
+		jQuery(this.hiddenCurrentVariationDiv).css("display", "none");
 		jQuery(this.dropdownSelector).change(
 			function () {
 				ProductWithVariations.calculateVariation();
