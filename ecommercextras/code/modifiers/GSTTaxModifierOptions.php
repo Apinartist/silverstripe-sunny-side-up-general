@@ -33,7 +33,7 @@ class GSTTaxModifierOptions extends DataObject {
 		"Code" => "Code for tax",
 		"Name" => "Name for tax",
 		"InclusiveOrExclusive" => "Inclusive/Exclusive",
-		"Rate" => "Rate",
+		"Rate" => "Rate (e.g. 0.125)",
 		"PriceSuffix" => "Price Suffix"
 	);
 
