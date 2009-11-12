@@ -125,6 +125,7 @@ class AjaxOrder_Controller extends Extension {
 		"RecommendedProducts",
 		"ModifierForm",
 		"OrderFormWithoutShippingAddress"
+		"OrderFormWithShippingAddress"
 	);
 
 	static function set_order_item_classname($v){
@@ -174,9 +175,12 @@ class AjaxOrder_Controller extends Extension {
 		}
 	}
 
-
 	function OrderFormWithoutShippingAddress() {
 		return new OrderFormWithoutShippingAddress($this->owner, 'OrderFormWithoutShippingAddress');
+	}
+
+	function OrderFormWithShippingAddress() {
+		return new OrderFormWithShippingAddress($this->owner, 'OrderFormWithShippingAddress');
 	}
 
 }
