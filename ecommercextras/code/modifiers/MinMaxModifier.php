@@ -120,7 +120,7 @@ class MinMaxModifier extends OrderModifier {
 			}
 		}
 		if(self::$adjustment_message && count($msgArray)) {
-			$msg = self::$adjustment_message.'+++ '.implode("+++ ",$msgArray);
+			$msg = self::$adjustment_message.'\n'.implode('\n',$msgArray);
 			if($msg) {
 				Requirements::customScript('alert("'.Convert::raw2js($msg).'");');
 			}
