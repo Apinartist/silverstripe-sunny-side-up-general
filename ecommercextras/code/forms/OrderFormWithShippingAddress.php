@@ -9,7 +9,9 @@
 class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 
 	function __construct($controller, $name) {
-		ShoppingCart::set_uses_different_shipping_address(false);
+
+		Requirements::javascript('ecommercextras/javascript/OrderFormWithShippingAddress.js');
+
 		parent::__construct($controller, $name);
 		if(self::$fixed_country_code) {
 			$defaulCountry = self::$fixed_country_code;
