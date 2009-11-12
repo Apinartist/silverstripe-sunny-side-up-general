@@ -21,7 +21,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 		}
 		$countryField = new DropdownField('ShippingCountry', 'Country', Geoip::getCountryDropDown(), $defaulCountry);
 
-		$shippingFields = new TabField(
+		$shippingFields = new Tab(
 			new HeaderField('Delivery Address', 3),
 			new LiteralField('ShippingNote', '<p class="warningMessage"><em>Your goods will be sent to the address below.</em></p>'),
 			new TextField('ShippingName', 'Name'),
