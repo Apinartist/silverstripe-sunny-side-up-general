@@ -30,7 +30,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			new HiddenField('UseShippingAddress', '', true),
 			new FormAction_WithoutLabel('useMemberShippingAddress', 'Use Billing Address for Shipping')
 		);
-		$this->fields->push($shippingFields);
+		//$this->fields->push($shippingFields);
 		$this->fields->addFieldToTab("",$shippingFields);
 	}
 
