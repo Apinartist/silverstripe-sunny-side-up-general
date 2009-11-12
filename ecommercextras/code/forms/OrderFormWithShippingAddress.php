@@ -31,6 +31,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			new FormAction_WithoutLabel('useMemberShippingAddress', 'Use Billing Address for Shipping')
 		);
 		$this->fields->push($shippingFields);
+		$this->fields->addFieldToTab("shippingFields",$shippingFields);
 	}
 
 	function processOrder($data, $form, $request) {
