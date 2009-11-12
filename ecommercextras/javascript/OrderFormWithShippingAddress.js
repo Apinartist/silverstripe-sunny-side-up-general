@@ -5,7 +5,7 @@
 		}
 	);
 	var OrderFormWithShippingAddress = {
-		init: function {
+		init: function(){
 			jQuery("#FirstName input, #Surname input").change(
 				function() {
 					if(!jQuery("#ShippingName input").val()) {
