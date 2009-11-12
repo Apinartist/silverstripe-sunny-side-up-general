@@ -27,7 +27,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			new TextField('ShippingAddress2', ''),
 			new TextField('ShippingCity', 'City'),
 			$countryField,
-			new HiddenField('UseShippingAddress', '', true),
+			new HiddenField('UseShippingAddress', '', true)
 		);
 		//$this->fields->push($shippingFields);
 		$this->fields->addFieldToTab("",$shippingFields);
