@@ -124,7 +124,7 @@ class AjaxOrder_Controller extends Extension {
 		"getajaxcheckoutcart",
 		"RecommendedProducts",
 		"ModifierForm",
-		"OrderFormWithoutShippingAddress"
+		"OrderFormWithoutShippingAddress",
 		"OrderFormWithShippingAddress"
 	);
 
