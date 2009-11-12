@@ -34,6 +34,7 @@ ProductWithVariations = {
 	NotAvailableText: "Sorry, selection is not available",
 
 	init: function() {
+		jQuery(this.hiddenCurrentVariationSelector).attr("disabled", "disabled");
 		jQuery(this.dropdownSelector).change(
 			function () {
 				ProductWithVariations.calculateVariation();

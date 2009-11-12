@@ -61,34 +61,49 @@ class ProductWithVariations extends Product {
 		return $field;
 	}
 
+	function IsInCart() {
+		$v = false;
+		$existingExtendedProductVariations = $this->Variations();
+		foreach($existingExtendedProductVariations as $variation) {
+			if($variation->IsInCart()) {
+				$v = true;
+			}
+		}
+		return $v;
+	}
+
+
 	function onBeforeWrite() {
-		$combinations = $this->getParentExtendedProductVariationGroups();
-		if($combinations) {
-			$groupsDataObject = new DataObjectSet();
-			foreach($combinations as $combination) {
-				$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
-				$groupsDataObject->push($group);
-				$options = $group->ExtendedProductVariationOptions();
-				if($options && $group->IncludeOptionsAsSoleProductVariations) {
-					foreach($options as $option) {
-						$optionsDos = new DataObjectSet();
-						$optionsDos->push($option);
-						$this->createExtendedProductVariations($optionsDos);
+		if($this->Price) {
+			$combinations = $this->getParentExtendedProductVariationGroups();
+			if($combinations) {
+				$groupsDataObject = new DataObjectSet();
+				foreach($combinations as $combination) {
+					$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
+					$groupsDataObject->push($group);
+					$options = $group->ExtendedProductVariationOptions();
+					if($options && $group->IncludeOptionsAsSoleProductVariations) {
+						foreach($options as $option) {
+							$optionsDos = new DataObjectSet();
+							$optionsDos->push($option);
+							$this->createExtendedProductVariations($optionsDos);
+						}
 					}
 				}
-			}
-			$obj = new ExtendedProductVariationOptionComboMaker();
-			$obj->addGroups($groupsDataObject);
-			$array = $obj->finalise();
-			if(is_array($array) && count($array)) {
-				foreach($array as $IDlist) {
-					$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
-					$this->createExtendedProductVariations($optionsDos);
+				$obj = new ExtendedProductVariationOptionComboMaker();
+				$obj->addGroups($groupsDataObject);
+				$array = $obj->finalise();
+				if(is_array($array) && count($array)) {
+					foreach($array as $IDlist) {
+						$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
+						$this->createExtendedProductVariations($optionsDos);
+					}
 				}
 			}
 		}
 		parent::onBeforeWrite();
 	}
+
 
 	protected function createExtendedProductVariations($optionsDos) {
 		//does it exist?
@@ -113,10 +128,10 @@ class ProductWithVariations extends Product {
 				//create Extended Product Variation
 				$obj = new ExtendedProductVariation();
 				$obj->Title = $title;
-				$obj->Price = $this->Price;
-				$obj->ProductID = $this->ID;
 			}
 			if($obj) {
+				$obj->Price = $this->Price;
+				$obj->ProductID = $this->ID;
 				$obj->write();
 				//links Extend Product Variation to Options
 				$variationDos = new DataObjectSet();

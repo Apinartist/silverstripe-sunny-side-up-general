@@ -100,8 +100,13 @@ class ExtendedProductVariationOption extends DataObject {
 	}
 
 	public function onBeforeDelete() {
-		if($data = $this->ExtendedProductVariation()) {
-			user_error("you can not delete a group with existing product variations.", E_USER_ERROR);
+		if($data = $this->ExtendedProductVariations()) {
+			foreach($data as $combination) {
+				$obj = DataObject::get_by_id("ExtendedProductVariation", $combination->ID);
+				if($obj) {
+					$obj->delete();
+				}
+			}
 		}
 		parent::onBeforeDelete();
 	}
@@ -115,6 +120,9 @@ class ExtendedProductVariationOption extends DataObject {
 			$o->Name = "Default Option";
 			$o->write();
 		}
+	}
+	function ExtendedProductVariation() {
+		return $this->ExtendedProductVariations();
 	}
 
 }
