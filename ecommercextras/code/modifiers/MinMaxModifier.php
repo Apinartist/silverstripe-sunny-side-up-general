@@ -29,6 +29,10 @@ class MinMaxModifier extends OrderModifier {
 	protected static $adjustment_message = "Quantities have been adjusted as follows: ";
 		static function set_adjustment_message($v) { self::$adjustment_message = $v;}
 
+	protected static $sorry_message = "Sorry, your selected value is available";
+		static function set_adjustment_message($v) { self::$sorry_message = $v;}
+
+
 //-------------------------------------------------------------------- *** static functions
 
 	static function show_form() {
@@ -138,7 +142,7 @@ class MinMaxModifier extends OrderModifier {
 										function() {
 											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").change(
 												function() {
-													alert("this value is not allowed");
+
 													if(jQuery(this).val() > '.intval($absoluteMax).') {
 														jQuery(this).val('.intval($absoluteMax).');
 														jQuery(this).focus();
@@ -147,6 +151,7 @@ class MinMaxModifier extends OrderModifier {
 														jQuery(this).val('.intval($absoluteMin).');
 														jQuery(this).focus();
 													}
+													alert("'.self::$sorry_message.'");
 												}
 											);
 										}
