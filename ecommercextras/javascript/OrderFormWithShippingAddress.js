@@ -11,7 +11,7 @@
 			jQuery("#FirstName input, #Surname input").change(
 				function() {
 					var FirstName =  jQuery("#FirstName input").val();
-					var Surname =  jQuery("#FirstName input").val();
+					var Surname =  jQuery("#Surname input").val();
 					var ShippingName =  jQuery("#ShippingName input").val();
 					if(!ShippingName || (FirstName == ShippingName && Surname) || (Surname == ShippingName && FirstName)) {
 						jQuery("#ShippingName input").val(FirstName+" "+Surname);
@@ -21,7 +21,7 @@
 			jQuery("#ShippingName input").focus(
 				function() {
 					var FirstName =  jQuery("#FirstName input").val();
-					var Surname =  jQuery("#FirstName input").val();
+					var Surname =  jQuery("#Surname input").val();
 					var ShippingName =  jQuery("#ShippingName input").val();
 					if(!ShippingName && (FirstName || Surname)) {
 						jQuery("#ShippingName input").val(FirstName+" "+Surname);
