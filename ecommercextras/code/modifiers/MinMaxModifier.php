@@ -131,11 +131,12 @@ class MinMaxModifier extends OrderModifier {
 							$i++;
 						}
 						if($absoluteMin || $absoluteMax < 99999) {
+							// NOT WORKING _ NEEDS TO BE REAPPLIED USING JQUERY LIVE!!!!
 							$js = '
 								jQuery(document).ready(
 									function() {
-										alert("hello");
-										jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").blur(
+										jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").livequery(
+											"blur",
 											function() {
 												alert("check quantities");
 												if(jQuery(this).val() > '.intval($absoluteMax).') {
