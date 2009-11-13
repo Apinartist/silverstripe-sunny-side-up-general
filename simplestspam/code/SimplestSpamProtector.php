@@ -41,7 +41,7 @@ class SimplestSpamProtector implements SpamProtector {
 	}
 
 
-	public function getFormField($name = null, $title = null, $value = null, $form = null, $rightTitle = null);
+	public function getFormField($name = null, $title = null, $value = null, $form = null, $rightTitle = null) {
 		return new SimplestSpamField($name, $title, $value, $form, $rightTitle);
 	}
 
