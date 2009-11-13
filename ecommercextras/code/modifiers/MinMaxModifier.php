@@ -127,6 +127,10 @@ class MinMaxModifier extends OrderModifier {
 		}
 	}
 
+	function updateForAjax(array &$js) {
+		self::apply_min_max();
+	}
+
 
 //--------------------------------------------------------------------*** database functions
 	public function onBeforeWrite() {
