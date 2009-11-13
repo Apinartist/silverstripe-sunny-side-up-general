@@ -24,7 +24,7 @@ class SimplestSpamProtector implements SpamProtector {
 	 */
 	function updateForm($form, $before=null, $fieldsToSpamServiceMapping=null) {
 
-		$this->field = new SimplestSpamField("SimplestSpamField", "Please answer this question to prove you are a real human", null, $form);
+		$this->field = $this->getFormField();
 
 		if ($before && $form->Fields()->fieldByName($before)) {
 			$form->Fields()->insertBefore($this->field, $before);
@@ -43,4 +43,13 @@ class SimplestSpamProtector implements SpamProtector {
 	function sendFeedback($object = null, $feedback = "") {
 		return false;
 	}
+
+	function getFormField() {
+		return new SimplestSpamField("SimplestSpamField", "Please answer this question to prove you are a real human", null, $form);
+	}
+
+	function sendFeedback($object = null, $feedback = "") {
+		return true;
+	}
+
 }
