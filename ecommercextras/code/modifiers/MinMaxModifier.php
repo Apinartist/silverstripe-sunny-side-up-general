@@ -134,11 +134,12 @@ class MinMaxModifier extends OrderModifier {
 							$js = '
 								jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").change(
 									function() {
-										if(jQuery(this).val() > '.$absoluteMax.') {
-											jQuery(this).val('.$absoluteMax.');
+										alert("checking "+jQuery(this).val());
+										if(jQuery(this).val() > '.intval($absoluteMax).') {
+											jQuery(this).val('.intval($absoluteMax).');
 										}
-										if(jQuery(this).val() < '.$absoluteMin.') {
-											jQuery(this).val('.$absoluteMin.');
+										if(jQuery(this).val() < '.intval($absoluteMin).') {
+											jQuery(this).val('.intval($absoluteMin).');
 										}
 									}
 								);';
