@@ -6,42 +6,61 @@
 	);
 	var OrderFormWithShippingAddress = {
 		init: function(){
+
+			// invoice field
+			var FirstName =  jQuery("#FirstName input").val();
+			var Surname =  jQuery("#FirstName input").val();
+			var Address =  jQuery("#Address input").val();
+			var AddressLine2 =  jQuery("#AddressLine2 input").val();
+			var City =  jQuery("#City input").val();
+
+			//shipping fields
+			var ShippingName =  jQuery("#ShippingName input").val();
+			var ShippingCity =  jQuery("#ShippingCity input").val();
+			var ShippingAddress =  jQuery("#ShippingAddress input").val();
+			var ShippingAddress2 =  jQuery("#ShippingAddress2 input").val();
+
+			//name
 			jQuery("#FirstName input, #Surname input").change(
 				function() {
 					if(
-						!jQuery("#ShippingName input").val() ||
-						jQuery("#FirstName input").val() == jQuery("#ShippingName input") ||
-						jQuery("#Surname input").val() == jQuery("#ShippingName input")
+						!ShippingName ||
+						FirstName == ShippingName ||
+						Surname == ShippingName
 					) {
-						jQuery("#ShippingName input").val(jQuery("#FirstName input").val()+" "+jQuery("#Surname input").val());
+						jQuery("#ShippingName input").val(FirstName+" "+Surname);
 					}
 				}
 			);
 			jQuery("#ShippingName input").focus(
 				function() {
-					if(!jQuery("#ShippingName input").val()) {
-						jQuery("#ShippingName input").val(jQuery("#FirstName input").val()+" "+jQuery("#Surname input").val());
+					if(!ShippingName && (FirstName || Surname)) {
+						jQuery("#ShippingName input").val(FirstName+" "+Surname);
 					}
 				}
 			);
-			jQuery("#City input").change(
-				function() {
-					if(!jQuery("#ShippingCity input").val() && jQuery("#City input").val()) {
-						jQuery("#ShippingCity input").val(jQuery("#City input").val());
-					}
-				}
-			);
+
+			//address
 			jQuery("#Address input").change(
 				function() {
-					if(!jQuery("#ShippingAddress input").val() && jQuery("#Address input").val()) {
-						jQuery("#ShippingAddress input").val(jQuery("#Address input").val());
+					if(!ShippingAddress && Address) {
+						jQuery("#ShippingAddress input").val(Address);
 					}
 				}
 			);
 			jQuery("#AddressLine2 input").change(
 				function() {
-					if(!jQuery("#ShippingAddress2 input").val() && jQuery("#AddressLine2 input").val()) {
-						jQuery("#ShippingAddress2 input").val(jQuery("#AddressLine2 input").val());
+					if(!ShippingAddress2 && AddressLine2) {
+						jQuery("#ShippingAddress2 input").val(AddressLine2);
+					}
+				}
+			);
+
+			//city
+			jQuery("#City input").change(
+				function() {
+					if(!ShippingCity && City) {
+						jQuery("#ShippingCity input").val(City);
 					}
 				}
 			);
