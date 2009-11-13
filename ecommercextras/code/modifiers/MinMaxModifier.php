@@ -90,24 +90,34 @@ class MinMaxModifier extends OrderModifier {
 
 					if($quantity = $item->getQuantity()) {
 						$newQuantity = 0;
+						$absoluteMin = 0;
+						$absoluteMax = 99999;
 						if($minFieldName) {
 							if($quantity < $product->$minFieldName) {
 								$newQuantity = $product->$minFieldName;
+								$absoluteMin = $product->$minFieldName;
 							}
 						}
 						elseif(self::$default_min_quantity) {
 							if($quantity < self::$default_min_quantity) {
 								$newQuantity = self::$default_min_quantity;
+								if($absoluteMin < self::$default_min_quantity ) {
+									$absoluteMin = self::$default_min_quantity;
+								}
 							}
 						}
 						if($maxFieldName) {
 							if($quantity < $product->$maxFieldName) {
 								$newQuantity = $product->$maxFieldName;
+								$absoluteMax = $product->$maxFieldName;
 							}
 						}
 						elseif(self::$default_max_quantity) {
 							if($quantity < self::$default_max_quantity) {
 								$newQuantity = self::$default_max_quantity;
+								if($absoluteMax > self::$default_max_quantity) {
+									$absoluteMax = self::$defaul_max_quantity;
+								}
 							}
 						}
 						if($newQuantity != $quantity && $newQuantity) {
@@ -115,6 +125,15 @@ class MinMaxModifier extends OrderModifier {
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
 						}
+						$js = '
+							jQuery("Product_OrderItem_'.$this->ID.'_Quantity").change(
+								function() {
+									if(jQuery(this).val() > '.$absoluteMax.') {
+										jQuery(this).val('.$absoluteMax.');
+									}
+								}
+							);';
+						Requirements::customScript($js,'Product_OrderItem_'.$this->ID.'_Quantity');
 					}
 				}
 			}
@@ -128,7 +147,6 @@ class MinMaxModifier extends OrderModifier {
 	}
 
 	function updateForAjax(array &$js) {
-		$js[] = array('id' => "Product_OrderItem_9_Quantity", 'parameter' => 'value', 'value' => 90);
 		self::apply_min_max();
 	}
 
