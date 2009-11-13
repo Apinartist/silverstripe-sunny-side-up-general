@@ -42,7 +42,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$this->unsetActionByName("useDifferentShippingAddress");
 		$member = Member::currentMember();
 		if(!$member || !$member->ID || $member->Password == '') {
-			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>'), "FirstName");
+			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>', $this), "FirstName");
 			//improve password field TEMPORARY HACK!
 			//$passwordField = new OptionalConfirmedPasswordField('Password', 'Password', '', null, true);
 			//$passwordField->minLength = 6;
@@ -56,6 +56,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$this->fields->removeFieldFromTab("RightOrder", "MemberInfo");
 		//add extra fields
 		foreach(self::$extra_fields as $fieldCombo) {
+			$fieldCombo["FieldObject"]->setForm($this);
 			$this->fields->addFieldToTab($fieldCombo["TabName"],$fieldCombo["FieldObject"]);
 		}
 		//replace field for address
@@ -85,7 +86,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			$this->resetField("Country", self::$fixed_country_code);
 		}
 
-		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note / Question'));
+		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note / Question', 7, 30, $this));
 
 		//$orderForm = new OrderForm($this, "OrderForm"); ************ NOT SURE WHY WE NEED THIS!
 		$data = $this->getData();

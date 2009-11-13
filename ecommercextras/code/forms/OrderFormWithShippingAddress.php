@@ -23,8 +23,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 
 		$shippingFields = new Tab(
 			"ShippingDetails",
-			new HeaderField('Delivery Address', 3),
-
+			new HeaderField('Delivery Address', 3, $this),
 			new LiteralField('ShippingNote', '<p class="warningMessage"><em>Your goods will be sent to the address below.</em></p>'),
 			new TextField('ShippingName', 'Name', null, 100, $this),
 			new TextField('ShippingAddress', 'Address', null,100,  $this),
@@ -35,6 +34,18 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 		);
 		//$this->fields->push($shippingFields);
 		$this->fields->addFieldToTab("",$shippingFields);
+		foreach($this->fields->dataFields() as $i => $child) {
+			if(is_object($child)){
+				$name = $child->Name();
+				switch ($name) {
+					case "Address":
+						$child->setTitle('Address for invoicing');
+						break;
+					default:
+						break;
+				}
+			}
+		}
 	}
 
 	function processOrder($data, $form, $request) {
