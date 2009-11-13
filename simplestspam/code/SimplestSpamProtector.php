@@ -40,9 +40,6 @@ class SimplestSpamProtector implements SpamProtector {
 
 	}
 
-	function sendFeedback($object = null, $feedback = "") {
-		return false;
-	}
 
 	function getFormField() {
 		return new SimplestSpamField("SimplestSpamField", "Please answer this question to prove you are a real human", null, $form);
