@@ -151,7 +151,7 @@ class MinMaxModifier extends OrderModifier {
 														jQuery(this).val('.intval($absoluteMin).');
 														updated = true;
 													}
-													if(update) {
+													if(updated) {
 														alert("'.self::$sorry_message.'");
 														jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").change();
 													}
