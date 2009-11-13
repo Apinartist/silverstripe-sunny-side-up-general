@@ -132,14 +132,20 @@ class MinMaxModifier extends OrderModifier {
 						}
 						if($absoluteMin || $absoluteMax < 99999) {
 							$js = '
-								jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").blur(
+								jQuery(document).ready(
 									function() {
-										if(jQuery(this).val() > '.intval($absoluteMax).') {
-											jQuery(this).val('.intval($absoluteMax).');
-										}
-										if(jQuery(this).val() < '.intval($absoluteMin).') {
-											jQuery(this).val('.intval($absoluteMin).');
-										}
+										jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").blur(
+											function() {
+												if(jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").val() > '.intval($absoluteMax).') {
+													jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").val('.intval($absoluteMax).');
+													jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").focus();
+												}
+												if(jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").val() < '.intval($absoluteMin).') {
+													jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").val('.intval($absoluteMin).');
+													jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").focus();
+												}
+											}
+										);
 									}
 								);';
 							Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
