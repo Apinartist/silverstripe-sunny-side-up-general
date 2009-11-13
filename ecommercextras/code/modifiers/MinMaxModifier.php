@@ -131,7 +131,7 @@ class MinMaxModifier extends OrderModifier {
 							$i++;
 						}
 						if($absoluteMin || $absoluteMax < 99999) {
-							// NOT WORKING _ NEEDS TO BE REAPPLIED USING JQUERY LIVE!!!!
+							Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 							$js = '
 								jQuery(document).ready(
 									function() {
