@@ -126,14 +126,17 @@ class MinMaxModifier extends OrderModifier {
 							$i++;
 						}
 						$js = '
-							jQuery("Product_OrderItem_'.$item->ID.'_Quantity").change(
+							jQuery("Product_OrderItem_'.$product->ID.'_Quantity").change(
 								function() {
 									if(jQuery(this).val() > '.$absoluteMax.') {
 										jQuery(this).val('.$absoluteMax.');
 									}
+									if(jQuery(this).val() < '.$absoluteMin.') {
+										jQuery(this).val('.$absoluteMin.');
+									}
 								}
 							);';
-						Requirements::customScript($js,'Product_OrderItem_'.$item->ID.'_Quantity');
+						Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
 					}
 				}
 			}
