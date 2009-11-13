@@ -140,7 +140,7 @@ class MinMaxModifier extends OrderModifier {
 								$js = '
 									jQuery(document).ready(
 										function() {
-											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").change(
+											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").blur(
 												function() {
 
 													if(jQuery(this).val() > '.intval($absoluteMax).') {
