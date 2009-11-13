@@ -83,9 +83,7 @@ class MinMaxModifier extends OrderModifier {
 			$maxFieldName = self::$max_field;
 			$items = ShoppingCart::get_items();
 			$i = 0;
-
 			foreach($items as $itemIndex => $item) {
-
 				if($item) {
 					$product = $item->Product();
 
@@ -177,7 +175,7 @@ class MinMaxModifier extends OrderModifier {
 		$jsAjaxArray = self::apply_min_max();
 		if(count($jsAjaxArray)) {
 			foreach($jsAjaxArray as $nameValueArray) {
-				$js[] = array('name' => $idValueArray["name"], 'parameter' => 'value', 'value' => $idValueArray["value"]);
+				$js[] = array('name' => $nameValueArray["name"], 'parameter' => 'value', 'value' => $nameValueArray["value"]);
 			}
 		}
 	}
