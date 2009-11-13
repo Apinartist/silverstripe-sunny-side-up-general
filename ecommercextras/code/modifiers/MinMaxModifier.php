@@ -152,6 +152,7 @@ class MinMaxModifier extends OrderModifier {
 														jQuery(this).focus();
 													}
 													alert("'.self::$sorry_message.'");
+													jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").change();
 												}
 											);
 										}
