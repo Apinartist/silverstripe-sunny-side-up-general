@@ -76,6 +76,7 @@ class MinMaxModifier extends OrderModifier {
 
 //-------------------------------------------------------------------- *** calculations
 	static function apply_min_max() {
+		$jsAjaxArray = array();
 		if(self::$min_field || self::$max_field  || self::$default_min_quantity || self::$default_max_quantity ) {
 			$msgArray = array();
 			$minFieldName = self::$min_field;
@@ -130,43 +131,55 @@ class MinMaxModifier extends OrderModifier {
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
 						}
-						if($absoluteMin || $absoluteMax < 99999) {
-							Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
-							$js = '
-								jQuery(document).ready(
-									function() {
-										jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").livequery(
-											"change",
-											function() {
-												alert("check quantities");
-												if(jQuery(this).val() > '.intval($absoluteMax).') {
-													jQuery(this).val('.intval($absoluteMax).');
-													jQuery(this).focus();
+						$quantity = $newQuantity;
+						if(!Director::is_ajax()) {
+							if($absoluteMin || $absoluteMax < 99999) {
+								Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
+								//NOT WORKING!!!!
+								$js = '
+									jQuery(document).ready(
+										function() {
+											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").livequery(
+												"blur",
+												function() {
+													if(jQuery(this).val() > '.intval($absoluteMax).') {
+														jQuery(this).val('.intval($absoluteMax).');
+														jQuery(this).focus();
+													}
+													if(jQuery(this).val() < '.intval($absoluteMin).') {
+														jQuery(this).val('.intval($absoluteMin).');
+														jQuery(this).focus();
+													}
 												}
-												if(jQuery(this).val() < '.intval($absoluteMin).') {
-													jQuery(this).val('.intval($absoluteMin).');
-													jQuery(this).focus();
-												}
-											}
-										);
-									}
-								);';
-							Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
+											);
+										}
+									);';
+									Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
+							}
+						}
+						else {
+							$jsAjaxArray[] = array("name" => 'Product_OrderItem_'.$product->ID.'_Quantity', "value" => $quantity);
 						}
 					}
 				}
 			}
 		}
-		if(self::$adjustment_message && count($msgArray)) {
-			$msg = self::$adjustment_message.'\n'.implode('\n',$msgArray);
+		if(self::$adjustment_message && count($msgArray) && !Director::is_ajax()) {
+			$msg = self::$adjustment_message."\n".implode("\n",$msgArray);
 			if($msg) {
 				Requirements::customScript('alert("'.Convert::raw2js($msg).'");');
 			}
 		}
+		return $jsAjaxArray;
 	}
 
 	function updateForAjax(array &$js) {
-		self::apply_min_max();
+		$jsAjaxArray = self::apply_min_max();
+		if(count($jsAjaxArray)) {
+			foreach($jsAjaxArray as $nameValueArray) {
+				$js[] = array('name' => $idValueArray["name"], 'parameter' => 'value', 'value' => $idValueArray["value"]);
+			}
+		}
 	}
 
 
