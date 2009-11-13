@@ -26,21 +26,21 @@
 			);
 			jQuery("#City input").change(
 				function() {
-					if(!jQuery("#ShippingCity input").val()) {
+					if(!jQuery("#ShippingCity input").val() && jQuery("#City input").val()) {
 						jQuery("#ShippingCity input").val(jQuery("#City input").val());
 					}
 				}
 			);
 			jQuery("#Address input").change(
 				function() {
-					if(!jQuery("#ShippingAddress input").val()) {
+					if(!jQuery("#ShippingAddress input").val() && jQuery("#Address input").val()) {
 						jQuery("#ShippingAddress input").val(jQuery("#Address input").val());
 					}
 				}
 			);
 			jQuery("#AddressLine2 input").change(
 				function() {
-					if(!jQuery("#ShippingAddress2 input").val()) {
+					if(!jQuery("#ShippingAddress2 input").val() && jQuery("#AddressLine2 input").val()) {
 						jQuery("#ShippingAddress2 input").val(jQuery("#AddressLine2 input").val());
 					}
 				}
