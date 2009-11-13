@@ -93,31 +93,36 @@ class MinMaxModifier extends OrderModifier {
 						$absoluteMin = 0;
 						$absoluteMax = 99999;
 						if($minFieldName) {
-							if($quantity < $product->$minFieldName) {
-								$newQuantity = $product->$minFieldName;
+							if($product->$minFieldName) {
 								$absoluteMin = $product->$minFieldName;
+								if($quantity < $product->$minFieldName) {
+									$newQuantity = $product->$minFieldName;
+								}
 							}
 						}
 						elseif(self::$default_min_quantity) {
+							if($absoluteMin < self::$default_min_quantity ) {
+								$absoluteMin = self::$default_min_quantity;
+							}
 							if($quantity < self::$default_min_quantity) {
 								$newQuantity = self::$default_min_quantity;
-								if($absoluteMin < self::$default_min_quantity ) {
-									$absoluteMin = self::$default_min_quantity;
-								}
 							}
 						}
 						if($maxFieldName) {
-							if($quantity < $product->$maxFieldName) {
-								$newQuantity = $product->$maxFieldName;
+							if($product->$maxFieldName) {
 								$absoluteMax = $product->$maxFieldName;
+								if($quantity < $product->$maxFieldName) {
+									$newQuantity = $product->$maxFieldName;
+								}
 							}
 						}
 						elseif(self::$default_max_quantity) {
+							if($absoluteMax > self::$default_max_quantity) {
+								$absoluteMax = self::$defaul_max_quantity;
+							}
+
 							if($quantity < self::$default_max_quantity) {
 								$newQuantity = self::$default_max_quantity;
-								if($absoluteMax > self::$default_max_quantity) {
-									$absoluteMax = self::$defaul_max_quantity;
-								}
 							}
 						}
 						if($newQuantity != $quantity && $newQuantity) {
@@ -125,18 +130,20 @@ class MinMaxModifier extends OrderModifier {
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
 						}
-						$js = '
-							jQuery("Product_OrderItem_'.$product->ID.'_Quantity").change(
-								function() {
-									if(jQuery(this).val() > '.$absoluteMax.') {
-										jQuery(this).val('.$absoluteMax.');
+						if($absoluteMin || $absoluteMax < 99999) {
+							$js = '
+								jQuery("Product_OrderItem_'.$product->ID.'_Quantity").change(
+									function() {
+										if(jQuery(this).val() > '.$absoluteMax.') {
+											jQuery(this).val('.$absoluteMax.');
+										}
+										if(jQuery(this).val() < '.$absoluteMin.') {
+											jQuery(this).val('.$absoluteMin.');
+										}
 									}
-									if(jQuery(this).val() < '.$absoluteMin.') {
-										jQuery(this).val('.$absoluteMin.');
-									}
-								}
-							);';
-						Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
+								);';
+							Requirements::customScript($js,'Product_OrderItem_'.$product->ID.'_Quantity');
+						}
 					}
 				}
 			}
