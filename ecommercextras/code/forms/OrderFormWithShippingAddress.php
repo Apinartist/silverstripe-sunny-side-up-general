@@ -25,12 +25,12 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			"ShippingDetails",
 			new HeaderField('Delivery Address', 3),
 			new LiteralField('ShippingNote', '<p class="warningMessage"><em>Your goods will be sent to the address below.</em></p>'),
-			new TextField('ShippingName', 'Name'),
-			new TextField('ShippingAddress', 'Address'),
-			new TextField('ShippingAddress2', ''),
-			new TextField('ShippingCity', 'City'),
+			new TextField('ShippingName', 'Name', null, $this),
+			new TextField('ShippingAddress', 'Address', null, $this),
+			new TextField('ShippingAddress2', '', null, $this),
+			new TextField('ShippingCity', 'City', null, $this),
 			$countryField,
-			new HiddenField('UseShippingAddress', '', true)
+			new HiddenField('UseShippingAddress', '', true, $this)
 		);
 		//$this->fields->push($shippingFields);
 		$this->fields->addFieldToTab("",$shippingFields);
