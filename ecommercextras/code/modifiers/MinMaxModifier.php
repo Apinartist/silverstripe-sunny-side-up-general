@@ -132,9 +132,8 @@ class MinMaxModifier extends OrderModifier {
 						}
 						if($absoluteMin || $absoluteMax < 99999) {
 							$js = '
-								jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").change(
+								jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").blur(
 									function() {
-										alert("checking "+jQuery(this).val());
 										if(jQuery(this).val() > '.intval($absoluteMax).') {
 											jQuery(this).val('.intval($absoluteMax).');
 										}
