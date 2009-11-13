@@ -136,7 +136,7 @@ class MinMaxModifier extends OrderModifier {
 								jQuery(document).ready(
 									function() {
 										jQuery("#Product_OrderItem_'.$product->ID.'_Quantity").livequery(
-											"blur",
+											"change",
 											function() {
 												alert("check quantities");
 												if(jQuery(this).val() > '.intval($absoluteMax).') {
