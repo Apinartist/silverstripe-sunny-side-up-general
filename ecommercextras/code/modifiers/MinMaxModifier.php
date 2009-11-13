@@ -114,7 +114,7 @@ class MinMaxModifier extends OrderModifier {
 						if($maxFieldName) {
 							if($product->$maxFieldName) {
 								$absoluteMax = $product->$maxFieldName;
-								if($quantity < $product->$maxFieldName) {
+								if($quantity > $product->$maxFieldName) {
 									$newQuantity = $product->$maxFieldName;
 								}
 							}
