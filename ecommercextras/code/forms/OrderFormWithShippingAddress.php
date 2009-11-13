@@ -19,18 +19,19 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 		else {
 			$defaulCountry = EcommerceRole::findCountry();
 		}
-		$countryField = new DropdownField('ShippingCountry', 'Country', Geoip::getCountryDropDown(), $defaulCountry);
+		$countryField = new DropdownField('ShippingCountry', 'Country', Geoip::getCountryDropDown(), $defaulCountry, $this);
 
 		$shippingFields = new Tab(
 			"ShippingDetails",
 			new HeaderField('Delivery Address', 3),
+
 			new LiteralField('ShippingNote', '<p class="warningMessage"><em>Your goods will be sent to the address below.</em></p>'),
-			new TextField('ShippingName', 'Name', null, $this),
-			new TextField('ShippingAddress', 'Address', null, $this),
-			new TextField('ShippingAddress2', '', null, $this),
-			new TextField('ShippingCity', 'City', null, $this),
+			new TextField('ShippingName', 'Name', null, 100, $this),
+			new TextField('ShippingAddress', 'Address', null,100,  $this),
+			new TextField('ShippingAddress2', '', null, 100, $this),
+			new TextField('ShippingCity', 'City', null, 100, $this),
 			$countryField,
-			new HiddenField('UseShippingAddress', '')
+			new HiddenField('UseShippingAddress', '', true, $this)
 		);
 		//$this->fields->push($shippingFields);
 		$this->fields->addFieldToTab("",$shippingFields);
