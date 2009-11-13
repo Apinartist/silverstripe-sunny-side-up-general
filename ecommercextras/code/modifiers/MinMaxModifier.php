@@ -128,7 +128,7 @@ class MinMaxModifier extends OrderModifier {
 	}
 
 	function updateForAjax(array &$js) {
-		$js[] = array('id' => "Product_OrderItem_9_Quantity", 'parameter' => 'innerHTML', 'value' => 90);
+		$js[] = array('id' => "Product_OrderItem_9_Quantity", 'parameter' => 'value', 'value' => 90);
 		self::apply_min_max();
 	}
 
