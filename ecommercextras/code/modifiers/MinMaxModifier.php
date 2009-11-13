@@ -132,14 +132,13 @@ class MinMaxModifier extends OrderModifier {
 						$quantity = $newQuantity;
 						if(!Director::is_ajax()) {
 							if($absoluteMin || $absoluteMax < 99999) {
-								Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
 								//NOT WORKING!!!!
 								$js = '
 									jQuery(document).ready(
 										function() {
-											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").livequery(
-												"blur",
+											jQuery("input[name=\'Product_OrderItem_'.$product->ID.'_Quantity\']").change(
 												function() {
+													alert("this value is not allowed");
 													if(jQuery(this).val() > '.intval($absoluteMax).') {
 														jQuery(this).val('.intval($absoluteMax).');
 														jQuery(this).focus();
