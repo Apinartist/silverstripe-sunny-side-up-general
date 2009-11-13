@@ -8,7 +8,11 @@
 		init: function(){
 			jQuery("#FirstName input, #Surname input").change(
 				function() {
-					if(!jQuery("#ShippingName input").val()) {
+					if(
+						!jQuery("#ShippingName input").val() ||
+						jQuery("#FirstName input").val() == jQuery("#ShippingName input") ||
+						jQuery("#Surname input").val() == jQuery("#ShippingName input")
+					) {
 						jQuery("#ShippingName input").val(jQuery("#FirstName input").val()+" "+jQuery("#Surname input").val());
 					}
 				}
