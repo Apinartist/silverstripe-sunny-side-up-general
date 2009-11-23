@@ -275,7 +275,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 			foreach($ExtendedProductVariations as $variations) {
 				$variations->delete();
 			}
+			return "deleted all variations for this product";
 		}
+
 	}
 
 }
