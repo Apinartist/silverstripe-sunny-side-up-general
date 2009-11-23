@@ -28,12 +28,13 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 		if($this->owner instanceOf ProductGroup || $this->owner instanceOf Product) {
 			$tab = new tab(
 				"ProductVariations",
+				new HeaderField("DefaultVariationGroupsHeader",'Select Combinations', 3),
 				new LiteralField(
 					"DefaultVariationGroupsExplanation",
 					'<p>
-						Selecting groups below will automatically add its options as product variations to all products listed under the current page.
-						If the current page does not have any entries selected (ticked) then the entries from the parent page will be used.
-						You can also <a href="admin/productvariations/">manage the groups and group options</a> directly.
+						Selecting lists below will automatically add its options as product variations to all products listed under the current page.
+						If the current page does not have any entries selected (ticked) then the entries from the parent (Product Group) page will be used.
+						Make sure you have entered all the correct <a href="admin/productvariations/">groups and group options</a>.
 					</p>'
 				),
 				$this->getExtendedProductVariationGroupsTable()
