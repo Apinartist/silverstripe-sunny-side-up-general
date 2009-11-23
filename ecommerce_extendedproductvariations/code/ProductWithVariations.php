@@ -164,6 +164,7 @@ class ProductWithVariations extends Product {
 				}
 			}
 		}
+		LeftAndMain::ForceReload();
 	}
 
 	function addExtendedProductVariation($ExtendedProductVariations) {
