@@ -29,7 +29,7 @@ class ProductWithVariations extends Product {
 		$tab = new tab("ProductVariations");
 		$tab->push(new LiteralField("VariationsExplanation","<p>Below is a list of actual variations available for this product.  If a price is listed then the product can be sold.</p>"));
 		$tab->push($this->getVariationsTable());
-		$fields->addFieldsToTab("Root.Content",$tab,$insertBefore = "ProductVariations");
+		$fields->addFieldsToTab("Root.Content.Product Variations",$tab,$insertBefore = "ProductVariations");
 		return $fields;
 	}
 
