@@ -28,14 +28,15 @@ class ProductWithVariations extends Product {
 	public static $casting = array();
 
 	protected static $hide_product_fields = array();
-		static function set_hide_product_fields(array $array) {
-			if(is_array($array)) {
-				self::$hide_product_fields = $array;
-			}
-			else {
-				user_error("ProductWithVariations::set_product_hide_fields() expects an array as first argument");
-			}
+
+	static function set_hide_product_fields(array $array) {
+		if(is_array($array)) {
+			self::$hide_product_fields = $array;
 		}
+		else {
+			user_error("ProductWithVariations::set_product_hide_fields() expects an array as first argument");
+		}
+	}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
