@@ -38,6 +38,12 @@ class ExtendedProductVariationGroup extends DataObject {
 		"ProductWithVariations" => "SiteTree"
 	);
 
+	public static $defaults = array(
+		"IncludeOptionsAsSoleProductVariations" => 0,
+		"IncludeOptionsAsCombinedProductVariations" => 1,
+		"IncludeGroupTitleInVariationTitle" => 0
+	);
+
 	public static $default_sort = "`Name` ASC";
 
 	public static $searchable_fields = array(
