@@ -11,6 +11,10 @@
    */
 class ProductWithVariations extends Product {
 
+	static $db = array(
+		"DoNotAddVariationsAutomatically" => "Boolean"
+	);
+
 	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
 
 	static $hide_ancestor = "Product";
@@ -23,13 +27,26 @@ class ProductWithVariations extends Product {
 
 	public static $casting = array();
 
+	protected static $hide_product_fields = array();
+		static function set_hide_product_fields(array $array) {
+			if(is_array($array)) {
+				self::$hide_product_fields = $array;
+			}
+			else {
+				user_error("ProductWithVariations::set_product_hide_fields() expects an array as first argument");
+			}
+		}
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Variations");
+		foreach(self::$hide_product_fields as $fieldName) {
+			$fields->removeByName($fieldName);
+		}
+		$fields->addFieldsToTab("Root.Content.ProductVariations", new CheckboxField("DoNotAddVariationsAutomatically", "Do not add variations automatically"));
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
 			new HeaderField("VariationsExplanation","Actual product variations for sale (price must be higher than zero)", 3)
 		);
-		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		return $fields;
 	}
@@ -75,7 +92,7 @@ class ProductWithVariations extends Product {
 
 
 	function onBeforeWrite() {
-		if($this->Price) {
+		if($this->Price && !$this->DoNotAddVariationsAutomatically) {
 			$combinations = $this->getParentExtendedProductVariationGroups();
 			if($combinations) {
 				$groupsDataObject = new DataObjectSet();
@@ -246,6 +263,19 @@ class ProductWithVariations_Controller extends Product_Controller {
 		Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations.js");
 		Requirements::customScript($js,'ProductWithVariationsArray');
 		return $variations;
+	}
+
+	public function deleteallvariations() {
+		if(!Permission::check("ADMIN")) {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+		}
+		else {
+			$existingExtendedProductVariations = $this->Variations();
+			// method 1: Add many by iteration
+			foreach($ExtendedProductVariations as $variations) {
+				$variations->delete();
+			}
+		}
 	}
 
 }
