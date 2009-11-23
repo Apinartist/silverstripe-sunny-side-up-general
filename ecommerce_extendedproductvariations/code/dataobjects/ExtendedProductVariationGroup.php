@@ -56,10 +56,10 @@ class ExtendedProductVariationGroup extends DataObject {
 
 	public static $field_labels = array(
 		"Name" => "Name	",
-		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen])",
-		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /)",
-		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. XL) for selected products",
-		"IncludeOptionsAsCombinedProductVariations" => "Include options from this group as combined variations (e.g. XL, Male, Red) for selected products"
+		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen]), make sure to include a space where needed",
+		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed",
+		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. XL) for selected products - i.e. does not work in combination with other variations",
+		"IncludeOptionsAsCombinedProductVariations" => "Include options from this group as combined variations (e.g. XL, Male, Red) for selected products - i.e. works in combination with other variations (shirt is both Red and XL)"
 	);
 
 	public static $singular_name = "Option Group";
