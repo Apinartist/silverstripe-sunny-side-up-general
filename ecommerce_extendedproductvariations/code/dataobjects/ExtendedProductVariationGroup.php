@@ -55,11 +55,12 @@ class ExtendedProductVariationGroup extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Name" => "Name	",
-		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen]), make sure to include a space where needed",
-		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed",
-		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. XL) for selected products - i.e. does not work in combination with other variations",
-		"IncludeOptionsAsCombinedProductVariations" => "Include options from this group as combined variations (e.g. XL, Male, Red) for selected products - i.e. works in combination with other variations (shirt is both Red and XL)"
+		"Name" => "Name	of the Product Variation Option List, please be as specific as possible",
+		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen]), make sure to include a space where needed. If unsure leave blank.",
+		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed. If unsure leave blank.",
+		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. variation will read 'XL' OR 'Kid Size 5' and never 'Kid Size 5, XL') for selected products - i.e. does not work in combination with other variations. If unsure, please do NOT tick.",
+		"IncludeOptionsAsCombinedProductVariations" => "Include options from this group as combined variations (e.g. variation will read: 'XL, Male, Red') for selected products - i.e. works in combination with other variations. If unsure, please DO tick "
+		"IncludeGroupTitleInVariationTitle" => "Include List Name (see above) in Title - e.g. variation will read: 'colour: Red, size: XL' rather than 'Red, XL'"
 	);
 
 	public static $singular_name = "Option Group";
