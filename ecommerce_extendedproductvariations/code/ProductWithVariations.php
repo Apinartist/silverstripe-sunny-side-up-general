@@ -273,7 +273,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 		else {
 			$existingExtendedProductVariations = $this->Variations();
 			// method 1: Add many by iteration
-			foreach($ExtendedProductVariations as $variations) {
+			foreach($existingExtendedProductVariations as $variations) {
 				$variations->delete();
 			}
 			return "deleted all variations for this product";
