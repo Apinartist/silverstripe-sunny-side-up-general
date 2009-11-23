@@ -96,7 +96,8 @@ class ProductWithVariations extends Product {
 
 
 	function onBeforeWrite() {
-		die($this->getChangedFields());
+		print_r($this->getChangedFields());
+		die("done");
 		if($this->Price && !$this->DoNotAddVariationsAutomatically) {
 			$combinations = $this->getParentExtendedProductVariationGroups();
 			if($combinations) {
