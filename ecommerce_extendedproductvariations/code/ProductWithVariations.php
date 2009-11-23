@@ -50,7 +50,7 @@ class ProductWithVariations extends Product {
 		);
 		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
-			new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations" target="_blank">delete all variations</a></p>')
+			new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations" target="_blank">delete all variations</a> - useful if the variations have gone pearshaped</p>')
 		);
 		return $fields;
 	}
