@@ -49,6 +49,9 @@ class ProductWithVariations extends Product {
 			new HeaderField("VariationsExplanation","Actual product variations for sale (price must be higher than zero)", 3)
 		);
 		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
+		$fields->addFieldsToTab("Root.Content.ProductVariations",
+			new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations" target="_blank">delete all variations</a></p>')
+		);
 		return $fields;
 	}
 
@@ -278,7 +281,6 @@ class ProductWithVariations_Controller extends Product_Controller {
 			}
 			return "deleted all variations for this product";
 		}
-
 	}
 
 }
