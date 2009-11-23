@@ -27,8 +27,9 @@ class ProductWithVariations extends Product {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Variations");
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
-			new LiteralField("VariationsExplanation","<p>Below is a list of actual variations available for this product.  To sell a variation, the price must be higher than zero.</p>")
+			new HeaderField("VariationsExplanation","Actual product variations for sale (price must be higher than zero)", 3)
 		);
+		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		return $fields;
 	}
