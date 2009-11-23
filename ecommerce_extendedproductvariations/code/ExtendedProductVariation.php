@@ -72,8 +72,13 @@ class ExtendedProductVariation extends ProductVariation {
 	function getPrice() {
 	//DIRTY HACK!!!! NOT SURE WHY WE NEED THIS
 		$object = DataObject::get_by_id("ProductVariation", $this->ID);
-		$array = $object->record;
-		return $array["Price"];
+		if($object) {
+			$array = $object->record;
+			return $array["Price"];
+		}
+		else {
+			return 0;
+		}
 	}
 
 }
