@@ -52,7 +52,6 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			Requirements::block(SAPPHIRE_DIR . '/javascript/ConfirmedPasswordField.js');
 		}
 
-		$this->fields->removeFieldFromTab("RightOrder", "Membership Details");
 		$this->fields->removeFieldFromTab("RightOrder", "MemberInfo");
 		//add extra fields
 		foreach(self::$extra_fields as $fieldCombo) {
@@ -65,6 +64,9 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 			if(is_object($child)){
 				$name = $child->Name();
 				switch ($name) {
+					case "Membership Details":
+						$child->setTitle('Retain Personal Details with Password');
+						break;
 					case "Address":
 						$child->setTitle('Delivery Address (no Postal Box)');
 						break;
