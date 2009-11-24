@@ -30,7 +30,6 @@
 //OrderFormWithoutShippingAddress::set_postal_code_label("find postcode");
 
 // *** PICK UP OR DELIVERY
-// can set one or more pickup options.
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
 
 // *** RECOMMENDED PROCUCTS
