@@ -29,7 +29,7 @@ class MinMaxModifier extends OrderModifier {
 	protected static $adjustment_message = "Quantities have been adjusted as follows: ";
 		static function set_adjustment_message($v) { self::$adjustment_message = $v;}
 
-	protected static $sorry_message = "Sorry, your selected value is available";
+	protected static $sorry_message = "Sorry, your selected value not is available";
 		static function set_sorry_message($v) { self::$sorry_message = $v;}
 
 
