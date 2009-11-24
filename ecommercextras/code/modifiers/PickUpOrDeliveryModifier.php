@@ -262,19 +262,26 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	protected function totalWeight() {
 		if(!self::$total_weight) {
 			if($this->ID) {
+				$this->debugMessage .= "<hr />saved total weight: ".$this->TotalWeight;
 				return $this->TotalWeight;
 			}
 			else {
-				$order = $this->Order();
-				$orderItems = $order->Items();
+				$items = ShoppingCart::get_items();
+				//get index numbers for bonus products - this can only be done now once they have actually been added
+				foreach($items as $itemIndex => $item) {
+					if($product = $item->Product()) {
 				// Calculate the total weight of the order
-				if($orderItems) {
-					foreach($orderItems as $orderItem) {
-						if(!empty($orderItem->Weight)) {
-							self::$total_weight += ($orderItem->Weight+0) * $orderItem->quantity;
+							if(!empty($product->Weight) && $item->Quantity) {
+								self::$total_weight += ($product->Weight+0) * $item->Quantity;
+							}
+							elseif(!$product->Weight)  {
+								$this->debugMessage .= "<hr />product without weight: ".$product->Weight;
+							}
+							elseif(!$item->Quantity) {
+								$this->debugMessage .= "<hr />item without quanty: ".$item->Quantity.$item->quantity;
+							}
 						}
 					}
-				}
 			}
 		}
 		self::$calculations_done = true;
