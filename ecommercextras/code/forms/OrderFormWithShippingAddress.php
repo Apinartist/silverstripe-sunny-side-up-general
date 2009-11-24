@@ -33,9 +33,8 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			new HiddenField('UseShippingAddress', '', true, $this)
 		);
 		//$this->fields->push($shippingFields);
-		$this->fields->addFieldToTab("",$shippingFields, "AccountInfo");
+		$this->fields->addFieldToTab("",$shippingFields);
 
-		$this->fields->addFieldToTab("RightOrder",new HeaderField('HeaderPasswordField', 'Retain Personal Details with Password', 3));
 		foreach($this->fields->dataFields() as $i => $child) {
 			if(is_object($child)){
 				$name = $child->Name();
