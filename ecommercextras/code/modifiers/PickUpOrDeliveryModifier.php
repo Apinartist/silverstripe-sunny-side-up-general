@@ -284,7 +284,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 					}
 			}
 		}
-		self::$calculations_done = true;
 		return self::$total_weight;
 	}
 
