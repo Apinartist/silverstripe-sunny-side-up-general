@@ -164,7 +164,6 @@ class ProductWithVariations extends Product {
 				}
 			}
 		}
-		LeftAndMain::ForceReload();
 	}
 
 	function addExtendedProductVariation($ExtendedProductVariations) {
@@ -190,6 +189,11 @@ class ProductWithVariations extends Product {
 				}
 			}
 		}
+	}
+
+	function onAfterWrite() {
+		parent::onAfterWrite();
+		LeftAndMain::ForceReload();
 	}
 
 }
