@@ -298,10 +298,12 @@ class CurrencyConverterWidget extends Widget {
 	}
 
 	static function get_from_currency_code() {
+		$this->retrieveDefaults();
 		return self::$from_currency_code;
 	}
 
 	static function get_to_currency_code() {
+		$this->retrieveDefaults();
 		return self::$to_currency_code;
 	}
 
