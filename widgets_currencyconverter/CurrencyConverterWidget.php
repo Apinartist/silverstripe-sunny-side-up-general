@@ -298,22 +298,22 @@ class CurrencyConverterWidget extends Widget {
 	}
 
 	static function get_from_currency_code() {
-		$this->retrieveDefaults();
+		self::retrieve_defaults();
 		return self::$from_currency_code;
 	}
 
 	static function get_to_currency_code() {
-		$this->retrieveDefaults();
+		self::retrieve_defaults();
 		return self::$to_currency_code;
 	}
 
 	static function from_equals_to() {
-		self::retrieveDefaults();
+		self::retrieve_defaults();
 		return (strtolower(self::$to_currency_code) == strtolower(self::$from_currency_code));
 	}
 
 	static function has_from_and_to_currencies() {
-		self::retrieveDefaults();
+		self::retrieve_defaults();
 		if(self::$to_currency_code && self::$from_currency_code) {
 			return true;
 		}
@@ -369,7 +369,7 @@ class CurrencyConverterWidget extends Widget {
 	}
 
 	static function get_exchanged_value($amount = 0, $digits = 2) {
-		self::retrieveDefaults();
+		self::retrieve_defaults();
 		if(self::$debug) {echo "-- from ".self::$from_currency_code;}
 		if(self::$debug) {echo "-- to ".self::$to_currency_code;}
 		if(self::$debug) {echo "-- amount ".$amount;}
@@ -378,7 +378,7 @@ class CurrencyConverterWidget extends Widget {
 		return strtoupper(self::$to_currency_code).' '.round(floatval($rate * $amount), $digits);
 	}
 
-	private static function retrieveDefaults() {
+	private static function retrieve_defaults() {
 		if(!self::$from_currency_code) {
 			if(self::$from_currency_code = Session::get("CurrencyConverter.from_currency_code")) {
 			}
