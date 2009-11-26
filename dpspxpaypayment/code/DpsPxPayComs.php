@@ -43,7 +43,7 @@ class DpsPxPayComs {
 	protected $CurrencyInput = "NZD";
 		public function setCurrencyInput($v)     {$this->CurrencyInput = $v;}
 	protected $TxnType = "Purchase";
-		public function setTxnType($v)           {$this->TxnType = $v; if(self::$overriding_txn_type) {$this->TxnType = self::$overriding_txn_type}}
+		public function setTxnType($v)           {$this->TxnType = $v; if(self::$overriding_txn_type) {$this->TxnType = self::$overriding_txn_type;}}
 	protected $TxnId = "";
 		public function setTxnId($v)             {$this->TxnId = $v; }
 
