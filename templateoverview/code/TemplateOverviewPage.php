@@ -27,7 +27,7 @@ class TemplateOverviewPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get("SiteTree", 'ClassName = "TemplateOverviewPage"');
+		return !DataObject::get("SiteTree", "`ClassName` = 'TemplateOverviewPage'");
 	}
 
 	public function getCMSFields() {
