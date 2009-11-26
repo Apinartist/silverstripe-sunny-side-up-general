@@ -266,8 +266,8 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 
 
 	private function json_decoder($content, $assoc = false) {
-		if ( !function_exists('json_decode') || 1 == 1){
-			include_once("Services_JSON.php");
+		if ( !function_exists('json_decode')){
+			include_once(Director::baseFolder().".googlemap/code/converters/thirdparty/Services_JSON.php");
 			if ( $assoc ){
 				$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			}
@@ -283,7 +283,7 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 
 	private function json_encoder($content) {
 		if ( !function_exists('json_encode') ){
-			include_once("JSON.php");
+			include_once(Director::baseFolder().".googlemap/code/converters/thirdparty/Services_JSON.php");
 			$json = new Services_JSON;
 			return $json->encode($content);
 		}
