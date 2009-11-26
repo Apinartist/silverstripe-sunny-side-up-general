@@ -193,7 +193,9 @@ class ProductWithVariations extends Product {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-		LeftAndMain::ForceReload();
+		if(!$this->DoNotAddVariationsAutomatically) {
+			LeftAndMain::ForceReload();
+		}
 	}
 
 }
