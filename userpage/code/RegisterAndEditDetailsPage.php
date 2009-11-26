@@ -71,7 +71,7 @@ class RegisterAndEditDetailsPage extends Page {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!$group = DataObject::get_one("Group", 'Code = "'.self::$register_group_code.'"')) {
+		if(!$group = DataObject::get_one("Group", '`Code` = \''.self::$register_group_code.'\'')) {
 			$group = new Group();
 			$group->Code = self::$register_group_code;
 			$group->Title = self::$register_group_title;
