@@ -37,7 +37,7 @@ class WebQuotePage extends Page {
 	}
 
 	function canCreate() {
-		return !DataObject::get("SiteTree", '`ClassName` = "QuotePage"');
+		return !DataObject::get("SiteTree", "`ClassName` = 'WebQuotePage'");
 	}
 
 	function canDelete() {
