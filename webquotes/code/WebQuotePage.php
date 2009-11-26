@@ -84,7 +84,7 @@ class WebQuotePage extends Page {
 
 }
 
-class QuotePage_Controller extends Page_Controller {
+class WebQuotePage_Controller extends Page_Controller {
 
 }
 
