@@ -39,7 +39,7 @@ class WebPortfolioPage extends Page {
 	}
 
 	function canCreate() {
-		return !DataObject::get("SiteTree", '`ClassName` = "QuotePage"');
+		return !DataObject::get("SiteTree", "`ClassName` = 'WebPortfolioPage'");
 	}
 
 	function canDelete() {
