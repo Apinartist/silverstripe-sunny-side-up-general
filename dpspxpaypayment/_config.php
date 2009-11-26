@@ -14,7 +14,8 @@
 /*
 if(Director::isLive()){
 	DpsPxPayComs::set_pxpay_userid("Code");
-	DpsPxPayComs::set_pxpay_encryption_key("A");
+	DpsPxPayComs::set_pxpay_encryption_key("A"); // ADD MAC KEY!!!!! CRAZY SYSTEM.
+	DpsPxPayComs::set_overriding_txn_type("AUTH"); // AUTH = Authorisation ONLY, Default is Purchase
 }
 else{
 	DpsPxPayComs::set_pxpay_userid("Code_Dev");

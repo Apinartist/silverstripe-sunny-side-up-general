@@ -17,6 +17,8 @@ class DpsPxPayComs {
 		static function set_pxpay_encryption_key($v)            {self::$pxpay_encryption_key = $v;}
 	protected static $alternative_thirdparty_folder =  "";
 		static function set_alternative_thirdparty_folder($v)    {self::$alternative_thirdparty_folder = $v;}
+	protected static $overriding_txn_type =  ""; //e.g. AUTH
+		static function set_overriding_txn_type($v)    {self::$overriding_txn_type = $v;}
 
 	/**
 	* customer details
@@ -41,7 +43,7 @@ class DpsPxPayComs {
 	protected $CurrencyInput = "NZD";
 		public function setCurrencyInput($v)     {$this->CurrencyInput = $v;}
 	protected $TxnType = "Purchase";
-		public function setTxnType($v)           {$this->TxnType = $v;}
+		public function setTxnType($v)           {$this->TxnType = $v; if(self::$overriding_txn_type) {$this->TxnType = self::$overriding_txn_type}}
 	protected $TxnId = "";
 		public function setTxnId($v)             {$this->TxnId = $v; }
 
