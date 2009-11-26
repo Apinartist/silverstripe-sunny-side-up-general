@@ -13,7 +13,7 @@ class CurrencyConverterPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get_one("SiteTree", '`ClassName` = "CurrencyConverterPage"');
+		return !DataObject::get_one("SiteTree", "`ClassName` = 'CurrencyConverterPage'");
 	}
 
 	function getCMSFields() {
