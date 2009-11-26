@@ -267,7 +267,7 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 
 	private function json_decoder($content, $assoc = false) {
 		if ( !function_exists('json_decode') || 1 == 1){
-			include_once("JSON.php");
+			include_once("Services_JSON.php");
 			if ( $assoc ){
 				$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			}
