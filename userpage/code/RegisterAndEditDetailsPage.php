@@ -79,7 +79,7 @@ class RegisterAndEditDetailsPage extends Page {
 			Permission::grant( $group->ID, self::$register_group_access_key);
 			Database::alteration_message("GROUP: ".self::$register_group_code.' ('.self::$register_group_title.')' ,"created");
 		}
-		elseif(DB::query('SELECT * FROM Permission WHERE `GroupID` = '.$group->ID.' AND `Code` = "'.self::$register_group_access_key.'"')->numRecords() == 0) {
+		elseif(DB::query('SELECT * FROM Permission WHERE `GroupID` = '.$group->ID.' AND `Code` = \''.self::$register_group_access_key.'\'')->numRecords() == 0) {
 			Permission::grant($group->ID, self::$register_group_access_key);
 		}
 	}
