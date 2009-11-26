@@ -7,7 +7,7 @@
 
 class WebQuotePage extends Page {
 
-	static $icon = "webquote/images/treeicons/QuotePage";
+	static $icon = "webquote/images/treeicons/WebQuotePage";
 
 	public static $db = array();
 
