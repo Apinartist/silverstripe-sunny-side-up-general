@@ -22,7 +22,7 @@ class WebQuoteTimeframeOption extends DataObject {
 
 	public static $default_records = array(
 		array("Name" => "Normal", "Multiplier" => 1),
-		array("Name" => "Urgent", "Multiplier" => 1.7)
+		array("Name" => "Urgent", "Multiplier" => 1.7),
 		array("Name" => "Rush", "Multiplier" => 2.7)
 	);
 
