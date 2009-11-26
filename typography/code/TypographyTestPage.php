@@ -24,6 +24,10 @@ class TypographyTestPage extends Page {
 		"Content" => 'auto-completed - do not alter',
 	);
 
+	public function canCreate() {
+		return !DataObject::get("SiteTree", "`ClassName` = 'TypographyTestPage'");
+	}
+
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(self::$auto_include) {
