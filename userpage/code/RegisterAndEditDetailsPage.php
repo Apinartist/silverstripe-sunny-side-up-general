@@ -62,7 +62,7 @@ class RegisterAndEditDetailsPage extends Page {
 	}
 
 	public function canCreate() {
-		return !DataObject::get_one("SiteTree", 'ClassName ="RegisterAndEditDetailsPage"');
+		return !DataObject::get_one("SiteTree", "`ClassName` = 'RegisterAndEditDetailsPage'");
 	}
 
 	public function canDelete() {
