@@ -30,6 +30,8 @@ ProductWithVariations = {
 
 	formMsgSelector: "#ExtendedProductVariationPrice",
 
+	buttonSelector: ".Actions input",
+
 	dropdownSelector: "#ExtendedProductVariationDropdowns select",
 
 	priceSelector: "#ExtendedProductVariationPrice",
@@ -83,34 +85,37 @@ ProductWithVariations = {
 		if(match !== false) {
 			jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
 			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.PriceArray[match]);
+			jQuery(ProductWithVariations.buttonSelector).slideDown();
 		}
 		else {
 			jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
 			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
+			jQuery(ProductWithVariations.buttonSelector).slideUp();
 
 		}
 	},
 
 	prepAjaxSubmit: function(){
 		var options = {
-				target:        ProductWithVariations.formMsgSelector,   // target element(s) to be updated with server response
-				beforeSubmit:  ProductWithVariations.showRequest,  // pre-submit callback
-				success:       ProductWithVariations.showResponse  // post-submit callback
-				// other available options:
-				//url:       url         // override for form's 'action' attribute
-				//type:      type        // 'get' or 'post', override for form's 'method' attribute
-				//dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
-				//clearForm: true        // clear all form fields after successful submit
-				//resetForm: true        // reset the form after successful submit
+			target:        ProductWithVariations.formMsgSelector,
+			beforeSubmit:  ProductWithVariations.showRequest,
+			success:       ProductWithVariations.showResponse,
+			type:          "post",
+			//dataType:      "xml"
+			//url:         url
+			//clearForm:   true
+			//resetForm:   true
 		};
     jQuery(ProductWithVariations.formSelector).ajaxForm(options);
 	},
 
 	showRequest: function (formData, jqForm, options) {
+		jQuery(ProductWithVariations.formMsgSelector).addClass("loading");
     return true;
 	},
 
 	showResponse: function (responseText, statusText)  {
+		jQuery(ProductWithVariations.formMsgSelector).removeClass("loading");
 	}
 
 }
