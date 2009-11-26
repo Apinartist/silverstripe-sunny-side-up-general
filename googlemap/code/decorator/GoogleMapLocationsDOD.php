@@ -274,7 +274,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
 			$where = "(".$orderByRadius.") > 0 AND `GoogleMapLocationsObject`.`Latitude` <> 0 AND `GoogleMapLocationsObject`.`Longitude` <> 0";
 			if($classNameForParent) {
-				$where .= ' AND `SiteTree_Live`.`ClassName` = "'.$classNameForParent.'"';
+				$where .= " AND `SiteTree_Live`.`ClassName` = '".$classNameForParent."'";
 			}
 			if(count($excludeIDList)) {
 				$where .= ' AND `GoogleMapLocationsObject`.`ID` NOT IN ('.implode(",",$excludeIDList).') ';
