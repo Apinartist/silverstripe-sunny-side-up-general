@@ -16,7 +16,7 @@ class BrowseAbstractPage extends Page {
 			return false;
 		}
 		else {
-			return DataObject::get_one("SiteTree", '`ClassName` = "'.self::$default_parent.'"');
+			return DataObject::get_one("SiteTree", "`ClassName` = '".self::$default_parent."'");
 		}
 	}
 
