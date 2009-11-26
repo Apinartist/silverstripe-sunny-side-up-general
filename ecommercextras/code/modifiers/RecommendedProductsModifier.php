@@ -128,7 +128,7 @@ class RecommendedProductsModifier_Form extends Form {
 					$resizedImage = $product->Image()->SetWidth(RecommendedProductsModifier::get_image_width());
 					if(is_object($resizedImage) && $resizedImage) {
 						$imageLink = $resizedImage->Filename;
-						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.$product->Title.'" /></span>';
+						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($product->Title).'" /></span>';
 					}
 				}
 				if(!$imagePart) {
