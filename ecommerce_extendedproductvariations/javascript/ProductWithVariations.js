@@ -42,6 +42,7 @@ ProductWithVariations = {
 				ProductWithVariations.calculateVariation();
 			}
 		);
+		jQuery(this.dropdownSelector).change();
 	},
 
 	calculateVariation: function() {

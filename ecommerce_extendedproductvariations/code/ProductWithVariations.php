@@ -17,8 +17,6 @@ class ProductWithVariations extends Product {
 
 	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
 
-	static $hide_ancestor = "Product";
-
 	static $add_action = 'a Product with variations';
 
 	public static $defaults = array(
@@ -267,7 +265,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$optionArray[$option->ParentID] = $option->ID;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
-				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$variation->Price."';\r\n";
+				$js .= " ProductWithVariations.PriceArray[".$number."] = '".Payment::site_currency().$variation->dbObject("Price")->Nice()."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
