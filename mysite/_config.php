@@ -37,13 +37,13 @@ BlogEntry::allow_wysiwyg_editing();
 //===================---------------- END blog MODULE ----------------===================
 
 //===================---------------- START googleAnalyticsbasics MODULE ----------------===================
-SiteTreeDecorator::add_extension('SiteTree', 'GoogleAnalytics');
+Object::add_extension('SiteTree', 'GoogleAnalytics');
 GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
 
 //===================---------------- START metatags MODULE ----------------===================
-SiteTreeDecorator::add_extension('SiteTree', 'MetaTagAutomation');
+Object::add_extension('SiteTree', 'MetaTagAutomation');
 Object::add_extension('ContentController', 'MetaTagAutomation_controller');
 /* pop-ups and form interaction */
 MetaTagAutomation::set_disable_update_popup(0);
@@ -73,7 +73,7 @@ MetaTagAutomation_controller::set_combine_js_files_into_one(0);
 //===================---------------- END metatags MODULE ----------------===================
 
 //===================---------------- START sharethis MODULE ----------------===================
-SiteTreeDecorator::add_extension('SiteTree', 'ShareThis');
+Object::add_extension('SiteTree', 'ShareThis');
 ShareThis::$EnabledIcons = Array("email", "print", "google", "facebook", "favourites");
 ShareThis::$ShowTitle = false;
 ShareThis::$IconTransparent = true;
