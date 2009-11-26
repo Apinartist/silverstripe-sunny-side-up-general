@@ -17,7 +17,7 @@ class ShopManagerPage extends Page {
 	);
 
 	function canCreate() {
-		return !DataObject::get_one("SiteTree", 'ClassName = "ShopManagerPage"');
+		return !DataObject::get_one("SiteTree", "`ClassName` = 'ShopManagerPage'");
 	}
 
 }
