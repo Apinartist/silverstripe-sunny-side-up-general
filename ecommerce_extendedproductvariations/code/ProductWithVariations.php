@@ -210,10 +210,14 @@ class ProductWithVariations_Controller extends Product_Controller {
 			if($variation) {
 				if($variation->AllowPurchase()) {
 					ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
+					$msg = "Added to cart.";
 					if(!$this->isAjax()) {
-						Session::set("ProductVariationsFormMessage", "Added to cart.");
+						Session::set("ProductVariationsFormMessage", $msg);
 						Director::redirectBack();
 						return;
+					}
+					else {
+						return $msg;
 					}
 				}
 			}

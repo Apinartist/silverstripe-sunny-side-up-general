@@ -28,6 +28,8 @@ ProductWithVariations = {
 
 	formSelector: "#Form_ProductVariationsForm",
 
+	formMsgSelector: "#ExtendedProductVariationPrice",
+
 	dropdownSelector: "#ExtendedProductVariationDropdowns select",
 
 	priceSelector: "#ExtendedProductVariationPrice",
@@ -91,7 +93,7 @@ ProductWithVariations = {
 
 	prepAjaxSubmit: function(){
 		var options = {
-				target:        '#output1',   // target element(s) to be updated with server response
+				target:        ProductWithVariations.formMsgSelector,   // target element(s) to be updated with server response
 				beforeSubmit:  ProductWithVariations.showRequest,  // pre-submit callback
 				success:       ProductWithVariations.showResponse  // post-submit callback
 				// other available options:
@@ -105,14 +107,12 @@ ProductWithVariations = {
 	},
 
 	showRequest: function (formData, jqForm, options) {
-    var queryString = jQuery.param(formData);
-    alert('About to submit: \n\n' + queryString);
     return true;
 	},
 
 	showResponse: function (responseText, statusText)  {
-    alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.');
 	}
+
 }
 
 
