@@ -16,7 +16,7 @@
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sharethis MODULE ----------------===================
 /*
-SiteTreeDecorator::add_extension('SiteTree', 'ShareThis');
+Object::add_extension('SiteTree', 'ShareThis');
 ShareThis::$EnabledIcons = Array("email", "print", "digg", "reddit", "delicious", "furl", "ma.gnolia", "newsvine", "live", "myweb", "google", "stumbleupon", "simpy", "facebook", "favourites");
 ShareThis::$ShowTitle = false;
 ShareThis::$IconTransparent = true;

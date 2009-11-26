@@ -6,7 +6,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sitewidesettings MODULE ----------------===================
-//SiteTreeDecorator::add_extension('SiteWideSettings', 'SiteWideSettingsDOD');
+//Object::add_extension('SiteWideSettings', 'SiteWideSettingsDOD');
 /*
 SiteWideSettingsDOD::set_extra_statics(
 	array(

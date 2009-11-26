@@ -11,12 +11,12 @@
 
 
 // *** EXTENSIONS
-//SiteTreeDecorator::add_extension('SiteTree', 'AjaxOrder');
+//Object::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
 //Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier'));
 //Order::set_email("websales@silverstripe.co.nz");
 //Order::set_subject("Thank you for your order at silverstripe.co.nz");
-//DataObjectDecorator::add_extension('Order', 'OrderDecorator');
+//Object::add_extension('Order', 'OrderDecorator');
 
 // *** ORDER ADDITIONS
 //OrderDecorator::set_order_id_start_number(1000);
