@@ -9,6 +9,7 @@
 	$(document).ready(
 		function() {
 			ProductWithVariations.init();
+			ProductWithVariations.prepAjaxSubmit();
 		}
 	);
 
@@ -24,6 +25,8 @@ ProductWithVariations = {
 	IDArray: new Array(),
 
 	PriceArray: new Array(),
+
+	formSelector: "#Form_ProductVariationsForm",
 
 	dropdownSelector: "#ExtendedProductVariationDropdowns select",
 
@@ -84,6 +87,31 @@ ProductWithVariations = {
 			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
 
 		}
+	},
+
+	prepAjaxSubmit: function(){
+		var options = {
+				target:        '#output1',   // target element(s) to be updated with server response
+				beforeSubmit:  ProductWithVariations.showRequest,  // pre-submit callback
+				success:       ProductWithVariations.showResponse  // post-submit callback
+				// other available options:
+				//url:       url         // override for form's 'action' attribute
+				//type:      type        // 'get' or 'post', override for form's 'method' attribute
+				//dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
+				//clearForm: true        // clear all form fields after successful submit
+				//resetForm: true        // reset the form after successful submit
+		};
+    jQuery(ProductWithVariations.formSelector).ajaxForm(options);
+	},
+
+	showRequest: function (formData, jqForm, options) {
+    var queryString = jQuery.param(formData);
+    alert('About to submit: \n\n' + queryString);
+    return true;
+	},
+
+	showResponse: function (responseText, statusText)  {
+    alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.');
 	}
 }
 
