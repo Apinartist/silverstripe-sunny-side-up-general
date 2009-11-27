@@ -20,7 +20,8 @@ class ProductWithVariations extends Product {
 	static $add_action = 'a Product with variations';
 
 	public static $defaults = array(
-		'AllowPurchase' => true
+		'AllowPurchase' => true,
+		'DoNotAddVariationsAutomatically' => true
 	);
 
 	public static $casting = array();
@@ -48,7 +49,7 @@ class ProductWithVariations extends Product {
 		);
 		$fields->addFieldsToTab("Root.Content.ProductVariations",$this->getVariationsTable());
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
-			new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations" target="_blank">delete all variations</a> - useful if the variations have gone pearshaped</p>')
+			new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations" target="_blank">delete all variations</a> - useful if the variations have gone pearshaped - PLEASE USE WITH CARE!</p>')
 		);
 		return $fields;
 	}
