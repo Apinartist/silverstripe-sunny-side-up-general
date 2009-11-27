@@ -11,7 +11,7 @@
 class ExtendedProductVariationOption extends DataObject {
 
 	public static $db = array(
-		"Code" => "Varchar(12)",
+		"Code" => "Varchar(30)",
 		"Name" => "Varchar(255)"
 	);
 	public static $has_one = array(
