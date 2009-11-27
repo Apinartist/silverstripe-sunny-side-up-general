@@ -138,4 +138,4 @@ HOW TO USE THE AJAX STUFF
 -----------------------------------------------------------
 add the following to your template:
 
-<a class="ajaxAdd" href="$addLinkAjax">
+<% if IsInCart %><a class="ajaxAdd" href="$addLinkAjax">In cart</a><% else %><a class="ajaxAdd" href="$removeLinkAjax">Buy Now</a><% end_if %>
