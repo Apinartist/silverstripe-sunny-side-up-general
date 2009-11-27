@@ -131,3 +131,11 @@ class OrderDecoratorCustom extends DataObjectDecorator {
 and then add the following to your _config.php file:
 
 DataObjectDecorator::add_extension('Order', 'OrderDecoratorCustom');
+
+
+
+HOW TO USE THE AJAX STUFF
+-----------------------------------------------------------
+add the following to your template:
+
+<a class="ajaxAdd" href="$addLinkAjax">
