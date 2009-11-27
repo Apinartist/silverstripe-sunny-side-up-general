@@ -53,7 +53,7 @@ class SimplestSpamField extends SpamProtectorField {
 
 	public function Field() {
 		$this->initialise();
-		$html = '<input type="text" name="SimplestSpam_challenge_field" />';
+		$html = '<input type="text" name="SimplestSpam_challenge_field" class="text requiredField" />';
 		return $html;
 	}
 
