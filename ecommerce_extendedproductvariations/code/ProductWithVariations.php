@@ -201,6 +201,8 @@ class ProductWithVariations extends Product {
 
 class ProductWithVariations_Controller extends Product_Controller {
 
+	protected $optionArray = null;
+
 	function init() {
 		parent::init();
 	}
@@ -236,8 +238,10 @@ class ProductWithVariations_Controller extends Product_Controller {
 			if($groups) {
 				foreach($groups as $group) {
 					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
+					//what options are actually available:
+
 					if($options) {
-						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $options->toDropDownMap("ID", "Name", null, "Name")));
+						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $this->optionArray[$option->ParentID]));
 					}
 				}
 			}
@@ -270,13 +274,14 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$options = $variation->ExtendedProductVariationOptions();
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
 				foreach($options as $option) {
-					$optionArray[$option->ParentID] = $option->ID;
+					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
 				$js .= " ProductWithVariations.PriceArray[".$number."] = '".Payment::site_currency().$variation->dbObject("Price")->Nice()."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
+
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations.js");
 		Requirements::customScript($js,'ProductWithVariationsArray');
