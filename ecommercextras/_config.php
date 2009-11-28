@@ -43,12 +43,13 @@
 //BonusProductModifier::set_bonus_price(0);
 
 // *** MinMaxModifier
-//MinMaxModifier::set_min_field("MinQuantity");
-//MinMaxModifier::set_max_field("MaxQuantity");
+//MinMaxModifier::set_min_field("MinQuantity"); //if you only want to use stock quantity tables then set to ""
+//MinMaxModifier::set_max_field("MaxQuantity"); //if you only want to use stock quantity tables then set to ""
 //MinMaxModifier::set_default_min_quantity(1);
 //MinMaxModifier::set_default_max_quantity(99);
 //MinMaxModifier::set_adjustment_message("Quantities have been adjusted as follows: ");
 //MinMaxModifier::set_sorry_message("Quantities have been adjusted as follows: ");
+//MinMaxModifier::set_use_stock_quantities(1); //make use of the stock quantity tables to keep track of them
 
 
 // *** GST TAX MODIFIER

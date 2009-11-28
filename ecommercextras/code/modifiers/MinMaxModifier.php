@@ -32,7 +32,8 @@ class MinMaxModifier extends OrderModifier {
 	protected static $sorry_message = "Sorry, your selected value not is available";
 		static function set_sorry_message($v) { self::$sorry_message = $v;}
 
-
+	protected static $use_stock_quantities = false;
+		static function set_use_stock_quantities($v) { self::$use_stock_quantities = $v;}
 //-------------------------------------------------------------------- *** static functions
 
 	static function show_form() {
@@ -92,9 +93,9 @@ class MinMaxModifier extends OrderModifier {
 					$product = $item->Product();
 
 					if($quantity = $item->getQuantity()) {
-						$newQuantity = 0;
+						$newQuantity = -1; //can be zero, but can not be minus 1!
 						$absoluteMin = 0;
-						$absoluteMax = 99999;
+						$absoluteMax = 9999999;
 						if($minFieldName) {
 							if($product->$minFieldName) {
 								$absoluteMin = $product->$minFieldName;
@@ -124,11 +125,20 @@ class MinMaxModifier extends OrderModifier {
 								$absoluteMax = self::$defaul_max_quantity;
 							}
 
-							if($quantity < self::$default_max_quantity) {
+							if($quantity > self::$default_max_quantity) {
 								$newQuantity = self::$default_max_quantity;
 							}
 						}
-						if($newQuantity != $quantity && $newQuantity) {
+						if(self::$use_stock_quantities) {
+							$maxStockQuantity = ProductStockQuantity::get_quantity_by_product_id($product->ID);
+							if($absoluteMax > $maxStockQuantity) {
+								$absoluteMax = $maxStockQuantity;
+							}
+							if($quantity > $maxStockQuantity) {
+								$newQuantity = $maxStockQuantity;
+							}
+						}
+						if($newQuantity != $quantity && $newQuantity > -1) {
 							ShoppingCart::set_quantity_item($product->ID, $newQuantity);
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
