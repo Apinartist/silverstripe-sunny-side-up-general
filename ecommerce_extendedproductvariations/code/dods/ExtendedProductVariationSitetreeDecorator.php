@@ -24,7 +24,7 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 
 
 	function updateCMSFields(FieldSet &$fields) {
-		if($this->owner instanceOf ProductGroup || $this->owner->DoNotAddVariationsAutomatically) {
+		if($this->owner instanceOf ProductGroup || ($this->owner instanceOf ProductWithVariations && $this->owner->AddVariationsAutomatically)) {
 			$tab = new tab(
 				"ProductVariations",
 				new HeaderField("DefaultVariationGroupsHeader",'Choose Applicable Variation Lists', 3),

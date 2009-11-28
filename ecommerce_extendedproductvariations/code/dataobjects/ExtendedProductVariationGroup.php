@@ -55,7 +55,7 @@ class ExtendedProductVariationGroup extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Name" => "Name	of the Product Variation Option List, please be as specific as possible",
+		"Name" => "Name of List",
 		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen]), make sure to include a space where needed. If unsure leave blank.",
 		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed. If unsure leave blank.",
 		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. variation will read &quot;XL&quot; OR &quot;Kid Size 5&quot; and never &quot;Kid Size 5, XL&quot;) for selected products - i.e. does not work in combination with other variations. If unsure, please do NOT tick.",

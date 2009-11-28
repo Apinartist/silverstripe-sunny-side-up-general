@@ -12,7 +12,7 @@
 class ProductWithVariations extends Product {
 
 	static $db = array(
-		"DoNotAddVariationsAutomatically" => "Boolean"
+		"AddVariationsAutomatically" => "Boolean"
 	);
 
 	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
@@ -21,7 +21,7 @@ class ProductWithVariations extends Product {
 
 	public static $defaults = array(
 		'AllowPurchase' => true,
-		'DoNotAddVariationsAutomatically' => true
+		'VariationsAutomatically' => false
 	);
 
 	public static $casting = array();
@@ -43,7 +43,7 @@ class ProductWithVariations extends Product {
 		foreach(self::$hide_product_fields as $fieldName) {
 			$fields->removeByName($fieldName);
 		}
-		$fields->addFieldsToTab("Root.Content.ProductVariations", new CheckboxField("DoNotAddVariationsAutomatically", "Do not add variations automatically"));
+		$fields->addFieldsToTab("Root.Content.ProductVariations", new CheckboxField("VariationsAutomatically", "Add variations automatically"));
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
 			new HeaderField("VariationsExplanation","Actual product variations for sale (price must be higher than zero)", 3)
 		);
@@ -95,7 +95,7 @@ class ProductWithVariations extends Product {
 
 
 	function onBeforeWrite() {
-		if($this->Price && !$this->DoNotAddVariationsAutomatically) {
+		if($this->Price && $this->AddVariationsAutomatically) {
 			$combinations = $this->getParentExtendedProductVariationGroups();
 			if($combinations) {
 				$groupsDataObject = new DataObjectSet();
@@ -192,9 +192,7 @@ class ProductWithVariations extends Product {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-		if(!$this->DoNotAddVariationsAutomatically) {
-			LeftAndMain::ForceReload();
-		}
+		LeftAndMain::ForceReload();
 	}
 
 }
@@ -241,7 +239,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					//what options are actually available:
 
 					if($options) {
-						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $this->optionArray[$option->ParentID]));
+						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $this->optionArray[$group->ID]));
 					}
 				}
 			}
