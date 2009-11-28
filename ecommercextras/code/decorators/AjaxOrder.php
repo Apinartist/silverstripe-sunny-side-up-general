@@ -155,7 +155,12 @@ class AjaxOrder_Controller extends Extension {
 	}
 
 	private function ajaxGetSimpleCart() {
-		return $this->owner->renderWith("AddToCartLink");
+		if($this->owner->isAjax()) {
+			return $this->owner->renderWith("AjaxSimpleCart");
+		}
+		else {
+			Director::redirectBack();
+		}
 	}
 
 	function removeitemwithajax() {
@@ -163,7 +168,8 @@ class AjaxOrder_Controller extends Extension {
 		if($id) {
 			ShoppingCart::remove_all_item($id);
 		}
-		return $this->ajaxGetSimpleCart();
+		die("ok");
+		return  $this->owner->renderWith("AjaxSimpleCart");
 	}
 
 	function getajaxcheckoutcart() {
