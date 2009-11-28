@@ -42,9 +42,9 @@ var AjaxCart = {
 	UnconfirmedDelete: false,
 
 	init: function(element) {
-		$(element).addAddLinks();
-		$(element).addRemoveLinks();
-		$(element).addCartRemove();
+		jQuery(element).addAddLinks();
+		jQuery(element).addRemoveLinks();
+		jQuery(element).addCartRemove();
 	},
 
 	set_LoadingText: function(v) {
