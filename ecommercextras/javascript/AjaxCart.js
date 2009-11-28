@@ -10,7 +10,7 @@
 ;(function($) {
 	$(document).ready(
 		function() {
-			AjaxCart.init();
+			AjaxCart.init("body");
 		}
 	);
 })(jQuery);
@@ -41,11 +41,11 @@ var AjaxCart = {
 
 	UnconfirmedDelete: false,
 
-	init: function() {
-		$("body").addAddLinks();
-		$("body").addRemoveLinks();
-		$("body").addCartRemove();
-	}
+	init: function(element) {
+		$(element).addAddLinks();
+		$(element).addRemoveLinks();
+		$(element).addCartRemove();
+	},
 
 	set_LoadingText: function(v) {
 		this.LoadingText = v;
@@ -62,22 +62,22 @@ var AjaxCart = {
 	loadAjax: function( url, el ) {
 		jQuery(AjaxCart.cartHolderSelector).html('<span class="'+AjaxCart.LoadingClass+'">'+AjaxCart.LoadingText+'</span>');
 		jQuery(el).addClass(AjaxCart.LoadingClass);
-		jQuery(AjaxCart.cartHolderSelector).load(
+		var clickedElement = el;
+		jQuery.get(
 			url,
 			{},
 			function(data) {
-				AjaxCart.swapShowAndNoShow(el);
-				AjaxCart.init();
+				alert("doing it");
+				jQuery(AjaxCart.cartHolderSelector).html(data);
+				jQuery(clickedElement).removeClass(AjaxCart.LoadingClass);
+				jQuery(clickedElement).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.showSelector).removeClass(AjaxCart.showSelector).addClass(AjaxCart.doNotShowSelector);
+				jQuery(clickedElement).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.doNotShowSelector).removeClass(AjaxCart.doNotShowSelector).addClass(AjaxCart.showSelector);
+				AjaxCart.init(clickedElement);
 			}
 		);
 		return true;
-	},
-
-	swapShowAndNoShow: function (el) {
-		var toHide = jQuery(el).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.showSelector).removeClass(AjaxCart.showSelector).addClass(AjaxCart.);
-		var toShow = jQuery(el).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.doNotShowSelector).removeClass(AjaxCart.doNotShowSelector).addClass(AjaxCart.showSelector);
-		jQuery(toHide)
 	}
+
 
 
 
