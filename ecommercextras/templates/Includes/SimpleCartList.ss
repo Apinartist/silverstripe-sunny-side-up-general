@@ -13,5 +13,7 @@
 			<% end_if %>
 		<% end_control %>
 <li><a href="$CheckoutLink" class="shoppingCartLink">Go to Shopping Cart</a></li>
+	<% else %>
+	<li>There are no items in your cart</li>
 	<% end_if %>
 <% end_control %>

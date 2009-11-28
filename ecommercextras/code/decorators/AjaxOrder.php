@@ -77,7 +77,7 @@ class AjaxOrder extends DataObjectDecorator {
 
 	function addLinkAjax() {
 		$this->addAjaxLinkRequirements();
-		return $this->owner->URLSegment."/additemwithajax/".$this->owner->ID.'/';
+		return $this->owner->URLSegment."/additemwithajax/".$this->owner->ID.'/'.$this->owner->ClassName;
 	}
 
 	function removeLinkAjax() {
@@ -144,8 +144,9 @@ class AjaxOrder_Controller extends Extension {
 
 	function additemwithajax() {
 		$id = intval(Director::URLParam("ID"));
-		if($id) {
-			$item = DataObject::get_by_id(self::$product_classname, $id);
+		$productClassName = Director::URLParam("OtherID");
+		if($id && class_exists($productClassName)) {
+			$item = DataObject::get_by_id($productClassName, $id);
 			if($item) {
 				$orderItem = new self::$order_item_classname($item);
 				ShoppingCart::add_new_item($orderItem);

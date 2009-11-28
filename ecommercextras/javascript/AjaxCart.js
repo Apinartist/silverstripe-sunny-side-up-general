@@ -25,9 +25,9 @@ var AjaxCart = {
 
 	ajaxAddRemoveLinkSelector: ".ajaxAddToCartLink",
 
-	showSelector: ".show",
+	showClass: "show",
 
-	doNotShowSelector: ".doNotShow",
+	doNotShowClass: "doNotShow",
 
 	addLinkSelector: ".ajaxAdd",
 
@@ -67,12 +67,12 @@ var AjaxCart = {
 			url,
 			{},
 			function(data) {
-				alert("doing it");
+				alert(data);
 				jQuery(AjaxCart.cartHolderSelector).html(data);
 				jQuery(clickedElement).removeClass(AjaxCart.LoadingClass);
-				jQuery(clickedElement).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.showSelector).removeClass(AjaxCart.showSelector).addClass(AjaxCart.doNotShowSelector);
-				jQuery(clickedElement).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.doNotShowSelector).removeClass(AjaxCart.doNotShowSelector).addClass(AjaxCart.showSelector);
-				AjaxCart.init(clickedElement);
+				jQuery(clickedElement).addClass(AjaxCart.doNotShowClass).removeClass(AjaxCart.showClass);
+				jQuery(clickedElement).next("."+AjaxCart.doNotShowClass).addClass(AjaxCart.showClass).removeClass(AjaxCart.doNotShowClass);
+				jQuery(clickedElement).prev("."+AjaxCart.doNotShowClass).addClass(AjaxCart.showClass).removeClass(AjaxCart.doNotShowClass);
 			}
 		);
 		return true;
