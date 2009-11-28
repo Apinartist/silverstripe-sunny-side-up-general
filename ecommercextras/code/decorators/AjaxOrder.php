@@ -149,7 +149,7 @@ class AjaxOrder_Controller extends Extension {
 	}
 
 	private function ajaxGetSimpleCart() {
-		return $this->owner->renderWith("AjaxSimpleCart");
+		return $this->owner->renderWith("AddToCartLink");
 	}
 
 	function removeitemwithajax() {

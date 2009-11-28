@@ -1,10 +1,18 @@
-/* add and remove using ajax... */
+/**
+ *@author Nicolaas [at] sunnysideup.co.nz
+ *@description: adds ajax functionality to page
+ *we have three options:
+ * * addLinks (click to add to cart)
+ * * delete links (remove from cart)
+ * * and remove from cart (cart is expected to be as <li>......<a href="">click to remove</a>, with a tag being a direct child of li, and li holding item
+ **/
 
 ;(function($) {
 	$(document).ready(
 		function() {
 			$("body").addAddLinks();
 			$("body").addRemoveLinks();
+			$("body").addCartRemove();
 		}
 	);
 })(jQuery);
@@ -16,6 +24,12 @@ var AjaxCart = {
 	LoadingText: "updating cart ... ",
 
 	LoadingClass: "loading",
+
+	addLinkSelector: ".ajaxAdd",
+
+	removeCartSelector: ".removeFromCart",
+
+	removeLinkSelector: ".ajaxRemove",
 
 	InCartText: "In Cart",
 
@@ -54,7 +68,7 @@ var AjaxCart = {
 jQuery.fn.extend({
 
 	addAddLinks: function() {
-		jQuery(this).find(".ajaxAdd").click(
+		jQuery(this).find(AjaxCart.addLinkSelector).click(
 			function(){
 				var url = jQuery(this).attr("href");
 				jQuery(this).text(AjaxCart.LoadingText);
@@ -64,8 +78,8 @@ jQuery.fn.extend({
 		);
 	},
 
-	addRemoveLinks: function () {
-		jQuery(this).find(".removeLink").click(
+	addCartRemove: function () {
+		jQuery(this).find(AjaxCart.removeCartSelector).click(
 			function(){
 				if(AjaxCart.UnconfirmedDelete || confirm(AjaxCart.ConfirmDeleteText)) {
 					var url = jQuery(this).attr("href");
@@ -77,6 +91,16 @@ jQuery.fn.extend({
 			}
 		);
 	},
+
+	addRemoveLinks: function () {
+		jQuery(this).find(AjaxCart.removeLinkSelector).click(
+			function(){
+				var url = jQuery(this).attr("href");
+				AjaxCart.loadAjax(url, this);
+				return false;
+			}
+		);
+	}
 
 });
 

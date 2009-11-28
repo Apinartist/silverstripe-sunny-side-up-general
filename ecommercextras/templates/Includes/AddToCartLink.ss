@@ -1,0 +1,1 @@
+<% if IsInCart %><a class="ajaxRemove" href="$removeLinkAjax">Remove From Cart</a><% else %><a class="ajaxAdd" href="$addLinkAjax">Add To Cart</a><% end_if %>
