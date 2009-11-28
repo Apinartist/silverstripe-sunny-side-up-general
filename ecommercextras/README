@@ -141,3 +141,11 @@ add the following to your template:
 <% include AddToCartLink %>
 
 You can theme this of course!
+
+Another template you can theme is:
+
+SimpleCartList.ss
+
+This should be embedded like this;
+
+<% if IsCheckoutPage %><% else %><% include SimpleCartList %><% end_if %>
