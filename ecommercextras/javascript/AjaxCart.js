@@ -67,7 +67,9 @@ var AjaxCart = {
 			url,
 			{},
 			function(data) {
+				alert(data);
 				jQuery(AjaxCart.cartHolderSelector).html(data);
+				jQuery(AjaxCart.cartHolderSelector).addCartRemove();
 				jQuery(clickedElement).removeClass(AjaxCart.LoadingClass);
 				jQuery(clickedElement).addClass(AjaxCart.doNotShowClass).removeClass(AjaxCart.showClass);
 				jQuery(clickedElement).next("."+AjaxCart.doNotShowClass).addClass(AjaxCart.showClass).removeClass(AjaxCart.doNotShowClass);
