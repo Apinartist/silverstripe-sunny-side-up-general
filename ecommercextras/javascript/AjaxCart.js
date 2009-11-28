@@ -10,9 +10,7 @@
 ;(function($) {
 	$(document).ready(
 		function() {
-			$("body").addAddLinks();
-			$("body").addRemoveLinks();
-			$("body").addCartRemove();
+			AjaxCart.init();
 		}
 	);
 })(jQuery);
@@ -36,6 +34,12 @@ var AjaxCart = {
 	cartHolderSelector: "#CartHolder",
 
 	UnconfirmedDelete: false,
+
+	init: function() {
+		$("body").addAddLinks();
+		$("body").addRemoveLinks();
+		$("body").addCartRemove();
+	}
 
 	set_LoadingText: function(v) {
 		this.LoadingText = v;

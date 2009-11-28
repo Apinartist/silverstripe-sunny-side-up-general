@@ -4,6 +4,12 @@
 * @package: ecommerce
 * @sub-package: ecommercextras
 * @description: main class for ecommercextras that kicks things into place.
+* it contains a whole bunch of useful functions (e.g. number of items in cart) and ajax functionality
+* ajax works as follows:
+* - there are three types of links: add to cart, remove from cart (within cart), remove from cart (link)
+* - when you click the link: add to cart or remove from cart two things change:
+* * the link itself
+* * a designated cart area gets a new cart
 */
 
 
@@ -156,9 +162,8 @@ class AjaxOrder_Controller extends Extension {
 		$id = intval(Director::URLParam("ID"));
 		if($id) {
 			ShoppingCart::remove_all_item($id);
-			return 1;
 		}
-		return 0;
+		return $this->ajaxGetSimpleCart();
 	}
 
 	function getajaxcheckoutcart() {
