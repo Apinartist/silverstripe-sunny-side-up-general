@@ -154,10 +154,11 @@ class AjaxOrder_Controller extends Extension {
 
 	function removeitemwithajax() {
 		$id = intval(Director::URLParam("ID"));
-		if($item) {
+		if($id) {
 			ShoppingCart::remove_all_item($id);
+			return 1;
 		}
-		return $this->ajaxGetSimpleCart();
+		return 0;
 	}
 
 	function getajaxcheckoutcart() {
