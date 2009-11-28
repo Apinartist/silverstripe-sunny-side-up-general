@@ -90,7 +90,6 @@ jQuery.fn.extend({
 		jQuery(this).find(AjaxCart.addLinkSelector).click(
 			function(){
 				var url = jQuery(this).attr("href");
-				jQuery(this).text(AjaxCart.LoadingText);
 				AjaxCart.loadAjax(url, this);
 				return false;
 			}
