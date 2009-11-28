@@ -23,11 +23,17 @@ var AjaxCart = {
 
 	LoadingClass: "loading",
 
+	ajaxAddRemoveLinkSelector: ".ajaxAddToCartLink",
+
+	showSelector: ".show",
+
+	doNotShowSelector: ".doNotShow",
+
 	addLinkSelector: ".ajaxAdd",
 
-	removeCartSelector: ".removeFromCart",
-
 	removeLinkSelector: ".ajaxRemove",
+
+	removeCartSelector: ".removeFromCart",
 
 	InCartText: "In Cart",
 
@@ -55,16 +61,25 @@ var AjaxCart = {
 
 	loadAjax: function( url, el ) {
 		jQuery(AjaxCart.cartHolderSelector).html('<span class="'+AjaxCart.LoadingClass+'">'+AjaxCart.LoadingText+'</span>');
+		jQuery(el).addClass(AjaxCart.LoadingClass);
 		jQuery(AjaxCart.cartHolderSelector).load(
 			url,
 			{},
-			function() {
-				jQuery(el).text(AjaxCart.InCartText);
-				jQuery(this).addRemoveLinks();
+			function(data) {
+				AjaxCart.swapShowAndNoShow(el);
+				AjaxCart.init();
 			}
 		);
 		return true;
+	},
+
+	swapShowAndNoShow: function (el) {
+		var toHide = jQuery(el).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.showSelector).removeClass(AjaxCart.showSelector).addClass(AjaxCart.);
+		var toShow = jQuery(el).parent(AjaxCart.ajaxAddRemoveLinkSelector).find(AjaxCart.doNotShowSelector).removeClass(AjaxCart.doNotShowSelector).addClass(AjaxCart.showSelector);
+		jQuery(toHide)
 	}
+
+
 
 }
 
