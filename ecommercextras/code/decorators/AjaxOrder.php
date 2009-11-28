@@ -168,7 +168,6 @@ class AjaxOrder_Controller extends Extension {
 		if($id) {
 			ShoppingCart::remove_all_item($id);
 		}
-		die("ok");
 		return  $this->owner->renderWith("AjaxSimpleCart");
 	}
 
