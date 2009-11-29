@@ -1,10 +1,15 @@
 <?php
 /**
-* @author Nicolaas [at] sunnysideup.co.nz
-* @package: ecommerce
-* @sub-package: ecommercextras
-* @description: this is an extra page which allows you to manage your shop
-*/
+ * @author Nicolaas [at] sunnysideup.co.nz
+ * @package: ecommerce
+ * @sub-package: ecommercextras
+ * @description:
+ *  This is the central management page for organising stock control
+ *  You will need to "on" the MinMaxModifier and add MinMaxModifier::set_use_stock_quantities(true)
+ *  to get this page working.
+ *
+ *
+ **/
 
 
 class StockControlPage extends Page {
@@ -17,7 +22,7 @@ class StockControlPage extends Page {
 	);
 
 	function canCreate() {
-		return !DataObject::get_one("SiteTree", "`ClassName` = 'StockControlPage'");
+		return !DataObject::get_one("SiteTree", "`ClassName` = 'StockControlPage'") && MinMaxModifier::get_use_stock_quantities();
 	}
 
 
@@ -55,5 +60,24 @@ class StockControlPage_Controller extends Page_Controller {
 		Requirements::javascript("ecommercextras/javascript/StockControlPage.js");
 	}
 
+	function StockProductObjects() {
+		ProductStockCalculatedQuantity::add_all_products();
+		$dos = new DataObjectSet();
+		$products = DataObject("Product");
+		foreach($products as $product) {
+			$product->CalculatedQuantity = ProductStockCalculatedQuantity::get_quantity_by_product_id($product->ID);
+		}
+		return $products;
+	}
+
+	function StockVariationObjects() {
+		ProductStockCalculatedQuantity::add_all_products();
+		$dos = new DataObjectSet();
+		$products = DataObject("ProductVariation");
+		foreach($products as $product) {
+			$product->CalculatedQuantity = ProductStockCalculatedQuantity::get_quantity_by_product_id($product->ID);
+		}
+		return $products;
+	}
 
 }

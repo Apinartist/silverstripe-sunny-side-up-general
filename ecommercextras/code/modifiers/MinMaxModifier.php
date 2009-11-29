@@ -34,6 +34,7 @@ class MinMaxModifier extends OrderModifier {
 
 	protected static $use_stock_quantities = false;
 		static function set_use_stock_quantities($v) { self::$use_stock_quantities = $v;}
+		static function get_use_stock_quantities() {return self::$use_stock_quantities;}
 //-------------------------------------------------------------------- *** static functions
 
 	static function show_form() {

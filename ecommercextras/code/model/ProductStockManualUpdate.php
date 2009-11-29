@@ -18,21 +18,23 @@ class ProductStockManualUpdate extends DataObject {
 	);
 
 	//MODEL ADMIN STUFF
+
 	public static $searchable_fields = array(
 		"Quantity",
-		"Parent",
-		"Member"
+		"ParentID",
+		"MemberID"
 	);
 
 	public static $field_labels = array(
 		"Quantity",
-		"Parent"  => "Product",
-		"Member"  => "Updated By"
+		"ParentID"  => "Product",
+		"MemberID"  => "Administrator"
 	);
 
 	public static $summary_fields = array(
-		"Quantity",
-		"Parent"
+		"Parent.Name" => "Product",
+		"Member.FirstName" => "Administrator",
+		"Quantity" => "Quantity Deducted"
 	);
 
 	public static $singular_name = "Product Stock Manual Update Entry";
@@ -54,13 +56,26 @@ class ProductStockManualUpdate extends DataObject {
 		return true;
 	}
 
-
-	function onBeforeWrite() {
-		if($m = Member::currentUser()) {
-			$this->MemberID = $m->ID;
+	function onAfterWrite() {
+		parent::onAfterWrite();
+		/*
+		if(!$this->ParentID) {
+			$this->delete();
+			user_error("Can not create record without associated product", E_USER_ERROR);
 		}
-
-		parent::onBeforeWrite();
+		*/
+		if(!$this->MemberID) {
+			$this->delete();
+			user_error("Can not create record without associated administrator.", E_USER_ERROR);
+		}
 	}
 
+	function onBeforeWrite() {
+		if(!$this->MemberID) {
+			if($m = Member::currentUser()) {
+				$this->MemberID = $m->ID;
+			}
+		}
+		parent::onBeforeWrite();
+	}
 }

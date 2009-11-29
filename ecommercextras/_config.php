@@ -91,6 +91,8 @@ ModifierRulesModifier::set_rule(
 
 // *** MODEL ADMIN
 //ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
+//EcommerceModifiersModelAdmin::set_managed_models("PickUpOrDeliveryModifierOptions", "GSTTaxModifierOptions");
+
 
 // *** REPORTS
 Director::addRules(50, array(

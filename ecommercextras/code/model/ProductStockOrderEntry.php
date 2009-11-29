@@ -10,7 +10,7 @@ class ProductStockOrderEntry extends DataObject {
 
 	static $db = array(
 		"Quantity" => "Int",
-		"NoLongerRelevant" => "Boolean",
+		"IncludeInCurrentCalculation" => "Boolean"
 	);
 
 	static $has_one = array(
@@ -18,24 +18,29 @@ class ProductStockOrderEntry extends DataObject {
 		"Order" => "Order",
 	);
 
+	static $defaults = array(
+		"IncludeInCurrentCalculation"
+	);
+
 	//MODEL ADMIN STUFF
 	public static $searchable_fields = array(
-		"BaseQuantity",
-		"NoProductPresent",
-		"Parent"
+		"Quantity",
+		"IncludeInCurrentCalculation",
+		"ParentID",
+		"OrderID",
 	);
 
 	public static $field_labels = array(
-		"BaseQuantity" => "Calculated Quantity On Hand",
-		"NoProductPresent" => "Product Not Present"
-		"Parent" => "Product"
-		"LastEdited" => "Last Calculated"
+		"Quantity" => "Calculated Quantity On Hand",
+		"IncludeInCurrentCalculation" => "Include in Calculation",
+		"ParentID" => "Product",
+		"OrderID" => "Order"
 	);
 
 	public static $summary_fields = array(
-		"BaseQuantity",
-		"Parent",
-		"LastEdited"
+		"OrderID",
+		"ParentID",
+		"Quantity"
 	);
 
 	public static $singular_name = "Product Stock Order Entry";
@@ -59,6 +64,15 @@ class ProductStockOrderEntry extends DataObject {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
+		//basic checks
+		if(!$this->ParentID) {
+			$this->delete();
+			user_error("Can not create record without associated product.", E_USER_ERROR);
+		}
+		if(!$this->OrderID) {
+			$this->delete();
+			user_error("Can not create record without order.", E_USER_ERROR);
+		}
 		//make sure no doubles are created
 		while(DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID." AND ID <> ".$this->ID)) {
 			$toBeDeleted = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID, false, "LastEdited ASC");
@@ -66,4 +80,7 @@ class ProductStockOrderEntry extends DataObject {
 		}
 	}
 
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+	}
 }
