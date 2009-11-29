@@ -213,7 +213,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
 					$msg = "Added to cart.";
 					if($checkoutPage = DataObject::get_one("CheckoutPage")) {
-						$msg .= 'Continue to <a href="'.$checkoutPage->Link().'">checkout</a> or continue shopping.';
+						$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a> .';
 					}
 					if(!$this->isAjax()) {
 						Session::set("ProductVariationsFormMessage", $msg);

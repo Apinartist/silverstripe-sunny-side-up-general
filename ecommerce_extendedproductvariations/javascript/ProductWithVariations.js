@@ -116,6 +116,7 @@ ProductWithVariations = {
 
 	showResponse: function (responseText, statusText)  {
 		jQuery(ProductWithVariations.formMsgSelector).removeClass("loading");
+		//jQuery(AjaxCart.cartHolderSelector).html(data);
 	}
 
 }
