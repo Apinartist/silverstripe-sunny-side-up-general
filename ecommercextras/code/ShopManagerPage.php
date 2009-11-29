@@ -20,6 +20,11 @@ class ShopManagerPage extends Page {
 		return !DataObject::get_one("SiteTree", "`ClassName` = 'ShopManagerPage'");
 	}
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		return $fields;
+	}
+
 }
 
 class ShopManagerPage_Controller extends Page_Controller {
