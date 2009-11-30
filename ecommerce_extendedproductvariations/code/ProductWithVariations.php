@@ -250,7 +250,6 @@ class ProductWithVariations_Controller extends Product_Controller {
 				foreach($groups as $group) {
 					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
 					//what options are actually available:
-
 					if($options) {
 						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $this->optionArray[$group->ID]));
 					}
@@ -261,28 +260,10 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$selectFieldsGp->setID("ExtendedProductVariationDropdowns");
 			$fieldSet = new FieldSet($selectFieldsGp);
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", $variationsAvailable->toDropDownMap("ID", "Title", "--not selected--", "Title" )));
-			$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
-			if($msg = Session::get("ProductVariationsFormMessage")) {
-				$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
-				Session::set("ProductVariationsFormMessage", "");
-			}
-			$action = new FormAction($action = "addVariation",$title = "Add To Cart");
-			return new Form(
-				$controller = $this,
-				$name = "ProductVariationsForm",
-				$fields = $fieldSet,
-				$actions = new FieldSet($action)
-			);
 		}
 		else {
 			$fieldSet = new FieldSet();
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", array(-1 => $this->Title)));
-			$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
-			if($msg = Session::get("ProductVariationsFormMessage")) {
-				$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
-				Session::set("ProductVariationsFormMessage", "");
-			}
-			$action = new FormAction($action = "addVariation",$title = "Add To Cart");
 			return new Form(
 				$controller = $this,
 				$name = "ProductVariationsForm",
@@ -290,6 +271,19 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$actions = new FieldSet($action)
 			);
 		}
+		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
+		if($msg = Session::get("ProductVariationsFormMessage")) {
+			$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
+			Session::set("ProductVariationsFormMessage", "");
+		}
+		$action = new FormAction($action = "addVariation",$title = "Add To Cart");
+		$form = new Form(
+			$controller = $this,
+			$name = "ProductVariationsForm",
+			$fields = $fieldSet,
+			$actions = new FieldSet($action)
+		);
+		return $form;
 	}
 
 	public function VariationsAvailable() {
@@ -308,7 +302,6 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
-
 		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations.js");
 		Requirements::customScript($js,'ProductWithVariationsArray');
