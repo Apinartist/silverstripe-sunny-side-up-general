@@ -20,6 +20,7 @@ class ExtendedProductVariationGroup extends DataObject {
 
 	public static $db = array(
 		"Name" => "Varchar(255)",
+		"DisplayName" => "Varchar(255)",
 		"Prefix" => "Varchar(50)",
 		"Postfix" => "Varchar(50)",
 		"IncludeOptionsAsSoleProductVariations" => "Boolean",
@@ -55,7 +56,8 @@ class ExtendedProductVariationGroup extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Name" => "Name of List",
+		"Name" => "Internal Name",
+		"DisplayName" => "Display Name",
 		"Prefix" => "When joining variations into a combo (e.g. - XL / Male / Red), what should go before option name (e.g. - [hyphen]), make sure to include a space where needed. If unsure leave blank.",
 		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed. If unsure leave blank.",
 		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. variation will read &quot;XL&quot; OR &quot;Kid Size 5&quot; and never &quot;Kid Size 5, XL&quot;) for selected products - i.e. does not work in combination with other variations. If unsure, please do NOT tick.",

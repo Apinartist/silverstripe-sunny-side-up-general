@@ -251,7 +251,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
 					//what options are actually available:
 					if($options) {
-						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->Title, $this->optionArray[$group->ID]));
+						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $this->optionArray[$group->ID]));
 					}
 				}
 			}
