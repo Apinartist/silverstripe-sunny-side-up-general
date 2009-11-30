@@ -1,8 +1,11 @@
 
 /**
-*@author nicolaas[at]sunnysideup . co . nz
-*
-**/
+ *@author nicolaas[at]sunnysideup . co . nz
+ *@description:
+ * you can use ActionBeforeSelector / ActionAfterSelector
+ * to add extra functionality in your custom mysite code.
+ * By adding Requirements::customScript('ProductWithVariations.SetActionAfterSelector("abc")');
+ **/
 
 (function($){
 
@@ -15,7 +18,6 @@
 
 
 })(jQuery);
-
 
 
 ProductWithVariations = {
@@ -41,6 +43,12 @@ ProductWithVariations = {
 	hiddenCurrentVariationSelector: "#Form_ProductVariationsForm_CurrentVariation",
 
 	NotAvailableText: "Sorry, selection is not available",
+
+	ActionBeforeSelector: "",
+		SetActionBeforeSelector: function(v) {this.ActionBeforeSelector = v},
+
+	ActionAfterSelector: "",
+		SetActionAfterSelector: function(v) {this.ActionAfterSelector = v},
 
 	init: function() {
 		jQuery(this.hiddenCurrentVariationDiv).css("display", "none");
@@ -110,11 +118,18 @@ ProductWithVariations = {
 	},
 
 	showRequest: function (formData, jqForm, options) {
+		if(ProductWithVariations.ActionBeforeSelector) {
+			jQuery(ProductWithVariations.ActionBeforeSelector).click();
+		}
 		jQuery(ProductWithVariations.formMsgSelector).addClass("loading");
     return true;
 	},
 
 	showResponse: function (responseText, statusText)  {
+		if(ProductWithVariations.ActionAfterSelector) {
+			jQuery(ProductWithVariations.ActionAfterSelector).click();
+		}
+
 		jQuery(ProductWithVariations.formMsgSelector).removeClass("loading");
 		//jQuery(AjaxCart.cartHolderSelector).html(data);
 	}

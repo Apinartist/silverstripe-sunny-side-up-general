@@ -206,27 +206,40 @@ class ProductWithVariations_Controller extends Product_Controller {
 	}
 
 	function addVariation($data, $form) {
+		$msg = '';
 		if(isset($data["CurrentVariation"])) {
-			$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
-			if($variation) {
-				if($variation->AllowPurchase()) {
-					ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
-					$msg = "Added to cart.";
-					if($checkoutPage = DataObject::get_one("CheckoutPage")) {
-						$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a> .';
+			if($data["CurrentVariation"] -1) {
+				$orderItem = new self::$order_item_classname($this->dataRecord);
+				ShoppingCart::add_new_item($orderItem);
+			}
+			else {
+				$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
+				if($variation) {
+					if($variation->AllowPurchase()) {
+						ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
+						$msg = "Added to cart.";
+						if($checkoutPage = DataObject::get_one("CheckoutPage")) {
+							$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a> .';
+						}
+
 					}
-					if(!$this->isAjax()) {
-						Session::set("ProductVariationsFormMessage", $msg);
-						Director::redirectBack();
-						return;
-					}
-					else {
-						return $msg;
-					}
+				}
+				else {
+					Session::set("ProductVariationsFormMessage", "Could not find product variation.");
 				}
 			}
 		}
-		Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
+		else {
+			Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
+		}
+		if(!$this->isAjax()) {
+			Session::set("ProductVariationsFormMessage", $msg);
+			Director::redirectBack();
+			return;
+		}
+		else {
+			return $msg;
+		}
 	}
 
 	public function ProductVariationsForm() {
@@ -248,6 +261,22 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$selectFieldsGp->setID("ExtendedProductVariationDropdowns");
 			$fieldSet = new FieldSet($selectFieldsGp);
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", $variationsAvailable->toDropDownMap("ID", "Title", "--not selected--", "Title" )));
+			$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
+			if($msg = Session::get("ProductVariationsFormMessage")) {
+				$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
+				Session::set("ProductVariationsFormMessage", "");
+			}
+			$action = new FormAction($action = "addVariation",$title = "Add To Cart");
+			return new Form(
+				$controller = $this,
+				$name = "ProductVariationsForm",
+				$fields = $fieldSet,
+				$actions = new FieldSet($action)
+			);
+		}
+		else {
+			$fieldSet = new FieldSet();
+			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", array(-1 => $this->Title)));
 			$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
 			if($msg = Session::get("ProductVariationsFormMessage")) {
 				$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
