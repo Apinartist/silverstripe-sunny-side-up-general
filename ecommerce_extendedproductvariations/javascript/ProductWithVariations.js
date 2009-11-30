@@ -61,7 +61,7 @@ ProductWithVariations = {
 			function(i) {
 				var els = jQuery(this).find("option");
 				if(els.length < 2) {
-					jQuery(this).hide();
+					jQuery(this).parent().parent().hide();
 				}
 			}
 		);
