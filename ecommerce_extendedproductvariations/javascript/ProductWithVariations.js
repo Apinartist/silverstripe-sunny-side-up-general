@@ -122,6 +122,7 @@ ProductWithVariations = {
 			jQuery(ProductWithVariations.ActionBeforeSelector).click();
 		}
 		jQuery(ProductWithVariations.formMsgSelector).addClass("loading");
+		jQuery(ProductWithVariations.buttonSelector).fadeOut();
     return true;
 	},
 
@@ -129,9 +130,8 @@ ProductWithVariations = {
 		if(ProductWithVariations.ActionAfterSelector) {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
-
 		jQuery(ProductWithVariations.formMsgSelector).removeClass("loading");
-		//jQuery(AjaxCart.cartHolderSelector).html(data);
+
 	}
 
 }

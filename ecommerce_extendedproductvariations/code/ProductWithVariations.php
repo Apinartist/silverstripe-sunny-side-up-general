@@ -212,7 +212,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 	function addVariation($data, $form) {
 		$msg = '';
 		if(isset($data["CurrentVariation"])) {
-			if($data["CurrentVariation"] -1) {
+			if($data["CurrentVariation"] == -1) {
 				$orderItem = new Product_OrderItem($this->dataRecord);
 				ShoppingCart::add_new_item($orderItem);
 				$msg = "Added ".$this->Title." to cart.";
