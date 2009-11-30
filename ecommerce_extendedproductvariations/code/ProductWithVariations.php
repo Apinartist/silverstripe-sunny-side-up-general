@@ -19,7 +19,7 @@ class ProductWithVariations extends Product {
 
 	static $hide_ancestor = "Product";
 
-	static $add_action = 'a Product with variations';
+	static $add_action = 'Ecommerce Product With Variations';
 
 	public static $defaults = array(
 		'AllowPurchase' => true,
