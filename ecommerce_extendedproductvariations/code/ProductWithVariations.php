@@ -17,6 +17,8 @@ class ProductWithVariations extends Product {
 
 	static $icon = 'ecommerce_extendedproductvariations/images/treeicons/ProductWithVariations';
 
+	static $hide_ancestor = "Product";
+
 	static $add_action = 'a Product with variations';
 
 	public static $defaults = array(
@@ -199,6 +201,8 @@ class ProductWithVariations extends Product {
 
 class ProductWithVariations_Controller extends Product_Controller {
 
+	static $allowed_actions = array("showsimplecart", "ProductVariationsForm");
+
 	protected $optionArray = null;
 
 	function init() {
@@ -209,8 +213,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 		$msg = '';
 		if(isset($data["CurrentVariation"])) {
 			if($data["CurrentVariation"] -1) {
-				$orderItem = new self::$order_item_classname($this->dataRecord);
+				$orderItem = new Product_OrderItem($this->dataRecord);
 				ShoppingCart::add_new_item($orderItem);
+				$msg = "Added ".$this->Title." to cart.";
 			}
 			else {
 				$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
@@ -218,10 +223,6 @@ class ProductWithVariations_Controller extends Product_Controller {
 					if($variation->AllowPurchase()) {
 						ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
 						$msg = "Added to cart.";
-						if($checkoutPage = DataObject::get_one("CheckoutPage")) {
-							$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a> .';
-						}
-
 					}
 				}
 				else {
@@ -231,6 +232,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 		}
 		else {
 			Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
+		}
+		if($checkoutPage = DataObject::get_one("CheckoutPage")) {
+			$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a>.';
 		}
 		if(!$this->isAjax()) {
 			Session::set("ProductVariationsFormMessage", $msg);
