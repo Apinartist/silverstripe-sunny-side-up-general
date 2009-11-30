@@ -57,6 +57,12 @@ ProductWithVariations = {
 				ProductWithVariations.calculateVariation();
 			}
 		);
+		jQuery(this.dropdownSelector).each(
+			var els = jQuery(this).find("option");
+			if(els.length < 2) {
+				jQuery(this).hide();
+			}
+		);
 		jQuery(this.dropdownSelector).change();
 	},
 
