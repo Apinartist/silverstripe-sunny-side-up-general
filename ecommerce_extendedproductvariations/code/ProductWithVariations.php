@@ -264,12 +264,6 @@ class ProductWithVariations_Controller extends Product_Controller {
 		else {
 			$fieldSet = new FieldSet();
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", array(-1 => $this->Title)));
-			return new Form(
-				$controller = $this,
-				$name = "ProductVariationsForm",
-				$fields = $fieldSet,
-				$actions = new FieldSet($action)
-			);
 		}
 		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice">'.$this->Price.'</div>'));
 		if($msg = Session::get("ProductVariationsFormMessage")) {
