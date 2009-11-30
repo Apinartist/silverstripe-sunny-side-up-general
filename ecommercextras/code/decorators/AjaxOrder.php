@@ -85,6 +85,10 @@ class AjaxOrder extends DataObjectDecorator {
 		return $this->owner->URLSegment."/removeitemwithajax/".$this->owner->ID.'/';
 	}
 
+	function retrieveSimpleCartLink() {
+		return $this->owner->URLSegment."/showsimplecart/";
+	}
+
 	function addAjaxLinkRequirements() {
 		self::include_basic_module_requirements();
 		if(!self::$added_ajax_links) {
@@ -155,6 +159,9 @@ class AjaxOrder_Controller extends Extension {
 		return $this->ajaxGetSimpleCart();
 	}
 
+	function showsimplecart() {
+		return $this->ajaxGetSimpleCart();
+	}
 	private function ajaxGetSimpleCart() {
 		if($this->owner->isAjax()) {
 			return $this->owner->renderWith("AjaxSimpleCart");
