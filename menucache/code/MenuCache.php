@@ -108,7 +108,11 @@ class MenuCache extends DataObjectDecorator {
 		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
 				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
+				if($days = intval(Director::URLParam("OtherID"))) {
+					$sql .= ' WHERE `LastEdited` > ( NOW() - INTERVAL '.$days.' DAY )';
+				}
 				if($showoutput) {
+					Database::alteration_message("Deleting cached data from $table");
 					debug::show($sql);
 				}
 				DB::query($sql);
