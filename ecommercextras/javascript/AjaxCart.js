@@ -113,9 +113,11 @@ jQuery.fn.extend({
 	addRemoveLinks: function () {
 		jQuery(this).find(AjaxCart.removeLinkSelector).click(
 			function(){
-				var url = jQuery(this).attr("href");
-				AjaxCart.loadAjax(url, this);
-				return false;
+				if(AjaxCart.UnconfirmedDelete || confirm(AjaxCart.ConfirmDeleteText)) {
+					var url = jQuery(this).attr("href");
+					AjaxCart.loadAjax(url, this);
+					return false;
+				}
 			}
 		);
 	}
