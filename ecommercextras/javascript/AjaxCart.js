@@ -116,8 +116,8 @@ jQuery.fn.extend({
 				if(AjaxCart.UnconfirmedDelete || confirm(AjaxCart.ConfirmDeleteText)) {
 					var url = jQuery(this).attr("href");
 					AjaxCart.loadAjax(url, this);
-					return false;
 				}
+				return false;
 			}
 		);
 	}
