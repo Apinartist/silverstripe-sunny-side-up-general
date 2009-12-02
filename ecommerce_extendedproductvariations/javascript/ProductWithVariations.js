@@ -44,6 +44,10 @@ ProductWithVariations = {
 
 	NotAvailableText: "Sorry, selection is not available",
 
+	loadingClass: "loading",
+
+	inCartClass: "inCart",
+
 	ActionBeforeSelector: "",
 		SetActionBeforeSelector: function(v) {this.ActionBeforeSelector = v},
 
@@ -129,7 +133,7 @@ ProductWithVariations = {
 		if(ProductWithVariations.ActionBeforeSelector) {
 			jQuery(ProductWithVariations.ActionBeforeSelector).click();
 		}
-		jQuery(ProductWithVariations.formMsgSelector).addClass("loading");
+		jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.loadingClass);
 		jQuery(ProductWithVariations.buttonSelector).fadeOut();
     return true;
 	},
@@ -138,7 +142,8 @@ ProductWithVariations = {
 		if(ProductWithVariations.ActionAfterSelector) {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
-		jQuery(ProductWithVariations.formMsgSelector).removeClass("loading");
+		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
+		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
 
 	}
 
