@@ -85,12 +85,18 @@ class ProductWithVariations extends Product {
 	}
 
 	function IsInCart() {
-		$v = false;
-		$existingExtendedProductVariations = $this->Variations();
-		foreach($existingExtendedProductVariations as $variation) {
-			if($variation->IsInCart()) {
-				$v = true;
+		$variations = DataObject::get("ExtendedProductVariation", "Price > 0 AND ProductID = ".$this->ID);
+		if($variations) {
+			$v = false;
+			$existingExtendedProductVariations = $this->Variations();
+			foreach($existingExtendedProductVariations as $variation) {
+				if($variation->IsInCart()) {
+					$v = true;
+				}
 			}
+		}
+		else {
+			$v = parent::IsInCart();
 		}
 		return $v;
 	}
@@ -247,6 +253,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 	}
 
 	public function ProductVariationsForm() {
+		$buttonTitle = "Add To Cart";
 		if($variationsAvailable = $this->VariationsAvailable()) {
 			$selectFields = new FieldSet();
 			$groups = $this->ExtendedProductVariationGroups();
@@ -268,19 +275,16 @@ class ProductWithVariations_Controller extends Product_Controller {
 		else {
 			$fieldSet = new FieldSet();
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", array(-1 => $this->Title)));
+			if($this->IsInCart()) {
+				$buttonTitle = "Already in Cart";
+			}
 		}
 		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice" class="toBeAdded">'.Payment::site_currency().$this->dbObject("Price")->Nice().'</div>'));
 		if($msg = Session::get("ProductVariationsFormMessage")) {
 			$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
 			Session::set("ProductVariationsFormMessage", "");
 		}
-		if($this->IsInCart()) {
-			$title = "Already in Cart";
-		}
-		else {
-			$title = "Add To Cart";
-		}
-		$action = new FormAction($action = "addVariation",$title);
+		$action = new FormAction($action = "addVariation",$buttonTitle);
 		$form = new Form(
 			$controller = $this,
 			$name = "ProductVariationsForm",
@@ -331,6 +335,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 			return "deleted all variations for this product";
 		}
 	}
+
 
 }
 
