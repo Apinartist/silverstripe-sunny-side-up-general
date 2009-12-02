@@ -45,7 +45,7 @@ class ProductWithVariations extends Product {
 		foreach(self::$hide_product_fields as $fieldName) {
 			$fields->removeByName($fieldName);
 		}
-		$fields->addFieldsToTab("Root.Content.ProductVariations", new CheckboxField("VariationsAutomatically", "Add variations automatically"));
+		$fields->addFieldsToTab("Root.Content.ProductVariations", new CheckboxField("AddVariationsAutomatically", "Add variations automatically"));
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
 			new HeaderField("VariationsExplanation","Actual product variations for sale (price must be higher than zero)", 3)
 		);
