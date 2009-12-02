@@ -143,7 +143,7 @@ ProductWithVariations = {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
-		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
+		jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
 
 	}
 
