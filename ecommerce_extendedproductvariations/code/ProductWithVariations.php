@@ -274,7 +274,13 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
 			Session::set("ProductVariationsFormMessage", "");
 		}
-		$action = new FormAction($action = "addVariation",$title = "Add To Cart");
+		if($this->IsInCart()) {
+			$title = "Already in Cart";
+		}
+		else {
+			$title = "Add To Cart";
+		}
+		$action = new FormAction($action = "addVariation",$title);
 		$form = new Form(
 			$controller = $this,
 			$name = "ProductVariationsForm",
@@ -296,7 +302,13 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
-				$js .= " ProductWithVariations.PriceArray[".$number."] = '".Payment::site_currency().$variation->dbObject("Price")->Nice()."';\r\n";
+				if($variation->IsInCart()) {
+					$price = "Already In Cart";
+				}
+				else {
+					$price = Payment::site_currency().$variation->dbObject("Price")->Nice();
+				}
+				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$price."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
