@@ -44,6 +44,8 @@ ProductWithVariations = {
 
 	NotAvailableText: "Sorry, selection is not available",
 
+	toBeAddedClass: "toBeAdded",
+
 	loadingClass: "loading",
 
 	inCartClass: "inCart",
@@ -144,7 +146,7 @@ ProductWithVariations = {
 		}
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
 		jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
-
+		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.toBeAdded);
 	}
 
 }
