@@ -20,7 +20,6 @@ class SlideShowObject extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->removeByName("SlideShowIDList");
 	 	return $fields;
 	}
 
