@@ -143,8 +143,8 @@ class MinMaxModifier extends OrderModifier {
 							ShoppingCart::set_quantity_item($product->ID, $newQuantity);
 							$msgArray[$i] = $product->Title.": ".$newQuantity;
 							$i++;
+							$quantity = $newQuantity;
 						}
-						$quantity = $newQuantity;
 						if(!Director::is_ajax()) {
 							if($absoluteMin || $absoluteMax < 99999) {
 								//NOT WORKING!!!!
