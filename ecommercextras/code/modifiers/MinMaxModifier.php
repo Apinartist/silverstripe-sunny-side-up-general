@@ -183,7 +183,7 @@ class MinMaxModifier extends OrderModifier {
 		if(self::$adjustment_message && count($msgArray) && !Director::is_ajax()) {
 			$msg = self::$adjustment_message."\n".implode("\n",$msgArray);
 			if($msg) {
-				Requirements::customScript('alert("'.Convert::raw2js($msg).'");');
+				Requirements::customScript('alert("'.Convert::raw2js($msg).'");', "MinMaxModifierAlert");
 			}
 		}
 		return $jsAjaxArray;

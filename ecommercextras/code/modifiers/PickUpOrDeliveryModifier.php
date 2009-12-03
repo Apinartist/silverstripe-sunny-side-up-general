@@ -56,7 +56,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				}
 			}
 			if($js) {
-				Requirements::customScript($js);
+				Requirements::($js, "PickupOrDeliveryModifier");
 			}
 		}
 		$defaultValue = self::get_option();
