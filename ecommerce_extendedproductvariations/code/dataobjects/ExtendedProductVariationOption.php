@@ -12,7 +12,8 @@ class ExtendedProductVariationOption extends DataObject {
 
 	public static $db = array(
 		"Code" => "Varchar(30)",
-		"Name" => "Varchar(255)"
+		"Name" => "Varchar(255)",
+		"Sort" => "Int"
 	);
 	public static $has_one = array(
 		"Parent" => "ExtendedProductVariationGroup"
@@ -28,7 +29,7 @@ class ExtendedProductVariationOption extends DataObject {
 		"FullName" => "Text"
 	);
 
-	public static $default_sort = "ParentID, Name";
+	public static $default_sort = "ParentID ASC, Sort ASC, Name ASC";
 
 	public static $searchable_fields = array(
 		"Code",
@@ -36,9 +37,10 @@ class ExtendedProductVariationOption extends DataObject {
 	);
 
 	public static $summary_fields = array(
-		"Code",
-		"Name",
-		"Parent.Name"
+		"Code" => "Short Code",
+		"Name" => "Long Name",
+		"Sort" => "No. for Sorting"
+		"Parent.Name" => "Group"
 	);
 
 	public static $field_labels = array(
