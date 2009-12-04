@@ -62,7 +62,7 @@ class OrderDecorator extends DataObjectDecorator {
 			}
 			if($number > $currentMax) {
 				DB::query("ALTER TABLE `Order`  AUTO_INCREMENT = $number ROW_FORMAT = DYNAMIC ");
-				DataBase::alteration_message("Change OrderID start number to ".$number, "created");
+				//Database::alteration_message("Change OrderID start number to ".$number, "created");
 			}
 		}
 	}
