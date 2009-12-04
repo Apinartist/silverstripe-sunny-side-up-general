@@ -184,7 +184,7 @@ class ProductWithVariations extends Product {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		//delete example product pages
-		$pages = DataObject::get("Product", '`URLSegment` = "example-product" OR `URLSegment` = "example-product-2"');
+		$pages = DataObject::get("Product", "`URLSegment` = 'example-product' OR `URLSegment` = 'example-product-2'");
 		if($pages) {
 			if(2 == $pages->count() ) {
 				foreach($pages as $page) {
