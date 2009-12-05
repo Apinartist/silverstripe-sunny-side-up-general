@@ -114,7 +114,7 @@ class MenuCache extends DataObjectDecorator {
 					$msg .= ', created before the last '.$days.' days';
 				}
 				elseif(Director::URLParam("ID") == "thispage") {
-					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$this->owner->ID.')';
+					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$this->owner->ID.'';
 					$msg .= ', for page with ID = '.$this->owner->ID.'';
 				}
 				if($showoutput) {
