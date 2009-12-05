@@ -118,7 +118,7 @@ class MenuCache extends DataObjectDecorator {
 					$msg .= ', for page with ID = '.$this->owner->ID.'';
 				}
 				if($showoutput) {
-					Database::alteration_message("Deleting cached data from $table, ".$pageID);
+					Database::alteration_message("Deleting cached data from $table, ".$msg);
 					debug::show($sql);
 				}
 				DB::query($sql);
