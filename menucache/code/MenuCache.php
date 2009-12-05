@@ -114,8 +114,8 @@ class MenuCache extends DataObjectDecorator {
 					$msg .= ', created before the last '.$days.' days';
 				}
 				if($pageID = intval(Director::URLParam("ID"))) {
-					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$page.')';
-					$msg .= ', for page with ID = '.$pageID.'';
+					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$this->owner->ID.')';
+					$msg .= ', for page with ID = '.$this->owner->ID.'';
 				}
 				if($showoutput) {
 					Database::alteration_message("Deleting cached data from $table, ".$pageID);
