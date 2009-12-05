@@ -109,11 +109,11 @@ class MenuCache extends DataObjectDecorator {
 			foreach(self::get_tables_to_clear() as $table) {
 				$msg = '';
 				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
-				if($days = intval(Director::URLParam("ID"))) {
+				if(Director::URLParam("ID") == "days" && $days = intval(Director::URLParam("OtherID"))) {
 					$sql .= ' WHERE `LastEdited` > ( NOW() - INTERVAL '.$days.' DAY )';
 					$msg .= ', created before the last '.$days.' days';
 				}
-				if($pageID = intval(Director::URLParam("OtherID"))) {
+				elseif(Director::URLParam("ID") == "thispage") {
 					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$this->owner->ID.')';
 					$msg .= ', for page with ID = '.$this->owner->ID.'';
 				}
