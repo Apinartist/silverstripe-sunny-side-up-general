@@ -28,6 +28,8 @@ http://www.mysite.com/home/showcachedfield/[0-4]/?flush=1
 http://www.mysite.com/home/clearfieldcache/[0-4]/?flush=1
 http://www.mysite.com/home/showuncachedfield/[0-4]/?flush=1
 http://www.mysite.com/home/clearallfieldcaches/?flush=1
+http://www.mysite.com/home/clearallfieldcaches/days/100?flush=1 - clear caches created more than 100 days ago
+http://www.mysite.com/home/clearallfieldcaches/thispage/?flush=1 - clear caches for home page (or whatever page) only.
 
 Common things to cache are:
 * header / footer sections
