@@ -107,12 +107,18 @@ class MenuCache extends DataObjectDecorator {
 		}
 		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
+				$msg = '';
 				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
 				if($days = intval(Director::URLParam("OtherID"))) {
 					$sql .= ' WHERE `LastEdited` > ( NOW() - INTERVAL '.$days.' DAY )';
+					$msg .= ', created before the last '.$days.' days';
+				}
+				if($pageID = intval(Director::URLParam("ID"))) {
+					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$page.')';
+					$msg .= ', for page with ID = '.$pageID.'';
 				}
 				if($showoutput) {
-					Database::alteration_message("Deleting cached data from $table");
+					Database::alteration_message("Deleting cached data from $table, ".$pageID);
 					debug::show($sql);
 				}
 				DB::query($sql);
