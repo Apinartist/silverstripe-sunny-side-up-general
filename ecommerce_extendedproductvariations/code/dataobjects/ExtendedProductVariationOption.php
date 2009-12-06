@@ -39,14 +39,14 @@ class ExtendedProductVariationOption extends DataObject {
 	public static $summary_fields = array(
 		"Code" => "Short Code",
 		"Name" => "Long Name",
-		"Sort" => "No. for Sorting",
+		"Sort" => "Sorting Value",
 		"Parent.Name" => "Group"
 	);
 
 	public static $field_labels = array(
 		"Code" => "Short Code",
 		"Name" => "Long Name",
-		"Sort" => "No. for Sorting (to override alphabetical ordering of list), lower numbers show first",
+		"Sort" => "Number for Sorting, lower numbers show first, equal numbers are sorted alpabetically",
 		"Parent" => "Group"
 	);
 

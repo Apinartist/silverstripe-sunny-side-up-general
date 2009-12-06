@@ -32,7 +32,7 @@ class ExtendedProductVariation extends ProductVariation {
 	}
 
 	static function return_existing_or_create_new($title, $optionsDos, $productID) {
-		if($obj = DataObject::get_one("ExtendedProductVariation", '`ProductID` = '.$productID.' AND `Title` = "'.$title.'"')) {
+		if($obj = DataObject::get_one("ExtendedProductVariation", '`ProductID` = '.$productID.' AND `Title` = "'.addslashes($title).'"')) {
 			return $obj;
 		}
 		//look for it ...
