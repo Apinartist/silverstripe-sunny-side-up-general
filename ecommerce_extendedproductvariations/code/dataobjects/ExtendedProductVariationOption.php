@@ -25,6 +25,10 @@ class ExtendedProductVariationOption extends DataObject {
 		"ExtendedProductVariations" => "ExtendedProductVariation"
 	);
 
+	public static $defaults = array(
+		"Sort" => 100
+	);
+
 	public static $casting = array(
 		"FullName" => "Text"
 	);
@@ -115,6 +119,7 @@ class ExtendedProductVariationOption extends DataObject {
 	}
 
 	function requireDefaultRecords() {
+		DB::query("Update ExtendedProductVariationOption set Sort = 100 WHERE Sort IS NULL or Sort = 0");
 		parent::requireDefaultRecords();
 		//here is where the magic happens of auto adding the groups
 		$options = DataObject::get("ExtendedProductVariationOption");
@@ -123,6 +128,7 @@ class ExtendedProductVariationOption extends DataObject {
 			$o->Name = "Default Option";
 			$o->write();
 		}
+		parent::requireDefaultRecords();
 	}
 
 	function ExtendedProductVariation() {

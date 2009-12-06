@@ -43,7 +43,8 @@ class ExtendedProductVariationGroup extends DataObject {
 	public static $defaults = array(
 		"IncludeOptionsAsSoleProductVariations" => 0,
 		"IncludeOptionsAsCombinedProductVariations" => 1,
-		"IncludeGroupTitleInVariationTitle" => 0
+		"IncludeGroupTitleInVariationTitle" => 0,
+		"Sort" => 100
 	);
 
 	public static $default_sort = "Sort ASC, Name ASC";
@@ -53,8 +54,7 @@ class ExtendedProductVariationGroup extends DataObject {
 	);
 
 	public static $summary_fields = array(
-		"Name",
-		"Sort" => "Sorting Value"
+		"Name"
 	);
 
 	public static $field_labels = array(
@@ -127,6 +127,7 @@ class ExtendedProductVariationGroup extends DataObject {
 	}
 
 	function requireDefaultRecords() {
+		DB::query("Update ExtendedProductVariationGroup SET Sort = 100 WHERE Sort IS NULL OR Sort = 0");
 		parent::requireDefaultRecords();
 		$groups = DataObject::get("ExtendedProductVariationGroup");
 		if($groups) {
@@ -136,6 +137,7 @@ class ExtendedProductVariationGroup extends DataObject {
 				$g->write();
 			}
 		}
+		parent::requireDefaultRecords();
 	}
 
 
