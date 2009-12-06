@@ -25,7 +25,8 @@ class ExtendedProductVariationGroup extends DataObject {
 		"Postfix" => "Varchar(50)",
 		"IncludeOptionsAsSoleProductVariations" => "Boolean",
 		"IncludeOptionsAsCombinedProductVariations" => "Boolean",
-		"IncludeGroupTitleInVariationTitle" => "Boolean"
+		"IncludeGroupTitleInVariationTitle" => "Boolean",
+		"Sort" => "Int"
 	);
 
 	public static $has_one = array(
@@ -45,14 +46,15 @@ class ExtendedProductVariationGroup extends DataObject {
 		"IncludeGroupTitleInVariationTitle" => 0
 	);
 
-	public static $default_sort = "`Name` ASC";
+	public static $default_sort = "Sort ASC, Name ASC";
 
 	public static $searchable_fields = array(
 		"Name" => "PartialMatchFilter"
 	);
 
 	public static $summary_fields = array(
-		"Name"
+		"Name",
+		"Sort" => "Sorting Value"
 	);
 
 	public static $field_labels = array(
@@ -62,7 +64,8 @@ class ExtendedProductVariationGroup extends DataObject {
 		"Postfix" => "When joining variations into a combo(e.g. - XL / Male / Red), what should go after the option name (e.g. /), make sure to include a space where needed. If unsure leave blank.",
 		"IncludeOptionsAsSoleProductVariations" => "Include options from this group as sole product variations (e.g. variation will read &quot;XL&quot; OR &quot;Kid Size 5&quot; and never &quot;Kid Size 5, XL&quot;) for selected products - i.e. does not work in combination with other variations. If unsure, please do NOT tick.",
 		"IncludeOptionsAsCombinedProductVariations" => "Include options from this group as combined variations (e.g. variation will read: &quot;XL, Male, Red&quot;) for selected products - i.e. works in combination with other variations. If unsure, please DO tick ",
-		"IncludeGroupTitleInVariationTitle" => "Include List Name (see above) in Title - e.g. variation will read: &quot;colour: Red, size: XL&quot; rather than &quot;Red, XL&quot;"
+		"IncludeGroupTitleInVariationTitle" => "Include List Name (see above) in Title - e.g. variation will read: &quot;colour: Red, size: XL&quot; rather than &quot;Red, XL&quot;",
+		"Sort" => "Number for Sorting of Groups, lower numbers show first, equal numbers are sorted alpabetically"
 	);
 
 	public static $singular_name = "Option Group";

@@ -62,7 +62,7 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 			array('Name' => 'Name'),
 			null,
 			null,
-			"`Checked` DESC, `Name` ASC"
+			"`Checked` DESC, `Sort` ASC, `Name` ASC"
 		);
 		$field->setPermissions(array());
 		$field->pageSize = 1000;
