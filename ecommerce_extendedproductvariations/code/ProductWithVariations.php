@@ -116,7 +116,7 @@ class ProductWithVariations extends Product {
 				$count++;
 				$variation->delete();
 			}
-			return 'deleted '.$count.' variations for this product.';
+			return 'deleted  variations for '.$this->Title;
 		}
 	}
 
