@@ -15,16 +15,18 @@ class ExtendedProductVariationOptionComboMaker extends Object {
 	function addGroups($groups) {
 		$this->groupCount = 0;
 		$item = array();
-		foreach($groups as $group) {
-			if(!in_array($group->ID, self::$alreadyDoneGroupIDArray)) {
-				self::$alreadyDoneGroupIDArray[$group->ID] = $group->ID;
-				if($group->IncludeOptionsAsCombinedProductVariations) {
-					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
-					if($options) {
-						foreach($options as $option) {
-							$this->fullArray[$this->groupCount][] = $option->ID;
+		if($groups->count()) {
+			foreach($groups as $group) {
+				if(!in_array($group->ID, self::$alreadyDoneGroupIDArray)) {
+					self::$alreadyDoneGroupIDArray[$group->ID] = $group->ID;
+					if($group->IncludeOptionsAsCombinedProductVariations) {
+						$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
+						if($options) {
+							foreach($options as $option) {
+								$this->fullArray[$this->groupCount][] = $option->ID;
+							}
+							$this->groupCount++;
 						}
-						$this->groupCount++;
 					}
 				}
 			}

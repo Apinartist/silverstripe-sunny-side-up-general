@@ -27,7 +27,7 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 		if($this->owner instanceOf ProductGroup || $this->owner instanceOf ProductWithVariations) {
 			$tab = new tab(
 				"ProductVariations",
-				new HeaderField("DefaultVariationGroupsHeader",'Choose Applicable Variation Lists', 3),
+				new HeaderField("DefaultVariationGroupsHeader",'1. Choose Applicable Variation Lists', 3),
 				new LiteralField(
 					"DefaultVariationGroupsExplanation",
 					'<p>
