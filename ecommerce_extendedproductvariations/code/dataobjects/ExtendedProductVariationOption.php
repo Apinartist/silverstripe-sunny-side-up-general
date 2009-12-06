@@ -124,6 +124,7 @@ class ExtendedProductVariationOption extends DataObject {
 			$o->write();
 		}
 	}
+
 	function ExtendedProductVariation() {
 		return $this->ExtendedProductVariations();
 	}

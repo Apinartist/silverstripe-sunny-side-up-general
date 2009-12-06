@@ -115,6 +115,11 @@ class ExtendedProductVariationGroup extends DataObject {
 				$child->delete();
 			}
 		}
+		if($combos = $this-ExtendedProductVariationOptions() ){
+			foreach($combos as $combo) {
+				$combo->delete();
+			}
+		}
 		parent::onBeforeDelete();
 	}
 

@@ -16,7 +16,7 @@ class ExtendedProductVariationOptionComboMaker extends Object {
 		$this->groupCount = 0;
 		$item = array();
 		foreach($groups as $group) {
-			if(!in_array($group->ID, self::$alreadyDoneGroupIDArray) {
+			if(!in_array($group->ID, self::$alreadyDoneGroupIDArray)) {
 				self::$alreadyDoneGroupIDArray[$group->ID] = $group->ID;
 				if($group->IncludeOptionsAsCombinedProductVariations) {
 					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);

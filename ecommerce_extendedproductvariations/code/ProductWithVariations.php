@@ -103,14 +103,17 @@ class ProductWithVariations extends Product {
 
 
 	function onBeforeWrite() {
+		set_time_limit(600);
 		if($this->Price && $this->AddVariationsAutomatically) {
 			$combinations = $this->getParentExtendedProductVariationGroups();
 			if($combinations) {
 				$groupsDataObject = new DataObjectSet();
 				foreach($combinations as $combination) {
+					//getting basic group data
 					$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
 					$groupsDataObject->push($group);
 					$options = $group->ExtendedProductVariationOptions();
+					//making sole ones
 					if($options && $group->IncludeOptionsAsSoleProductVariations) {
 						foreach($options as $option) {
 							$optionsDos = new DataObjectSet();
@@ -139,7 +142,7 @@ class ProductWithVariations extends Product {
 		$title = '';
 		if(1 == $optionsDos->count()) {
 			foreach($optionsDos as $option) {
-				$title = $option->ShorterName();
+				$title .= $option->ShorterName();
 			}
 		}
 		elseif($optionsDos->count() > 1) {
@@ -148,26 +151,20 @@ class ProductWithVariations extends Product {
 			}
 		}
 		if($title) {
-			$obj = ExtendedProductVariation::return_existing_or_create_new($title, $optionsDos, $this->ID);
-			if($obj instanceOf ExtendedProductVariation) {
-				$obj->Title = $title;
-			}
-			elseif($obj) {
-				//create title
-				//create Extended Product Variation
-				$obj = new ExtendedProductVariation();
-				$obj->Title = $title;
-			}
+			$obj = ExtendedProductVariation::return_existing_or_create_new($optionsDos, $this->ID);
 			if($obj) {
-				$obj->Price = $this->Price;
-				$obj->ProductID = $this->ID;
-				$obj->write();
-				//links Extend Product Variation to Options
-				$variationDos = new DataObjectSet();
-				$variationDos->push($obj);
-				foreach($optionsDos as $option) {
-					$option->addExtendedProductVariations($variationDos);
+				if($obj instanceOf ExtendedProductVariation) {
+					$obj->Title = $title;
+					$obj->Price = $this->Price;
+					$obj->ProductID = $this->ID;
+					$obj->write();
+					//links Extend Product Variation to Options
+					$variationDos = new DataObjectSet();
+					$variationDos->push($obj);
 					$this->addExtendedProductVariation($variationDos);
+					foreach($optionsDos as $option) {
+						$option->addExtendedProductVariations($variationDos);
+					}
 				}
 			}
 		}
