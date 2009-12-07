@@ -160,7 +160,6 @@ class ProductStockCalculatedQuantity extends DataObject {
 						`Product_OrderItem`.`ProductID`,
 						Sum(`OrderItem`.`Quantity`)+0 QuantitySum,
 						`Order`.`ID` OrderID,
-						`ProductStockOrderEntry`.`Quantity`
 					FROM
 						`Order`
 						INNER JOIN `OrderAttribute` ON `OrderAttribute`.`OrderID` = `Order`.ID
