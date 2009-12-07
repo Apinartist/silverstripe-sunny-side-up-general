@@ -117,7 +117,7 @@ class DropAndDragProductGroup_Controller extends ProductGroup_Controller {
 
 	function init() {
 		parent::init();
-		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("ecommercedropanddragcart/javascript/dragToCart.js");
 		Requirements::javascript("ecommercedropanddragcart/javascript/jquery-ui-1.6.custom.min.js");
 		Requirements::themedCSS("dragToCart");
