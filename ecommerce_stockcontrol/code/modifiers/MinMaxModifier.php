@@ -135,6 +135,10 @@ class MinMaxModifier extends OrderModifier {
 							if($absoluteMax > $maxStockQuantity) {
 								$absoluteMax = $maxStockQuantity;
 							}
+							if($absoluteMin > $maxStockQuantity) {
+								$absoluteMax = 0;
+								$maxStockQuantity = 0;
+							}
 							if($quantity > $maxStockQuantity) {
 								$newQuantity = $maxStockQuantity;
 							}
