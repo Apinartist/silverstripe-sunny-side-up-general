@@ -44,17 +44,22 @@ var StockControlPage = {
 
 		jQuery(StockControlPage.historyLinkSelector).click(
 			function() {
-				jQuery(this).click( function() {jQuery(this).hide();});
 				var identifier = jQuery(this).attr("rel");
-				var url = jQuery(this).attr("href");
-				jQuery.get(
-					url,
-					{},
-					function(data) {
-						jQuery("#"+identifier).html(data);
-						alert("history loaded");
-					}
-				);
+				var selector = "#"+identifier;
+				if(jQuery(selector).is(":hidden")) {
+					var url = jQuery(this).attr("href");
+					jQuery.get(
+						url,
+						{},
+						function(data) {
+							jQuery(selector).html(data);
+							jQuery(selector).slideDown();
+						}
+					);
+				}
+				else {
+					jQuery(selector).slideUp();
+				}
 				return false;
 			}
 
