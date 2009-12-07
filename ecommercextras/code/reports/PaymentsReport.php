@@ -20,8 +20,8 @@ class PaymentsReport extends SSReport {
 	 * @return ComplexTableField
 	 */
 	function getReportField() {
-		Requirements::javascript("jsparty/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/livequery/jquery.livequery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/PaymentsReport.js");
 		Requirements::customScript('var PaymentsReportURL = "'.Director::baseURL()."PaymentsReport_Handler".'/";', 'PaymentsReport_Handler_Base_URL');
 		$fields = array(
