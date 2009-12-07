@@ -80,6 +80,9 @@ class ExtendedProductVariationGroup extends DataObject {
 			$fields->dataFieldByName("ProductWithVariations")->setPermissions(array());
 			$fields->dataFieldByName("ProductWithVariations")->pageSize=1000;
 		}
+		if(class_exists("DataObjectSorterController")) {
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '<a href="dataobjectsorter/ExtendedProductVariationGroup/" target="_blank">click here to sort list</a>'));
+		}
 		return $fields;
 	}
 
