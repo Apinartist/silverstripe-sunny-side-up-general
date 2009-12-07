@@ -78,7 +78,7 @@ class ProductStockOrderEntry extends DataObject {
 				user_error("Can not create record without order.", E_USER_ERROR);
 			}
 			//make sure no doubles are created
-			while(DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID." AND ID <> ".$this->ID)) {
+			while($tobeDeleted = DataObject::get_one("ProductStockOrderEntry", "`OrderID` = ".$this->OrderID." AND `ID` <> ".$this->ID, false, "LastEdited ASC")) {
 				$toBeDeleted = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID, false, "LastEdited ASC");
 				$toBeDeleted->delete();
 			}
