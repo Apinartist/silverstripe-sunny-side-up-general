@@ -53,6 +53,8 @@ class ProductStockCalculatedQuantity extends DataObject {
 
 	public static $plural_name = "Product Stock Calculated Quantities";
 
+	protected static $calculation_done = array();
+
 	public function canCreate() {return false;}
 
 	public function canEdit() {return false;}
@@ -147,7 +149,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 	}
 
 	function onBeforeWrite() {
-		if($this->ProductID && $this->ID) {
+		if($this->ProductID && $this->ID && !isset(self::$calculation_done[$this->ID])) {
 			if($product = DataObject::get_by_id("Product", $this->ProductID)) {
 				//set name
 				$this->Name = $product->Title;
@@ -165,31 +167,28 @@ class ProductStockCalculatedQuantity extends DataObject {
 						INNER JOIN `OrderItem` ON `OrderAttribute`.`ID` = `OrderItem`.`ID`
 						INNER JOIN `Product_OrderItem` ON `Product_OrderItem`.`ID` = `OrderAttribute`.`ID`
 						INNER JOIN `Payment` ON `Payment`.`OrderID` = `Order`.`ID`
-						LEFT JOIN `ProductStockOrderEntry` On `ProductStockOrderEntry`.`OrderID` = `Order`.`ID`
 					GROUP BY
 						`Order`.`ID`, `ProductID`
 					HAVING
 						(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).') AND
-						(
-							`ProductStockOrderEntry`.`Quantity` <> QuantitySum OR
-							`ProductStockOrderEntry`.`Quantity` IS NULL
-						)
-
 				');
 				if($data) {
 					foreach($data as $row) {
-						if($ProductStockOrderEntry = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$row["OrderID"]." AND ParentID = ".$this->ID)) {
-
-						}
-						else {
-							$ProductStockOrderEntry = new ProductStockOrderEntry();
-							$ProductStockOrderEntry->OrderID = $row["OrderID"];
-							$ProductStockOrderEntry->ParentID = $this->ID;
-						}
-						if($ProductStockOrderEntry->Quantity != $row["QuantitySum"]) {
-							$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
-							$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
-							$ProductStockOrderEntry->write();
+						if($row["OrderID"] && $this->ID && $row["QuantitySum"]) {
+							if($ProductStockOrderEntry = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$row["OrderID"]." AND ParentID = ".$this->ID)) {
+								//do nothing
+							}
+							else {
+								$ProductStockOrderEntry = new ProductStockOrderEntry();
+								$ProductStockOrderEntry->OrderID = $row["OrderID"];
+								$ProductStockOrderEntry->ParentID = $this->ID;
+								$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
+							}
+							if($ProductStockOrderEntry->Quantity != $row["QuantitySum"] && $ProductStockOrderEntry->IncludeInCurrentCalculation) {
+								$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
+								$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
+								$ProductStockOrderEntry->write();
+							}
 						}
 					}
 				}
@@ -224,6 +223,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 					echo "<hr />";
 				}
 			}
+			self::$calculation_done[$this->ID] = $this->BaseQuantity;
 		}
 		parent::onBeforeWrite();
 	}
