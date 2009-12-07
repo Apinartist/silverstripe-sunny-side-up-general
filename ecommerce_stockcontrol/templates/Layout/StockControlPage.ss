@@ -6,7 +6,7 @@ $Form
 	<li>
 		<label class="history"><a href="{$StockControlPage.Link}history/product/$ID" rel="history{$ClassName}{$ID}">$Title</a></label>
 		<input type="text" value="0" name="$ClassName/$ID" class="updateField productUpdateField" />
-		<label class="right">$CalculatedQuantity</label>
+		<label class="right small">currently: $CalculatedQuantity</label>
 		<div class="loadHistoryHere" id="history{$ClassName}{$ID}"></div>
 		<% if VariationQuantities %><ul id="StockVariationObjects"><% control VariationQuantities %>
 			<li>

@@ -21,38 +21,26 @@ class StockControlPage extends Page {
 		"ShowInSearch" => 0
 	);
 
-	function canCreate() {
-		if(!DataObject::get_one("SiteTree", "`ClassName` = 'StockControlPage'")) {
-			return MinMaxModifier::get_use_stock_quantities();
-		}
-	}
-
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab(
-			'Root.Content.StockQuantities',
-			new ComplexTableField(
-				$controller = $this,
-				$name ="ProductStockCalculatedQuantity",
-				$sourceClass = "ProductStockCalculatedQuantity",
-				$fieldList = array(
-					"BaseQuantity" => "BaseQuantity"
-				),
-				$detailFormFields = null,
-				$sourceFilter = "",
-				$sourceSort = "",
-				$sourceJoin = "Inner Join SiteTree ON ParentID = SiteTree.ID"
-			)
-		);
 		return $fields;
+	}
+
+	function canCreate() {
+		if(!DataObject::get_one("SiteTree", "ClassName = 'StockControlPage'") && MinMaxModifier::get_use_stock_quantities()) {
+			return true;
+		}
+		return false;
 	}
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!DataObject::get_one("StockControlPage") && $this->canCreate()) {
+		if(!DataObject::get_one("SiteTree", "ClassName = 'StockControlPage'") && MinMaxModifier::get_use_stock_quantities()) {
 			$page = new StockControlPage();
 			$page->URLSegment = "stock-manager";
+			$page->Title = "Stock Manager";
+			$page->MetaTitle = "Stock Manager";
+			$page->MenuTitle = "Stock Manager";
 			$page->writeToStage('Stage');
 			$page->publish('Stage', 'Live');
 			if(method_exists('DB', 'alteration_message')) DB::alteration_message('Stock Control Page Created', 'created');

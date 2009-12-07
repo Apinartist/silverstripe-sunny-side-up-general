@@ -4,12 +4,11 @@
 **/
 
 .StockObjectsFeedback{}
-#StockProductObjects{}
-	#StockProductObjects li {}
-		#StockProductObjects span {}
-			#StockProductObjects span.history {}
-			#StockProductObjects input.updateField{}
-			#StockProductObjects span.right {}
-			#StockProductObjects span.history {}
-		#StockProductObjects div.loadHistoryHere{}
+#StockProductObjects{margin: 0; padding: 0;}
+	#StockProductObjects li {list-style: none; border-bottom: 1px dotted grey; margin: 0; padding: 0.3em;}
+		#StockProductObjects span {display: block; float: left;}
+			#StockProductObjects span.history {width: 300px}
+			#StockProductObjects input.updateField{width: 1.5em}
+			#StockProductObjects span.right {width: 100px; }
+		#StockProductObjects div.loadHistoryHere{clear: left;}
 #StockVariationObjects{}
