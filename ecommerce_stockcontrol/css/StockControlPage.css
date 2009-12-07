@@ -1,0 +1,15 @@
+/**
+*@author nicolaas[at]sunnysideup . co . nz
+*
+**/
+
+.StockObjectsFeedback{}
+#StockProductObjects{}
+	#StockProductObjects li {}
+		#StockProductObjects span {}
+			#StockProductObjects span.history {}
+			#StockProductObjects input.updateField{}
+			#StockProductObjects span.right {}
+			#StockProductObjects span.history {}
+		#StockProductObjects div.loadHistoryHere{}
+#StockVariationObjects{}
