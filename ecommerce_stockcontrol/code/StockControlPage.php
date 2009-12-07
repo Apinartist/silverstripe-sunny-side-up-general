@@ -2,7 +2,7 @@
 /**
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce
- * @sub-package: ecommercextras
+ * @sub-package: ecommerce_stockcontrol
  * @description:
  *  This is the central management page for organising stock control
  *  You will need to "on" the MinMaxModifier and add MinMaxModifier::set_use_stock_quantities(true)
@@ -72,7 +72,7 @@ class StockControlPage_Controller extends Page_Controller {
 		}
 		parent::init();
 		Requirements::themedCSS("StockControlPage");
-		Requirements::javascript("ecommercextras/javascript/StockControlPage.js");
+		Requirements::javascript("ecommerce_stockcontrol/javascript/StockControlPage.js");
 		$url = Director::absoluteURL($this->Link()."update/");
 		Requirements::customScript("StockControlPageURL = '".$url."'");
 	}

@@ -3,7 +3,7 @@
 /**
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce
- * @sub-package: ecommercextras
+ * @sub-package: ecommerce_stockcontrol
  * @description: makes sure that a product quantity in cart stays between a min and a max
  */
 class MinMaxModifier extends OrderModifier {
