@@ -170,7 +170,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 					GROUP BY
 						`Order`.`ID`, `ProductID`
 					HAVING
-						(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).') AND
+						(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).')
 				');
 				if($data) {
 					foreach($data as $row) {
