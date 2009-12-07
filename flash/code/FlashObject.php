@@ -94,7 +94,7 @@ class FlashObject extends ViewableData  {
 						}
 					);';
 			}
-			Requirements::javascript("jsparty/jquery/jquery.js");
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript("flash/javascript/swfobject.js");
 			Requirements::customScript($js);
 		}
