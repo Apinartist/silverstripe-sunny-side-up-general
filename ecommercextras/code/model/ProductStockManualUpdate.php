@@ -1,7 +1,7 @@
 <?php
 /**
  *@author: Nicolaas [at] Sunny Side Up . Co . Nz
- *@description: works out the quantity available for each product
+ *@description: manual top up for a product
  *
  *
  **/
@@ -36,6 +36,8 @@ class ProductStockManualUpdate extends DataObject {
 		"Member.FirstName" => "Administrator",
 		"Quantity" => "Quantity Deducted"
 	);
+
+	public static $default_sort = "LastEdited DESC, ParentID ASC";
 
 	public static $singular_name = "Product Stock Manual Update Entry";
 

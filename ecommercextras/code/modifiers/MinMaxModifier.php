@@ -131,7 +131,7 @@ class MinMaxModifier extends OrderModifier {
 							}
 						}
 						if(self::$use_stock_quantities) {
-							$maxStockQuantity = ProductStockQuantity::get_quantity_by_product_id($product->ID);
+							$maxStockQuantity = ProductStockCalculatedQuantity::get_quantity_by_product_id($product->ID);
 							if($absoluteMax > $maxStockQuantity) {
 								$absoluteMax = $maxStockQuantity;
 							}

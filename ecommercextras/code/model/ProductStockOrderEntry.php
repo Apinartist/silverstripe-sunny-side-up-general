@@ -19,7 +19,7 @@ class ProductStockOrderEntry extends DataObject {
 	);
 
 	static $defaults = array(
-		"IncludeInCurrentCalculation"
+		"IncludeInCurrentCalculation" => 1
 	);
 
 	//MODEL ADMIN STUFF
@@ -43,6 +43,8 @@ class ProductStockOrderEntry extends DataObject {
 		"Quantity"
 	);
 
+	public static $default_sort = "LastEdited DESC, ParentID ASC";
+
 	public static $singular_name = "Product Stock Order Entry";
 
 	public static $plural_name = "Product Stock  Order Entries";
@@ -63,6 +65,7 @@ class ProductStockOrderEntry extends DataObject {
 	}
 
 	function onAfterWrite() {
+
 		parent::onAfterWrite();
 		//basic checks
 		if(!$this->ParentID) {
@@ -80,7 +83,4 @@ class ProductStockOrderEntry extends DataObject {
 		}
 	}
 
-	function onBeforeWrite() {
-		parent::onBeforeWrite();
-	}
 }

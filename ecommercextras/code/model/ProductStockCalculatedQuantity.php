@@ -15,7 +15,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 	);
 
 	static $has_one = array(
-		"Product" => "Product"
+		"Product" => "Product",
 	);
 
 	static $has_many = array(
@@ -47,6 +47,8 @@ class ProductStockCalculatedQuantity extends DataObject {
 		"LastEdited"
 	);
 
+	public static $default_sort = "ProductPresent DESC, Name ASC";
+
 	public static $singular_name = "Product Stock Calculated Quantity";
 
 	public static $plural_name = "Product Stock Calculated Quantities";
@@ -66,7 +68,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 		return true;
 	}
 
-	function init() {
+	function index() {
 		die("ok");
 		self::add_all_products();
 	}
@@ -92,16 +94,31 @@ class ProductStockCalculatedQuantity extends DataObject {
 		DB::query($sql);
 	}
 
-	static function get_quantity_by_product_id($id) {
+	static function get_quantity_by_product_id($productID) {
 		$value = 0;
-		$item = DataObject::get_one("ProductStockCalculatedQuantity", "`ProductID` = ".$id);
+		$item = self::get_by_product_id($productID);
 		if($item) {
-			$value = $item->getBaseQuantity();
+			$value = $item->calculatedBaseQuantity();
 			if($value < 0) {
 				$value = 0;
 			}
 		}
 		return $value;
+	}
+
+	static function get_by_product_id($productID) {
+		if($obj = DataObject::get_one("ProductStockCalculatedQuantity", "ProductID = ".intval($productID))) {
+			//do nothing
+		}
+		else {
+			$obj = new ProductStockCalculatedQuantity();
+			$obj->ProductID = $productID;
+		}
+		if($obj) {
+			$obj->write();
+			return $obj;
+		}
+		user_error("Could not find / create ProductStockCalculatedQuantity for product with ID: ".$id, E_WARNING);
 	}
 
 	function calculatedBaseQuantity() {
@@ -130,53 +147,70 @@ class ProductStockCalculatedQuantity extends DataObject {
 	}
 
 	function onBeforeWrite() {
-		//add total order quantities
-		$data = DB::query('
-			SELECT
-				`Product_OrderItem`.`ProductID`,
-				Sum(`OrderItem`.`Quantity`)+0 QuantitySum,
-				`Order`.`ID` OrderID
-			FROM
-				`Order`
-				INNER JOIN `OrderAttribute` ON `OrderAttribute`.`OrderID` = `Order`.ID
-				INNER JOIN `OrderItem` ON `OrderAttribute`.`ID` = `OrderItem`.`ID`
-				INNER JOIN `Product_OrderItem` ON `Product_OrderItem`.`ID` = `OrderAttribute`.`ID`
-				INNER JOIN `Payment` ON `Payment`.`ID` = `Order`.`ID`
-				INNER JOIN `ProductStockOrderEntry` On `ProductStockOrderEntry`.`OrderID` = `Order`.`ID`
-			GROUP BY `Order`.`ID`, `ProductID`
-			HAVING
-				(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).')
-				')
-				;//				(`ProductStockOrderEntry`.`Quantity` <> QuantitySum) AND
-		foreach($data as $row) {
-			$ProductStockOrderEntry = new ProductStockOrderEntry();
-			$ProductStockOrderEntry->OrderID = $row["OrderID"];
-			$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
-			$ProductStockOrderEntry->ParentID = $this->ID;
-			$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
-			$ProductStockOrderEntry->write();
+		if($this->ProductID && $this->ID) {
+			if($product = DataObject::get_by_id("Product", $this->ProductID)) {
+				//set name
+				$this->Name = $product->Title;
+
+				//add total order quantities
+				$data = DB::query('
+					SELECT
+						`Product_OrderItem`.`ProductID`,
+						Sum(`OrderItem`.`Quantity`)+0 QuantitySum,
+						`Order`.`ID` OrderID,
+						`ProductStockOrderEntry`.`Quantity`
+					FROM
+						`Order`
+						INNER JOIN `OrderAttribute` ON `OrderAttribute`.`OrderID` = `Order`.ID
+						INNER JOIN `OrderItem` ON `OrderAttribute`.`ID` = `OrderItem`.`ID`
+						INNER JOIN `Product_OrderItem` ON `Product_OrderItem`.`ID` = `OrderAttribute`.`ID`
+						INNER JOIN `Payment` ON `Payment`.`OrderID` = `Order`.`ID`
+						LEFT JOIN `ProductStockOrderEntry` On `ProductStockOrderEntry`.`OrderID` = `Order`.`ID`
+					GROUP BY
+						`Order`.`ID`, `ProductID`
+					HAVING
+						(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).') AND
+						(
+							`ProductStockOrderEntry`.`Quantity` <> QuantitySum OR
+							`ProductStockOrderEntry`.`Quantity` IS NULL
+						)
+
+				');
+				if($data) {
+					foreach($data as $row) {
+						$ProductStockOrderEntry = new ProductStockOrderEntry();
+						$ProductStockOrderEntry->OrderID = $row["OrderID"];
+						$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
+						$ProductStockOrderEntry->ParentID = $this->ID;
+						$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
+						$ProductStockOrderEntry->write();
+					}
+				}
+				//work out additional purchases
+				$sqlQuery = new SQLQuery(
+					 "SUM(`Quantity`)", // Select
+					 "ProductStockOrderEntry", // From
+					 "`ParentID` = ".$this->ID." AND `IncludeInCurrentCalculation` = 1" // Where (optional)
+				);
+				$OrderQuantityToDeduct = $sqlQuery->execute()->value();
+
+				//find last adjustment
+				$LatestManualUpdate = DataObject::get_one("ProductStockManualUpdate","ParentID = ".$this->ID, "LastEdited DESC");
+
+				//nullify order quantities that were entered before last adjustment
+				if($LatestManualUpdate) {
+					$LatestManualUpdateQuantity = $LatestManualUpdate->Quantity;
+					DB::query("UPDATE `ProductStockOrderEntry` SET `IncludeInCurrentCalculation` = 0 WHERE `LastEdited` < '".$LatestManualUpdate->LastEdited."' AND `ParentID` = ".$this->ID);
+				}
+				else {
+					$LatestManualUpdateQuantity = 0;
+				}
+
+				//work out base total
+				$this->BaseQuantity = $LatestManualUpdateQuantity - $OrderQuantityToDeduct;
+			}
 		}
-		//find last adjustment
-		$LatestManualUpdate = DataObject::get_one("ProductStockManualUpdate","ParentID = ".$this->ID. true, "LastEdited DESC");
-		//nullify order quantities that were entered before last adjustment
-		if($LatestManualUpdate) {
-			$LatestManualUpdateQuantity = $LatestManualUpdate->Quantity;
-			DB::query("UPDATE `ProductStockOrderEntry` SET `IncludeInCurrentCalculation` = 0 WHERE `LastEdited` < ".$LatestManualUpdate->LastEdited." AND `ParentID` = ".$this->ID);
-		}
-		else {
-			$LatestManualUpdateQuantity = 0;
-		}
-		//work out additional purchases
-		$sqlQuery = new SQLQuery(
-			 "SUM(`Quantity`)", // Select
-			 "ProductStockOrderEntry", // From
-			 "`ParentID` = ".$this->ID." AND `IncludeInCurrentCalculation` = 1" // Where (optional)
-		);
-		$OrderQuantityToDeduct = $sqlQuery->execute()->value();
-		//work out base total
-		$this->BaseQuantity = $LatestManualUpdateQuantity - $OrderQuantityToDeduct;
 		parent::onBeforeWrite();
 	}
-
 
 }

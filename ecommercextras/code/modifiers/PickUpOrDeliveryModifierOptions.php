@@ -81,10 +81,12 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	static function get_all_as_country_array() {
 		$array = array();
 		$Options = DataObject::get("PickUpOrDeliveryModifierOptions");
-		foreach($Options as $option) {
-			if($countries = $option->AvailableInCountries()) {
-				foreach($countries as $country) {
-					$array[$option->Code][] = $country->Code;
+		if($Options) {
+			foreach($Options as $option) {
+				if($countries = $option->AvailableInCountries()) {
+					foreach($countries as $country) {
+						$array[$option->Code][] = $country->Code;
+					}
 				}
 			}
 		}
