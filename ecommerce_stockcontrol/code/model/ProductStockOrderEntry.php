@@ -70,6 +70,7 @@ class ProductStockOrderEntry extends DataObject {
 		if($this->ID) {
 			//basic checks
 			if(!$this->ParentID) {
+
 				$this->delete();
 				user_error("Can not create record without associated product.", E_USER_ERROR);
 			}
@@ -81,6 +82,7 @@ class ProductStockOrderEntry extends DataObject {
 			while($tobeDeleted = DataObject::get_one("ProductStockOrderEntry", "`OrderID` = ".$this->OrderID." AND `ID` <> ".$this->ID, false, "LastEdited ASC")) {
 				$toBeDeleted = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID, false, "LastEdited ASC");
 				$toBeDeleted->delete();
+				user_error("deleting ProductStockOrderEntry because there are multiples!", E_USER_ERROR);
 			}
 		}
 	}

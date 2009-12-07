@@ -178,12 +178,19 @@ class ProductStockCalculatedQuantity extends DataObject {
 				');
 				if($data) {
 					foreach($data as $row) {
-						$ProductStockOrderEntry = new ProductStockOrderEntry();
-						$ProductStockOrderEntry->OrderID = $row["OrderID"];
-						$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
-						$ProductStockOrderEntry->ParentID = $this->ID;
-						$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
-						$ProductStockOrderEntry->write();
+						if($ProductStockOrderEntry = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$row["OrderID"]." AND ParentID = ".$this->ID)) {
+
+						}
+						else {
+							$ProductStockOrderEntry = new ProductStockOrderEntry();
+							$ProductStockOrderEntry->OrderID = $row["OrderID"];
+							$ProductStockOrderEntry->ParentID = $this->ID;
+						}
+						if($ProductStockOrderEntry->Quantity != $row["QuantitySum"]) {
+							$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
+							$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
+							$ProductStockOrderEntry->write();
+						}
 					}
 				}
 				//work out additional purchases
@@ -211,9 +218,9 @@ class ProductStockCalculatedQuantity extends DataObject {
 				if(isset($_GET["debug"])) {
 					echo "<hr />";
 					echo $this->Name;
-					echo "Manual SUM: ".$LatestManualUpdateQuantity;
-					echo "Order SUM: ".$OrderQuantityToDeduct;
-					echo "Total SUM: ".$this->BaseQuantity;
+					echo " | Manual SUM: ".$LatestManualUpdateQuantity;
+					echo " | Order SUM: ".$OrderQuantityToDeduct;
+					echo " | Total SUM: ".$this->BaseQuantity;
 					echo "<hr />";
 				}
 			}
