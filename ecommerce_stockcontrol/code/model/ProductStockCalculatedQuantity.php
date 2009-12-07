@@ -182,10 +182,10 @@ class ProductStockCalculatedQuantity extends DataObject {
 								$ProductStockOrderEntry->OrderID = $row["OrderID"];
 								$ProductStockOrderEntry->ParentID = $this->ID;
 								$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
+								$ProductStockOrderEntry->Quantity = 0;
 							}
 							if($ProductStockOrderEntry->Quantity != $row["QuantitySum"] && $ProductStockOrderEntry->IncludeInCurrentCalculation) {
 								$ProductStockOrderEntry->Quantity = $row["QuantitySum"];
-								$ProductStockOrderEntry->IncludeInCurrentCalculation = 1;
 								$ProductStockOrderEntry->write();
 							}
 						}
