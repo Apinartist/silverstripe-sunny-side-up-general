@@ -8,7 +8,7 @@
 		<span class="quantity">$Quantity</span>
 		<span class="date">on $LastEdited.Nice</span>
 		<span class="explanation"> - Order # $OrderID</span>
-		<span class="small"><% if IncludeInCurrentCalculation %>included in current calculations no longer relevant to calculations<% end_if %></span>
+		<span class="small"><% if IncludeInCurrentCalculation %>included in current calculations<% else %>no longer relevant to calculations<% end_if %></span>
 	</li>
 	<% end_control %>
 </ul>
