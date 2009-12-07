@@ -67,19 +67,21 @@ class ProductStockOrderEntry extends DataObject {
 	function onAfterWrite() {
 
 		parent::onAfterWrite();
-		//basic checks
-		if(!$this->ParentID) {
-			$this->delete();
-			user_error("Can not create record without associated product.", E_USER_ERROR);
-		}
-		if(!$this->OrderID) {
-			$this->delete();
-			user_error("Can not create record without order.", E_USER_ERROR);
-		}
-		//make sure no doubles are created
-		while(DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID." AND ID <> ".$this->ID)) {
-			$toBeDeleted = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID, false, "LastEdited ASC");
-			$toBeDeleted->delete();
+		if($this->ID) {
+			//basic checks
+			if(!$this->ParentID) {
+				$this->delete();
+				user_error("Can not create record without associated product.", E_USER_ERROR);
+			}
+			if(!$this->OrderID) {
+				$this->delete();
+				user_error("Can not create record without order.", E_USER_ERROR);
+			}
+			//make sure no doubles are created
+			while(DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID." AND ID <> ".$this->ID)) {
+				$toBeDeleted = DataObject::get_one("ProductStockOrderEntry", "OrderID = ".$this->OrderID, false, "LastEdited ASC");
+				$toBeDeleted->delete();
+			}
 		}
 	}
 
