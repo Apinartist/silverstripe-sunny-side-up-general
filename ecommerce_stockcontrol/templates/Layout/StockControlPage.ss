@@ -1,6 +1,6 @@
 $Content
 $Form
-<div class="StockObjectsFeedback"><p>Please enter new quantities below.</p></div>
+<div class="StockObjectsFeedback"><p>Please adjust available quantities below.</p></div>
 <ul id="StockProductObjects">
 <% control StockProductObjects %>
 	<li>
@@ -19,4 +19,4 @@ $Form
 	</li>
 <% end_control %>
 </ul>
-<div class="StockObjectsFeedback"><p>Please enter new quantities above.</p></div>
+<div class="StockObjectsFeedback"><p>Please adjust available quantities above.</p></div>

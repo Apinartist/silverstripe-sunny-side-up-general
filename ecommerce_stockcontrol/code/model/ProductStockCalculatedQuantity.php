@@ -208,6 +208,14 @@ class ProductStockCalculatedQuantity extends DataObject {
 
 				//work out base total
 				$this->BaseQuantity = $LatestManualUpdateQuantity - $OrderQuantityToDeduct;
+				if(isset($_GET["debug")) {
+					echo "<hr />";
+					echo $this->Name;
+					echo "Manual SUM: ".$LatestManualUpdateQuantity;
+					echo "Order SUM: ".$OrderQuantityToDeduct;
+					echo "Total SUM: ".$this->BaseQuantity;
+					echo "<hr />";
+				}
 			}
 		}
 		parent::onBeforeWrite();
