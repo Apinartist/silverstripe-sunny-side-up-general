@@ -11,12 +11,11 @@ require_once("conf/ConfigureFromEnv.php");
 /* sapphire */
 SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
-ContentNegotiator::disable();
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
-$protocolAndHost = Director::protocolAndHost();
 
 //===================---------------- start testemail ----------------===================
+$protocolAndHost = Director::protocolAndHost();
 $devsitearray = array("http://localhost");
 if(in_array($protocolAndHost, $devsitearray)) {
 	Email::set_mailer("TestMailer");
