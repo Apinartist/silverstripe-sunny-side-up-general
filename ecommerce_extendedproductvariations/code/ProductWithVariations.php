@@ -348,7 +348,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
-		Requirements::javascript("jsparty/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations.js");
 		Requirements::customScript($js,'ProductWithVariationsArray');
 		return $variations;
