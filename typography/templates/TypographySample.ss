@@ -481,7 +481,6 @@
 	Integer fringilla, metus in adipiscing venenatis, nisi metus scelerisque magna, id fringilla dolor diam ac ligula.
 	Nulla consequat nunc id sem.
 </p>
-</blockquote>
 
 
 <h6>example of heading 6</h6>
