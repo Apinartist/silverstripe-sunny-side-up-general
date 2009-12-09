@@ -74,7 +74,7 @@ ProductWithVariations = {
 				}
 			}
 		);
-		jQuery(this.dropdownSelector).calculateVariation();
+		ProductWithVariations.calculateVariation(true);
 	},
 
 	calculateVariation: function(initial) {
