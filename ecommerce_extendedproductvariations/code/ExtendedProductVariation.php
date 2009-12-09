@@ -97,4 +97,8 @@ class ExtendedProductVariation extends ProductVariation {
 		parent::onBeforeDelete();
 	}
 
+	function getProductID() {
+		return $this->ID;
+	}
+
 }

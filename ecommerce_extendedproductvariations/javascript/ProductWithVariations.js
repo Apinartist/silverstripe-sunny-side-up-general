@@ -61,8 +61,8 @@ ProductWithVariations = {
 		jQuery(this.dropdownSelector).change(
 			function () {
 				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
-				jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
 				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
+				jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
 				ProductWithVariations.calculateVariation(false);
 			}
 		);
@@ -117,7 +117,9 @@ ProductWithVariations = {
 				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
 				jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
 			}
-			jQuery(ProductWithVariations.buttonSelector).slideUp();
+			if(jQuery(ProductWithVariations.formSelector+" option").length > 1) {
+				jQuery(ProductWithVariations.buttonSelector).slideUp();
+			}
 		}
 	},
 

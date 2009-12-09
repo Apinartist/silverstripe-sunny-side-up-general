@@ -264,12 +264,12 @@ class ProductWithVariations_Controller extends Product_Controller {
 					}
 				}
 				else {
-					Session::set("ProductVariationsFormMessage", "Could not find product variation.");
+					$msg = "Could not find product variation.";
 				}
 			}
 		}
 		else {
-			Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
+			$msg = "Could not be added to cart.";
 		}
 		if($checkoutPage = DataObject::get_one("CheckoutPage")) {
 			$msg .= '<a href="'.$checkoutPage->Link().'">'.$update.' View Order</a>';
