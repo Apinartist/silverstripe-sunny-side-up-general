@@ -7,7 +7,7 @@
 
 class TestMailerToFile extends Mailer  {
 
-	protected static $file_to_write_to = "assets/emails.txt"
+	protected static $file_to_write_to = "assets/emails.txt";
 		static function set_file_to_write_to ($v) {self::$file_to_write_to = $v;}
 
 	protected static $separation_string = "\r\nr\n
@@ -45,7 +45,7 @@ class TestMailerToFile extends Mailer  {
 	}
 
 	function writeToFile($string) {
-		$myFile = Director::baseFolder()."/".self::$file_to_write_to
+		$myFile = Director::baseFolder()."/".self::$file_to_write_to;
 		$fh = fopen($myFile, 'a') or die("can't open file $myFile");
 		$stringData = self::$separation_string.$string;
 		fwrite($fh, $stringData);
