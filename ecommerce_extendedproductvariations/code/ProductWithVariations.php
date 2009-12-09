@@ -253,14 +253,14 @@ class ProductWithVariations_Controller extends Product_Controller {
 			if($data["CurrentVariation"] == -1) {
 				$orderItem = new Product_OrderItem($this->dataRecord);
 				ShoppingCart::add_new_item($orderItem);
-				$msg = "Added ".$this->Title." to cart.";
+				$update = "Added, ";
 			}
 			else {
 				$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
 				if($variation) {
 					if($variation->AllowPurchase()) {
 						ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
-						$msg = "Added to cart.";
+						$update = "Added, ";
 					}
 				}
 				else {
@@ -272,7 +272,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 			Session::set("ProductVariationsFormMessage", "Could not be added to cart.");
 		}
 		if($checkoutPage = DataObject::get_one("CheckoutPage")) {
-			$msg .= ' Continue to <a href="'.$checkoutPage->Link().'">checkout</a>.';
+			$msg .= '<a href="'.$checkoutPage->Link().'">'.$update.' View Order</a>';
 		}
 		if(!$this->isAjax()) {
 			Session::set("ProductVariationsFormMessage", $msg);
