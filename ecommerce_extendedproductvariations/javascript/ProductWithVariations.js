@@ -62,7 +62,9 @@ ProductWithVariations = {
 			function () {
 				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
 				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
-				jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
+				if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAdded)) {
+					jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
+				}
 				ProductWithVariations.calculateVariation(false);
 			}
 		);
@@ -138,21 +140,27 @@ ProductWithVariations = {
 	},
 
 	showRequest: function (formData, jqForm, options) {
+		jQuery(ProductWithVariations.buttonSelector).slideUp(1000);
 		if(ProductWithVariations.ActionBeforeSelector) {
 			jQuery(ProductWithVariations.ActionBeforeSelector).click();
 		}
-		jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.loadingClass);
-		jQuery(ProductWithVariations.buttonSelector).fadeOut();
+		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.loadingClass)) {
+			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.loadingClass);
+		}
     return true;
 	},
 
 	showResponse: function (responseText, statusText)  {
+
 		if(ProductWithVariations.ActionAfterSelector) {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.toBeAdded);
-		jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
+		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.inCartClass)) {
+			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
+		}
+
 	}
 
 }
