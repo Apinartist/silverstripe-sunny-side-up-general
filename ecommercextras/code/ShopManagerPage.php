@@ -91,27 +91,16 @@ class ShopManagerPage_Controller extends Page_Controller {
 				$subject = $order->getReceiptSubject();
 
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
-				$emailClass = 'Order_ReceiptEmail';
-				if($c = Director::URLParam("OtherID")) {
-					if(class_exists($c)) {
-						$c = $emailClass = $c;
-					}
-				}
-				$email = new $emailClass();
-				$email->setFrom($from);
-				$email->setTo($to);
-				$email->setSubject($subject);
-				$email->populateTemplate(
-					array(
-						'PurchaseCompleteMessage' => $purchaseCompleteMessage,
-						'Order' => $order
-					)
+
+				$data = array(
+					'PurchaseCompleteMessage' => $purchaseCompleteMessage,
+					'Order' => $order,
+					'From' => $from,
+					'To' => $to,
+					'Subject' => $subject
 				);
 				Requirements::clear();
-
-				$v = $email->debug();
-				print_r( $v );
-				die('------------------------------------------------- end, <a href="'.Director::absoluteURL($this->Link()).'">click to continue</a> -------------------------------------------------');
+				return $this->customise($data)->renderWith("AjaxTestEmailReceipt");
 			}
 		}
 		else {
