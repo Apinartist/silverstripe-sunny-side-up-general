@@ -60,7 +60,10 @@ ProductWithVariations = {
 		jQuery(this.hiddenCurrentVariationDiv).css("display", "none");
 		jQuery(this.dropdownSelector).change(
 			function () {
-				ProductWithVariations.calculateVariation();
+				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
+				jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
+				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
+				ProductWithVariations.calculateVariation(false);
 			}
 		);
 		jQuery(this.dropdownSelector).each(
@@ -71,10 +74,10 @@ ProductWithVariations = {
 				}
 			}
 		);
-		jQuery(this.dropdownSelector).change();
+		jQuery(this.dropdownSelector).calculateVariation();
 	},
 
-	calculateVariation: function() {
+	calculateVariation: function(initial) {
 		var selectedValueArray = new Array();
 		var groupIDArray = new Array();
 		jQuery(this.dropdownSelector).each(
@@ -110,10 +113,11 @@ ProductWithVariations = {
 			jQuery(ProductWithVariations.buttonSelector).slideDown();
 		}
 		else {
-			jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
-			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
+			if(!initial) {
+				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
+				jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
+			}
 			jQuery(ProductWithVariations.buttonSelector).slideUp();
-
 		}
 	},
 
@@ -122,7 +126,7 @@ ProductWithVariations = {
 			target:        ProductWithVariations.formMsgSelector,
 			beforeSubmit:  ProductWithVariations.showRequest,
 			success:       ProductWithVariations.showResponse,
-			type:          "post",
+			type:          "post"
 			//dataType:      "xml"
 			//url:         url
 			//clearForm:   true
