@@ -68,7 +68,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 						$child->setTitle('Retain Personal Details with Password');
 						break;
 					case "Address":
-						$child->setTitle('Delivery Address (no Postal Box)');
+						$child->setTitle('Street Address');
 						break;
 					case "AddressLine2":
 						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">'.self::$postal_code_label.'</a>');
