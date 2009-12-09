@@ -69,7 +69,8 @@ class ExtendedProductVariationOption extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		if(class_exists("DataObjectSorterController")) {
-			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '<a href="dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'" target="_blank">click here to sort list</a>'));
+			Requirements::javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariationsPopUp.js");
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '<a href="dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'" class="ProductWithVariationsPopUp">click here to sort list</a>'));
 		}
 		return $fields;
 	}
