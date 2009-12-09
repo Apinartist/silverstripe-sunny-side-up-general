@@ -100,7 +100,7 @@ class ShopManagerPage_Controller extends Page_Controller {
 					'Subject' => $subject
 				);
 				Requirements::clear();
-				return $this->customise($data)->renderWith("AjaxTestEmailReceipt");
+				return $this->customise($data)->renderWith("Order_ReceiptEmail");
 			}
 		}
 		else {
