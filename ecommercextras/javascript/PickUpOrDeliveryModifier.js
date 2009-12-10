@@ -62,6 +62,9 @@ var	PickUpOrDeliveryModifier = {
 		var currentIndex = jQuery("#" + PickUpOrDeliveryModifier.formID+ PickUpOrDeliveryModifier.DropdownIDappendix).val();
 		var currentCountryValue = jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val();
 		var acceptableOptions = PickUpOrDeliveryModifier.availableCountries[currentIndex];
+		if(acceptableOptions ==undefined) {
+			acceptableOptions = new Array();
+		}
 		if(acceptableOptions.length < 1) {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option").show();
 		}
