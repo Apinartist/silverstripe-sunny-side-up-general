@@ -91,9 +91,12 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", $id);
 		if($obj) {
-			$data = DataObject::get($obj->ClassName);
+			$data = DataObject::get($obj->ClassName, $where = "", $orderBy = "", $join = "", $limit = 100);
 		}
-		$array = array("Results" => $data);
+		$array = array(
+			"Results" => $data,
+			"MoreDetail" => DataObject::get("TemplateOverviewDescriptions", "ClassNameLink = '".$obj->ClassName."'")
+		);
 		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
 	}
 

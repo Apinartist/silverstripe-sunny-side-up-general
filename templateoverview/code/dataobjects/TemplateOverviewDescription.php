@@ -7,7 +7,7 @@ class TemplateOverviewDescription extends DataObject {
 		"ClassNameLink" => "Varchar(255)"
 	);
 
-	static $has_one = array(
+	static $has_many = array(
 		"Parent" => "TemplateOverviewPage",
 		"Image1" => "Image",
 		"Image2" => "Image",
@@ -24,10 +24,11 @@ class TemplateOverviewDescription extends DataObject {
 	 	return $fields;
 	}
 
+	public static $searchable_fields = array("ClassNameLink" => "PartialMatchFilter");
 
-	static $searchable_fields = array('ClassNameLink');
-
-	static $summary_fields = array('ClassNameLink', 'Description');
+	public static $field_labels = array(
+		"ClassNameLink" => "Page Type Name"
+	);
 
 	static $singular_name = 'Template Description';
 
@@ -43,5 +44,11 @@ class TemplateOverviewDescription extends DataObject {
 		}
 		parent::onBeforeWrite();
 	}
+
+	function updateCMSFields(FieldSet &$fields) {
+		$fields->removeFieldByName("ClassNameLink");
+		$fields->push(new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
+	}
+
 
 }
