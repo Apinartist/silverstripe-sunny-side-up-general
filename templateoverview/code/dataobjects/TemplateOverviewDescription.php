@@ -52,7 +52,7 @@ class TemplateOverviewDescription extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ClassNameLink");
-		$fields->addFieldToTab("Root", new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
+		$fields->addFieldToTab("Root.Content", new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
 		return $fields;
 	}
 
