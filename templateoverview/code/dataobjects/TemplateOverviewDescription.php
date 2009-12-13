@@ -20,7 +20,7 @@ class TemplateOverviewDescription extends DataObject {
 
 	public static $searchable_fields = array("ClassNameLink" => "PartialMatchFilter");
 
-	public static $summary_fields = array("ClassNameLink" => "Page Name");
+	public static $summary_fields = array("ClassNameLink");
 
 	public static $field_labels = array(
 		"ClassNameLink" => "Page Type Name"
