@@ -55,7 +55,7 @@ class TemplateOverviewDescription extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ClassNameLink");
-		$fields->addFieldToTab("Root.Link", new HeaderField("ClassNameLinkInfo", $this->ClassNameLink)));
+		$fields->addFieldToTab("Root.Link", new HeaderField("ClassNameLinkInfo", $this->ClassNameLink));
 		$fields->removeByName("ParentID");
 		return $fields;
 	}
