@@ -18,12 +18,6 @@ class TemplateOverviewDescription extends DataObject {
 		"Image7" => "Image",
 	);
 
-
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-	 	return $fields;
-	}
-
 	public static $searchable_fields = array("ClassNameLink" => "PartialMatchFilter");
 
 	public static $field_labels = array(
@@ -36,6 +30,14 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $default_sort = 'ClassNameLink ASC';
 
+	function canAdd() {
+		return false;
+	}
+
+	function canDelete() {
+		return false;
+	}
+
 	function onBeforeWrite() {
 		if(!$this->ParentID) {
 			if($page = DataObject::get_one("TemplateOverviewPage")) {
@@ -47,10 +49,23 @@ class TemplateOverviewDescription extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->removeFieldByName("ClassNameLink");
-		$fields->push(new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
+		$fields->removeByName("ClassNameLink");
+		$fields->addFieldToTab("Root", new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
 		return $fields;
 	}
 
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$data = ClassInfo::subclassesFor("SiteTree");
+		if($data) {
+			foreach($data as $className) {
+				if(!DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '$className'")) {
+					$new = new TemplateOverviewDescription();
+					$new->ClassNameLink = $className;
+					$new->write();
+				}
+			}
+		}
+	}
 
 }
