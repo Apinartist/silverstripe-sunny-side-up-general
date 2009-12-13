@@ -1,25 +1,56 @@
-<hr />
+<h1>Instructions for Typography Test Page</h1>
+<p>
+	This page allows you to review typographic formatting for this website.
+	This directly relates to the areas that are editable in the Content Management System.
+	While the options and configurations are endless, most websites require the following minimum elements:
+</p>
+<ul>
+	<li>heading one through to heading six where heading one is the most important one (e.g. page title) and heading six the <i>smallest</i> heading.</li>
+	<li>paragraphs</li>
+	<li>bulleted lists</li>
+	<li>numbered lists</li>
+	<li>blockquote (i.e. a longer quote)</li>
+	<li>address</li>
+	<li>horizontal line</li>
+	<li>pre-formatted text (e.g. recipes, computer code)</li>
+	<li>tables with table heading (e.g. will show the word "cost") and table data cells (e.g. will show "$14")</li>
+	<li>images and whether they break up text, or that the text wraps around it to either the left or the right.</li>
+	<li>bold, italics, and underline - e.g. bold can actually be achieved by having a different colour rather than bold text</li>
+	<li>links: new, visited, active (currently being clicked on) and hovered (mouse is current hovering over link) ones, to within site and to other sites</li>
+</ul>
+<p>
+	Each of these elements can have the following (basic selection - there are lots more!) formatting rules applied:
+</p>
+<ul>
+	<li>colour of font</li>
+	<li>background-color</li>
+	<li>padding and margins around elements</li>
+	<li>borders (thickness, colours, styles)</li>
+	<li>font-size</li>
+	<li>line-height</li>
+	<li>first letter / first word alternative format</li>
+	<li>text-alignment (e.g. justified, left, right)</li>
+	<li>all uppercase, all lowercase or capitalised (each word starts with a capital)</li>
+	<li>italic, bold, underlined or strikken through (looks like deleted text).</li>
+</ul>
 <p>
 	Below is a variety of styles that you may use in your SilverStripe Content Management System.
 	The styles should look the same (or similar) in your Content Management System as they do on this page.
-	Below, each special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
+	Special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
 	Each start of a new section will tell you what to look for.
-	Make sure to also check for the within paragraph formatting:
+	Make sure to also check for the <i>within paragraph</i> formatting.
 </p>
 <p>
-	Paragraph Number 2: Below is a variety of styles that you may use in your SilverStripe Content Management System.
-	The styles should look the same (or similar) in your Content Management System as they do on this page.
-	Below, each special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
-	Each start of a new section will tell you what to look for.
-	Make sure to also check for the within paragraph formatting:
+	At the bottom of this page, you will also find the most common form elements and their proposed formatting.
 </p>
 <p>
-	Paragraph Number 3: Below is a variety of styles that you may use in your SilverStripe Content Management System.
-	The styles should look the same (or similar) in your Content Management System as they do on this page.
-	Below, each special formats are interspersed with a paragraph as this is a more normal typographic setting than having heading after heading after heading.
-	Each start of a new section will tell you what to look for.
-	Make sure to also check for the within paragraph formatting:
+	It is important to remember that the page below only focusses on typography (writing) and not on the design of the page as a whole (e.g. where the menu goes, how wide the page is, etc...)
 </p>
+<hr />
+<hr />
+<p>these are horizontal lines</p>
+<hr />
+<hr />
 <h3>bold, italic, underline, and links</h3>
 <ul>
 	<li><strong>bold 1</strong>, <b>bold 2</b></li>
@@ -329,48 +360,48 @@
 	<li>
 		In feugiat consectetuer lectus.
 		Cras lacinia elit nec libero.
-		<ul>
+		<ol>
 			<li>
 				In feugiat consectetuer lectus.
 				Cras lacinia elit nec libero.
 			</li>
-		</ul>
-		<ul>
+		</ol>
+		<ol>
 			<li>
 				In consectetuer lectus.
 				Cras nec libero.
-				<ul>
+				<ol>
 					<li>
 						In feugiat consectetuer lectus.
 						Cras lacinia elit nec libero.
-						<ul>
+						<ol>
 							<li>
 								In feugiat consectetuer lectus.
 								Cras lacinia elit nec libero.
 							</li>
-						</ul>
-						<ul>
+						</ol>
+						<ol>
 							<li>
 								In feugiat consectetuer lectus.
 								Cras lacinia elit nec libero.
 							</li>
-						</ul>
-						<ul>
+						</ol>
+						<ol>
 							<li>
 								In feugiat consectetuer lectus.
 								Cras lacinia elit nec libero.
 							</li>
-						</ul>
+						</ol>
 					</li>
-				</ul>
-				<ul>
+				</ol>
+				<ol>
 					<li>
 						In feugiat consectetuer lectus.
 						Cras lacinia elit nec libero.
 					</li>
-				</ul>
+				</ol>
 			</li>
-		</ul>
+		</ol>
 	</li>
 	<li>
 		Sed id ante in nisi faucibus tristique.
@@ -531,4 +562,8 @@
 <h4>heading 4</h4>
 <h5>heading 5</h5>
 <h6>heading 6</h6>
+<hr />
+<hr />
+<hr />
+<hr />
 <hr />
