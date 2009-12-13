@@ -123,8 +123,8 @@ ProductWithVariations = {
 		}
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
-		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAdded)) {
-			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
+		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAddedClass)) {
+			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAddedClass);
 		}
 	},
 
@@ -143,7 +143,7 @@ ProductWithVariations = {
 	},
 
 	showRequest: function (formData, jqForm, options) {
-		jQuery(ProductWithVariations.buttonSelector).slideUp(1000);
+		jQuery(ProductWithVariations.buttonSelector).slideUp(500);
 		if(ProductWithVariations.ActionBeforeSelector) {
 			jQuery(ProductWithVariations.ActionBeforeSelector).click();
 		}
@@ -158,11 +158,13 @@ ProductWithVariations = {
 		if(ProductWithVariations.ActionAfterSelector) {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
+		jQuery(ProductWithVariations.returnMessageSelector).slideDown(500);
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
 		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.toBeAdded);
 		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.inCartClass)) {
 			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
 		}
+
 	}
 
 }
