@@ -1,5 +1,12 @@
 <?php
 
+/**
+ *@author nicolaas[at]sunnysideup.co.nz
+ *@description: more details per template. Records are auto-added
+ *@link: http://localhost/kitesurf.co.nz/trunk/admin/templates/TemplateOverviewDescription/13/edit
+ **/
+
+
 class TemplateOverviewDescription extends DataObject {
 
 	static $db = array(
@@ -11,11 +18,7 @@ class TemplateOverviewDescription extends DataObject {
 		"Parent" => "TemplateOverviewPage",
 		"Image1" => "Image",
 		"Image2" => "Image",
-		"Image3" => "Image",
-		"Image4" => "Image",
-		"Image5" => "Image",
-		"Image6" => "Image",
-		"Image7" => "Image",
+		"Image3" => "Image"
 	);
 
 	public static $searchable_fields = array("ClassNameLink" => "PartialMatchFilter");
@@ -52,7 +55,7 @@ class TemplateOverviewDescription extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ClassNameLink");
-		$fields->addFieldToTab("Root.Content", new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
+		$fields->removeByName("ParentID");
 		return $fields;
 	}
 
