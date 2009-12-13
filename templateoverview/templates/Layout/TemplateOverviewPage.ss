@@ -12,7 +12,7 @@
 		<% if AddShowMoreLink %>
 
 		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">see all</a></span>
-		<ol id="entry-for-$URLSegment"><li>&nbsp;</li></ol>
+		<ol id="entry-for-$URLSegment"><li style="display: none;">&nbsp;</li></ol>
 		<% end_if %><% end_if %>
 	</li>
 	<% else %>
