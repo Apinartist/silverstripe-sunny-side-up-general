@@ -7,7 +7,7 @@ class TemplateOverviewDescription extends DataObject {
 		"ClassNameLink" => "Varchar(255)"
 	);
 
-	static $has_many = array(
+	static $has_one = array(
 		"Parent" => "TemplateOverviewPage",
 		"Image1" => "Image",
 		"Image2" => "Image",
