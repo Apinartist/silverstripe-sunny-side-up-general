@@ -1,12 +1,11 @@
 <% if MoreDetail %>
 	<% control MoreDetail %>
 	<li>
-		<p>$Description</p>
+		<p>$Description ... <a href="admin/templates/$ClassName/$ID/edit">edit details</a></p>
 		<div id="TemplateOverviewImages">
 			<% if Image1 %>$Image1.SetWidth(770)<% end_if %>
 			<% if Image2 %>$Image2.SetWidth(770)<% end_if %>
 			<% if Image3 %>$Image3.SetWidth(770)<% end_if %>
-			$Image1.SetWidth(770)
 		</div>
 	</li>
 	<% end_control %>
