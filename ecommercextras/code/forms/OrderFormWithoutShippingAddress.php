@@ -82,6 +82,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 
 		if(self::$fixed_country_code) {
 			$this->resetField("Country", self::$fixed_country_code);
+			Requirements::customScript('jQuery(document).ready(function() {jQuery(".ajaxCountryField").val("'.self::$fixed_country_code.'")});');
 		}
 
 		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note / Question', 7, 30, null, $this));
