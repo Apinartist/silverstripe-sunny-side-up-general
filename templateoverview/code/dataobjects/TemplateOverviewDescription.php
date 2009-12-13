@@ -45,9 +45,11 @@ class TemplateOverviewDescription extends DataObject {
 		parent::onBeforeWrite();
 	}
 
-	function updateCMSFields(FieldSet &$fields) {
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
 		$fields->removeFieldByName("ClassNameLink");
 		$fields->push(new DropdownField("ClassNameLink", "Page Type", ClassInfo::subclassesFor("SiteTree")));
+		return $fields;
 	}
 
 
