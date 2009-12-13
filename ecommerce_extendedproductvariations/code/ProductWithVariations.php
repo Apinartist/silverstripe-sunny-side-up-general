@@ -312,10 +312,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 			}
 		}
 		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice" class="toBeAdded">'.Payment::site_currency().$this->dbObject("Price")->Nice().'</div>'));
-		if($msg = Session::get("ProductVariationsFormMessage")) {
-			$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
-			Session::set("ProductVariationsFormMessage", "");
-		}
+		$msg = Session::get("ProductVariationsFormMessage");
+		Session::set("ProductVariationsFormMessage", "");
+		$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
 		$action = new FormAction($action = "addVariation",$buttonTitle);
 		$form = new Form(
 			$controller = $this,

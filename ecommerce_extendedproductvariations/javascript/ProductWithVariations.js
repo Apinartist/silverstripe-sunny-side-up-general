@@ -32,6 +32,8 @@ ProductWithVariations = {
 
 	formMsgSelector: "#ExtendedProductVariationPrice",
 
+	returnMessageSelector: "#ExtendedProductVariationMessage",
+
 	buttonSelector: ".Actions input",
 
 	dropdownSelector: "#ExtendedProductVariationDropdowns select",
@@ -60,11 +62,6 @@ ProductWithVariations = {
 		jQuery(this.hiddenCurrentVariationDiv).css("display", "none");
 		jQuery(this.dropdownSelector).change(
 			function () {
-				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
-				jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
-				if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAdded)) {
-					jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
-				}
 				ProductWithVariations.calculateVariation(false);
 			}
 		);
@@ -110,6 +107,7 @@ ProductWithVariations = {
 			}
 		}
 		if(match !== false) {
+			jQuery(ProductWithVariations.returnMessageSelector).hide();
 			jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
 			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.PriceArray[match]);
 			jQuery(ProductWithVariations.buttonSelector).slideDown();
@@ -123,11 +121,16 @@ ProductWithVariations = {
 				jQuery(ProductWithVariations.buttonSelector).slideUp();
 			}
 		}
+		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
+		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
+		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAdded)) {
+			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAdded);
+		}
 	},
 
 	prepAjaxSubmit: function(){
 		var options = {
-			target:        ProductWithVariations.formMsgSelector,
+			target:        ProductWithVariations.returnMessageSelector,
 			beforeSubmit:  ProductWithVariations.showRequest,
 			success:       ProductWithVariations.showResponse,
 			type:          "post"
@@ -160,7 +163,6 @@ ProductWithVariations = {
 		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.inCartClass)) {
 			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
 		}
-
 	}
 
 }
