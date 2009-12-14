@@ -180,7 +180,7 @@ ProductWithVariations = {
 			if(match !== false) {
 				//show all details for selected entry
 				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
-				if(match != -1) {
+				if(!ProductWithVariations.onlyOneOption()) {
 					var priceText = ProductWithVariations.PriceArray[match];
 					if(situationType == "added") {
 						priceText += ProductWithVariations.InCartPriceAddition;
@@ -194,7 +194,7 @@ ProductWithVariations = {
 					jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
 					hideButton = true;
 				}
-				if(jQuery(ProductWithVariations.formSelector+" option").length > 1) {
+				if(!ProductWithVariations.onlyOneOption()) {
 					hideButton = true;
 				}
 			}
@@ -237,6 +237,10 @@ ProductWithVariations = {
 			}
 		}
 		return false;
+	},
+
+	onlyOneOption: function() {
+		return jQuery(ProductWithVariations.formSelector+" option").length == 1;
 	},
 
 	isInCart: function (itemID) {
