@@ -180,13 +180,16 @@ ProductWithVariations = {
 			if(match !== false) {
 				//show all details for selected entry
 				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
-				if(!ProductWithVariations.onlyOneOption()) {
+				if(ProductWithVariations.onlyOneOption()) {
 					var priceText = ProductWithVariations.PriceArray[match];
-					if(situationType == "added") {
-						priceText += ProductWithVariations.InCartPriceAddition;
-					}
-					jQuery(ProductWithVariations.priceSelector).text(priceText);
 				}
+				else {
+					var priceText = ProductWithVariations.PriceArray[0]
+				}
+				if(situationType == "added") {
+					priceText += ProductWithVariations.InCartPriceAddition;
+				}
+				jQuery(ProductWithVariations.priceSelector).text(priceText);
 			}
 			else {
 				if(!initial) {
