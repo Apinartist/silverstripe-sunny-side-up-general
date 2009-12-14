@@ -9,9 +9,7 @@
 		<% else %>
 		<span class="typo-example"><em>example:</em> <a href="$URLSegment">$Title</a></span>
 		<span class="typo-fullLink"><em>link:</em> <a href="$FullLink">$FullLink</a></span>
-		<% if AddShowMoreLink %>
-
-		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">see all</a></span>
+		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">more examples and details (if any)</a></span>
 		<ol id="entry-for-$URLSegment"><li style="display: none;">&nbsp;</li></ol>
 		<% end_if %><% end_if %>
 	</li>

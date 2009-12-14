@@ -95,7 +95,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		}
 		$array = array(
 			"Results" => $data,
-			"MoreDetail" => DataObject::get("TemplateOverviewDescriptions", "ClassNameLink = '".$obj->ClassName."'")
+			"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
 		);
 		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
 	}
@@ -164,12 +164,6 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$listArray["indexNumber"] = $indexNumber;
 		$listArray["ClassName"] = $className;
 		$listArray["Count"] = $count;
-		if($count > 1) {
-			$listArray["AddShowMoreLink"] = true;
-		}
-		else {
-			$listArray["AddShowMoreLink"] = false;
-		}
 		$listArray["ID"] = $obj->ID;
 		$listArray["TypoURLSegment"] = $this->URLSegment;
 		$listArray["Title"] = $obj->Title;
