@@ -247,9 +247,11 @@ ProductWithVariations = {
 	},
 
 	isInCart: function (itemID) {
+		if(ProductWithVariations.addedProducts[0] == -1;) {
+			return true;
+		}
 		for(i = 0; i < ProductWithVariations.addedProducts.length; i++) {
 			if (ProductWithVariations.addedProducts[i] == itemID) {
-
 				return true;
 			}
 		}
