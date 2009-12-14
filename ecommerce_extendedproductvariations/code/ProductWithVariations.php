@@ -309,7 +309,10 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$fieldSet->push(new DropdownField("CurrentVariation", "Final Selection", array(-1 => $this->Title)));
 			if($this->IsInCart()) {
 				$buttonTitle = "Add Again";
-				Requirements::customScript("ProductWithVariations.AddProduct(-1);", "ProductWithVariationsArray-1");
+				Requirements::customScript(
+					"ProductWithVariations.AddProduct(-1); ProductWithVariations.PriceArray[0] = '".$this->Price."';",
+					"ProductWithVariationsArray-1"
+				);
 			}
 		}
 		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice" class="toBeAdded">'.Payment::site_currency().$this->dbObject("Price")->Nice().'</div>'));
