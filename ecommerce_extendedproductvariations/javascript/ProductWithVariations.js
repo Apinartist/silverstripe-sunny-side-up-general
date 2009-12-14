@@ -13,6 +13,7 @@
 		function() {
 			ProductWithVariations.init();
 			ProductWithVariations.prepAjaxSubmit();
+			ProductWithVariations.prepAjaxSubmit();
 		}
 	);
 
@@ -42,9 +43,21 @@ ProductWithVariations = {
 
 	hiddenCurrentVariationDiv: "#CurrentVariation",
 
-	hiddenCurrentVariationSelector: "#Form_ProductVariationsForm_CurrentVariation",
+	hiddenCurrentVariationSelector: "#CurrentVariation select",
 
 	NotAvailableText: "Sorry, selection is not available",
+
+	AddedToCartText: "Add Again",
+		SetAddedToCartText: function(v) {ProductWithVariations.AddedToCartText = v},
+
+	AddToCartText: "Add to Cart",
+		SetAddToCartText: function(v) {ProductWithVariations.AddToCartText = v},
+
+	InCartPriceAddition: " (in cart)",
+		SetInCartPriceAddition: function(v) {ProductWithVariations.InCartPriceAddition = v},
+
+	addedProducts: new Array(),
+		AddProduct: function(id) {ProductWithVariations.addedProducts[ProductWithVariations.addedProducts.length] = id;},
 
 	toBeAddedClass: "toBeAdded",
 
@@ -52,20 +65,26 @@ ProductWithVariations = {
 
 	inCartClass: "inCart",
 
+	checkoutLinkSelector: ".goToCheckout",
+
+	checkoutLinkShowClass: "goToCheckoutShow",
+
+	checkoutLinkHideClass: "goToCheckoutHide",
+
 	ActionBeforeSelector: "",
-		SetActionBeforeSelector: function(v) {this.ActionBeforeSelector = v},
+		SetActionBeforeSelector: function(v) {ProductWithVariations.ActionBeforeSelector = v},
 
 	ActionAfterSelector: "",
-		SetActionAfterSelector: function(v) {this.ActionAfterSelector = v},
+		SetActionAfterSelector: function(v) {ProductWithVariations.ActionAfterSelector = v},
 
 	init: function() {
-		jQuery(this.hiddenCurrentVariationDiv).css("display", "none");
-		jQuery(this.dropdownSelector).change(
+		jQuery(ProductWithVariations.hiddenCurrentVariationDiv).css("display", "none");
+		jQuery(ProductWithVariations.dropdownSelector).change(
 			function () {
 				ProductWithVariations.calculateVariation(false);
 			}
 		);
-		jQuery(this.dropdownSelector).each(
+		jQuery(ProductWithVariations.dropdownSelector).each(
 			function(i) {
 				var els = jQuery(this).find("option");
 				if(els.length < 2) {
@@ -78,8 +97,9 @@ ProductWithVariations = {
 
 	calculateVariation: function(initial) {
 		var selectedValueArray = new Array();
+		//work out selected array
 		var groupIDArray = new Array();
-		jQuery(this.dropdownSelector).each(
+		jQuery(ProductWithVariations.dropdownSelector).each(
 			function(i) {
 				var group = jQuery(this).attr("name");
 				var groupIDWithBrackets = group.searchByRegex(new RegExp(/\[\d+\]$/));
@@ -93,6 +113,7 @@ ProductWithVariations = {
 				}
 			}
 		);
+		// find match of selection with data
 		match = false;
 		if(selectedValueArray.length) {
 			for(i = 0; i < ProductWithVariations.ItemArray.length && false === match; i++) {
@@ -106,26 +127,12 @@ ProductWithVariations = {
 				}
 			}
 		}
-		if(match !== false) {
-			jQuery(ProductWithVariations.returnMessageSelector).hide();
-			jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
-			jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.PriceArray[match]);
-			jQuery(ProductWithVariations.buttonSelector).slideDown();
+		//setup situation depending on whether item is in cart or not
+		var situationType = "add"
+		if(ProductWithVariations.isInCart(ProductWithVariations.IDArray[match])) {
+			situationType = "added";
 		}
-		else {
-			if(!initial) {
-				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
-				jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
-			}
-			if(jQuery(ProductWithVariations.formSelector+" option").length > 1) {
-				jQuery(ProductWithVariations.buttonSelector).slideUp();
-			}
-		}
-		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
-		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass);
-		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.toBeAddedClass)) {
-			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.toBeAddedClass);
-		}
+		ProductWithVariations.setupSituation(situationType, match, initial);
 	},
 
 	prepAjaxSubmit: function(){
@@ -143,29 +150,101 @@ ProductWithVariations = {
 	},
 
 	showRequest: function (formData, jqForm, options) {
-		jQuery(ProductWithVariations.buttonSelector).slideUp(500);
+		// for extensions
 		if(ProductWithVariations.ActionBeforeSelector) {
 			jQuery(ProductWithVariations.ActionBeforeSelector).click();
 		}
-		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.loadingClass)) {
-			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.loadingClass);
-		}
+		//add product to list of added products
+		ProductWithVariations.AddProduct(jQuery(ProductWithVariations.hiddenCurrentVariationSelector).val());
+		//hide button
+		ProductWithVariations.setupSituation("loading", false, false);
     return true;
 	},
 
 	showResponse: function (responseText, statusText)  {
-
+		//for extensions
 		if(ProductWithVariations.ActionAfterSelector) {
 			jQuery(ProductWithVariations.ActionAfterSelector).click();
 		}
-		jQuery(ProductWithVariations.returnMessageSelector).slideDown(500);
-		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass);
-		jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.toBeAdded);
-		if(!jQuery(ProductWithVariations.formMsgSelector).hasClass(ProductWithVariations.inCartClass)) {
-			jQuery(ProductWithVariations.formMsgSelector).addClass(ProductWithVariations.inCartClass);
-		}
+		jQuery(ProductWithVariations.returnMessageSelector).html(responseText);
+		//bring back messages
+		var match = ProductWithVariations.getMatchFromID(jQuery(ProductWithVariations.hiddenCurrentVariationSelector).val());
+		ProductWithVariations.setupSituation("added", match , false);
+	},
 
+	setupSituation: function(situationType, match, initial) {//situationType = add / loading / added
+		var hideButton = true;
+		if(situationType == "add" || situationType == "added") {
+			hideButton = false;
+			jQuery(ProductWithVariations.returnMessageSelector).slideUp();
+			if(match !== false) {
+				//show all details for selected entry
+				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
+				var priceText = ProductWithVariations.PriceArray[match];
+				if(situationType == "added") {
+					priceText += ProductWithVariations.InCartPriceAddition;
+				}
+				jQuery(ProductWithVariations.priceSelector).text(priceText);
+
+			}
+			else {
+				if(!initial) {
+					jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",match);
+					jQuery(ProductWithVariations.priceSelector).text(ProductWithVariations.NotAvailableText);
+					hideButton = true;
+				}
+				if(jQuery(ProductWithVariations.formSelector+" option").length > 1) {
+					hideButton = true;
+				}
+			}
+		}
+		if(situationType == "add") {
+			jQuery(ProductWithVariations.buttonSelector).attr("value", ProductWithVariations.AddToCartText);
+			jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass).removeClass(ProductWithVariations.inCartClass).addClass(ProductWithVariations.toBeAddedClass);
+		}
+		else if(situationType == "added") {
+			//button
+			jQuery(ProductWithVariations.buttonSelector).attr("value", ProductWithVariations.AddedToCartText);
+			//feedback message
+			jQuery(ProductWithVariations.returnMessageSelector).slideDown();
+			//message
+			jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.loadingClass).removeClass(ProductWithVariations.toBeAddedClass).addClass(ProductWithVariations.inCartClass);
+			//we keep this - do not remove!
+			jQuery(ProductWithVariations.checkoutLinkSelector).removeClass(ProductWithVariations.checkoutLinkHideClass).addClass(ProductWithVariations.checkoutLinkShowClass);
+		}
+		else if(situationType = "loading") {
+			//feedback message
+			jQuery(ProductWithVariations.returnMessageSelector).slideUp();
+			//message
+			jQuery(ProductWithVariations.formMsgSelector).removeClass(ProductWithVariations.inCartClass).removeClass(ProductWithVariations.toBeAdded).addClass(ProductWithVariations.loadingClass).text(situationType);
+		}
+		if(hideButton) {
+			jQuery(ProductWithVariations.buttonSelector).slideUp();
+		}
+		else {
+			jQuery(ProductWithVariations.buttonSelector).slideDown();
+		}
+	},
+
+	getMatchFromID: function (val) {
+		for(i = 0; i < ProductWithVariations.IDArray.length; i++) {
+			if(ProductWithVariations.IDArray[i] == val) {
+				return i;
+			}
+		}
+		return false;
+	},
+
+	isInCart: function (itemID) {
+		for(i = 0; i < ProductWithVariations.addedProducts.length; i++) {
+			if (ProductWithVariations.addedProducts[i] == itemID) {
+
+				return true;
+			}
+		}
+		return false;
 	}
+
 
 }
 

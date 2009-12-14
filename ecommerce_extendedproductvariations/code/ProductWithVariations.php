@@ -337,11 +337,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
+				$price = Payment::site_currency().$variation->dbObject("Price")->Nice();
 				if($variation->IsInCart()) {
-					$price = "Already In Cart";
-				}
-				else {
-					$price = Payment::site_currency().$variation->dbObject("Price")->Nice();
+					Requirements::customScript("ProductWithVariations.AddProduct(".$variation->ID.");", "ProductWithVariationsArray".$variation->ID);
 				}
 				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$price."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
