@@ -181,10 +181,10 @@ ProductWithVariations = {
 				//show all details for selected entry
 				jQuery(ProductWithVariations.hiddenCurrentVariationSelector).attr("value",ProductWithVariations.IDArray[match]);
 				if(ProductWithVariations.onlyOneOption()) {
-					var priceText = ProductWithVariations.PriceArray[match];
+					var priceText = ProductWithVariations.PriceArray[0];
 				}
 				else {
-					var priceText = ProductWithVariations.PriceArray[0]
+					var priceText = ProductWithVariations.PriceArray[match]
 				}
 				if(situationType == "added") {
 					priceText += ProductWithVariations.InCartPriceAddition;
@@ -247,7 +247,7 @@ ProductWithVariations = {
 	},
 
 	isInCart: function (itemID) {
-		if(ProductWithVariations.addedProducts[0] == -1) {
+		if(ProductWithVariations.addedProducts.length > 0 && ProductWithVariations.onlyOneOption()) {
 			return true;
 		}
 		for(i = 0; i < ProductWithVariations.addedProducts.length; i++) {
