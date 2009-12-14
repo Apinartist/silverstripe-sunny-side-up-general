@@ -227,6 +227,9 @@ ProductWithVariations = {
 	},
 
 	getMatchFromID: function (val) {
+		if(val == -1) {
+			return val;
+		}
 		for(i = 0; i < ProductWithVariations.IDArray.length; i++) {
 			if(ProductWithVariations.IDArray[i] == val) {
 				return i;
