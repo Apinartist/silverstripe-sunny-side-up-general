@@ -286,6 +286,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 
 	public function ProductVariationsForm() {
 		$buttonTitle = "Add To Cart";
+		$fancyPrice = Payment::site_currency().$this->dbObject("Price")->Nice();
 		if($variationsAvailable = $this->VariationsAvailable()) {
 			$selectFields = new FieldSet();
 			$groups = $this->ExtendedProductVariationGroups();
@@ -310,12 +311,12 @@ class ProductWithVariations_Controller extends Product_Controller {
 			if($this->IsInCart()) {
 				$buttonTitle = "Add Again";
 				Requirements::customScript(
-					"ProductWithVariations.AddProduct(-1); ProductWithVariations.PriceArray[0] = '".$this->Price."';",
+					"ProductWithVariations.AddProduct(-1); ProductWithVariations.PriceArray[0] = '".$fancyPrice."';",
 					"ProductWithVariationsArray-1"
 				);
 			}
 		}
-		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice" class="toBeAdded">'.Payment::site_currency().$this->dbObject("Price")->Nice().'</div>'));
+		$fieldSet->push(new LiteralField('PriceField','<div id="ExtendedProductVariationPrice" class="toBeAdded">'.$fancyPrice.'</div>'));
 		$msg = Session::get("ProductVariationsFormMessage");
 		Session::set("ProductVariationsFormMessage", "");
 		$fieldSet->push(new LiteralField('ExtendedProductVariationMessage','<div id="ExtendedProductVariationMessage">'.$msg.'</div>'));
@@ -341,11 +342,11 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
-				$price = Payment::site_currency().$variation->dbObject("Price")->Nice();
+				$fancyPrice = Payment::site_currency().$variation->dbObject("Price")->Nice();
 				if($variation->IsInCart()) {
 					Requirements::customScript("ProductWithVariations.AddProduct(".$variation->ID.");", "ProductWithVariationsArray".$variation->ID);
 				}
-				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$price."';\r\n";
+				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$fancyPrice."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
 			}
 		}
