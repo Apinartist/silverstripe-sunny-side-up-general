@@ -7,7 +7,7 @@
  **/
 
 
-class TemplateOverviewPage_ControllerExtension extends Extension {
+class TemplateOverviewPageExtension extends Extension {
 
 	public function TemplateOverviewPage() {
 		return DataObject::get_one("TemplateOverviewPage");
