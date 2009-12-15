@@ -6,10 +6,9 @@
 		<% if TemplateOverviewDescription %><% control TemplateOverviewDescription %><% if Image1ID %><span class="thumb">$Image1.SetWidth(150)</span><% end_if %><% end_control %><% end_if %>
 		<span class="typo-heading">$Count x $ClassName - template</span>
 		<% if ShowAll %>
-		<span class="typo-fullLink"><a href="$FullLink">$FullLink - $Title</a></span>
+		<span class="typo-fullLink"><a href="$FullLink">$FullLink</a> :: $Title</span>
 		<% else %>
-		<span class="typo-example"><em>example:</em> <a href="$URLSegment">$Title</a></span>
-		<span class="typo-fullLink"><em>link:</em> <a href="$FullLink">$FullLink</a></span>
+		<span class="typo-fullLink"><em>example:</em> <a href="$FullLink">$FullLink</a> :: $Title</span>
 		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">more examples and details (if any)</a></span>
 		<ol id="entry-for-$URLSegment"><li style="display: none;">&nbsp;</li></ol>
 		<% end_if %>
