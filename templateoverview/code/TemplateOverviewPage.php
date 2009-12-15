@@ -1,6 +1,7 @@
 <?php
 /**
- * Add a page to your site that allows you to view all the html that can be used in the typography section - if applied correctly.
+ *@author: nicolaas [at] sunnysideup.co.nz
+ *@description Add a page to your site that allows you to view all the html that can be used in the typography section - if applied correctly.
  */
 
 
@@ -91,7 +92,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", $id);
 		if($obj) {
-			$data = DataObject::get($obj->ClassName, $where = "", $orderBy = "", $join = "", $limit = 100);
+			$data = DataObject::get($obj->ClassName, $where = "", $orderBy = "", $join = "", $limit = 500);
 		}
 		$array = array(
 			"Results" => $data,
@@ -127,7 +128,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 						$count = 0;
 					}
 					$object = $this->createPageObject($obj, $count, $className);
-					$object->TemplateOverviewDescription = $this->getTemplateOverviewDescription($className);
+					$object->TemplateOverviewDescription = $this->TemplateDetails($className);
 					$ArrayOfAllClasses[$object->indexNumber] = clone $object;
 				}
 			}
@@ -142,7 +143,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $doSet;
 	}
 
-	public function getTemplateOverviewDescription($className) {
+	protected function TemplateDetails($className) {
 		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'" AND ParentID = '.$this->ID);
 		if(!$obj) {
 			$obj = new TemplateOverviewDescription();
@@ -182,7 +183,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $object;
 	}
 
-	function FinalClass($obj) {
+	function NoSubClasses($obj) {
 		$array = ClassInfo::subclassesFor($obj->ClassName);
 		if(count($array)) {
 			foreach($array as $class) {
