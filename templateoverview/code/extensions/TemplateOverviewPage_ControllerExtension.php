@@ -13,4 +13,13 @@ class TemplateOverviewPage_ControllerExtension extends Extension {
 		return DataObject::get_one("TemplateOverviewPage");
 	}
 
+	public function IncludeTemplateOverviewDevelopmentFooter() {
+		if(Director::isDev()) {
+			Requirements::javascript("templateoverview/javascript/TemplateOverviewExtension.js");
+			return true;
+		}
+		return false;
+	}
+
+
 }
