@@ -11,7 +11,7 @@
 //TemplateOverviewPage::set_auto_include(true);
 /*
 if(Director::isDev()) {
-	Object::add_extension('TemplateOverviewPage_Controller', 'TemplateOverviewPage_ControllerExtension');
+	Object::add_extension('TemplateOverviewPage_Controller', 'TemplateOverviewPageExtension');
 }
 */
 //===================---------------- END templateoverview MODULE ----------------===================
