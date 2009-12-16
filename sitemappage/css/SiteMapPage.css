@@ -1,6 +1,11 @@
 
- /**
+/**
  * @author Nicolaas [at] sunnysideup.co.nz
  *
  *
  */
+ul#SiteMap{}
+a.siteMapPageExpander{background-image: url(../images/plusMinus.gif); background-repeat: no-repeat; width: 16px; height: 16px;display: block; float: left; }
+a.SiteMapNodeExpanded{background-position: 0 0;}
+a.SiteMapNodeImploded{background-position: 0 16px;}
+

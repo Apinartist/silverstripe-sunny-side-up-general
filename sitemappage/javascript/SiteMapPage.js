@@ -36,12 +36,12 @@ var sitemappage = {
 				var id = jQuery(this).attr('rel');
 				var idSelector = sitemappage.idSelectorPrepend + id;
 				if(jQuery(this).hasClass(sitemappage.expandedClass) && jQuery(idSelector).length > 0) {
-					jQuery(idSelector).hide(sitemappage.speed);
+					jQuery(idSelector).slideDown(sitemappage.speed);
 					jQuery(this).removeClass(sitemappage.expandedClass);
 					jQuery(this).addClass(sitemappage.implodedClass);
 				}
 				else {
-					jQuery(idSelector).show(sitemappage.speed);
+					jQuery(idSelector).slideUp(sitemappage.speed);
 					jQuery(this).removeClass(sitemappage.implodedClass);
 					jQuery(this).addClass(sitemappage.expandedClass);
 				}
