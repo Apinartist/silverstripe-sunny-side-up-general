@@ -1,9 +1,9 @@
 
- /**
- * @author Nicolaas [at] sunnysideup.co.nz
- *
- *
- */
+/**
+* @author Nicolaas [at] sunnysideup.co.nz
+*
+*
+*/
 
 
 ;(function($) {
@@ -30,7 +30,6 @@ var sitemappage = {
 	speed: 'slow',
 
 	init: function() {
-		alert("go")
 		jQuery(sitemappage.outerUlSelector + ' ul').hide();
 		jQuery(sitemappage.expanderASelector).click(
 			function() {

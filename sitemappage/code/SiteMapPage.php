@@ -1,18 +1,18 @@
 <?php
 
 
- /**
+/**
  * @author Nicolaas [at] sunnysideup.co.nz
  *
  *
- */
+ **/
 
 
 class SiteMapPage extends Page {
 
 	static $add_action = 'Site Map Page';
 
-	static $icon = 'mysite/images/treeicons/SiteMapPage';
+	static $icon = 'sitemappage/images/treeicons/SiteMapPage';
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
