@@ -17,6 +17,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"WeightMultiplier" => "Double",
 		"Percentage" => "Double",
 		"FixedCost" => "Currency",
+		"Sort" => "Int"
 	);
 
 	public static $many_many = array(
@@ -46,14 +47,15 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	);
 
 	public static $defaults = array(
-		"Code" => "deliverycode",
-		"Code" => "Home Delivery",
+		"Code" => "homedelivery",
+		"Name" => "Home Delivery",
 		"MinimumDeliveryCharge" => 10,
-		"MaximumDeliveryCharge" => 9999999,
-		"MinimumOrderAmountForZeroRate" => 9999999,
+		"MaximumDeliveryCharge" => 100,
+		"MinimumOrderAmountForZeroRate" => 50,
 		"WeightMultiplier" => 0,
 		"Percentage" => 0,
-		"FixedCost" => 10
+		"FixedCost" => 10,
+		"Sort" => 100
 	);
 
 	public static $summary_fields = array(
@@ -65,6 +67,8 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	public static $singular_name = "Delivery / Pick-up Option";
 
 	public static $plural_name = "Delivery / Pick-up Options";
+
+	public static $default_sort = "IsDefault DESC, Sort ASC, Name ASC";
 
 	static function default_object() {
 		if($obj = DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = "`IsDefault` = 1")) {
@@ -96,19 +100,26 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
+		if(class_exists("DataObjectSorterController")) {
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '
+			<a href="dataobjectsorter/PickUpOrDeliveryModifierOptions/"  onclick="window.open(\'dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'\', \'sortlistOption'.$this->ParentID.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">>click here to sort list</a>'));
+		}
 		return $fields;
 	}
 
 	private function createManyManyComplexTableField() {
 		$title = '';
 		if(class_exists("MultiSelectField")) {
-			$array = DataObject::get("PickUpOrDeliveryModifierOptionsCountry")->toDropdownMap('ID','Title');
-			//$name, $title = "", $source = array(), $value = "", $form = null
-			$field = new MultiSelectField(
-				'AvailableInCountries',
-				'This option is available in...',
-				$array
-			);
+			$dos = DataObject::get("PickUpOrDeliveryModifierOptionsCountry");
+			if($dos) {
+				$array = $dos->toDropdownMap('ID','Title');
+				//$name, $title = "", $source = array(), $value = "", $form = null
+				$field = new MultiSelectField(
+					'AvailableInCountries',
+					'This option is available in...',
+					$array
+				);
+			}
 		}
 		else {
 			// $controller,  $name,  $sourceClass, [ $fieldList = null], [ $detailFormFields = null], [ $sourceFilter = ""], [ $sourceSort = ""], [ $sourceJoin = ""]
