@@ -101,8 +101,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
 		if(class_exists("DataObjectSorterController")) {
-			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '
-			<a href="dataobjectsorter/PickUpOrDeliveryModifierOptions/"  onclick="window.open(\'dataobjectsorter/PickUpOrDeliveryModifierOptions/\', \'sortlistOption'.$this->ID.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">click here to sort list</a>'));
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", $this->dataObjectSorterPopupLink()));
 		}
 		return $fields;
 	}
