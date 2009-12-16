@@ -11,6 +11,6 @@ class TemplateOverviewDescriptionModelAdmin extends ModelAdmin {
 
 	public static $url_segment = 'templates';
 
-	public static $menu_title = 'Templates';
+	public static $menu_title = '';
 
 }
