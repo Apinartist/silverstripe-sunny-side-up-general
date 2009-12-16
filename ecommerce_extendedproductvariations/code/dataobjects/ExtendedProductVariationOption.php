@@ -70,7 +70,7 @@ class ExtendedProductVariationOption extends DataObject {
 		$fields = parent::getCMSFields();
 		if(class_exists("DataObjectSorterController")) {
 			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", '
-			<a href="dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'"  onclick="window.open(\'dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'\', \'sortlistOption'.$this->ParentID.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">>click here to sort list</a>'));
+			<a href="dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'"  onclick="window.open(\'dataobjectsorter/ExtendedProductVariationOption/'.$this->ParentID.'\', \'sortlistOption'.$this->ParentID.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">click here to sort list</a>'));
 		}
 		return $fields;
 	}
