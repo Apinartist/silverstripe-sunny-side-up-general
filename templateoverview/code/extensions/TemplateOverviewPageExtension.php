@@ -14,7 +14,7 @@ class TemplateOverviewPageExtension extends Extension {
 	}
 
 	public function IncludeTemplateOverviewDevelopmentFooter() {
-		if(Director::isDev()) {
+		if(Director::isDev() && Member::isAdmin()) {
 			Requirements::javascript("templateoverview/javascript/TemplateOverviewExtension.js");
 			return true;
 		}

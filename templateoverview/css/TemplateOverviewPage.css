@@ -3,6 +3,7 @@
 		#classList li img {float: none;}
 		#classList li span {display: block;}
 			#classList li span.thumb {float: left; margin-right: 10px}
+				#classList li span.thumb img {border: 1px solid #000;}
 
 .typo-heading {font-weight: bold; font-size: 1.3em; text-decoration: underline;}
 .typo-example {}
