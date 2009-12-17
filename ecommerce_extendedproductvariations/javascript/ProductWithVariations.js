@@ -186,6 +186,9 @@ ProductWithVariations = {
 				else {
 					var priceText = ProductWithVariations.PriceArray[match]
 				}
+				if(!priceText) {
+					priceText = ProductWithVariations.PriceArray[0];
+				}
 				if(situationType == "added") {
 					priceText += ProductWithVariations.InCartPriceAddition;
 				}
