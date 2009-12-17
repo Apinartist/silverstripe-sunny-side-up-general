@@ -44,6 +44,7 @@ var sitemappage = {
 					jQuery(idSelector).slideUp(sitemappage.speed);
 					jQuery(this).text("+").addClass(sitemappage.implodedClass).removeClass(sitemappage.expandedClass);
 				}
+				return false;
 			}
 		);
 	}

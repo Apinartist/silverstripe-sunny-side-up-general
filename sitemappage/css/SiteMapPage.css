@@ -7,7 +7,7 @@
 ul#SiteMap{}
 	ul#SiteMap li {list-style: none; }
 		ul#SiteMap li.SiteMapLevel1 {margin-top: 2em;}
-			ul#SiteMap li.Level1 a.SiteMapLevel1 { border-bottom: 1px solid #ccc;}
+			ul#SiteMap li a.SiteMapLevel1 { border-bottom: 1px solid #ccc;}
 a.siteMapPageExpander{background-image: url(../images/plusMinus.png); background-repeat: no-repeat; width: 16px; height: 16px;display: block; float: left; text-indent: -2000px; margin-left: -19px; }
 	a.siteMapPageExpander:hover{text-decoration: none; }
 	a.SiteMapNodeExpanded{background-position: 0 -16px;}
