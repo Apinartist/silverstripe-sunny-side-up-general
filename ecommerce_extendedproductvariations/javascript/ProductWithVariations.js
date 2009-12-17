@@ -187,10 +187,10 @@ ProductWithVariations = {
 					var priceText = ProductWithVariations.PriceArray[match]
 				}
 				//start hack for unexpected behaviour
-				if(!priceText || priceText==undefined) {
+				if(priceText==undefined) {
 					priceText = ProductWithVariations.PriceArray[0];
 				}
-				if(!priceText || priceText==undefined) {
+				if(priceText==undefined) {
 					priceText = "";
 				}
 				//end hack for unexpected behaviour
