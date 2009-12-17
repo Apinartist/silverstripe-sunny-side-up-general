@@ -74,16 +74,18 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 						$child->setRightTitle('<a href="'.self::$postal_code_url.'" id="OrderFormWithoutShippingAddressPostalCodeLink">'.self::$postal_code_label.'</a>');
 						$child->setTitle('Postal Code');
 						break;
+					case "Country":
+						if(self::$fixed_country_code) {
+							$child->setValue(self::$fixed_country_code);
+						}
+						break;
 					default:
 						break;
 				}
 			}
 		}
 
-		if(self::$fixed_country_code) {
-			$this->resetField("Country", self::$fixed_country_code);
-			Requirements::customScript('jQuery(document).ready(function() {jQuery(".ajaxCountryField").val("'.self::$fixed_country_code.'")});');
-		}
+
 
 		$this->fields->addFieldToTab("", new TextareaField('CustomerOrderNote', 'Note / Question', 7, 30, null, $this));
 
