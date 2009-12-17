@@ -38,13 +38,11 @@ var sitemappage = {
 				var idSelector = sitemappage.idSelectorPrepend + id;
 				if(jQuery(this).hasClass(sitemappage.implodedClass) && jQuery(idSelector).length > 0) {
 					jQuery(idSelector).slideDown(sitemappage.speed);
-					jQuery(this).addClass(sitemappage.expandedClass);
-					jQuery(this).removeClass(sitemappage.implodedClass);
+					jQuery(this).text("-").addClass(sitemappage.expandedClass).removeClass(sitemappage.implodedClass);
 				}
 				else {
 					jQuery(idSelector).slideUp(sitemappage.speed);
-					jQuery(this).addClass(sitemappage.implodedClass);
-					jQuery(this).removeClass(sitemappage.expandedClass);
+					jQuery(this).text("+").addClass(sitemappage.implodedClass).removeClass(sitemappage.expandedClass);
 				}
 			}
 		);
