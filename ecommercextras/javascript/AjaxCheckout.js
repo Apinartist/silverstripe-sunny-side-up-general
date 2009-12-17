@@ -2,7 +2,6 @@
 	$(document).ready(
 		function() {
 			AjaxCheckout.redoCartAjax();
-			AjaxCheckout.redoCountryQuery();
 		}
 	);
 })(jQuery);
