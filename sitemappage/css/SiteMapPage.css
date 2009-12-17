@@ -6,7 +6,7 @@
  */
 ul#SiteMap{}
 	ul#SiteMap li {list-style: none;}
-a.siteMapPageExpander{background-image: url(../images/plusMinus.png); background-repeat: no-repeat; width: 16px; height: 16px;display: block; float: left; text-indent: -2000px; }
-a.SiteMapNodeExpanded{background-position: 0 0;}
-a.SiteMapNodeImploded{background-position: 0 -16px;}
+a.siteMapPageExpander{background-image: url(../images/plusMinus.png); background-repeat: no-repeat; width: 16px; height: 16px;display: block; float: left; text-indent: -2000px; margin-left: -19px;}
+a.SiteMapNodeExpanded{background-position: 0 -16px;}
+a.SiteMapNodeImploded{background-position: 0 0;}
 
