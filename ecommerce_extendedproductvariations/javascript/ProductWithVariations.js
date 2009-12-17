@@ -147,6 +147,9 @@ ProductWithVariations = {
 			//resetForm:   true
 		};
     jQuery(ProductWithVariations.formSelector).ajaxForm(options);
+		if(ProductWithVariations.onlyOneOption()) {
+			ProductWithVariations.PriceArray[0] =jQuery(ProductWithVariations.priceSelector).text();
+		}
 	},
 
 	showRequest: function (formData, jqForm, options) {
