@@ -31,19 +31,20 @@ var sitemappage = {
 
 	init: function() {
 		jQuery(sitemappage.outerUlSelector + ' ul').hide();
+		jQuery(sitemappage.expanderASelector).addClass(sitemappage.implodedClass);
 		jQuery(sitemappage.expanderASelector).click(
 			function() {
 				var id = jQuery(this).attr('rel');
 				var idSelector = sitemappage.idSelectorPrepend + id;
-				if(jQuery(this).hasClass(sitemappage.expandedClass) && jQuery(idSelector).length > 0) {
+				if(jQuery(this).hasClass(sitemappage.implodedClass) && jQuery(idSelector).length > 0) {
 					jQuery(idSelector).slideDown(sitemappage.speed);
-					jQuery(this).removeClass(sitemappage.expandedClass);
-					jQuery(this).addClass(sitemappage.implodedClass);
+					jQuery(this).addClass(sitemappage.expandedClass);
+					jQuery(this).removeClass(sitemappage.implodedClass);
 				}
 				else {
 					jQuery(idSelector).slideUp(sitemappage.speed);
-					jQuery(this).removeClass(sitemappage.implodedClass);
-					jQuery(this).addClass(sitemappage.expandedClass);
+					jQuery(this).addClass(sitemappage.implodedClass);
+					jQuery(this).removeClass(sitemappage.expandedClass);
 				}
 			}
 		);
