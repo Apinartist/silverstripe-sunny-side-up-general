@@ -9,6 +9,8 @@
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START ecommercextra MODULE ----------------===================
 
+// *** REMINDERS FOR THINGS TO SET IN ECOMMERCE:
+//ShoppingCart::set_country("NZ");
 
 // *** EXTENSIONS
 //Object::add_extension('SiteTree', 'AjaxOrder');
