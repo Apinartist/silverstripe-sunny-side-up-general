@@ -87,13 +87,15 @@ var	PickUpOrDeliveryModifier = {
 			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").hide();
 		}
 		else {
-			if(jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").length < 1) {
-				jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).prepend('<option class="nothingSelected" value="-">'+PickUpOrDeliveryModifier.notSelectedText+'</option>');
+			if(acceptableOptions.length > 1) {
+				if(jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").length < 1) {
+					jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).prepend('<option class="nothingSelected" value="-">'+PickUpOrDeliveryModifier.notSelectedText+'</option>');
+				}
+				else {
+					jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").show();
+				}
+				jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val("-");
 			}
-			else {
-				jQuery(PickUpOrDeliveryModifier.countryDropdownSelector + " option.nothingSelected").show();
-			}
-			jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).val("-");
 		}
 		jQuery(PickUpOrDeliveryModifier.countryDropdownSelector).change();
 	}
