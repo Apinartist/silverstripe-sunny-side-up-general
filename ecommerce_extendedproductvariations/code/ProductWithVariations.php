@@ -311,7 +311,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 			if($this->IsInCart()) {
 				$buttonTitle = "Add Again";
 				Requirements::customScript(
-					"ProductWithVariations.AddProduct(-1); ProductWithVariations.PriceArray[0] = '".$fancyPrice."';",
+					"ProductWithVariations.AddProduct(-1); ProductWithVariations.PriceArray[0] = '".$fancyPrice."'; jQuery(document).ready(function() {ProductWithVariations.PriceArray[0] = '".$fancyPrice."})",
 					"ProductWithVariationsArray-1"
 				);
 			}

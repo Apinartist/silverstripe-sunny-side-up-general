@@ -186,14 +186,14 @@ ProductWithVariations = {
 				else {
 					var priceText = ProductWithVariations.PriceArray[match]
 				}
-				//start hack for unexpected behaviour//
+				//start hack for unexpected behaviour
 				if(!priceText || priceText==undefined) {
 					priceText = ProductWithVariations.PriceArray[0];
 				}
 				if(!priceText || priceText==undefined) {
 					priceText = "";
 				}
-				//end hack for unexpected behaviour//
+				//end hack for unexpected behaviour
 				if(situationType == "added") {
 					priceText += ProductWithVariations.InCartPriceAddition;
 				}
