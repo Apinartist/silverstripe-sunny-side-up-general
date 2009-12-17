@@ -8,11 +8,24 @@ require_once("conf/ConfigureFromEnv.php");
 
 
 
-/* sapphire */
+//===================---------------- START sapphire MODULE ----------------===================
 SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
+Member::set_password_validator("NZGovtPasswordValidator");
+//===================---------------- END sapphire MODULE ----------------===================
+
+
+//===================---------------- START cms MODULE ----------------===================
+LeftAndMain::setApplicationName("Sunny Side Up Test Website");
+LeftAndMain::set_loading_image("themes/main/images/logo.gif");
+ModelAdmin::set_page_length(100);
+CMSMenu::remove_menu_item("CommentAdmin");
+CMSMenu::remove_menu_item("ReportAdmin");
+LeftAndMain::setLogo("")
+//===================---------------- ENBD cms MODULE  ----------------===================
+
 
 //===================---------------- start testemail ----------------===================
 $protocolAndHost = Director::protocolAndHost();
@@ -23,13 +36,6 @@ if(in_array($protocolAndHost, $devsitearray)) {
 unset($devsitearray);
 unset($protocolAndHost);
 //===================---------------- end testemail ----------------===================
-
-/* CMS */
-LeftAndMain::setApplicationName("Sunny Side Up Test Website");
-LeftAndMain::set_loading_image("themes/main/images/logo.gif");
-ModelAdmin::set_page_length(100);
-CMSMenu::remove_menu_item("CommentAdmin");
-CMSMenu::remove_menu_item("ReportAdmin");
 
 //===================---------------- START blog MODULE ----------------===================
 BlogEntry::allow_wysiwyg_editing();
