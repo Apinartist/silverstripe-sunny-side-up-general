@@ -249,6 +249,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 
 	function addVariation($data, $form) {
 		$msg = '';
+		$update = "Item could not be added, please try again.";
 		if(isset($data["CurrentVariation"])) {
 			if($data["CurrentVariation"] == -1) {
 				$orderItem = new Product_OrderItem($this->dataRecord);
@@ -273,6 +274,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 		}
 		if($checkoutPage = DataObject::get_one("CheckoutPage")) {
 			$msg .= '<a href="'.$checkoutPage->Link().'">'.$update.' View Order</a>';
+		}
+		else {
+			$msg .= $update;
 		}
 		if(!$this->isAjax()) {
 			Session::set("ProductVariationsFormMessage", $msg);
