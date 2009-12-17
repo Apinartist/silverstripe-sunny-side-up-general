@@ -2,24 +2,24 @@
 <% control Menu(1) %>
 	<li class="$FirstLast Level1">
 		<% if SiteMapPages %><a href="#" class="siteMapPageExpander SiteMapNodeImploded" rel="$ID">+</a> <% end_if %>
-		<a href="$Link">$Title</a>
+		<a href="$Link" class="pageTitle">$Title</a>
 		<% if SiteMapPages %>
 		<ul id="sublist{$ID}"><% control SiteMapPages %>
 			<li class="$FirstLast SiteMapLevel2">
 				<% if SiteMapPages %><a href="#" class="siteMapPageExpander SiteMapNodeImploded" rel="$ID">+</a> <% end_if %>
-				<a href="$Link">$Title</a>
+				<a href="$Link" class="pageTitle">$Title</a>
 				<% if SiteMapPages %>
 				<ul id="sublist{$ID}"><% control SiteMapPages %>
 					<li class="$FirstLast SiteMapLevel3">
 						<% if SiteMapPages %><a href="#" class="siteMapPageExpander SiteMapNodeImploded" rel="$ID">+</a> <% end_if %>
-						<a href="$Link">$Title</a>
+						<a href="$Link" class="pageTitle">$Title</a>
 						<% if SiteMapPages %>
 						<ul id="sublist{$ID}"><% control SiteMapPages %>
 							<li class="$FirstLast SiteMapLevel4">
 								<% if SiteMapPages %><a href="#" class="siteMapPageExpander SiteMapNodeImploded" rel="$ID">+</a> <% end_if %>
-								<a href="$Link">$Title</a>
+								<a href="$Link" class="pageTitle">$Title</a>
 								<% if SiteMapPages %><% control SiteMapPages %>
-								<ul><li class="$FirstLast SiteMapLevel5"><a href="$Link">$Title</a></li></ul>
+								<ul><li class="$FirstLast SiteMapLevel5"><a href="$Link" class="pageTitle">$Title</a></li></ul>
 								<% end_control %><% end_if %>
 							</li><% end_control %>
 						</ul><% end_if %>
