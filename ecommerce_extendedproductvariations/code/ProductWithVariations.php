@@ -296,14 +296,13 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					if($this->optionArray[$group->ID]) {
-						if($this->optionArray[$group->ID]->count()) {
-							$selectFields->push(new DropdownField(
-								"ExtendedProductVariationGroup[".$group->ID."]",
-								$group->DisplayName,
-								$this->optionArray[$group->ID]->toDropDownMap("ID", "Name")
-							));
-						}
+					if(count($this->optionArray[$option->ParentID])) {
+						$idList = implode(",",$this->optionArray[$option->ParentID]);
+					}
+					$options = DataObject::get("ExtendedProductVariationOption", "`ID` IN ( ".$idList.")");
+					//what options are actually available:
+					if($options) {
+						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $options->toDropDownMap("ID", "Name")));
 					}
 				}
 			}
@@ -344,37 +343,18 @@ class ProductWithVariations_Controller extends Product_Controller {
 		$js = '';
 		if($variations) {
 			foreach($variations as $number => $variation) {
-				$variationIdArray[$variation->ID] = $variation->ID;
+				$options = $variation->ExtendedProductVariationOptions();
+				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
+				foreach($options as $option) {
+					$this->optionArray[$option->ParentID][$option->ID] = [$option->ID];
+					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
+				}
 				$fancyPrice = Payment::site_currency().$variation->dbObject("Price")->Nice();
 				if($variation->IsInCart()) {
 					Requirements::customScript("ProductWithVariations.AddProduct(".$variation->ID.");", "ProductWithVariationsArray".$variation->ID);
 				}
 				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$fancyPrice."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
-			}
-			//line below can not be used as it does not sort correctly
-			//$options = $variation->ExtendedProductVariationOptions();
-			if(count($variationIdArray)) {
-				$idString = implode(",", $variationIdArray);
-				$options = DataObject::get(
-					$from = "ExtendedProductVariationOption",
-					$where = "`ExtendedProductVariationOption_ExtendedProductVariations`.`ExtendedProductVariationID` IN (".$idString.")",
-					$sortBy = "`ExtendedProductVariationOption`.`ParentID` ASC,`ExtendedProductVariationOption`.`Sort` ASC,`ExtendedProductVariationOption`.`AlternativeSortNumber` ASC, `ExtendedProductVariationOption`.`Name` ASC",
-					$join = "INNER JOIN `xExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
-				);
-				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
-				$optionExistsArray = array();
-				foreach($options as $option) {
-
-					if(!isset($this->optionArray[$option->ParentID])) {
-						$this->optionArray[$option->ParentID] = new DataObjectSet();
-					}
-					if(!isset($optionExistsArray[$option->ParentID][$option->ID])) {
-						$this->optionArray[$option->ParentID]->push($option);
-						$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
-						$optionExistsArray[$option->ParentID][$option->ID] = $option->ID;
-					}
-				}
 			}
 		}
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
