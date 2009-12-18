@@ -296,8 +296,8 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					if(count($this->optionArray[$option->ParentID])) {
-						$idList = implode(",",$this->optionArray[$option->ParentID]);
+					if(count($this->optionArray[$group->ID])) {
+						$idList = implode(",",$this->optionArray[$group->ID]);
 					}
 					$options = DataObject::get("ExtendedProductVariationOption", "`ID` IN ( ".$idList.")");
 					//what options are actually available:
