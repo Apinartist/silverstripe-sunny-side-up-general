@@ -347,7 +347,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$from = "ExtendedProductVariationOption",
 					$where = "`ExtendedProductVariationOption_ExtendedProductVariation`.`ExtendedProductVariationID` = ".$variation->ID,
 					$sortBy = "`ExtendedProductVariationOption`.`Sort` ASC, `ExtendedProductVariationOption`.`Name` ASC",
-					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariation` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
+					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
 				foreach($options as $option) {
