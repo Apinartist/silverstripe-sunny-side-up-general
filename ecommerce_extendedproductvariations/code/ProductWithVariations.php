@@ -296,7 +296,8 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID. " AND Name = '8'", "Sort ASC, Name ASC");
+					//just checking if they exist at all ...
+					$testOption = DataObject::get_one("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
 					//what options are actually available:
 					if($options) {
 						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $this->optionArray[$group->ID]));
@@ -340,7 +341,14 @@ class ProductWithVariations_Controller extends Product_Controller {
 		$js = '';
 		if($variations) {
 			foreach($variations as $number => $variation) {
-				$options = $variation->ExtendedProductVariationOptions();
+				//line below can not be used as it does not sort correctly
+				//$options = $variation->ExtendedProductVariationOptions();
+				$options = DataObject::get(
+					$from = "ExtendedProductVariationOption",
+					$where = "`ExtendedProductVariationOption`.`ParentID` = ".$group->ID.' AND `ExtendedProductVariationOption_ExtendedProductVariation`.`ExtendedProductVariationID` = '.$variation->ID,
+					$sortBy = "`ExtendedProductVariationOption`.`ParentID` ASC, `ExtendedProductVariationOption`.`Sort` ASC, `ExtendedProductVariationOption`.`Name` ASC",
+					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariation` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
+				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
 				foreach($options as $option) {
 					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
