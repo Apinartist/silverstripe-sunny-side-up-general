@@ -302,7 +302,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 								"ExtendedProductVariationGroup[".$group->ID."]",
 								$group->DisplayName,
 								$this->optionArray[$group->ID]->toDropDownMap("ID", "Name")
-							);
+							));
 						}
 					}
 				}
