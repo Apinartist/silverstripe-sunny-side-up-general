@@ -11,6 +11,7 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $db = array(
 		"Description" => "Text",
+		"ToDoListHyperLink" => "Varchar(255)",
 		"ClassNameLink" => "Varchar(255)"
 	);
 
@@ -21,12 +22,18 @@ class TemplateOverviewDescription extends DataObject {
 		"Image3" => "Image"
 	);
 
-	public static $searchable_fields = array("ClassNameLink" => "PartialMatchFilter");
+	public static $searchable_fields = array(
+		"ClassNameLink" => "PartialMatchFilter"
+	);
 
-	public static $summary_fields = array("ClassNameLink");
+	public static $summary_fields = array(
+		"ClassNameLink",
+		"ToDoListHyperLink"
+	);
 
 	public static $field_labels = array(
-		"ClassNameLink" => "Page Type Name"
+		"ClassNameLink" => "Page Type Name",
+		"ToDoListHyperLink" => "Link to ToDo List",
 	);
 
 	static $singular_name = 'Template Description';
