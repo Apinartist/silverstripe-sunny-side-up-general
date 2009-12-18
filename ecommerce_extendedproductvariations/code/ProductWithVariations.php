@@ -353,10 +353,10 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
-				if(!isset($this->optionArray[$option->ParentID])) {
-					$this->optionArray[$option->ParentID] = new DataObjectSet();
-				}
 				foreach($options as $option) {
+					if(!isset($this->optionArray[$option->ParentID])) {
+						$this->optionArray[$option->ParentID] = new DataObjectSet();
+					}
 					$this->optionArray[$option->ParentID]->push($option);
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
