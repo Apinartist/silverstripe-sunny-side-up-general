@@ -345,7 +345,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				//$options = $variation->ExtendedProductVariationOptions();
 				$options = DataObject::get(
 					$from = "ExtendedProductVariationOption",
-					$where = "`ExtendedProductVariationOption_ExtendedProductVariation`.`ExtendedProductVariationID` = ".$variation->ID,
+					$where = "`ExtendedProductVariationOption_ExtendedProductVariations`.`ExtendedProductVariationID` = ".$variation->ID,
 					$sortBy = "`ExtendedProductVariationOption`.`Sort` ASC, `ExtendedProductVariationOption`.`Name` ASC",
 					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
