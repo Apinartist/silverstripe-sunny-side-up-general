@@ -82,10 +82,22 @@ class ExtendedProductVariationGroup extends DataObject {
 		}
 		if(class_exists("DataObjectSorterController")) {
 			$child = DataObject::get_one("ExtendedProductVariationOption", "ParentID = ".$this->ID);
-			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort",$this->dataObjectSorterPopupLink()));
-			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", $child->dataObjectSorterPopupLink($this->ID)));
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort",$this->dataObjectSorterPopupLink("", 0, "option groups")));
+			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", $child->dataObjectSorterPopupLink($this->ID, 0, $this->Name)));
 		}
 		return $fields;
+	}
+
+	function getTitle() {
+		return $this->Name;
+	}
+
+	function setTitle($v) {
+		return $this->Name = $v;
+	}
+
+	function Title() {
+		return $this->Name;
 	}
 
   function addProductGroups($productGroups) {
