@@ -296,7 +296,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
+					$options = DataObject::get("ExtendedProductVariationOption", "`ParentID` = ".$group->ID, "Sort ASC, Name ASC");
 					//what options are actually available:
 					if($options) {
 						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $this->optionArray[$group->ID]));
