@@ -363,13 +363,17 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$join = "INNER JOIN `xExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
+				$optionExistsArray = array();
 				foreach($options as $option) {
-					debug::show($option->Name.'-'.$option->ParentID.'-'.$option->Sort.'-'.$option->AlternativeSortNumber);
+
 					if(!isset($this->optionArray[$option->ParentID])) {
 						$this->optionArray[$option->ParentID] = new DataObjectSet();
 					}
-					$this->optionArray[$option->ParentID]->push($option);
-					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
+					if(!isset($optionExistsArray[$option->ParentID][$option->ID])) {
+						$this->optionArray[$option->ParentID]->push($option);
+						$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
+						$optionExistsArray[$option->ParentID][$option->ID] = $option->ID;
+					}
 				}
 			}
 		}
