@@ -33,6 +33,7 @@
 
 // *** PICK UP OR DELIVERY
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
+//PickUpOrDeliveryModifier::set_form_header("Delivery Option (REQUIRED)");
 
 // *** RECOMMENDED PROCUCTS
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");

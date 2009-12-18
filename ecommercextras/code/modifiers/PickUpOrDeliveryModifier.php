@@ -29,6 +29,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	protected static $calculations_done = false;
 
+	protected static = $form_header = 'Pick-up / Deliver';
+		function set_form_header($v) {self::$form_header = $v;}
+
 //--------------------------------------------------------------------*** static functions
 
 
@@ -62,7 +65,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		$defaultValue = self::get_option();
 		$fields = new FieldSet();
 		$options = self::getOptionListForDropDown();
-		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', 'Pick-up / Deliver'));
+		$fields->push(new HeaderField('PickupOrDeliveryTypeHeader', self::$form_header));
 
 		$fields->push(new DropdownField('PickupOrDeliveryType','Preference',$options, $defaultValue));
 		$validator = null;
