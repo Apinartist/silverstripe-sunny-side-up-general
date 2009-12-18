@@ -344,29 +344,33 @@ class ProductWithVariations_Controller extends Product_Controller {
 		$js = '';
 		if($variations) {
 			foreach($variations as $number => $variation) {
-				//line below can not be used as it does not sort correctly
-				//$options = $variation->ExtendedProductVariationOptions();
-				$options = DataObject::get(
-					$from = "ExtendedProductVariationOption",
-					$where = "`ExtendedProductVariationOption_ExtendedProductVariations`.`ExtendedProductVariationID` = ".$variation->ID,
-					$sortBy = "`ExtendedProductVariationOption`.`Sort` ASC,`ExtendedProductVariationOption`.`AlternativeSortNumber` ASC, `ExtendedProductVariationOption`.`Name` ASC",
-					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
-				);
-				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
-				foreach($options as $option) {
-					debug::show($option->Name.'-'.$option->Sort.'-'.$option->AlternativeSortNumber);
-					if(!isset($this->optionArray[$option->ParentID])) {
-						$this->optionArray[$option->ParentID] = new DataObjectSet();
-					}
-					$this->optionArray[$option->ParentID]->push($option);
-					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
-				}
+				$variationIdArray[$variation->ID] = $variation->ID;
 				$fancyPrice = Payment::site_currency().$variation->dbObject("Price")->Nice();
 				if($variation->IsInCart()) {
 					Requirements::customScript("ProductWithVariations.AddProduct(".$variation->ID.");", "ProductWithVariationsArray".$variation->ID);
 				}
 				$js .= " ProductWithVariations.PriceArray[".$number."] = '".$fancyPrice."';\r\n";
 				$js .= " ProductWithVariations.IDArray[".$number."] = ".$variation->ID.";\r\n";
+			}
+			//line below can not be used as it does not sort correctly
+			//$options = $variation->ExtendedProductVariationOptions();
+			if(count($variationIdArray)) {
+				$idString = implode(",", $variationIdArray);
+				$options = DataObject::get(
+					$from = "ExtendedProductVariationOption",
+					$where = "`ExtendedProductVariationOption_ExtendedProductVariations`.`ExtendedProductVariationID` IN (".$idString.")",
+					$sortBy = "`ExtendedProductVariationOption`.`ParentID` ASC,`ExtendedProductVariationOption`.`Sort` ASC,`ExtendedProductVariationOption`.`AlternativeSortNumber` ASC, `ExtendedProductVariationOption`.`Name` ASC",
+					$join = "INNER JOIN `xExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
+				);
+				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
+				foreach($options as $option) {
+					debug::show($option->Name.'-'.$option->ParentID.'-'.$option->Sort.'-'.$option->AlternativeSortNumber);
+					if(!isset($this->optionArray[$option->ParentID])) {
+						$this->optionArray[$option->ParentID] = new DataObjectSet();
+					}
+					$this->optionArray[$option->ParentID]->push($option);
+					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
+				}
 			}
 		}
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
