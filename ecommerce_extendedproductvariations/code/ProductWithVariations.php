@@ -346,7 +346,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$options = $variation->ExtendedProductVariationOptions();
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
 				foreach($options as $option) {
-					$this->optionArray[$option->ParentID][$option->ID] = [$option->ID];
+					$this->optionArray[$option->ParentID][$option->ID] = $option->ID;
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
 				$fancyPrice = Payment::site_currency().$variation->dbObject("Price")->Nice();
