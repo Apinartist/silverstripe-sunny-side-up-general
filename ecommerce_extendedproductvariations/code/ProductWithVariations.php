@@ -296,10 +296,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					//just checking if they exist at all ...
-					$testOption = DataObject::get_one("ExtendedProductVariationOption", "`ParentID` = ".$group->ID);
-					//what options are actually available:
-					if($options) {
+					if(count($this->optionArray[$group->ID])) {
 						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $this->optionArray[$group->ID]));
 					}
 				}
