@@ -29,8 +29,8 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	protected static $calculations_done = false;
 
-	protected static = $form_header = 'Pick-up / Deliver';
-		function set_form_header($v) {self::$form_header = $v;}
+	protected static $form_header = 'Pick-up / Deliver';
+		static function set_form_header($v) {self::$form_header = $v;}
 
 //--------------------------------------------------------------------*** static functions
 
