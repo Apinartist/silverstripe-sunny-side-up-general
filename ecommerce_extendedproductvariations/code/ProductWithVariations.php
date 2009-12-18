@@ -296,8 +296,14 @@ class ProductWithVariations_Controller extends Product_Controller {
 			$groups = $this->ExtendedProductVariationGroups();
 			if($groups) {
 				foreach($groups as $group) {
-					if(count($this->optionArray[$group->ID])) {
-						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $this->optionArray[$group->ID]));
+					if($this->optionArray[$group->ID]) {
+						if($this->optionArray[$group->ID]->count()) {
+							$selectFields->push(new DropdownField(
+								"ExtendedProductVariationGroup[".$group->ID."]",
+								$group->DisplayName,
+								$this->optionArray[$group->ID]->toDropDownMap("ID", "Name")
+							);
+						}
 					}
 				}
 			}
@@ -347,8 +353,11 @@ class ProductWithVariations_Controller extends Product_Controller {
 					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
+				if(!isset($this->optionArray[$option->ParentID])) {
+					$this->optionArray[$option->ParentID] = new DataObjectSet();
+				}
 				foreach($options as $option) {
-					$this->optionArray[$option->ParentID][$option->ID] = $option->Name;
+					$this->optionArray[$option->ParentID]->push($option);
 					$js .= " ProductWithVariations.ItemArray[$number][".$option->ParentID."] = ".$option->ID.";\r\n";
 				}
 				$fancyPrice = Payment::site_currency().$variation->dbObject("Price")->Nice();
