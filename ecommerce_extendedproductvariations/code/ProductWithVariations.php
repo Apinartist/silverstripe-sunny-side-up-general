@@ -349,7 +349,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$options = DataObject::get(
 					$from = "ExtendedProductVariationOption",
 					$where = "`ExtendedProductVariationOption_ExtendedProductVariations`.`ExtendedProductVariationID` = ".$variation->ID,
-					$sortBy = "`ExtendedProductVariationOption`.`Sort` ASC, `ExtendedProductVariationOption`.`Name` ASC",
+					$sortBy = "`ExtendedProductVariationOption`.`AlternativeSort` ASC, `ExtendedProductVariationOption`.`Name` ASC",
 					$join = "INNER JOIN `ExtendedProductVariationOption_ExtendedProductVariations` ON `ExtendedProductVariationOptionID` = `ExtendedProductVariationOption`.`ID`"
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
