@@ -354,7 +354,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				);
 				$js .= "ProductWithVariations.ItemArray[$number] = new Array();\r\n";
 				foreach($options as $option) {
-					debug::show($option->Name.'-'.$option->Sort'-'.$option->AlternativeSortNumber);
+					debug::show($option->Name.'-'.$option->Sort.'-'.$option->AlternativeSortNumber);
 					if(!isset($this->optionArray[$option->ParentID])) {
 						$this->optionArray[$option->ParentID] = new DataObjectSet();
 					}
