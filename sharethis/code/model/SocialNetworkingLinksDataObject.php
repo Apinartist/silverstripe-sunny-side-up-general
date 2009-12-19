@@ -13,7 +13,6 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $db = array(
 		'URL' => 'Varchar(255)',
 		'Title' => 'Varchar(255)'
-
 	);
 
 	public static $has_one = array(
@@ -33,8 +32,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $searchable_fields = array();
 
 	public static $field_labels = array(
-		"URL" => "location (e.g. http://twitter.com/myname/)"
-		"Title" => "Title"
+		"URL" => "location (e.g. http://twitter.com/myname/)",
+		"Title" => "Title",
 		"Icon" => "Icon (preferably something like 32pixels by 32pixels)"
 	);
 

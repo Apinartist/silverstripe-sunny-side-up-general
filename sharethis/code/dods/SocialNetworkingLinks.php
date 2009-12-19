@@ -97,8 +97,10 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 		return false;
 	}
 
-	public function Icons(){
-		return DataObject::get("SocialNetworkingLinksDataObject");
+	public function SocialNetworkingLinksDataObjects(){
+		if($this->ThisPageHasSocialNetworkingLinks()) {
+			return DataObject::get("SocialNetworkingLinksDataObject");
+		}
 	}
 
 }
