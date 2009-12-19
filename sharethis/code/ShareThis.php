@@ -12,12 +12,13 @@
 	*/
 
 
-class ShareThis extends SiteTreeDecorator {
+class ShareThis extends DataObjectDecorator {
 
 
 	/**
 	* Boolean that determines whether icons are transparent or not.
 	* @var boolean
+	* DEPRECIATED!
 	*/
 	static $IconTransparent = false;//LEGACY
 
@@ -58,7 +59,7 @@ class ShareThis extends SiteTreeDecorator {
 
 	protected static $share_this_all_in_one = false;
 
-	static $always_include = true;
+	protected static $always_include = true;
 
 	function extraDBFields(){
 		if(self::$always_include) {
@@ -85,8 +86,9 @@ class ShareThis extends SiteTreeDecorator {
 		self::$always_include = $value;
 	}
 
-	var $pageURL = '';
-	var $pageTitle = '';
+	var $encodedPageURL = '';
+	var $nonEncodedPageURL = '';
+	var $encodedPageTitle = '';
 	var $pageIcon = '';
 
 	function updateCMSFields(FieldSet &$fields) {
@@ -124,10 +126,9 @@ class ShareThis extends SiteTreeDecorator {
 
 	public function Icons(){
 		$doSet = new DataObjectSet();
-		if($this->thisPageHasShareThis()){
+		if($this->ThisPageHasShareThis()){
 			Requirements::css("sharethis/css/ShareThis.css");
 			Requirements::javascript("sharethis/javascript/shareThis.js");
-			$format = self::$IconTransparent ? "_trans" : "";
 			$bookmarks = $this->bookmarks();
 			foreach(self::$EnabledIcons as $EnabledIcon){
 				if(isset($EnabledIcon["title"]) && isset($EnabledIcon["url"])) {
@@ -169,71 +170,139 @@ class ShareThis extends SiteTreeDecorator {
 <script type="text/javascript">
 SHARETHIS.addEntry(
 	{
-		title:"'.urldecode($this->pageTitle).'",
-		summary:"'.urldecode($this->pageTitle).'",
+		title:"'.urldecode($this->encodedPageTitle).'",
+		summary:"'.urldecode($this->encodedPageTitle).'",
 		url:"'.urldecode($this->pageIcon).'",
-		icon:"'.urldecode($this->pageURL).'"
+		icon:"'.urldecode($this->encodedPageURL).'"
 	},
 	{button:true}
 );
 </script>';
 	}
 
+	/*
+	 * returns array of bookmarks: array(array(name => array(url, title, click)))
+	 *
+	 */
+
 	private function bookmarks() {
 		$bookmarks = array();
 		if($this->owner) {
-			$this->pageURL = urlencode(Director::absoluteBaseURL().$this->owner->URLSegment);
-			$this->pageTitle = urlencode($this->owner->Title);
+			$this->nonEncodedPageURL = Director::absoluteBaseURL().$this->owner->URLSegment;
+			$this->encodedPageURL = urlencode($this->nonEncodedPageURL);
+			$this->encodedPageTitle = urlencode($this->owner->Title);
+			$this->encodedPageTitleSpaceEncoded = str_replace("+", "%20",urlencode($this->owner->Title));
+			if($this->owner->MetaDescription) {
+				$this->encodedDescription = urlencode($this->owner->MetaDescription);
+			}
+			else {
+				$this->encodedDescription = $this->encodedPageTitle;
+			}
+
 			$bookmarks = array(
 			"email" => array(
-				 "url" => "mailto:?body=".$this->pageURL."",
+				 "url" => "mailto:?".htmlentities("Subject=".$this->encodedPageTitle."&Body=".$this->encodedDescription."%0D%0A".$this->encodedPageURL),
 				 "title" => "Email"),
 			"print" => array(
 				 "url" => "#",
 				 "click" => "window.print(); return false;",
 				 "title" => "Print"),
-			"digg" => array(
-				 "url" => "http://digg.com/submit?".htmlentities("phase=2&url=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Digg this!"),
-			"reddit" => array(
-				 "url" => "http://reddit.com/submit?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Reddit!"),
-			"delicious" => array(
-				 "url" => "http://del.icio.us/post?".htmlentities("v=4&noui&jump=close&url=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Add to del.icio.us"),
-			"furl" => array(
-				 "url" => "http://www.furl.net/storeIt.jsp?".htmlentities("t=".$this->pageTitle."&u=".$this->pageURL.""),
-				 "title" => "Furl this!"),
-			"ma.gnolia" => array(
-				 "url" => "http://ma.gnolia.com/bookmarklet/add?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Add to ma.gnolia"),
-			"newsvine" => array(
-				 "url" => "http://www.newsvine.com/_tools/seed".htmlentities("&save?u=".$this->pageURL."&h=".$this->pageTitle.""),
-				 "title" => "Save to Newsvine!"),
-			"live" => array(
-				 "url" => "https://favorites.live.com/quickadd.aspx?".htmlentities("marklet=1&mkt=en-us&url=".$this->pageURL."&title=".$this->pageTitle."&top=1"),
-				 "title" => "Add to Windows Live"),
-			"myweb" => array(
-				 "url" =>  "http://myweb.yahoo.com/myresults/bookmarklet?".htmlentities("t=".$this->pageTitle."&u=".$this->pageURL."&ei=UTF"),
-				 "title" => "Add to Yahoo MyWeb"),
-			"google" => array(
-				 "url" =>  "http://www.google.com/bookmarks/mark?".htmlentities("op=edit&output=popup&bkmk=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Googlize this post!"),
-			"stumbleupon" => array(
-				 "url" => "http://www.stumbleupon.com/submit?".htmlentities("url=".$this->pageURL."&title=".$this->pageTitle.""),
-				 "title" => "Stumble It!"),
-			"simpy" => array(
-				 "url" => "http://simpy.com/simpy/LinkAdd.do?".htmlentities("title=".$this->pageTitle."&href=".$this->pageURL.""),
-				 "title" => "Add to Simpy"),
 			"favourites" => array(
 				 "url" => "#",
-				 "click" => "bookmark('".$this->pageURL."', '".$this->pageTitle."'); return false;",
+				 "click" => "bookmark('".$this->encodedPageURL."', '".$this->encodedPageTitle."'); return false;",
 				 "title" => "Add to favourites (Internet Explorer Only)"),
+			"ask" => array(
+				 "url" => "http://mystuff.ask.com/mysearch/BookmarkIt?".htmlentities("v=1.2&t=webpages&title=".$this->encodedPageTitle."&url=".$this->encodedPageURL."&abstext=".$this->encodedDescription),
+				 "title" => "Share on Ask"),
+			"bebo" => array(
+				 "url" => "http://www.bebo.com/c/share?".htmlentities("Url=".$this->encodedPageURL."&Title=".$this->encodedPageTitle),
+				 "title" => "Stumble It"),
+			"blinklist" => array(
+				 "url" => "http://blinklist.com/blink?".htmlentities("t=".$this->encodedPageTitle."&u=".$this->encodedPageURL."&d=".$this->encodedDescription),
+				 "title" => "Share on BlinkList"),
+			"blogmarks" => array(
+				 "url" => "http://blogmarks.net/my/new.php?".htmlentities("mini=1&simple=1&url=".$this->encodedPageTitle."&title=".$this->encodedPageURL),
+				 "title" => "BlogMark It"),
+			"delicious" => array(
+				 "url" => "http://delicious.com/save?".htmlentities("url=".$this->encodedPageURL."&title=".$this->encodedPageTitle),
+				 "title" => "Add to Delicious"),
+			"digg" => array(
+				 "url" => "http://digg.com/submit?".htmlentities("url=".$this->nonEncodedURL."&title=".$this->encodedPageTitle),
+				 "title" => "Digg this"),
+			"dzone" => array(
+				 "url" => "	 http://www.dzone.com/links/add.html?".htmlentities("url=".$this->nonEncodedURL."&title=".$this->encodedPageTitle),
+				 "title" => "Add to DZone"),
 			"facebook" => array(
-				 "url" => "http://www.facebook.com/share.php?".htmlentities("u=".$this->pageURL."&t=".$this->pageTitle.""),
+				 "url" => "http://www.facebook.com/sharer.php?".htmlentities("u=".$this->encodedPageURL."&t=".$this->encodedPageTitle),
 				 "title" => "Share on Facebook"),
+			"fark" => array(
+				 "url" => "	 http://cgi.fark.com/cgi/fark/submit.pl?".htmlentities("new_url=".$this->encodedPageURL),
+				 "title" => "Fark It"),
+			"friendfeed" => array(
+				 "url" => "	 http://friendfeed.com/share/bookmarklet/frame#".htmlentities("title={$title.spaceencoded}".$this->encodedPageTitle."&url=".$this->encodedPageURL),
+				 "title" => "Furl this"),
+			"furl" => array(
+				 "url" => "http://www.furl.net/storeIt.jsp?".htmlentities("t=".$this->encodedPageTitle."&u=".$this->encodedPageURL),
+				 "title" => "Furl this"),
+			"google" => array(
+				 "url" =>  "http://www.google.com/bookmarks/mark?".htmlentities("op=edit&output=popup&bkmk=".$this->encodedPageURL."&title=".$this->encodedPageTitle."&annotation=".$this->encodedDescription),
+				 "title" => "Googlize this post"),
+			"kaboodle" => array(
+				 "url" =>  "	 http://www.kaboodle.com/za/additem?".htmlentities("get=1&url=".$this->encodedPageURL."&title=".$this->encodedPageTitle);
+				 "title" => "Share on Kadooble"),
+			"linkedin" => array(
+				 "url" =>  "http://www.linkedin.com/shareArticle?".htmlentities("mini=true&url=".$this->encodedPageURL."&title=".$this->encodedPageTitle."&source=".$this->encodedPageTitle),
+				 "title" => "Share on LinkedIn"),
+			"live" => array(
+				 "url" => "https://favorites.live.com/quickadd.aspx?".htmlentities("url=".$this->encodedPageURL."&title=".$this->encodedPageTitleSpaceEncoded),
+				 "title" => "Add to Windows Live"),
+			"ma.gnolia" => array(
+				 "url" => "http://ma.gnolia.com/bookmarklet/add?".htmlentities("url=".$this->encodedPageURL."&title=".$this->encodedPageTitle),
+				 "title" => "Add to ma.gnolia"),
+			"misterwong" => array(
+				 "url" => "http://www.mister-wong.com/addurl/?".htmlentities("bm_url=".$this->encodedPageURL."&bm_description=".$this->encodedPageTitleSpaceEncoded),
+				 "title" => "Wong It"),
+			"myspace" => array(
+				 "url" => "http://www.myspace.com/Modules/PostTo/Pages/?".htmlentities("u=".$this->encodedPageURL.'&t='.$this->encodedPageTitle),
+				 "title" => "Share on MySpace"),
+			"netvouz" => array(
+				 "url" => "http://www.netvouz.com/action/submitBookmark?".htmlentities("url=".$this->encodedPageTitle.'&title='.$this->encodedPageTitle),
+				 "title" => "Add to NetVouz"),
+			"newsvine" => array(
+				 "url" => "http://www.newsvine.com/_tools/seed".htmlentities("&save?u=".$this->encodedPageURL."&h=".$this->encodedPageTitle),
+				 "title" => "Seed Newsvine"),
+			"reddit" => array(
+				 "url" => "http://reddit.com/submit?".htmlentities("url=".$this->encodedPageURL."&title=".$this->encodedPageTitle),
+				 "title" => "Reddit"),
+			"simpy" => array(
+				 "url" => "http://simpy.com/simpy/LinkAdd.do?".htmlentities("title=".$this->encodedPageTitle."&href=".$this->encodedPageURL),
+				 "title" => "Add to Simpy"),
+			"slashdot" => array(
+				 "url" => "http://slashdot.org/bookmark.pl?".htmlentities("title=".$this->encodedPageTitle."&url=".$this->encodedPageURL),
+				 "title" => "Slashdot It"),
+			"spurl" => array(
+				 "url" => "http://www.spurl.net/spurl.php?".htmlentities("title=".$this->encodedPageTitle."&url=".$this->encodedPageURL),
+				 "title" => "Spurl It"),
+			"squidoo" => array(
+				 "url" => "	 http://www.squidoo.com/lensmaster/bookmark?".htmlentities($this->encodedPageURL),
+				 "title" => "Add to Squidoo"),
+			"stumbleupon" => array(
+				 "url" => "http://www.stumbleupon.com/submit?".htmlentities("url=".$this->nonEncodedPageURL."&title=".$this->encodedPageTitle),
+				 "title" => "Stumble It"),
+			"stylehive" => array(
+				 "url" => "http://www.stylehive.com/savebookmark/index.htm?".htmlentities("url=".$this->encodedPageURL),
+				 "title" => "Add to Stylehive"),
+			"technorati" => array(
+				 "url" => "http://technorati.com/faves?".htmlentities("add=".$this->encodedPageURL),
+				 "title" => "Add to Technorati"),
+			"twitter" => array(
+					"url" => "http://twitter.com/home?status=".htmlentities(urlencode("currently reading: ").$this->encodedPageURL),
+					"title" => "Tweet It"),
+			"yahoo" => array(
+				 "url" =>  "	 http://bookmarks.yahoo.com/toolbar/savebm?u=".htmlentities("u=".$this->encodedPageTitle."&t=".$this->encodedPageURL),
+				 "title" => "Bookmark it on Yahoo"),
 			"socialmarker" => array(
-				 "url" => "http://www.socialmarker.com/?".htmlentities("link=".$this->pageURL."&title=".$this->pageTitle.""),
+				 "url" => "http://www.socialmarker.com/?".htmlentities("link=".$this->encodedPageURL."&title=".$this->encodedPageTitle),
 				 "title" => "Bookmark Elsewhere")
 			);
 		}
