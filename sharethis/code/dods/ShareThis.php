@@ -1,18 +1,17 @@
 <?php
-	/**
-	* Add a field to each SiteTree object and it's subclasses to enable Share icons.
-	*
-	* You can (and should) customise this class by adding the following options
-	* to your _config.php file:
-	*
-	*
-	*/
+/**
+ * Add a field to each SiteTree object and it's subclasses to enable Share icons.
+ *@author nicolaas [at] sunnysideup.co.nz
+ *@inspiration: Silverstripe Original Module - full credits to them.  We made our own to improve their module
+ *
+ *
+ **/
 
 
 class ShareThis extends DataObjectDecorator {
 
 	/**
-	* Include on all pages (NO field required)
+	* Include on all pages no matter what
 	* @var boolean
 	*/
 
@@ -65,7 +64,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $icons_to_exclude = array();
-		static function set_icons_to_include($array) {self::check_array($array); self::$icons_to_exclude = $array;}
+		static function set_icons_to_exclude($array) {self::check_array($array); self::$icons_to_exclude = $array;}
 
 
 	protected static function check_array($array) {
@@ -138,9 +137,7 @@ class ShareThis extends DataObjectDecorator {
 				return true;
 			}
 			elseif(isset($this->owner->ShareIcons)) {
-				if($this->owner->ShareIcons) {
-					return true;
-				}
+				return $this->owner->ShareIcons;
 			}
 		}
 		return false;

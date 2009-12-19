@@ -9,19 +9,18 @@
  * to include:
  * a. tweak settings below
  * b. add <% include ShareThis %> to your template
- * c. run db/build/?flush
-**/
+ * c. run dev/build/?flush
+ **/
 
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sharethis MODULE ----------------===================
-/*
-Object::add_extension('SiteTree', 'ShareThis');
-ShareThis::$EnabledIcons = Array("email", "print", "digg", "reddit", "delicious", "furl", "ma.gnolia", "newsvine", "live", "myweb", "google", "stumbleupon", "simpy", "facebook", "favourites");
-ShareThis::$ShowTitle = false;
-ShareThis::$IconTransparent = true;
-ShareThis::set_include_by_default(true);
-ShareThis::set_always_include (true);
-ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
-*/
+
+//DataObject::add_extension('SiteTree', 'ShareThis');
+//ShareThis::set_always_include (false);
+//ShareThis::set_include_by_default(true);
+//ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
+//ShareThis::set_show_title_with_icon(false);
+//ShareThis::set_alternate_icons(array("live" => "mysite/images/madgif.gif"));
+//ShareThis::set_icons_to_include(array("facebook", "google", "linkedin")); OR ShareThis::set_icons_to_exclude(array("myspace"));
 //===================---------------- END sharethis MODULE ----------------===================
