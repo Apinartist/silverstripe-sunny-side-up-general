@@ -116,6 +116,7 @@ class ShareThis extends DataObjectDecorator {
 	function updateCMSFields(FieldSet &$fields) {
 		if(!self::$always_include) {
 			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
+			$fields->addFieldToTab("Root.Behaviour", new LiteralField("ShareIconsExplanation","<p>The social network <a href=\"/admin/social/\">icons shown</a> are editable within the CMS.</p>"));
 		}
 		return $fields;
 	}

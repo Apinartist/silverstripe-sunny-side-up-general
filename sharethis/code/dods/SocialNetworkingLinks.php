@@ -67,6 +67,9 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 	function updateCMSFields(FieldSet &$fields) {
 		if(!self::$always_include) {
 			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("HasSocialNetworkingLinks","Show Social Networking Links on this Page (e.g. follow us on Twitter) - make sure to specify social networking links!"));
+			$fields->addFieldToTab("Root.Behaviour", new LiteralField("HasSocialNetworkingLinksExplanation","<p>Social Networking links (e.g. a link to your facebook page) need to be <a href=\"/admin/social/\">added first</a>.</p>"));
+
+
 		}
 		return $fields;
 	}
