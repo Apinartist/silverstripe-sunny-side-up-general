@@ -65,7 +65,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $icons_to_include = array();
-		static function set_icons_to_include($array) {self::check_array($array); unset(self::$icons_to_include); self::$icons_to_include = $array;}
+		static function set_icons_to_include($array) {self::check_array($array);  self::$icons_to_include = $array;}
 
 	/**
 	* specify icons to be excluded, if left empty, this variable will be ignored
@@ -73,7 +73,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $icons_to_exclude = array();
-		static function set_icons_to_exclude($array) {self::check_array($array); unset(self::$icons_to_exclude); self::$icons_to_exclude = $array;}
+		static function set_icons_to_exclude($array) {self::check_array($array);  self::$icons_to_exclude = $array;}
 
 
 	protected static function check_array($array) {
