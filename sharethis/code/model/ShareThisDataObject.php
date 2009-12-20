@@ -66,7 +66,7 @@ class ShareThisDataObject extends DataObject {
 			$page = DataObject::get_one("SiteTree");
 			if($page) {
 				$keys = $page->ShareIconsKeys();
-				if(count($keys) {
+				if(count($keys)) {
 					foreach($keys as $key) {
 						if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
 							$o = new ShareThisDataObject();
