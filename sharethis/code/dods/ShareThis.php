@@ -252,9 +252,6 @@ class ShareThis extends DataObjectDecorator {
 			}
 			return true;
 		}
-		else {
-			debug::show("can not find owner, cant make shareicons!");
-		}
 	}
 
 	protected function makeBookmarks() {

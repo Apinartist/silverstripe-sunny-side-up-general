@@ -58,19 +58,21 @@ class ShareThisDataObject extends DataObject {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		ShareThis::set_use_data_object(0);
+		ShareThis::always_include(1);
+		ShareThis::set_icons_to_include(array());
+		ShareThis::set_icons_to_exclude(array());
 		if(ShareThis::get_use_data_object()) {
 			$page = DataObject::get_one("SiteTree");
 			if($page) {
 				$keys = $page->ShareIconsKeys();
 				foreach($keys as $key) {
-					ShareThis::set_use_data_object(0);
-					ShareThis::always_include(1);
-					ShareThis::set_icons_to_include(array());
-					ShareThis::set_icons_to_exclude(array());
-					$o = new ShareThisDataObject();
-					$o->Title = $key;
-					$o->Show = true;
-					$o->write();
+					if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
+						$o = new ShareThisDataObject();
+						$o->Title = $key;
+						$o->Show = 1;
+						$o->write();
+					}
 				}
 			}
 		}
