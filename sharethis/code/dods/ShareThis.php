@@ -421,6 +421,8 @@ class ShareThis extends DataObjectDecorator {
 			if(!count($this->bookmarks)) {
 				$this->bookmarks = 0;
 			}
+			print_r($this->bookmarks);
+			debug::show("teset");
 		}
 		return $this->bookmarks;
 	}
