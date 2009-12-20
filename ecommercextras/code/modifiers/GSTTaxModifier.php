@@ -37,11 +37,14 @@ class GSTTaxModifier extends TaxModifier {
 	protected static $based_on_country_note = " - based on a sale to: ";
 		static function set_based_on_country_note($v) {self::$based_on_country_note = $v;}
 
-	protected static $refund_title = "Tax Reduction";
+	protected static $refund_title = "Tax Exemption";
 		static function set_refund_title($v) {self::$refund_title = $v;}
 
 	protected static $no_tax_description = "tax-exempt";
 		static function set_no_tax_description($v) {self::$no_tax_description = $v;}
+
+	protected static $order_item_function_for_tax_exclusive_portion = "";//PortionWithoutTax
+		static function set_order_item_function_for_tax_exclusive_portion($v) {self::$order_item_function_for_tax_exclusive_portion = $v;}
 
 	private static $current_country_code = "";
 
@@ -259,7 +262,19 @@ class GSTTaxModifier extends TaxModifier {
 
 	function TaxableAmount() {
 		$order = $this->Order();
-		return $order->SubTotal() + $order->ModifiersSubTotal(array("GSTTaxModifier"));
+		$deduct = 0;
+		if($functionName = self::$order_item_function_for_tax_exclusive_portion)
+			$items = ShoppingCart::get_items();
+			//get index numbers for bonus products - this can only be done now once they have actually been added
+			if($items) {
+				foreach($items as $itemIndex => $item) {
+					if(method_exists($item, $functionName)) {
+						$deduct += $item->$functionName();
+					}
+				}
+			}
+		}
+		return $order->SubTotal() + $order->ModifiersSubTotal(array("GSTTaxModifier")) - $deduct;
 	}
 
 	//this occurs when there is no country match and the rate is inclusive

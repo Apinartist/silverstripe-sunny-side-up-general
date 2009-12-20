@@ -130,32 +130,34 @@ class BonusProductModifier extends OrderModifier {
 			}
 			// work out bonus products based on items added to cart
 			$items = ShoppingCart::get_items();
-			foreach($items as $itemIndex => $item) {
-				if($item) {
-					$product = $item->Product();
-					if($product && !array_key_exists($product->ID, $oldBonusProductArray)) {
-						unset($tempIDArray);
-						$tempIDArray = array();
-						$tempIDArray = $product->BonusProductsForCart();
-						foreach($tempIDArray as $bonusItemID) {
-							if($quantity = $item->getQuantity()) {
-								//debug::show("product ".$product->ID." has the following bonus products ".$bonusItemID." and QTY: $quantity" );
-								//dont bother about adding it twice
-								if(!array_key_exists($bonusItemID, $newBonusProductArray)) {
-									$product = DataObject::get_by_id("SiteTree", $bonusItemID);
-									//foreach product in cart get recommended products
-									//debug::show("adding $product->Title as bonus product");
-									$orderItem = new self::$order_item_classname($product);
-									$orderItem->setAlternativeUnitPrice(self::$bonus_price);
-									ShoppingCart::add_new_item($orderItem);
+			if($items) {
+				foreach($items as $itemIndex => $item) {
+					if($item) {
+						$product = $item->Product();
+						if($product && !array_key_exists($product->ID, $oldBonusProductArray)) {
+							unset($tempIDArray);
+							$tempIDArray = array();
+							$tempIDArray = $product->BonusProductsForCart();
+							foreach($tempIDArray as $bonusItemID) {
+								if($quantity = $item->getQuantity()) {
+									//debug::show("product ".$product->ID." has the following bonus products ".$bonusItemID." and QTY: $quantity" );
+									//dont bother about adding it twice
+									if(!array_key_exists($bonusItemID, $newBonusProductArray)) {
+										$product = DataObject::get_by_id("SiteTree", $bonusItemID);
+										//foreach product in cart get recommended products
+										//debug::show("adding $product->Title as bonus product");
+										$orderItem = new self::$order_item_classname($product);
+										$orderItem->setAlternativeUnitPrice(self::$bonus_price);
+										ShoppingCart::add_new_item($orderItem);
+									}
+									if(array_key_exists($bonusItemID, $newBonusProductArray)) {
+										$quantity += $newBonusProductArray[$bonusItemID]["quantity"];
+									}
+									$newBonusProductArray[$bonusItemID] = array(
+										"ID" => $bonusItemID,
+										"quantity" => $quantity
+									);
 								}
-								if(array_key_exists($bonusItemID, $newBonusProductArray)) {
-									$quantity += $newBonusProductArray[$bonusItemID]["quantity"];
-								}
-								$newBonusProductArray[$bonusItemID] = array(
-									"ID" => $bonusItemID,
-									"quantity" => $quantity
-								);
 							}
 						}
 					}
@@ -164,18 +166,19 @@ class BonusProductModifier extends OrderModifier {
 			unset($items);
 			$items = ShoppingCart::get_items();
 			//get index numbers for bonus products - this can only be done now once they have actually been added
-			foreach($items as $itemIndex => $item) {
-				if($product = $item->Product()) {
-					$bonusItemID = $product->ID;
-					if(isset($newBonusProductArray[$bonusItemID]) && is_array($newBonusProductArray[$bonusItemID])) {
-						$quantity = $newBonusProductArray[$product->ID]["quantity"];
-						//debug::show("Updating qty for $bonusItemID to $quantity");
-						ShoppingCart::set_quantity_item( $bonusItemID, $quantity);
-						self::$savings += $newBonusProductArray[$bonusItemID]["quantity"] * $item->UnitPrice();
+			if($items) {
+				foreach($items as $itemIndex => $item) {
+					if($product = $item->Product()) {
+						$bonusItemID = $product->ID;
+						if(isset($newBonusProductArray[$bonusItemID]) && is_array($newBonusProductArray[$bonusItemID])) {
+							$quantity = $newBonusProductArray[$product->ID]["quantity"];
+							//debug::show("Updating qty for $bonusItemID to $quantity");
+							ShoppingCart::set_quantity_item( $bonusItemID, $quantity);
+							self::$savings += $newBonusProductArray[$bonusItemID]["quantity"] * $item->UnitPrice();
+						}
 					}
 				}
 			}
-
 			//remove old ones
 			if($oldBonusProductArray && count($oldBonusProductArray) ) {
 				//debug::show("there are old oldBonusProductArray");
