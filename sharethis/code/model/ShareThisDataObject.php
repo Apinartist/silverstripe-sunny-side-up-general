@@ -59,7 +59,7 @@ class ShareThisDataObject extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		ShareThis::set_use_data_object(0);
-		ShareThis::always_include(1);
+		ShareThis::set_always_include(1);
 		ShareThis::set_icons_to_include(array());
 		ShareThis::set_icons_to_exclude(array());
 		if(ShareThis::get_use_data_object()) {
