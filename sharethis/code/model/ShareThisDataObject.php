@@ -59,11 +59,12 @@ class ShareThisDataObject extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		debug::show("1");
-		ShareThis::set_use_data_object(0);
-		ShareThis::set_always_include(1);
-		ShareThis::set_icons_to_include(array());
-		ShareThis::set_icons_to_exclude(array());
 		if(ShareThis::get_use_data_object()) {
+			//must be after the line below
+			ShareThis::set_use_data_object(0);
+			ShareThis::set_always_include(1);
+			ShareThis::set_icons_to_include(array());
+			ShareThis::set_icons_to_exclude(array());
 			debug::show("2");
 			$page = DataObject::get_one("SiteTree");
 			if($page) {
