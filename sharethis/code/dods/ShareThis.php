@@ -49,6 +49,7 @@ class ShareThis extends DataObjectDecorator {
 
 	protected static $use_data_object = 1;
 		static function set_use_data_object($value) {$value = self::clean_boolean_value($value); self::$use_data_object = $value;}
+		static function get_use_data_object() {return self::$use_data_object;}
 
 	/**
 	* specify alternative icons in the form of array($key => $filename, $key => $filename)
