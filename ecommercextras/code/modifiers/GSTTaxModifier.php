@@ -263,7 +263,7 @@ class GSTTaxModifier extends TaxModifier {
 	function TaxableAmount() {
 		$order = $this->Order();
 		$deduct = 0;
-		if($functionName = self::$order_item_function_for_tax_exclusive_portion)
+		if($functionName = self::$order_item_function_for_tax_exclusive_portion) {
 			$items = ShoppingCart::get_items();
 			//get index numbers for bonus products - this can only be done now once they have actually been added
 			if($items) {
