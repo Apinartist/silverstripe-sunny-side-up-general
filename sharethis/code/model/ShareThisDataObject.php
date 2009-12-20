@@ -66,13 +66,18 @@ class ShareThisDataObject extends DataObject {
 			$page = DataObject::get_one("SiteTree");
 			if($page) {
 				$keys = $page->ShareIconsKeys();
-				foreach($keys as $key) {
-					if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
-						$o = new ShareThisDataObject();
-						$o->Title = $key;
-						$o->Show = 1;
-						$o->write();
+				if(count($keys) {
+					foreach($keys as $key) {
+						if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
+							$o = new ShareThisDataObject();
+							$o->Title = $key;
+							$o->Show = 1;
+							$o->write();
+						}
 					}
+				}
+				else {
+					debug::show("there are no social bookmark icons listed");
 				}
 			}
 		}
