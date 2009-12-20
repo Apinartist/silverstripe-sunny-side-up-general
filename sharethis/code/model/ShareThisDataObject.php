@@ -58,7 +58,6 @@ class ShareThisDataObject extends DataObject {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		DB::query("Update ShareThisDataObject set `Show` = 0");
 		if(ShareThis::get_use_data_object()) {
 			//must be after the line below
 			ShareThis::set_use_data_object(0);
