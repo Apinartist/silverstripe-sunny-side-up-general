@@ -372,7 +372,7 @@ class ShareThis extends DataObjectDecorator {
 				if(self::$use_data_object) {
 					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1");
 					foreach($objects as $obj) {
-						$this->bookmarks[$obj->Title] = $bookmarks[$$obj->Title];
+						$this->bookmarks[$obj->Title] = $bookmarks[$obj->Title];
 					}
 				}
 				else {
