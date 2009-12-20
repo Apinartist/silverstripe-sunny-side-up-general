@@ -368,6 +368,7 @@ class ShareThis extends DataObjectDecorator {
 				foreach($bookmarks as $key => $ignore) {
 					$originalArray[$key] = $key;
 				}
+				unset($ignore);
 				if(self::$use_data_object) {
 					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1");
 					foreach($objects as $obj) {
