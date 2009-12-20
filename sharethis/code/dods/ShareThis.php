@@ -418,6 +418,9 @@ class ShareThis extends DataObjectDecorator {
 					}
 				}
 			}
+			else {
+				debug::show("could not make page specific variables!");
+			}
 			if(!count($this->bookmarks)) {
 				$this->bookmarks = 0;
 			}
