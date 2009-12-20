@@ -16,7 +16,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $always_include = 0;
-		static function set_always_include($value) {self::$always_include = $value;}
+		static function set_always_include($value) {$value = self::clean_boolean_value($value); self::$always_include = $value;}
 
 	/**
 	* Include on all pages by default
@@ -24,7 +24,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $include_by_default = 0;
-		static function set_include_by_default($value) {self::$include_by_default = $value;}
+		static function set_include_by_default($value) {$value = self::clean_boolean_value($value); self::$include_by_default = $value;}
 
 	/**
 	* include a share this all in one
@@ -32,7 +32,7 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $share_this_all_in_one = 0;
-		static function set_share_this_all_in_one($value) {self::$share_this_all_in_one = $value;}
+		static function set_share_this_all_in_one($value) {$value = self::clean_boolean_value($value); self::$share_this_all_in_one = $value;}
 
 	/**
 	* show bookmark title next to icon
@@ -40,7 +40,15 @@ class ShareThis extends DataObjectDecorator {
 	*/
 
 	protected static $show_title_with_icon = 0;
-		static function set_show_title_with_icon($value) {self::$show_title_with_icon = $value;}
+		static function set_show_title_with_icon($value) {$value = self::clean_boolean_value($value); self::$show_title_with_icon = $value;}
+
+	/**
+	* show bookmark title next to icon
+	* @var boolean
+	*/
+
+	protected static $use_data_object = 1;
+		static function set_use_data_object($value) {$value = self::clean_boolean_value($value); self::$use_data_object = $value;}
 
 	/**
 	* specify alternative icons in the form of array($key => $filename, $key => $filename)
@@ -362,33 +370,40 @@ class ShareThis extends DataObjectDecorator {
 				foreach($bookmarks as $key => $ignore) {
 					$originalArray[$key] = $key;
 				}
-				/*
-				if(count(self::$icons_to_include)) {
-					$new_array_of_icons_to_include = array();
-					foreach(self::$icons_to_include as $key => $value) {
-						$new_array_of_icons_to_include[$value] = $value;
-						if(!isset($originalArray[$value])) {
-							debug::show("Error in ShareIcons::set_icons_to_include, $key does not exist in bookmark list");
-						}
-					}
-					foreach($bookmarks as $key => $array) {
-						if(!isset($new_array_of_icons_to_include[$key])) {
-							unset($bookmarks[$key]);
-						}
+				if(self::$use_data_object) {
+					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1");
+					foreach($objects as $obj) {
+						$this->bookmarks[$obj->Title] = $bookmarks[$$obj->Title];
 					}
 				}
-				//which ones do we exclude
-				if(count(self::$icons_to_exclude)) {
-					foreach(self::$icons_to_exclude as $key) {
-						if(!isset($originalArray[$key])) {
-							debug::show("Error in ShareIcons::set_icons_to_exclude, $key does not exist in bookmark list");
+				else {
+					if(count(self::$icons_to_include)) {
+						$new_array_of_icons_to_include = array();
+						foreach(self::$icons_to_include as $key => $value) {
+							$new_array_of_icons_to_include[$value] = $value;
+							if(!isset($originalArray[$value])) {
+								debug::show("Error in ShareIcons::set_icons_to_include, $key does not exist in bookmark list");
+							}
 						}
-						else {
-							unset($bookmarks[$key]);
+						foreach($bookmarks as $key => $array) {
+							if(!isset($new_array_of_icons_to_include[$key])) {
+								unset($bookmarks[$key]);
+							}
 						}
 					}
+					//which ones do we exclude
+					if(count(self::$icons_to_exclude)) {
+						foreach(self::$icons_to_exclude as $key) {
+							if(!isset($originalArray[$key])) {
+								debug::show("Error in ShareIcons::set_icons_to_exclude, $key does not exist in bookmark list");
+							}
+							else {
+								unset($bookmarks[$key]);
+							}
+						}
+					}
+					$this->bookmarks = $bookmarks;
 				}
-				*/
 				//find images
 				if(count(self::$alternate_icons)) {
 					foreach(self::$alternate_icons as $key => $file) {
@@ -398,14 +413,10 @@ class ShareThis extends DataObjectDecorator {
 						elseif(!Director::fileExists($file)) {
 							debug::show("Error in ShareIcons::set_alternate_icons, $file ($key) does not exist - should be a file name (e.g. images/icons/myicon.gif)");
 						}
-						elseif(isset($bookmarks[$key])) {
-							$bookmarks[$key]["icon"] = $file;
+						elseif(isset($this->bookmarks[$key])) {
+							$this->bookmarks[$key]["icon"] = $file;
 						}
 					}
-				}
-				$objects = DataObject::get("ShareThisDataObject", "`Show` = 1");
-				foreach($objects as $obj) {
-					$this->bookmarks[$obj->Title] = $bookmarks[$$obj->Title];
 				}
 			}
 			if(!count($this->bookmarks)) {

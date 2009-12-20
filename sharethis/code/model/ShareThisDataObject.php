@@ -62,6 +62,7 @@ class ShareThisDataObject extends DataObject {
 		if($page) {
 			$keys = $page->ShareIconsKeys();
 			foreach($keys as $key) {
+				ShareThis::set_use_data_object(0);
 				$o = new ShareThisDataObject();
 				$o->Title = $key;
 				$o->Show = true;
