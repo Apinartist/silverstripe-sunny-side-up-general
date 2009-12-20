@@ -60,7 +60,7 @@ class ShareThisDataObject extends DataObject {
 		parent::requireDefaultRecords();
 		if(ShareThis::get_use_data_object()) {
 			$page = DataObject::get_one("SiteTree");
-			if($page && method_exists($page, "ShareIconsKeys")) {
+			if($page) {
 				$keys = $page->ShareIconsKeys();
 				foreach($keys as $key) {
 					ShareThis::set_use_data_object(0);

@@ -155,12 +155,12 @@ class ShareThis extends DataObjectDecorator {
 
 
 	public function ThisPageHasShareThis() {
+		if(self::$always_include) {
+			return true;
+		}
 		if(!$this->owner) {
 			//just in case
 			$this->owner = DataObject::get_one("SiteTree");
-		}
-		if(self::$always_include) {
-			return true;
 		}
 		elseif(isset($this->owner->ShareIcons)) {
 			return $this->owner->ShareIcons;
