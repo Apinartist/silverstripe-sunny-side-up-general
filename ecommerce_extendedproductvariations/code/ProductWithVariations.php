@@ -364,6 +364,5 @@ class ProductWithVariations_Controller extends Product_Controller {
 	}
 
 
-
 }
 
