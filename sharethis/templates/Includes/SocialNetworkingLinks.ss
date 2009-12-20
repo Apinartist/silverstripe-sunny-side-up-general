@@ -1,5 +1,8 @@
-<% if ThisPageHasSocialNetworkingLinks %>
-<ul id="shareThisUL">
-	<% control SocialNetworkingLinksDataObjects %><li class="socialNetworkingLinkLI"><a href="$URL.URL">$Icon.SetHeight(32)<% if ShowTitle %> $Title<% end_if %></a></li><% end_control %>
-</ul>
-<% end_if %>
+<% if ThisPageHasSocialNetworkingLinks %><% if SocialNetworkingLinksDataObjects %>
+<div id="SocialNetworkingLinksHolder" class="socialNetworkingHolder">
+	<div id="SocialNetworkingLinksHeader" class="socialNetworkingHeader typography"><h5>follow</h5></div>
+	<ul id="SocialNetworkingLinksUL" class="socialNetworkingList">
+		<% control SocialNetworkingLinksDataObjects %><li><a href="$URL.URL">$Icon.SetHeight(32)<% if ShowTitle %> $Title<% end_if %></a></li><% end_control %>
+	</ul>
+</div>
+<% end_if %><% end_if %>

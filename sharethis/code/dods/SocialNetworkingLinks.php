@@ -99,7 +99,10 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 
 	public function SocialNetworkingLinksDataObjects(){
 		if($this->ThisPageHasSocialNetworkingLinks()) {
-			return DataObject::get("SocialNetworkingLinksDataObject");
+			if($objects = DataObject::get("SocialNetworkingLinksDataObject")) {
+				Requirements::themedCSS("SocialNetworking");
+				return $objects;
+			}
 		}
 	}
 

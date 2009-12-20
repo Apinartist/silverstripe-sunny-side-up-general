@@ -134,22 +134,34 @@ class ShareThis extends DataObjectDecorator {
 	function augmentDatabase() {
 	}
 
+	public function ShareIconsKeys() {
+		$keyData = array();
+		$data = $this->makeBookmarks();
+		foreach($data as $key => $ignore) {
+			$keyData[$key] = $key;
+		}
+		return $keyData;
+	}
+
+
 	public function ThisPageHasShareThis() {
-		if($this->owner) {
-			if(self::$always_include) {
-				return true;
-			}
-			elseif(isset($this->owner->ShareIcons)) {
-				return $this->owner->ShareIcons;
-			}
+		if(!$this->owner) {
+			//just in case
+			$this->owner = DataObject::get_one("SiteTree");
+		}
+		if(self::$always_include) {
+			return true;
+		}
+		elseif(isset($this->owner->ShareIcons)) {
+			return $this->owner->ShareIcons;
 		}
 		return false;
 	}
 
-	public function Icons(){
+	public function ShareIcons(){
 		$doSet = new DataObjectSet();
 		if($this->ThisPageHasShareThis()){
-			Requirements::css("sharethis/css/ShareThis.css");
+			Requirements::themedCSS("SocialNetworking");
 			Requirements::javascript("sharethis/javascript/shareThis.js");
 			$this->bookmarks = $this->makeBookmarks();
 			foreach($this->bookmarks as $key => $bookmark){
@@ -191,7 +203,7 @@ class ShareThis extends DataObjectDecorator {
 
 	public function ShareAll() {
 		if($this->IncludeShareAll()) {
-			if($this->makeBookMarkIndependentVariables()) {
+			if($this->makeBookmarkIndependentVariables()) {
 				$this->pageIcon = urlencode(Director::absoluteBaseURL().'favicon.ico');
 				return '
 					<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
@@ -216,7 +228,7 @@ class ShareThis extends DataObjectDecorator {
 	 *
 	 */
 
-	protected function makeBookMarkIndependentVariables() {
+	protected function makeBookmarkIndependentVariables() {
 		if($this->ThisPageHasShareThis()) {
 			$this->nonEncodedPageURL = Director::absoluteBaseURL().$this->owner->URLSegment;
 			$this->encodedPageURL = urlencode($this->nonEncodedPageURL);
@@ -236,9 +248,9 @@ class ShareThis extends DataObjectDecorator {
 	}
 
 	protected function makeBookmarks() {
-		if(!count($this->bookmarks)) {
-			if($this->makeBookMarkIndependentVariables()) {
-				$this->bookmarks = array(
+		if(!count($this->bookmarks) && $this->bookmarks !== 0) {
+			if($this->makeBookmarkIndependentVariables()) {
+				$bookmarks = array(
 				"email" => array(
 					 "url" => "mailto:?".htmlentities("Subject=".$this->encodedPageTitle."&Body=".$this->encodedDescription."%0D%0A".$this->encodedPageURL),
 					 "title" => "Email"),
@@ -346,9 +358,10 @@ class ShareThis extends DataObjectDecorator {
 				);
 				//which ones do we include
 				$originalArray = array();
-				foreach($this->bookmarks as $key => $ignore) {
+				foreach($bookmarks as $key => $ignore) {
 					$originalArray[$key] = $key;
 				}
+				/*
 				if(count(self::$icons_to_include)) {
 					$new_array_of_icons_to_include = array();
 					foreach(self::$icons_to_include as $key => $value) {
@@ -357,9 +370,9 @@ class ShareThis extends DataObjectDecorator {
 							debug::show("Error in ShareIcons::set_icons_to_include, $key does not exist in bookmark list");
 						}
 					}
-					foreach($this->bookmarks as $key => $array) {
+					foreach($bookmarks as $key => $array) {
 						if(!isset($new_array_of_icons_to_include[$key])) {
-							unset($this->bookmarks[$key]);
+							unset($bookmarks[$key]);
 						}
 					}
 				}
@@ -370,10 +383,11 @@ class ShareThis extends DataObjectDecorator {
 							debug::show("Error in ShareIcons::set_icons_to_exclude, $key does not exist in bookmark list");
 						}
 						else {
-							unset($this->bookmarks[$key]);
+							unset($bookmarks[$key]);
 						}
 					}
 				}
+				*/
 				//find images
 				if(count(self::$alternate_icons)) {
 					foreach(self::$alternate_icons as $key => $file) {
@@ -383,11 +397,18 @@ class ShareThis extends DataObjectDecorator {
 						elseif(!Director::fileExists($file)) {
 							debug::show("Error in ShareIcons::set_alternate_icons, $file ($key) does not exist - should be a file name (e.g. images/icons/myicon.gif)");
 						}
-						elseif(isset($this->bookmarks[$key])) {
-							$this->bookmarks[$key]["icon"] = $file;
+						elseif(isset($bookmarks[$key])) {
+							$bookmarks[$key]["icon"] = $file;
 						}
 					}
 				}
+			}
+			$objects = DataObject::("ShareThisDataObject", "Show = 1");
+			foreach($objects as $obj) {
+				$this->bookmarks[$obj->Title] = $bookmarks[$$obj->Title];
+			}
+			if(!count($this->bookmarks)) {
+				$this->bookmarks = 0;
 			}
 		}
 		return $this->bookmarks;

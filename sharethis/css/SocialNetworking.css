@@ -1,0 +1,27 @@
+/*
+	GENERAL
+*/
+.shareThisHolder{}
+	.socialNetworkingHeader{clear: right;}
+		.socialNetworkingHeader h5{text-align: right;}
+	.socialNetworkingList{}
+		.socialNetworkingList li{list-style :none!important;float: right;width: auto;}
+			.socialNetworkingList li a{padding: 0.1em;opacity:0.33; filter:alpha(opacity=33);}
+				.socialNetworkingList li a:hover{opacity:1;filter:alpha(opacity=100)}
+				.socialNetworkingList li a img{padding-right : 3px;}
+					.socialNetworkingList li a:hover img{margin-top: -1px;border-bottom: 1px solid #ccc;}
+
+
+/*
+	SHARE THIS
+*/
+#ShareThisHolder{}
+	#ShareThisHeader{}
+	#ShareThisUL{}
+	#ShareThisUL{} #ShareAllLI{}
+/*
+	Social Networking Links
+*/
+#SocialNetworkingLinksHolder{}
+	#SocialNetworkingLinksHeader{}
+	#SocialNetworkingLinksUL{}
