@@ -4,7 +4,7 @@
  *@description: manages social networking data objects
  **/
 
-class SocialNetworkingLinksModelAdmin extends ModelAdmin {
+class SocialNetworkingModelAdmin extends ModelAdmin {
 
 	public static $managed_models = array("SocialNetworkingLinksDataObject", "ShareThisDataObject");
 
