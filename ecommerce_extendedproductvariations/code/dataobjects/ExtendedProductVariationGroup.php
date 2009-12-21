@@ -139,7 +139,7 @@ class ExtendedProductVariationGroup extends DataObject {
 				$child->delete();
 			}
 		}
-		if($combos = $this-ExtendedProductVariationOptions() ){
+		if($combos = $this->ProductWithVariations() ){
 			foreach($combos as $combo) {
 				$combo->delete();
 			}
