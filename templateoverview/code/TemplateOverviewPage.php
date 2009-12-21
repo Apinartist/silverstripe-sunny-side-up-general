@@ -92,7 +92,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", $id);
 		if($obj) {
-			$data = DataObject::get($obj->ClassName, $where = "", $orderBy = "", $join = "", $limit = 500);
+			$data = DataObject::get($obj->ClassName, $where = "`ClassName` = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
 		}
 		$array = array(
 			"Results" => $data,
