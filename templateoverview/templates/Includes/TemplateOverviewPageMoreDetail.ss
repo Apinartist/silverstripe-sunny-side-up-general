@@ -1,5 +1,5 @@
 <% control Results %>
-	<li>example #{$Pos}. <a href="$URLSegment">$Title</a> - <a href="/admin/show/$ID">edit in CMS</a></li>
+	<li>example #{$Pos}. <a href="$URLSegment">$Title</a> - <a href="/admin/show/$ID">edit <i>$Title</i> in CMS</a></li>
 <% end_control %>
 <% if MoreDetail %>
 	<% control MoreDetail %>
