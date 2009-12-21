@@ -64,7 +64,6 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 
 	public function IsCheckoutPage() {
-		die("end");
 		if($this->owner instanceOf CheckoutPage) {
 			return true;
 		}
