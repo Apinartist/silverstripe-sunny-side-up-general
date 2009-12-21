@@ -4,7 +4,7 @@
 <% if MoreDetail %>
 	<% control MoreDetail %>
 	<li>
-		<p style="border: 1px solid green; padding: 10px; margin: 10px;">
+		<p class="templateOverviewDescription">
 			$Description ... <a href="admin/templates/$ClassName/$ID/edit">edit this description</a>
 			<% if ToDoListHyperLink %> | <a href="$ToDoListHyperLink.URL">update to do list</a><% end_if %>
 		</p>

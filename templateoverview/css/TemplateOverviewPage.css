@@ -10,3 +10,7 @@
 .typo-fullLink {}
  .typo-fullLink a {}
 
+#TemplateOverviewImages img {border: 10px solid #ccc;}
+.MoreDetailOL {background-color: #ddd;}
+.templateOverviewDescription {border: 1px solid green; padding: 10px; margin: 0px;}
+.updateToDoListLink {font-weight: bold; color: green;}
