@@ -10,6 +10,7 @@
 		<% else %>
 		<span class="typo-fullLink"><em>example:</em> <a href="$FullLink">$FullLink</a> :: $Title</span>
 		<span class="typo-more"><em>more:</em> <a href="$TypoURLSegment/showmore/$ID" class="typo-seemore" rel="entry-for-$URLSegment">more examples and details (if any)</a></span>
+		<span class="typo-less"><em>less:</em> <a href="#" class="typo-seeless" rel="entry-for-$URLSegment">hide it again!</a></span>
 		<ol id="entry-for-$URLSegment" class="MoreDetailOL"><li style="display: none;">&nbsp;</li></ol>
 		<% end_if %>
 	</li>

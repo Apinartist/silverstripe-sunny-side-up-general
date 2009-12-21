@@ -8,9 +8,19 @@ jQuery(document).ready(
 					jQuery("#" + id).show();
 					jQuery("#" + id).html("<li>loading pages ....</li>");
 					jQuery("#" + id).load(url);
+					jQuery(this).parent("typo-more").hide().next("typo-less").show();
 					return false;
 				}
 			);
+			jQuery("#classList .typo-seeless").click(
+				function() {
+					var id = jQuery(this).attr("rel");
+					jQuery("#" + id).hide();
+					jQuery(this).parent("typo-less").hide().prev("typo-more").show();
+					return false;
+				}
+			);
+
 		}
 	}
 );
