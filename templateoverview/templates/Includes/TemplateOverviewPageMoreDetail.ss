@@ -9,9 +9,9 @@
 			<% if ToDoListHyperLink %> | <a href="$ToDoListHyperLink.URL">update to do list</a><% end_if %>
 		</p>
 		<div id="TemplateOverviewImages">
-			<% if Image1 %><img src="$Image1.URL" alt="first image" /><% end_if %>
-			<% if Image2 %><img src="$Image2.URL" alt="first image" /><% end_if %>
-			<% if Image3 %><img src="$Image3.URL" alt="first image" /><% end_if %>
+			<% if Image1 %><img src="$Image1.URL" alt="first image" style="border: 10px solid #ccc;" /><% end_if %>
+			<% if Image2 %><img src="$Image2.URL" alt="first image" style="border: 10px solid #ccc;" /><% end_if %>
+			<% if Image3 %><img src="$Image3.URL" alt="first image" style="border: 10px solid #ccc;" /><% end_if %>
 		</div>
 	</li>
 	<% end_control %>
