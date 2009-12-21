@@ -1,6 +1,5 @@
 jQuery(document).ready(
 	function () {
-
 		if( jQuery("#classList").length > 0) {
 			jQuery(".typo-less").hide();
 			jQuery("#classList .typo-seemore").click(
