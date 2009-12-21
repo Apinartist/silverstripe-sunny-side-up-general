@@ -65,7 +65,7 @@ class AjaxOrder extends DataObjectDecorator {
 
 	public function SubTotalCartValue() {
 		$order = ShoppingCart::current_order();
-		return $order->SubTotal();
+		return $order->SubTotal;
 	}
 
 	public function IsCheckoutPage() {
