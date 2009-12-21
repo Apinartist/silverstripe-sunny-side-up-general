@@ -24,7 +24,11 @@ class GSTTaxModifier extends TaxModifier {
 		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
 		'DebugString' => 'HTMLText'
 	);
-
+	
+	static $casting = array(
+		'TaxableAmount' => 'Currency'
+	);
+	
 	protected static $default_country_code = "NZ";
 		static function set_default_country_code($v) {self::$default_country_code = $v;}
 
