@@ -1,6 +1,8 @@
 jQuery(document).ready(
 	function () {
+
 		if( jQuery("#classList").length > 0) {
+			jQuery(".typo-less").hide();
 			jQuery("#classList .typo-seemore").click(
 				function() {
 					var url = jQuery(this).attr("href");
@@ -8,7 +10,7 @@ jQuery(document).ready(
 					jQuery("#" + id).show();
 					jQuery("#" + id).html("<li>loading pages ....</li>");
 					jQuery("#" + id).load(url);
-					jQuery(this).parent(".typo-more").hide().next(".typo-less").show();
+					jQuery(this).parent(".typo-more").hide().next(".typo-less").show().css("display", "block");
 					return false;
 				}
 			);
@@ -16,7 +18,7 @@ jQuery(document).ready(
 				function() {
 					var id = jQuery(this).attr("rel");
 					jQuery("#" + id).hide();
-					jQuery(this).parent(".typo-less").hide().prev(".typo-more").show();
+					jQuery(this).parent(".typo-less").hide().prev(".typo-more").show().css("display", "block");
 					return false;
 				}
 			);
