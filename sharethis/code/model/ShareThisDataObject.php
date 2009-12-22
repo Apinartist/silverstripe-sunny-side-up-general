@@ -66,19 +66,21 @@ class ShareThisDataObject extends DataObject {
 			ShareThis::set_icons_to_exclude(array());
 			$page = DataObject::get_one("SiteTree");
 			if($page) {
-				$keys = $page->ShareIconsKeys();
-				if(count($keys)) {
-					foreach($keys as $key) {
-						if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
-							$o = new ShareThisDataObject();
-							$o->Title = $key;
-							$o->Show = 1;
-							$o->write();
+				if(method_exists($page, "ShareIconsKeys")) {
+					$keys = $page->ShareIconsKeys();
+					if(count($keys)) {
+						foreach($keys as $key) {
+							if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
+								$o = new ShareThisDataObject();
+								$o->Title = $key;
+								$o->Show = 1;
+								$o->write();
+							}
 						}
 					}
-				}
-				else {
-					debug::show("there are no social bookmark icons listed");
+					else {
+						debug::show("there are no social bookmark icons listed");
+					}
 				}
 			}
 		}
