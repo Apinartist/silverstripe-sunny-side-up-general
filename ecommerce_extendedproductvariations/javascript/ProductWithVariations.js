@@ -12,8 +12,6 @@
 	$(document).ready(
 		function() {
 			ProductWithVariations.init();
-			ProductWithVariations.prepAjaxSubmit();
-			ProductWithVariations.prepAjaxSubmit();
 		}
 	);
 
@@ -93,6 +91,7 @@ ProductWithVariations = {
 			}
 		);
 		ProductWithVariations.calculateVariation(true);
+		ProductWithVariations.prepAjaxSubmit();
 	},
 
 	calculateVariation: function(initial) {

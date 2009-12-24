@@ -43,12 +43,13 @@ class ProductWithVariations extends Product {
 		$fields->addFieldsToTab("Root.Content.ProductVariations",
 			new FieldSet(
 				new HeaderField("CreateVariationGroupsHeader",'2. Create Variations', 3),
-				new LiteralField("VariationsCreateAll",'<p><a href="'.$this->Link().'createallvariations/?stage=Stage" target="_blank">create all variations</a> - based on the variation lists selected above. Make sure page is SAVED and default PRICE has been entered!'),
+				new LiteralField("VariationsCreateAll",'<p><a href="'.$this->Link().'createallvariations/?stage=Stage"  class="runsilently" rel="'.$this->ID.'" onclick="return !ProductWithVariations_CMS.clicker(this);return false;">create all variations</a> - based on the variation lists selected above. Make sure page is SAVED and default PRICE has been entered!'),
 				new HeaderField("VariationsExplanation","3. Review and edit actual product variations for sale (price must be higher than zero)", 3),
 				$this->getVariationsTable(),
-				new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations/?stage=Stage" target="_blank">delete all variations</a> - useful if the variations have gone pearshaped - PLEASE USE WITH CARE!</p>')
+				new LiteralField("VariationsDeteleAll",'<p><a href="'.$this->Link().'deleteallvariations/?stage=Stage" class="runsilently" rel="'.$this->ID.'" onclick="ProductWithVariations_CMS.clicker(this); return false;">delete all variations</a> - useful if the variations have gone pearshaped - PLEASE USE WITH CARE!</p>')
 			)
 		);
+
 		return $fields;
 	}
 
@@ -182,7 +183,7 @@ class ProductWithVariations extends Product {
 			if($obj) {
 				if($obj instanceOf ExtendedProductVariation) {
 					$obj->Title = $title;
-					Database::alteration_message("Creating &quot;".$obj->Title."&quot; for &quot;".$this->Title."&quot;");
+					//Database::alteration_message("Creating &quot;".$obj->Title."&quot; for &quot;".$this->Title."&quot;");
 					$obj->Price = $this->Price;
 					$obj->ProductID = $this->ID;
 					$obj->write();

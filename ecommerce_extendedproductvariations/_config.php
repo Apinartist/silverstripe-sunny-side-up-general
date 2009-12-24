@@ -10,5 +10,6 @@
 //===================---------------- START ecommerce_extendedproductvariations MODULE ----------------===================
 //Object::add_extension('SiteTree', 'ExtendedProductVariationSitetreeDecorator');
 //ProductWithVariations::set_hide_product_fields("Weight", "Model");
+//LeftAndMain::require_javascript("ecommerce_extendedproductvariations/javascript/ProductWithVariations_CMS.js");
 //===================---------------- END ecommerce_extendedproductvariations MODULE ----------------===================
 
