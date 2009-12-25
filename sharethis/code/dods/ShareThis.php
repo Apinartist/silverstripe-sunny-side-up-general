@@ -123,9 +123,19 @@ class ShareThis extends DataObjectDecorator {
 	protected $pageIcon = '';
 
 	function updateCMSFields(FieldSet &$fields) {
-		if(!self::$always_include) {
-			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
-			$fields->addFieldToTab("Root.Behaviour", new LiteralField("ShareIconsExplanation","<p>The social network <a href=\"/admin/social/\">icons shown</a> are editable within the CMS.</p>"));
+		$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
+		$addedLinks = array();
+		if($this->EditLink()) {
+			$addedLinks["edit"]  = $this->EditLink();
+		}
+		if($this->SortLink()) {
+			$addedLinks["sort"]  = $this->SortLink();
+		}
+		if(count($addedLinks)) {
+			$fields->addFieldToTab("Root.Behaviour", new LiteralField(
+				"ShareIconsExplanation",
+				'<p>Share Icon Settings: '.implode(", ",$addedLinks).'.</p>'
+			));
 		}
 		return $fields;
 	}
@@ -153,6 +163,27 @@ class ShareThis extends DataObjectDecorator {
 		return $keyData;
 	}
 
+	public function CanEditShareIcons() {
+		if(class_exists("DataObjectSorterDOD")) {
+			$obj = singleton("ShareThisDataObject");
+			if($obj->hasExtension("DataObjectSorterDOD")) {
+				return true;
+			}
+		}
+	}
+
+	public function EditLink() {
+		if($this->CanEditShareIcons()) {
+			return DataObjectOneFieldUpdateController::popup_link("ShareThisDataObject", "Show");
+		}
+	}
+
+	public function SortLink() {
+		if($obj = $this->CanEditShareIcons()) {
+			$obj = singleton("ShareThisDataObject");
+			return $obj->dataObjectSorterPopupLink("Show", 1);
+		}
+	}
 
 	public function ThisPageHasShareThis() {
 		if(self::$always_include) {
@@ -167,6 +198,7 @@ class ShareThis extends DataObjectDecorator {
 		}
 		return false;
 	}
+
 
 	public function ShareIcons(){
 		$doSet = new DataObjectSet();
@@ -370,7 +402,9 @@ class ShareThis extends DataObjectDecorator {
 				}
 				unset($ignore);
 				if(self::$use_data_object) {
-					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1");
+					$this->bookmarks = null;
+					$this->bookmarks = array();
+					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1", "`Sort` ASC, `Title` ASC");
 					foreach($objects as $obj) {
 						$this->bookmarks[$obj->Title] = $bookmarks[$obj->Title];
 					}

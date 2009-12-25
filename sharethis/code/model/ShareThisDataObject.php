@@ -12,7 +12,8 @@ class ShareThisDataObject extends DataObject {
 
 	public static $db = array(
 		'Title' => 'Varchar(20)',
-		'Show' => 'Boolean'
+		'Show' => 'Boolean',
+		"Sort" => "Int"
 	);
 
 	public static $has_many = array();
@@ -29,15 +30,22 @@ class ShareThisDataObject extends DataObject {
 
 	public static $field_labels = array(
 		"Title" => "Name",
-		"Show" => "Show"
+		"Show" => "Show",
+		"Sort" => "Sort Index (lower numbers shown first)"
 	);
 
-	public function canView() {
-		return false;
+	public static $default_sort = "`Show` DESC, `Sort` ASC, `Title` ASC";
+
+	public function canView($member = false) {
+		return Permission::check('CMS_ACCESS_CMSMain');
 	}
 
 	public function canDelete() {
 		return false;
+	}
+
+	public function canEdit($member = false) {
+		return $this->canView();
 	}
 
 	public static $summary_fields = array(

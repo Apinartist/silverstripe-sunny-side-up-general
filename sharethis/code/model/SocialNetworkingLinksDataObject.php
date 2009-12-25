@@ -12,7 +12,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $db = array(
 		'URL' => 'Varchar(255)',
-		'Title' => 'Varchar(255)'
+		'Title' => 'Varchar(255)',
+		"Sort" => "Int"
 	);
 
 	public static $has_one = array(
@@ -34,6 +35,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $field_labels = array(
 		"URL" => "location (e.g. http://twitter.com/myname/)",
 		"Title" => "Title",
+		"Sort" => "Sort Index (lower numbers shown first)",
 		"Icon" => "Icon (preferably something like 32pixels by 32pixels)"
 	);
 
@@ -41,6 +43,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"URL" => "URL",
 		"Title" => "Title"
 	);
+
+	public static $default_sort = "`Sort` ASC, `Title` ASC";
 
 	public static $singular_name = "Social Networking Location";
 

@@ -5,11 +5,6 @@
  * developed by www.sunnysideup.co.nz
  * author: Nicolaas - modules [at] sunnysideup.co.nz
  *
- * This module allows you to create social networking icons on your site
- * to include:
- * a. tweak settings below
- * b. add <% include ShareThis %> to your template
- * c. run dev/build/?flush
  **/
 
 
