@@ -10,8 +10,9 @@ Nicolaas Francken [at] sunnysideup.co.nz
 Requirements
 -----------------------------------------------
 SilverStripe 2.3.0 or greater.
-RECOMMENDED: dataobject sorter
-http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+HIGHLY RECOMMENDED:
+dataobject sorter: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+multiselect field: http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2
 
 Documentation
 -----------------------------------------------
