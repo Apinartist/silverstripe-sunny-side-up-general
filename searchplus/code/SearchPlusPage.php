@@ -1,4 +1,9 @@
 <?php
+/*
+ *@author: nicolaas [at] sunnysideup.co.nz
+ *
+ *
+ **/
 
 class SearchPlusPage extends Page {
 
@@ -8,7 +13,20 @@ class SearchPlusPage extends Page {
 
 	static $icon = 'mysite/images/treeicons/SearchPlusPage';
 
-	public static $db = array();
+	public static $db = array(
+		"RecommendedSectionTitle1" => "Varchar(255)",
+		"RecommendedSectionTitle2" => "Varchar(255)",
+		"RecommendedSectionTitle3" => "Varchar(255)",
+		"RecommendedSectionIntro1" => "HTMLText",
+		"RecommendedSectionIntro2" => "HTMLText",
+		"RecommendedSectionIntro3" => "HTMLText"
+	);
+
+	public static $has_one = array(
+		"RecommendedSectionParentPage1" => "Page",
+		"RecommendedSectionParentPage2" => "Page",
+		"RecommendedSectionParentPage3" => "Page"
+	);
 
 	public function canCreate() {
 		return !DataObject::get_one("SiteTree", 'ClassName = "SearchPlusPage"');
@@ -18,8 +36,16 @@ class SearchPlusPage extends Page {
 		return false;
 	}
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+	public function getCMSFields($params) {
+		$fields = parent::getCMSFields($params);
+		$sourceObjectName = "SiteTree";
+		for($i = 1; $i < 4; $i++) {
+			$fields->addFieldsToTab("Root.Content.RecommendedSection$i",
+				new TextField("RecommendedSectionTitle$i", "Recommended Section Title"),
+				new HTMLEditorField("RecommendedSectionTitle$i", "Recommended Section Introduction", $rows = 4, $cols = 20),
+				new TreeDropdownField($name = "RecommendedSectionParentPage".$i."ID", $title = "Parent Page for Recommended Section", $sourceObjectName ));
+			);
+		}
 		return $fields;
 	}
 
@@ -44,7 +70,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 			$days = 100;
 		}
 		$countMin = intval(Director::URLParam("OtherID")+0);
-		$data = DB::query("SELECT COUNT(ID) count, Title FROM `SearchHistory` WHERE Created > ( NOW() - INTERVAL $days DAY ) GROUP BY `Title`  HAVING COUNT(ID) >= $countMin ORDER BY count DESC ");
+		$data = DB::query("SELECT COUNT(ID) count, Title FROM `SearchHistoryLog` WHERE Created > ( NOW() - INTERVAL $days DAY ) GROUP BY `Title`  HAVING COUNT(ID) >= $countMin ORDER BY count DESC ");
 		$do = new DataObject();
 		$do->Data = new DataObjectSet();
 		if(!$countMin) $countMin++;
