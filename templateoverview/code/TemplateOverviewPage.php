@@ -81,6 +81,9 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript('templateoverview/javascript/TemplateOverviewPage.js');
 		Requirements::css("templateoverview/css/TemplateOverviewPage.css");
+		if(class_exists("PrettyPhoto")) {
+			PrettyPhoto::include_code();
+		}
 	}
 
 	function showall () {
