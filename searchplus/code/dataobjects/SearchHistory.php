@@ -1,5 +1,6 @@
 <?php
 /**
+ *@author: nicolaas[at]sunnysideup.co.nz
  *@description:
  * a log history and counted history of searches done (e.g. 100 people searched for "sunshine")
  * it allows gives the opportunity to link zero or more pages to a particular search phrase
@@ -28,7 +29,7 @@ class SearchHistory Extends DataObject {
 		$obj = new SearchHistoryLog();
 		$obj->Title = $KeywordString;
 		$obj->write();
-		if(DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'")) {
+		if($obj = DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'")) {
 			//do nothing
 		}
 		else {
@@ -36,7 +37,7 @@ class SearchHistory Extends DataObject {
 			$obj->Title = $KeywordString;
 			$obj->write();
 		}
-		return $KeywordString;
+		return $obj;
 	}
 
 	static $singular_name = 'Search History Phrase';

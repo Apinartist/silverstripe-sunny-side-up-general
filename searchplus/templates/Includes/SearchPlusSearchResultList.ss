@@ -1,0 +1,12 @@
+<h2 id="SearchPlusSearchResultListHeading">Results $Results.CurrentPage of $Results.TotalPages for '$Query'</h2>
+<% include SearchPlusMoreThanOnePage %>
+<ul id="SearchResults">
+<% control Results %>
+	<li class="$EvenOdd">
+		<h3><% if MenuTitle %> $MenuTitle<% else %>$Title<% end_if %></h3>
+		<p>$Content.LimitWordCountPlainText</p>
+		<a href="$Link" title="Read more about $Title.ATT">Read more &gt;&gt;</a>
+	</li>
+<% end_control %>
+</ul>
+<% include SearchPlusMoreThanOnePage %>

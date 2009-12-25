@@ -13,19 +13,10 @@ class SearchPlusPage extends Page {
 
 	static $icon = 'mysite/images/treeicons/SearchPlusPage';
 
-	public static $db = array(
-		"RecommendedSectionTitle1" => "Varchar(255)",
-		"RecommendedSectionTitle2" => "Varchar(255)",
-		"RecommendedSectionTitle3" => "Varchar(255)",
-		"RecommendedSectionIntro1" => "HTMLText",
-		"RecommendedSectionIntro2" => "HTMLText",
-		"RecommendedSectionIntro3" => "HTMLText"
-	);
+	public static $db = array();
 
-	public static $has_one = array(
-		"RecommendedSectionParentPage1" => "Page",
-		"RecommendedSectionParentPage2" => "Page",
-		"RecommendedSectionParentPage3" => "Page"
+	public static $has_many = array(
+		"RecommendedSections" => "RecommendedSection"
 	);
 
 	public function canCreate() {
@@ -36,16 +27,9 @@ class SearchPlusPage extends Page {
 		return false;
 	}
 
-	public function getCMSFields($params) {
+	public function getCMSFields($params = null) {
 		$fields = parent::getCMSFields($params);
-		$sourceObjectName = "SiteTree";
-		for($i = 1; $i < 4; $i++) {
-			$fields->addFieldsToTab("Root.Content.RecommendedSection$i",
-				new TextField("RecommendedSectionTitle$i", "Recommended Section Title"),
-				new HTMLEditorField("RecommendedSectionTitle$i", "Recommended Section Introduction", $rows = 4, $cols = 20),
-				new TreeDropdownField($name = "RecommendedSectionParentPage".$i."ID", $title = "Parent Page for Recommended Section", $sourceObjectName )
-			);
-		}
+
 		return $fields;
 	}
 
@@ -60,16 +44,23 @@ class SearchPlusPage_Controller extends Page_Controller {
 		parent::init();
 	}
 
+	protected static $search_history_object = null;
 
 	function results($data){
 		$form = $this->SearchForm();
-		SearchHistory::add_entry($data["Search"]);
+		self::$search_history_object = SearchHistory::add_entry($data["Search"]);
 		$data = array(
 			'Results' => $form->getResults(),
 			'Query' => $form->getSearchQuery(),
 			'Title' => 'Search Results'
 		);
 		return $this->customise($data)->renderWith(array('Page_results', 'Page'));
+	}
+
+	function Recommendations() {
+		if(self::$search_history_object) {
+			return self::$search_history_object->Recommendations();
+		}
 	}
 
 
