@@ -13,12 +13,17 @@ class RecommendedSearchPlusSection Extends DataObject {
 
 	static $db = array(
 		"Title" => "Varchar(255)",
-		"Intro" => "HTMLText",
+		"Intro" => "Text",
 		"Sort" => "Int"
 	);
 
 	static $has_one = array(
-		"ParentPage" => "Page"
+		"ParentPage" => "Page",
+		"Parent" => "SearchPlusPage"
+	);
+
+	static $defaults = array(
+		"Sort" => 100
 	);
 
 	static $singular_name = 'Recommended SearchPlus Section';
@@ -38,5 +43,25 @@ class RecommendedSearchPlusSection Extends DataObject {
 	public static $field_labels = array(
 		"Sort" => "Sort Index"
 	);
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->removeByName("ParentPageID");
+		$fields->removeByName("ParentID");
+		$fields->addFieldToTab("Root.Main", new TreeDropdownField($name = "ParentPageID", $title = "Parent Page (show all child pages as links for this recommended section)", $sourceObject = "SiteTree"));
+		return $fields;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		if(!$this->ParentID) {
+			if($page = DataObject::get_one("SearchPlusPage")) {
+				$this->ParentID = $page->ID;
+			}
+			else{
+				user_error("Make sure to create a SearchPlusPage", E_USER_NOTICE);
+			}
+		}
+	}
 
 }

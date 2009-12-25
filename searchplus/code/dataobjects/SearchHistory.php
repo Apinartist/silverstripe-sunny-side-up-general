@@ -13,19 +13,40 @@ class SearchHistory Extends DataObject {
 
 	static $db = array(
 		"Title" => "Varchar(255)",
+		"RedirectTo" => "Varchar(255)"
 	);
 
 	static $many_many = array(
 		"Recommendations" => "Page"
 	);
 
-	static $casting = array(
-		"Count" => "Int"
+	static $singular_name = 'Search History Phrase';
+
+	static $plural_name = 'Search History Phrases';
+
+	static $default_sort = 'Title';
+
+	public static $searchable_fields = array(
+		"Title",
+		"RedirectTo"
 	);
 
+	public static $summary_fields = array(
+		"Title", "RedirectTo"
+	);
+
+	public static $field_labels = array(
+		"Title" => "Phrase Searched For",
+		"RedirectTo" => "Redirect To"
+	);
+
+
+	function canDelete() {
+		return false;
+	}
+
 	static function add_entry($KeywordString) {
-		Convert::raw2sql($KeywordString);
-		$KeywordString = trim(eregi_replace(" +", " ", $KeywordString));
+		$KeywordString = self::clean_keywordstring($KeywordString);
 		$obj = new SearchHistoryLog();
 		$obj->Title = $KeywordString;
 		$obj->write();
@@ -40,42 +61,38 @@ class SearchHistory Extends DataObject {
 		return $obj;
 	}
 
-	static $singular_name = 'Search History Phrase';
+	static function find_entry($KeywordString) {
+		$KeywordString = self::clean_keywordstring($KeywordString);
+		return DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'");
+	}
 
-	static $plural_name = 'Search History Phrases';
-
-	static $default_sort = 'Title';
-
-	public static $searchable_fields = array(
-		"Title"
-	);
-
-	public static $summary_fields = array(
-		"Title", "Count"
-	);
-
-	public static $field_labels = array(
-		"Phrase Searched For"
-	);
-
-
-	function canDelete() {
-		return false;
+	static function clean_keywordstring($KeywordString) {
+		Convert::raw2sql($KeywordString);
+		$KeywordString = trim(eregi_replace(" +", " ", $KeywordString));
+		return $KeywordString;
 	}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Recommendations");
-		$fields->push(new TreeMultiselectField($name = "Recommendations", $title = "Recommendations", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title"));
+		if(!$this->RedirectTo) {
+			$source = DataObject::get("Page", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
+			$sourceArray = $source->toDropdownMap();
+			$fields->addFieldToTab("Root.Main", new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceArray));
+		}
+		else {
+			$fields->addFieldToTab("Root.Main", new LiteralField($name = "Recommendations", '<p>This search phrase cannot have recommendations, because it redirects to <i>'.$this->RedirectTo.'</i></p>'));
+		}
 		return $fields;
 	}
 
-	function getCount() {
-		DataObject::get("SearchHistoryLog", "`Title` = '".$this->Title."'");
-	}
 
-	function Count() {
-		return $this->getCount();
+	function getFrontEndFields() {
+		$fields = parent::getFrontEndFields();
+		$fields->removeByName("Recommendations");
+		$source = DataObject::
+		$fields->push(new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title"));
+		return $fields;
 	}
 
 }

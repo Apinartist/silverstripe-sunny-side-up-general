@@ -1,5 +1,6 @@
 <h2 id="SearchPlusSearchResultListHeading">Results $Results.CurrentPage of $Results.TotalPages for '$Query'</h2>
 <% include SearchPlusMoreThanOnePage %>
+<% if Results %>
 <ul id="SearchResults">
 <% control Results %>
 	<li class="$EvenOdd">
@@ -9,4 +10,7 @@
 	</li>
 <% end_control %>
 </ul>
+<% else %>
+<p class="SearchPlusSearchResultListRegret">Sorry, no pages matched your search, please try again.</p>
+<% end_if %>
 <% include SearchPlusMoreThanOnePage %>

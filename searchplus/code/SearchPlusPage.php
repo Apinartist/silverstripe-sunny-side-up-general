@@ -16,7 +16,7 @@ class SearchPlusPage extends Page {
 	public static $db = array();
 
 	public static $has_many = array(
-		"RecommendedSections" => "RecommendedSection"
+		"RecommendedSearchPlusSections" => "RecommendedSearchPlusSection"
 	);
 
 	public function canCreate() {
@@ -29,7 +29,19 @@ class SearchPlusPage extends Page {
 
 	public function getCMSFields($params = null) {
 		$fields = parent::getCMSFields($params);
-
+		$fields->addFieldToTab(
+			"Root.Content.RecommendedSections",
+			new HasManyComplexTableField(
+				$controller = $this,
+				$name = "RecommendedSearchPlusSections",
+				$sourceClass = "RecommendedSearchPlusSection",
+				$fieldList = array("Title" => "Title"),
+				$detailFormFields = null,
+				$sourceFilter = "",
+				$sourceSort = "",
+				$sourceJoin = ""
+			)
+		);
 		return $fields;
 	}
 
@@ -48,10 +60,26 @@ class SearchPlusPage_Controller extends Page_Controller {
 
 	function results($data){
 		$form = $this->SearchForm();
-		self::$search_history_object = SearchHistory::add_entry($data["Search"]);
+		if(!isset($_GET["redirect"])) {
+			self::$search_history_object = SearchHistory::add_entry($data["Search"]);
+			if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
+				Director::redirect(
+					str_replace(
+						"Search=".urlencode(self::$search_history_object->Title),
+						"Search=".urlencode(self::$search_history_object->RedirectTo),
+						HTTP::RAW_setGetVar('redirect', 1, null)
+					)
+				);
+			}
+		}
+		else {
+			self::$search_history_object = SearchHistory::find_entry($data["Search"]);
+		}
 		$data = array(
 			'Results' => $form->getResults(),
 			'Query' => $form->getSearchQuery(),
+			'Recommendations' => $this->Recommendations(),
+			'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
 			'Title' => 'Search Results'
 		);
 		return $this->customise($data)->renderWith(array('Page_results', 'Page'));
@@ -69,36 +97,45 @@ class SearchPlusPage_Controller extends Page_Controller {
 			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 			return;
 		}
+		Requirements::themedCSS("popularsearches");
 		$days = intval(Director::URLParam("ID"));
 		if(!$days) {
 			$days = 100;
 		}
 		$countMin = intval(Director::URLParam("OtherID")+0);
-		$data = DB::query("SELECT COUNT(ID) count, Title FROM `SearchHistoryLog` WHERE Created > ( NOW() - INTERVAL $days DAY ) GROUP BY `Title`  HAVING COUNT(ID) >= $countMin ORDER BY count DESC ");
-		$do = new DataObject();
-		$do->Data = new DataObjectSet();
 		if(!$countMin) $countMin++;
-		$v = "<h1>Search Phrases entered at least $countMin times during the last $days days</h1><table>";
+		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title`  HAVING COUNT(`SearchHistory`.`ID`) >= $countMin ORDER BY count DESC ");
+		$do = new DataObject();
+		$do->Title = "Search Phrase Popularity";
+		$do->MenuTitle = "Search Phrase Popularity";
+		$do->MetaTitle = "Search Phrase Popularity";
+		$do->DataByCount = new DataObjectSet();
+		$do->DataByTitle = new DataObjectSet();
+		$do->CountMin = $countMin;
+		$do->Days = $days;
 		$list = array();
 		foreach($data as $key => $row) {
 			if(!$key) {
-				$multiplier = 700 / $row["count"];
+				$max = $row["count"];
 			}
-			$multipliedWidth = floor($row["count"]*$multiplier);
-			$list[$row["count"]."-".$key] = $row["Title"];
-			$do->Data->push(new ArrayData($row));
-			$v .=' <tr><td style="text-align: right; width: 350px;">'.$row["Title"].'</td><td style="background-color: grey"><div style="width: '.$multipliedWidth.'px; background-color: #0066CC;">'.$row["count"].'</div></td></tr>';
+			$percentage = floor(($row["count"]/$max)*100);
+			$subDataSet = new ArrayData(
+				array(
+					"ParentID" => $row["id"],
+					"Title" => $row["title"],
+					"Width" => $percentage,
+					"Count" => $row["count"]
+				)
+			);
+			$list[$row["title"]] = $subDataSet;
+			$do->DataByCount->push($subDataSet );
 		}
-		$v .= '</table>';
-		asort($list);
-		$v .= "<h1>A - Z</h1><table>";
-		foreach($list as $key => $title) {
-			$array = explode("-", $key);
-			$multipliedWidth = $array[0]*$multiplier;
-			$v .=' <tr><td style="text-align: right; width: 350px;">'.$title.'</td><td style="background-color: grey"><div style="width: '.$multipliedWidth.'px; background-color: #0066CC;">'.$array[0].'</div></td></tr>';
+		ksort($list);
+		foreach($list as $subDataSet ) {
+			$do->DataByTitle->push($subDataSet);
 		}
-		$v .= '</table>';
-		return $v;
+
+		return $this->customise($do)->renderWith(array('Page_popularsearches', 'Page'));
 	}
 
 
