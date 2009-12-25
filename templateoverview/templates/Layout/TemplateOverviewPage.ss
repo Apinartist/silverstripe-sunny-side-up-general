@@ -3,13 +3,19 @@
 <% control ListOfAllClasses %>
 	<% if Count %>
 	<li style="background-image: url({$Icon});">
-		<% if TemplateOverviewDescription %><% control TemplateOverviewDescription %>
-			<% if Image1ID %><span class="thumb"><a href="$Image1.URL" rel="prettyPhoto">$Image1.SetWidth(150)</a></span><% end_if %>
-			<% if Image2ID %><span class="littleThumb"><a href="$Image2.URL" rel="prettyPhoto">$Image2.SetWidth(25)</a></span><% end_if %>
-			<% if Image3ID %><span class="littleThumb"><a href="$Image3.URL" rel="prettyPhoto">$Image3.SetWidth(25)</a></span><% end_if %>
-			<% if Image4ID %><span class="littleThumb"><a href="$Image4.URL" rel="prettyPhoto">$Image4.SetWidth(25)</a></span><% end_if %>
-			<% if Image5ID %><span class="littleThumb"><a href="$Image5.URL" rel="prettyPhoto">$Image5.SetWidth(25)</a></span><% end_if %>
-		<% end_control %><% end_if %>
+		<% if TemplateOverviewDescription %>
+		<div class="images">
+		<% control TemplateOverviewDescription %>
+			<% if Image1ID %><span class="thumb"><a href="$Image1.URL" rel="prettyPhoto[$Parent.ClassName]">$Image1.SetWidth(150)</a></span><% end_if %>
+			<div class="littleImages">
+				<% if Image2ID %><span class="littleThumb"><a href="$Image2.URL" rel="prettyPhoto[$Parent.ClassName]">$Image2.SetWidth(25)</a></span><% end_if %>
+				<% if Image3ID %><span class="littleThumb"><a href="$Image3.URL" rel="prettyPhoto[$Parent.ClassName]">$Image3.SetWidth(25)</a></span><% end_if %>
+				<% if Image4ID %><span class="littleThumb"><a href="$Image4.URL" rel="prettyPhoto[$Parent.ClassName]">$Image4.SetWidth(25)</a></span><% end_if %>
+				<% if Image5ID %><span class="littleThumb"><a href="$Image5.URL" rel="prettyPhoto[$Parent.ClassName]">$Image5.SetWidth(25)</a></span><% end_if %>
+			</div>
+		<% end_control %>
+		</div>
+		<% end_if %>
 		<span class="typo-heading">$Count x $ClassName - template</span>
 		<% if ShowAll %>
 		<span class="typo-fullLink"><a href="$FullLink">$FullLink</a> :: $Title</span>

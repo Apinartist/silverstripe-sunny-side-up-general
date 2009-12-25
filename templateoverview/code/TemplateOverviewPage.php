@@ -84,6 +84,9 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		if(class_exists("PrettyPhoto")) {
 			PrettyPhoto::include_code();
 		}
+		else {
+			user_error("It is recommended that you install the Sunny Side Up Pretty Photo Module", E_USER_NOTICE);
+		}
 	}
 
 	function showall () {

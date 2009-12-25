@@ -63,11 +63,23 @@ class TemplateOverviewDescription extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$page = DataObject::get_one("TemplateOverviewPage");
+		if(!$page) {
+			user_error("Please make sure to create a TemplateOverviewPage to make use of this module.", E_USER_WARNING);
+		}
 		$fields->removeByName("ClassNameLink");
-		$fields->removeByName("Image3ID");
-		$fields->removeByName("Image4ID");
-		$fields->removeByName("Image5ID");
-		$fields->addFieldToTab("Root.Link", new HeaderField("ClassNameLinkInfo", $this->ClassNameLink));
+		$fields->removeByName("Image1");
+		$fields->removeByName("Image2");
+		$fields->removeByName("Image3");
+		$fields->removeByName("Image4");
+		$fields->removeByName("Image5");
+		$fields->addFieldToTab("Root.Design", new ImageField("Image1", "Design One"));
+		$fields->addFieldToTab("Root.Design", new ImageField("Image2", "Design Two"));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image3", "Instructions One"));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image4", "Instructions Two"));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image5", "Instructions Three"));
+		$fields->addFieldToTab("Root.Main", new HeaderField("ClassNameLinkInfo", "Details for: ".$this->ClassNameLink), "Description");
+		$fields->addFieldToTab("Root.Main", new LiteralField("BackLink", '<p><a href="'.$page->Link().'">go back to template overview page</a></p>'));
 		$fields->removeByName("ParentID");
 		return $fields;
 	}
