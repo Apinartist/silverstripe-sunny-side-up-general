@@ -33,12 +33,11 @@ class SearchHistory Extends DataObject {
 		}
 		else {
 			$obj = new SearchHistory();
-			$obj->Title = $KeywordString
+			$obj->Title = $KeywordString;
 			$obj->write();
 		}
 		return $KeywordString;
 	}
-
 
 	static $singular_name = 'Search History Phrase';
 
