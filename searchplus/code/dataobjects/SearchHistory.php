@@ -78,7 +78,6 @@ class SearchHistory Extends DataObject {
 		return $this->getCount();
 	}
 
-
 }
 
 
