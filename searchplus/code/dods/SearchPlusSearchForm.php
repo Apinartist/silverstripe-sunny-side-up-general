@@ -12,7 +12,8 @@
 
 	function SearchForm() {
 		$action = Director::URLParam("Action");
-		if(!in_array($action, array("login", "logout"))) {
+		$page = DataObject::get_one("SearchPlusPage");
+		if(!in_array($action, array("login", "logout")) && $page) {
 			$searchText = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : 'Search';
 			$fields = new FieldSet(
 				new TextField('Search', '', $searchText)
@@ -20,7 +21,10 @@
 			$actions = new FieldSet(
 				new FormAction('results', 'Search')
 			);
-			return new SearchForm($this, 'SearchForm', $fields, $actions);
+			$form = SearchForm($this, 'SearchForm', $fields, $actions);
+
+			$form->setFormAction($page->Link());
+			return $form;
 		}
 	}
 
