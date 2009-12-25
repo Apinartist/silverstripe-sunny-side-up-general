@@ -43,7 +43,7 @@ class SearchPlusPage extends Page {
 			$fields->addFieldsToTab("Root.Content.RecommendedSection$i",
 				new TextField("RecommendedSectionTitle$i", "Recommended Section Title"),
 				new HTMLEditorField("RecommendedSectionTitle$i", "Recommended Section Introduction", $rows = 4, $cols = 20),
-				new TreeDropdownField($name = "RecommendedSectionParentPage".$i."ID", $title = "Parent Page for Recommended Section", $sourceObjectName ));
+				new TreeDropdownField($name = "RecommendedSectionParentPage".$i."ID", $title = "Parent Page for Recommended Section", $sourceObjectName )
 			);
 		}
 		return $fields;
@@ -59,6 +59,19 @@ class SearchPlusPage_Controller extends Page_Controller {
 	public function init() {
 		parent::init();
 	}
+
+
+	function results($data){
+		$form = $this->SearchForm();
+		SearchHistory::add_entry($data["Search"]);
+		$data = array(
+			'Results' => $form->getResults(),
+			'Query' => $form->getSearchQuery(),
+			'Title' => 'Search Results'
+		);
+		return $this->customise($data)->renderWith(array('Page_results', 'Page'));
+	}
+
 
 	function popularsearchwords() {
 		if(!Permission::check("ADMIN")) {

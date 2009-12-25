@@ -7,7 +7,7 @@
  *
  **/
 
- class SearchFormPlus extends Extension {
+class SearchPlusSearchForm extends Extension {
 
 
 	function SearchForm() {
@@ -21,20 +21,15 @@
 			$actions = new FieldSet(
 				new FormAction('results', 'Search')
 			);
-			$form = SearchForm($this, 'SearchForm', $fields, $actions);
+			$form = new SearchForm($this, 'SearchForm', $fields, $actions);
 
-			$form->setFormAction($page->Link());
+			$form->setFormAction($page->Link()."results");
 			return $form;
+		}
+		elseif(!$page) {
+			user_error("You need to create a SearchPlusPage to have a search box", E_USER_NOTICE);
 		}
 	}
 
-	function results($data, $form){
-		$data = array(
-			'Results' => $form->getResults(),
-			'Query' => $form->getSearchQuery(),
-			'Title' => 'Search Results'
-		);
-		return $this->customise($data)->renderWith(array('Page_results', 'Page'));
-	}
 
  }

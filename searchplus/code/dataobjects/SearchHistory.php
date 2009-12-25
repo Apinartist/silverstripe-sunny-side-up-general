@@ -43,7 +43,7 @@ class SearchHistory Extends DataObject {
 
 	static $plural_name = 'Search History Phrases';
 
-	static $default_sort = 'Count DESC';
+	static $default_sort = 'Title';
 
 	public static $searchable_fields = array(
 		"Title"
