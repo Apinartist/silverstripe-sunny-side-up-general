@@ -19,7 +19,9 @@ class TemplateOverviewDescription extends DataObject {
 		"Parent" => "TemplateOverviewPage",
 		"Image1" => "Image",
 		"Image2" => "Image",
-		"Image3" => "Image"
+		"Image3" => "Image",
+		"Image4" => "Image",
+		"Image5" => "Image"
 	);
 
 	public static $searchable_fields = array(
@@ -62,6 +64,9 @@ class TemplateOverviewDescription extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ClassNameLink");
+		$fields->removeByName("Image3ID");
+		$fields->removeByName("Image4ID");
+		$fields->removeByName("Image5ID");
 		$fields->addFieldToTab("Root.Link", new HeaderField("ClassNameLinkInfo", $this->ClassNameLink));
 		$fields->removeByName("ParentID");
 		return $fields;
