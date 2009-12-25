@@ -8,6 +8,9 @@ class ProductGroupAlternative extends ProductGroup {
 
 	static $icon = "ecommerce_alternativeproductgroup/images/treeicons/ProductGroupAlternative";
 
+	static $add_action = 'alternative products overview';
+
+
 }
 class ProductGroupAlternative_Controller extends ProductGroup_Controller {
 
