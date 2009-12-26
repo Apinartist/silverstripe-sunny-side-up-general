@@ -11,7 +11,7 @@ class SearchPlusPage extends Page {
 
 	static $can_be_root = true;
 
-	static $icon = 'mysite/images/treeicons/SearchPlusPage';
+	static $icon = 'searchplus/images/treeicons/SearchPlusPage';
 
 	public static $db = array();
 
