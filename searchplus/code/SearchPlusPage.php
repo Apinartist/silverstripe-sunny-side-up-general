@@ -135,10 +135,12 @@ class SearchPlusPage_Controller extends Page_Controller {
 			$do->DataByTitle->push($subDataSet);
 		}
 
-		return $this->customise($do)->renderWith(array('Page_popularsearches', 'Page'));
+		return $this->customise($do)->renderWith(array('SearchPlusPage_popularsearches', 'Page'));
 	}
 
-
+	function Form() {
+		return $this->SearchForm("MainSearchForm");
+	}
 
 }
 
