@@ -137,8 +137,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 					"ParentID" => $row["id"],
 					"Title" => $row["title"],
 					"Width" => $percentage,
-					"Count" => $row["count"],
-					"SampleLink" => $this->Link().'results/?Search='.urlencode($row["title"]).'&amp;action_results=Search&amp;redirect=1'
+					"Count" => $row["count"]
 				)
 			);
 			$list[$row["title"]] = $subDataSet;

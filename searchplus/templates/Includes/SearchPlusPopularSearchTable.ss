@@ -5,8 +5,7 @@
 		<tr>
 			<% control DataByCount %>
 			<td>
-				<a href="$SampleLink">$Title</a>
-				<br /><a href="admin/searchplus/SearchHistory/{$ParentID}/edit" class="addRecommendations">add synonyms and recommendations</a>
+				<a href="admin/searchplus/SearchHistory/{$ParentID}/edit">$Title</a>
 			</td>
 			<td class="background"><div style="width: {$Width}%;" class="foreground">$Count</div></td></tr>
 			<% end_control %>

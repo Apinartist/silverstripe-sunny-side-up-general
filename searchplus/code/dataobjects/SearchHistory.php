@@ -87,7 +87,12 @@ class SearchHistory Extends DataObject {
 		if(!$page) {
 			user_error("Make sure to create a SearchPlusPage to make proper use of this module", E_USER_NOTICE);
 		}
-		$fields->addFieldToTab("Root.Main", new LiteralField($name = "Backlink", '<p>Review all search phrases on <a href="'.$page->Link.'/popularsearchphrases/popularsearchwords/100/10/">Popular Search Phrases</a></p>'));
+		$fields->addFieldToTab("Root.Main", new LiteralField($name = "BackLinks", '
+			<p>
+				Review a graph of all <a href="'.$page->Link.'/popularsearchphrases/popularsearchwords/100/10/">Popular Search Phrases</a> OR
+				You may want to <a href="'.$page->Link.'results/?Search='.urlencode($this->Title).'&amp;action_results=Search&amp;redirect=1">try this search</a>.
+			</p>'
+		));
 		return $fields;
 	}
 
