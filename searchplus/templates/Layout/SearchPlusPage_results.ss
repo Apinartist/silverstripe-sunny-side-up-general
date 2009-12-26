@@ -6,13 +6,13 @@
 </div>
 <% end_if %>
 <% if RecommendedSearchPlusSection %>
-<ul id="RecommendedSearchPlusSection">
+<div id="RecommendedSearchPlusSections">
 	<% control RecommendedSearchPlusSection %>
-	<li>
+	<div class="recommendedSearchPlusSectionOne">
 		<h3>$Title</h3>
 		<p>$Intro</p>
 		<% if ParentPage %><% control ParentPage %><ul><% control Children %><li><a href="$Link">$Title</a></li><% end_control %></ul><% end_control %><% end_if %>
-	</li>
+	</div>
 	<% end_control %>
-</ul>
+</div>
 <% end_if %>
