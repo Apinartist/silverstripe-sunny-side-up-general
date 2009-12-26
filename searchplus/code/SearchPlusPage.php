@@ -91,9 +91,12 @@ class SearchPlusPage_Controller extends Page_Controller {
 		}
 	}
 
+	function HasPopularSearchWords() {
+		return Permission::check("ADMIN");
+	}
 
 	function popularsearchwords() {
-		if(!Permission::check("ADMIN")) {
+		if(!$this->HasPopularSearchWords()) {
 			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 			return;
 		}
@@ -102,16 +105,16 @@ class SearchPlusPage_Controller extends Page_Controller {
 		if(!$days) {
 			$days = 100;
 		}
-		$countMin = intval(Director::URLParam("OtherID")+0);
-		if(!$countMin) $countMin++;
-		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title`  HAVING COUNT(`SearchHistory`.`ID`) >= $countMin ORDER BY count DESC ");
+		$limit = intval(Director::URLParam("OtherID")+0);
+		if(!$limit) $limit++;
+		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title`  HAVING COUNT(`SearchHistory`.`ID`) >= $countMin ORDER BY count DESC LIMIT 0, $limit");
 		$do = new DataObject();
 		$do->Title = "Search Phrase Popularity";
 		$do->MenuTitle = "Search Phrase Popularity";
 		$do->MetaTitle = "Search Phrase Popularity";
 		$do->DataByCount = new DataObjectSet();
 		$do->DataByTitle = new DataObjectSet();
-		$do->CountMin = $countMin;
+		$do->Limit = $limit;
 		$do->Days = $days;
 		$list = array();
 		foreach($data as $key => $row) {

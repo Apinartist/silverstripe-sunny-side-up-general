@@ -1,5 +1,5 @@
 <div id="SearchPlusPopularSearches">
-	<h3>Search Phrases entered at least $CountMin times during the last $Days days</h3>
+	<h3>Top $Limit Search Phrases during the last $Days days</h3>
 	<h4>By Popularity</h4>
 	<table summary="most popular search phrases by count" class="graphTable">
 		<tr>
