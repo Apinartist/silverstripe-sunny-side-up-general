@@ -83,17 +83,15 @@ class SearchHistory Extends DataObject {
 		else {
 			$fields->addFieldToTab("Root.Main", new LiteralField($name = "Recommendations", '<p>This search phrase cannot have recommendations, because it redirects to <i>'.$this->RedirectTo.'</i></p>'));
 		}
+		$page = DataObject::get_one("SearchPlusPage");
+		if(!$page) {
+			user_error("Make sure to create a SearchPlusPage to make proper use of this module", E_USER_NOTICE);
+		}
+		$fields->addFieldToTab("Root.Main", new LiteralField($name = "Backlink", '<p>Review all search phrases on <a href="'.$page->Link.'/popularsearchphrases/popularsearchwords/100/10/">Popular Search Phrases</a></p>'));
 		return $fields;
 	}
 
 
-	function getFrontEndFields() {
-		$fields = parent::getFrontEndFields();
-		$fields->removeByName("Recommendations");
-		$source = DataObject::
-		$fields->push(new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title"));
-		return $fields;
-	}
 
 }
 
