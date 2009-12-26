@@ -76,8 +76,12 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$array[] = "blue";
 		$array[] = "pink";
 		$array[] = "orange";
-		$errorField = new TextField($name = "ErrorField", $title = "Text Field Example");
+		$errorField1 = new TextField($name = "ErrorField", $title = "Text Field Example");
 		$errorField->setError("there is an error", "required");
+		$errorField2 = new TextField($name = "ErrorField", $title = "Text Field Example");
+		$errorField->setCustomValidationMessage("try again...");
+		$rightTitle = new TextField($name = "ErrorField", $title = "Text Field Example");
+		$rightTitle->setRightTitle("fancy title here");
 		$form = new Form(
 			$controller = $this,
 			$name = "TestForm",
@@ -85,11 +89,14 @@ class TypographyTestPage_Controller extends Page_Controller {
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
 				new TextField($name = "TextField", $title = "Text Field Example"),
-				new HeaderField($name = "HeaderField2a", $title = "Error Message Should Display Below", 2),
-				$errorField,
+				new HeaderField($name = "HeaderField2a", $title = "Error Messages Should Display Below", 2),
+				$errorField1,
+				$errorField2,
+				new HeaderField($name = "HeaderField2b", $title = "Field with right title", 2),
+				$rightTitle,
 				new TextareaField($name = "TextareaField", $title = "Textarea Field", 5, 5),
 				new EmailField("EmailField", "Email address"),
-				new HeaderField($name = "HeaderField2b", $title = "HeaderField Level 2", 2),
+				new HeaderField($name = "HeaderField2c", $title = "HeaderField Level 2", 2),
 				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
 				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$array),
 				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$array),
@@ -108,6 +115,9 @@ class TypographyTestPage_Controller extends Page_Controller {
 					// List the required fields here: "Email", "FirstName"
 			)
 		);
+		$form->setMessage("good message", "good");
+		$form->setMessage("bad message", "bad");
+		$form->setMessage("warning message", "warning");
 		return $form;
 	}
 
