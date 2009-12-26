@@ -1,4 +1,4 @@
-<h2 id="SearchPlusSearchResultListHeading">Search for '$Query': $Results.Count results</h2>
+<h2 id="SearchPlusSearchResultListHeading">Search for <q>$Query</q>: $Results.Count results</h2>
 <% include SearchPlusMoreThanOnePage %>
 <% if Results %>
 <ul id="SearchResults">
