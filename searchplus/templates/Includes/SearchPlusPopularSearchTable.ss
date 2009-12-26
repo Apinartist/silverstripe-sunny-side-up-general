@@ -4,7 +4,7 @@
 	<table summary="most popular search phrases by count" class="graphTable">
 		<tr>
 			<% control DataByCount %>
-			<td>
+			<td class="title">
 				<a href="admin/searchplus/SearchHistory/{$ParentID}/edit">$Title</a>
 			</td>
 			<td class="background"><div style="width: {$Width}%;" class="foreground">$Count</div></td></tr>
