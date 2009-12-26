@@ -92,7 +92,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 				'Query' => $form->getSearchQuery(),
 				'Recommendations' => $this->Recommendations(),
 				'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
-				'Title' => 'Search Results'
+				'Title' => 'Search Results',
 				'MenuTitle' => 'Search Results'
 			);
 			return $this->customise($data)->renderWith(array('SearchPlusPage_results', 'Page'));
