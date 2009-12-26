@@ -24,8 +24,10 @@ class SearchPlusSearchForm extends Extension {
 			else {
 				$searchText = '';
 			}
+			$field = new TextField($fieldName, $fieldLabel, $searchText);
+			$field->setName("Search");
 			$fields = new FieldSet(
-				new TextField($fieldName, $fieldLabel, $searchText)
+				$field;
 			);
 			$actions = new FieldSet(
 				new FormAction('results', 'Search')

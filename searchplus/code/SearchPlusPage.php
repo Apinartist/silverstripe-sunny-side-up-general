@@ -60,9 +60,6 @@ class SearchPlusPage extends Page {
 class SearchPlusPage_Controller extends Page_Controller {
 
 	public function init() {
-		if(isset($_GET["MainSearch"]) || !isset($_GET["Search"])) {
-			$_GET["Search"] = $_GET["MainSearch"];
-		}
 		parent::init();
 	}
 
@@ -70,7 +67,9 @@ class SearchPlusPage_Controller extends Page_Controller {
 
 	function results($data){
 		if(isset($data["Search"]) || isset($data["MainSearch"])) {
-
+			if(isset($data["MainSearch"]) || !isset($data["Search"])) {
+				$data["Search"] = $data["MainSearch"];
+			}
 			$form = $this->SearchForm();
 			if(!isset($_GET["redirect"])) {
 				self::$search_history_object = SearchHistory::add_entry($data["Search"]);
