@@ -88,7 +88,9 @@ class TypographyTestPage_Controller extends Page_Controller {
 			$fields = new FieldSet(
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
-				new TextField($name = "TextField", $title = "Text Field Example"),
+				new TextField($name = "TextField1", $title = "Text Field Example 1"),
+				new TextField($name = "TextField2", $title = "Text Field Example 2"),
+				new TextField($name = "TextField3", $title = "Text Field Example 3"),
 				new HeaderField($name = "HeaderField2a", $title = "Error Messages Should Display Below", 2),
 				$errorField1,
 				$errorField2,
@@ -112,7 +114,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 
 			),
 			$requiredFields = new RequiredFields(
-					// List the required fields here: "Email", "FirstName"
+					"ErrorField1","ErrorField2", "EmailField", "TextField3"// List the required fields here: "Email", "FirstName"
 			)
 		);
 		$form->setMessage("good message", "good");
