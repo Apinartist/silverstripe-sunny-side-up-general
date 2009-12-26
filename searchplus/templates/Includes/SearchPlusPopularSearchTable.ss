@@ -1,6 +1,6 @@
 <div id="SearchPlusPopularSearches">
 	<h3>Top $Limit Search Phrases during the last $Days days</h3>
-	<h4>By Popularity</h4>
+	<h4>By Popularity (click to customise / edit search phrases)</h4>
 	<table summary="most popular search phrases by count" class="graphTable">
 		<tr>
 			<% control DataByCount %>
