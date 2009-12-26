@@ -76,11 +76,11 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$array[] = "blue";
 		$array[] = "pink";
 		$array[] = "orange";
-		$errorField1 = new TextField($name = "ErrorField", $title = "Text Field Example");
-		$errorField->setError("there is an error", "required");
-		$errorField2 = new TextField($name = "ErrorField", $title = "Text Field Example");
-		$errorField->setCustomValidationMessage("try again...");
-		$rightTitle = new TextField($name = "ErrorField", $title = "Text Field Example");
+		$errorField1 = new TextField($name = "ErrorField1", $title = "Text Field Example 1");
+		$errorField1->setError("there is an error", "required");
+		$errorField2 = new TextField($name = "ErrorField2", $title = "Text Field Example 2");
+		$errorField2->setCustomValidationMessage("try again...");
+		$rightTitle = new TextField($name = "RightTitleField", $title = "Left Title is Default");
 		$rightTitle->setRightTitle("fancy title here");
 		$form = new Form(
 			$controller = $this,
