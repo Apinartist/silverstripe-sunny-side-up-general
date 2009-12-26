@@ -68,7 +68,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 	function results($data){
 		if(isset($data["Search"]) || isset($data["MainSearch"])) {
 			if(isset($data["MainSearch"]) || !isset($data["Search"])) {
-				$data["Search"] = $data["MainSearch"]
+				$data["Search"] = $data["MainSearch"];
 			}
 			$form = $this->SearchForm();
 			if(!isset($_GET["redirect"])) {
