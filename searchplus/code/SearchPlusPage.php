@@ -61,6 +61,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 
 	public function init() {
 		parent::init();
+		Requirements::javascript("searchplus/javascript/searchpluspage.js");
 	}
 
 	protected static $search_history_object = null;
