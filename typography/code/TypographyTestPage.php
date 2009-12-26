@@ -81,7 +81,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$errorField2 = new TextField($name = "ErrorField2", $title = "Text Field Example 2");
 		$errorField2->setCustomValidationMessage("try again...");
 		$rightTitle = new TextField($name = "RightTitleField", $title = "Left Title is Default");
-		$rightTitle->setRightTitle("fancy title here");
+		$rightTitle->setRightTitle("right title here");
 		$form = new Form(
 			$controller = $this,
 			$name = "TestForm",
