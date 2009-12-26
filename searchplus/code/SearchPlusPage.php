@@ -60,8 +60,8 @@ class SearchPlusPage extends Page {
 class SearchPlusPage_Controller extends Page_Controller {
 
 	public function init() {
-		if(isset($data["MainSearch"]) || !isset($data["Search"])) {
-			$data["Search"] = $data["MainSearch"];
+		if(isset($_GET["MainSearch"]) || !isset($_GET["Search"])) {
+			$_GET["Search"] = $_GET["MainSearch"];
 		}
 		parent::init();
 	}
