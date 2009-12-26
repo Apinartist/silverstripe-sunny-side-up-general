@@ -2,7 +2,7 @@
 <ul id="classList">
 <% control ListOfAllClasses %>
 	<% if Count %>
-	<li style="background-image: url({$Icon});">
+	<li style="background-image: url({$Icon});" id="sectionFor-$ClassName">
 		<% if TemplateOverviewDescription %>
 		<div class="images">
 		<% control TemplateOverviewDescription %>

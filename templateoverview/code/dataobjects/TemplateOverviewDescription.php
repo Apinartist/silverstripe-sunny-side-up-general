@@ -79,7 +79,7 @@ class TemplateOverviewDescription extends DataObject {
 		$fields->addFieldToTab("Root.Instructions", new ImageField("Image4", "Instructions Two"));
 		$fields->addFieldToTab("Root.Instructions", new ImageField("Image5", "Instructions Three"));
 		$fields->addFieldToTab("Root.Main", new HeaderField("ClassNameLinkInfo", "Details for: ".$this->ClassNameLink), "Description");
-		$fields->addFieldToTab("Root.Main", new LiteralField("BackLink", '<p><a href="'.$page->Link().'">go back to template overview page</a> - dont forget to SAVE FIRST.</p>'));
+		$fields->addFieldToTab("Root.Main", new LiteralField("BackLink", '<p><a href="'.$page->Link().'#sectionFor-'.$this->ClassNameLink.'">go back to template overview page</a> - dont forget to SAVE FIRST.</p>'));
 		$fields->removeByName("ParentID");
 		return $fields;
 	}
