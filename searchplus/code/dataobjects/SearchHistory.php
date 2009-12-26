@@ -75,7 +75,7 @@ class SearchHistory Extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Title");
-		$fields->addFieldToTab("Root.Main", new HeaderField($name = "TitleHeader", "search for: &quot;"$this->Title."&quot;", 1), "RedirectTo");
+		$fields->addFieldToTab("Root.Main", new HeaderField($name = "TitleHeader", "search for: &quot;".$this->Title."&quot;", 1), "RedirectTo");
 		$fields->removeByName("Recommendations");
 		if(!$this->RedirectTo) {
 			$source = DataObject::get("Page", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
