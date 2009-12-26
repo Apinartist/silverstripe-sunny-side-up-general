@@ -138,6 +138,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 					"Title" => $row["title"],
 					"Width" => $percentage,
 					"Count" => $row["count"]
+					"SampleLink" => $this->Link."results/?Search=".urlencode($row["Title"]).'&amp;action_results=Search&amp;redirect=1';
 				)
 			);
 			$list[$row["title"]] = $subDataSet;
