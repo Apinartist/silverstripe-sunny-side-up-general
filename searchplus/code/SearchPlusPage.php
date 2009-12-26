@@ -117,7 +117,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 		}
 		$limit = intval(Director::URLParam("OtherID")+0);
 		if(!$limit) $limit++;
-		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title`  HAVING COUNT(`SearchHistory`.`ID`) >= $countMin ORDER BY count DESC LIMIT 0, $limit");
+		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title` ORDER BY count DESC LIMIT 0, $limit");
 		$do = new DataObject();
 		$do->Title = "Search Phrase Popularity";
 		$do->MenuTitle = "Search Phrase Popularity";
