@@ -66,7 +66,10 @@ class SearchPlusPage_Controller extends Page_Controller {
 	protected static $search_history_object = null;
 
 	function results($data){
-		if(isset($data["Search"])) {
+		if(isset($data["Search"]) || isset($data["MainSearch"])) {
+			if(isset($data["MainSearch"]) || !isset($data["Search"])) {
+				$data["Search"] = $data["MainSearch"]
+			}
 			$form = $this->SearchForm();
 			if(!isset($_GET["redirect"])) {
 				self::$search_history_object = SearchHistory::add_entry($data["Search"]);
@@ -152,7 +155,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 	}
 
 	function Form() {
-		return $this->SearchForm("MainSearchForm");
+		return $this->SearchForm("MainSearchForm", "MainSearch", "Enter Keyword(s)");
 	}
 
 }

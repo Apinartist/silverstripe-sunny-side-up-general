@@ -14,13 +14,13 @@
 
 class SearchPlusSearchForm extends Extension {
 
-	function SearchForm($name = "SearchForm") {
+	function SearchForm($name = "SearchForm", $fieldName = "Search", $fieldLabel = '') {
 		$action = Director::URLParam("Action");
 		$page = DataObject::get_one("SearchPlusPage");
 		if(!in_array($action, array("login", "logout")) && $page) {
-			$searchText = isset($_REQUEST['Search']) ? $_REQUEST['Search'] : 'Search';
+			$searchText = isset($_REQUEST[$fieldName]) ? $_REQUEST[$fieldName] : 'Search';
 			$fields = new FieldSet(
-				new TextField('Search', '', $searchText)
+				new TextField($fieldName, $fieldLabel, $searchText)
 			);
 			$actions = new FieldSet(
 				new FormAction('results', 'Search')
