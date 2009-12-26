@@ -43,7 +43,7 @@ class SearchPlusPage extends Page {
 			)
 		);
 		$fields->addFieldToTab(
-			"Root.Content.PopularSearchPhrases"
+			"Root.Content.PopularSearchPhrases",
 			new LiteralField(
 				"PopularSearchPhrasesLink",
 				'<p>Please make sure to regular <a href="'.$this->Link().'popularsearchwords/100/10">review the most popular search phrases</a> and to add recommendations for each</a>.</p>'
