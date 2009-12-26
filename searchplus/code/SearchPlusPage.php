@@ -42,6 +42,13 @@ class SearchPlusPage extends Page {
 				$sourceJoin = ""
 			)
 		);
+		$fields->addFieldToTab(
+			"Root.Content.PopularSearchPhrases"
+			new LiteralField(
+				"PopularSearchPhrasesLink",
+				'<p>Please make sure to regular <a href="'.$this->Link().'popularsearchwords/100/10">review the most popular search phrases</a> and to add recommendations for each</a>.</p>'
+			)
+		);
 		return $fields;
 	}
 
@@ -59,30 +66,33 @@ class SearchPlusPage_Controller extends Page_Controller {
 	protected static $search_history_object = null;
 
 	function results($data){
-		$form = $this->SearchForm();
-		if(!isset($_GET["redirect"])) {
-			self::$search_history_object = SearchHistory::add_entry($data["Search"]);
-			if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
-				Director::redirect(
-					str_replace(
-						"Search=".urlencode(self::$search_history_object->Title),
-						"Search=".urlencode(self::$search_history_object->RedirectTo),
-						HTTP::RAW_setGetVar('redirect', 1, null)
-					)
-				);
+		if(isset($data["Search"])) {
+			$form = $this->SearchForm();
+			if(!isset($_GET["redirect"])) {
+				self::$search_history_object = SearchHistory::add_entry($data["Search"]);
+				if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
+					Director::redirect(
+						str_replace(
+							"Search=".urlencode(self::$search_history_object->Title),
+							"Search=".urlencode(self::$search_history_object->RedirectTo),
+							HTTP::RAW_setGetVar('redirect', 1, null)
+						)
+					);
+				}
 			}
+			else {
+				self::$search_history_object = SearchHistory::find_entry($data["Search"]);
+			}
+			$data = array(
+				'Results' => $form->getResults(),
+				'Query' => $form->getSearchQuery(),
+				'Recommendations' => $this->Recommendations(),
+				'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
+				'Title' => 'Search Results'
+			);
+			return $this->customise($data)->renderWith(array('SearchPlusPage_results', 'Page'));
 		}
-		else {
-			self::$search_history_object = SearchHistory::find_entry($data["Search"]);
-		}
-		$data = array(
-			'Results' => $form->getResults(),
-			'Query' => $form->getSearchQuery(),
-			'Recommendations' => $this->Recommendations(),
-			'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
-			'Title' => 'Search Results'
-		);
-		return $this->customise($data)->renderWith(array('SearchPlusPage_results', 'Page'));
+		return Array();
 	}
 
 	function Recommendations() {
