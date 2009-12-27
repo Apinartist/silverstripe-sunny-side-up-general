@@ -78,7 +78,7 @@ class OrderDecorator extends DataObjectDecorator {
 		return $this->owner->stat("receipt_subject");
 	}
 
-
+	/*
 	function onAfterWrite() {
 		if($this->owner->ID) {
 			//just to make sure that order arrives!
@@ -88,6 +88,7 @@ class OrderDecorator extends DataObjectDecorator {
 		}
 		parent::onAfterWrite();
 	}
+	*/
 
 }
 

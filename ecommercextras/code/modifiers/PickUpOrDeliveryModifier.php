@@ -198,9 +198,10 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 						}
 						else {
 							// add weight based shipping
-							$this->debugMessage .= "<hr />actual weight:".$this->totalWeight()." multiplier = ".$obj->WeightMultiplier;
-							if($this->totalWeight() && $obj->WeightMultiplier ) {
-								self::$actual_charges += $this->totalWeight() * $obj->WeightMultiplier;
+							$weight = $this->totalWeight();
+							$this->debugMessage .= "<hr />actual weight:".$weight." multiplier = ".$obj->WeightMultiplier;
+							if($weight && $obj->WeightMultiplier ) {
+								self::$actual_charges += $weight * $obj->WeightMultiplier;
 								$this->debugMessage .= "<hr />weight charge: ".self::$actual_charges;
 							}
 							// add percentage
