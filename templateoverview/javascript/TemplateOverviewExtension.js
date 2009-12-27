@@ -1,6 +1,6 @@
 jQuery(document).ready(
 	function () {
-		jQuery("#TemplateOverviewPageDevelopmentFooter a").click(
+		jQuery(".IncludeTemplateOverviewDevelopmentFooterClickHere").click(
 			function() {
 				var url = jQuery(this).attr("href");
 				jQuery("#TemplateOverviewPageDevelopmentFooterLoadHere").html("loading ....");
