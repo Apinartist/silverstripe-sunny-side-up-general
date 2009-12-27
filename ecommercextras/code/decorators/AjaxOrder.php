@@ -40,9 +40,11 @@ class AjaxOrder extends DataObjectDecorator {
 		self::$confirm_delete_text = $v;
 	}
 
+	/* why do we need this???
 	public function can($member) {
 		$this->addAjaxLinkRequirements();
 	}
+	*/
 
 	public function Cart() {
 		$this->addAjaxLinkRequirements();
