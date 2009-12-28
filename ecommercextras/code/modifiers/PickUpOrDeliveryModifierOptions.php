@@ -43,7 +43,8 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"MinimumOrderAmountForZeroRate" => "Minimum for 0 rate (i.e. if the total order is over ... then there is no fee for this option)",
 		"WeightMultiplier" => "WeightMultiplier per kg. (works out weight of order (make sure products have weight) and multiplies with this number to work out charge for this option)",
 		"Percentage" => "Percentage (number between 0 = 0% and 1 = 100%) of total order cost as charge for this option (e.g. 0.05 would add 5 cents to every dollar ordered)",
-		"FixedCost" =>  "This option has a fixed cost (e.g. always 10 dollars)"
+		"FixedCost" =>  "This option has a fixed cost (e.g. always 10 dollars)",
+		"Sort" =>  "Sort Index"
 	);
 
 	public static $defaults = array(
@@ -100,7 +101,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
-		if(class_exists("DataObjectSorterController")) {
+		if(class_exists("DataObjectSorterController") && $this->hasExtension("DataObjectSorterController")) {
 			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", $this->dataObjectSorterPopupLink()));
 		}
 		return $fields;

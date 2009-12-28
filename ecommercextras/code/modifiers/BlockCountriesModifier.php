@@ -124,8 +124,12 @@ class BlockCountriesModifier extends OrderModifier {
 	}
 
 
-
 //-------------------------------------------------------------------- *** database functions
+//-------------------------------------------------------------------- *** debug
+
+	function DebugMessage () {
+		if(Director::isDev()) {return $this->debugMessage;}
+	}
 }
 
 

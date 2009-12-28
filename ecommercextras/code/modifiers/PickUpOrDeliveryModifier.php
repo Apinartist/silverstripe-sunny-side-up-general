@@ -21,6 +21,11 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	);
 
+	static $casting = array(
+		'TaxableAmount' => 'Currency',
+		"TableValue" => "Currency"
+	);
+
 	protected static $is_chargable = true;
 
 	protected static $total_weight = 0;
@@ -39,7 +44,12 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	static function show_form() {
 		$items = ShoppingCart::get_items();
 		if(count($items)) {
-			return true;
+			if($objects = DataObject::get("PickUpOrDeliveryModifierOptions")) {
+				//if there is only one option then we do not need a form
+				if($objects->count() > 1) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -239,15 +249,11 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			self::$calculations_done = true;
 		}
 		$this->debugMessage .= "<hr />final score: ".self::$actual_charges;
-		if(isset($_GET["debug"])) {
-			debug::show($this->debugMessage);
-		}
 		return self::$actual_charges;
 
 	}
 
 	function Amount() {
-		$this->debugMessage .= $this->LiveAmount();
 		if($this->ID && $this->Amount) {
 			$this->debugMessage .= "<hr />value from database";
 			return $this->Amount;
@@ -313,6 +319,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		return $this->LivePickUpOrDeliveryType();
 	}
 
+	function DebugMessage () {
+		return $this->debugMessage;
+	}
 
 }
 

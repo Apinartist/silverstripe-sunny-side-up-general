@@ -181,6 +181,13 @@ class ModifierRulesModifier extends OrderModifier {
 		$this->RulesApplied = $this->applyRules();
 		$this->Name = $this->LiveName();
 	}
+
+//-------------------------------------------------------------------- *** debug
+
+	function DebugMessage () {
+		if(Director::isDev()) {return $this->debugMessage;}
+	}
+
 }
 
 

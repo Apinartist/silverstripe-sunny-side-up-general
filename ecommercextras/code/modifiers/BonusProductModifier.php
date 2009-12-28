@@ -213,6 +213,11 @@ class BonusProductModifier extends OrderModifier {
 		$this->SerializedProductArray = serialize(self::get_bonus_product_array());
 	}
 
+//-------------------------------------------------------------------- *** debug
+
+	function DebugMessage () {
+		if(Director::isDev()) {return $this->debugMessage;}
+	}
 
 }
 

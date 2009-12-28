@@ -62,5 +62,7 @@ class GSTTaxModifierOptions extends DataObject {
 		}
 		parent::onBeforeWrite();
 	}
+
+
 }
 

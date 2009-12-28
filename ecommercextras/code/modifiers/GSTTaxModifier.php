@@ -24,13 +24,17 @@ class GSTTaxModifier extends TaxModifier {
 		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
 		'DebugString' => 'HTMLText'
 	);
-	
+
 	static $casting = array(
-		'TaxableAmount' => 'Currency'
+		'TaxableAmount' => 'Currency',
+		"TableValue" => "Currency"
 	);
-	
+
 	protected static $default_country_code = "NZ";
 		static function set_default_country_code($v) {self::$default_country_code = $v;}
+
+	protected static $fixed_country_code = "";
+		static function set_fixed_country_code($v) {self::$fixed_country_code = $v;}
 
 	protected static $exclusive_explanation = " (added to the above price) ";
 		static function set_exclusive_explanation($v) {self::$exclusive_explanation = $v;}
@@ -50,14 +54,19 @@ class GSTTaxModifier extends TaxModifier {
 	protected static $order_item_function_for_tax_exclusive_portion = "";//PortionWithoutTax
 		static function set_order_item_function_for_tax_exclusive_portion($v) {self::$order_item_function_for_tax_exclusive_portion = $v;}
 
-	private static $current_country_code = "";
+	protected static $current_country_code = "";
+
+	protected static $tax_objects = null;
+
+	protected static $live_rate = 0;
+
+	protected static $is_chargable = true;
 
 //-------------------------------------------------------------------- *** static functions
 
 	static function override_country($countryCode) {
-		self::$current_country_code = $countryCode;
-		$this->debugMessage .= "<hr />OVERRIDING COUNTRY CODE";
-		Session::set("GSTTaxModifier_CountryCode", $countryCode);
+		user_error("GSTTaxModifier::override_country is no longer in use, please use GSTTaxModifier::set_fixed_country_code", E_USER_NOTICE);
+		self::set_fixed_country_code($countryCode);
 	}
 
 // -------------------------------------------------------------------- *** internal variables
@@ -79,7 +88,7 @@ class GSTTaxModifier extends TaxModifier {
 	*/
 	protected function LiveIsExclusive() {
 		$countryCode = $this->LiveCountry();
-		if($obj = $this->LiveTaxObject()) {
+		if($obj = $this->LivetaxObjects()) {
 			$obj->InclusiveOrExclusive;
 		}
 		else {
@@ -90,74 +99,117 @@ class GSTTaxModifier extends TaxModifier {
 //--------------------------------------------------------------------*** other attribute functions: country
 
 	protected function LiveCountry() {
-		if($fixedCode = Session::get("GSTTaxModifier_CountryCode")) {
-			$this->debugMessage .= "<hr />taking session value for country code";
-			self::$current_country_code = $fixedCode;
-		}
 		if(!self::$current_country_code) {
-			$this->debugMessage .= "<hr />using shopping cart for country";
-			self::$current_country_code = ShoppingCart::get_country();
+			$fixedCode = Session::get("GSTTaxModifier_CountryCode");
+			if($fixedCode || self::$fixed_country_code) {
+				if(!$fixedCode) {
+					$fixedCode = self::$fixed_country_code;
+					Session::set("GSTTaxModifier_CountryCode", self::$fixed_country_code);
+				}
+				Session::set("GSTTaxModifier_CountryCode", self::$fixed_country_code);
+				$this->debugMessage .= "<hr />OVERRIDING COUNTRY CODE TO: ".$fixedCode;
+				self::$current_country_code = $fixedCode;
+			}
 			if(!self::$current_country_code) {
-				self::$current_country_code = parent::LiveCountry();
-				$this->debugMessage .= "<hr />using parent::LiveCountry country for country";
+				$this->debugMessage .= "<hr />using shopping cart for country";
+				self::$current_country_code = ShoppingCart::get_country();
 				if(!self::$current_country_code) {
-					$this->debugMessage .= "<hr />using default country for cart";
-					self::$current_country_code	 = self::$default_country_code;
+					self::$current_country_code = parent::LiveCountry();
+					$this->debugMessage .= "<hr />using parent::LiveCountry country for country";
+					if(!self::$current_country_code) {
+						$this->debugMessage .= "<hr />using default country for cart";
+						self::$current_country_code	 = self::$default_country_code;
+					}
 				}
 			}
+			$this->debugMessage .= "<hr />Live Country Code: ".self::$current_country_code;
 		}
-		$this->debugMessage .= "<hr />Live Country Code: ".self::$current_country_code;
 		return self::$current_country_code;
 	}
 
-	function LiveTaxObject() {
-		if($countryCode = $this->LiveCountry()) {
-			$this->debugMessage .= "<hr />There is a current live tax object";
-			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
+	function LivetaxObjects() {
+		if(!self::$tax_objects) {
+			if($countryCode = $this->LiveCountry()) {
+				$this->debugMessage .= "<hr />There is a current live country: ".$countryCode;
+				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
+				if($objects->count()) {
+					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
+					self::$tax_objects = $objects;
+				}
+				else {
+					$this->debugMessage .= "<hr />there are no tax objects available for ".$countryCode;
+				}
+			}
+			else {
+				$this->debugMessage .= "<hr />There are no current live tax objects (no country specified), using default country instead";
+				self::$tax_objects = $this->DefaultLivetaxObjects();
+			}
 		}
-		else {
-			$this->debugMessage .= "<hr />There is no current live tax object";
-		}
+		return self::$tax_objects;
 	}
 
-	function DefaultLiveTaxObject() {
-		$defaultCountryCode = GSTTaxModifierOptions::$defaults["CountryCode"];
-		if($defaultCountryCode) {
-			$this->debugMessage .= "<hr />There is a current live DEFAULT tax object";
-			return DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
+	function DefaultLivetaxObjects() {
+		if(!self::$tax_objects) {
+			$defaultCountryCode = GSTTaxModifier::$default_country_code;
+			if($defaultCountryCode) {
+				$this->debugMessage .= "<hr />There are current live DEFAULT country code: ".$defaultCountryCode;
+				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
+				if($objects->count()){
+					$this->debugMessage .= "<hr />there are DEFAULT tax objects available for ".$defaultCountryCode;
+					self::$tax_objects = $objects;
+				}
+				else {
+					$this->debugMessage .= "<hr />there are no DEFAULT tax object available for ".$defaultCountryCode;
+				}
+			}
+			else {
+				$this->debugMessage .= "<hr />There are no current live DEFAULT tax object";
+			}
 		}
-		else {
-			$this->debugMessage .= "<hr />There is no current live DEFAULT tax object";
-		}
+		return self::$tax_objects;
 	}
 
 //--------------------------------------------------------------------*** rates functions
 
 	protected function LiveRate() {
-		if($this->IsRefundSituation()) {
-			$defaultTaxObject = $this->DefaultLiveTaxObject();
-			if($defaultTaxObject) {
-				$this->debugMessage .= "<hr />using DEFAULT (REFUND) rate: ".$defaultTaxObject->Rate;
-				return $defaultTaxObject->Rate;
+		if(!self::$live_rate) {
+			if($this->IsRefundSituation()) {
+				//need to use default here as refund is always based on default country!
+				$taxObjects = $this->DefaultLivetaxObjects();
+				if($sumRate = $this->workOutSumRate($taxObjects)) {
+					$this->debugMessage .= "<hr />using DEFAULT (REFUND) rate: ".$sumRate;
+					self::$live_rate = $sumRate;
+				}
+				else {
+					$this->debugMessage .= "<hr />no DEFAULT (REFUND) rate found, using: 0 ";
+					self::$live_rate = 0;
+				}
 			}
 			else {
-				$this->debugMessage .= "<hr />no DEFAULT (REFUND) rate found: ";
-				return 0;
+				$taxObjects = $this->LivetaxObjects();
+				if($sumRate = $this->workOutSumRate($taxObjects)) {
+					$this->debugMessage .= "<hr />using rate: ".$sumRate;
+					self::$live_rate = $sumRate;
+				}
+				else {
+					$this->debugMessage .= "<hr />no rate found, using: 0";
+					self::$live_rate = 0;
+				}
 			}
 		}
-		else {
-			$taxObject = $this->LiveTaxObject();
-			if($taxObject) {
-				$this->debugMessage .= "<hr />using rate: ".$taxObject->Rate;
-				return $taxObject->Rate;
-			}
-			else {
-				$this->debugMessage .= "<hr />no rate found: ";
-				return 0;
-			}
-		}
+		return self::$live_rate;
 	}
 
+	protected function workOutSumRate($taxObjects) {
+		$sumRate = 0;
+		if($taxObjects->count()) {
+			foreach($taxObjects as $obj) {
+				$this->debugMessage .= "<hr />found a rate of ".$obj->Rate;
+				$sumRate += floatval($obj->Rate);
+			}
+		}
+		return $sumRate;
+	}
 
 //-------------------------------------------------------------------- *** table value functions
 
@@ -168,12 +220,14 @@ class GSTTaxModifier extends TaxModifier {
 		}
 		else {
 			if($this->ID) {
-				return $this->Type == 'Chargable';
+				$this->Type == 'Chargable';
+				self::$is_chargable = $this->Type;
 			}
 			else {
-				$this->stat('is_chargable');
+				self::$is_chargable = $this->stat('is_chargable');
 			}
 		}
+		return self::$is_chargable;
 	}
 
 	// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
@@ -206,15 +260,13 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function TableValue() {
-		if(isset($_REQUEST["debug"])) {
-			echo $this->debugMessage;
-		}
-		return "$".number_format(abs($this->Charge()), 2);
+		return DBField::create('Currency', $this->Charge())->Nice();
 	}
 
 //-------------------------------------------------------------------- *** title function
 
 	protected function LiveName() {
+		$finalString = "tax could not be determined";
 		if($this->IsRefundSituation()) {
 			$finalString = self::$refund_title;
 			$countryCode = $this->LiveCountry();
@@ -223,11 +275,17 @@ class GSTTaxModifier extends TaxModifier {
 			$start = '';
 			$name = '';
 			$end = '';
-			$taxObject = $this->LiveTaxObject();
-			if($taxObject) {
-				$name = $taxObject->Name;
-				if($rate = $this->Rate()) {
-					$startString = number_format($this->Rate() * 100, 2) . '% ';
+			$taxObjects = $this->LivetaxObjects();
+			if($taxObjects->count()) {
+				$objectArray = array();
+				foreach($taxObjects as $object) {
+					$objectArray[] = $object->Name;
+				}
+				if(count($objectArray)) {
+					$name = implode(", ", $objectArray);
+				}
+				if($rate = $this->LiveRate()) {
+					$startString = number_format($this->LiveRate() * 100, 2) . '% ';
 				}
 				if( $this->IsExclusive()) {
 					$endString = self::$exclusive_explanation;
@@ -235,7 +293,7 @@ class GSTTaxModifier extends TaxModifier {
 				else {
 					$endString = self::$inclusive_explanation;
 				}
-				$countryCode = $taxObject->CountryCode;
+				$countryCode = $this->LiveCountry();
 				if($name && $rate) {
 					$finalString = $startString.$name.$endString;
 				}
@@ -278,13 +336,18 @@ class GSTTaxModifier extends TaxModifier {
 				}
 			}
 		}
-		return $order->SubTotal() + $order->ModifiersSubTotal(array("GSTTaxModifier")) - $deduct;
+		$subTotal = $order->SubTotal();
+		$modifierTotal = $order->ModifiersSubTotal(array("GSTTaxModifier"));
+		$this->debugMessage .= "<hr />using sub-total: ".$subTotal;
+		$this->debugMessage .= "<hr />using modifer-total: ".$modifierTotal;
+		$this->debugMessage .= "<hr />using non-taxable portion: ".$deduct;
+		return  $subTotal + $modifierTotal - $deduct;
 	}
 
 	//this occurs when there is no country match and the rate is inclusive
 	protected function IsRefundSituation() {
-		if(!$this->LiveTaxObject()) {
-			if($this->DefaultLiveTaxObject()) {
+		if(!$this->LivetaxObjects()) {
+			if($this->DefaultLivetaxObjects()) {
 				if(!$this->LiveIsExclusive) {
 					//IMPORTANT
 					$this->debugMessage .= "<hr />IS REFUND SITUATION";
@@ -314,6 +377,10 @@ class GSTTaxModifier extends TaxModifier {
 		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => $this->Charge());
 		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => $this->TableValue());
 		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->TableTitle());
+	}
+
+	function DebugMessage () {
+		if(Director::isDev()) {return $this->debugMessage;}
 	}
 
 }

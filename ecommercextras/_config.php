@@ -47,6 +47,7 @@
 
 // *** GST TAX MODIFIER
 //GSTTaxModifier::set_default_country_code("NZ");
+//GSTTaxModifier::set_fixed_country_code("NZ");
 //GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
 //GSTTaxModifier::set_inclusive_explanation(" (included in prices above)");
 //GSTTaxModifier::set_based_on_country_note(" - based on a sale to: ");

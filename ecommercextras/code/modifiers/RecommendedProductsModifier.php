@@ -186,4 +186,10 @@ class RecommendedProductsModifier_Form extends Form {
 		}
 		return self::$site_currency;
 	}
+
+//-------------------------------------------------------------------- *** debug
+
+	function DebugMessage () {
+		if(Director::isDev()) {return $this->debugMessage;}
+	}
 }
