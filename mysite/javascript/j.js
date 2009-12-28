@@ -1,3 +1,8 @@
+/*
+ *@author nicolaas[at]sunnysideup.co.nz
+ *
+ **/
+
 ;(function($) {
 	$(document).ready(function() {
 		initFunctions.imageFixes();
