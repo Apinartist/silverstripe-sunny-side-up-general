@@ -25,6 +25,7 @@ class FormFieldExplanationExtension extends Extension{
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($name = $field->Name()) {
+					$message = '';
 					if(isset($explanations[$name])) {
 						$message .= $explanations[$name];
 						if($datarecord->canEdit()) {
