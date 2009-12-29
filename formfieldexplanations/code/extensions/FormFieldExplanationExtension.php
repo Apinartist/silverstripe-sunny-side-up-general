@@ -47,7 +47,7 @@ class FormFieldExplanationExtension extends Extension{
 							break;
 					}
 					$id = $field->id();
-					$message = str_replace("/", "\/", Convert::raw2js($message))
+					$message = str_replace("/", "\/", Convert::raw2js($message));
 					if($do && $message && $name && $id) {
 						$js .= "
 						formfieldexplanations.add_info('".$name."', '".$message."', '".$id."');";
