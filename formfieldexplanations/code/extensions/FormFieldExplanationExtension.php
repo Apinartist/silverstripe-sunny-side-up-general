@@ -61,7 +61,7 @@ class FormFieldExplanationExtension extends Extension{
 		return $form;
 	}
 
-	protected function addfieldexplanation(HTTPRequest $HTTPRequest) {
+	public function addfieldexplanation(HTTPRequest $HTTPRequest) {
 		$fieldName = $HTTPRequest->param("ID");
 		$fieldTitle = $HTTPRequest->param("OtherID");
 		$obj = DataObject::get_one("FormFieldExplanation", "`Name` = '".$fieldName."' AND ParentID = ".$this->owner->ID);
@@ -79,6 +79,15 @@ class FormFieldExplanationExtension extends Extension{
 		else {
 			Director::redirectBack();
 		}
+	}
+
+	protected function editfieldexplanation(HTTPRequest $HTTPRequest) {
+		$customiseArray = array(
+			"Title" => "Test"
+			"Form" => "FormTest"
+		);
+		//TO DO!!!!! link with DataObjectsorter
+		return Array();
 	}
 
 	protected static function CMSLink ($id) {
