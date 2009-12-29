@@ -27,7 +27,7 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 
 	function getFormFieldExplanationHasManyTable() {
 		$field = new HasManyComplexTableField(
-			$controller = $this,
+			$controller = $this->owner,
 			$name = "FormFieldExplanation",
 			$sourceClass = "FormFieldExplanation",
 			$fieldList = array("Title" => "Title"),
@@ -37,6 +37,8 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 			$sourceJoin = ""
 		);
 		$field->setPermissions(array("edit", "delete"));
+		$field->setParentClass($this->owner->class);
+		$field->relationAutoSetting = true;
 		return $field;
 	}
 }

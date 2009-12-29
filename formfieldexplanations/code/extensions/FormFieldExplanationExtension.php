@@ -12,7 +12,8 @@ class FormFieldExplanationExtension extends Extension{
 	static $allowed_actions = array("addfieldexplanation");
 
 	static function add_explanations($form, $datarecord) {
-		$dos = DataObject::get_one("FormFieldExplanation", "`ParentID` = ".$datarecord->ID);
+		$js = '';
+		$dos = DataObject::get("FormFieldExplanation", "`ParentID` = ".$datarecord->ID);
 		$explanations = array();
 		if($dos) {
 			foreach($dos as $do) {
@@ -20,7 +21,7 @@ class FormFieldExplanationExtension extends Extension{
 			}
 		}
 		$dos = $do = null;
-		$dataFields = $form->fields()->dataFields();
+		$dataFields = $form->fields();
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($name = $field->Name()) {
@@ -36,12 +37,27 @@ class FormFieldExplanationExtension extends Extension{
 						if(!$title) {
 							$title = $name;
 						}
-						$rightTitle .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($field->Title()).'/" class="addFieldExplanation">add explanation</a>';
+						$rightTitle .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">add explanation</a>';
 					}
-					$field->setRightTitle($rightTitle);
+					$do = true;
+					switch($field->class) {
+						case "HeaderField":
+							$do = false;
+							break;
+						default:
+
+
+					}
+					if($do) {
+						$js .= "
+						formfieldexplanations.add_info('".$name."', '".str_replace("/", "\/", Convert::raw2js($rightTitle))."', '".$field->id()."');";
+					}
 				}
 			}
 		}
+		Requirements::javascript("formfieldexplanations/javascript/formfieldexplanations.js");
+		Requirements::customScript($js, "FormFieldExplanationExtension");
+		Requirements::themedCSS("formfieldexplanations");
 		return $form;
 	}
 
@@ -66,7 +82,7 @@ class FormFieldExplanationExtension extends Extension{
 	}
 
 	protected static function CMSLink ($id) {
-		return '<a href="/admin/show/'.$id.'" class="editFieldExplanation">edit description in CMS</a>';
+		return '<a href="admin/show/'.$id.'" class="editFieldExplanation">edit description in CMS</a>';
 	}
 
 }

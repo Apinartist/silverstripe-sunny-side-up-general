@@ -12,7 +12,7 @@ class FormFieldExplanation extends DataObject {
 	public static $db = array(
 		"Name" => "Varchar(255)",
 		"Title" => "Varchar(255)",
-		"Explanation" => "HTMLText"
+		"Explanation" => "Text"
 	);
 
 	public static $has_one = array(
@@ -32,44 +32,17 @@ class FormFieldExplanation extends DataObject {
 		"Title" => "Title"
 	);
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->removeByName("ParentID");
+		$fields->removeByName("Explanation");
+		$fields->addFieldToTab("Root.Main", new HTMLEditorField("Explanation", "Explanation", $rows = 3, $cols = 20));
+		return $fields;
+	}
+
 	public static $singular_name = "Form Field Explanation";
 
 	public static $plural_name = "Form Field Explanations";
-	/*
-	function requiredDefaultRecords(){
-		parent::requiredDefaultRecords();
-		$array = self::$classname_function_combo;
-		if(count($array)) {
-			foreach($array as $arr	) {
-				$className = $arr["ClassName"];
-				$functionName = $arr["FunctionName"];
-				if(class_exists($className)) {
-					$obj = singleton($className);
-					if(method_exists($obj, $functionName)) {
-						$form = $obj->$functionName;
-						$dataFields = $form->fields->dataFields();
-						if($dataFields){
-							foreach($dataFields as $field) {
-								if($name = $field->Name()) {
-									$obj = DataObject::get_one("FormFieldExplanation", "`Name` '".$name."'");
-									if(!$obj) {
-										$obj = new FormFieldExplanation();
-									}
-									$title = $field->Title();
-									if(!$title) {
-										$title = $name;
-									}
-									$obj->Title = $title;
-									$obj->ParentClassName = $className;
-									$obj->write();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-*/
+
 
 }
