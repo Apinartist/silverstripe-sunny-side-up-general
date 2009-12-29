@@ -25,11 +25,10 @@ class FormFieldExplanationExtension extends Extension{
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($name = $field->Name()) {
-					$rightTitle = $field->RightTitle();
 					if(isset($explanations[$name])) {
-						$rightTitle .= $explanations[$name];
+						$message .= $explanations[$name];
 						if($datarecord->canEdit()) {
-							$rightTitle .= ' | '.self::CMSLink($datarecord->ID);
+							$message .= ' | '.self::CMSLink($datarecord->ID);
 						}
 					}
 					elseif($datarecord->canEdit() && $name) {
@@ -37,7 +36,7 @@ class FormFieldExplanationExtension extends Extension{
 						if(!$title) {
 							$title = $name;
 						}
-						$rightTitle .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">add explanation</a>';
+						$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">add explanation</a>';
 					}
 					$do = true;
 					switch($field->class) {
@@ -45,12 +44,13 @@ class FormFieldExplanationExtension extends Extension{
 							$do = false;
 							break;
 						default:
-
-
+							break;
 					}
-					if($do) {
+					$id = $field->id();
+					$message = str_replace("/", "\/", Convert::raw2js($message))
+					if($do && $message && $name && $id) {
 						$js .= "
-						formfieldexplanations.add_info('".$name."', '".str_replace("/", "\/", Convert::raw2js($rightTitle))."', '".$field->id()."');";
+						formfieldexplanations.add_info('".$name."', '".$message."', '".$id."');";
 					}
 				}
 			}
