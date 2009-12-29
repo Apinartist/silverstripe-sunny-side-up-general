@@ -83,7 +83,7 @@ class FormFieldExplanationExtension extends Extension{
 
 	protected function editfieldexplanation(HTTPRequest $HTTPRequest) {
 		$customiseArray = array(
-			"Title" => "Test"
+			"Title" => "Test",
 			"Form" => "FormTest"
 		);
 		//TO DO!!!!! link with DataObjectsorter
