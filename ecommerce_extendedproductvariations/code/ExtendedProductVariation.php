@@ -97,8 +97,16 @@ class ExtendedProductVariation extends ProductVariation {
 		parent::onBeforeDelete();
 	}
 
-	function getProductID() {
-		return $this->ID;
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$variationsWithouthProduct = DataObject::get("ProductVariation", "`Product`.`ID` IS NULL", "", "LEFT JOIN `Product` ON `Product`.`ID` = `ProductVariation`.`ID`");
+		if($variationsWithouthProduct) {
+			foreach($variationsWithouthProduct as $obj) {
+				$obj->delete();
+				Database::alteration_message("Deleting ".$obj->Title.", as it does not link to any Product", "deleted");
+			}
+		}
 	}
+
 
 }
