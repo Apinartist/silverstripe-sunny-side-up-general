@@ -27,6 +27,10 @@ class SearchPlusPage extends Page {
 		return false;
 	}
 
+	protected static $result_length = 10;
+		static function set_result_length($v) { $v = intval($v); if($v < 1) {user_error("SearchPlusPage::set_result_length expects an integer greater than zero", E_USER_WARNING);} self::$result_length = $v; }
+		static function get_result_length() { return self::$result_length; }
+
 	public function getCMSFields($params = null) {
 		$fields = parent::getCMSFields($params);
 		$fields->addFieldToTab(
@@ -66,12 +70,19 @@ class SearchPlusPage_Controller extends Page_Controller {
 
 	protected static $search_history_object = null;
 
+	function Form() {
+		return $this->SearchPlusForm("MainSearchForm", "MainSearch", "");
+	}
+
 	function results($data){
 		if(isset($data["Search"]) || isset($data["MainSearch"])) {
+			Requirements::themedCSS("searchpluspage_searchresults");
 			if(isset($data["MainSearch"]) || !isset($data["Search"])) {
 				$data["Search"] = $data["MainSearch"];
 			}
-			$form = $this->SearchForm();
+			//redirect if needed
+			$data["Search"] = urldecode($data["Search"]);
+			$form = $this->SearchPlusForm();
 			if(!isset($_GET["redirect"])) {
 				self::$search_history_object = SearchHistory::add_entry($data["Search"]);
 				if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
@@ -87,12 +98,54 @@ class SearchPlusPage_Controller extends Page_Controller {
 			else {
 				self::$search_history_object = SearchHistory::find_entry($data["Search"]);
 			}
+			//load data for recommended pages
+			$recommendationsSet = $this->Recommendations();
+			$matchArrayRecommended = array();
+			$matchArrayResults = array();
+			if($recommendationsSet) {
+				foreach($recommendationsSet as $rec) {
+					$matchArrayRecommended[$rec->ClassName.$rec->ID] = $rec->ClassName.$rec->ID;
+				}
+			}
+			//work out positions
+			$results = $form->getResults();
+			$query = $form->getSearchQuery();
+			$startingPosition = isset($_REQUEST["start"]) ? $_REQUEST["start"] : 0;
+			$endingPosition = $startingPosition + SearchPlusPage::get_result_length();
+			$startingPosition++;
+			if($results) {
+				$total = $results->TotalItems();
+			}
+			else {
+				$total = 0;
+			}
+			if($endingPosition > $total) {
+				$endingPosition = $total;
+			}
+			//highlight search text and check which ones are recommended
+			if($total) {
+				foreach($results as $result) {
+					$title = $result->getTitle();
+					$dbField = DBField::create($className = "Text", $title);
+					$result->HighlightedTitle = $dbField->ContextSummary();
+					$result->IsRecommended = false;
+					$matchArrayResults[$result->ClassName.$result->ID] = $result->ClassName.$result->ID;
+					if(isset($matchArrayRecommended[$result->ClassName.$result->ID])) {
+						$result->IsRecommended = true;
+					}
+				}
+			}
 			$data = array(
-				'Results' => $form->getResults(),
-				'Query' => $form->getSearchQuery(),
+				'Results' => $results,
+				'Query' => $query,
+				'From' => $startingPosition,
+				'To' => $endingPosition,
+				'Total' => $total,
+				'HasResults' => $total ? true : false,
 				'Recommendations' => $this->Recommendations(),
 				'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
 				'Title' => 'Search Results',
+				'MetaTitle' => 'Search Results for '.Convert::raw2att($query),
 				'MenuTitle' => 'Search Results'
 			);
 			return $this->customise($data)->renderWith(array('SearchPlusPage_results', 'Page'));
@@ -110,23 +163,43 @@ class SearchPlusPage_Controller extends Page_Controller {
 		return Permission::check("ADMIN");
 	}
 
-	function popularsearchwords() {
+	function PopularSearchWordsForAllUsers($days = 100, $limit = 7) {
+		$do = $this->getPopularSearchWords($days, $limit, $mergeRedirects = true);
+		return $do->DataByCount;
+	}
+
+	function popularsearchwords(HTTPRequest $HTTPRequest) {
 		if(!$this->HasPopularSearchWords()) {
 			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 			return;
 		}
 		Requirements::themedCSS("popularsearches");
-		$days = intval(Director::URLParam("ID"));
+		$days = intval($HTTPRequest->param("ID"));
 		if(!$days) {
 			$days = 100;
 		}
-		$limit = intval(Director::URLParam("OtherID")+0);
+		$limit = intval($HTTPRequest->param("OtherID")+0);
 		if(!$limit) $limit++;
-		$data = DB::query("SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id FROM `SearchHistoryLog` INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title` WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) GROUP BY `SearchHistoryLog`.`Title` ORDER BY count DESC LIMIT 0, $limit");
+		$do = $this->getPopularSearchWords($days, $limit);
+		return $this->customise($do)->renderWith(array('SearchPlusPage_popularsearches', 'Page'));
+	}
+
+	protected function getPopularSearchWords($days, $limit, $mergeRedirects = false) {
+		$extraWhere = '';
+		if($mergeRedirects) {
+			$extraWhere = " AND `RedirectTo` = '' OR `RedirectTo` IS NULL";
+		}
+		$data = DB::query("
+			SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`RedirectTo` RedirectTo, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id
+			FROM `SearchHistoryLog`
+				INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title`
+			WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) ".$extraWhere."
+			GROUP BY `SearchHistoryLog`.`Title` ORDER BY count DESC LIMIT 0, $limit");
 		$do = new DataObject();
-		$do->Title = "Search Phrase Popularity";
-		$do->MenuTitle = "Search Phrase Popularity";
-		$do->MetaTitle = "Search Phrase Popularity";
+		$title = "Search Phrase Popularity, $days days $limit entries";
+		$do->Title = $title;
+		$do->MenuTitle = $title;
+		$do->MetaTitle = $title;
 		$do->DataByCount = new DataObjectSet();
 		$do->DataByTitle = new DataObjectSet();
 		$do->Limit = $limit;
@@ -136,13 +209,26 @@ class SearchPlusPage_Controller extends Page_Controller {
 			if(!$key) {
 				$max = $row["count"];
 			}
+			if($mergeRedirects) {
+				$data = DB::query("
+					SELECT COUNT(`SearchHistoryLog`.`ID`) count
+					FROM `SearchHistoryLog`
+						INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title`
+					WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) AND `SearchHistory`.`RedirectTo` = '".$row["title"]."'
+					GROUP BY `SearchHistory`.`RedirectTo` ORDER BY count DESC LIMIT 1");
+				if($data) {
+					$extraCounts = $data->value();
+				}
+				$row["count"] += $extraCounts;
+			}
 			$percentage = floor(($row["count"]/$max)*100);
 			$subDataSet = new ArrayData(
 				array(
 					"ParentID" => $row["id"],
 					"Title" => $row["title"],
 					"Width" => $percentage,
-					"Count" => $row["count"]
+					"Count" => $row["count"],
+					"Link" => $this->Link()."results/?Search=".urldecode($row["title"])."&amp;action_results=Search"
 				)
 			);
 			$list[$row["title"]] = $subDataSet;
@@ -152,13 +238,9 @@ class SearchPlusPage_Controller extends Page_Controller {
 		foreach($list as $subDataSet ) {
 			$do->DataByTitle->push($subDataSet);
 		}
-
-		return $this->customise($do)->renderWith(array('SearchPlusPage_popularsearches', 'Page'));
+		return $do;
 	}
 
-	function Form() {
-		return $this->SearchForm("MainSearchForm", "MainSearch", "Enter Keyword(s)");
-	}
 
 }
 

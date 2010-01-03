@@ -14,12 +14,22 @@
 
 class SearchPlusSearchForm extends Extension {
 
-	function SearchForm($name = "SearchForm", $fieldName = "Search", $fieldLabel = '') {
+	function SearchPlusForm($name = "SearchForm", $fieldName = "Search", $fieldLabel = '') {
 		$action = Director::URLParam("Action");
 		$page = DataObject::get_one("SearchPlusPage");
 		if(!in_array($action, array("login", "logout")) && $page) {
 			if(!$fieldLabel) {
-				$searchText = isset($_REQUEST[$fieldName]) ? $_REQUEST[$fieldName] : 'Search';
+				if( isset($_REQUEST[$fieldName]) ) {
+					$searchText = $_REQUEST[$fieldName];
+					//we set $_REQUEST["Search"] below because it is also used by things like Text::ContextSummary
+					$_REQUEST["Search"] = $_REQUEST[$fieldName];
+				}
+				elseif(isset($_REQUEST["Search"])) {
+					$searchText = $_REQUEST["Search"];
+				}
+				else {
+					$searchText = 'Search';
+				}
 			}
 			else {
 				$searchText = '';
@@ -32,6 +42,7 @@ class SearchPlusSearchForm extends Extension {
 			$form = new SearchForm($this, $name, $fields, $actions);
 
 			$form->setFormAction($page->Link()."results/");
+			$form->setPageLength(SearchPlusPage::get_result_length());
 			return $form;
 		}
 		elseif(!$page) {

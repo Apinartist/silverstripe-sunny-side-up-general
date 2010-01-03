@@ -17,7 +17,7 @@ class SearchHistory Extends DataObject {
 	);
 
 	static $many_many = array(
-		"Recommendations" => "Page"
+		"Recommendations" => "SiteTree"
 	);
 
 	static $singular_name = 'Search History Phrase';
@@ -25,6 +25,18 @@ class SearchHistory Extends DataObject {
 	static $plural_name = 'Search History Phrases';
 
 	static $default_sort = 'Title';
+
+	protected static $separator = " | ";
+		static function set_separator($v) { self::$separator = $v;}
+		static function get_separator() { return self::$separator;}
+
+	protected static $minimum_length = 3;
+		static function set_minimum_length($v) { self::$minimum_length = intval($v) + 0;}
+		static function get_minimum_length() { return self::$minimum_length;}
+
+	protected static $number_of_keyword_repeats = 3;
+		static function set_number_of_keyword_repeats($v) {if(!intval($v)) { $v = 1; } self::$number_of_keyword_repeats = intval($v) + 0;}
+		static function get_number_of_keyword_repeats() { return self::$number_of_keyword_repeats;}
 
 	public static $searchable_fields = array(
 		"Title",
@@ -37,7 +49,8 @@ class SearchHistory Extends DataObject {
 
 	public static $field_labels = array(
 		"Title" => "Phrase Searched For",
-		"RedirectTo" => "Redirect To"
+		"RedirectTo" => "Redirect To Search Phrase (if any)",
+		"Recommendations" => "Recommended Pages - must already be part of the natural result set",
 	);
 
 
@@ -78,7 +91,7 @@ class SearchHistory Extends DataObject {
 		$fields->addFieldToTab("Root.Main", new HeaderField($name = "TitleHeader", "search for: '".$this->Title."'", 1), "RedirectTo");
 		$fields->removeByName("Recommendations");
 		if(!$this->RedirectTo) {
-			$source = DataObject::get("Page", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
+			$source = DataObject::get("SiteTree", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
 			$sourceArray = $source->toDropdownMap();
 			$fields->addFieldToTab("Root.Main", new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceArray));
 		}
@@ -90,17 +103,71 @@ class SearchHistory Extends DataObject {
 			user_error("Make sure to create a SearchPlusPage to make proper use of this module", E_USER_NOTICE);
 		}
 		else {
-			$fields->addFieldToTab("Root.Main", new LiteralField($name = "BackLinks", '
-				<p>
-					Review a graph of all <a href="'.$page->Link().'popularsearchwords/100/10/">Popular Search Phrases</a> OR
-					You may want to <a href="'.$page->Link().'results/?Search='.urlencode($this->Title).'&amp;action_results=Search&amp;redirect=1">try this search</a>.
-				</p>'
+			$fields->addFieldToTab("Root.Main", new LiteralField(
+				$name = "BackLinks",
+				$content =
+					'<p>
+						Review a graph of all <a href="'.$page->Link().'popularsearchwords/100/10/">Popular Search Phrases</a> OR
+						<a href="'.$page->Link().'results/?Search='.urlencode($this->Title).'&amp;action_results=Search&amp;redirect=1">try this search</a>.
+					</p>'
 			));
 		}
 		return $fields;
 	}
 
+	function onAfterWrite() {
+		parent::onAfterWrite();
+		//add recommendations that are not actually matching
+		$combos = $this->Recommendations();
+		if($combos) {
+			$idArray = array();
+			foreach($combos as $combo) {
+				$idArray[$combo->SiteTreeID] = $combo->SiteTreeID;
+			}
+			if(count($idArray)) {
+				if($pages = DataObject::get("SiteTree", "`SiteTree`.`ID` IN (".implode(",", $idArray).")")) {
+					foreach($pages as $page) {
+						$changed = false;
+						$title = self::get_separator().$this->getTitle();
+						if(stripos($page->MetaTitle." ", $title) === false) {
+							$page->MetaTitle = $page->MetaTitle . $title;
+							$changed = true;
+							echo $page->Title." updated to ".$page->MetaTitle;
+						}
+						$multipliedTitle = self::get_separator().str_repeat($this->getTitle(), self::get_number_of_keyword_repeats());
+						if(stripos($page->MetaKeywords." ", $multipliedTitle) === false) {
+							$page->MetaKeywords = $page->MetaKeywords. $multipliedTitle;
+							$changed = true;
+						}
+						if(stripos($page->MetaKeywords." ", $multipliedTitle) === false) {
+							$page->MetaKeywords = $page->MetaKeywords. $multipliedTitle;
+							$changed = true;
+						}
+						if($changed) {
+							$page->writeToStage('Stage');
+							$page->Publish('Stage', 'Live');
+							$page->Status = "Published";
+						}
+					}
+				}
+			}
+		}
+		//delete useless ones
+		if(!strlen($this->Title) < self::get_minimum_length()) {
+			$this->delete();
+		}
+	}
 
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$dos = DataObject::get("SearchHistory", "`Title` = '' OR `Title` IS NULL OR LENGTH(`Title`) < ".self::get_minimum_length());
+		if($dos) {
+			foreach($dos as $do) {
+				Database::alteration_message("deleting #".$do->ID." from SearchHistory as it does not have a search phrase", "deleted");
+				$do->delete();
+			}
+		}
+	}
 
 }
 

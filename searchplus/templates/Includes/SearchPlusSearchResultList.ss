@@ -3,9 +3,9 @@
 <% if Results %>
 <ul id="SearchResults">
 <% control Results %>
-	<li class="$EvenOdd">
-		<h3><% if MenuTitle %> $MenuTitle<% else %>$Title<% end_if %></h3>
-		<p>$Content.LimitWordCountPlainText</p>
+	<li class="$EvenOdd $FirstLast <% if IsRecommended %>recommended<% end_if %>">
+		<h3><a href="$Link"><% if MenuTitle %>$HighlightedTitle<% end_if %></a></h3>
+		<p>$Content.ContextSummary(300) ...</p>
 		<a href="$Link" title="Read more about $Title.ATT">Read more &gt;&gt;</a>
 	</li>
 <% end_control %>
