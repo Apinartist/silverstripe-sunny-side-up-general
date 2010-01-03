@@ -144,10 +144,10 @@ class SearchPlusPage_Controller extends Page_Controller {
 				'HasResults' => $total ? true : false,
 				'Recommendations' => $this->Recommendations(),
 				'RecommendedSearchPlusSection' => $this->dataRecord->RecommendedSearchPlusSections(),
-				'Title' => 'Search Results',
-				'MetaTitle' => 'Search Results for '.Convert::raw2att($query),
-				'MenuTitle' => 'Search Results'
 			);
+			$this->Title = 'Search Results';
+			$this->MetaTitle = 'Search: '.Convert::raw2att($query);
+			$this->MenuTitle = 'Search Results';
 			return $this->customise($data)->renderWith(array('SearchPlusPage_results', 'Page'));
 		}
 		return Array();
@@ -181,6 +181,9 @@ class SearchPlusPage_Controller extends Page_Controller {
 		$limit = intval($HTTPRequest->param("OtherID")+0);
 		if(!$limit) $limit++;
 		$do = $this->getPopularSearchWords($days, $limit);
+		$page->MenuTitle = $do->Title;
+		$do->MetaTitle = $do->Title;
+		$do->Title = $do->Title;
 		return $this->customise($do)->renderWith(array('SearchPlusPage_popularsearches', 'Page'));
 	}
 
@@ -196,10 +199,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 			WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) ".$extraWhere."
 			GROUP BY `SearchHistoryLog`.`Title` ORDER BY count DESC LIMIT 0, $limit");
 		$do = new DataObject();
-		$title = "Search Phrase Popularity, $days days $limit entries";
-		$do->Title = $title;
-		$do->MenuTitle = $title;
-		$do->MetaTitle = $title;
+		$do->Title = "Search Phrase Popularity, $days days $limit entries";
 		$do->DataByCount = new DataObjectSet();
 		$do->DataByTitle = new DataObjectSet();
 		$do->Limit = $limit;
