@@ -14,6 +14,8 @@ Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
 Member::set_password_validator("NZGovtPasswordValidator");
+SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
+Session::set_timeout(1209600);//60 * 60 * 24 * 14
 //===================---------------- END sapphire MODULE ----------------===================
 
 
