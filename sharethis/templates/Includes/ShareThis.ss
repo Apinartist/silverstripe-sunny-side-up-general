@@ -7,6 +7,5 @@
 		<% if IncludeShareAll %><li id="ShareAllLI">$ShareAll</li><% end_if %>
 	</ul>
 	<% end_if %>
-	<% if CanEditShareIcons %>$EditLink| $SortLink <% end_if %>
 </div>
 <% end_if %>
