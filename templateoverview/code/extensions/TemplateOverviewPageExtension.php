@@ -18,6 +18,7 @@ class TemplateOverviewPageExtension extends Extension {
 			if($m = Member::currentUser()) {
 				if($m->isAdmin()) {
 					Requirements::javascript("templateoverview/javascript/TemplateOverviewExtension.js");
+					Requirements::themedCSS("TemplateOverviewExtension");
 					return true;
 				}
 			}
