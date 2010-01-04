@@ -1,495 +1,63 @@
 /* ------------------------------------------------------------------------
-	Class: prettyPhoto
-	Use: Lightbox clone for jQuery
-	Author: Stephane Caron (http://www.no-margin-for-errors.com)
-	Version: 2.2.2
-	Patched By: Michael Mitchell (http://www.michaelmitchell.co.nz)
-------------------------------------------------------------------------- */
-(function($) {
-	$.fn.prettyPhoto = function(settings) {
-		// global Variables
-		var isSet = false; /* Total position in the array */
-		var setCount = 0; /* Total images in the set */
-		var setPosition = 0; /* Position in the set */
-		var arrayPosition = 0; /* Total position in the array */
-		var hasTitle = false;
-		var caller = 0;
-		var doresize = true;
-		var imagesArray = [];
-
-		$(window).scroll(function(){ _centerPicture(); });
-		$(window).resize(function(){ _centerPicture(); _resizeOverlay(); });
-		$(document).keyup(function(e){
-			switch(e.keyCode){
-				case 37:
-					if (setPosition == 1) return;
-					changePicture('previous');
-					break;
-				case 39:
-					if (setPosition == setCount) return;
-					changePicture('next');
-					break;
-				case 27:
-					close();
-					break;
-			};
-	    });
-
-
-		settings = jQuery.extend({
-			animationSpeed: 'normal', /* fast/slow/normal */
-			padding: 40, /* padding for each side of the picture */
-			opacity: 0.35, /* Value betwee 0 and 1 */
-			showTitle: true, /* true/false */
-			allowresize: true, /* true/false */
-			counter_separator_label: '/' /* Teh separator for the gallery counter 1 "of" 2 */
-		}, settings);
-
-		$(this).each(function(){
-			imagesArray[imagesArray.length] = this;
-			$(this).bind('click',function(){
-				open(this); return false;
-			});
-		});
-
-		function open(el) {
-			caller = $(el);
-
-			// Find out if the picture is part of a set
-			theRel = $(caller).attr('rel');
-			galleryRegExp = /\[(?:.*)\]/;
-			theGallery = galleryRegExp.exec(theRel);
-
-			// Find out the type of content
-			contentType = "image";
-			if($(caller).attr('href').indexOf('.swf') > 0){ hasTitle = false; contentType = 'flash'; };
-
-			// Calculate the number of items in the set, and the position of the clicked picture.
-			isSet = false;
-			setCount = 0;
-			for (i = 0; i < imagesArray.length; i++){
-				if($(imagesArray[i]).attr('rel').indexOf(theGallery) != -1){
-					setCount++;
-					if(setCount > 1) isSet = true;
-
-					if($(imagesArray[i]).attr('href') == $(el).attr('href')){
-						setPosition = setCount;
-						arrayPosition = i;
-					};
-				};
-			};
-
-			_buildOverlay(isSet);
-
-			// Display the current position
-			$('div.pictureHolder p.currentTextHolder').text(setPosition + settings.counter_separator_label + setCount);
-
-			// Position the picture in the center of the viewing area
-			_centerPicture();
-
-			$('div.pictureHolder #fullResImageContainer').hide();
-			$('.loaderIcon').show();
-
-			// Display the correct type of information
-			(contentType == 'image') ? _preload() : _writeFlash();
-		};
-
-		showimage = function(width,height,containerWidth,containerHeight,contentHeight,contentWidth,resized){
-			$('.loaderIcon').hide();
-			var scrollPos = _getScroll();
-
-			if($.browser.opera) {
-				windowHeight = window.innerHeight;
-				windowWidth = window.innerWidth;
-			}else{
-				windowHeight = $(window).height();
-				windowWidth = $(window).width();
-			};
-
-			$('div.pictureHolder .content').animate({'height':contentHeight,'width':containerWidth},settings.animationSpeed);
-
-			projectedTop = scrollPos['scrollTop'] + ((windowHeight/2) - (containerHeight/2));
-			if(projectedTop < 0) projectedTop = 0 + $('div.prettyPhotoTitle').height();
-
-			// Resize the holder
-			$('div.pictureHolder').animate({
-				'top': projectedTop,
-				'left': ((windowWidth/2) - (containerWidth/2)),
-				'width': containerWidth
-			},settings.animationSpeed,function(){
-				$('#fullResImage').attr({
-					'width':width,
-					'height':height
-				});
-
-				$('div.pictureHolder').width(containerWidth);
-				$('div.pictureHolder .hoverContainer').height(height).width(width);
-
-				// Show the nav elements
-				_shownav();
-
-				// Fade the new image
-				$('div.pictureHolder #fullResImageContainer').fadeIn(settings.animationSpeed);
-
-				// Fade the resizing link if the image is resized
-				if(resized) $('a.expand,a.contract').fadeIn(settings.animationSpeed);
-			});
-		};
-
-		function changePicture(direction){
-			if(direction == 'previous') {
-				arrayPosition--;
-				setPosition--;
-			}else{
-				arrayPosition++;
-				setPosition++;
-			};
-
-			// Allow the resizing of the images
-			if(!doresize) doresize = true;
-
-			// Fade out the current picture
-			$('div.pictureHolder .hoverContainer,div.pictureHolder .details').fadeOut(settings.animationSpeed);
-			$('div.pictureHolder #fullResImageContainer').fadeOut(settings.animationSpeed,function(){
-				$('.loaderIcon').show();
-
-				// Preload the image
-				_preload();
-			});
-
-			_hideTitle();
-			$('a.expand,a.contract').fadeOut(settings.animationSpeed,function(){
-				$(this).removeClass('contract').addClass('expand');
-			});
-		};
-
-		function close(){
-			$('div.pictureHolder,div.prettyPhotoTitle').fadeOut(settings.animationSpeed, function(){
-				$('div.prettyPhotoOverlay').fadeOut(settings.animationSpeed, function(){
-					$('div.prettyPhotoOverlay,div.pictureHolder,div.prettyPhotoTitle').remove();
-
-					// To fix the bug with IE select boxes
-					if($.browser.msie && $.browser.version == 6){
-						$('select').css('visibility','visible');
-					};
-				});
-			});
-		};
-
-		function _checkPosition(){
-			// If at the end, hide the next link
-			if(setPosition == setCount) {
-				$('div.pictureHolder a.next').css('visibility','hidden');
-				$('div.pictureHolder a.arrow_next').addClass('disabled').unbind('click');
-			}else{
-				$('div.pictureHolder a.next').css('visibility','visible');
-				$('div.pictureHolder a.arrow_next.disabled').removeClass('disabled').bind('click',function(){
-					changePicture('next');
-					return false;
-				});
-			};
-
-			// If at the beginning, hide the previous link
-			if(setPosition == 1) {
-				$('div.pictureHolder a.previous').css('visibility','hidden');
-				$('div.pictureHolder a.arrow_previous').addClass('disabled').unbind('click');
-			}else{
-				$('div.pictureHolder a.previous').css('visibility','visible');
-				$('div.pictureHolder a.arrow_previous.disabled').removeClass('disabled').bind('click',function(){
-					changePicture('previous');
-					return false;
-				});
-			};
-
-			// Change the current picture text
-			$('div.pictureHolder p.currentTextHolder').text(setPosition + settings.counter_separator_label + setCount);
-
-			(isSet) ? $c = $(imagesArray[arrayPosition]) : $c = $(caller);
-
-			if($c.attr('title')){
-				$('div.pictureHolder .description').show().html(unescape($c.attr('title')));
-			}else{
-				$('div.pictureHolder .description').hide().text('');
-			};
-
-			if($c.find('img').attr('alt') && settings.showTitle){
-				hasTitle = true;
-				$('div.prettyPhotoTitle .prettyPhotoTitleContent').html(unescape($c.find('img').attr('alt')));
-			}else{
-				hasTitle = false;
-			};
-		};
-
-		function _fitToViewport(width,height){
-			hasBeenResized = false;
-
-			$('div.pictureHolder .details').width(width); /* To have the correct height */
-			$('div.pictureHolder .details p.description').width(width - parseFloat($('div.pictureHolder a.close').css('width'))); /* So it doesn't overlap the button */
-
-			// Get the container size, to resize the holder to the right dimensions
-			contentHeight = height + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
-			contentWidth = width;
-			containerHeight = height + parseFloat($('div.prettyPhotoTitle').height()) + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
-			containerWidth = width + settings.padding;
-
-			// Define them in case there's no resize needed
-			imageWidth = width;
-			imageHeight = height;
-
-			if($.browser.opera) {
-				windowHeight = window.innerHeight;
-				windowWidth = window.innerWidth;
-			}else{
-				windowHeight = $(window).height();
-				windowWidth = $(window).width();
-			};
-
-			if( ((containerWidth > windowWidth) || (containerHeight > windowHeight)) && doresize && settings.allowresize) {
-				hasBeenResized = true;
-
-				if((containerWidth > windowWidth) && (containerHeight > windowHeight)){
-					// Get the original geometry and calculate scales
-					var xscale =  (containerWidth + 200) / windowWidth;
-					var yscale = (containerHeight + 200) / windowHeight;
-				}else{
-					// Get the original geometry and calculate scales
-					var xscale = windowWidth / containerWidth;
-					var yscale = windowHeight / containerHeight;
-				}
-
-				// Recalculate new size with default ratio
-				if (yscale>xscale){
-					imageWidth = Math.round(width * (1/yscale));
-					imageHeight = Math.round(height * (1/yscale));
-				} else {
-					imageWidth = Math.round(width * (1/xscale));
-					imageHeight = Math.round(height * (1/xscale));
-				};
-
-				// Define the new dimensions
-				contentHeight = imageHeight + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
-				contentWidth = imageWidth;
-				containerHeight = imageHeight + parseFloat($('div.prettyPhotoTitle').height()) + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
-				containerWidth = imageWidth + settings.padding;
-
-				$('div.pictureHolder .details').width(contentWidth); /* To have the correct height */
-				$('div.pictureHolder .details p.description').width(contentWidth - parseFloat($('div.pictureHolder a.close').css('width'))); /* So it doesn't overlap the button */
-			};
-
-			return {
-				width:imageWidth,
-				height:imageHeight,
-				containerHeight:containerHeight,
-				containerWidth:containerWidth,
-				contentHeight:contentHeight,
-				contentWidth:contentWidth,
-				resized:hasBeenResized
-			};
-		};
-
-		function _centerPicture(){
-			//Make sure the gallery is open
-			if($('div.pictureHolder').size() > 0){
-
-				var scrollPos = _getScroll();
-
-				if($.browser.opera) {
-					windowHeight = window.innerHeight;
-					windowWidth = window.innerWidth;
-				}else{
-					windowHeight = $(window).height();
-					windowWidth = $(window).width();
-				};
-
-				if(doresize) {
-					projectedTop = (windowHeight/2) + scrollPos['scrollTop'] - ($('div.pictureHolder').height()/2);
-					if(projectedTop < 0) projectedTop = 0 + $('div.prettyPhotoTitle').height();
-
-					$('div.pictureHolder').css({
-						'top': projectedTop,
-						'left': (windowWidth/2) + scrollPos['scrollLeft'] - ($('div.pictureHolder').width()/2)
-					});
-
-					$('div.prettyPhotoTitle').css({
-						'top' : $('div.pictureHolder').offset().top - $('div.prettyPhotoTitle').height(),
-						'left' : $('div.pictureHolder').offset().left + (settings.padding/2)
-					});
-				};
-			};
-		};
-
-		function _shownav(){
-			if(isSet) $('div.pictureHolder .hoverContainer').fadeIn(settings.animationSpeed);
-			$('div.pictureHolder .details').fadeIn(settings.animationSpeed);
-
-			_showTitle();
-		};
-
-		function _showTitle(){
-			if(settings.showTitle && hasTitle){
-				$('div.prettyPhotoTitle').css({
-					'top' : $('div.pictureHolder').offset().top,
-					'left' : $('div.pictureHolder').offset().left + (settings.padding/2),
-					'display' : 'block'
-				});
-
-				$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width','auto');
-
-				if($('div.prettyPhotoTitle').width() > $('div.pictureHolder').width()){
-					$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width',$('div.pictureHolder').width() - (settings.padding * 2));
-				}else{
-					$('div.prettyPhotoTitle div.prettyPhotoTitleContent').css('width','');
-				};
-
-				$('div.prettyPhotoTitle').animate({'top':($('div.pictureHolder').offset().top - 22)},settings.animationSpeed);
-			};
-		};
-
-		function _hideTitle() {
-			$('div.prettyPhotoTitle').animate({'top':($('div.pictureHolder').offset().top)},settings.animationSpeed,function() { $(this).css('display','none'); });
-		};
-
-		function _preload(){
-			// Hide the next/previous links if on first or last images.
-			_checkPosition();
-
-			// Set the new image
-			imgPreloader = new Image();
-
-			// Preload the neighbour images
-			nextImage = new Image();
-			if(isSet) nextImage.src = $(imagesArray[arrayPosition + 1]).attr('href');
-			prevImage = new Image();
-			if(isSet && imagesArray[arrayPosition - 1]) prevImage.src = $(imagesArray[arrayPosition - 1]).attr('href');
-
-			$('div.pictureHolder .content').css('overflow','hidden');
-
-			if(isSet) {
-				$('div.pictureHolder #fullResImage').attr('src',$(imagesArray[arrayPosition]).attr('href'));
-			}else{
-				$('div.pictureHolder #fullResImage').attr('src',$(caller).attr('href'));
-			};
-
-			imgPreloader.onload = function(){
-				var correctSizes = _fitToViewport(imgPreloader.width,imgPreloader.height);
-				imgPreloader.width = correctSizes['width'];
-				imgPreloader.height = correctSizes['height'];
-
-				// Need that small delay for the anim to be nice
-				setTimeout('showimage(imgPreloader.width,imgPreloader.height,'+correctSizes["containerWidth"]+','+correctSizes["containerHeight"]+','+correctSizes["contentHeight"]+','+correctSizes["contentWidth"]+','+correctSizes["resized"]+')',500);
-			};
-
-			(isSet) ? imgPreloader.src = $(imagesArray[arrayPosition]).attr('href') : imgPreloader.src = $(caller).attr('href');
-		};
-
-		function _getScroll(){
-			scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-			scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
-			return {scrollTop:scrollTop,scrollLeft:scrollLeft};
-		};
-
-		function _resizeOverlay() {
-			$('div.prettyPhotoOverlay').css({
-				'height':$(document).height(),
-				'width':$(window).width()
-			});
-		};
-
-		function _writeFlash(){
-			flashParams = $(caller).attr('rel').split(';');
-			$(flashParams).each(function(i){
-				// Define the width and height
-				if(flashParams[i].indexOf('width') >= 0) flashWidth = flashParams[i].substring(flashParams[i].indexOf('width') + 6, flashParams[i].length);
-				if(flashParams[i].indexOf('height') >= 0) flashHeight = flashParams[i].substring(flashParams[i].indexOf('height') + 7, flashParams[i].length);
-				if(flashParams[i].indexOf('flashvars') >= 0) flashVars = flashParams[i].substring(flashParams[i].indexOf('flashvars') + 10, flashParams[i].length);
-			});
-
-			$('.pictureHolder #fullResImageContainer').append('<embed width="'+flashWidth+'" height="'+flashHeight+'" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" wmode="opaque" name="prettyFlash" flashvars="'+flashVars+'" allowscriptaccess="always" bgcolor="#FFFFFF" quality="high" src="'+$(caller).attr('href')+'"/>');
-			$('#fullResImage').hide();
-
-			contentHeight = parseFloat(flashHeight) + parseFloat($('div.pictureHolder .details').height()) + parseFloat($('div.pictureHolder .details').css('margin-top')) + parseFloat($('div.pictureHolder .details').css('margin-bottom'));
-			contentWidth = parseFloat(flashWidth)+ parseFloat($('div.pictureHolder .details').width()) + parseFloat($('div.pictureHolder .details').css('margin-left')) + parseFloat($('div.pictureHolder .details').css('margin-right'));
-			containerHeight = contentHeight + parseFloat($('div.pictureHolder .top').height()) + parseFloat($('div.pictureHolder .bottom').height());
-			containerWidth = parseFloat(flashWidth) + parseFloat($('div.pictureHolder .content').css("padding-left")) + parseFloat($('div.pictureHolder .content').css("padding-right")) + settings.padding;
-
-			setTimeout('showimage('+flashWidth+','+flashHeight+','+containerWidth+','+containerHeight+','+contentHeight+','+contentWidth+')',500);
-		};
-
-		function _buildOverlay(){
-
-			// Build the background overlay div
-			backgroundDiv = "<div class='prettyPhotoOverlay'></div>";
-			$('body').append(backgroundDiv);
-			$('div.prettyPhotoOverlay').css('height',$(document).height()).bind('click',function(){
-				close();
-			});
-
-			// Basic HTML for the picture holder
-			pictureHolder = '<div class="pictureHolder"><div class="top"><div class="left"></div><div class="middle"></div><div class="right"></div></div><div class="content"><a href="#" class="expand" title="Expand the image">Expand</a><div class="loaderIcon"></div><div class="hoverContainer"><a class="next" href="#">next</a><a class="previous" href="#">previous</a></div><div id="fullResImageContainer"><img id="fullResImage" src="" /></div><div class="details clearfix"><a class="close" href="#">Close</a><p class="description"></p><div class="nav"><a href="#" class="arrow_previous">Previous</a><p class="currentTextHolder">0'+settings.counter_separator_label+'0</p><a href="#" class="arrow_next">Next</a></div></div></div><div class="bottom"><div class="left"></div><div class="middle"></div><div class="right"></div></div></div>';
-
-			// Basic html for the title holder
-			titleHolder = '<div class="prettyPhotoTitle"><div class="prettyPhotoTitleLeft"></div><div class="prettyPhotoTitleContent"></div><div class="prettyPhotoTitleRight"></div></div>';
-
-			$('body').append(pictureHolder).append(titleHolder);
-
-			$('.pictureHolder,.titleHolder').css({'opacity': 0});
-			$('a.close').bind('click',function(){ close(); return false; });
-			$('a.expand').bind('click',function(){
-
-				// Expand the image
-				if($(this).hasClass('expand')){
-					$(this).removeClass('expand').addClass('contract');
-					doresize = false;
-				}else{
-					$(this).removeClass('contract').addClass('expand');
-					doresize = true;
-				};
-
-				_hideTitle();
-				$('div.pictureHolder .hoverContainer,div.pictureHolder #fullResImageContainer').fadeOut(settings.animationSpeed);
-				$('div.pictureHolder .details').fadeOut(settings.animationSpeed,function(){
-					_preload();
-				});
-
-				return false;
-			});
-
-			$('.pictureHolder .previous,.pictureHolder .arrow_previous').bind('click',function(){
-				changePicture('previous');
-				return false;
-			});
-
-			$('.pictureHolder .next,.pictureHolder .arrow_next').bind('click',function(){
-				changePicture('next');
-				return false;
-			});
-
-			$('.hoverContainer').css({
-				'margin-left': settings.padding/2
-			});
-
-			// If it's not a set, hide the links
-			if(!isSet) {
-				$('.hoverContainer,.nav').hide();
-			};
-
-
-			// To fix the bug with IE select boxes
-			if($.browser.msie && $.browser.version == 6){
-				$('select').css('visibility','hidden');
-			};
-
-			// Then fade it in
-			$('div.prettyPhotoOverlay').css('opacity',0).fadeTo(settings.animationSpeed,settings.opacity, function(){
-				$('div.pictureHolder').css('opacity',0).fadeIn(settings.animationSpeed,function(){
-					// To fix an IE bug
-					$('div.pictureHolder').attr('style','left:'+$('div.pictureHolder').css('left')+';top:'+$('div.pictureHolder').css('top')+';');
-				});
-			});
-		};
-	};
-
-	$(document).ready(function(){
-		$("a[rel^='prettyPhoto']").prettyPhoto();
-	});
-})(jQuery);
+ * 	Class: prettyPhoto
+ * 		Use: Lightbox clone for jQuery
+ * 			Author: Stephane Caron (http://www.no-margin-for-errors.com)
+ * 				Version: 2.5.5
+ * NOTE: PATCH APPLIED ON LINE 53! by nicolaas[at] sunnysideup.co.nz
+ * 				------------------------------------------------------------------------- */
+
+(function($){$.prettyPhoto={version:'2.5.5'};$.fn.prettyPhoto=function(settings){settings=jQuery.extend({animationSpeed:'normal',opacity:0.80,showTitle:true,allowresize:true,default_width:500,default_height:344,counter_separator_label:'/',theme:'light_rounded',hideflash:false,wmode:'opaque',autoplay:true,modal:false,changepicturecallback:function(){},callback:function(){},markup:'<div class="pp_pic_holder"> \
+      <div class="pp_top"> \
+       <div class="pp_left"></div> \
+       <div class="pp_middle"></div> \
+       <div class="pp_right"></div> \
+      </div> \
+      <div class="pp_content_container"> \
+       <div class="pp_left"> \
+       <div class="pp_right"> \
+        <div class="pp_content"> \
+         <div class="pp_fade"> \
+          <a href="#" class="pp_expand" title="Expand the image">Expand</a> \
+          <div class="pp_loaderIcon"></div> \
+          <div class="pp_hoverContainer"> \
+           <a class="pp_next" href="#">next</a> \
+           <a class="pp_previous" href="#">previous</a> \
+          </div> \
+          <div id="pp_full_res"></div> \
+          <div class="pp_details clearfix"> \
+           <a class="pp_close" href="#">Close</a> \
+           <p class="pp_description"></p> \
+           <div class="pp_nav"> \
+            <a href="#" class="pp_arrow_previous">Previous</a> \
+            <p class="currentTextHolder">0/0</p> \
+            <a href="#" class="pp_arrow_next">Next</a> \
+           </div> \
+          </div> \
+         </div> \
+        </div> \
+       </div> \
+       </div> \
+      </div> \
+      <div class="pp_bottom"> \
+       <div class="pp_left"></div> \
+       <div class="pp_middle"></div> \
+       <div class="pp_right"></div> \
+      </div> \
+     </div> \
+     <div class="pp_overlay"></div> \
+     <div class="ppt"></div>',image_markup:'<img id="fullResImage" src="" />',flash_markup:'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="{width}" height="{height}"><param name="wmode" value="{wmode}" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="{path}" /><embed src="{path}" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="{width}" height="{height}" wmode="{wmode}"></embed></object>',quicktime_markup:'<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab" height="{height}" width="{width}"><param name="src" value="{path}"><param name="autoplay" value="{autoplay}"><param name="type" value="video/quicktime"><embed src="{path}" height="{height}" width="{width}" autoplay="{autoplay}" type="video/quicktime" pluginspage="http://www.apple.com/quicktime/download/"></embed></object>',iframe_markup:'<iframe src ="{path}" width="{width}" height="{height}" frameborder="no"></iframe>',inline_markup:'<div class="pp_inline clearfix">{content}</div>'},settings);if($.browser.msie&&$.browser.version==6){settings.theme="light_square";}
+if(!$pp_overlay)_buildOverlay();var doresize=true,percentBased=false,correctSizes,$pp_pic_holder,$ppt,$pp_overlay,pp_contentHeight,pp_contentWidth,pp_containerHeight,pp_containerWidth,windowHeight=$(window).height(),windowWidth=$(window).width(),setPosition=0,scrollPos=_getScroll();$(window).scroll(function(){scrollPos=_getScroll();_centerOverlay();_resizeOverlay();});$(window).resize(function(){_centerOverlay();_resizeOverlay();});$(document).keydown(function(e){if($pp_pic_holder.is(':visible'))
+switch(e.keyCode){case 37:$.prettyPhoto.changePage('previous');break;case 39:$.prettyPhoto.changePage('next');break;case 27:if(!settings.modal)
+$.prettyPhoto.close();break;};});$(this).each(function(){$(this).bind('click',function(){_self=this;theRel=$(this).attr('rel');galleryRegExp=/\[(?:.*)\]/;theGallery=galleryRegExp.exec(theRel);var images=new Array(),titles=new Array(),descriptions=new Array();if(theGallery){
+
+	var gallerySelector = 'a[rel$=\''+theGallery+'\']';
+
+$(gallerySelector).each(function(i){if($(this)[0]===$(_self)[0])setPosition=i;images.push($(this).attr('href'));titles.push($(this).find('img').attr('alt'));descriptions.push($(this).attr('title'));});}else{images=$(this).attr('href');titles=($(this).find('img').attr('alt'))?$(this).find('img').attr('alt'):'';descriptions=($(this).attr('title'))?$(this).attr('title'):'';}
+$.prettyPhoto.open(images,titles,descriptions);return false;});});$.prettyPhoto.open=function(gallery_images,gallery_titles,gallery_descriptions){if($.browser.msie&&$.browser.version==6){$('select').css('visibility','hidden');};if(settings.hideflash)$('object,embed').css('visibility','hidden');images=$.makeArray(gallery_images);titles=$.makeArray(gallery_titles);descriptions=$.makeArray(gallery_descriptions);image_set=($(images).size()>0)?true:false;_checkPosition($(images).size());$('.pp_loaderIcon').show();$pp_overlay.show().fadeTo(settings.animationSpeed,settings.opacity);$pp_pic_holder.find('.currentTextHolder').text((setPosition+1)+settings.counter_separator_label+$(images).size());if(descriptions[setPosition]){$pp_pic_holder.find('.pp_description').show().html(unescape(descriptions[setPosition]));}else{$pp_pic_holder.find('.pp_description').hide().text('');};if(titles[setPosition]&&settings.showTitle){hasTitle=true;$ppt.html(unescape(titles[setPosition]));}else{hasTitle=false;};movie_width=(parseFloat(grab_param('width',images[setPosition])))?grab_param('width',images[setPosition]):settings.default_width.toString();movie_height=(parseFloat(grab_param('height',images[setPosition])))?grab_param('height',images[setPosition]):settings.default_height.toString();if(movie_width.indexOf('%')!=-1||movie_height.indexOf('%')!=-1){movie_height=parseFloat(($(window).height()*parseFloat(movie_height)/100)-100);movie_width=parseFloat(($(window).width()*parseFloat(movie_width)/100)-100);percentBased=true;}
+imgPreloader="";switch(_getFileType(images[setPosition])){case'image':imgPreloader=new Image();nextImage=new Image();if(image_set&&setPosition>$(images).size())nextImage.src=images[setPosition+1];prevImage=new Image();if(image_set&&images[setPosition-1])prevImage.src=images[setPosition-1];$pp_pic_holder.find('#pp_full_res')[0].innerHTML=settings.image_markup;$pp_pic_holder.find('#fullResImage').attr('src',images[setPosition]);imgPreloader.onload=function(){correctSizes=_fitToViewport(imgPreloader.width,imgPreloader.height);_showContent();};imgPreloader.onerror=function(){alert('Image cannot be loaded. Make sure the path is correct and image exist.');$.prettyPhoto.close();};imgPreloader.src=images[setPosition];break;case'youtube':correctSizes=_fitToViewport(movie_width,movie_height);movie='http://www.youtube.com/v/'+grab_param('v',images[setPosition]);if(settings.autoplay)movie+="&autoplay=1";toInject=settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,movie);break;case'vimeo':correctSizes=_fitToViewport(movie_width,movie_height);movie_id=images[setPosition];movie='http://vimeo.com/moogaloop.swf?clip_id='+movie_id.replace('http://vimeo.com/','');if(settings.autoplay)movie+="&autoplay=1";toInject=settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,movie);break;case'quicktime':correctSizes=_fitToViewport(movie_width,movie_height);correctSizes['height']+=15;correctSizes['contentHeight']+=15;correctSizes['containerHeight']+=15;toInject=settings.quicktime_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,images[setPosition]).replace(/{autoplay}/g,settings.autoplay);break;case'flash':correctSizes=_fitToViewport(movie_width,movie_height);flash_vars=images[setPosition];flash_vars=flash_vars.substring(images[setPosition].indexOf('flashvars')+10,images[setPosition].length);filename=images[setPosition];filename=filename.substring(0,filename.indexOf('?'));toInject=settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,filename+'?'+flash_vars);break;case'iframe':correctSizes=_fitToViewport(movie_width,movie_height);frame_url=images[setPosition];frame_url=frame_url.substr(0,frame_url.indexOf('iframe')-1);toInject=settings.iframe_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{path}/g,frame_url);break;case'inline':myClone=$(images[setPosition]).clone().css({'width':settings.default_width}).wrapInner('<div id="pp_full_res"><div class="pp_inline clearfix"></div></div>').appendTo($('body'));correctSizes=_fitToViewport($(myClone).width(),$(myClone).height());$(myClone).remove();toInject=settings.inline_markup.replace(/{content}/g,$(images[setPosition]).html());break;};if(!imgPreloader){$pp_pic_holder.find('#pp_full_res')[0].innerHTML=toInject;_showContent();};};$.prettyPhoto.changePage=function(direction){if(direction=='previous'){setPosition--;if(setPosition<0){setPosition=0;return;};}else{if($('.pp_arrow_next').is('.disabled'))return;setPosition++;};if(!doresize)doresize=true;_hideContent(function(){$.prettyPhoto.open(images,titles,descriptions)});$('a.pp_expand,a.pp_contract').fadeOut(settings.animationSpeed);};$.prettyPhoto.close=function(){$pp_pic_holder.find('object,embed').css('visibility','hidden');$('div.pp_pic_holder,div.ppt,.pp_fade').fadeOut(settings.animationSpeed);$pp_overlay.fadeOut(settings.animationSpeed,function(){$pp_pic_holder.attr('style','').find('div:not(.pp_hoverContainer)').attr('style','');_centerOverlay();if($.browser.msie&&$.browser.version==6){$('select').css('visibility','visible');};if(settings.hideflash)$('object,embed').css('visibility','visible');setPosition=0;settings.callback();});doresize=true;};_showContent=function(){$('.pp_loaderIcon').hide();projectedTop=scrollPos['scrollTop']+((windowHeight/2)-(correctSizes['containerHeight']/2));if(projectedTop<0)projectedTop=0+$ppt.height();$pp_pic_holder.find('.pp_content').animate({'height':correctSizes['contentHeight']},settings.animationSpeed);$pp_pic_holder.animate({'top':projectedTop,'left':(windowWidth/2)-(correctSizes['containerWidth']/2),'width':correctSizes['containerWidth']},settings.animationSpeed,function(){$pp_pic_holder.find('.pp_hoverContainer,#fullResImage').height(correctSizes['height']).width(correctSizes['width']);$pp_pic_holder.find('.pp_fade').fadeIn(settings.animationSpeed);if(image_set&&_getFileType(images[setPosition])=="image"){$pp_pic_holder.find('.pp_hoverContainer').show();}else{$pp_pic_holder.find('.pp_hoverContainer').hide();}
+if(settings.showTitle&&hasTitle){$ppt.css({'top':$pp_pic_holder.offset().top-25,'left':$pp_pic_holder.offset().left+20,'display':'none'});$ppt.fadeIn(settings.animationSpeed);};if(correctSizes['resized'])$('a.pp_expand,a.pp_contract').fadeIn(settings.animationSpeed);settings.changepicturecallback();});};function _hideContent(callback){$pp_pic_holder.find('#pp_full_res object,#pp_full_res embed').css('visibility','hidden');$pp_pic_holder.find('.pp_fade').fadeOut(settings.animationSpeed,function(){$('.pp_loaderIcon').show();if(callback)callback();});$ppt.fadeOut(settings.animationSpeed);}
+function _checkPosition(setCount){if(setPosition==setCount-1){$pp_pic_holder.find('a.pp_next').css('visibility','hidden');$pp_pic_holder.find('a.pp_arrow_next').addClass('disabled').unbind('click');}else{$pp_pic_holder.find('a.pp_next').css('visibility','visible');$pp_pic_holder.find('a.pp_arrow_next.disabled').removeClass('disabled').bind('click',function(){$.prettyPhoto.changePage('next');return false;});};if(setPosition==0){$pp_pic_holder.find('a.pp_previous').css('visibility','hidden');$pp_pic_holder.find('a.pp_arrow_previous').addClass('disabled').unbind('click');}else{$pp_pic_holder.find('a.pp_previous').css('visibility','visible');$pp_pic_holder.find('a.pp_arrow_previous.disabled').removeClass('disabled').bind('click',function(){$.prettyPhoto.changePage('previous');return false;});};if(setCount>1){$('.pp_nav').show();}else{$('.pp_nav').hide();}};function _fitToViewport(width,height){hasBeenResized=false;_getDimensions(width,height);imageWidth=width;imageHeight=height;if(((pp_containerWidth>windowWidth)||(pp_containerHeight>windowHeight))&&doresize&&settings.allowresize&&!percentBased){hasBeenResized=true;notFitting=true;while(notFitting){if((pp_containerWidth>windowWidth)){imageWidth=(windowWidth-200);imageHeight=(height/width)*imageWidth;}else if((pp_containerHeight>windowHeight)){imageHeight=(windowHeight-200);imageWidth=(width/height)*imageHeight;}else{notFitting=false;};pp_containerHeight=imageHeight;pp_containerWidth=imageWidth;};_getDimensions(imageWidth,imageHeight);};return{width:Math.floor(imageWidth),height:Math.floor(imageHeight),containerHeight:Math.floor(pp_containerHeight),containerWidth:Math.floor(pp_containerWidth)+40,contentHeight:Math.floor(pp_contentHeight),contentWidth:Math.floor(pp_contentWidth),resized:hasBeenResized};};function _getDimensions(width,height){width=parseFloat(width);height=parseFloat(height);$pp_details=$pp_pic_holder.find('.pp_details');$pp_details.width(width);detailsHeight=parseFloat($pp_details.css('marginTop'))+parseFloat($pp_details.css('marginBottom'));$pp_details=$pp_details.clone().appendTo($('body')).css({'position':'absolute','top':-10000});detailsHeight+=$pp_details.height();detailsHeight=(detailsHeight<=34)?36:detailsHeight;if($.browser.msie&&$.browser.version==7)detailsHeight+=8;$pp_details.remove();pp_contentHeight=height+detailsHeight;pp_contentWidth=width;pp_containerHeight=pp_contentHeight+$ppt.height()+$pp_pic_holder.find('.pp_top').height()+$pp_pic_holder.find('.pp_bottom').height();pp_containerWidth=width;}
+function _getFileType(itemSrc){if(itemSrc.match(/youtube\.com\/watch/i)){return'youtube';}else if(itemSrc.match(/vimeo\.com/i)){return'vimeo';}else if(itemSrc.indexOf('.mov')!=-1){return'quicktime';}else if(itemSrc.indexOf('.swf')!=-1){return'flash';}else if(itemSrc.indexOf('iframe')!=-1){return'iframe'}else if(itemSrc.substr(0,1)=='#'){return'inline';}else{return'image';};};function _centerOverlay(){if(doresize){titleHeight=$ppt.height();contentHeight=$pp_pic_holder.height();contentwidth=$pp_pic_holder.width();projectedTop=(windowHeight/2)+scrollPos['scrollTop']-((contentHeight+titleHeight)/2);$pp_pic_holder.css({'top':projectedTop,'left':(windowWidth/2)+scrollPos['scrollLeft']-(contentwidth/2)});$ppt.css({'top':projectedTop-titleHeight,'left':(windowWidth/2)+scrollPos['scrollLeft']-(contentwidth/2)+20});};};function _getScroll(){if(self.pageYOffset){return{scrollTop:self.pageYOffset,scrollLeft:self.pageXOffset};}else if(document.documentElement&&document.documentElement.scrollTop){return{scrollTop:document.documentElement.scrollTop,scrollLeft:document.documentElement.scrollLeft};}else if(document.body){return{scrollTop:document.body.scrollTop,scrollLeft:document.body.scrollLeft};};};function _resizeOverlay(){windowHeight=$(window).height();windowWidth=$(window).width();$pp_overlay.css({'height':$(document).height()});};function _buildOverlay(){$('body').append(settings.markup);$pp_pic_holder=$('.pp_pic_holder');$ppt=$('.ppt');$pp_overlay=$('div.pp_overlay');$pp_pic_holder.attr('class','pp_pic_holder '+settings.theme);$pp_overlay.css({'opacity':0,'height':$(document).height()}).bind('click',function(){if(!settings.modal)
+$.prettyPhoto.close();});$('a.pp_close').bind('click',function(){$.prettyPhoto.close();return false;});$('a.pp_expand').bind('click',function(){$this=$(this);if($this.hasClass('pp_expand')){$this.removeClass('pp_expand').addClass('pp_contract');doresize=false;}else{$this.removeClass('pp_contract').addClass('pp_expand');doresize=true;};_hideContent(function(){$.prettyPhoto.open(images,titles,descriptions)});$pp_pic_holder.find('.pp_fade').fadeOut(settings.animationSpeed);return false;});$pp_pic_holder.find('.pp_previous, .pp_arrow_previous').bind('click',function(){$.prettyPhoto.changePage('previous');return false;});$pp_pic_holder.find('.pp_next, .pp_arrow_next').bind('click',function(){$.prettyPhoto.changePage('next');return false;});};_centerOverlay();};function grab_param(name,url){name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(url);if(results==null)
+return"";else
+return results[1];}})(jQuery);
