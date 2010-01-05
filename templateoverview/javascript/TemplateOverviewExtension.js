@@ -22,7 +22,7 @@ var templateoverviewextension = {
 				jQuery(templateoverviewextension.loadingAreaSelector).load(
 					url,
 					function() {
-						PrettyPhotoConfig.init(templateoverviewextension.loadingAreaSelector);
+						PrettyPhotoLoader.load(templateoverviewextension.loadingAreaSelector);
 					}
 				);
 				return false;
