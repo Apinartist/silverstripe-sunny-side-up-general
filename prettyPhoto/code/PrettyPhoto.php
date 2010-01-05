@@ -24,7 +24,7 @@ class PrettyPhoto extends Object {
 			if(self::$more_config) {
 				$config .= ", " . self::$more_config;
 			}
-			Requirements::customScript('PrettyPhotoInit.set_configs("{'.$config.'}");', "prettyPhotoCustomScript");
+			Requirements::customScript('PrettyPhotoInit.configs = {'.$config.'};', "prettyPhotoCustomScript");
 		}
 	}
 
