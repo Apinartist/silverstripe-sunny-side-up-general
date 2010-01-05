@@ -11,7 +11,7 @@ jQuery(document).ready(
 					jQuery("#" + id).load(
 						url,
 						function() {
-							jQuery("#" + id).prettyPhoto();
+							PrettyPhotoConfig.init("#" + id);
 						}
 					);
 					jQuery(this).parent(".typo-more").hide().next(".typo-less").show().css("display", "block");
