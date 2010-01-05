@@ -10,14 +10,21 @@ var templateoverviewextension = {
 
 	prettyphotoCSSlocation: "prettyphoto/css/prettyPhoto.css",
 
+	loadingAreaSelector: "#TemplateOverviewPageDevelopmentFooterLoadHere",
+
 	init: function() {
 		jQuery(".IncludeTemplateOverviewDevelopmentFooterClickHere").click(
 			function() {
 				templateoverviewextension.javascriptImporter(templateoverviewextension.prettyphotoJSlocation);
 				templateoverviewextension.cssImporter(templateoverviewextension.prettyphotoCSSlocation);
 				var url = jQuery(this).attr("href");
-				jQuery("#TemplateOverviewPageDevelopmentFooterLoadHere").html("<li>loading ....</li>");
-				jQuery("#TemplateOverviewPageDevelopmentFooterLoadHere").load(url);
+				jQuery(templateoverviewextension.loadingAreaSelector).html("<li>loading ....</li>");
+				jQuery(templateoverviewextension.loadingAreaSelector).load(
+					url,
+					function() {
+						jQuery(templateoverviewextension.loadingAreaSelector).prettyPhoto();
+					}
+				);
 				return false;
 			}
 		);

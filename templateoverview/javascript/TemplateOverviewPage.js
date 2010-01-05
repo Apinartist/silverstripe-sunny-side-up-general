@@ -9,7 +9,7 @@ jQuery(document).ready(
 					jQuery("#" + id).show();
 					jQuery("#" + id).html("<li>loading pages ....</li>");
 					jQuery("#" + id).load(
-						url
+						url,
 						function() {
 							jQuery("#" + id).prettyPhoto();
 						}
