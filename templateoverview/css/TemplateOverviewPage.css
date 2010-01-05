@@ -15,5 +15,6 @@
 
 #TemplateOverviewImages img {border: 10px solid #ccc;}
 .MoreDetailOL {background-color: #ddd; clear: left;}
+	.MoreDetailOL .moreDetailLI {margin-left: 0px!important; padding-left:0!important;}
 .templateOverviewDescription {border: 1px solid green; padding: 10px; margin: 0px;}
 .updateToDoListLink {font-weight: bold; color: green;}
