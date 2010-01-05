@@ -1,14 +1,13 @@
-jQuery(document).ready(function(){PrettyPhotoInit.init("body");});
+var PrettyPhotoLoader = {
 
-var PrettyPhotoInit = {
-
-	configs: {},
-
-	init: function(outerSelector) {
-		jQuery(outerSelector + " a[rel^=\'prettyPhoto\']").prettyPhoto(PrettyPhotoInit.configs);
+	load: function(outerSelector) {
+		jQuery(outerSelector + " a[rel^='prettyPhoto']").prettyPhoto(PrettyPhotoInitConfigs);
 	}
 
 }
+
+jQuery(document).ready(function(){PrettyPhotoLoader.load("body")});
+
 
 
 /* ------------------------------------------------------------------------
