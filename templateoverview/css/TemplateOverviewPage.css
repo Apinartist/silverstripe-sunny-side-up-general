@@ -8,7 +8,7 @@
 				#classList li div.images span.littleThumb {}
 				#classList li div.images span.thumb img {border: 1px solid #000;}
 
-.typo-heading {font-weight: bold; font-size: 1.3em; text-decoration: underline;}
+			#classList .typo-heading {font-weight: bold; font-size: 1.3em; text-decoration: underline; margin-top: 0!important; padding-top: 0!important;}
 .typo-example {}
 .typo-fullLink {}
  .typo-fullLink a {}
