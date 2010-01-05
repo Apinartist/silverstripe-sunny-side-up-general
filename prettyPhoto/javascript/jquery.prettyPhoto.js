@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){PrettyPhotoConfig.init("body");}
+jQuery(document).ready(function(){PrettyPhotoInit.init("body");}
 
 var PrettyPhotoInit = {
 
@@ -6,11 +6,12 @@ var PrettyPhotoInit = {
 
 	set_configs: function(v) {
 		this.configs = v;
-	}
+	},
 
 	init: function(outerSelector) {
 		jQuery(outerSelector + " a[rel^=\'prettyPhoto\']").prettyPhoto(this.configs);
 	}
+
 }
 
 
