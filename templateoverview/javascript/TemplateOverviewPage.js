@@ -8,7 +8,12 @@ jQuery(document).ready(
 					var id = jQuery(this).attr("rel");
 					jQuery("#" + id).show();
 					jQuery("#" + id).html("<li>loading pages ....</li>");
-					jQuery("#" + id).load(url);
+					jQuery("#" + id).load(
+						url
+						function() {
+							jQuery("#" + id).prettyPhoto();
+						}
+					);
 					jQuery(this).parent(".typo-more").hide().next(".typo-less").show().css("display", "block");
 					return false;
 				}
