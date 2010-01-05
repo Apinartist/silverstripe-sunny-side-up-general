@@ -1,3 +1,19 @@
+jQuery(document).ready(function(){PrettyPhotoConfig.init("body");}
+
+var PrettyPhotoInit = {
+
+	configs: {},
+
+	set_configs: function(v) {
+		this.configs = v;
+	}
+
+	init: function(outerSelector) {
+		jQuery(outerSelector + " a[rel^=\'prettyPhoto\']").prettyPhoto(this.configs);
+	}
+}
+
+
 /* ------------------------------------------------------------------------
  * 	Class: prettyPhoto
  * 		Use: Lightbox clone for jQuery
