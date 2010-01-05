@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){PrettyPhotoInit.init("body");}
+jQuery(document).ready(function(){PrettyPhotoInit.init("body");});
 
 var PrettyPhotoInit = {
 
