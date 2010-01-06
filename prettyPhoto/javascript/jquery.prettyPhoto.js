@@ -1,19 +1,4 @@
 
-var PrettyPhotoLoader = {
-
-	selector: " a[rel^='prettyPhoto']",
-
-	load: function(outerSelector) {
-		if(window.PrettyPhotoInitConfigs === undefined) {
-			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto();
-		}
-		else {
-			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(PrettyPhotoInitConfigs);
-		}
-	}
-}
-
-
 
 
 /* ------------------------------------------------------------------------
@@ -79,3 +64,20 @@ function _getFileType(itemSrc){if(itemSrc.match(/youtube\.com\/watch/i)){return'
 $.prettyPhoto.close();});$('a.pp_close').bind('click',function(){$.prettyPhoto.close();return false;});$('a.pp_expand').bind('click',function(){$this=$(this);if($this.hasClass('pp_expand')){$this.removeClass('pp_expand').addClass('pp_contract');doresize=false;}else{$this.removeClass('pp_contract').addClass('pp_expand');doresize=true;};_hideContent(function(){$.prettyPhoto.open(images,titles,descriptions)});$pp_pic_holder.find('.pp_fade').fadeOut(settings.animationSpeed);return false;});$pp_pic_holder.find('.pp_previous, .pp_arrow_previous').bind('click',function(){$.prettyPhoto.changePage('previous');return false;});$pp_pic_holder.find('.pp_next, .pp_arrow_next').bind('click',function(){$.prettyPhoto.changePage('next');return false;});};_centerOverlay();};function grab_param(name,url){name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(url);if(results==null)
 return"";else
 return results[1];}})(jQuery);
+
+
+
+var PrettyPhotoLoader = {
+
+	selector: " a[rel^='prettyPhoto']",
+
+	load: function(outerSelector) {
+		if(window.PrettyPhotoInitConfigs === undefined) {
+			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto();
+		}
+		else {
+			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(PrettyPhotoInitConfigs);
+		}
+	}
+}
+
