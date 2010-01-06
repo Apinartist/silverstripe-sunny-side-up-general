@@ -11,7 +11,6 @@ var PrettyPhotoLoader = {
 
 }
 
-jQuery(document).ready(function(){PrettyPhotoLoader.load("body")});
 
 
 
