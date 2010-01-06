@@ -1,11 +1,14 @@
 
 var PrettyPhotoLoader = {
+
+	selector: " a[rel^='prettyPhoto']",
+
 	load: function(outerSelector) {
 		if(window.PrettyPhotoInitConfigs === undefined) {
-			jQuery(outerSelector + " a[rel^='prettyPhoto']").prettyPhoto();
+			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto();
 		}
 		else {
-			jQuery(outerSelector + " a[rel^='prettyPhoto']").prettyPhoto(PrettyPhotoInitConfigs);
+			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(PrettyPhotoInitConfigs);
 		}
 	}
 }
