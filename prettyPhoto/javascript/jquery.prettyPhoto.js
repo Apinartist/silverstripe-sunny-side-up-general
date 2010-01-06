@@ -79,5 +79,5 @@ var PrettyPhotoLoader = {
 			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(PrettyPhotoInitConfigs);
 		}
 	}
-}
+};
 
