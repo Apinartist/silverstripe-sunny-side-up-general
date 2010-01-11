@@ -60,6 +60,14 @@ class ShareThis extends DataObjectDecorator {
 		static function set_alternate_icons($array) {self::check_array($array); self::$alternate_icons = $array;}
 
 	/**
+	* use Black and White Mouse-Over effect
+	* @var boolean
+	*/
+
+	protected static $use_bw_effect = array();
+		static function set_use_bw_effect($value) {$value = self::clean_boolean_value($value); self::$use_bw_effect = $value;}
+
+	/**
 	* specify icons to be included, if left empty, this variable will be ignored
 	* @var array
 	*/
@@ -121,6 +129,8 @@ class ShareThis extends DataObjectDecorator {
 	protected $encodedPageTitleSpaceEncoded = '';
 
 	protected $pageIcon = '';
+
+	protected $variablesAssigned = false;
 
 	function updateCMSFields(FieldSet &$fields) {
 		$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
@@ -205,6 +215,9 @@ class ShareThis extends DataObjectDecorator {
 		if($this->ThisPageHasShareThis()){
 			Requirements::themedCSS("SocialNetworking");
 			Requirements::javascript("sharethis/javascript/shareThis.js");
+			if(self::$use_bw_effect) {
+				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
+			}
 			$this->bookmarks = $this->makeBookmarks();
 			foreach($this->bookmarks as $key => $bookmark){
 				if(isset($bookmark["title"]) && isset($bookmark["url"])) {
@@ -271,20 +284,38 @@ class ShareThis extends DataObjectDecorator {
 	 */
 
 	protected function makeBookmarkIndependentVariables() {
-		if($this->ThisPageHasShareThis()) {
-			$this->nonEncodedPageURL = Director::absoluteBaseURL().$this->owner->URLSegment;
-			$this->encodedPageURL = urlencode($this->nonEncodedPageURL);
-			$this->encodedPageTitle = urlencode($this->owner->Title);
-			$this->encodedPageTitleSpaceEncoded = str_replace("+", "%20",urlencode($this->owner->Title));
-			if($this->owner->MetaDescription) {
-				$this->encodedDescription = urlencode($this->owner->MetaDescription);
-			}
-			else {
-				$this->encodedDescription = $this->encodedPageTitle;
-			}
-			return true;
+		if($this->ThisPageHasShareThis() && !$this->variablesAssigned) {
+			$title = $this->owner->Title;
+			$link = $this->owner->Link();
+			$description = $this->owner->MetaDescription;
+			$this->AssignVariables($title, $link, $description);
 		}
+		return true;
 	}
+
+	public function getShareThisIconsForObject($title, $link, $description) {
+		self::$always_include = true;
+		if(!$this->variablesAssigned) {
+			$this->AssignVariables($title, $link, $description);
+		}
+		return $this->ShareIcons();
+	}
+
+	private function AssignVariables($title, $link, $description) {
+		$this->nonEncodedPageURL = Director::absoluteBaseURL().$link;
+		$this->encodedPageURL = urlencode($this->nonEncodedPageURL);
+		$this->encodedPageTitle = urlencode($title);
+		$this->encodedPageTitleSpaceEncoded = str_replace("+", "%20",urlencode($title));
+		if($description) {
+			$this->encodedDescription = urlencode($description);
+		}
+		else {
+			$this->encodedDescription = $this->encodedPageTitle;
+		}
+		$this->variablesAssigned = true;
+	}
+
+
 
 	protected function makeBookmarks() {
 		if(!count($this->bookmarks) && $this->bookmarks !== 0) {
@@ -299,7 +330,7 @@ class ShareThis extends DataObjectDecorator {
 					 "title" => "Print"),
 				"favourites" => array(
 					 "url" => "#",
-					 "click" => "bookmark('".$this->encodedPageURL."', '".$this->encodedPageTitle."'); return false;",
+					 "click" => "sharethis.bookmark('".$this->encodedPageURL."', '".$this->encodedPageTitle."'); return false;",
 					 "title" => "Add to favourites (Internet Explorer Only)"),
 				"ask" => array(
 					 "url" => "http://mystuff.ask.com/mysearch/BookmarkIt?".htmlentities("v=1.2&t=webpages&url=".$this->encodedPageURL."&title=".$this->encodedPageTitle."&abstext=".$this->encodedDescription),
