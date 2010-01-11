@@ -1,63 +1,35 @@
 <?php
 /**
  *@author nicolaas [at] sunnysideup.co.nz
- */
-class QuickLinks extends Widget {
+ **/
+class Headlines extends Widget {
 
-	static $db = array();
-
-	static $has_one = array(
-		"QuickLink1" => "SiteTree",
-		"QuickLink2" => "SiteTree",
-		"QuickLink3" => "SiteTree",
-		"QuickLink4" => "SiteTree",
-		"QuickLink5" => "SiteTree",
-		"QuickLink6" => "SiteTree",
-		"QuickLink7" => "SiteTree"
+	static $db = array(
+		"NumberOfHeadlinesShown" => "Int"
 	);
 
-	static $has_many = array();
+	static $defaults = array(
+		"NumberOfHeadlinesShown" => 5
+	);
 
-	static $many_many = array();
+	protected static $boolean_field_used_to_identify_headline = "IsHeadline";
+		static function set_boolean_field_used_to_identify_headline($v) {self::$boolean_field_used_to_identify_headline = $v;}
 
-	static $belongs_many_many = array();
+	static $title = 'Headlines';
 
-	static $defaults = array();
+	static $cmsTitle = 'Headlines';
 
-	static $title = 'Quick Links';
-
-	static $cmsTitle = 'Quick Links';
-
-	static $description = 'Adds a customisable list of links.';
+	static $description = 'Adds a list of identified headlines';
 
 	function getCMSFields() {
-		$source = DataObject::get("SiteTree");
-		$optionArray = $source->toDropDownMap($index = 'ID', $titleField = 'Title', "--- select page ---", $sort = "Sort");
-		if($source) foreach( $source as $page ) {
-			$optionArray[$page->ID] = $page->MenuTitle;
-		}
 		return new FieldSet(
-			new DropdownField("QuickLink1ID","First Link",$optionArray),
-			new DropdownField("QuickLink2ID","Second Link",$optionArray),
-			new DropdownField("QuickLink3ID","Third Link",$optionArray),
-			new DropdownField("QuickLink4ID","Fourth Link",$optionArray),
-			new DropdownField("QuickLink5ID","Fifth Link",$optionArray),
-			new DropdownField("QuickLink6ID","Sixth Link",$optionArray),
-			new DropdownField("QuickLink7ID","Seventh Link",$optionArray)
+			new NumericField("NumberOfHeadlinesShown","Number of Headlines Shown")
 		);
 	}
 
-	function Links() {
-		Requirements::themedCSS("widgets_quicklinks");
-		$dos = new DataObjectSet();
-		for($i = 1; $i < 8; $i++) {
-			$fieldname = "QuickLink".$i."ID";
-			if($this->$fieldname > 0) {
-				if($page = DataObject::get_by_id("SiteTree", $this->$fieldname - 0)) {
-					$dos->push($page);
-				}
-			}
-		}
+	function Headlines() {
+		Requirements::themedCSS("widgets_headlines");
+		$dos = DataObject("BlogEntry","`".self::$boolean_field_used_to_identify_headline."` = 1", "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
 		return $dos;
 	}
 
