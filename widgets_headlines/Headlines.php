@@ -27,9 +27,9 @@ class Headlines extends Widget {
 		);
 	}
 
-	function Headlines() {
+	function Links() {
 		Requirements::themedCSS("widgets_headlines");
-		$dos = DataObject("BlogEntry","`".self::$boolean_field_used_to_identify_headline."` = 1", "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
+		$dos = DataObject::get("BlogEntry","`".self::$boolean_field_used_to_identify_headline."` = 1", "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
 		return $dos;
 	}
 
