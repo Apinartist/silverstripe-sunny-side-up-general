@@ -117,7 +117,7 @@ class SearchableOrderReport extends SalesReport {
 		if(trim($where)) {
 		 $where = " ( $where ) AND ";
 		}
-		$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` IS NULL)';
+		$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` = "Pending" OR  `Payment`.`Status` IS NULL)';
 		$query = singleton('Order')->buildSQL(
 			$where,
 			$sort = '`Order`.`Created` DESC',
