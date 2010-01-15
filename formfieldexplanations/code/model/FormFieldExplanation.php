@@ -12,7 +12,7 @@ class FormFieldExplanation extends DataObject {
 	public static $db = array(
 		"Name" => "Varchar(255)",
 		"Title" => "Varchar(255)",
-		"Explanation" => "Text"
+		"Explanation" => "HTMLText"
 	);
 
 	public static $has_one = array(
@@ -39,6 +39,14 @@ class FormFieldExplanation extends DataObject {
 		$fields->addFieldToTab("Root.Main", new HTMLEditorField("Explanation", "Explanation", $rows = 3, $cols = 20));
 		return $fields;
 	}
+	/*
+	function getFrontEndFields() {
+		$fields = parent::getCMSFields();
+		$fields->removeByName("Explanation");
+		$fields->addFieldToTab("Root.Main", new HTMLEditorField("Explanation", "Explanation", $rows = 3, $cols = 20));
+		return $fields;
+	}
+	*/
 
 	public static $singular_name = "Form Field Explanation";
 
