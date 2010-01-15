@@ -1,5 +1,5 @@
 <% if ThisPageHasShareThis %>
-<div class="ShareThisHolde socialNetworkingHolder">
+<div class="ShareThisHolder socialNetworkingHolder">
 	<% if ShareIcons %>
 	<div class="ShareThisHeader socialNetworkingHeader typography"><h5>Share</h5></div>
 	<ul class="ShareThisUL socialNetworkingList">
