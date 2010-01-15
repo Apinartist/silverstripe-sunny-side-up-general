@@ -319,6 +319,27 @@
 		Suspendisse laoreet.
 	</li>
 </ul>
+<p>Elements within elements...</p>
+<ul>
+ 	<li><h1>heading 1: The quick brown fox jumps over the lazy dog</h1></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+ 	<li><h2>heading 2: The quick brown fox jumps over the lazy dog</h2></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+ 	<li><h3>heading 3: The quick brown fox jumps over the lazy dog</h3></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+ 	<li><h4>heading 1: The quick brown fox jumps over the lazy dog</h4></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+	<li><h5>heading 1: The quick brown fox jumps over the lazy dog</h5></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+	<li><h6>heading 1: The quick brown fox jumps over the lazy dog</h6></li>
+ 	<li>List item with no elements within it.</li>
+	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+</ul>
 <p>
 	In in purus eget mauris fringilla placerat.
 	Proin pellentesque fermentum dui.
@@ -556,12 +577,12 @@
 	Nullam sed tortor.
 	Aenean tellus est, bibendum non, fringilla in, eleifend vitae, erat.
 </p>
-<h1>heading 1</h1>
-<h2>heading 2</h2>
-<h3>heading 3</h3>
-<h4>heading 4</h4>
-<h5>heading 5</h5>
-<h6>heading 6</h6>
+<h1>heading 1: The quick brown fox jumps over the lazy dog</h1>
+<h2>heading 2: The quick brown fox jumps over the lazy dog</h2>
+<h3>heading 3: The quick brown fox jumps over the lazy dog</h3>
+<h4>heading 4: The quick brown fox jumps over the lazy dog</h4>
+<h5>heading 5: The quick brown fox jumps over the lazy dog</h5>
+<h6>heading 6: The quick brown fox jumps over the lazy dog</h6>
 <hr />
 <hr />
 <hr />
