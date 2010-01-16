@@ -65,7 +65,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 	}
 
 	public function index() {
-		$this->Content .= $this->renderWith("TypographySample");
+		$this->Content .= $this->typographyhtml();
 		return array();
 	}
 

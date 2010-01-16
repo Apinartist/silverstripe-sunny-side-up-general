@@ -330,15 +330,25 @@
  	<li><h3>heading 3: The quick brown fox jumps over the lazy dog</h3></li>
  	<li>List item with no elements within it.</li>
 	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
- 	<li><h4>heading 1: The quick brown fox jumps over the lazy dog</h4></li>
+ 	<li><h4>heading 4: The quick brown fox jumps over the lazy dog</h4></li>
  	<li>List item with no elements within it.</li>
 	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
-	<li><h5>heading 1: The quick brown fox jumps over the lazy dog</h5></li>
+	<li><h5>heading 5: The quick brown fox jumps over the lazy dog</h5></li>
  	<li>List item with no elements within it.</li>
 	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
-	<li><h6>heading 1: The quick brown fox jumps over the lazy dog</h6></li>
+	<li><h6>heading 6: The quick brown fox jumps over the lazy dog</h6></li>
  	<li>List item with no elements within it.</li>
 	<li><p>Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+	<li>
+		<ul>
+			<li><h1>Extra LI LI heading 1: The quick brown fox jumps over the lazy dog</h1></li>
+			<li>Extra LI LI List item with no elements within it.</li>
+			<li><p>Extra LI LI Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+			<li><h2>Extra LI LI heading 2: The quick brown fox jumps over the lazy dog</h2></li>
+			<li>Extra LI LI List item with no elements within it.</li>
+			<li><p>Extra LI LI Paragraph <span>span in a paragraph</span> heading 1: The quick brown fox jumps over the lazy dog</p></li>
+		</ul>
+	</li>
 </ul>
 <p>
 	In in purus eget mauris fringilla placerat.
