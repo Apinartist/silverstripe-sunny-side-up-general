@@ -46,3 +46,18 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module, but instead customise it
 in your mysite folder at all so that you can upgrade it later.
+
+
+Adding Overlays
+-----------------------------------------------
+If you create a file:
+
+TemplateOverviewOverlay.js in your project folder
+e.g.
+
+mysite/javascript/TemplateOverviewOverlay.js
+
+using TemplateOverviewOverlayExample.js as the example
+then you can create useful overlays.  These overlays
+can show the design graphic over your own design, allowing
+visual checks of your css work.
