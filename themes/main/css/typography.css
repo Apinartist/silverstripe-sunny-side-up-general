@@ -14,7 +14,7 @@
 	.typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {text-transform: lowercase; }
 
 /* general font-size changes */
-.typography p, .typography li, .typography address {font-size: 1.7em;}
+.typography p, .typography li, .typography address {font-size: 1em;}
 	.typography td p {font-size: 1em;}
 	.typography td li {font-size: 1em;}
 	.typography li p {font-size: 1em;}
