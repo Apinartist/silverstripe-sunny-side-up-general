@@ -26,7 +26,7 @@ ModelAdmin::set_page_length(100);
 CMSMenu::remove_menu_item("CommentAdmin");
 CMSMenu::remove_menu_item("ReportAdmin");
 CMSMenu::remove_menu_item("HelpAdmin");
-LeftAndMain::setLogo("")
+LeftAndMain::setLogo("");
 
 //===================---------------- ENBD cms MODULE  ----------------===================
 
