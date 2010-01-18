@@ -1,13 +1,13 @@
 .typography{color:#808383; font-size: 1.7em;}
 
 /* HEADINGS */
-.typography h1 {color: #FFCC33; font-size: 2.7em; line-height: 0.85em; text-transform: uppercase}
+.typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; text-transform: uppercase}
 	.typography h1#mainPageTitle{margin-top: 0!important; padding-top: 0!important;}
-.typography h2 {color: #317010; font-size: 2.3em;}
-.typography h3 {color: #82274B; margin-top: 1em; font-size: 1em;text-align: right; font-size: 1.7em;}
-.typography h4{font-size: 1.7em;font-weight: bold; font-style: italic;}
-.typography h5{font-size: 1.7em; color: #317010;}
-.typography h6{font-size: 1.3em; color: #B5AB8B; text-decoration: underline;}
+.typography h2 {color: #317010; font-size: 1.33em;}
+.typography h3 {color: #82274B; margin-top: 1em; font-size: 1em;text-align: right; font-size: 1em;}
+.typography h4{font-size: 1em;font-weight: bold; font-style: italic;}
+.typography h5{font-size: 1em; color: #317010;}
+.typography h6{font-size: 0.87em; color: #B5AB8B; text-decoration: underline;}
 
 /* heading combos */
 .typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {padding: 0.7em 0 0.3em 0;  }

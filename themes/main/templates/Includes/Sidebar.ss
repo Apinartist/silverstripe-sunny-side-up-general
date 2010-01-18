@@ -1,3 +1,4 @@
 <div id="SidebarSection">
-$Sidebar
+	<% include Breadcrumbs %>
+	$Sidebar
 </div>

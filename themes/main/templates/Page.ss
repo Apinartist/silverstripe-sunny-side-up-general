@@ -10,7 +10,6 @@
 		<% include Navigation %>
 		<% include Sidebar %>
  		<div id="Layout" class="typography">
-			<% include Breadcrumbs %>
 			$Layout
 		</div>
 	</div>
