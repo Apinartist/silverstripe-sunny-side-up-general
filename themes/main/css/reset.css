@@ -6,3 +6,6 @@ table{border-collapse:separate;border-spacing:0pt;}
 caption,th,td{font-weight:normal;text-align:left;}
 blockquote:before,blockquote:after,q:before,q:after{content:"";}
 blockquote,q{quotes:"" "";}
+html{font-size: 100%;}
+body {font-size: 100%;}
+#Wrapper {font: 62.5%/1.5;}
