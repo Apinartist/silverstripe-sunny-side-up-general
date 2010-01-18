@@ -3,15 +3,7 @@ ecommerce drop and drag cart
 Pre 0.1 proof of concept
 ###############################################
 
-This module extends the standard ecommerce module
-giving you easy access to setting up a drop-and-drag
-functionality for the cart.
-
-This module is just one ideas at present, please dont
-use it without thoroughly checking the code and dont try it
-without a good understanding of ecommerce.
-
-Any feedback or ideas appreciated
+see: http://silverstripe-webdevelopment.com/ecommercedropanddragcart
 
 
 TO DO: investigate if the code works better as decorator.

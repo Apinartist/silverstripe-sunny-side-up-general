@@ -28,7 +28,7 @@ class CurrencyConverterPage extends Page {
 class CurrencyConverterPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
-		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("widgets_currencyconverter/javascript/CurrencyConverter.js");
 		Requirements::css("widgets_currencyconverter/css/CurrencyConverter.css");
 	}

@@ -60,7 +60,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
 
-		Requirements::javascript("jsparty/jquery/jquery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript('typography/javascript/typography.js');
 	}
 
