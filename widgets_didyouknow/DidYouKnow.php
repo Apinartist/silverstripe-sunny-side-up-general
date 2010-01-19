@@ -4,6 +4,10 @@
  **/
 class DidYouKnow extends Widget {
 
+	static $db = array(
+		"Title" => "Varchar(50)"
+	);
+
 	static $title = 'Did You Know?';
 
 	static $cmsTitle = 'Did You Know?';
@@ -12,6 +16,7 @@ class DidYouKnow extends Widget {
 
 	function getCMSFields() {
 		return new FieldSet(
+			new TextField("Title", "Title"),
 			new TableField(
 				$name = "DidYouKnow",
 				$sourceClass = "DidYouKnow_Statement",
@@ -19,6 +24,14 @@ class DidYouKnow extends Widget {
 				$fieldTypes = array("Content" => "TextField")
 			)
 		);
+	}
+
+	function Title() {
+		return $this->Title ? $this->Title : self::$title;
+	}
+
+	function getTitle() {
+		return $this->Title;
 	}
 
 	function RandomDidYouKnowItem() {
