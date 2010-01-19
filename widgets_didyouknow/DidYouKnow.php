@@ -5,7 +5,7 @@
 class DidYouKnow extends Widget {
 
 	static $db = array(
-		"Title" => "Varchar(50)"
+		"WidgetTitle" => "Varchar(50)"
 	);
 
 	static $title = 'Did You Know?';
@@ -16,7 +16,7 @@ class DidYouKnow extends Widget {
 
 	function getCMSFields() {
 		return new FieldSet(
-			new TextField("Title", "Title"),
+			new TextField("WidgetTitle", "Title (optional)"),
 			new TableField(
 				$name = "DidYouKnow",
 				$sourceClass = "DidYouKnow_Statement",
@@ -27,7 +27,7 @@ class DidYouKnow extends Widget {
 	}
 
 	function Title() {
-		return $this->Title ? $this->Title : self::$title;
+		return $this->WidgetTitle ? $this->WidgetTitle : self::$title;
 	}
 
 	function getTitle() {
@@ -35,7 +35,7 @@ class DidYouKnow extends Widget {
 	}
 
 	function RandomDidYouKnowItem() {
-		Requirements::themedCSS("widgets_headlines");
+		Requirements::themedCSS("widgets_didyouknow");
 		$do = DataObject::get_one("DidYouKnow_Statement", null, $cache = true, "RAND() DESC");
 		if($do) {
 			return $do->Content;

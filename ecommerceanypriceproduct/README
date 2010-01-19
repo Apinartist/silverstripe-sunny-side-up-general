@@ -13,8 +13,8 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-This setups an ecommerce product where the user
-can set the total price (e.g. a donation).
+see:
+ http://silverstripe-webdevelopment.com/ecommerceanypriceproduct
 
 
 Installation Instructions

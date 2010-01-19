@@ -12,7 +12,7 @@ class Headlines extends Widget {
 		"NumberOfHeadlinesShown" => 5
 	);
 
-	protected static $boolean_field_used_to_identify_headline = "IsHeadline";
+	protected static $boolean_field_used_to_identify_headline = "";
 		static function set_boolean_field_used_to_identify_headline($v) {self::$boolean_field_used_to_identify_headline = $v;}
 
 	static $title = 'Headlines';
@@ -29,7 +29,11 @@ class Headlines extends Widget {
 
 	function Links() {
 		Requirements::themedCSS("widgets_headlines");
-		$dos = DataObject::get("BlogEntry","`".self::$boolean_field_used_to_identify_headline."` = 1", "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
+		$where = null;
+		if(self::$boolean_field_used_to_identify_headline) {
+			$where = "`".self::$boolean_field_used_to_identify_headline."` = 1";
+		}
+		$dos = DataObject::get("BlogEntry",$where, "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
 		return $dos;
 	}
 

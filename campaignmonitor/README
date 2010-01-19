@@ -1,5 +1,5 @@
 ###############################################
-CampaignMonitorSignupPage Module
+CampaignMonitor Module
 Pre 0.1 proof of concept
 ###############################################
 
@@ -13,7 +13,8 @@ SilverStripe 2.3.0 or greater.
 
 Documentation
 -----------------------------------------------
-see: http://silverstripe-webdevelopment.com/
+see:
+ http://silverstripe-webdevelopment.com/campaignmonitor
 
 Installation Instructions
 -----------------------------------------------
