@@ -132,7 +132,7 @@ class GSTTaxModifier extends TaxModifier {
 			if($countryCode = $this->LiveCountry()) {
 				$this->debugMessage .= "<hr />There is a current live country: ".$countryCode;
 				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
-				if($objects->count()) {
+				if($objects) {
 					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
 					self::$tax_objects = $objects;
 				}
