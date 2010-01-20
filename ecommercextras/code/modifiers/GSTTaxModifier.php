@@ -154,7 +154,7 @@ class GSTTaxModifier extends TaxModifier {
 			if($defaultCountryCode) {
 				$this->debugMessage .= "<hr />There are current live DEFAULT country code: ".$defaultCountryCode;
 				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
-				if($objects->count()){
+				if($objects){
 					$this->debugMessage .= "<hr />there are DEFAULT tax objects available for ".$defaultCountryCode;
 					self::$tax_objects = $objects;
 				}
@@ -202,11 +202,14 @@ class GSTTaxModifier extends TaxModifier {
 
 	protected function workOutSumRate($taxObjects) {
 		$sumRate = 0;
-		if($taxObjects->count()) {
+		if($taxObjects) {
 			foreach($taxObjects as $obj) {
 				$this->debugMessage .= "<hr />found a rate of ".$obj->Rate;
 				$sumRate += floatval($obj->Rate);
 			}
+		}
+		else {
+			$this->debugMessage .= "<hr />could not find a rate";
 		}
 		return $sumRate;
 	}
@@ -276,7 +279,7 @@ class GSTTaxModifier extends TaxModifier {
 			$name = '';
 			$end = '';
 			$taxObjects = $this->LivetaxObjects();
-			if($taxObjects->count()) {
+			if($taxObjects) {
 				$objectArray = array();
 				foreach($taxObjects as $object) {
 					$objectArray[] = $object->Name;
