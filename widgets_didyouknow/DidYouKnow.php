@@ -46,7 +46,7 @@ class DidYouKnow extends Widget {
 
 class DidYouKnow_Statement extends DataObject {
 
-	$db = array(
+	static $db = array(
 		"Content" => "Varchar(255)"
 	);
 
