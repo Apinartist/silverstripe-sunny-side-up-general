@@ -17,13 +17,14 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 		);
 	}
 
-
+	/*
 	function updateCMSFields(FieldSet &$fields) {
 		if(DataObject::get_one("FormFieldExplanation", "`ParentID` = ".$this->owner->ID)) {
 			$fields->addFieldToTab("Root.Content.FormExplanations", $this->getFormFieldExplanationHasManyTable());
 		}
 		return $fields;
 	}
+	*/
 
 	function getFormFieldExplanationHasManyTable() {
 		$field = new HasManyComplexTableField(

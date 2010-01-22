@@ -19,6 +19,10 @@ class FormFieldExplanation extends DataObject {
 		"Parent" => "SiteTree"
 	);
 
+	public static $indexes = array(
+		"Name" => true
+	);
+
 	public static $searchable_fields = array(
 		"Title" => "PartialMatch"
 	);
@@ -35,18 +39,16 @@ class FormFieldExplanation extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ParentID");
-		$fields->removeByName("Explanation");
-		$fields->addFieldToTab("Root.Main", new HTMLEditorField("Explanation", "Explanation", $rows = 3, $cols = 20));
+		$fields->removeByName("Name");
 		return $fields;
 	}
-	/*
+
 	function getFrontEndFields() {
-		$fields = parent::getCMSFields();
-		$fields->removeByName("Explanation");
-		$fields->addFieldToTab("Root.Main", new HTMLEditorField("Explanation", "Explanation", $rows = 3, $cols = 20));
+		$fields = parent::getFrontEndFields();
+		$fields->removeByName("ParentID");
+		$fields->removeByName("Name");
 		return $fields;
 	}
-	*/
 
 	public static $singular_name = "Form Field Explanation";
 

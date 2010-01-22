@@ -17,7 +17,8 @@ class FormFieldExplanationExtension extends Extension{
 		$explanations = array();
 		if($dos) {
 			foreach($dos as $do) {
-				$explanations[$do->Name] = $do->Explanation;
+				$explanations[$do->Name]["Explanation"] = $do->Explanation;
+				$explanations[$do->Name]["ID"] = $do->ID;
 			}
 		}
 		$dos = $do = null;
@@ -27,9 +28,9 @@ class FormFieldExplanationExtension extends Extension{
 				if($name = $field->Name()) {
 					$message = '';
 					if(isset($explanations[$name])) {
-						$message .= $explanations[$name];
-						if($datarecord->canEdit()) {
-							$message .= ' | '.self::CMSLink($datarecord->ID);
+						$message .= $explanations[$name]["Explanation"];
+						if($datarecord->canEdit() && isset($explanations[$name]["ID"])) {
+							$message .= ' | '.self::CMSLink($datarecord->ID, $explanations[$name]["ID"]);
 						}
 					}
 					elseif($datarecord->canEdit() && $name) {
@@ -75,7 +76,7 @@ class FormFieldExplanationExtension extends Extension{
 		$obj->ParentID = $this->owner->ID;
 		$obj->write();
 		if(Director::is_ajax()) {
-			return self::CMSLink($this->owner->ID);
+			return self::CMSLink($this->owner->ID, $obj->ID);
 		}
 		else {
 			Director::redirectBack();
@@ -91,8 +92,18 @@ class FormFieldExplanationExtension extends Extension{
 		return Array();
 	}
 
-	protected static function CMSLink ($id) {
-		return '<a href="admin/show/'.$id.'" class="editFieldExplanation">edit description in CMS</a>';
+	protected static function CMSLink ($pageID, $itemID) {
+		if(class_exists("DataObjectOneFieldOneRecordUpdateController")) {
+			return DataObjectOneFieldOneRecordUpdateController::popup_link(
+				$className = "FormFieldExplanation",
+				$FieldName = "Explanation",
+				$recordID = $itemID
+			);
+		}
+		else {
+			return '<a href="admin/show/'.$id.'" class="editFieldExplanation">edit description in CMS</a>';
+		}
 	}
+
 
 }
