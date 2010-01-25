@@ -2,6 +2,8 @@
 /**
  *@author: Nicolaas [at] Sunny Side Up . Co . Nz
  *@description: works out the quantity available for each product
+ * based on the the number of items sold (recorded in ProductStockOrderEntry)
+ * and manual corrections, recorded in ProductStockManualUpdate.
  *
  *
  **/

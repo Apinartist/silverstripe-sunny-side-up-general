@@ -1,14 +1,14 @@
 <?php
 /**
  *@author: Nicolaas [at] Sunny Side Up . Co . Nz
- *
+ *@description: calculates quantities availabel for product variations as opposed to products.
  *
  **/
 
 class ProductStockVariationCalculatedQuantity extends ProductStockCalculatedQuantity {
 
 	static $db = array(
-		"ProductVariationPresentPresent" => "Boolean"
+		"ProductVariationPresent" => "Boolean"
 	);
 
 	static $has_one = array(

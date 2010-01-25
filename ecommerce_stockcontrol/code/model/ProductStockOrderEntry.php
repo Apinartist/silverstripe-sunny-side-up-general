@@ -1,8 +1,9 @@
 <?php
 /**
  *@author: Nicolaas [at] Sunny Side Up . Co . Nz
- *@description: works out the quantity available for each product
- *
+ *@description:
+ * keeps a record of the quantity deduction made for each sale.  That is, if we sell 10 widgets in an order then an entry is made in this dataclass for
+ * a reduction of ten widgets in the available quantity
  *
  **/
 

@@ -1,8 +1,8 @@
 <?php
 /**
  *@author: Nicolaas [at] Sunny Side Up . Co . Nz
- *@description: manual top up for a product
- *
+ *@description: manual top-up for a product
+ * at any stage, the product available quantity can be changed (manually overridden) using this class
  *
  **/
 
