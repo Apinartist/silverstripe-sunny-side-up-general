@@ -34,6 +34,28 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 		}
 		$allUsersGroupID = $allUsersGroup->ID;
 
+		//delete members without group
+		if(self::get_automatically_delete_members_without_group()) {
+			$query = new SQLQuery('*', array('Group_Members'), 'GroupID = ' . $allUsersGroupID);
+			$query->delete = true;
+			$query->execute();
+			$sql = "Delete Group_Members From Group_Members  WHERE GroupID = ". $allUsersGroupID;
+			DB::query($sql);
+			$unlistedMembers = DataObject::get(
+				"Member",
+				$where = "Group_Members.ID IS NULL",
+				$sort = null,
+				$join = "LEFT JOIN Group_Members ON Group_Members.MemberID = Member.ID"
+			);
+			if($unlistedMembers) {
+				foreach($unlistedMembers as $member) {
+					Database::alteration_message("Deleting Member: <i>".$member->getName()."</i> as he/she is not listed in any groups.", "deleted");
+					$member->delete();
+				}
+			}
+		}
+
+		//load current combos
 		$groupMemberCombos = array();
 		$groupMemberCombosToDelete = array();
 		$groupMemberCombosToAdd = array();
@@ -52,6 +74,7 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 				$groupMemberCombosToAdd[] = $memberID;
 			}
 		}
+
 		//add all members that are not listed in any groups
 		$extraWhere = '';
 		if(count($groupMemberCombosToAdd)) {
@@ -63,6 +86,7 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 			$sort = null,
 			$join = "LEFT JOIN Group_Members ON Group_Members.MemberID = Member.ID"
 		);
+
 		//add combos
 		if($unlistedMembers) {
 			$existingMembers = $allUsersGroup->Members();
@@ -70,6 +94,7 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 				$existingMembers->add($member);
 			}
 		}
+
 		//delete double-entries
 		if($number = count($groupMemberCombosToDelete)) {
 			$query = new SQLQuery('*', array('Group_Members'), 'ID IN('.implode(",",$groupMemberCombosToDelete).')');
@@ -78,24 +103,6 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 			Database::alteration_message("deleted double entries (".$count.") in group members table", "deleted");
 		}
 
-		//delete members without group
-		if(self::get_automatically_delete_members_without_group()) {
-			$query = new SQLQuery('*', array('Group_Members'), 'GroupID = ' . $allUsersGroupID);
-			$query->delete = true;
-			$query->execute();
-			$unlistedMembers = DataObject::get(
-				"Member",
-				$where = "Group_Members.ID IS NULL",
-				$sort = null,
-				$join = "LEFT JOIN Group_Members ON Group_Members.MemberID = Member.ID"
-			);
-			if($unlistedMembers) {
-				foreach($unlistedMembers as $member) {
-					Database::alteration_message("Deleting Member: <i>".$member->getName()."</i> from Members table as it is not listed in any groups.", "deleted");
-					$member->destroy();
-				}
-			}
-		}
 
 
 	}

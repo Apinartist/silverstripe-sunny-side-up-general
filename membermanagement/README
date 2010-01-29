@@ -23,4 +23,5 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module, but instead customise it
 in your mysite folder at all so that you can upgrade it later.
+3. run a dev/build/?flush=1 to action
 
