@@ -10,5 +10,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START membermanagement MODULE ----------------===================
-Object::add_extension('Group', 'GroupCleanManagement');
+//Object::add_extension('Group', 'MemberManagementGroupCleanup');
+//MemberManagementGroupCleanup::set_name_for_all_users_group("*** All Users ***");
+//MemberManagementGroupCleanup::set_automatically_delete_members_without_group(TRUE);
 //===================---------------- END membermanagement MODULE ----------------===================
