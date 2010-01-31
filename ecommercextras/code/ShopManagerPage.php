@@ -129,5 +129,23 @@ class ShopManagerPage_Controller extends Page_Controller {
 		}
 	}
 
+	function currentorderdetails() {
+		$currentOrder = ShoppingCart::current_order();
+		$html = '';
+
+		if($items = $currentOrder->Items()) {
+			foreach($items as $item) $html .= $item->debug();
+		}
+
+		if($modifiers = $currentOrder->Modifiers()) {
+			foreach($modifiers as $modifier) $html .= $modifier->debug();
+		}
+		return array(
+			'Message' => $html,
+			'Content' => $html
+		);
+
+	}
+
 
 }

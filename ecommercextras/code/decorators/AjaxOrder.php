@@ -61,9 +61,28 @@ class AjaxOrder extends DataObjectDecorator {
 		return 0;
 	}
 
+	public function NumItemsTimesQuantityInCart() {
+		$total = 0;
+		if($cart = $this->Cart()) {
+			if($items = $cart->Items()) {
+				foreach($items as $item) {
+					$total += $item->getQuantity();
+				}
+			}
+		}
+		return $total;
+	}
+
+
+	public function MoreThanOneNumItemsTimesQuantityInCart() {
+		return $this->NumItemsTimesQuantityInCart() > 1;
+	}
+
 	public function MoreThanOneItemInCart() {
 		return $this->NumItemsInCart() > 1;
 	}
+
+
 
 	public function SubTotalCartValue() {
 		$order = ShoppingCart::current_order();
