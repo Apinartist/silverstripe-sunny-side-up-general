@@ -11,34 +11,12 @@ class FontResizer extends Extension {
 	protected static $min_font_size = 0.7;
 		static function set_min_font_size($v) {self::$min_font_size = floatval($v);}
 
-	function increasefontsize() {
-		return $this->fontAction(1 * self::$font_size_change);
-	}
 
-	function decreasefontsize() {
-		return $this->fontAction(-1 * self::$font_size_change);
-	}
-
-	function resetfontsize() {
-		Session::clear("fontsize");
-		return $this->fontAction(0);
-	}
-
-	function fontAction($change) {
-		$currentSize = $this->currentFontSize();
-		$currentSize = floatval($currentSize) + $change;
-		Session::set("fontsize", $currentSize);
-		if(Director::is_ajax()) {
-			return $this->CurrentFontSizeInPercentages($currentSize);
-		}
-		else {
-			Director::redirectBack();
-		}
-		return array();
-	}
+	// *** TEMPLATE FUNCTIONS
 
 	function CurrentFontSizeInPercentages($currentSize = 0) {
-		Requirements::javascript("mysite/javascript/fontresizer.js");
+		Requirements::themedCSS("fontresizer");
+		Requirements::javascript("fontresizer/javascript/fontresizer.js");
 		Requirements::customScript("fontresizer.setMin(".(Page::$min_font_size*100).");fontresizer.setMax(".(Page::$max_font_size*100).");");
 		if(!$currentSize) {
 			$currentSize = $this->currentFontSize();
@@ -53,6 +31,39 @@ class FontResizer extends Extension {
 		return false;
 	}
 
+
+	// *** ACTIONS
+
+	function increasefontsize() {
+		return $this->fontAction(1 * self::$font_size_change);
+	}
+
+	function decreasefontsize() {
+		return $this->fontAction(-1 * self::$font_size_change);
+	}
+
+	function resetfontsize() {
+		Session::clear("fontsize");
+		return $this->fontAction(0);
+	}
+
+
+	// *** INTERNAL FUNCTIONS
+
+	protected function fontAction($change) {
+		$currentSize = $this->currentFontSize();
+		$currentSize = floatval($currentSize) + $change;
+		Session::set("fontsize", $currentSize);
+		if(Director::is_ajax()) {
+			return $this->CurrentFontSizeInPercentages($currentSize);
+		}
+		else {
+			Director::redirectBack();
+		}
+		return array();
+	}
+
+
 	protected function currentFontSize() {
 		$currentSize = Session::get("fontsize");
 		if(!$currentSize) {
@@ -65,7 +76,6 @@ class FontResizer extends Extension {
 			$currentSize = self::$max_font_size;
 		}
 		//make percentage
-
 		return $currentSize;
 	}
 
