@@ -33,41 +33,38 @@ fontresizer = {
 
 	max: 230, setMax: function(v) {fontresizer.max = parseInt(v);},
 
+	currentElement: null,
+
 	init: function () {
 		jQuery("." + fontresizer.doesNotHaveAlteredFontClass).hide();
 		jQuery(fontresizer.chooserClickersSelector).click(
 			function() {
-
 				fontresizer.href = jQuery(this).attr("href");
-				jQuery("body").fadeTo(
-					"fast",
-					0.7,
-					function() {
-						jQuery.get(
-							fontresizer.href,
-							function (returnValue) {
-								fontresizer.lastSize = fontresizer.size;
-								fontresizer.size = returnValue
-								if(fontresizer.size == fontresizer.median) {
-									jQuery(fontresizer.resetSelector).addClass(fontresizer.doesNotHaveAlteredFontClass).hide();
-								}
-								else {
-									jQuery(fontresizer.resetSelector).removeClass(fontresizer.doesNotHaveAlteredFontClass).show();
-								}
-								jQuery(fontresizer.increaseSelector+ ", " + fontresizer.decreaseSelector).show();
-								if(fontresizer.size >= fontresizer.max) {
-									jQuery(fontresizer.increaseSelector).hide();
-								}
-								else if(fontresizer.size <= fontresizer.min) {
-									jQuery(fontresizer.decreaseSelector).hide();
-								}
-								jQuery(fontresizer.wrapperSelector).css("font-size", fontresizer.size+"%");
-								jQuery(fontresizer.currentFontSizeInPercentagesSelector).text(fontresizer.size+"%");
-								jQuery("body").fadeTo("fast", 1.3);
-							}
-						);
+				fontresizer.currentElement = jQuery(this).parent().addClass("loading");
+				jQuery.get(
+					fontresizer.href,
+					function (returnValue) {
+						fontresizer.lastSize = fontresizer.size;
+						fontresizer.size = returnValue
+						if(fontresizer.size == fontresizer.median) {
+							jQuery(fontresizer.resetSelector).addClass(fontresizer.doesNotHaveAlteredFontClass).hide();
+						}
+						else {
+							jQuery(fontresizer.resetSelector).removeClass(fontresizer.doesNotHaveAlteredFontClass).show();
+						}
+						jQuery(fontresizer.increaseSelector+ ", " + fontresizer.decreaseSelector).show();
+						if(fontresizer.size >= fontresizer.max) {
+							jQuery(fontresizer.increaseSelector).hide();
+						}
+						else if(fontresizer.size <= fontresizer.min) {
+							jQuery(fontresizer.decreaseSelector).hide();
+						}
+						jQuery(fontresizer.wrapperSelector).css("font-size", fontresizer.size+"%");
+						jQuery(fontresizer.currentFontSizeInPercentagesSelector).text(fontresizer.size+"%");
+						jQuery(fontresizer.currentElement).removeClass("loading");
 					}
 				);
+
 				return false;
 			}
 		)
