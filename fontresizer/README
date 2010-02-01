@@ -35,8 +35,12 @@ NB. the idea is not to edit the module, but instead customise it
 in your mysite folder at all so that you can upgrade it later.
 
 3. place the part of the website that you would like to be font-resized in the following div:
+	...
+	<div id="FontSizeWrapper">
+		fonts are resized!!!
+	</div>
+	...
 
+4. for the place in your template where you want to have the resize buttons, add
 
-<div id="FontSizeWrapper">
-	fonts are resized!!!
-</div>
+<% include FontResizer %>
