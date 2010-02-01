@@ -11,13 +11,14 @@ class FontResizer extends Extension {
 	protected static $min_font_size = 0.7;
 		static function set_min_font_size($v) {self::$min_font_size = floatval($v);}
 
+	static $allowed_actions = array("increasefontsize", "decreasefontsize", "resetfontsize");
 
 	// *** TEMPLATE FUNCTIONS
 
 	function CurrentFontSizeInPercentages($currentSize = 0) {
 		Requirements::themedCSS("fontresizer");
 		Requirements::javascript("fontresizer/javascript/fontresizer.js");
-		Requirements::customScript("fontresizer.setMin(".(Page::$min_font_size*100).");fontresizer.setMax(".(Page::$max_font_size*100).");");
+		Requirements::customScript("fontresizer.setMin(".(self::$min_font_size*100).");fontresizer.setMax(".(self::$max_font_size*100).");");
 		if(!$currentSize) {
 			$currentSize = $this->currentFontSize();
 		}
