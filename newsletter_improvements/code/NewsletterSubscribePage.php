@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *@author nicolaas [at] sunnysideup.co.nz
+ *@description allows you to only show some newsletters for "add me to" in the subscribe form
+ **/
+
+
 class NewsletterSubscribePage extends SubscribeForm {
 
 	static $hide_ancestor = "SubscribeForm";
@@ -28,4 +34,3 @@ class NewsletterSubscribePage extends SubscribeForm {
 	}
 
 }
-
