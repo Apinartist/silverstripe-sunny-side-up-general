@@ -28,8 +28,8 @@ class StandingOrder extends DataObject {
 	);
 
 	public static $has_many = array(
-		"StandingOrderProducts" => "StandingOrder_Product",
-		"StandingOrderEntries" => "StandingOrder_Entry"
+		"StandingOrderProducts" => "StandingOrderProduct",
+		"StandingOrderEntries" => "StandingOrderEntry"
 	);
 
 	public static $many_many = array();
@@ -53,51 +53,49 @@ class StandingOrder extends DataObject {
 	public static $searchable_fields = array(
 		"Member.Title" => "PartialMatchFilter"
 		"StartDate",
-		"EndDate",
+		"EndDate"
 	);
 
 	public static $field_labels = array("Name" => "Carrot Name");
 
-	public static $summary_fields = array("Name" => "Name");
+	public static $summary_fields = array(
+		"Customer" => "MemberFullName",
+		"StartDate" => "StartDate",
+		"EndDate" => "EndDate"
+	);
 
-	public static $singular_name = "Carrot";
+	public static $singular_name = "Standing Order";
 
-	public static $plural_name = "Carrots";
-
-	//CRUD settings
-
-	static $can_create = Boolean;
-
-	public function canCreate() {return false;}
-
-	public function canView() {return false;}
-
-	public function canEdit() {return false;}
-
-	public function canDelete() {return false;}
+	public static $plural_name = "Standing Orders";
 
 	//defaults
-	public static $default_sort = "Sort ASC, Name ASC";
+	public static $default_sort = "StartDate ASC";
+
 	public static $defaults = array();//use fieldName => Default Value
+
 	public function populateDefaults() {
 		parent::populateDefaults();
 	}
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	function MemberFullName() {
+		return $this->Member()->FirstName." ".$this->Member()->Surname.' ('.$this->Member()->Email.')';
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
