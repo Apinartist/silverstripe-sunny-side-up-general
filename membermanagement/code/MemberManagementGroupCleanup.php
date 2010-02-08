@@ -7,7 +7,7 @@
 class MemberManagementGroupCleanup extends HourlyTask {
 
 	function process() {
-		$this->cleanup()
+		$this->cleanup();
 	}
 
 	protected static $name_for_all_users_group = "All Users";
