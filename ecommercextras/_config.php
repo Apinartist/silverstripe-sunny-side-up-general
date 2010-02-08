@@ -77,6 +77,14 @@ ModifierRulesModifier::set_rule(
 );
 */
 
+// *** LIVE EMAIL CHECK MODIFIER
+/*
+Director::addRules(50, array(
+	'liveemailcheckmodifier//$Action/$ID' => 'LiveEmailCheckModifier_handler',
+));
+LiveEmailCheckModifier::set_account_exists_message("There is already an account for [email].  Would you like to login now?");
+*/
+
 // *** AJAX ORDER
 //AjaxOrder::set_loading_cart_text("Loading Cart");
 //AjaxOrder::set_in_cart_text("In Cart");
