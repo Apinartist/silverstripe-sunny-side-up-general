@@ -35,6 +35,8 @@ var AjaxCheckout = {
 
 	emailFieldError: "Please check your email address.",
 
+	emailFieldCheckingMessage: "checking email address",
+
 	redoCartAjax: function() {
 
 		jQuery(AjaxCheckout.quantitySelector).each(
@@ -112,7 +114,7 @@ var AjaxCheckout = {
 			function () {
 				var email = jQuery(this).val();
 				jQuery(this).addClass("loading");
-				jQuery(this).val("checking email address ...");
+				jQuery(this).val(AjaxCheckout.emailFieldCheckingMessage);
 				var base = jQuery("base").attr("href");
 				url = base + "liveemailcheckmodifier/checkemail/?email=" + email;
 				jQuery.get(
