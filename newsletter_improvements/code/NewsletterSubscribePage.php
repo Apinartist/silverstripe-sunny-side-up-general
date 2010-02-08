@@ -10,7 +10,7 @@ class NewsletterSubscribePage extends SubscribeForm {
 
 	static $hide_ancestor = "SubscribeForm";
 
-	$has_many = array(
+	static $has_many = array(
 		"AvailableNewsletterTypes" => "NewsletterTypes"
 	);
 
