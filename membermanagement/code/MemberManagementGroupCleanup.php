@@ -4,7 +4,11 @@
  * @author nicolaas [at] sunny side up . co . nz
  * @description: adds all members to an "All Users" group.
  */
-class MemberManagementGroupCleanup extends DataObjectDecorator {
+class MemberManagementGroupCleanup extends HourlyTask {
+
+	function process() {
+		$this->cleanup()
+	}
 
 	protected static $name_for_all_users_group = "All Users";
 		static function set_name_for_all_users_group($v) {self::$name_for_all_users_group = Convert::raw2sql($v);}
@@ -15,8 +19,7 @@ class MemberManagementGroupCleanup extends DataObjectDecorator {
 		static function set_automatically_delete_members_without_group ($v) {self::$automatically_delete_members_without_group = $v;}
 		static function get_automatically_delete_members_without_group () {return self::$automatically_delete_members_without_group === TRUE;}
 
-	function requireDefaultRecords() {
-		parent::requireDefaultRecords();
+	function cleanup() {
 
 		//basic cleanup of useless entries in Group_Members
 		$sql = 'DELETE `Group_Members` FROM `Group_Members` LEFT JOIN `Member` ON `Group_Members`.`MemberID` = `Member`.`ID` WHERE `Member`.`ID` IS NULL;';
