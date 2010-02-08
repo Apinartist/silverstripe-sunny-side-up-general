@@ -5,7 +5,7 @@
  * @sub-package: ecommerce_stockcontrol
  * @description:
  *  This is the central management page for organising stock control
- *  You will need to "on" the MinMaxModifier and add MinMaxModifier::set_use_stock_quantities(true)
+ *  You will need to "turn on" the MinMaxModifier and add MinMaxModifier::set_use_stock_quantities(true)
  *  to get this page working.
  *
  *
