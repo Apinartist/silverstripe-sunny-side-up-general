@@ -194,7 +194,7 @@ class MinMaxModifier extends OrderModifier {
 					Requirements::customScript('alert("'.Convert::raw2js($msg).'");', "MinMaxModifierAlert");
 				}
 			}
-			self::$apply_min_max = $jsAjaxArray;
+			self::$apply_min_max_jsAjaxArray = $jsAjaxArray;
 		}
 		return self::$apply_min_max_jsAjaxArray;
 	}
