@@ -327,7 +327,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 
-
 	public function processOrderModifier($data, $form) {
 		$order = ShoppingCart::current_order();
 		$modifiers = $order->Modifiers();
