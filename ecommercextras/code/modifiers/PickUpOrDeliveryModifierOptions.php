@@ -112,6 +112,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 
 	private function createManyManyComplexTableField() {
 		$title = '';
+		$field = null;
 		if(class_exists("MultiSelectField")) {
 			$dos = DataObject::get("PickUpOrDeliveryModifierOptionsCountry");
 			if($dos) {
