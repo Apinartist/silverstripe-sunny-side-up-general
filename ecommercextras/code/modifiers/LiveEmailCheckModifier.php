@@ -55,6 +55,10 @@ class LiveEmailCheckModifier extends OrderModifier {
 
 //--------------------------------------------------------------------*** table titles
 
+	function LiveName() {
+		return "Email has been checked";
+	}
+
 	function Name() {
 		if($this->ID) {
 			return $this->Name;
