@@ -100,7 +100,10 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->replaceField("AvailableInCountries", $this->createManyManyComplexTableField());
+		$field = $this->createManyManyComplexTableField();
+		if($field) {
+			$fields->replaceField("AvailableInCountries", $field);
+		}
 		if(class_exists("DataObjectSorterController") && $this->hasExtension("DataObjectSorterController")) {
 			$fields->addFieldToTab("Root.SortList", new LiteralField("InvitationToSort", $this->dataObjectSorterPopupLink()));
 		}
@@ -136,7 +139,9 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 			$field->setPermissions(array("export"));
 			$field->setPageSize(250);
 		}
-		return $field;
+		if($field) {
+			return $field;
+		}
 	}
 
 
