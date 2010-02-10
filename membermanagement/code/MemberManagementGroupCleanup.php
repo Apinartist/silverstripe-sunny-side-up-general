@@ -33,7 +33,6 @@ class MemberManagementGroupCleanup extends HourlyTask {
 			$allUsersGroup->Title = self::$name_for_all_users_group;
 			$allUsersGroup->Sort = 999999;
 			$allUsersGroup->write();
-			Database::alteration_message("created ".self::$name_for_all_users_group." group", "created");
 		}
 		$allUsersGroupID = $allUsersGroup->ID;
 
@@ -72,12 +71,13 @@ class MemberManagementGroupCleanup extends HourlyTask {
 		}
 		$allCombos = $combo = null;
 		//find all members that are not listed in all-users groups
-		foreach($groupMemberCombos as $memberID => $memberGroup) {
-			if(!isset($memberGroup[$allUsersGroupID])) {
-				$groupMemberCombosToAdd[] = $memberID;
+		if(count($groupMemberCombos)) {
+			foreach($groupMemberCombos as $memberID => $memberGroup) {
+				if(!isset($memberGroup[$allUsersGroupID])) {
+					$groupMemberCombosToAdd[] = $memberID;
+				}
 			}
 		}
-
 		//add all members that are not listed in any groups
 		$extraWhere = '';
 		if(count($groupMemberCombosToAdd)) {
