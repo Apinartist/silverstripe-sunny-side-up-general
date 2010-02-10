@@ -100,6 +100,9 @@ LiveEmailCheckModifier::set_account_exists_message("There is already an account 
 // *** REPORTS
 Director::addRules(50, array(
 	'SalesReport_Handler//$Action/$ID' => 'SalesReport_Handler',
+	//'silverstripe/HourlyTask/$Action/$ID' => 'HourlyTask' // optional..
+	// setup cron job 0 * * * * wget http://www.mysite.com/silverstripe/HourlyTask/
+	//if you add the OrderDecorator then this also runs this task at Order::onAfterWrite();
 ));
 
 //===================---------------- END ecommercextra MODULE ----------------===================
