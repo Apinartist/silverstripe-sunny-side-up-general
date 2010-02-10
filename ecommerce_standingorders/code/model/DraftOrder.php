@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Used to review an order after it is posted by a StandingOrder
  * @author Michael Mitchell <michael@michaelmitchell.co.nz>
  */
 

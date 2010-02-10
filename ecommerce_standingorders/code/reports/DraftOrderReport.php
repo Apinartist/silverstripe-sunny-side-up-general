@@ -79,9 +79,11 @@ class DraftOrderReport_Controller extends Controller {
 	public function publish() {
 		$draftOrder = DataObject::get_by_id('DraftOrder', $this->urlParams['ID']);
 		
-		if($draftOrder) $draftOrder->publishOrder();
-
-		return $this->renderWith('OrderInformation_Draft');
+		if($draftOrder) { 
+			$published = $this->renderWith('OrderInformation_Draft', array('Published' => true));
+			$draftOrder->publishOrder();
+			return $published;
+		}
 	}
 
 	public function PublishLink($action = null) {
