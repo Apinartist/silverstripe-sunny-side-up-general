@@ -28,6 +28,8 @@ var StockControlPage = {
 		jQuery(StockControlPage.inputSelector).change(
 			function () {
 				var nameValue = jQuery(this).attr("name");
+				jQuery(this).addClass("loading");
+				var element = this;
 				var nameArray = nameValue.split("/");
 				var table = nameArray[0];
 				var id = nameArray[1];
@@ -37,6 +39,7 @@ var StockControlPage = {
 					{},
 					function(data) {
 						jQuery(StockControlPage.feedbackSelector).html(data)
+						jQuery(element).removeClass("loading");
 					}
 				);
 			}

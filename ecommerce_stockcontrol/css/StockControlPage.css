@@ -25,3 +25,5 @@
 
 	#StockProductObjects .loadHistoryHere h3 {color: red;}
 	#StockProductObjects .loadHistoryHere h4 {color: green; background-color: gold;}
+
+.loading {background-image: url(../images/loading.gif); background-repeat: no-repeat; background-position: right middle;}
