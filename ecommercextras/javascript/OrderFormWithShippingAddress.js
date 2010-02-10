@@ -5,60 +5,82 @@
 		}
 	);
 	var OrderFormWithShippingAddress = {
+
+		nameSelector: "#FirstName input, #Surname input",
+
+		firstnameSelector: "#FirstName input",
+
+		surnameSelector: "#Surname input",
+
+		shippingNameSelector: "#ShippingName input",
+
+		addressSelector: "#Address input",
+
+		extraAddressSelector: "#AddressLine2 input",
+
+		shippingAddressSelector: "#ShippingAddress input",
+
+		shippingExtraAddressSelector: "#ShippingAddress2 input",
+
+		citySelector: "#City input",
+
+		shippingCitySelector: "#ShippingCity input",
+
+		shippingSectionSelector: "#ShippingDetails",
+
+		useShippingDetailsSelector: "input[name='UseShippingAddress']",
+
+
 		init: function(){
+			//hide shipping fields
+			jQuery(OrderFormWithShippingAddress.shippingSectionSelector).hide();
+			//turn-on shipping details toggle
+			jQuery(OrderFormWithShippingAddress.useShippingDetailsSelector).click(
+				function(){
+					jQuery(OrderFormWithShippingAddress.shippingSectionSelector).slideToggle();
+					jQuery(OrderFormWithShippingAddress.shippingNameSelector).focus();
+				}
+			);
+			//update on change
+			jQuery(OrderFormWithShippingAddress.nameSelector+", "+OrderFormWithShippingAddress.addressSelector+" ,"+OrderFormWithShippingAddress.extraAddressSelector+", "+OrderFormWithShippingAddress.citySelector).change(
+				function() {
+					OrderFormWithShippingAddress.updateFields();
+				}
+			);
+			//update on focus
+			jQuery(OrderFormWithShippingAddress.shippingNameSelector+", "+OrderFormWithShippingAddress.shippingAddressSelector+" ,"+OrderFormWithShippingAddress.shippingExtraAddressSelector+", "+OrderFormWithShippingAddress.shippingCitySelector).focus(
+				function() {
+					OrderFormWithShippingAddress.updateFields();
+				}
+			);
+		},
 
-			//name
-			jQuery("#FirstName input, #Surname input").change(
-				function() {
-					var FirstName =  jQuery("#FirstName input").val();
-					var Surname =  jQuery("#Surname input").val();
-					var ShippingName =  jQuery("#ShippingName input").val();
-					if(!ShippingName || (FirstName == ShippingName && Surname) || (Surname == ShippingName && FirstName)) {
-						jQuery("#ShippingName input").val(FirstName+" "+Surname);
-					}
-				}
-			);
-			jQuery("#ShippingName input").focus(
-				function() {
-					var FirstName =  jQuery("#FirstName input").val();
-					var Surname =  jQuery("#Surname input").val();
-					var ShippingName =  jQuery("#ShippingName input").val();
-					if(!ShippingName && (FirstName || Surname)) {
-						jQuery("#ShippingName input").val(FirstName+" "+Surname);
-					}
-				}
-			);
-
-			//address
-			jQuery("#Address input").change(
-				function() {
-					var Address =  jQuery("#Address input").val();
-					var ShippingAddress =  jQuery("#ShippingAddress input").val();
-					if(!ShippingAddress && Address) {
-						jQuery("#ShippingAddress input").val(Address);
-					}
-				}
-			);
-			jQuery("#AddressLine2 input").change(
-				function() {
-					var AddressLine2 =  jQuery("#AddressLine2 input").val();
-					var ShippingAddress2 =  jQuery("#ShippingAddress2 input").val();
-					if(!ShippingAddress2 && AddressLine2) {
-						jQuery("#ShippingAddress2 input").val(AddressLine2);
-					}
-				}
-			);
-
+		updateFields: function() {
 			//city
-			jQuery("#City input").change(
-				function() {
-					var City =  jQuery("#City input").val();
-					var ShippingCity =  jQuery("#ShippingCity input").val();
-					if(!ShippingCity && City) {
-						jQuery("#ShippingCity input").val(City);
-					}
-				}
-			);
+			var City =  jQuery(OrderFormWithShippingAddress.citySelector).val();
+			var ShippingCity =  jQuery(OrderFormWithShippingAddress.shippingCitySelector).val();
+			if(!ShippingCity && City) {
+				jQuery(OrderFormWithShippingAddress.shippingCitySelector).val(City);
+			}
+			//address
+			var Address =  jQuery(OrderFormWithShippingAddress.addressSelector).val();
+			var ShippingAddress =  jQuery(OrderFormWithShippingAddress.shippingAddressSelector).val();
+			if(!ShippingAddress && Address) {
+				jQuery(OrderFormWithShippingAddress.shippingAddressSelector).val(Address);
+			}
+			//address 2
+			var AddressLine2 =  jQuery(OrderFormWithShippingAddress.extraAddressSelector).val();
+			var ShippingAddress2 =  jQuery(OrderFormWithShippingAddress.shippingExtraAddressSelector).val();
+			if(!ShippingAddress2 && AddressLine2) {
+				jQuery(OrderFormWithShippingAddress.shippingExtraAddressSelector).val(AddressLine2);
+			}
+			//name
+			var FirstName =  jQuery(OrderFormWithShippingAddress.firstnameSelector).val();
+			var Surname =  jQuery(OrderFormWithShippingAddress.surnameSelector).val();
+			var ShippingName =  jQuery(OrderFormWithShippingAddress.shippingNameSelector).val();
+			if(!ShippingName || (FirstName == ShippingName && Surname) || (Surname == ShippingName && FirstName)) {
+				jQuery(OrderFormWithShippingAddress.shippingNameSelector).val(FirstName+" "+Surname);
+			}
 		}
 	}
 })(jQuery);

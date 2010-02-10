@@ -29,10 +29,10 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 			new TextField('ShippingAddress', 'Address', null,100,  $this),
 			new TextField('ShippingAddress2', '', null, 100, $this),
 			new TextField('ShippingCity', 'City', null, 100, $this),
-			$countryField,
-			new HiddenField('UseShippingAddress', '', true, $this)
+			$countryField
 		);
 		//$this->fields->push($shippingFields);
+		$this->fields->addFieldToTab("",new CheckboxField("UseShippingAddress", "Use Alternative Delivery Address"));
 		$this->fields->addFieldToTab("",$shippingFields);
 
 		foreach($this->fields->dataFields() as $i => $child) {
@@ -40,7 +40,7 @@ class OrderFormWithShippingAddress extends OrderFormWithoutShippingAddress {
 				$name = $child->Name();
 				switch ($name) {
 					case "Address":
-						$child->setTitle('Address for invoicing');
+						$child->setTitle('Address');
 						break;
 					default:
 						break;
