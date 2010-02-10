@@ -8,6 +8,10 @@ class CampaignMonitorSignupPage extends Page {
 
 	static $icon = "campaignmonitor/images/treeicons/CampaignMonitorSignupPage";
 
+	private static $remove_linebreaks_from_original_code = false;
+		static function set_remove_linebreaks_from_original_code($v) { self::$remove_linebreaks_from_original_code = $v;}
+		static function get_remove_linebreaks_from_original_code() { return self::$remove_linebreaks_from_original_code; }
+
 	static $db = array(
 		"FormHTML" => "HTMLText",
 		"ThankYouMessage" => "HTMLText",
@@ -29,6 +33,12 @@ class CampaignMonitorSignupPage extends Page {
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeMetaTitle", "AlternativeMetaTitle"));
 		$fields->addFieldToTab('Root.Content.ThankYou', new HTMLEditorField("ThankYouMessage", "Thank You Message after Submitting Form"));
 		return $fields;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		$this->FormHTML = str_replace("<br>", " ", $this->FormHTML);
+		$this->FormHTML = str_replace("<br />", " ", $this->FormHTML);
 	}
 
 
