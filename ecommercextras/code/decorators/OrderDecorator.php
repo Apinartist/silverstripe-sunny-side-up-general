@@ -90,6 +90,11 @@ class OrderDecorator extends DataObjectDecorator {
 	}
 	*/
 
+	function onAfterWrite() {
+		parent::onAfterWrite();
+		HourlyEcommerceGroupUpdate::add_members_to_customer_group();
+	}
+
 }
 
 
