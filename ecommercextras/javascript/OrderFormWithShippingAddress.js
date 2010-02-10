@@ -35,7 +35,7 @@
 			//hide shipping fields
 			jQuery(OrderFormWithShippingAddress.shippingSectionSelector).hide();
 			//turn-on shipping details toggle
-			jQuery(OrderFormWithShippingAddress.useShippingDetailsSelector).click(
+			jQuery(OrderFormWithShippingAddress.useShippingDetailsSelector).change(
 				function(){
 					jQuery(OrderFormWithShippingAddress.shippingSectionSelector).slideToggle();
 					jQuery(OrderFormWithShippingAddress.shippingNameSelector).focus();
