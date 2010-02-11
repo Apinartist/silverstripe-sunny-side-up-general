@@ -83,6 +83,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 			else {
 				$folder = "slideshow";
 			}
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript($folder."/javascript/SlideShow.js");
 			Requirements::themedCSS("SlideShow");
 		}
