@@ -10,7 +10,9 @@ class MinMaxModifier extends OrderModifier {
 
 //--------------------------------------------------------------------*** static variables
 
-	static $db = array();
+	static $db = array(
+		"Adjustments" => "HTMLText"
+	);
 
 	protected static $apply_min_max_jsAjaxArray = false;
 
@@ -28,7 +30,7 @@ class MinMaxModifier extends OrderModifier {
 	protected static $max_field = "MaxQuantity";
 		static function set_max_field($v) { self::$max_field = $v;}
 
-	protected static $adjustment_message = "Quantities have been adjusted as follows: ";
+	protected static $adjustment_message = "Based on stock availability, quantities have been adjusted as follows: ";
 		static function set_adjustment_message($v) { self::$adjustment_message = $v;}
 
 	protected static $sorry_message = "Sorry, your selected value not is available";
@@ -54,6 +56,9 @@ class MinMaxModifier extends OrderModifier {
 	}
 
 	function ShowInTable() {
+		if($this->Name()) {
+			return true;
+		}
 		return false;
 	}
 
@@ -71,11 +76,16 @@ class MinMaxModifier extends OrderModifier {
 
 //--------------------------------------------------------------------*** table titles
 	function LiveName() {
-		return self::$title;
+		return $this->readAdjustments();
 	}
 
 	function Name() {
-		return self::$title;
+		if($this->ID) {
+			return $this->Name;
+		}
+		else {
+			return $this->LiveName();
+		}
 	}
 
 	function TableTitle() {
@@ -149,13 +159,13 @@ class MinMaxModifier extends OrderModifier {
 							}
 							if($newQuantity != $quantity && $newQuantity > -1) {
 								ShoppingCart::set_quantity_item($product->ID, $newQuantity);
-								$msgArray[$i] = $product->Title.": ".$newQuantity;
+								$msgArray[$i] = $product->Title." changed from ".$quantity." to ".$newQuantity;
 								$i++;
 								$quantity = $newQuantity;
 							}
 							if(!Director::is_ajax()) {
 								if($absoluteMin || $absoluteMax < 99999) {
-									//NOT WORKING!!!!
+									//IS THIS WORKING
 									$js = '
 										jQuery(document).ready(
 											function() {
@@ -188,10 +198,14 @@ class MinMaxModifier extends OrderModifier {
 					}
 				}
 			}
-			if(self::$adjustment_message && count($msgArray) && !Director::is_ajax()) {
-				$msg = self::$adjustment_message."\n".implode("\n",$msgArray);
-				if($msg) {
-					Requirements::customScript('alert("'.Convert::raw2js($msg).'");', "MinMaxModifierAlert");
+			if(count($msgArray)) {
+				self::write_adjustments($msgArray);
+				if(self::$adjustment_message && !Director::is_ajax()) {
+					$msg = self::$adjustment_message."\n".implode("\n",$msgArray);
+
+					if($msg) {
+						Requirements::customScript('alert("'.Convert::raw2js($msg).'");', "MinMaxModifierAlert");
+					}
 				}
 			}
 			self::$apply_min_max_jsAjaxArray = $jsAjaxArray;
@@ -206,14 +220,46 @@ class MinMaxModifier extends OrderModifier {
 				$js[] = array('name' => $nameValueArray["name"], 'parameter' => 'value', 'value' => $nameValueArray["value"]);
 			}
 		}
+		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
+		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
+		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->readAdjustments());
 	}
 
 
 //--------------------------------------------------------------------*** database functions
-	public function onBeforeWrite() {
-		parent::onBeforeWrite();
+
+	function readAdjustments() {
+		$listItems = Session::get("MinMaxModifier_name");
+		if($listItems) {
+			return self::$adjustment_message." ".$listItems.".";
+		}
+		return "";
 	}
 
+	static function write_adjustments($msgArray) {
+		$newMsg = implode("; ",$msgArray);
+		$oldMsg = Session::get("MinMaxModifier_name");
+		if($newMsg && $oldMsg) {
+			$oldMsg .="; ";
+		}
+		Session::set("MinMaxModifier_name", $oldMsg.$newMsg);
+	}
+
+	function writeAdjustments($msg){
+		self::write_adjustments($msg);
+	}
+
+	function clearAdjustments(){
+		Session::clear("MinMaxModifier_name");
+		Session::set("MinMaxModifier_name", "");
+	}
+
+	public function onBeforeWrite() {
+		parent::onBeforeWrite();
+		$this->Adjustments = $this->readAdjustments();
+		$this->clearAdjustments();
+
+	}
 
 }
 

@@ -120,6 +120,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 		}
 		if($obj) {
 			$obj->write();
+			$obj->write();
 			return $obj;
 		}
 		user_error("Could not find / create ProductStockCalculatedQuantity for product with ID: ".$id, E_WARNING);
