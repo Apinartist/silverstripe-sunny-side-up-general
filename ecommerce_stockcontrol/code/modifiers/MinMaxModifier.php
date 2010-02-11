@@ -39,6 +39,10 @@ class MinMaxModifier extends OrderModifier {
 	protected static $use_stock_quantities = false;
 		static function set_use_stock_quantities($v) { self::$use_stock_quantities = $v;}
 		static function get_use_stock_quantities() {return self::$use_stock_quantities;}
+
+	protected static $show_adjustments_in_checkout_table = true;
+		static function set_show_adjustments_in_checkout_table($v) { self::$show_adjustments_in_checkout_table = $v;}
+		static function get_show_adjustments_in_checkout_table() {return self::$show_adjustments_in_checkout_table;}
 //-------------------------------------------------------------------- *** static functions
 
 	static function show_form() {
@@ -56,7 +60,7 @@ class MinMaxModifier extends OrderModifier {
 	}
 
 	function ShowInTable() {
-		if($this->Name()) {
+		if($this->Name() && self::get_show_adjustments_in_checkout_table()) {
 			return true;
 		}
 		return false;
@@ -199,10 +203,11 @@ class MinMaxModifier extends OrderModifier {
 				}
 			}
 			if(count($msgArray)) {
-				self::write_adjustments($msgArray);
+				if(self::get_show_adjustments_in_checkout_table()) {
+					self::write_adjustments($msgArray);
+				}
 				if(self::$adjustment_message && !Director::is_ajax()) {
 					$msg = self::$adjustment_message."\n".implode("\n",$msgArray);
-
 					if($msg) {
 						Requirements::customScript('alert("'.Convert::raw2js($msg).'");', "MinMaxModifierAlert");
 					}
@@ -220,9 +225,11 @@ class MinMaxModifier extends OrderModifier {
 				$js[] = array('name' => $nameValueArray["name"], 'parameter' => 'value', 'value' => $nameValueArray["value"]);
 			}
 		}
-		$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
-		$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
-		$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->readAdjustments());
+		if(self::get_show_adjustments_in_checkout_table()) {
+			$js[] = array('id' => $this->CartTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
+			$js[] = array('id' => $this->TableTotalID(), 'parameter' => 'innerHTML', 'value' => 0);
+			$js[] = array('id' => $this->TableTitleID(), 'parameter' => 'innerHTML', 'value' => $this->readAdjustments());
+		}
 	}
 
 
