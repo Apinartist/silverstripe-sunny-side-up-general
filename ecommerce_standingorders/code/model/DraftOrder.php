@@ -17,6 +17,10 @@ class DraftOrder extends Order {
 		return 'Draft Order';
 	}
 	
+	public function sendReceipt() {
+		$this->sendEmail('DraftOrder_ReceiptEmail');
+	}
+	
 	/**
 	 * Publish the order
 	 * @return null
@@ -33,4 +37,10 @@ class DraftOrder extends Order {
 		$this->write();
 	}
 	
+}
+
+class DraftOrder_ReceiptEmail extends Email {
+
+	protected $ss_template = 'DraftOrder_ReceiptEmail';
+
 }

@@ -1,10 +1,6 @@
 <?php
- /**
-  * ShopAccountForm allows shop members to update
-  * their details with the shop.
-  * 
-  * @package ecommerce
-  */
+
+
 class StandingOrderForm extends Form {
 	
 	public function __construct($controller, $name, $orderID = null, $update = false) {
@@ -25,14 +21,21 @@ class StandingOrderForm extends Form {
 		
 		$items = $order->Items();
 
+		$products = DataObject::get('FishProduct');
+		$productsMap = $products->map('ID', 'Title', ' ');
+		
 		if($items) {
 			foreach($items as $item) {
-				$fields->push(new TextareaField('_Alternatives['.$item->getProductID().']', $item->ProductTitle(), 1));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][0]', $item->ProductTitle(), $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][1]', '', $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][2]', '', $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][3]', '', $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][4]', '', $productsMap));
 			}
 		}
 		
 		$fields->push(new HeaderField('DetailsHeader', 'Standing Order Details'));
-		
+		$fields->push(new DropdownField('PaymentMethod', 'Payment Method', StandingOrder::payment_methods()));
 		$fields->push(new CalendarDateField('Start', 'Start'));
 		$fields->push(new CalendarDateField('End', 'End (Optional)'));
 		$fields->push(new DropdownField('Period', 'Period', StandingOrder::$period_fields));
@@ -105,12 +108,10 @@ class StandingOrderForm extends Form {
 	
 			$standingOrder = StandingOrder::createFromOrder($order, $params);
 	
-			Director::redirect(StandingOrdersPage::get_standing_order_link($standingOrder->ID));
+			Director::redirect(StandingOrdersPage::get_standing_order_link('view', $standingOrder->ID));
 		}
-		else {
-			Director::redirectBack();
-		}
-		
+		else Director::redirectBack();
+
 		return true;
 	}
 	
@@ -127,7 +128,18 @@ class StandingOrderForm extends Form {
 		if($standingOrder) {
 			$params = array();
 			
-			$orderItems = $form->Controller()->Order->Items();
+			//stop versioning while we make alterations
+			StandingOrder::$update_versions = false;
+			
+			$orderItems = $standingOrder->OrderItems();
+			
+			if($orderItems) {
+				foreach($orderItems as $orderItem) {
+					$orderItem->delete();
+				}
+			}
+			
+			$orderItems = $form->Controller()->Order()->Items();
 		
 			if($orderItems) {
 				foreach($orderItems as $orderItem) {
@@ -140,16 +152,24 @@ class StandingOrderForm extends Form {
 				}
 			}
 			
+			//start versioning again
+			StandingOrder::$update_versions = true;
+			
 			if(isset($data['Start'])) $params['Start'] = $data['Start'];
 			if(isset($data['End'])) $params['End'] = $data['End'];
 			if(isset($data['Period'])) $params['Period'] = $data['Period'];
 			if(isset($data['Notes'])) $params['Notes'] = $data['Notes'];
 	
 			$standingOrder->update($params);
+			$standingOrder->Status = 'Pending';
 			$standingOrder->write();
+			
+			$standingOrder->sendUpdate();
+			
+			Session::set('StandingOrder', null);
 		}
 		
-		Director::redirectBack();
+		Director::redirect(StandingOrdersPage::get_standing_order_link('view', $standingOrder->ID));
 		
 		return true;
 	}

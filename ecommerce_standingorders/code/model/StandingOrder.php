@@ -7,11 +7,15 @@
 class StandingOrder extends DataObject {
 	
 	public static $db = array(
-		'Status' => "Enum('Draft, Confirmed, MemberCancelled, AdminCancelled', 'Draft')",
+		'Status' => "Enum('Pending, Active, MemberCancelled, AdminCancelled, Finished', 'Pending')",
 	
 		'Start' => 'Date',
 		'End' => 'Date',
 		'Period' => 'Varchar',
+		
+		'LastCreated' => 'Date',
+	
+		'PaymentMethod' => 'Varchar',
 	
 		//Guytons.co.nz specific
 		'DeliveryDays' => 'Text', //Serialized Array
@@ -62,6 +66,14 @@ class StandingOrder extends DataObject {
 	 */
 	public static $update_versions = true;
 	
+	protected static $status_nice = array(
+		'Pending' => 'Pending',
+		'Active' => 'Active',
+		'MemberCancelled' => 'Pending Cancellation',
+		'AdminCancelled' => 'Cancelled',
+		'Finished' => 'Finished',
+	);
+
 	/**
 	 * delivery days options for guytons.co.nz
 	 * @var array
@@ -76,6 +88,26 @@ class StandingOrder extends DataObject {
 		'Sunday',
 	);
 	
+	protected static $payment_methods = array(
+		'DirectCreditPayment' => 'Direct Credit (payment into bank account)'
+	);
+	
+	/**
+	 * This is the from address that the receipt
+	 * email contains. e.g. "info@shopname.com"
+	 *
+	 * @var string
+	 */
+	protected static $receipt_email;	
+
+	/**
+	 * This is the subject that the receipt
+	 * email will contain. e.g. "Joe's Shop Receipt".
+	 *
+	 * @var string
+	 */
+	protected static $receipt_subject;
+	
 	/**
 	 * Guytons.co.nz specific, set the delivery days options
 	 * @param $days array of days
@@ -88,7 +120,76 @@ class StandingOrder extends DataObject {
 	public static function delivery_days() {
 		return self::$delivery_days;	
 	}
+	
+	/**
+	 * @param $days array of days
+	 * @return null
+	 */
+	public static function set_payment_methods($payment_methods = array()) {
+		self::$payment_methods = $payment_methods;
+	}
+	
+	public static function payment_methods() {
+		return self::$payment_methods;	
+	}
+	
+	public static function set_receipt_email($receipt_email) {
+		self::$receipt_email = $receipt_email;
+	}
+	
+	public static function receipt_email() {
+		return self::$receipt_email;
+	}
 
+	public static function set_receipt_subject($receipt_subject) {
+		self::$receipt_subject = $receipt_subject;
+	}	
+	
+	public static function receipt_subject() {
+		return self::$receipt_subject;
+	}	
+
+	/**
+	 * Create due draft orders
+	 */
+	public static function createDraftOrders() {
+		Versioned::reading_stage('Stage');
+		
+		set_time_limit(0); //might take a while with lots of orders
+		
+		
+		//get all standing orders
+		$standingOrders = DataObject::get('StandingOrder', 'Status = \'Active\'');
+
+		if($standingOrders) {
+			foreach($standingOrders as $standingOrder) {
+				//current time + period is less than LastCreated and less then end
+				$currentTime = (strtotime(date('Y-m-d'))-1);
+				$startTime = strtotime($standingOrder->Start);
+				$endTime = strtotime($standingOrder->End);
+				$lastTime = strtotime($standingOrder->LastCreated);
+				$periodTime = strtotime('+'.$standingOrder->Period, $lastTime);
+
+				if($periodTime < $currentTime && $periodTime < $endTime) {
+					StandingOrder::$update_versions == false;
+
+					$standingOrder->createDraftOrder(false);
+					$standingOrder->LastCreated = date('Y-m-d');
+					$standingOrder->writeWithoutVersion();
+					
+					StandingOrder::$update_versions == true;
+				}
+				else if($periodTime > $endTime) {
+					$standingOrder->Status = 'Finished';
+					$standingOrder->write();
+					$standingOrder->sendUpdate();
+				}
+			}
+		}
+		
+		
+	}
+	
 	/**
 	 * Create a StandingOrder from a regular Order and its Order Items
 	 * @param Order $Order
@@ -99,7 +200,7 @@ class StandingOrder extends DataObject {
 		Versioned::reading_stage('Stage');
 		
 		$standingOrder = new StandingOrder();
-		$standingOrder->Status = 'Draft';
+		$standingOrder->Status = 'Pending';
 		$standingOrder->MemberID = $Order->MemberID;
 		$standingOrder->update($params);
 		$standingOrder->write();
@@ -118,6 +219,8 @@ class StandingOrder extends DataObject {
 		}
 		
 		$standingOrder->write();
+		
+		$standingOrder->sendReceipt();
 
 		return $standingOrder;
 	}
@@ -142,6 +245,7 @@ class StandingOrder extends DataObject {
 			new TabSet('Root',
 				new Tab('Main',
 					new AutocompleteTextField('Email', 'Email (Auto complete)', 'admin/security/autocomplete/Email'),	
+					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
@@ -186,6 +290,7 @@ class StandingOrder extends DataObject {
 HTML
 					),
 					new DropdownField('Status', 'Status', singleton(__CLASS__)->dbObject('Status')->enumValues()),
+					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
@@ -201,13 +306,12 @@ HTML
 						true
 					),
 					new TextareaField('Notes', 'Notes'),
+					new CheckboxField('SendReciept', 'Manually a reciept email for this standing order? (save to send reciept)'),
+					new CheckboxField('SendUpdate', 'Manually an update email for this standing order? (save to send update)'),
 					new CheckboxField('CreateDraftOrder', 'Manually create a draft order from this standing order? (save to create draft order)')
 				),
 				new Tab('Products',
 					$this->getCMSProductsTable()
-				),
-				new Tab('History',
-					$this->getCMSHistoryTable()
 				)
 			)
 		);
@@ -215,12 +319,22 @@ HTML
 		$alternatives = unserialize($this->Alternatives);
 		$orderItems = $this->OrderItems();
 		
+		$products = DataObject::get('FishProduct');
+		$productsMap = array('');
+		$productsMap = $products->map('ID', 'Title', ' ');
+		
 		if($orderItems) {
 			foreach($orderItems as $orderItem) {
 				$value = isset($alternatives[$orderItem->ProductID]) ? $alternatives[$orderItem->ProductID] : null;
-				$fields->addFieldToTab('Root.Products', new TextareaField('_Alternatives['.$orderItem->ProductID.']', $orderItem->ProductTitle(), 1, null, $value));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));	
 			}
 		}
+		
+		$fields->addFieldToTab('Root', new Tab('History',$this->getCMSHistoryTable()));
 		
 		return $fields;
 	}
@@ -234,6 +348,8 @@ HTML
 			new TabSet('Root',
 				new Tab('Main',
 					new ReadonlyField('Readonly[Member]', 'Member', $this->Member()->getTitle().' ('.$this->Member()->Email.')'),
+					new DropdownField('Status', 'Status', self::$status_nice),
+					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
@@ -249,10 +365,18 @@ HTML
 		$alternatives = unserialize($this->Alternatives);
 		$orderItems = $this->getVersionedComponents('OrderItems');
 		
+		$products = DataObject::get('FishProduct');
+		$productsMap = array('');
+		$productsMap = $products->map('ID', 'Title', ' ');
+		
 		if($orderItems) {
 			foreach($orderItems as $orderItem) {
 				$value = isset($alternatives[$orderItem->ProductID]) ? $alternatives[$orderItem->ProductID] : null;
-				$fields->addFieldToTab('Root.Products', new TextareaField('_Alternatives['.$orderItem->ProductID.']', $orderItem->ProductTitle(), 1, null, $value));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));	
 			}
 		}
 		
@@ -349,7 +473,7 @@ HTML
 	 * Create a new DraftOrder from the StandingOrder
 	 * @return null
 	 */
-	public function createDraftOrder() {
+	public function createDraftOrder($redirect = true) {
 		//create draft order
 		$order = new DraftOrder();
 		$order->write();
@@ -379,16 +503,104 @@ HTML
 		$order->MemberID = $this->MemberID;
 		$order->write();
 		
-		Director::redirect($order->Link());
-	}
+		$order->sendReceipt();
 		
+		if($redirect) Director::redirect($order->Link());
+	}
+
+	public function sendReceipt() {
+		$this->sendEmail('StandingOrder_ReceiptEmail');
+	}
+	
+	public function sendUpdate() {
+		$this->sendEmail('StandingOrder_UpdateEmail');
+	}
+	
+	protected function sendEmail($emailClass, $copyToAdmin = true) {
+ 		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
+ 		$to = $this->Member()->Email;
+		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing ORder Information #$this->ID";
+
+ 		$email = new $emailClass();
+ 		$email->setFrom($from);
+ 		$email->setTo($to);
+ 		$email->setSubject($subject);
+		if($copyToAdmin) $email->setBcc(Email::getAdminEmail());
+		
+		$email->populateTemplate(
+			array(
+				'StandingOrder' => $this
+			)
+		);
+		
+		$email->send();
+	}
+	
+	public function CanModify() {
+		if(in_array($this->Status, array('Pending', 'Active'))) {
+			return true;
+		}
+		else return false;
+	}
+
 	public function Link() {
-		return StandingOrdersPage::get_standing_order_link($this->ID);
+		return StandingOrdersPage::get_standing_order_link('view', $this->ID);
 	}
 	
 	public function Period() {
 		if(isset(self::$period_fields[$this->Period])) return self::$period_fields[$this->Period];	
 	}
+	
+	public function ModifyLink() {
+		return StandingOrdersPage::get_standing_order_link('modify', $this->ID);	
+	}
+	
+	public function CancelLink() {
+		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);	
+	}
+	
+	public function TableAlternatives() {
+		$alternatives = unserialize($this->Alternatives);
+		
+		$products = new DataObjectSet();
+		
+		if(is_array($alternatives)) {
+			foreach($alternatives as $id => $alternative) {
+				$product = DataObject::get_by_id('Product', $id);
+				
+				$product->Alternatives = new DataObjectSet();
+				
+				if(is_array($alternative)) {
+					foreach($alternative as $id) {
+						if($id) {
+							$alternativeProduct = DataObject::get_by_id('Product', $id);
+							
+							if($alternativeProduct) $product->Alternatives->push($alternativeProduct);
+						}
+					}
+				}
+				
+				$products->push($product);
+			}
+		}
+
+		return $products;
+	}
+	
+	public function TableDeliveryDays() {
+		return $this->DeliveryDays;
+	}
+	
+	public function TablePaymentMethod() {
+		if(isset(self::$payment_methods[$this->PaymentMethod])) {
+			return self::$payment_methods[$this->PaymentMethod];
+		}
+	}
+	
+	public function TableStatus() {
+		return self::$status_nice[$this->Status];
+	}
+
 	
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
@@ -408,6 +620,8 @@ HTML
 				$this->record['Version'] = -1;
 			}	
 	
+			$this->LastCreated = $this->Start;
+			
 			$_SQL = Convert::raw2sql($_POST);
 
 			if($this->MemberID) {
@@ -525,6 +739,13 @@ class StandingOrder_OrderItem extends DataObject {
 		}
 	}
 	
+	public function onAfterWrite() {
+		parent::onAfterWrite();
+		
+		if($this->SendRecipt) $standingOrder->sendReceipt();
+		if($this->SendUpdate) $standingOrder->sendUpdate();
+	}
+	
 	public function onBeforeDelete() {
 		parent::onBeforeDelete();
 		
@@ -537,4 +758,16 @@ class StandingOrder_OrderItem extends DataObject {
 			}
 		}
 	}
+}
+
+class StandingOrder_ReceiptEmail extends Email {
+
+	protected $ss_template = 'StandingOrder_ReceiptEmail';
+
+}
+
+class StandingOrder_UpdateEmail extends Email {
+
+	protected $ss_template = 'StandingOrder_UpdateEmail';
+
 }

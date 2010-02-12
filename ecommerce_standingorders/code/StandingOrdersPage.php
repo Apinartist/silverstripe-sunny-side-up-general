@@ -15,12 +15,12 @@ class StandingOrdersPage extends AccountPage {
 	 * @param int|string $orderID ID of the order
 	 * @param boolean $urlSegment Return the URLSegment only
 	 */
-	public static function get_standing_order_link($orderID, $urlSegment = false) {
+	public static function get_standing_order_link($action = 'view', $orderID = null, $urlSegment = false) {
 		if(!$page = DataObject::get_one(__CLASS__)) {
 			user_error('No StandingOrderPage was found. Please create one in the CMS!', E_USER_ERROR);
 		}
 		
-		return ($urlSegment ? $page->URLSegment . '/' : $page->Link()) . 'standing-order/view/' . $orderID;
+		return ($urlSegment ? $page->URLSegment . '/' : $page->Link()) . 'standing-order/'.$action.'/' . $orderID;
 	}
 	
 	/**
@@ -71,6 +71,10 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		}
 	}
 	
+	public function create_draft_orders() {
+		StandingOrder::createDraftOrders();
+	}
+	
 	/**
 	 * Return the {@link Order} details for the current
 	 * Order ID that we're viewing (ID parameter in URL).
@@ -78,6 +82,8 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 	 * @return array of template variables
 	 */
 	public function standing_order($request) {
+		Versioned::reading_stage('Stage');
+		
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
 		
@@ -86,6 +92,15 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		$orderID = $request->param('OtherID');
 		
 		switch($request->param('ID')) {
+			case 'cancel':
+				if($orderID) {
+					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
+					$standingOrder->Status = 'MemberCancelled';
+					$standingOrder->write();
+					
+					Director::redirectBack();
+				}
+				break;
 			case 'create':
 				$order = isset($orderID) ? DataObject::get_by_id('Order', $orderID): $this->Order();
 	
@@ -174,11 +189,11 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		$orderID = $this->urlParams['OtherID'];
 
 		if($action == 'create' || isset($_REQUEST['action_doCreate'])) {
-			if(isset($_REQUEST['action_doCreate'])) $orderID = $_REQUEST['OrderID'];
+			if(isset($_REQUEST['action_doCreate']) && isset($_REQUEST['OrderID'])) $orderID = $_REQUEST['OrderID'];
 			return new StandingOrderForm($this, 'StandingOrderForm', $orderID);
 		}
 		else if($action == 'update' || isset($_REQUEST['action_doSave'])) {
-			if(isset($_REQUEST['action_doSave'])) $orderID = $_REQUEST['StandingOrderID'];
+			if(isset($_REQUEST['action_doSave']) && isset($_REQUEST['StandingOrderID'])) $orderID = $_REQUEST['StandingOrderID'];
 			return new StandingOrderForm($this, 'StandingOrderForm', $orderID, true);
 		}
 	}
