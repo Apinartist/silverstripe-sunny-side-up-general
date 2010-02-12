@@ -306,8 +306,8 @@ HTML
 						true
 					),
 					new TextareaField('Notes', 'Notes'),
-					new CheckboxField('SendReciept', 'Manually a reciept email for this standing order? (save to send reciept)'),
-					new CheckboxField('SendUpdate', 'Manually an update email for this standing order? (save to send update)'),
+					new CheckboxField('SendReciept', 'Manually send a receipt email for this standing order? (save to send reciept)'),
+					new CheckboxField('SendUpdate', 'Manually send an update email for this standing order? (save to send update)'),
 					new CheckboxField('CreateDraftOrder', 'Manually create a draft order from this standing order? (save to create draft order)')
 				),
 				new Tab('Products',
@@ -503,7 +503,7 @@ HTML
 		$order->MemberID = $this->MemberID;
 		$order->write();
 		
-		$order->sendReceipt();
+		//$order->sendReceipt();
 		
 		if($redirect) Director::redirect($order->Link());
 	}

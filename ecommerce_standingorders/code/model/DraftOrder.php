@@ -35,6 +35,7 @@ class DraftOrder extends Order {
 		}
 		
 		$this->write();
+		$this->sendReceipt();
 	}
 	
 }
