@@ -289,8 +289,8 @@ class StandingOrder extends DataObject {
 	</div>
 HTML
 					),
-					new DropdownField('Status', 'Status', singleton(__CLASS__)->dbObject('Status')->enumValues()),
-					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
+					new DropdownField('Status', 'Status', self::$status_nice),
+					//new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
@@ -349,7 +349,7 @@ HTML
 				new Tab('Main',
 					new ReadonlyField('Readonly[Member]', 'Member', $this->Member()->getTitle().' ('.$this->Member()->Email.')'),
 					new DropdownField('Status', 'Status', self::$status_nice),
-					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
+					//new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),

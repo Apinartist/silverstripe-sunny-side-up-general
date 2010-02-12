@@ -75,6 +75,33 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		StandingOrder::createDraftOrders();
 	}
 	
+	public function order($request) {
+		Requirements::themedCSS('Order');
+		Requirements::themedCSS('Order_print', 'print');
+		
+		$memberID = Member::currentUserID();
+		$accountPageLink = AccountPage::find_link();
+		
+		if($orderID = $request->param('ID')) {
+			if($order = DataObject::get_one('Order', "Order.ID = '$orderID' AND MemberID = '$memberID'")) {
+				return array(
+					'Order' => $order,
+					'CreateLink' => StandingOrdersPage::get_standing_order_link('create', $orderID)
+				);
+			} else {
+				return array(
+					'Order' => false,
+					'Message' => 'You do not have any order corresponding to this ID. However, you can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+				);
+			}
+		} else {
+			return array(
+				'Order' => false,
+				'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+			);
+		}
+	}
+	
 	/**
 	 * Return the {@link Order} details for the current
 	 * Order ID that we're viewing (ID parameter in URL).
@@ -102,7 +129,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				}
 				break;
 			case 'create':
-				$order = isset($orderID) ? DataObject::get_by_id('Order', $orderID): $this->Order();
+				$order = isset($orderID) ? DataObject::get_by_id('Order', $orderID): $this->BlankOrder();
 	
 				$params = array(
 					'Order' => $order,
@@ -110,7 +137,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
 			case 'update':
-				$order = $this->Order();
+				$order = $this->BlankOrder();
 				
 				$params = array(
 					'Order' => $order,
@@ -198,7 +225,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		}
 	}
 	
-	public function Order() {
+	public function BlankOrder() {
 		//Create an Order to use
 		$order = new Order();
 

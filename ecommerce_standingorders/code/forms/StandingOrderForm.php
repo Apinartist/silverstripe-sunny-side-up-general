@@ -7,14 +7,13 @@ class StandingOrderForm extends Form {
 		
 		if($update) {
 			$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
-			$order = $controller->Order();
+			$order = $controller->BlankOrder();
 		}
 		else {
-			$order = $orderID ? DataObject::get_by_id('Order', $orderID) : $controller->Order();
+			$order = $orderID ? DataObject::get_by_id('Order', $orderID) : $controller->BlankOrder();
 			$standingOrder = null;	
 		}
 		
-
 		$fields = new FieldSet();
 		
 		$fields->push(new HeaderField('AlternativesHeader', 'Alternative Products'));
@@ -35,7 +34,7 @@ class StandingOrderForm extends Form {
 		}
 		
 		$fields->push(new HeaderField('DetailsHeader', 'Standing Order Details'));
-		$fields->push(new DropdownField('PaymentMethod', 'Payment Method', StandingOrder::payment_methods()));
+		//$fields->push(new DropdownField('PaymentMethod', 'Payment Method', StandingOrder::payment_methods()));
 		$fields->push(new CalendarDateField('Start', 'Start'));
 		$fields->push(new CalendarDateField('End', 'End (Optional)'));
 		$fields->push(new DropdownField('Period', 'Period', StandingOrder::$period_fields));
@@ -95,7 +94,7 @@ class StandingOrderForm extends Form {
 			$order = DataObject::get_one('Order', 'Order.ID = \''.$data['OrderID'].'\' AND MemberID = \''.$memberID.'\'');
 		}
 		else {
-			$order = $form->Controller()->Order();
+			$order = $form->Controller()->BlankOrder();
 		}
 		
 		if($order) {
@@ -139,7 +138,7 @@ class StandingOrderForm extends Form {
 				}
 			}
 			
-			$orderItems = $form->Controller()->Order()->Items();
+			$orderItems = $form->Controller()->BlankOrder()->Items();
 		
 			if($orderItems) {
 				foreach($orderItems as $orderItem) {
