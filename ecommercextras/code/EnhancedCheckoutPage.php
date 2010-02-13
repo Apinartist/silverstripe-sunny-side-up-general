@@ -15,7 +15,7 @@ class EnhancedCheckoutPage extends CheckoutPage {
 	static $add_action = 'The Checkout Page';
 
 	function canCreate() {
-		return !DataObject("Page", "`ClassName`= 'CheckoutPage' OR `ClassName`= 'EnhancedCheckoutPage'");
+		return !DataObject::get_one("Page", "`ClassName`= 'CheckoutPage' OR `ClassName`= 'EnhancedCheckoutPage'");
 	}
 
 }
