@@ -14,6 +14,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 		parent::init();
 		Requirements::block("ecommerce/css/OrderReport.css");
 		Requirements::themedCSS("OrderReportWithLog");
+		Requirements::themedCSS("OrderReportWithLog_Print", "print");
 	}
 	/**
 	 * This is the default action of this
@@ -87,7 +88,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 					$fields,
 					$actions
 				);
-				$OrderStatusLogWithDetails = DataObject::get_one("OrderStatusLogWithDetails", "OrderStatusLog.OrderID = ".$order->ID, "Created DESC");
+				$OrderStatusLogWithDetails = DataObject::get_one("OrderStatusLogWithDetails", "OrderStatusLog.OrderID = ".$order->ID, $cache = false, $sortBy = "Created DESC");
 				if($OrderStatusLogWithDetails) {
 					$form->loadDataFrom($OrderStatusLogWithDetails);
 				}
