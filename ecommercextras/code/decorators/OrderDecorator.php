@@ -34,7 +34,7 @@ class OrderDecorator extends DataObjectDecorator {
 				"CustomerOrderNote" => "Text"
 			),
 			'has_many' => array(
-				"OrderStatusLogInternal" => "OrderStatusLogInternal"
+				"OrderStatusLogWithDetails" => "OrderStatusLogWithDetails"
 			),
 			'casting' => array(
 				'MemberSummary' => 'Text',

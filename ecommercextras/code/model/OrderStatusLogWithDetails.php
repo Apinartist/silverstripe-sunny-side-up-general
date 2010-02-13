@@ -9,18 +9,17 @@
  *
  **/
 
-class OrderStatusLogInternal extends DataObject {
+class OrderStatusLogWithDetails extends OrderStatusLog {
 
 
 	public static $db = array(
-		'Notes' => 'Text',
+		'DispatchedBy' => 'Varchar(255)',
+		'DispatchedOn' => 'Date',
+		'DispatchTicket' => 'Varchar(255)',
+		'PaymentCode' => 'Varchar(255)',
+		'PaymentOK' => 'Boolean'
 	);
 
-
-	public static $has_one = array(
-		'Author' => 'Member',
-		'Order' => 'Order'
-	);
 
 	public static $has_many = array();
 
@@ -32,11 +31,18 @@ class OrderStatusLogInternal extends DataObject {
 
 	public static $casting = array();
 
-	function onBeforeSave() {
+	public function canDelete($member = null) {
+		return false;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
 		if(!$this->ID) {
 			$this->AuthorID = Member::currentUser()->ID;
 		}
-		parent::onBeforeSave();
+		if(!$this->OrderID) {
+			user_error("Trying to save OrderStatusLogWithDetails without Order ID", E_USER_WARNING);
+		}
 	}
 
 }

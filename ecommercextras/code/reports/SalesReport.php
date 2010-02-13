@@ -56,7 +56,7 @@ class SalesReport extends SSReport {
 		// Set the links to the Invoice and Print fields allowing a user to view
 		// another template for viewing an Order instance
 		$table->setFieldFormatting(array(
-			'Invoice' => '<a href=\"OrderReport_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice</a>',
+			'Invoice' => '<a href=\"OrderReportWithLog_Popup/invoice/$ID\" class=\"makeIntoPopUp\">Invoice and Update</a>',
 			'PackingSlip' => '<a href=\"OrderReport_Popup/packingslip/$ID\" class=\"makeIntoPopUp\">Packing Slip</a>',
 			'ChangeStatus' => '<a href=\"#\" class=\"statusDropdownChange\" rel=\"$ID\">$Status</a><span class=\"outcome\"></span>'
 		));
