@@ -12,6 +12,12 @@ class EnhancedCheckoutPage extends CheckoutPage {
 
 	static $hide_ancestor = "CheckoutPage";
 
+	static $add_action = 'The Checkout Page';
+
+	function canCreate() {
+		return !DataObject("Page", "`ClassName`= 'CheckoutPage' OR `ClassName`= 'EnhancedCheckoutPage'");
+	}
+
 }
 
 class EnhancedCheckoutPage_Controller extends CheckoutPage_Controller {
