@@ -56,6 +56,14 @@ class DpsPxPayComs {
 		public function setUrlSuccess($v)        { $this->UrlSuccess = $v;}
 
 	/**
+	 * Details to use stored cards
+	 */
+	protected $EnableAddBillCard = 0;
+		public function setEnableAddBillCard($v)             {$this->EnableAddBillCard = $v;}	
+	protected $BillingId = 0;
+		public function setBillingId($v)             {$this->BillingId = $v;}	
+	
+	/**
 	* external object
 	**/
 	protected $PxPayObject = null;
@@ -98,6 +106,8 @@ class DpsPxPayComs {
 		if($this->UrlFail)           {$request->setUrlFail($this->UrlFail);	}                     else { user_error("error in DpsPxPayComs::startPaymentProcess, UrlFail not set. ", E_USER_WARNING);}
 		if($this->UrlSuccess)        {$request->setUrlSuccess($this->UrlSuccess);}                else { user_error("error in DpsPxPayComs::startPaymentProcess, UrlSuccess not set. ", E_USER_WARNING);}
 		if($this->TxnId)             {$request->setTxnId($this->TxnId);}
+		if($this->EnableAddBillCard)             {$request->setEnableAddBillCard($this->EnableAddBillCard);}
+		if($this->BillingId)             {$request->setBillingId($this->BillingId);}
 
 		/* TODO:
 		$request->setEnableAddBillCard($EnableAddBillCard);
@@ -107,7 +117,7 @@ class DpsPxPayComs {
 
 		#Call makeRequest function to obtain input XML
 		$request_string = $this->PxPayObject->makeRequest($request);
-
+		
 		#Obtain output XML
 		$response = new MifMessage($request_string);
 
