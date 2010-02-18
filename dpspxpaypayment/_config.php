@@ -31,8 +31,8 @@ else{
 //*** must have!
 Director::addRules(50, array(
 	DpsPxPayPayment_Handler::$url_segment . '/$Action/$ID' => 'DpsPxPayPayment_Handler',
+	DpsPxPayStoredPayment_Handler::$url_segment . '/$Action/$ID' => 'DpsPxPayStoredPayment_Handler',
 ));
 
 
 //===================---------------- END dpspxpaypayment MODULE ----------------===================
-
