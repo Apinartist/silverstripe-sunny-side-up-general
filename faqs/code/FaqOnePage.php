@@ -5,7 +5,7 @@
  */
 class FaqOnePage extends Page {
 
-	static $icon = "faqs/images/treeicons/FaqOnePage";
+	static $icon = "mysite/images/treeicons/FaqOnePage";
 
 	static $default_parent = 'FaqHolderPage';
 
