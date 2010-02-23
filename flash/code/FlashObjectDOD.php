@@ -6,7 +6,7 @@
 
 class FlashObjectDOD extends SiteTreeDecorator {
 
-	function extraDBFields(){
+	function extraStatics(){
 		return array(
 			'db' =>   array(
 				"Title" => "Varchar(255)"
