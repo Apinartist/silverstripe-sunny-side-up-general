@@ -89,7 +89,7 @@
 			var pattern=/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
 			var shippingCitySelectorValue = jQuery(OrderFormWithShippingAddress.shippingCitySelector).val();
 			if(pattern.test(shippingCitySelectorValue)){
-				jQuery(OrderFormWithShippingAddress.shippingCitySelector).val(jQuery(OrderFormWithShippingAddress.citySelector).val() + " ");
+				jQuery(OrderFormWithShippingAddress.shippingCitySelector).val(jQuery(OrderFormWithShippingAddress.citySelector).val());
 			}
 			else{
 				//do nothing
