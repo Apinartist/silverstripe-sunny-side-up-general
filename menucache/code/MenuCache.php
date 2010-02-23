@@ -27,7 +27,12 @@ class MenuCache extends DataObjectDecorator {
 	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
 	static function get_tables_to_clear() {return self::$tables_to_clear;}
 
-	function extraDBFields(){
+	//legacy function
+	public function extraDBFields() {
+		return $this->extraStatics();
+	}
+
+	function extraStatics(){
 		$dbArray = array(
 			"DoNotCacheMenu" => "Boolean"
 		);
