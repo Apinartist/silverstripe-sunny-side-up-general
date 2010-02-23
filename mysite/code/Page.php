@@ -2,11 +2,15 @@
 
 class Page extends SiteTree {
 
+	static $has_one = array(
+		"Sidebar" => "WidgetArea",
+	);
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Root.Content.Widgets", new WidgetAreaEditor("Sidebar"));
 		return $fields;
 	}
-
 }
 
 class Page_Controller extends ContentController {
