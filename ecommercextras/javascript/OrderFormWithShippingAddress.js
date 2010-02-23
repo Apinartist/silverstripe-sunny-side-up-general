@@ -81,6 +81,19 @@
 			if(!ShippingName || (FirstName == ShippingName && Surname) || (Surname == ShippingName && FirstName)) {
 				jQuery(OrderFormWithShippingAddress.shippingNameSelector).val(FirstName+" "+Surname);
 			}
+		},
+
+		removeEmailInCity: function() {
+			//this function exists, because FF was auto-completing Shipping City as the username part of a password / username combination (password being the next field)
+			var pattern=/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+			var shippingCitySelectorValue = jQuery(OrderFormWithShippingAddress.shippingCitySelector).val();
+			if(pattern.test(shippingCitySelectorValue)){
+				jQuery(OrderFormWithShippingAddress.shippingCitySelector).val(jQuery(OrderFormWithShippingAddress.citySelector).val() + " ");
+			}
+			else{
+				//do nothing
+			}
+
 		}
 	}
 })(jQuery);
