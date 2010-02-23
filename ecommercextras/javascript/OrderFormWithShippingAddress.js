@@ -2,6 +2,7 @@
 	$(document).ready(
 		function() {
 			OrderFormWithShippingAddress.init();
+			OrderFormWithShippingAddress.removeEmailFromShippingCityHack();
 		}
 	);
 	var OrderFormWithShippingAddress = {
@@ -83,7 +84,7 @@
 			}
 		},
 
-		removeEmailInCity: function() {
+		removeEmailFromShippingCityHack: function() {
 			//this function exists, because FF was auto-completing Shipping City as the username part of a password / username combination (password being the next field)
 			var pattern=/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
 			var shippingCitySelectorValue = jQuery(OrderFormWithShippingAddress.shippingCitySelector).val();
