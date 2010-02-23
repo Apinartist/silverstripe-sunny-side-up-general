@@ -23,13 +23,12 @@
 
 
 /* paragraphs */
-.typography p {margin-top: 0.5em; margin-bottom: 0.5em; line-height: 1.3em; text-align: justify; }
+.typography p {margin-top: 0.5em; margin-bottom: 0.5em; line-height: 1.3em; text-align: left; }
 
 /* lists */
 .typography ul, .typography ol {padding: 0.1em 0 0.3em 2.3em;}
 	.typography ul{}
-		.typography li { padding: 0.3em 0; list-style-position: outside; list-style-image: url(../images/bullet.gif); text-align: justify;}
-		.typography li { padding: 0.3em 0; list-style-position: outside; list-style-image: url(../images/bullet.gif); text-align: justify;}
+		.typography li { padding: 0.3em 0; list-style-position: outside; list-style-image: url(../images/bullet.gif); text-align: left;}
 	.typography ol{}
 		.typography ol li { list-style-image: none; list-style-type:decimal;}
 			.typography ol li li { list-style-type:lower-alpha;}
