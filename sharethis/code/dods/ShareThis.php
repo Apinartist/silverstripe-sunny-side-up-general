@@ -219,6 +219,7 @@ class ShareThis extends DataObjectDecorator {
 				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
 			}
 			$this->bookmarks = $this->makeBookmarks();
+			if($this->bookmarks) {
 			foreach($this->bookmarks as $key => $bookmark){
 				if(isset($bookmark["title"]) && isset($bookmark["url"])) {
 					$itemArray = array();
@@ -315,10 +316,12 @@ class ShareThis extends DataObjectDecorator {
 		$this->variablesAssigned = true;
 	}
 
-
+	/**
+	 *returns array
+	 **/
 
 	protected function makeBookmarks() {
-		if(!count($this->bookmarks) && $this->bookmarks !== 0) {
+		if(!count($this->bookmarks)) {
 			if($this->makeBookmarkIndependentVariables()) {
 				$bookmarks = array(
 				"email" => array(
@@ -491,7 +494,7 @@ class ShareThis extends DataObjectDecorator {
 				debug::show("could not make page specific variables!");
 			}
 			if(!count($this->bookmarks)) {
-				$this->bookmarks = 0;
+				$this->bookmarks = array();
 			}
 		}
 		return $this->bookmarks;
