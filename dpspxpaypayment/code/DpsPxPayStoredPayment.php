@@ -66,25 +66,30 @@ class DpsPxPayStoredPayment extends Payment {
 		foreach(self::$credit_cards as $name => $image) {
 			$paymentsList .= '<img src="' . $image . '" alt="' . $name . '"/>';
 		}
-		
+
 		$fields = new FieldSet();
-		
-		$storedCards = DataObject::get('DpsPxPayStoredCard', 'MemberID = '.Member::currentMember()->ID);
-		
+
+		if($m = Member::currentMember()) {
+			$storedCards = DataObject::get('DpsPxPayStoredCard', 'MemberID = '.$m->ID);
+		}
+		else {
+			$storedCards = null;
+		}
+
 		$cardsDropdown = array('' => '');
-		
+
 		if($storedCards) {
 			foreach($storedCards as $card) {
 				$cardsDropdown[$card->BillingID] = $card->CardHolder.' - '.$card->CardNumber.' ('.$card->CardName.')';
 			}
-			
+
 			$fields->push(new DropdownField('DPSUseStoredCard', 'Use a stored card?', $cardsDropdown));
 		}
-		
+
 		$fields->push(new DropdownField('DPSStoreCard', 'Or store a card for future use?', array(1 => 'Yes', 0 => 'No')));
 		$fields->push(new LiteralField('DPSInfo', $privacyLink));
 		$fields->push(new LiteralField('DPSPaymentsList', $paymentsList));
-		
+
 		return $fields;
 	}
 
@@ -102,7 +107,7 @@ class DpsPxPayStoredPayment extends Payment {
 		//replace any character that is NOT [0-9] or dot (.)
 		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $data["Amount"])));
 		$commsObject->setCurrencyInput($this->Currency);
-		
+
 		if($data['DPSUseStoredCard']) {
 			$commsObject->setBillingId($data['DPSUseStoredCard']);
 		}
@@ -173,14 +178,14 @@ class DpsPxPayStoredPayment_Handler extends Controller {
 	function paid() {
 		$commsObject = new DpsPxPayComs();
 		$response = $commsObject->processRequestAndReturnResultsAsObject();
-		
+
 		if($payment = DataObject::get_by_id('DpsPxPayStoredPayment', $response->getMerchantReference())) {
 			if(1 == $response->getSuccess()) {
 				$payment->Status = 'Success';
-				
+
 				if($response->DpsBillingId) {
 					$existingCard = DataObject::get_one('DpsPxPayStoredCard', 'BillingID = '.$response->DpsBillingId);
-					
+
 					if($existingCard == false) {
 						$storedCard = new DpsPxPayStoredCard();
 						$storedCard->BillingID = $response->DpsBillingId;
