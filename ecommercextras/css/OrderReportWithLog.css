@@ -18,3 +18,6 @@ table#InformationTable {width: 100%; font-size: 1em;}
 
 div.Actions input.action {float: none!important;}
 
+/* fixes */
+.calendardate img {float: none!important; margin: 0!important;padding: 0!important;}
+table.data td,table.data th {padding: 2px!important; font-size: 12px!important; width: 11%!important;}
