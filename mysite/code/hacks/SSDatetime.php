@@ -1,6 +1,6 @@
 <?php
 
-class SSDateTime extends SS_Datetime {
+class SSDatetime extends SS_Datetime {
 
 
 }
