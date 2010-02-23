@@ -220,24 +220,25 @@ class ShareThis extends DataObjectDecorator {
 			}
 			$this->bookmarks = $this->makeBookmarks();
 			if($this->bookmarks) {
-			foreach($this->bookmarks as $key => $bookmark){
-				if(isset($bookmark["title"]) && isset($bookmark["url"])) {
-					$itemArray = array();
-					$itemArray["OnClick"] = isset($bookmark['click']) ? $bookmark['click'] : "";
-					$itemArray["Title"] = $bookmark['title'];
-					$itemArray["ShowTitle"] = self::$show_title_with_icon;
-					$itemArray["URL"] = $bookmark["url"];
-					$itemArray["Key"] = $key;
-					if(isset($bookmark["icon"]) ) {
-						$itemArray["ImageSource"] = $bookmark["icon"];
+				foreach($this->bookmarks as $key => $bookmark){
+					if(isset($bookmark["title"]) && isset($bookmark["url"])) {
+						$itemArray = array();
+						$itemArray["OnClick"] = isset($bookmark['click']) ? $bookmark['click'] : "";
+						$itemArray["Title"] = $bookmark['title'];
+						$itemArray["ShowTitle"] = self::$show_title_with_icon;
+						$itemArray["URL"] = $bookmark["url"];
+						$itemArray["Key"] = $key;
+						if(isset($bookmark["icon"]) ) {
+							$itemArray["ImageSource"] = $bookmark["icon"];
+						}
+						else {
+							$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
+						}
+						$doSet->push(new ArrayData($itemArray));
 					}
 					else {
-						$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
+						debug::show("title of url not defined for $key");
 					}
-					$doSet->push(new ArrayData($itemArray));
-				}
-				else {
-					debug::show("title of url not defined for $key");
 				}
 			}
 		}
