@@ -83,7 +83,7 @@ class StandingOrdersPage extends AccountPage {
 		$cleanDays = array();
 		foreach($days as $day) {
 			$day = trim($day);
-			if(in_array($day, self::$week_days)) {
+			if(in_array(strtolower($day), array_map('strtolower',self::$week_days))) {
 				$cleanDays[$day] = $day;
 			}
 		}
@@ -116,10 +116,10 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 	public function order($request) {
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
-		
+
 		$memberID = Member::currentUserID();
 		$accountPageLink = AccountPage::find_link();
-		
+
 		if($orderID = $request->param('ID')) {
 			if($order = DataObject::get_one('Order', "Order.ID = '$orderID' AND MemberID = '$memberID'")) {
 				return array(
@@ -139,7 +139,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 			);
 		}
 	}
-	
+
 	/**
 	 * Return the {@link Order} details for the current
 	 * Order ID that we're viewing (ID parameter in URL).
