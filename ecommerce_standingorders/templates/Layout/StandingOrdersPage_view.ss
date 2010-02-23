@@ -13,8 +13,8 @@
 			<div class="block">
 				<h3>Overview</h3>
 				<% if CanModify %>
-					<input class="action" type="button" value="Make changes to your standing order" onclick="window.location='$ModifyLink';" />
-					<input class="action" type="button" value="Cancel your standing order" onclick="window.location='$CancelLink';" />
+					<input class="action" type="button" value="Amend standing order" onclick="window.location='$ModifyLink';" />
+					<input class="action" type="button" value="Cancel this standing order" onclick="window.location='$CancelLink';" />
 				<% end_if %>
 
 				<% include StandingOrder_Content %>
