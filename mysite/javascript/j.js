@@ -54,7 +54,9 @@
 
 		removeTypographyWithinTypography: function() {
 			jQuery(".typography .typography").each(
-				jQuery(this).removeClass("typography");
+				function() {
+					jQuery(this).removeClass("typography");
+				}
 			);
 		}
 	}
