@@ -51,7 +51,7 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 		Debug::show("$value should be a 0 or 1");
 	}
 
-	function extraDBFields(){
+	function extraStatics(){
 		if(self::$always_include) {
 			return array();
 		}
