@@ -108,7 +108,7 @@ class DpsPxPayStoredPayment extends Payment {
 		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $data["Amount"])));
 		$commsObject->setCurrencyInput($this->Currency);
 
-		if($data['DPSUseStoredCard']) {
+		if(isset($data['DPSUseStoredCard'])) {
 			$commsObject->setBillingId($data['DPSUseStoredCard']);
 		}
 		else if($data['DPSStoreCard']) $commsObject->setEnableAddBillCard(1);
