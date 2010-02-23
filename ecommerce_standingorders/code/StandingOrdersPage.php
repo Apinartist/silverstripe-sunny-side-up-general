@@ -81,13 +81,24 @@ class StandingOrdersPage extends AccountPage {
 	function onBeforeWrite() {
 		$days = explode(",", $this->OrderDays);
 		$cleanDays = array();
-		foreach($days as $day) {
-			$day = trim($day);
-			if(in_array(strtolower($day), array_map('strtolower',self::$week_days))) {
-				$cleanDays[$day] = $day;
+		if(count($days)) {
+			foreach($days as $day) {
+				$day = trim($day);
+				if(count(self::$week_days)) {
+					foreach(self::$week_days as $perfectDay) {
+						if(strtolower($day)== strtolower($perfectDay)) {
+							$cleanDays[$perfectDay] = $perfectDay;
+						}
+					}
+				}
 			}
 		}
-		$this->OrderDays = implode(",", $cleanDays);
+		if(count($cleanDays)) {
+			$this->OrderDays = implode(",", $cleanDays);
+		}
+		else {
+			$this->OrderDays = implode(",", self::$week_days);
+		}
 		parent::onBeforeWrite();
 	}
 
