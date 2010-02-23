@@ -10,7 +10,12 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	static $ajax_info_window_text = "View Details";
 
-	function extraDBFields(){
+	//legacy function
+	public function extraDBFields() {
+		return $this->extraStatics();
+	}
+
+	function extraStatics(){
 		return array(
 			'db' => array(
 				"HasGeoInfo" => "Boolean",
