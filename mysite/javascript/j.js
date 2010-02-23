@@ -19,7 +19,7 @@
 		},
 
 		setupRemoveDefault: function () {
-			$(".nolabel").bind("click focus",
+			$("input.nolabel").bind("click focus",
 				function () {
 			 		if(!$(this).attr("rel") || $(this).attr("rel") == $(this).val()) {
 						if(!$(this).attr("rel")) {
