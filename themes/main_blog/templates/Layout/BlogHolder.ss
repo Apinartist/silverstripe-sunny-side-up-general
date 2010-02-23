@@ -1,5 +1,5 @@
 
-<div id="BlogContent" class="blogcontent typography">
+<div id="BlogContent" class="blogcontent">
 
 	<% include BreadCrumbs %>
 

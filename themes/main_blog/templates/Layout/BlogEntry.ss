@@ -1,4 +1,4 @@
-<div id="BlogContent" class="typography">
+<div id="BlogContent">
 
 	<div class="blogEntry">
 		<h2>$Title</h2>
