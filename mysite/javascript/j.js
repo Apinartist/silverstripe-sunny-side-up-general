@@ -8,6 +8,7 @@
 		initFunctions.imageFixes();
 		initFunctions.setupRemoveDefault();
 		initFunctions.externalLinks();
+		initFunctions.removeTypographyWithinTypography();
 	});
 
 	var initFunctions = {
@@ -50,5 +51,11 @@
 				}
 			);
 		},
+
+		removeTypographyWithinTypography: function() {
+			jQuery(".typography .typography").each(
+				jQuery(this).removeClass("typography");
+			);
+		}
 	}
 })(jQuery);
