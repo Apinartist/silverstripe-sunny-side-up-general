@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Michael Mitchell <michael@michaelmitchell.co.nz>
+ * @author Michael Mitchell <michael@sunnysideup.co.nz>
  */
 
 class StandingOrder extends DataObject {
@@ -118,9 +118,16 @@ class StandingOrder extends DataObject {
 	}
 
 	public static function delivery_days() {
+		$array = array();
 		$page = DataObject::get_one("StandingOrdersPage");
 		if($page) {
-			return explode(",", $page->OrderDays);
+			$array = explode(",", $page->OrderDays);
+		}
+		if(count($array)) {
+			return $array;
+		}
+		else {
+			return self::$delivery_days;
 		}
 	}
 
