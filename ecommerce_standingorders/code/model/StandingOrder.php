@@ -5,33 +5,33 @@
  */
 
 class StandingOrder extends DataObject {
-	
+
 	public static $db = array(
 		'Status' => "Enum('Pending, Active, MemberCancelled, AdminCancelled, Finished', 'Pending')",
-	
+
 		'Start' => 'Date',
 		'End' => 'Date',
 		'Period' => 'Varchar',
-		
+
 		'LastCreated' => 'Date',
-	
+
 		'PaymentMethod' => 'Varchar',
-	
+
 		//Guytons.co.nz specific
 		'DeliveryDays' => 'Text', //Serialized Array
 		'Alternatives' => 'Text', //Serialized Array
-		
+
 		'Notes' => 'Text',
 	);
-	
+
 	public static $has_one = array(
 		'Member' => 'Member',
 	);
-	
+
 	public static $has_many = array(
 		'OrderItems' => 'StandingOrder_OrderItem', //products & quanitites
 	);
-	
+
 	public static $summary_fields = array(
 		'Member.FirstName' => 'First Name',
 		'Member.Surname' => 'Surname',
@@ -40,17 +40,17 @@ class StandingOrder extends DataObject {
 		'Period' => 'Period',
 		'Status' => 'Status'
 	);
-	
+
 	public static $default_sort = 'Created DESC';
-	
+
 	public static $versioning = array(
 		'Stage'
 	);
-	
+
 	public static $extensions = array(
 		"Versioned('Stage')"
 	);
-	
+
 	/**
 	 * Dropdown options for Period
 	 * @var array 'strtotime period' > 'nice name'
@@ -60,12 +60,12 @@ class StandingOrder extends DataObject {
 		'2 weeks' => 'Fornightly',
 		'1 month' => 'Monthly',
 	);
-	
+
 	/**
 	 * Should orderItems/orders call a write to update versions?
 	 */
 	public static $update_versions = true;
-	
+
 	protected static $status_nice = array(
 		'Pending' => 'Pending',
 		'Active' => 'Active',
@@ -87,18 +87,18 @@ class StandingOrder extends DataObject {
 		'Saturday',
 		'Sunday',
 	);
-	
+
 	protected static $payment_methods = array(
 		'DirectCreditPayment' => 'Direct Credit (payment into bank account)'
 	);
-	
+
 	/**
 	 * This is the from address that the receipt
 	 * email contains. e.g. "info@shopname.com"
 	 *
 	 * @var string
 	 */
-	protected static $receipt_email;	
+	protected static $receipt_email;
 
 	/**
 	 * This is the subject that the receipt
@@ -107,7 +107,7 @@ class StandingOrder extends DataObject {
 	 * @var string
 	 */
 	protected static $receipt_subject;
-	
+
 	/**
 	 * Guytons.co.nz specific, set the delivery days options
 	 * @param $days array of days
@@ -116,11 +116,14 @@ class StandingOrder extends DataObject {
 	public static function set_delivery_days($days = array()) {
 		self::$delivery_days = $days;
 	}
-	
+
 	public static function delivery_days() {
-		return self::$delivery_days;	
+		$page = DataObject::get_one("StandingOrdersPage");
+		if($page) {
+			return explode(",", $page->OrderDays);
+		}
 	}
-	
+
 	/**
 	 * @param $days array of days
 	 * @return null
@@ -128,36 +131,36 @@ class StandingOrder extends DataObject {
 	public static function set_payment_methods($payment_methods = array()) {
 		self::$payment_methods = $payment_methods;
 	}
-	
+
 	public static function payment_methods() {
-		return self::$payment_methods;	
+		return self::$payment_methods;
 	}
-	
+
 	public static function set_receipt_email($receipt_email) {
 		self::$receipt_email = $receipt_email;
 	}
-	
+
 	public static function receipt_email() {
 		return self::$receipt_email;
 	}
 
 	public static function set_receipt_subject($receipt_subject) {
 		self::$receipt_subject = $receipt_subject;
-	}	
-	
+	}
+
 	public static function receipt_subject() {
 		return self::$receipt_subject;
-	}	
+	}
 
 	/**
 	 * Create due draft orders
 	 */
 	public static function createDraftOrders() {
 		Versioned::reading_stage('Stage');
-		
+
 		set_time_limit(0); //might take a while with lots of orders
-		
-		
+
+
 		//get all standing orders
 		$standingOrders = DataObject::get('StandingOrder', 'Status = \'Active\'');
 
@@ -176,7 +179,7 @@ class StandingOrder extends DataObject {
 					$standingOrder->createDraftOrder(false);
 					$standingOrder->LastCreated = date('Y-m-d');
 					$standingOrder->writeWithoutVersion();
-					
+
 					StandingOrder::$update_versions == true;
 				}
 				else if($periodTime > $endTime) {
@@ -186,10 +189,10 @@ class StandingOrder extends DataObject {
 				}
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Create a StandingOrder from a regular Order and its Order Items
 	 * @param Order $Order
@@ -198,7 +201,7 @@ class StandingOrder extends DataObject {
 	 */
 	public static function createFromOrder(Order $Order, $params = array()) {
 		Versioned::reading_stage('Stage');
-		
+
 		$standingOrder = new StandingOrder();
 		$standingOrder->Status = 'Pending';
 		$standingOrder->MemberID = $Order->MemberID;
@@ -206,7 +209,7 @@ class StandingOrder extends DataObject {
 		$standingOrder->write();
 
 		$orderItems = $Order->Items();
-		
+
 		if($orderItems) {
 			foreach($orderItems as $orderItem) {
 				$standingOrderItem = new StandingOrder_OrderItem();
@@ -217,25 +220,25 @@ class StandingOrder extends DataObject {
 				$standingOrderItem->write();
 			}
 		}
-		
+
 		$standingOrder->write();
-		
+
 		$standingOrder->sendReceipt();
 
 		return $standingOrder;
 	}
-	
+
 	/**
 	 * CMS Fields for ModelAdmin, use different fields for adding/editing
 	 * @see sapphire/core/model/DataObject#getCMSFields($params)
 	 */
 	public function getCMSFields() {
 		if($this->ID) {
-			return self::getCMSFields_edit();	
+			return self::getCMSFields_edit();
 		}
 		else return self::getCMSFields_add();
 	}
-	
+
 	/**
 	 * CMS Fields to adding via ModelAdmin
 	 * @return FieldSet
@@ -244,7 +247,7 @@ class StandingOrder extends DataObject {
 		$fields = new FieldSet(
 			new TabSet('Root',
 				new Tab('Main',
-					new AutocompleteTextField('Email', 'Email (Auto complete)', 'admin/security/autocomplete/Email'),	
+					new AutocompleteTextField('Email', 'Email (Auto complete)', 'admin/security/autocomplete/Email'),
 					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
@@ -267,14 +270,14 @@ class StandingOrder extends DataObject {
 
 		return $fields;
 	}
-	
+
 	/**
 	 * CMS Fields to adding via ModelAdmin
 	 * @return FieldSet
 	 */
 	public function getCMSFields_edit() {
 		$countries = Geoip::getCountryDropDown();
-		
+
 		$fields = new FieldSet(
 			new TabSet('Root',
 				new Tab('Main',
@@ -315,30 +318,30 @@ HTML
 				)
 			)
 		);
-		
+
 		$alternatives = unserialize($this->Alternatives);
 		$orderItems = $this->OrderItems();
-		
+
 		$products = DataObject::get('FishProduct');
 		$productsMap = array('');
 		$productsMap = $products->map('ID', 'Title', ' ');
-		
+
 		if($orderItems) {
 			foreach($orderItems as $orderItem) {
 				$value = isset($alternatives[$orderItem->ProductID]) ? $alternatives[$orderItem->ProductID] : null;
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));
 			}
 		}
-		
+
 		$fields->addFieldToTab('Root', new Tab('History',$this->getCMSHistoryTable()));
-		
+
 		return $fields;
 	}
-	
+
 	/**
 	 * CMS Fields for Popup
 	 * @return FieldSet
@@ -361,42 +364,42 @@ HTML
 				)
 			)
 		);
-		
+
 		$alternatives = unserialize($this->Alternatives);
 		$orderItems = $this->getVersionedComponents('OrderItems');
-		
+
 		$products = DataObject::get('FishProduct');
 		$productsMap = array('');
 		$productsMap = $products->map('ID', 'Title', ' ');
-		
+
 		if($orderItems) {
 			foreach($orderItems as $orderItem) {
 				$value = isset($alternatives[$orderItem->ProductID]) ? $alternatives[$orderItem->ProductID] : null;
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));	
-				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));	
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][0]', $orderItem->ProductTitle(), $productsMap, $value[0]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][1]', '', $productsMap, $value[1]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][2]', '', $productsMap, $value[2]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][3]', '', $productsMap, $value[3]));
+				$fields->addFieldToTab('Root.Alternatives', new DropdownField('_Alternatives['.$orderItem->ProductID.'][4]', '', $productsMap, $value[4]));
 			}
 		}
-		
+
 		return $fields;
 	}
-	
+
 	/**
 	 * Get products table
 	 * @return ComplexTableField
 	 */
-	public function getCMSProductsTable() {	
+	public function getCMSProductsTable() {
 		$products = DataObject::get('Product');
-		
+
 		$fields = new TabSet('Root',
 			new Tab('Main',
 				new DropdownField('ProductID', 'Choose a product:', $products->map()),
 				new TextField('Quantity', 'Quantity')
 			)
 		);
-		
+
 		$table = new ComplexTableField(
 			$this,
 			'OrderItems',
@@ -411,10 +414,10 @@ HTML
 		$table->setShowPagination(false);
 		$table->setAddTitle('Product');
 		$table->setPermissions(array('add', 'edit', 'delete'));
-		
+
 		return $table;
 	}
-	
+
 	/**
 	 * Get products table for versioned popup
 	 * @return ComplexTableField
@@ -430,15 +433,15 @@ HTML
 			),
 			'getCMSFields_forPopup'
 		);
-		
+
 		$table->setCustomSourceItems($this->getVersionedComponents('OrderItems'));
-		
+
 		$table->setShowPagination(false);
 		$table->setPermissions(array());
-		
+
 		return $table;
 	}
-	
+
 	/**
 	 * Repeating Order History
 	 * @return unknown_type
@@ -457,18 +460,18 @@ HTML
 
 		$table->setCustomSourceItems($this->allVersions());
 		$table->setPermissions(array('show'));
-		
+
 		return $table;
 	}
-	
+
 	public function getVersionedComponents($component) {
 		$baseTable = ClassInfo::baseDataClass(self::$has_many[$component]);
 		$query = singleton(self::$has_many[$component])->buildVersionSQL("`{$baseTable}`.OrderID = {$this->ID} AND `{$baseTable}`.OrderVersion = {$this->Version}");
 		$result = singleton(self::$has_many[$component])->buildDataObjectSet($query->execute());
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Create a new DraftOrder from the StandingOrder
 	 * @return null
@@ -477,12 +480,12 @@ HTML
 		//create draft order
 		$order = new DraftOrder();
 		$order->write();
-		
+
 		// Set the items from the cart into the order
 		if($this->OrderItems()) {
 			foreach($this->OrderItems() as $orderItem) {
 				$product = DataObject::get_by_id('Product', $orderItem->ProductID);
-				
+
 				if($product) {
 					$productOrderItem = new Product_OrderItem(
 						array(
@@ -492,30 +495,30 @@ HTML
 						),
 						$orderItem->Quantity
 					);
-					
+
 					$productOrderItem->OrderID = $order->ID;
 					$productOrderItem->write();
 				}
 			}
 		}
-		
+
 		$order->StandingOrderID = $this->ID;
 		$order->MemberID = $this->MemberID;
 		$order->write();
-		
+
 		//$order->sendReceipt();
-		
+
 		if($redirect) Director::redirect($order->Link());
 	}
 
 	public function sendReceipt() {
 		$this->sendEmail('StandingOrder_ReceiptEmail');
 	}
-	
+
 	public function sendUpdate() {
 		$this->sendEmail('StandingOrder_UpdateEmail');
 	}
-	
+
 	protected function sendEmail($emailClass, $copyToAdmin = true) {
  		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
  		$to = $this->Member()->Email;
@@ -526,16 +529,16 @@ HTML
  		$email->setTo($to);
  		$email->setSubject($subject);
 		if($copyToAdmin) $email->setBcc(Email::getAdminEmail());
-		
+
 		$email->populateTemplate(
 			array(
 				'StandingOrder' => $this
 			)
 		);
-		
+
 		$email->send();
 	}
-	
+
 	public function CanModify() {
 		if(in_array($this->Status, array('Pending', 'Active'))) {
 			return true;
@@ -546,82 +549,82 @@ HTML
 	public function Link() {
 		return StandingOrdersPage::get_standing_order_link('view', $this->ID);
 	}
-	
+
 	public function Period() {
-		if(isset(self::$period_fields[$this->Period])) return self::$period_fields[$this->Period];	
+		if(isset(self::$period_fields[$this->Period])) return self::$period_fields[$this->Period];
 	}
-	
+
 	public function ModifyLink() {
-		return StandingOrdersPage::get_standing_order_link('modify', $this->ID);	
+		return StandingOrdersPage::get_standing_order_link('modify', $this->ID);
 	}
-	
+
 	public function CancelLink() {
-		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);	
+		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);
 	}
-	
+
 	public function TableAlternatives() {
 		$alternatives = unserialize($this->Alternatives);
-		
+
 		$products = new DataObjectSet();
-		
+
 		if(is_array($alternatives)) {
 			foreach($alternatives as $id => $alternative) {
 				$product = DataObject::get_by_id('Product', $id);
-				
+
 				$product->Alternatives = new DataObjectSet();
-				
+
 				if(is_array($alternative)) {
 					foreach($alternative as $id) {
 						if($id) {
 							$alternativeProduct = DataObject::get_by_id('Product', $id);
-							
+
 							if($alternativeProduct) $product->Alternatives->push($alternativeProduct);
 						}
 					}
 				}
-				
+
 				$products->push($product);
 			}
 		}
 
 		return $products;
 	}
-	
+
 	public function TableDeliveryDays() {
 		return $this->DeliveryDays;
 	}
-	
+
 	public function TablePaymentMethod() {
 		if(isset(self::$payment_methods[$this->PaymentMethod])) {
 			return self::$payment_methods[$this->PaymentMethod];
 		}
 	}
-	
+
 	public function TableStatus() {
 		return self::$status_nice[$this->Status];
 	}
 
-	
+
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
 		if(isset($_REQUEST['_DeliveryDays'])) {
 			$this->DeliveryDays = implode(',', $_REQUEST['_DeliveryDays']);
 		}
-		
+
 		if(isset($_REQUEST['_Alternatives'])) {
 			$this->Alternatives = serialize($_REQUEST['_Alternatives']);
 		}
-		
+
 		if($this->ID == false) {
 			$this->changed['Version'] = 1;
-			
+
 			if(!isset($this->record['Version'])) {
 				$this->record['Version'] = -1;
-			}	
-	
+			}
+
 			$this->LastCreated = $this->Start;
-			
+
 			$_SQL = Convert::raw2sql($_POST);
 
 			if($this->MemberID) {
@@ -632,14 +635,14 @@ HTML
 			}
 
 			$data = array(); foreach($_POST as $k => $v) if($v) $data[$k] = $v;
-			
+
 			if($member) {
 				$member->update($data);
 			} else {
 				$member = new Member();
 				$member->update($data);
 			}
-			
+
 			$member->write();
 
 			if($this->MemberID == false) {
@@ -650,7 +653,7 @@ HTML
 			self::$update_versions = false;
 		}
 	}
-	
+
 	/**
 	 * Complex Versioning accross more than one DataObject
 	 */
@@ -659,9 +662,9 @@ HTML
 
 		if(self::$update_versions) {
 			self::$update_versions = false;
-			
+
 			$OrderItems = DataObject::get('StandingOrder_OrderItem', 'OrderID = '.$this->ID);
-			
+
 			if($OrderItems) foreach($OrderItems as $OrderItem) {
 				if(
 					$OrderItem->ID != $this->ignoreID &&
@@ -674,61 +677,61 @@ HTML
 
 			self::$update_versions = true;
 		}
-		
+
 		if(isset($_POST['CreateDraftOrder'])) $this->createDraftOrder();
 	}
-	
+
 }
 
 class StandingOrder_OrderItem extends DataObject {
-	
+
 	public static $db = array(
 		'Quantity' => 'Int',
 		'OrderVersion' => 'Int',
 	);
-	
+
 	public static $has_one = array(
 		'Product' => 'Product',
 		'Order' => 'StandingOrder',
 	);
-	
+
 	public static $versioning = array(
 		'Stage'
 	);
-	
+
 	public static $extensions = array(
 		"Versioned('Stage')"
 	);
-	
+
 	public function Title() {
 		return $this->Product()->Title;
 	}
-	
+
 	public function ProductTitle() {
 		return $this->Product()->Title;
 	}
-	
+
 	public function Link() {
 		return $this->Product()->Link();
 	}
-	
+
 	public function ProductVersion() {
 		return $this->Product()->Version;
 	}
-	
+
 	/**
 	 * Complex Versioning accross more than one DataObject
 	 */
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
-		
+
 		if($this->ID == false) {
 			$this->changed['Version'] = 1;
 			if(!isset($this->record['Version'])) {
 				$this->record['Version'] = -1;
 			}
 		}
-		
+
 		if(StandingOrder::$update_versions == true) {
 			if($this->ID) {
 				$this->Order()->ignoreID = $this->ID;
@@ -738,17 +741,17 @@ class StandingOrder_OrderItem extends DataObject {
 			}
 		}
 	}
-	
+
 	public function onAfterWrite() {
 		parent::onAfterWrite();
-		
+
 		if($this->SendRecipt) $standingOrder->sendReceipt();
 		if($this->SendUpdate) $standingOrder->sendUpdate();
 	}
-	
+
 	public function onBeforeDelete() {
 		parent::onBeforeDelete();
-		
+
 		if(StandingOrder::$update_versions == true) {
 			if($this->ID) {
 				$this->Order()->ignoreID = $this->ID;

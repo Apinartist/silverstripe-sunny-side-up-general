@@ -2,11 +2,25 @@
 /**
  * Account page shows order history and a form to allow
  * the member to edit his/her details.
- * 
+ *
  * @package ecommerce
  */
 class StandingOrdersPage extends AccountPage {
-	
+
+	static $db = array(
+		"OrderDays" => "Varchar(255)"
+	);
+
+	protected static $week_days = array(
+		"Monday" => "Monday",
+		"Tuesday" => "Tuesday",
+		"Wednesday" => "Wednesday",
+		"Thursday" => "Thursday",
+		"Friday" => "Friday",
+		"Saturday" => "Saturday",
+		"Sunday" => "Sunday"
+	);
+
 	public static $add_action = 'a Standing Orders Page';
 
 	/**
@@ -19,10 +33,20 @@ class StandingOrdersPage extends AccountPage {
 		if(!$page = DataObject::get_one(__CLASS__)) {
 			user_error('No StandingOrderPage was found. Please create one in the CMS!', E_USER_ERROR);
 		}
-		
+
 		return ($urlSegment ? $page->URLSegment . '/' : $page->Link()) . 'standing-order/'.$action.'/' . $orderID;
 	}
-	
+
+	public function canCreate($member = null) {
+		return !DataObject::get_one("StandingOrdersPage");
+	}
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Root.Content.Settings", new TextField($name = "OrderDays", $title = "Order Weekdays - separated by comma, e.g. Monday, Tuesday, Wednesday"));
+		return $fields;
+	}
+
 	/**
 	 * Returns all {@link Order} records for this
 	 * member that are completed.
@@ -33,14 +57,14 @@ class StandingOrdersPage extends AccountPage {
 		$memberID = Member::currentUserID();
 		return DataObject::get('StandingOrder', "MemberID = '$memberID'", "Created DESC");
 	}
-	
+
 	/**
 	 * Automatically create an AccountPage if one is not found
 	 * on the site at the time the database is built (dev/build).
 	 */
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		
+
 		if(!DataObject::get_one('StandingOrdersPage')) {
 			$page = new StandingOrdersPage();
 			$page->Title = 'Standing Orders';
@@ -49,14 +73,28 @@ class StandingOrdersPage extends AccountPage {
 			$page->ShowInMenus = 0;
 			$page->writeToStage('Stage');
 			$page->publish('Stage', 'Live');
-			
+
 			if(method_exists('DB', 'alteration_message')) DB::alteration_message('Standing Order page \'Standing Orders\' created', 'created');
 		}
 	}
+
+	function onBeforeWrite() {
+		$days = explode(",", $this->OrderDays);
+		$cleanDays = array();
+		foreach($days as $day) {
+			$day = trim($day);
+			if(in_array($day, self::$week_days)) {
+				$cleanDays[$day] = $day;
+			}
+		}
+		$this->OrderDays = implode(",", $cleanDays);
+		parent::onBeforeWrite();
+	}
+
 }
 
 class StandingOrdersPage_Controller extends AccountPage_Controller {
-	
+
 	function init() {
 		parent::init();
 
@@ -65,16 +103,16 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				'default' => '<p class="message good">' . _t('AccountPage.Message', 'You\'ll need to login before you can access the standing orders page. If you are not registered, you won\'t be able to access it until you make your first order, otherwise please enter your details below.') . '</p>',
 				'logInAgain' => 'You have been logged out. If you would like to log in again, please do so below.'
 			);
-			
+
 			Security::permissionFailure($this, $messages);
 			return false;
 		}
 	}
-	
+
 	public function create_draft_orders() {
 		StandingOrder::createDraftOrders();
 	}
-	
+
 	public function order($request) {
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
@@ -110,55 +148,55 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 	 */
 	public function standing_order($request) {
 		Versioned::reading_stage('Stage');
-		
+
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
-		
+
 		$memberID = Member::currentUserID();
 		$accountPageLink = AccountPage::find_link();
 		$orderID = $request->param('OtherID');
-		
+
 		switch($request->param('ID')) {
 			case 'cancel':
 				if($orderID) {
 					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
 					$standingOrder->Status = 'MemberCancelled';
 					$standingOrder->write();
-					
+
 					Director::redirectBack();
 				}
 				break;
 			case 'create':
 				$order = isset($orderID) ? DataObject::get_by_id('Order', $orderID): $this->BlankOrder();
-	
+
 				$params = array(
 					'Order' => $order,
 				);
-				
+
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
 			case 'update':
 				$order = $this->BlankOrder();
-				
+
 				$params = array(
 					'Order' => $order,
 				);
-				
+
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
 			case 'modify':
 				if(isset($orderID)) {
 					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
-		
+
 					$items = ShoppingCart::get_items();
-					
+
 					if($items) {
 						foreach($items as $item) {
 							ShoppingCart::remove_all_item($item->getProductID());
 						}
 					}
-					
+
 					//fill cart with standing order items
 					$orderItems = $standingOrder->OrderItems();
-		
+
 					if($orderItems || false) {
 						foreach($orderItems as $orderItem) {
 								ShoppingCart::add_new_item(new Product_OrderItem(
@@ -171,21 +209,21 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 							));
 						}
 					}
-					
+
 					//save session identifier for editing standing order
 					Session::set('StandingOrder', $orderID);
-					
+
 					Director::redirect(CheckoutPage::find_link());
-					
+
 					$params = array();
 				}
 				else {
 					$params = array(
 						'StandingOrder' => false,
 						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
-					);	
+					);
 				}
-				
+
 				return $this->renderWith(array('StandingOrdersPage_view', 'Page'), $params);
 			case 'view':
 				if($orderID) {
@@ -205,10 +243,10 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
 					);
 				}
-				
+
 				return $this->renderWith(array('StandingOrdersPage_view', 'Page'), $params);
 		}
-		
+
 	}
 
 	public function StandingOrderForm() {
@@ -224,14 +262,14 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 			return new StandingOrderForm($this, 'StandingOrderForm', $orderID, true);
 		}
 	}
-	
+
 	public function BlankOrder() {
 		//Create an Order to use
 		$order = new Order();
 
 		$order->MemberID = Member::currentUserID();
-		
+
 		return $order;
 	}
-	
+
 }
