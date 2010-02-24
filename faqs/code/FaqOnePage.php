@@ -1,7 +1,7 @@
 <?php
 /**
- *
- *
+ *@author nicolaas[at] sunnysideup.co.nz
+ *@description: individual FAQ page. Usually, these are not viewed as they can be read completely from the parent (FAQ HOLDER) page.
  */
 class FaqOnePage extends Page {
 
@@ -37,14 +37,6 @@ class FaqOnePage_Controller extends Page_Controller {
 	}
 
 
-	public function ShowMenu() {
-		return true;
-	}
-
-
-	public function CacheLayout() {
-		return true;
-	}
 
 }
 
