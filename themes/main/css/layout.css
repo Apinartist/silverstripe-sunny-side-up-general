@@ -2,11 +2,9 @@
 #HiddenTextItems {display: block; font-size: 0px; text-indent: -9999px; line-height: 0;}
 .clear {clear: both;}
 
-html{font-size: 100%;}
 body {
 	font-family: Trebuchet MS,Tahoma,Arial,Verdana,helvetica,Sans-Serif;
 	height: 100%;
-	font-size: 62.5%;
 	background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 }
 #Wrapper{}
