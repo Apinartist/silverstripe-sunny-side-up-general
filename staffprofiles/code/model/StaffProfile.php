@@ -44,8 +44,8 @@ class StaffProfile extends DataObject {
 	);
 
 	public function populateDefaults() {
-		parent::populateDefaults();
 		$this->Sort = 100;
+		parent::populateDefaults();
 	}
 
   public function EmailObfuscator() {
@@ -56,6 +56,17 @@ class StaffProfile extends DataObject {
 					return $array[0]." [at] ".$array[1];
 				}
 			}
+		}
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		if(!$this->Sort) {
+			$this->Sort = 100;
+		}
+		if(!$this->ParentID) {
+			$page = DataObject::get_one("StaffProfilesPage");
+			$this->ParentID = $page->ID;
 		}
 	}
 

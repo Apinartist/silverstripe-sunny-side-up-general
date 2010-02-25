@@ -16,12 +16,12 @@ class StaffProfilesPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab(
-			"Root.Main.Profiles",
+			"Root.Content.Profiles",
 			new HasManyComplexTableField(
 				$controller = $this,
 				$name = "StaffProfiles",
 				$sourceClass = "StaffProfile",
-				$fieldList = array("Name", "Email"),
+				StaffProfile::$summary_fields,
 				$detailFormFields = null,
 				$sourceFilter = "ParentID = ".$this->ID
 			)
