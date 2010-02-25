@@ -8,4 +8,4 @@ blockquote:before,blockquote:after,q:before,q:after{content:"";}
 blockquote,q{quotes:"" "";}
 html{font-size: 100%;}
 body {font-size: 100%;}
-#Wrapper {font: 62.5%/1.5;}
+#Wrapper {font-size: 62.5%;}
