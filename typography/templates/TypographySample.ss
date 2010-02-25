@@ -499,8 +499,8 @@
 </p>
 <address>
 	Sunny Side Up
-	<br /> PO Box 3058
-	<br /> Dunedin
+	<br /> PO Box 559
+	<br /> Napier 4140
 	<br /> New Zealand
 	<br />
 </address>
