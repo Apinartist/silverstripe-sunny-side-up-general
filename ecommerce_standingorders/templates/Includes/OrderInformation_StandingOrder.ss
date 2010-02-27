@@ -29,7 +29,7 @@
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Delivery Days</td>
-			<td>$DeliveryDays</td>
+			<td>$DeliveryDay</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Notes</td>
@@ -65,6 +65,6 @@
 			</td>
 		</tr>
 		<% end_control %>
-		
+
 	</tbody>
 </table>

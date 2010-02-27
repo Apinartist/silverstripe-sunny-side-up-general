@@ -1,14 +1,17 @@
 <?php
 /**
- * Account page shows order history and a form to allow
+ * StandingOrdersPage page shows order history and a form to allow
  * the member to edit his/her details.
  *
  * @package ecommerce
+ * @subpackage ecommerce ecommerce_standingorders
+ * @author nicolaas [at] sunnysideup.co.nz
  */
 class StandingOrdersPage extends AccountPage {
 
 	static $db = array(
-		"OrderDays" => "Varchar(255)"
+		"OrderDays" => "Varchar(255)",
+		"WhatAreStandingOrders" => "HTMLText"
 	);
 
 	protected static $week_days = array(
@@ -115,12 +118,15 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				'logInAgain' => 'You have been logged out. If you would like to log in again, please do so below.'
 			);
 
-			Security::permissionFailure($this, $messages);
+			//Security::permissionFailure($this, $messages);
 			return false;
 		}
 	}
 
-	public function create_draft_orders() {
+	public function createdraftorders() {
+		if(!Permission::check('ADMIN') || !Permission::check('CMS_ACCESS_ReportAdmin')) {
+			return Security::permissionFailure($this, _t('OrderReport.PERMISSIONFAILURE', 'Sorry you do not have permission for this function. Please login as an Adminstrator'));
+		}
 		StandingOrder::createDraftOrders();
 	}
 
@@ -140,13 +146,13 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 			} else {
 				return array(
 					'Order' => false,
-					'Message' => 'You do not have any order corresponding to this ID. However, you can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+					'Message' => 'You do not have any order corresponding to this ID. However, you can <a href="' . $accountPageLink . '">edit your personal details and view your orders.</a>.'
 				);
 			}
 		} else {
 			return array(
 				'Order' => false,
-				'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+				'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your personal details and view your orders</a>.'
 			);
 		}
 	}
@@ -185,6 +191,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				);
 
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
+				break;
 			case 'update':
 				$order = $this->BlankOrder();
 
@@ -193,6 +200,23 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				);
 
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
+				break;
+			case 'load':
+				$order = DataObject::get_one("DraftOrder", "UIDhash = '".$orderID."'");
+				if($order) {
+					$member = $order->Member();
+					if($member) {
+						$member->logIn();
+						Director::redirect(StandingOrdersPage::get_standing_order_link('modify', $order->ID));
+					}
+					else {
+						USER_ERROR("Could not find member for order.", E_USER_ERROR);
+					}
+				}
+				else {
+					USER_ERROR("Could not find order.", E_USER_ERROR);
+				}
+				break;
 			case 'modify':
 				if(isset($orderID)) {
 					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
@@ -231,11 +255,12 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				else {
 					$params = array(
 						'StandingOrder' => false,
-						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your personal details and view your orders</a>.'
 					);
 				}
 
 				return $this->renderWith(array('StandingOrdersPage_view', 'Page'), $params);
+				break;
 			case 'view':
 				if($orderID) {
 					if($order = DataObject::get_one('StandingOrder', "StandingOrder.ID = '$orderID' AND MemberID = '$memberID'")) {
@@ -245,13 +270,13 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 					} else {
 						$params = array(
 							'StandingOrder' => false,
-							'Message' => 'You do not have any order corresponding to this ID. However, you can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+							'Message' => 'You do not have any order corresponding to this ID. However, you can <a href="' . $accountPageLink . '">edit your personal details and view your orders.</a>.'
 						);
 					}
 				} else {
 					$params = array(
 						'StandingOrder' => false,
-						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your own personal details and view your orders.</a>.'
+						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your personal details and view your orders.</a>.'
 					);
 				}
 

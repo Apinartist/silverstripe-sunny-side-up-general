@@ -18,8 +18,9 @@ class StandingOrder extends DataObject {
 		'PaymentMethod' => 'Varchar',
 
 		//Guytons.co.nz specific
-		'DeliveryDays' => 'Text', //Serialized Array
+		'DeliveryDay' => 'Text', //Serialized Array
 		'Alternatives' => 'Text', //Serialized Array
+		'Items' => 'Text', //FOR SEARCH PURPOSES ONLY!
 
 		'Notes' => 'Text',
 	);
@@ -29,12 +30,26 @@ class StandingOrder extends DataObject {
 	);
 
 	public static $has_many = array(
-		'OrderItems' => 'StandingOrder_OrderItem', //products & quanitites
+		'OrderItems' => 'StandingOrder_OrderItem' //products & quanitites
+	);
+
+	public static $casting = array(
+		"OrderItemList" => "Text",
+		"LastOrderDate" => "Date",
+		"NextOrderDate" => "Date"
+	);
+
+	public static $searchable_fields = array(
+		"Member.Email" => "PartialMatchFilter",
+		"Member.Surname" => "PartialMatchFilter",
+		"Items" => "PartialMatchFilter",
+		"Status"
 	);
 
 	public static $summary_fields = array(
-		'Member.FirstName' => 'First Name',
+		'Member.Email' => 'First Name',
 		'Member.Surname' => 'Surname',
+		'OrderItemList' => 'Order Item List',
 		'Start' => 'Start',
 		'End' => 'End',
 		'Period' => 'Period',
@@ -175,19 +190,19 @@ class StandingOrder extends DataObject {
 			foreach($standingOrders as $standingOrder) {
 				//current time + period is less than LastCreated and less then end
 				$currentTime = (strtotime(date('Y-m-d'))-1);
-				$startTime = strtotime($standingOrder->Start);
+				$startTime = strtotime($standingOrder->FirstOrderDate());
 				$endTime = strtotime($standingOrder->End);
 				$lastTime = strtotime($standingOrder->LastCreated);
 				$periodTime = strtotime('+'.$standingOrder->Period, $lastTime);
 
 				if($periodTime < $currentTime && $periodTime < $endTime) {
-					StandingOrder::$update_versions == false;
+					StandingOrder::$update_versions = false;
 
 					$standingOrder->createDraftOrder(false);
 					$standingOrder->LastCreated = date('Y-m-d');
 					$standingOrder->writeWithoutVersion();
 
-					StandingOrder::$update_versions == true;
+					StandingOrder::$update_versions = true;
 				}
 				else if($periodTime > $endTime) {
 					$standingOrder->Status = 'Finished';
@@ -235,6 +250,48 @@ class StandingOrder extends DataObject {
 		return $standingOrder;
 	}
 
+	function OrderItemList() {
+		$a = array();
+		if($list = $this->OrderItems()) {
+			foreach($list as $item) {
+				$a[] = $item->Quantity . " x " . $item->Title();
+			}
+		}
+		return "Products: ".implode(", ", $a).".";
+	}
+
+	function getOrderItemList() {
+		return $this->OrderItemList();
+	}
+
+	function FirstOrderDate() {
+		$startTime = strtotime($this->Start);
+		$firstTime = strtotime("Next ".$this->DeliveryDay, $startTime);
+		return Date::create($className = "Date", $value = Date("Y-m-d", $firstTime));
+	}
+
+	function getFirstOrderDate() {
+		return $this->FirstOrderDate();
+	}
+
+	function NextOrderDate() {
+		$lastTime = strtotime($this->LastCreated);
+		$nextTime = strtotime('+'.$this->Period, $lastTime);
+		return Date::create($className = "Date", $value = Date("Y-m-d", $nextTime));
+	}
+
+	function getNextOrderDate() {
+		return $this->NextOrderDate();
+	}
+
+	function LastOrderDate() {
+		return Date::create($className = "Date", $value = $this->LastCreated);
+	}
+
+	function getLastOrderDate() {
+		return $this->LastOrderDate();
+	}
+
 	/**
 	 * CMS Fields for ModelAdmin, use different fields for adding/editing
 	 * @see sapphire/core/model/DataObject#getCMSFields($params)
@@ -260,15 +317,15 @@ class StandingOrder extends DataObject {
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
 					new ListboxField(
-						'_DeliveryDays',
-						'Deilvery days:',
-						array_combine(
-							self::$delivery_days,
-							self::$delivery_days
+						$name = '_DeliveryDay',
+						$title 'Delivery day:',
+						$source = array_combine(
+							self::delivery_days(),
+							self::delivery_days()
 						),
-						explode(',', $this->DeliveryDays),
-						7,
-						true
+						$value = explode(',', $this->DeliveryDay),
+						$size = 7,
+						$multiple = false
 					),
 					new TextareaField('Notes', 'Notes')
 				)
@@ -284,7 +341,18 @@ class StandingOrder extends DataObject {
 	 */
 	public function getCMSFields_edit() {
 		$countries = Geoip::getCountryDropDown();
-
+		$lastCreatedObj = $this->LastOrderDate();
+		$lastCreated = $lastCreatedObj->Long();
+		$firstCreatedObj = $this->FirstOrderDate();
+		$firstCreated = $firstCreatedObj->Long();
+		if($this->Status == "Active") {
+			$nextCreatedObj = $this->NextOrderDate();
+			$nextCreated = $nextCreatedObj->Long();
+		}
+		else {
+			$lastCreated = "Standing Order Not Active";
+			$nextCreated = "Standing Order Not Active";
+		}
 		$fields = new FieldSet(
 			new TabSet('Root',
 				new Tab('Main',
@@ -305,23 +373,30 @@ HTML
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
 					new ListboxField(
-						'_DeliveryDays',
-						'Deilvery days:',
-						array_combine(
+						$name = '_DeliveryDay',
+						$title = 'Delivery day:',
+						$source = array_combine(
 							self::$delivery_days,
 							self::$delivery_days
 						),
-						explode(',', $this->DeliveryDays),
-						7,
-						true
+						$value explode(',', $this->DeliveryDay),
+						$size = 7,
+						$multiple = false
 					),
 					new TextareaField('Notes', 'Notes'),
-					new CheckboxField('SendReciept', 'Manually send a receipt email for this standing order? (save to send reciept)'),
-					new CheckboxField('SendUpdate', 'Manually send an update email for this standing order? (save to send update)'),
-					new CheckboxField('CreateDraftOrder', 'Manually create a draft order from this standing order? (save to create draft order)')
+					new CheckboxField('SendReciept', 'Send a receipt email for this standing order (executed when you click Save) '),
+					new CheckboxField('SendUpdate', 'Send an update email for this standing order (executed when you click Save) '),
+					new CheckboxField('CreateDraftOrder', 'Create a draft order from this standing order (executed when you click Save) ')
 				),
 				new Tab('Products',
 					$this->getCMSProductsTable()
+				),
+				new Tab('Previous Orders',
+					new ReadOnlyField("FirstCreatedFormatted", "First Order", $firstCreated),
+					new ReadOnlyField("LastCreatedFormatted", "Last Order", $lastCreated),
+					new ReadOnlyField("NextCreatedFormatted", "Next Order", $nextCreated),
+					new HeaderField("DraftOrders", "Orders Placed Through this Standing Order"),
+					$this->getCMSPreviousOrders()
 				)
 			)
 		);
@@ -344,7 +419,11 @@ HTML
 			}
 		}
 
-		$fields->addFieldToTab('Root', new Tab('History',$this->getCMSHistoryTable()));
+		$fields->addFieldToTab('Root', new Tab(
+			'HistoryOfChanges',
+			new HeaderField("HistoryTableHeader", "List of updates to the standing order with date of update and version"),
+			$this->getCMSHistoryTable()
+		));
 
 		return $fields;
 	}
@@ -363,7 +442,7 @@ HTML
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::$period_fields),
-					new TextField('DeliveryDays', 'Delivery Days'),
+					new TextField('DeliveryDay', 'Delivery Day'),
 					new TextareaField('Notes', 'Notes')
 				),
 				new Tab('Products',
@@ -425,6 +504,41 @@ HTML
 		return $table;
 	}
 
+
+	/**
+	 * Get previous actual order table
+	 * @return ComplexTableField
+	 */
+	public function getCMSPreviousOrders() {
+		$table = new ComplexTableField(
+			$controller = $this,
+			$name = 'PreviousOrders',
+			$sourceClass = 'DraftOrder',
+			$fieldList = array(
+				"ID" => "Order ID",
+				"Total" => "Value",
+				"Created" => "Created",
+				"Status" => "Status",
+				"ViewLink" => "Link",
+				"LoadLink" => "Load"
+			),
+			$detailFormFields = new FieldSet(),
+			$sourceFilter = "StandingOrderID = ".$this->ID,
+			$sourceSort = "Created DESC",
+			$sourceJoin = ""
+		);
+		$table->setFieldCasting(array(
+			'Created' => 'Date->Long',
+			'Total' => 'Currency->Nice'
+		));
+		$table->setShowPagination(false);
+		$table->setAddTitle('Previous Orders');
+		$table->setPermissions(array("export"));
+		return $table;
+	}
+
+
+
 	/**
 	 * Get products table for versioned popup
 	 * @return ComplexTableField
@@ -459,8 +573,7 @@ HTML
 			'StandingOrders',
 			'StandingOrder',
 			array(
-				'LastEdited' => 'Date',
-				'Version' => 'Version',
+				'LastEdited' => 'Date'
 			),
 			'getCMSFields_forPopup'
 		);
@@ -529,7 +642,7 @@ HTML
 	protected function sendEmail($emailClass, $copyToAdmin = true) {
  		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
  		$to = $this->Member()->Email;
-		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing ORder Information #$this->ID";
+		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing Order Confirmation (#$this->ID)";
 
  		$email = new $emailClass();
  		$email->setFrom($from);
@@ -569,6 +682,15 @@ HTML
 		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);
 	}
 
+	public function DoneLink() {
+		$page = DataObject::get_one("StandingOrdersPage");
+		if($page) {
+			return $page->Link();
+		}
+		$page = DataObject::get_one("Page", "URLSegment 'home'");
+		return $page->Link();
+	}
+
 	public function TableAlternatives() {
 		$alternatives = unserialize($this->Alternatives);
 
@@ -597,8 +719,8 @@ HTML
 		return $products;
 	}
 
-	public function TableDeliveryDays() {
-		return $this->DeliveryDays;
+	public function TableDeliveryDay() {
+		return $this->DeliveryDay;
 	}
 
 	public function TablePaymentMethod() {
@@ -614,12 +736,25 @@ HTML
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
-
-		if(isset($_REQUEST['_DeliveryDays'])) {
-			$this->DeliveryDays = implode(',', $_REQUEST['_DeliveryDays']);
+		$this->Items = $this->OrderItemList();
+		if(isset($_REQUEST['_DeliveryDay'])) {
+			$this->DeliveryDay = implode(',', $_REQUEST['_DeliveryDay']);
 		}
 
 		if(isset($_REQUEST['_Alternatives'])) {
+			foreach($_REQUEST['_Alternatives'] as $key => $array) {
+				for($i = 0; $i < 5; $i++) {
+					$item = $_REQUEST["_Alternatives"][$key][$i];
+					if($item > 0 && $i > 0) {
+						for($j = ($i - 1); $j >= 0; $j--) {
+							$previousItem = $_REQUEST["_Alternatives"][$key][$j];
+							if($item == $previousItem) {
+								$_REQUEST["_Alternatives"][$key][$i]  = 0;
+							}
+						}
+					}
+				}
+			}
 			$this->Alternatives = serialize($_REQUEST['_Alternatives']);
 		}
 
@@ -630,7 +765,7 @@ HTML
 				$this->record['Version'] = -1;
 			}
 
-			$this->LastCreated = $this->Start;
+			$this->LastCreated = $this->FirstOrderDate()->format("Y-m-d");
 
 			$_SQL = Convert::raw2sql($_POST);
 
@@ -659,6 +794,13 @@ HTML
 
 			self::$update_versions = false;
 		}
+		else {
+			$lastTime = strtotime($this->LastCreated);
+			$firstTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
+			if($lastTime < $firstTime) {
+				$this->LastCreated = $this->FirstOrderDate()->format("Y-m-d");
+			}
+		}
 	}
 
 	/**
@@ -685,8 +827,9 @@ HTML
 			self::$update_versions = true;
 		}
 
-		if(isset($_POST['CreateDraftOrder'])) $this->createDraftOrder();
+		$this->createDraftOrders();
 	}
+
 
 }
 

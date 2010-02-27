@@ -40,15 +40,15 @@ class StandingOrderForm extends Form {
 		$fields->push(new DropdownField('Period', 'Period', StandingOrder::$period_fields));
 
 		$fields->push(new ListboxField(
-			'_DeliveryDays',
-			'Delivery days:',
-			array_combine(
+			$name = '_DeliveryDay',
+			$title = 'Delivery day:',
+			$source = array_combine(
 				StandingOrder::delivery_days(),
 				StandingOrder::delivery_days()
 			),
-			null,
-			4,
-			true
+			$value = null,
+			$size = 4,
+			$multiple = false
 		));
 
 		$fields->push(new TextareaField('Notes', 'Notes'));
@@ -66,7 +66,7 @@ class StandingOrderForm extends Form {
 
 		$required[] = 'Start';
 		$required[] = 'Period';
-		$required[] = 'DeliveryDays';
+		$required[] = 'DeliveryDay';
 
 		$requiredFields = new RequiredFields($required);
 
@@ -78,7 +78,7 @@ class StandingOrderForm extends Form {
 				'End' => $standingOrder->End,
 				'Period' => $standingOrder->Period,
 				'Notes' => $standingOrder->Notes,
-				'_DeliveryDays' => explode(',', $standingOrder->DeliveryDays),
+				'_DeliveryDay' => explode(',', $standingOrder->DeliveryDay),
 				'_Alternatives' => unserialize($standingOrder->Alternatives),
 			));
 		}
