@@ -318,7 +318,7 @@ class StandingOrder extends DataObject {
 					new DropdownField('Period', 'Period', self::$period_fields),
 					new ListboxField(
 						$name = '_DeliveryDay',
-						$title 'Delivery day:',
+						$title = 'Delivery day:',
 						$source = array_combine(
 							self::delivery_days(),
 							self::delivery_days()
