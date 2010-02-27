@@ -1,35 +1,15 @@
 <?php
 
 /**
- * Payment type to support credit-card payments through DPS.
- *
- * Supported currencies:
- * 	CAD  	Canadian Dollar
- * 	CHF 	Swiss Franc
- * 	EUR 	Euro
- * 	FRF 	French Franc
- * 	GBP 	United Kingdom Pound
- * 	HKD 	Hong Kong Dollar
- * 	JPY 	Japanese Yen
- * 	NZD 	New Zealand Dollar
- * 	SGD 	Singapore Dollar
- * 	USD 	United States Dollar
- * 	ZAR 	Rand
- * 	AUD 	Australian Dollar
- * 	WST 	Samoan Tala
- * 	VUV 	Vanuatu Vatu
- * 	TOP 	Tongan Pa'anga
- * 	SBD 	Solomon Islands Dollar
- * 	PGK 	Papua New Guinea Kina
- * 	MYR 	Malaysian Ringgit
- * 	KWD 	Kuwaiti Dinar
- * 	FJD 	Fiji Dollar
- *
- * @package payment
- *
+ *@author nicolaas[at]sunnysideup.co.nz
  * unique identifier: OrderNumber and PaymentID
  *
- */
+ *
+ *
+ *
+ *
+ *
+ **/
 
 class DpsPxPayPayment extends Payment {
 
@@ -76,7 +56,13 @@ class DpsPxPayPayment extends Payment {
 	function getPaymentFormRequirements() {
 		return array();
 	}
+
 	function processPayment($data, $form) {
+		$url = $this->buildURL($data["Amount"]);
+		return $this->executeURL($url);
+	}
+
+	protected function buildURL($amount) {
 		$commsObject = new DpsPxPayComs();
 
 		/**
@@ -85,8 +71,9 @@ class DpsPxPayPayment extends Payment {
 		$commsObject->setTxnType('Purchase');
 		$commsObject->setMerchantReference($this->ID);
 		//replace any character that is NOT [0-9] or dot (.)
-		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $data["Amount"])));
+		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $amount)));
 		$commsObject->setCurrencyInput($this->Currency);
+
 		/**
 		* details of the redirection
 		**/
@@ -97,9 +84,12 @@ class DpsPxPayPayment extends Payment {
 		* process payment data (check if it is OK and go forward if it is...
 		**/
 		$url = $commsObject->startPaymentProcess();
+		return $url;
+	}
+
+	function executeURL() {
 		$url = str_replace("&", "&amp;", $url);
 		$url = str_replace("&amp;&amp;", "&amp;", $url);
-
 		if($url) {
 			/**
 			* build redirection page

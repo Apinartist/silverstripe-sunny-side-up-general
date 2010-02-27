@@ -1,63 +1,13 @@
 <?php
 
 /**
- * Payment type to support credit-card payments through DPS.
+ *@author nicolaas [at] sunny side up. co . nz
  *
- * Supported currencies:
- * 	CAD  	Canadian Dollar
- * 	CHF 	Swiss Franc
- * 	EUR 	Euro
- * 	FRF 	French Franc
- * 	GBP 	United Kingdom Pound
- * 	HKD 	Hong Kong Dollar
- * 	JPY 	Japanese Yen
- * 	NZD 	New Zealand Dollar
- * 	SGD 	Singapore Dollar
- * 	USD 	United States Dollar
- * 	ZAR 	Rand
- * 	AUD 	Australian Dollar
- * 	WST 	Samoan Tala
- * 	VUV 	Vanuatu Vatu
- * 	TOP 	Tongan Pa'anga
- * 	SBD 	Solomon Islands Dollar
- * 	PGK 	Papua New Guinea Kina
- * 	MYR 	Malaysian Ringgit
- * 	KWD 	Kuwaiti Dinar
- * 	FJD 	Fiji Dollar
  *
- * @package payment
- *
- * unique identifier: OrderNumber and PaymentID
- *
- */
+ **/
 
-class DpsPxPayStoredPayment extends Payment {
 
-	static $db = array(
-		'TxnRef' => 'Text'
-	);
-
-	// DPS Information
-
-	protected static $privacy_link = 'http://www.paymentexpress.com/privacypolicy.htm';
-
-	protected static $logo = 'dpspxpaypayment/images/dps_paymentexpress_small.png';
-
-	// URLs
-
-	protected static $url = 'https://www.paymentexpress.com/pxpost.aspx';
-
-	protected static $credit_cards = array(
-		'Visa' => 'payment/images/payments/methods/visa.jpg',
-		'MasterCard' => 'payment/images/payments/methods/mastercard.jpg',
-		'American Express' => 'payment/images/payments/methods/american-express.gif',
-		'Dinners Club' => 'payment/images/payments/methods/dinners-club.jpg',
-		'JCB' => 'payment/images/payments/methods/jcb.jpg'
-	);
-
-	static function remove_credit_card($creditCard) {
-		unset(self::$credit_cards[$creditCard]);
-	}
+class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
 	function getPaymentFormFields() {
 		$logo = '<img src="' . self::$logo . '" alt="Credit card payments powered by DPS"/>';
@@ -83,20 +33,45 @@ class DpsPxPayStoredPayment extends Payment {
 				$cardsDropdown[$card->BillingID] = $card->CardHolder.' - '.$card->CardNumber.' ('.$card->CardName.')';
 			}
 
-			$fields->push(new DropdownField('DPSUseStoredCard', 'Use a stored card?', $cardsDropdown));
+			$fields->push(new DropdownField('DPSUseStoredCard', 'Use a stored card?', $cardsDropdown, $value = $card->BillingID, $form = null, $emptyString = "--- use new Credit Card ---"));
 		}
 
-		$fields->push(new DropdownField('DPSStoreCard', 'Or store a card for future use?', array(1 => 'Yes', 0 => 'No')));
+		$fields->push(new DropdownField('DPSStoreCard', '', array(1 => 'Store Credit Card', 0 => 'Do NOT Store Credit Card')));
 		$fields->push(new LiteralField('DPSInfo', $privacyLink));
 		$fields->push(new LiteralField('DPSPaymentsList', $paymentsList));
-
+		Requirements::javascript("dpspxpaypayment/javascript/DpxPxPayStoredPayment.js");
 		return $fields;
 	}
 
-	function getPaymentFormRequirements() {
-		return array();
+	function autoProcessPayment($amount, $ref) {
+		$DPSUrl = $this->buildURL($amount, $ref, false);
+		/*
+		add CURL HERE
+		$data = array('page' => $page);
+		// create our curl object
+		$ch = curl_init();
+		$lurl = 'http://www.test.com';
+		curl_setopt( $ch, CURLOPT_POST, true );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS,$data);
+		curl_setopt($ch, CURLOPT_URL, $lurl);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_FAILONERROR, 0);
+		$content = curl_exec($ch);
+		curl_close($ch);
+		return $content;
+		*/
+
 	}
+
 	function processPayment($data, $form) {
+		$url = $this->buildURL($data["Amount"], $data["DPSUseStoredCard"], $data["DPSStoreCard"]);
+		return $this->executeURL($url);
+	}
+
+	protected function buildURL($amount, $cardToUse = '', $storeCard = false) {
 		$commsObject = new DpsPxPayComs();
 
 		/**
@@ -105,13 +80,15 @@ class DpsPxPayStoredPayment extends Payment {
 		$commsObject->setTxnType('Purchase');
 		$commsObject->setMerchantReference($this->ID);
 		//replace any character that is NOT [0-9] or dot (.)
-		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $data["Amount"])));
+		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $amount)));
 		$commsObject->setCurrencyInput($this->Currency);
 
-		if(isset($data['DPSUseStoredCard'])) {
-			$commsObject->setBillingId($data['DPSUseStoredCard']);
+		if(isset($cardToUse)) {
+			$commsObject->setBillingId($cardToUse);
 		}
-		else if($data['DPSStoreCard']) $commsObject->setEnableAddBillCard(1);
+		else if($storeCard) {
+			$commsObject->setEnableAddBillCard(1);
+		}
 
 		/**
 		* details of the redirection
@@ -123,57 +100,18 @@ class DpsPxPayStoredPayment extends Payment {
 		* process payment data (check if it is OK and go forward if it is...
 		**/
 		$url = $commsObject->startPaymentProcess();
-		$url = str_replace("&", "&amp;", $url);
-		$url = str_replace("&amp;&amp;", "&amp;", $url);
+		return $url;
 
-		if($url) {
-			/**
-			* build redirection page
-			**/
-			$page = new Page();
-			$page->Title = 'Redirection to DPS...';
-			$page->Logo = '<img src="' . self::$logo . '" alt="Payments powered by DPS"/>';
-			$page->Form = $this->DPSForm($url);
-			$controller = new ContentController($page);
-			Requirements::clear();
-			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-			return new Payment_Processing($controller->renderWith('PaymentProcessingPage'));
-		}
-		else {
-			$page = new Page();
-			$page->Title = 'Sorry, DPS can not be contacted at the moment ...';
-			$page->Logo = 'Sorry, an error has occured in contacting the Payment Processing Provider, please try again in a few minutes...';
-			$page->Form = $this->DPSForm($url);
-			$controller = new ContentController($page);
-			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-			return new Payment_Failure($controller->renderWith('PaymentProcessingPage'));
-		}
 	}
 
-	function DPSForm($url) {
-		return <<<HTML
-			<form id="PaymentForm" method="post" action="$url"></form>
-			<script type="text/javascript">
-				jQuery(document).ready(function() {
-					jQuery("#PaymentForm").submit();
-				});
-			</script>
-HTML;
-	}
+
+
 
 }
 
 class DpsPxPayStoredPayment_Handler extends Controller {
 
 	static $url_segment = 'dpspxpaystoredpayment';
-
-	static function complete_link() {
-		return self::$url_segment . '/paid/';
-	}
-
-	static function absolute_complete_link() {
-		return Director::AbsoluteURL(self::complete_link());
-	}
 
 	function paid() {
 		$commsObject = new DpsPxPayComs();
