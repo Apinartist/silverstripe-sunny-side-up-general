@@ -379,7 +379,7 @@ HTML
 							self::$delivery_days,
 							self::$delivery_days
 						),
-						$value explode(',', $this->DeliveryDay),
+						$value = explode(',', $this->DeliveryDay),
 						$size = 7,
 						$multiple = false
 					),
