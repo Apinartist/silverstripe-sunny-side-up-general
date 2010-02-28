@@ -26,6 +26,7 @@ var YouTubeGalleryPage = {
 				return false;
 			}
 		);
+		jQuery(".first "+YouTubeGalleryPage.linkSelector).click();
 	}
 
 }
