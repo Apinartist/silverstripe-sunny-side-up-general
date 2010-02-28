@@ -21,7 +21,7 @@ YouTubeGalleryPage::set_player_options(
 		"enablejsapi" => 0, 	//see http://code.google.com/apis/youtube/js_api_reference.html, Values: 0 or 1. Default is 0. Setting this to 1 will enable the Javascript API. For more information on the Javascript API and how to use it, see the JavaScript API documentation.
 		"playerapiid" => "",	//Value can be any alphanumeric string. This setting is used in conjunction with the JavaScript API. See the JavaScript API documentation for details.
 		"disablekb" => 0, 		//Values: 0 or 1. Default is 0. Setting to 1 will disable the player keyboard controls. Keyboard controls are as follows:
-		"egm" = 0, 						//Values: 0 or 1. Default is 0. Setting to 1 enables the "Enhanced Genie Menu". This behavior causes the genie menu (if present) to appear when the user's mouse enters the video display area, as opposed to only appearing when the menu button is pressed.
+		"egm" => 0, 						//Values: 0 or 1. Default is 0. Setting to 1 enables the "Enhanced Genie Menu". This behavior causes the genie menu (if present) to appear when the user's mouse enters the video display area, as opposed to only appearing when the menu button is pressed.
 		"border" => 0, 				//Values: 0 or 1. Default is 0. Setting to 1 enables a border around the entire video player. The border's primary color can be set via the color1 parameter, and a secondary color can be set by the color2 parameter.
 		"color1" => "0x4e9e00",				//Values: Any RGB value in hexadecimal format.
 		"color2" => "0x234900",				//color1 is the primary border color, and color2 is the video control bar background color and secondary border color.
