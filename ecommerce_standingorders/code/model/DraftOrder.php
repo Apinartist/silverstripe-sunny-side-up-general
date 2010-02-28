@@ -74,7 +74,9 @@ class DraftOrder extends Order {
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->UIDHash = substr(base_convert(md5(uniqid(mt_rand(), true)), 16, 36),0, 32);
+		if(!strlen($this->UIDHash) == 32) {
+			$this->UIDHash = substr(base_convert(md5(uniqid(mt_rand(), true)), 16, 36),0, 32);
+		}
 	}
 
 }

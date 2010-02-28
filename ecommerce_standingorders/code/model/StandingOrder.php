@@ -266,6 +266,7 @@ class StandingOrder extends DataObject {
 
 	function FirstOrderDate() {
 		$startTime = strtotime($this->Start);
+		$phrase = "Next ".$this->DeliveryDay;
 		$firstTime = strtotime("Next ".$this->DeliveryDay, $startTime);
 		return Date::create($className = "Date", $value = Date("Y-m-d", $firstTime));
 	}
@@ -323,7 +324,7 @@ class StandingOrder extends DataObject {
 							self::delivery_days(),
 							self::delivery_days()
 						),
-						$value = explode(',', $this->DeliveryDay),
+						$value = $this->DeliveryDay,
 						$size = 7,
 						$multiple = false
 					),
@@ -352,6 +353,9 @@ class StandingOrder extends DataObject {
 		else {
 			$lastCreated = "Standing Order Not Active";
 			$nextCreated = "Standing Order Not Active";
+		}
+		if(!$this->DeliveryDay) {
+			$firstCreated = "Please select a delivery day first.";
 		}
 		$fields = new FieldSet(
 			new TabSet('Root',
@@ -738,7 +742,7 @@ HTML
 		parent::onBeforeWrite();
 		$this->Items = $this->OrderItemList();
 		if(isset($_REQUEST['_DeliveryDay'])) {
-			$this->DeliveryDay = implode(',', $_REQUEST['_DeliveryDay']);
+			$this->DeliveryDay = $_REQUEST['_DeliveryDay'];
 		}
 
 		if(isset($_REQUEST['_Alternatives'])) {
