@@ -26,7 +26,7 @@ class FlashObject extends ViewableData  {
 
 	protected static $external_flash_file = '';
 
-	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray = array()) {
+	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray = array(), $YouTubeStyle = false) {
 		if(!$Title ) {$Title  = self::$title ;}
 		$Title = Convert::raw2js($Title);
 
@@ -69,6 +69,7 @@ class FlashObject extends ViewableData  {
 				'AlternativeContent' => $AlternativeContent,
 				'Parameters' => $params,
 				'UseDynamicInsert' => self::$use_dynamic_insert,
+				'YouTubeStyle' => $YouTubeStyle
 			);
 			$doSet->push(new ArrayData($record));
 			if(self::$use_dynamic_insert) {
@@ -94,9 +95,11 @@ class FlashObject extends ViewableData  {
 						}
 					);';
 			}
-			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-			Requirements::javascript("flash/javascript/swfobject.js");
-			Requirements::customScript($js);
+			if(!$YouTubeStyle) {
+				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+				Requirements::javascript("flash/javascript/swfobject.js");
+				Requirements::customScript($js);
+			}
 		}
 		return $doSet;
   }
