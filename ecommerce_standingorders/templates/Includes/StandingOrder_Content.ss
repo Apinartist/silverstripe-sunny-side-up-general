@@ -61,5 +61,12 @@
 			</td>
 		</tr>
 		<% end_control %>
+		<tr class="gap">
+			<th colspan="4" scope="row" class="left">Schedule</th>
+		</tr>
+		<tr class="summary">
+			<td scope="row" class="left">Planned Delivery Schedule</td>
+			<td>$DeliverySchedule</td>
+		</tr>
 	</tbody>
 </table>
