@@ -65,11 +65,11 @@ class AutomaticallyCreatedOrderDecorator extends DataObjectDecorator {
 		if($this->owner->OrderItemsAdded()) {return  true;} else {return false;}
 	}
 
-
+	/*
 	public function sendReceipt() {
-		$this->owner->sendEmail('AutomaticallyCreatedOrderDecorator_ReceiptEmail');
+		//$this->owner->sendEmail('AutomaticallyCreatedOrderDecorator_ReceiptEmail');
 	}
-
+	*/
 
 
 

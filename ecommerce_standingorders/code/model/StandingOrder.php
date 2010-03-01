@@ -275,7 +275,7 @@ class StandingOrder extends DataObject {
 		if($currentTime > $endTime && $this->Status != "Finished") {
 			$this->Status = 'Finished';
 			$this->write();
-			$this->sendUpdate();
+			//$this->sendUpdate();
 		}
 		elseif($startTime < $currentTime) {
 			$a = $this->workOutSchedule();
@@ -352,14 +352,16 @@ class StandingOrder extends DataObject {
 
 		$standingOrder->write();
 
-		$standingOrder->sendReceipt();
+		//$standingOrder->sendReceipt();
 
 		return $standingOrder;
 	}
 
+	/*
 	public function sendReceipt() {
 		$this->sendEmail('StandingOrder_ReceiptEmail');
 	}
+
 
 	public function sendUpdate() {
 		$this->sendEmail('StandingOrder_UpdateEmail');
@@ -384,7 +386,7 @@ class StandingOrder extends DataObject {
 
 		$email->send();
 	}
-
+	*/
 
 
 //================================================================================================================================================================================
