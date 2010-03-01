@@ -35,8 +35,9 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
 			$fields->push(new DropdownField('DPSUseStoredCard', 'Use a stored card?', $cardsDropdown, $value = $card->BillingID, $form = null, $emptyString = "--- use new Credit Card ---"));
 		}
-
-		$fields->push(new DropdownField('DPSStoreCard', '', array(1 => 'Store Credit Card', 0 => 'Do NOT Store Credit Card')));
+		else {
+			$fields->push(new DropdownField('DPSStoreCard', '', array(1 => 'Store Credit Card', 0 => 'Do NOT Store Credit Card')));
+		}
 		$fields->push(new LiteralField('DPSInfo', $privacyLink));
 		$fields->push(new LiteralField('DPSPaymentsList', $paymentsList));
 		Requirements::javascript("dpspxpaypayment/javascript/DpxPxPayStoredPayment.js");
@@ -70,7 +71,6 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 		if(!isset($data["DPSUseStoredCard"])) {$data["DPSUseStoredCard"] = null;}
 		if(!isset($data["DPSStoreCard"])) {$data["DPSStoreCard"] = null;}
 		if(!isset($data["Amount"])) {USER_ERROR("There was no amount information for processing the payment.", E_USER_WARNING);}
-
 		$url = $this->buildURL($data["Amount"], $data["DPSUseStoredCard"], $data["DPSStoreCard"]);
 		return $this->executeURL($url);
 	}
