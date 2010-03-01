@@ -45,7 +45,6 @@ class SalesAdmin extends ReportAdmin {
 			}
 		}
 		$processedReports[] = new PaymentsReport();
-		$processedReports[] = new DraftOrderReport();
 		$reports = new DataObjectSet($processedReports);
 
 		return $reports;

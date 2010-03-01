@@ -72,7 +72,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 					new CalendarDateField('DispatchedOn', "Dispatched On"),
 					new TextField('DispatchTicket', "Dispatch Ticket Code"),
 					new TextField('PaymentCode', "Payment Code / Reference"),
-					new CheckboxField('PaymentOK', "Payment has cleared"),
+					new CheckboxField('PaymentOK', "Payment has cleared (NOTE: Pending Payments will be updated to Succesful - use with care)"),
 					new TextareaField('Note', "Note", $rows = 4, $cols = 30),
 					new CheckboxField('SentToCustomer', sprintf(_t('OrderReport.SENDNOTETO', "Send status update details to %s (%s)"), $member->Title, $member->Email), false),
 					new HiddenField('OrderID', 'OrderID', $order->ID)
@@ -156,7 +156,15 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 		}
 
 		$order = DataObject::get_by_id("Order", $data['OrderID']);
-
+		if(isset($data["PaymentOK"])) {
+			$payments = DataObject::get("Payment", "OrderID = ".$order->ID);
+			if($payments) {
+				foreach($payments as $payment) {
+					$payment->Status = "Success";
+					$payment->write();
+				}
+			}
+		}
 	// if the status was changed or a note was added, create a new log-object
 		$orderlog = new OrderStatusLogWithDetails();
 		$orderlog->OrderID = $order->ID;
