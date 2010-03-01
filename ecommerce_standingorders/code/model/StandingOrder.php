@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Michael Mitchell <michael@sunnysideup.co.nz>
+ * @author michael@ sunnysideup . co . nz
  */
 
 class StandingOrder extends DataObject {
@@ -12,8 +12,6 @@ class StandingOrder extends DataObject {
 		'Start' => 'Date',
 		'End' => 'Date',
 		'Period' => 'Varchar',
-
-		'LastCreated' => 'Date',
 
 		'PaymentMethod' => 'Varchar',
 
@@ -30,13 +28,17 @@ class StandingOrder extends DataObject {
 	);
 
 	public static $has_many = array(
-		'OrderItems' => 'StandingOrder_OrderItem' //products & quanitites
+		'OrderItems' => 'StandingOrder_OrderItem', //products & quanitites
+		'Orders' => 'Order'
 	);
 
 	public static $casting = array(
 		"OrderItemList" => "Text",
+		"FirstOrderDate" => "Date",
 		"LastOrderDate" => "Date",
-		"NextOrderDate" => "Date"
+		"NextOrderDate" => "Date",
+		"FinalOrderDate" => "Date",
+		"DeliverySchedule" => "Text"
 	);
 
 	public static $searchable_fields = array(
@@ -53,6 +55,7 @@ class StandingOrder extends DataObject {
 		'Start' => 'Start',
 		'End' => 'End',
 		'Period' => 'Period',
+		'DeliveryDay' => 'Delivery Day',
 		'Status' => 'Status'
 	);
 
@@ -70,16 +73,21 @@ class StandingOrder extends DataObject {
 	 * Dropdown options for Period
 	 * @var array 'strtotime period' > 'nice name'
 	 */
-	public static $period_fields = array(
+	protected static $period_fields = array(
 		'1 week' => 'Weekly',
 		'2 weeks' => 'Fornightly',
 		'1 month' => 'Monthly',
 	);
 
+	static function set_period_fields($array) { self::$period_fields = $array;}
+	static function get_period_fields() { return self::$period_fields;}
+	static function default_period_key() {if($a = self::get_period_fields()) {foreach($a as $k => $v) {return $k;}}}
 	/**
 	 * Should orderItems/orders call a write to update versions?
 	 */
 	public static $update_versions = true;
+
+	protected static $schedule = array();
 
 	protected static $status_nice = array(
 		'Pending' => 'Pending',
@@ -132,7 +140,7 @@ class StandingOrder extends DataObject {
 		self::$delivery_days = $days;
 	}
 
-	public static function delivery_days() {
+	public static function get_delivery_days() {
 		$array = array();
 		$page = DataObject::get_one("StandingOrdersPage");
 		if($page) {
@@ -146,6 +154,14 @@ class StandingOrder extends DataObject {
 		}
 	}
 
+	public static function default_delivery_day_key() {
+		$a = self::get_delivery_days();
+		if(count($a)) {
+			foreach($a as $k => $v) {
+				return $k;
+			}
+		}
+	}
 	/**
 	 * @param $days array of days
 	 * @return null
@@ -154,8 +170,15 @@ class StandingOrder extends DataObject {
 		self::$payment_methods = $payment_methods;
 	}
 
-	public static function payment_methods() {
+	public static function get_payment_methods() {
 		return self::$payment_methods;
+	}
+
+	public static function default_payment_method_key() {
+		$a = self::get_payment_methods();
+		foreach($a as $k => $v) {
+			return $k;
+		}
 	}
 
 	public static function set_receipt_email($receipt_email) {
@@ -174,10 +197,57 @@ class StandingOrder extends DataObject {
 		return self::$receipt_subject;
 	}
 
+
+	public function CanModify() {
+		if(in_array($this->Status, array('Pending', 'Active'))) {
+			return true;
+		}
+		else return false;
+	}
+
+	public function Link() {
+		return StandingOrdersPage::get_standing_order_link('view', $this->ID);
+	}
+
+	public function Period() {
+		$a = self::get_period_fields();
+		if(isset($a[$this->Period])) { return $a[$this->Period];}
+	}
+
+	public function ModifyLink() {
+		return StandingOrdersPage::get_standing_order_link('modify', $this->ID);
+	}
+
+	public function CancelLink() {
+		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);
+	}
+
+	public function DoneLink() {
+		$page = DataObject::get_one("StandingOrdersPage");
+		if($page) {
+			return $page->Link();
+		}
+		$page = DataObject::get_one("Page", "URLSegment 'home'");
+		return $page->Link();
+	}
+
+	public function OutstandingAutomaticallyCreatedOrders() {
+		$orders = DataObject::get("Order", "StandingOrderID = ".$this->ID, "OrderDate ASC");
+		$dos = new DataObjectSet();
+		foreach($orders as $order) {
+			if(!$order->Completed()) {
+				$dos->push($order);
+			}
+		}
+		return $dos;
+	}
+
+//====================================================================================================================================================================================
+
 	/**
 	 * Create due draft orders
 	 */
-	public static function createDraftOrders() {
+	public static function create_automatically_created_orders() {
 		Versioned::reading_stage('Stage');
 
 		set_time_limit(0); //might take a while with lots of orders
@@ -186,34 +256,71 @@ class StandingOrder extends DataObject {
 		//get all standing orders
 		$standingOrders = DataObject::get('StandingOrder', 'Status = \'Active\'');
 
+		StandingOrder::$update_versions = false;
 		if($standingOrders) {
 			foreach($standingOrders as $standingOrder) {
-				//current time + period is less than LastCreated and less then end
-				$currentTime = (strtotime(date('Y-m-d'))-1);
-				$startTime = strtotime($standingOrder->FirstOrderDate());
-				$endTime = strtotime($standingOrder->End);
-				$lastTime = strtotime($standingOrder->LastCreated);
-				$periodTime = strtotime('+'.$standingOrder->Period, $lastTime);
+				$standingOrder->addAutomaticallyCreatedOrders();
+			}
+		}
+		StandingOrder::$update_versions = true;
+	}
 
-				if($periodTime < $currentTime && $periodTime < $endTime) {
-					StandingOrder::$update_versions = false;
 
-					$standingOrder->createDraftOrder(false);
-					$standingOrder->LastCreated = date('Y-m-d');
-					$standingOrder->writeWithoutVersion();
 
-					StandingOrder::$update_versions = true;
-				}
-				else if($periodTime > $endTime) {
-					$standingOrder->Status = 'Finished';
-					$standingOrder->write();
-					$standingOrder->sendUpdate();
+	public function addAutomaticallyCreatedOrders() {
+		//current time + period is less than LastCreated and less then end
+		$currentTime = (strtotime(date('Y-m-d'))-1);
+		$startTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
+		$endTime = strtotime($this->End);
+		if($currentTime > $endTime && $this->Status != "Finished") {
+			$this->Status = 'Finished';
+			$this->write();
+			$this->sendUpdate();
+		}
+		elseif($startTime < $currentTime) {
+			$a = $this->workOutSchedule();
+			if(count($a)) {
+				foreach($a as $orderDateInteger => $orderDateLong) {
+					if($obj = DataObject::get_one("Order", "`OrderDateInteger` = ".$orderDateInteger." AND StandingOrderID = ".$this->ID)) {
+						//do nothing
+					}
+					else {
+						$this->createAutomaticallyCreatedOrder($orderDateInteger, false);
+					}
 				}
 			}
 		}
-
-
 	}
+
+	/**
+	 * Create a new AutomaticallyCreatedOrder from the StandingOrder
+	 * @return null
+	 */
+	public function createAutomaticallyCreatedOrder($orderDateInteger, $redirect = true) {
+		//create AutomaticallyCreatedOrder order
+		if($order = DataObject::get_one("Order", "OrderDateInteger = '".$orderDateInteger."' AND StandingOrderID = ".$this->ID)) {
+			//do nothing
+		}
+		elseif(!$this->MemberID){
+			USER_ERROR("Can not create Order without member linked in StandingOrder #".$this->ID, E_USER_ERROR);
+		}
+		elseif(!$orderDateInteger){
+			USER_ERROR("Can not create Order without date for in StandingOrder #".$this->ID, E_USER_ERROR);
+		}
+		else {
+			$order = new Order();
+			$order->OrderDate = date("Y-m-d", $orderDateInteger);
+			$order->StandingOrderID = $this->ID;
+			$order->MemberID = $this->MemberID;
+			$order->write();
+		}
+		//$order->sendReceipt();
+
+		if($redirect) Director::redirect($order->Link());
+		return $order->ID;
+	}
+
+
 
 	/**
 	 * Create a StandingOrder from a regular Order and its Order Items
@@ -250,48 +357,94 @@ class StandingOrder extends DataObject {
 		return $standingOrder;
 	}
 
-	function OrderItemList() {
-		$a = array();
-		if($list = $this->OrderItems()) {
-			foreach($list as $item) {
-				$a[] = $item->Quantity . " x " . $item->Title();
+	public function sendReceipt() {
+		$this->sendEmail('StandingOrder_ReceiptEmail');
+	}
+
+	public function sendUpdate() {
+		$this->sendEmail('StandingOrder_UpdateEmail');
+	}
+
+	protected function sendEmail($emailClass, $copyToAdmin = true) {
+ 		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
+ 		$to = $this->Member()->Email;
+		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing Order Confirmation (#$this->ID)";
+
+ 		$email = new $emailClass();
+ 		$email->setFrom($from);
+ 		$email->setTo($to);
+ 		$email->setSubject($subject);
+		if($copyToAdmin) $email->setBcc(Email::getAdminEmail());
+
+		$email->populateTemplate(
+			array(
+				'StandingOrder' => $this
+			)
+		);
+
+		$email->send();
+	}
+
+
+
+//================================================================================================================================================================================
+
+	public function TableAlternatives() {
+		$alternatives = unserialize($this->Alternatives);
+
+		$products = new DataObjectSet();
+
+		if(is_array($alternatives)) {
+			foreach($alternatives as $id => $alternative) {
+				$product = DataObject::get_by_id('Product', $id);
+
+				$product->Alternatives = new DataObjectSet();
+
+				if(is_array($alternative)) {
+					foreach($alternative as $id) {
+						if($id) {
+							$alternativeProduct = DataObject::get_by_id('Product', $id);
+
+							if($alternativeProduct) $product->Alternatives->push($alternativeProduct);
+						}
+					}
+				}
+
+				$products->push($product);
 			}
 		}
-		return "Products: ".implode(", ", $a).".";
+
+		return $products;
 	}
 
-	function getOrderItemList() {
-		return $this->OrderItemList();
+
+	public function AlternativesPerProduct($productID) {
+		$dos = $this->TableAlternatives();
+		foreach($dos as $do) {
+			if($do->ID = $productID) {
+				return $do->Alternatives;
+			}
+		}
 	}
 
-	function FirstOrderDate() {
-		$startTime = strtotime($this->Start);
-		$phrase = "Next ".$this->DeliveryDay;
-		$firstTime = strtotime("Next ".$this->DeliveryDay, $startTime);
-		return Date::create($className = "Date", $value = Date("Y-m-d", $firstTime));
+	public function TableDeliveryDay() {
+		return $this->DeliveryDay;
 	}
 
-	function getFirstOrderDate() {
-		return $this->FirstOrderDate();
+	public function TablePaymentMethod() {
+		if(isset(self::$payment_methods[$this->PaymentMethod])) {
+			return self::$payment_methods[$this->PaymentMethod];
+		}
 	}
 
-	function NextOrderDate() {
-		$lastTime = strtotime($this->LastCreated);
-		$nextTime = strtotime('+'.$this->Period, $lastTime);
-		return Date::create($className = "Date", $value = Date("Y-m-d", $nextTime));
+	public function TableStatus() {
+		return self::$status_nice[$this->Status];
 	}
 
-	function getNextOrderDate() {
-		return $this->NextOrderDate();
-	}
 
-	function LastOrderDate() {
-		return Date::create($className = "Date", $value = $this->LastCreated);
-	}
+//==========================================================================================================================================================
 
-	function getLastOrderDate() {
-		return $this->LastOrderDate();
-	}
+
 
 	/**
 	 * CMS Fields for ModelAdmin, use different fields for adding/editing
@@ -301,7 +454,9 @@ class StandingOrder extends DataObject {
 		if($this->ID) {
 			return self::getCMSFields_edit();
 		}
-		else return self::getCMSFields_add();
+		else {
+			return self::getCMSFields_add();
+		}
 	}
 
 	/**
@@ -313,20 +468,20 @@ class StandingOrder extends DataObject {
 			new TabSet('Root',
 				new Tab('Main',
 					new AutocompleteTextField('Email', 'Email (Auto complete)', 'admin/security/autocomplete/Email'),
-					new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
+					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
-					new DropdownField('Period', 'Period', self::$period_fields),
+					new ListboxField('Period', 'Period', self::get_period_fields(), null, count(self::get_period_fields())),
 					new ListboxField(
-						$name = '_DeliveryDay',
-						$title = 'Delivery day:',
+						'DeliveryDay',
+						'Delivery day:',
 						$source = array_combine(
-							self::delivery_days(),
-							self::delivery_days()
+							self::get_delivery_days(),
+							self::get_delivery_days()
 						),
-						$value = $this->DeliveryDay,
-						$size = 7,
-						$multiple = false
+						$this->DeliveryDay,
+						7,
+						false
 					),
 					new TextareaField('Notes', 'Notes')
 				)
@@ -341,21 +496,24 @@ class StandingOrder extends DataObject {
 	 * @return FieldSet
 	 */
 	public function getCMSFields_edit() {
-		$countries = Geoip::getCountryDropDown();
-		$lastCreatedObj = $this->LastOrderDate();
-		$lastCreated = $lastCreatedObj->Long();
-		$firstCreatedObj = $this->FirstOrderDate();
-		$firstCreated = $firstCreatedObj->Long();
+		$firstCreated = "can not be computed"; if ($firstCreatedObj = $this->FirstOrderDate()) {$firstCreated = $firstCreatedObj->Long();}
+		$lastCreated = "no orders have been placed yet"; if ($lastCreatedObj = $this->LastOrderDate()) {$lastCreated = $lastCreatedObj->Long();}
+		$finalCreated = "can not be computed"; if ($finalCreatedObj = $this->FinalOrderDate()) {$finalCreated = $finalCreatedObj->Long();}
 		if($this->Status == "Active") {
-			$nextCreatedObj = $this->NextOrderDate();
-			$nextCreated = $nextCreatedObj->Long();
+			$nextCreated = "can not be computed"; if ($nextCreatedObj = $this->NextOrderDate()) {$nextCreated = $nextCreatedObj->Long();}
 		}
 		else {
-			$lastCreated = "Standing Order Not Active";
-			$nextCreated = "Standing Order Not Active";
+			$nextCreated = "Standing Order not active - no next date is available if the Standing Order is not active.";
 		}
 		if(!$this->DeliveryDay) {
-			$firstCreated = "Please select a delivery day first.";
+			$firstCreated = $finalCreated = $lastCreated = $nextCreated = "Please select a delivery day first.";
+		}
+		$page = DataObject::get_one("StandingOrdersPage");
+		if($page) {
+			$StandingOrdersPageLink = '<p><a href="'.$page->Link().'admin">please click here to create orders and execute them....</a></p>';
+		}
+		else {
+			$StandingOrdersPageLink = '<p>You must create a Standing Orders Page before you can execute orders.</p>';
 		}
 		$fields = new FieldSet(
 			new TabSet('Root',
@@ -372,35 +530,34 @@ class StandingOrder extends DataObject {
 HTML
 					),
 					new DropdownField('Status', 'Status', self::$status_nice),
-					//new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
+					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
-					new DropdownField('Period', 'Period', self::$period_fields),
+					new ListboxField('Period', 'Period', self::get_period_fields(), null, count(self::get_period_fields())),
 					new ListboxField(
-						$name = '_DeliveryDay',
-						$title = 'Delivery day:',
-						$source = array_combine(
-							self::$delivery_days,
-							self::$delivery_days
+						'DeliveryDay',
+						'Delivery day:',
+						array_combine(
+							self::get_delivery_days(),
+							self::get_delivery_days()
 						),
-						$value = explode(',', $this->DeliveryDay),
-						$size = 7,
-						$multiple = false
+						$this->DeliveryDay,
+						7,
+						false
 					),
-					new TextareaField('Notes', 'Notes'),
-					new CheckboxField('SendReciept', 'Send a receipt email for this standing order (executed when you click Save) '),
-					new CheckboxField('SendUpdate', 'Send an update email for this standing order (executed when you click Save) '),
-					new CheckboxField('CreateDraftOrder', 'Create a draft order from this standing order (executed when you click Save) ')
+					new TextareaField('Notes', 'Notes')
 				),
 				new Tab('Products',
 					$this->getCMSProductsTable()
 				),
-				new Tab('Previous Orders',
-					new ReadOnlyField("FirstCreatedFormatted", "First Order", $firstCreated),
-					new ReadOnlyField("LastCreatedFormatted", "Last Order", $lastCreated),
-					new ReadOnlyField("NextCreatedFormatted", "Next Order", $nextCreated),
-					new HeaderField("DraftOrders", "Orders Placed Through this Standing Order"),
-					$this->getCMSPreviousOrders()
+				new Tab('Orders',
+					new LiteralField("StandingOrdersPageLink", $StandingOrdersPageLink),
+					$this->getCMSPreviousOrders(),
+					new ReadonlyField("DeliveryScheduleFormatted", "Delivery Schedule", $this->DeliverySchedule()),
+					new ReadonlyField("FirstCreatedFormatted", "First Order", $firstCreated),
+					new ReadonlyField("LastCreatedFormatted", "Last Order", $lastCreated),
+					new ReadonlyField("NextCreatedFormatted", "Next Order", $nextCreated),
+					new ReadonlyField("FinalCreatedFormatted", "Final Order", $finalCreated)
 				)
 			)
 		);
@@ -442,10 +599,10 @@ HTML
 				new Tab('Main',
 					new ReadonlyField('Readonly[Member]', 'Member', $this->Member()->getTitle().' ('.$this->Member()->Email.')'),
 					new DropdownField('Status', 'Status', self::$status_nice),
-					//new DropdownField('PaymentMethod', 'Payment Method', self::$payment_methods),
+					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
-					new DropdownField('Period', 'Period', self::$period_fields),
+					new DropdownField('Period', 'Period', self::get_period_fields()),
 					new TextField('DeliveryDay', 'Delivery Day'),
 					new TextareaField('Notes', 'Notes')
 				),
@@ -517,22 +674,21 @@ HTML
 		$table = new ComplexTableField(
 			$controller = $this,
 			$name = 'PreviousOrders',
-			$sourceClass = 'DraftOrder',
+			$sourceClass = 'Order',
 			$fieldList = array(
 				"ID" => "Order ID",
 				"Total" => "Value",
-				"Created" => "Created",
+				"OrderDate" => "OrderDate",
 				"Status" => "Status",
-				"ViewLink" => "Link",
-				"LoadLink" => "Load"
+				"ViewHTMLLink" => "Link"
 			),
 			$detailFormFields = new FieldSet(),
 			$sourceFilter = "StandingOrderID = ".$this->ID,
-			$sourceSort = "Created DESC",
+			$sourceSort = "OrderDateInteger DESC",
 			$sourceJoin = ""
 		);
 		$table->setFieldCasting(array(
-			'Created' => 'Date->Long',
+			'OrderDate' => 'Date->Long',
 			'Total' => 'Currency->Nice'
 		));
 		$table->setShowPagination(false);
@@ -596,153 +752,14 @@ HTML
 		return $result;
 	}
 
-	/**
-	 * Create a new DraftOrder from the StandingOrder
-	 * @return null
-	 */
-	public function createDraftOrder($redirect = true) {
-		//create draft order
-		$order = new DraftOrder();
-		$order->write();
 
-		// Set the items from the cart into the order
-		if($this->OrderItems()) {
-			foreach($this->OrderItems() as $orderItem) {
-				$product = DataObject::get_by_id('Product', $orderItem->ProductID);
-
-				if($product) {
-					$productOrderItem = new Product_OrderItem(
-						array(
-							'ProductID' => $product->ID,
-							'ProductVersion' => $product->Version,
-							'Quantity' => $orderItem->Quantity,
-						),
-						$orderItem->Quantity
-					);
-
-					$productOrderItem->OrderID = $order->ID;
-					$productOrderItem->write();
-				}
-			}
-		}
-
-		$order->StandingOrderID = $this->ID;
-		$order->MemberID = $this->MemberID;
-		$order->write();
-
-		//$order->sendReceipt();
-
-		if($redirect) Director::redirect($order->Link());
-	}
-
-	public function sendReceipt() {
-		$this->sendEmail('StandingOrder_ReceiptEmail');
-	}
-
-	public function sendUpdate() {
-		$this->sendEmail('StandingOrder_UpdateEmail');
-	}
-
-	protected function sendEmail($emailClass, $copyToAdmin = true) {
- 		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
- 		$to = $this->Member()->Email;
-		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing Order Confirmation (#$this->ID)";
-
- 		$email = new $emailClass();
- 		$email->setFrom($from);
- 		$email->setTo($to);
- 		$email->setSubject($subject);
-		if($copyToAdmin) $email->setBcc(Email::getAdminEmail());
-
-		$email->populateTemplate(
-			array(
-				'StandingOrder' => $this
-			)
-		);
-
-		$email->send();
-	}
-
-	public function CanModify() {
-		if(in_array($this->Status, array('Pending', 'Active'))) {
-			return true;
-		}
-		else return false;
-	}
-
-	public function Link() {
-		return StandingOrdersPage::get_standing_order_link('view', $this->ID);
-	}
-
-	public function Period() {
-		if(isset(self::$period_fields[$this->Period])) return self::$period_fields[$this->Period];
-	}
-
-	public function ModifyLink() {
-		return StandingOrdersPage::get_standing_order_link('modify', $this->ID);
-	}
-
-	public function CancelLink() {
-		return StandingOrdersPage::get_standing_order_link('cancel', $this->ID);
-	}
-
-	public function DoneLink() {
-		$page = DataObject::get_one("StandingOrdersPage");
-		if($page) {
-			return $page->Link();
-		}
-		$page = DataObject::get_one("Page", "URLSegment 'home'");
-		return $page->Link();
-	}
-
-	public function TableAlternatives() {
-		$alternatives = unserialize($this->Alternatives);
-
-		$products = new DataObjectSet();
-
-		if(is_array($alternatives)) {
-			foreach($alternatives as $id => $alternative) {
-				$product = DataObject::get_by_id('Product', $id);
-
-				$product->Alternatives = new DataObjectSet();
-
-				if(is_array($alternative)) {
-					foreach($alternative as $id) {
-						if($id) {
-							$alternativeProduct = DataObject::get_by_id('Product', $id);
-
-							if($alternativeProduct) $product->Alternatives->push($alternativeProduct);
-						}
-					}
-				}
-
-				$products->push($product);
-			}
-		}
-
-		return $products;
-	}
-
-	public function TableDeliveryDay() {
-		return $this->DeliveryDay;
-	}
-
-	public function TablePaymentMethod() {
-		if(isset(self::$payment_methods[$this->PaymentMethod])) {
-			return self::$payment_methods[$this->PaymentMethod];
-		}
-	}
-
-	public function TableStatus() {
-		return self::$status_nice[$this->Status];
-	}
-
+//========================================================================================================================================================================================================================================================================
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->Items = $this->OrderItemList();
-		if(isset($_REQUEST['_DeliveryDay'])) {
-			$this->DeliveryDay = $_REQUEST['_DeliveryDay'];
+		if(isset($_REQUEST['DeliveryDay'])) {
+			$this->DeliveryDay = $_REQUEST['DeliveryDay'];
 		}
 
 		if(isset($_REQUEST['_Alternatives'])) {
@@ -768,8 +785,6 @@ HTML
 			if(!isset($this->record['Version'])) {
 				$this->record['Version'] = -1;
 			}
-
-			$this->LastCreated = $this->FirstOrderDate()->format("Y-m-d");
 
 			$_SQL = Convert::raw2sql($_POST);
 
@@ -798,13 +813,6 @@ HTML
 
 			self::$update_versions = false;
 		}
-		else {
-			$lastTime = strtotime($this->LastCreated);
-			$firstTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
-			if($lastTime < $firstTime) {
-				$this->LastCreated = $this->FirstOrderDate()->format("Y-m-d");
-			}
-		}
 	}
 
 	/**
@@ -830,10 +838,121 @@ HTML
 
 			self::$update_versions = true;
 		}
-
-		$this->createDraftOrders();
+		return true;
 	}
 
+//===========================================================================================================================================================================================
+
+	function OrderItemList() {
+		$a = array();
+		if($list = $this->OrderItems()) {
+			foreach($list as $item) {
+				$a[] = $item->Quantity . " x " . $item->Title();
+			}
+		}
+		return "Products: ".implode(", ", $a).".";
+	}
+
+	function getOrderItemList() {
+		return $this->OrderItemList();
+	}
+
+//===========================================================================================================================================================================================
+
+	function FirstOrderDate() {
+		$a = $this->workOutSchedule();
+		foreach($a as $k => $v) {
+			return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+		}
+	}
+
+	function getFirstOrderDate() {
+		return $this->FirstOrderDate();
+	}
+
+	function LastOrderDate() {
+		$a = $this->workOutSchedule();
+		$today = strtotime(Date("Y-m-d"));
+		$i = 0;
+		foreach($a as $k => $v) {
+			if($k > $today && $i > 0 && $previousK < $today) {
+				return Date::create($className = "Date", $value = Date("Y-m-d", $previousK));
+			}
+			$previousK = $k;
+			$i++;
+		}
+	}
+
+	function getLastOrderDate() {
+		return $this->LastOrderDate();
+	}
+
+	function NextOrderDate() {
+		$a = $this->workOutSchedule();
+		$today = strtotime(Date("Y-m-d"));
+		foreach($a as $k =>$v) {
+			if($k > $today) {
+				return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+			}
+		}
+	}
+
+	function getNextOrderDate() {
+		return $this->NextOrderDate();
+	}
+
+	function FinalOrderDate() {
+		$a = $this->workOutSchedule();
+		foreach($a as $k =>$v) {
+			//do nothing wait for last one...
+		}
+		return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+	}
+
+	function getFinalOrderDate() {
+		return $this->FinalOrderDate();
+	}
+
+	function DeliverySchedule() {
+		$a = $this->workOutSchedule();
+		if(count($a)) {
+			return implode("; ", $a);
+		}
+	}
+
+	function getDeliverySchedule() {
+		return $this->DeliverySchedule();
+	}
+
+	protected function workOutSchedule() {
+		if(!isset(self::$schedule[$this->ID])) {
+			$a = array();
+			if($this->Period && $this->End && $this->Start && $this->DeliveryDay) {
+				$startTime = strtotime($this->Start);
+				if(Date("l", $startTime) == $this->DeliveryDay) {
+					$firstTime = $startTime;
+				}
+				else {
+					$phrase = "Next ".$this->DeliveryDay;
+					$firstTime = strtotime($phrase, $startTime);
+				}
+				$endTime = strtotime($this->End);
+				$nextTime = $firstTime;
+				if($firstTime && $nextTime && $endTime) {
+					if($firstTime < $endTime) {
+						$i = 0;
+						while($nextTime <= $endTime && $i < 999) {
+							$a[$nextTime] = Date("j F Y", $nextTime);
+							$nextTime = strtotime("+ ".$this->Period, $nextTime);
+							$i++;
+						}
+					}
+				}
+			}
+			self::$schedule[$this->ID] = $a;
+		}
+		return self::$schedule[$this->ID];
+	}
 
 }
 

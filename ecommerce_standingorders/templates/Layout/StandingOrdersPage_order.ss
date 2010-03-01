@@ -1,7 +1,5 @@
 <div id="Account">
 <% if Order %>
-	<input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" />
-	<p class="whatAreStandingOrdersLink"><a href="#WhatAreStandingOrders">What are Standing Orders?</a></p>
 	<% control Order %>
 		<h2>Order #$ID ($Created.Long)</h2>
 
@@ -87,16 +85,21 @@
 							</tr>
 						<% end_control %>
 					<% else %>
-						<tr><td colspan="5"><% _t('NOPAYMENTS','Sorry, no payment information is available at this time.') %></td></tr>
+						<tr><td colspan="5">Sorry, no payment information is available at this time.</td></tr>
 					<% end_if %>
 				</tbody>
 			</table>
 		</div>
+		<% if StandingOrderID %>
+		<p>This Order was based on Standing Order # $StandingOrderID.</p>
+		<% else %>
+		<input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" />
+		<div id="WhatAreStandingOrders">
+			$WhatAreStandingOrders
+		</div>
+		<% end_if %>
 	<% end_control %>
-	<input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" />
-	<div id="WhatAreStandingOrders">
-		$WhatAreStandingOrders
-	</div>
+
 <% else %>
 	<p><strong>$Message</strong></p>
 <% end_if %>

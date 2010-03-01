@@ -28,7 +28,7 @@
 				font-family:Verdana,Arial,Helvetica,sans-serif;
 				width:460px;
 			}
-			
+
 			#OrderStatus label.left {
 				width:100px;
 				float:left;
@@ -40,11 +40,11 @@
 			border-bottom: 1px solid #ccc;
 			background: #fdfdfd;
 		}
-			
+
 			.InformationTable tr.Total {
 				background: #c9ebff;
 			}
-			
+
 			/* apply the colour to these elements */
 			.InformationTable tr.Total td,
 			.InformationTable th {
@@ -59,12 +59,12 @@
 					border: 4px solid #FF7373;
 					background: #FED0D0;
 				}
-			
+
 			/* total line in order information table */
 			.InformationTable tr.Total td {
 				text-transform: uppercase;
 			}
-			
+
 			.InformationTable tr.summary {
 				font-weight: bold;
 			}
@@ -87,7 +87,7 @@
 						#InformationTable tr td a img {
 							vertical-align: middle;
 						}
-			
+
 			/* Information table alignment classes */
 			.InformationTable .right {
 				text-align: right;
@@ -98,7 +98,7 @@
 			.InformationTable .left {
 				text-align: left;
 			}
-			
+
 		</style>
 		<script type="text/javascript">
 			if(document.location.href.indexOf('print=1') > 0) {
@@ -108,29 +108,29 @@
 		<title><% _t("PAGETITLE","Print Orders") %></title>
 		</head>
 		<body>
-				
+
 				<div id="OrderInformation">
 					<h2>Draft Order</h2>
 					<p>Modifiers will not be added until after the Order is Publsihed</p>
 					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
 					<br />
 					<br />
-					
+
 					<h2>Standing Order Information</h2>
 					<% control StandingOrder %>
 						<% include OrderInformation_StandingOrder %>
 					<% end_control %>
-					
+
 					<br />
 					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
 					<br />
 					<br />
-					
+
 					<h2>Draft Order Information</h2>
 					<% control Order %>
-						<% include OrderInformation_DraftOrder %>
+						<% include OrderInformation_AutomaticallyCreatedOrder %>
 					<% end_control %>
-					
+
 					<br />
 					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
 				</div>

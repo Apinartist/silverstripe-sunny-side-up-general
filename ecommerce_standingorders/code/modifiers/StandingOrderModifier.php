@@ -24,43 +24,56 @@ class StandingOrderModifier extends OrderModifier {
 			if($order->CanModify()) {
 				 $fields->push(new LiteralField('modifyStandingOrder',
 <<<HTML
-					<p id="ModifyStandingOrderNote">Currently making changes to standing order #$orderID</p>
+					<input id="ModifyStandingOrderUpdate"  class="action" type="button" value="Save changes to your Standing Order #$orderID" onclick="window.location='{$updateLink}';" />
+HTML
+					)
+				);
+
+			}
+			else {
+				$fields->push(new LiteralField('createStandingOrder',
+<<<HTML
+						<input id="ModifyStandingOrderCreate" class="action" type="button" value="Create a new Standing Order" onclick="window.location='{$createLink}';" />
 HTML
 					)
 				);
 			}
-
-			$fields->push(new LiteralField('createStandingOrder',
-<<<HTML
-					<input id="ModifyStandingOrderCreate" class="action" type="button" value="Create a new Standing Order" onclick="window.location='{$createLink}';" />
-HTML
-				)
-			);
-
-			if($order->CanModify()) {
-				 $fields->push(new LiteralField('modifyStandingOrder',
-<<<HTML
-					<input id="ModifyStandingOrderUpdate"  class="action" type="button" value="Save changes to your Standing Order" onclick="window.location='{$updateLink}';" />
-HTML
-					)
-				);
-			}
+			Requirements::customScript("jQuery(document).ready(function(){jQuery(\"input[name='action_processOrder']\").hide();});", "hide_action_processOrder");
 		}
 		else if(Member::currentMember()) {
-			$fields->push(new LiteralField('createStandingOrder',
+			if(!Session::get("DraftOrderID")) {
+				$fields->push(new LiteralField('createStandingOrder',
 <<<HTML
-					<input  id="ModifyStandingOrderCreate" class="action" type="button" value="Create a new Standing Order" onclick="window.location='{$createLink}';" />
+					<input  id="ModifyStandingOrderCreate" class="action" type="button" value="Turn this Order into a Standing Order" onclick="window.location='{$createLink}';" />
 HTML
-				)
-			);
+					)
+				);
+				$page = DataObject::get_one("StandingOrdersPage");
+				if($page) {
+					$fields->push(new LiteralField("whatAreStandingOrders",
+<<<HTML
+					<div id="WhatAreStandingOrders">$page->WhatAreStandingOrders</div>
+HTML
+					));
+				}
+			}
+			else {
+					$fields->push(new LiteralField("whatAreStandingOrders",
+<<<HTML
+					<div id="WhatAreStandingOrders">This order is based on a Standing Order.</div>
+HTML
+					));
+			}
 		}
-		$page = DataObject::get_one("StandingOrdersPage");
-		if($page) {
-			$fields->push(new LiteralField("whatAreStandingOrders",
+		else {
+			$page = DataObject::get_one("StandingOrdersPage");
+			if($page) {
+				$fields->push(new LiteralField("whatAreStandingOrders",
 <<<HTML
-				<div id="WhatAreStandingOrders">$page->WhatAreStandingOrders</div>
+					<div id="WhatAreStandingOrders">$page->OnceLoggedInYouCanCreateStandingOrder</div>
 HTML
-			));
+				));
+			}
 		}
 		return new OrderModifierForm($controller, 'ModifierForm', $fields, new FieldSet());
 	}

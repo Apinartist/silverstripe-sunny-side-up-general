@@ -34,21 +34,21 @@ class StandingOrderForm extends Form {
 		}
 
 		$fields->push(new HeaderField('DetailsHeader', 'Standing Order Details'));
-		//$fields->push(new DropdownField('PaymentMethod', 'Payment Method', StandingOrder::payment_methods()));
+		$fields->push(new ListboxField('PaymentMethod', 'Payment Method', StandingOrder::get_payment_methods(), null, count(StandingOrder::get_payment_methods())));
 		$fields->push(new CalendarDateField('Start', 'Start'));
-		$fields->push(new CalendarDateField('End', 'End (Optional)'));
-		$fields->push(new DropdownField('Period', 'Period', StandingOrder::$period_fields));
+		$fields->push(new CalendarDateField('End', 'End'));
+		$fields->push(new ListboxField('Period', 'Period', StandingOrder::get_period_fields(), null, count(StandingOrder::get_period_fields())));
 
 		$fields->push(new ListboxField(
-			$name = '_DeliveryDay',
-			$title = 'Delivery day:',
+			'DeliveryDay',
+			'Delivery day:',
 			$source = array_combine(
-				StandingOrder::delivery_days(),
-				StandingOrder::delivery_days()
+				StandingOrder::get_delivery_days(),
+				StandingOrder::get_delivery_days()
 			),
-			$value = null,
-			$size = 4,
-			$multiple = false
+			null,
+			count(StandingOrder::get_delivery_days()),
+			false
 		));
 
 		$fields->push(new TextareaField('Notes', 'Notes'));
@@ -64,9 +64,10 @@ class StandingOrderForm extends Form {
 			$actions->push(new FormAction('doCreate', 'Create'));
 		}
 
-		$required[] = 'Start';
-		$required[] = 'Period';
-		$required[] = 'DeliveryDay';
+		$required["Start"] = 'Start';
+		$required["End"] = 'End';
+		$required["Period"] = 'Period';
+		$required["DeliveryDay"] = 'DeliveryDay';
 
 		$requiredFields = new RequiredFields($required);
 
@@ -78,7 +79,8 @@ class StandingOrderForm extends Form {
 				'End' => $standingOrder->End,
 				'Period' => $standingOrder->Period,
 				'Notes' => $standingOrder->Notes,
-				'_DeliveryDay' => explode(',', $standingOrder->DeliveryDay),
+				'DeliveryDay' => $standingOrder->DeliveryDay,
+				'PaymentMethod' => $standingOrder->PaymentMethod,
 				'_Alternatives' => unserialize($standingOrder->Alternatives),
 			));
 		}
@@ -98,18 +100,14 @@ class StandingOrderForm extends Form {
 		}
 
 		if($order) {
-			$params = array();
 
-			if(isset($data['Start'])) $params['Start'] = $data['Start'];
-			if(isset($data['End'])) $params['End'] = $data['End'];
-			if(isset($data['Period'])) $params['Period'] = $data['Period'];
-			if(isset($data['Notes'])) $params['Notes'] = $data['Notes'];
-
+			$params = $this->dataCheck($data);
 			$standingOrder = StandingOrder::createFromOrder($order, $params);
-
 			Director::redirect(StandingOrdersPage::get_standing_order_link('view', $standingOrder->ID));
 		}
-		else Director::redirectBack();
+		else {
+			Director::redirectBack();
+		}
 
 		return true;
 	}
@@ -154,10 +152,7 @@ class StandingOrderForm extends Form {
 			//start versioning again
 			StandingOrder::$update_versions = true;
 
-			if(isset($data['Start'])) $params['Start'] = $data['Start'];
-			if(isset($data['End'])) $params['End'] = $data['End'];
-			if(isset($data['Period'])) $params['Period'] = $data['Period'];
-			if(isset($data['Notes'])) $params['Notes'] = $data['Notes'];
+			$params = $this->dataCheck($data);
 
 			$standingOrder->update($params);
 			$standingOrder->Status = 'Pending';
@@ -171,6 +166,16 @@ class StandingOrderForm extends Form {
 		Director::redirect(StandingOrdersPage::get_standing_order_link('view', $standingOrder->ID));
 
 		return true;
+	}
+
+	protected function dataCheck($data) {
+		if(isset($data['Start'])) {$params['Start'] = $data['Start'];} else {$params["Start"] = Date("Y-m-d");}
+		if(isset($data['End'])) {$params['End'] = $data['End'];} else {$params["End"] = Date("Y-m-d", strtotime("+1 year"));}
+		if(isset($data['Period'])) {$params['Period'] = $data['Period'];} else {$data['Period'] = StandingOrder::default_period_key();}
+		if(isset($data['DeliveryDay'])) {$params['DeliveryDay'] = $data['DeliveryDay'];} else {$data['DeliveryDay'] = StandingOrder::default_delivery_day_key();}
+		if(isset($data['PaymentMethod'])) {$params['PaymentMethod'] = $data['PaymentMethod'];} else {$data['PaymentMethod'] = StandingOrder::default_payment_method_key();}
+		if(isset($data['Notes'])) $params['Notes'] = $data['Notes'];
+		return Convert::raw2sql($params);
 	}
 
 }

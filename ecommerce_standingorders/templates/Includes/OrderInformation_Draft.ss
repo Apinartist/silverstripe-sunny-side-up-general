@@ -31,7 +31,7 @@
 				font-family:Verdana,Arial,Helvetica,sans-serif;
 				width:460px;
 			}
-			
+
 			#OrderStatus label.left {
 				width:100px;
 				float:left;
@@ -43,11 +43,11 @@
 			border-bottom: 1px solid #ccc;
 			background: #fdfdfd;
 		}
-			
+
 			.InformationTable tr.Total {
 				background: #c9ebff;
 			}
-			
+
 			/* apply the colour to these elements */
 			.InformationTable tr.Total td,
 			.InformationTable th {
@@ -61,19 +61,19 @@
 					border: 1px solid #FF7373;
 					background: #FED0D0;
 				}
-				
+
 				.successMessage {
 					padding: 5px;
 					width: 97%;
 					border: 2px solid #00FF00;
 					background: #B9FFB9;
 				}
-			
+
 			/* total line in order information table */
 			.InformationTable tr.Total td {
 				text-transform: uppercase;
 			}
-			
+
 			.InformationTable tr.summary {
 				font-weight: bold;
 			}
@@ -96,7 +96,7 @@
 						#InformationTable tr td a img {
 							vertical-align: middle;
 						}
-			
+
 			/* Information table alignment classes */
 			.InformationTable .right {
 				text-align: right;
@@ -107,7 +107,7 @@
 			.InformationTable .left {
 				text-align: left;
 			}
-			
+
 		</style>
 		<script type="text/javascript">
 			if(document.location.href.indexOf('print=1') > 0) {
@@ -117,24 +117,24 @@
 		<title><% _t("PAGETITLE","Print Orders") %></title>
 		</head>
 		<body>
-				
+
 				<div id="OrderInformation">
-					
+
 					<h1 class="pageTitle">Draft Order</h1>
-					
+
 					<% if Published %>
 						<p class="successMessage"><strong>Your order has been published successfully</strong> <a onclick="javascript:window.top.GB_hide(); return false;" href="#">(Close Popup)</a></p>
 					<% end_if %>
-					
+
 					<% if Published %><% else %>
 						<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/><br />
 					<% end_if %>
-	
+
 					<h2>Standing Order Information</h2>
 					<% control StandingOrder %>
 						<% include OrderInformation_StandingOrder %>
 					<% end_control %>
-					
+
 					<% if Published %><% else %>
 						<br /><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/><br />
 					<% end_if %>
@@ -142,9 +142,9 @@
 					<h2>Draft Order Information</h2>
 					<p>Modifiers will not be added until after the Order is Publsihed</p>
 					<% control Order %>
-						<% include OrderInformation_DraftOrder %>
+						<% include OrderInformation_AutomaticallyCreatedOrder %>
 					<% end_control %>
-					
+
 					<% if Published %><% else %>
 						<br /><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
 					<% end_if %>

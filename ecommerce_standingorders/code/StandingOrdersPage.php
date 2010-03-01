@@ -11,7 +11,8 @@ class StandingOrdersPage extends AccountPage {
 
 	static $db = array(
 		"OrderDays" => "Varchar(255)",
-		"WhatAreStandingOrders" => "HTMLText"
+		"WhatAreStandingOrders" => "HTMLText",
+		"OnceLoggedInYouCanCreateStandingOrder" => "HTMLText"
 	);
 
 	protected static $week_days = array(
@@ -47,6 +48,8 @@ class StandingOrdersPage extends AccountPage {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Content.Settings", new TextField($name = "OrderDays", $title = "Order Weekdays - separated by comma, e.g. Monday, Tuesday, Wednesday"));
+		$fields->addFieldToTab("Root.Content.ExplainingStandingOrders", new HTMLEditorField($name = "WhatAreStandingOrders", $title = "What Are Standing Orders - Explanation Used throughout the site.", $rows = 3, $cols = 3));
+		$fields->addFieldToTab("Root.Content.ExplainingStandingOrders", new HTMLEditorField($name = "OnceLoggedInYouCanCreateStandingOrder", $title = "Explanation for people who are not logged-in yet explaining that they can turn an order into a standing order...", $rows = 3, $cols = 3));
 		return $fields;
 	}
 
@@ -123,13 +126,6 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		}
 	}
 
-	public function createdraftorders() {
-		if(!Permission::check('ADMIN') || !Permission::check('CMS_ACCESS_ReportAdmin')) {
-			return Security::permissionFailure($this, _t('OrderReport.PERMISSIONFAILURE', 'Sorry you do not have permission for this function. Please login as an Adminstrator'));
-		}
-		StandingOrder::createDraftOrders();
-	}
-
 	public function order($request) {
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
@@ -202,12 +198,28 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				return $this->renderWith(array('StandingOrdersPage_edit', 'Page'), $params);
 				break;
 			case 'load':
-				$order = DataObject::get_one("DraftOrder", "UIDhash = '".$orderID."'");
+				$order = DataObject::get_one("Order", "UIDhash = '".$orderID."'");
 				if($order) {
-					$member = $order->Member();
-					if($member) {
-						$member->logIn();
-						Director::redirect(StandingOrdersPage::get_standing_order_link('modify', $order->ID));
+					$standingOrder = $order->StandingOrder();
+					if($standingOrder) {
+						$member = $order->Member();
+						if(Member::currentUserID() != $member->ID && Member::currentUserID()){
+							$oldMember = Member::currentUser();
+							$oldMember->logOut();
+						}
+						if($member->ID != Member::currentUserID()) {
+							$member->logIn();
+						}
+						if($member) {
+							if($order->CompleteOrder() != $order->ID) {
+								E_USER_ERROR("There was an error loading the Order", E_USER_ERROR);
+							}
+							Session::set('StandingOrder', null);
+							Director::redirect(CheckoutPage::find_link());
+						}
+						else {
+							USER_ERROR("Could not find the associated Standing Order.", E_USER_ERROR);
+						}
 					}
 					else {
 						USER_ERROR("Could not find member for order.", E_USER_ERROR);
@@ -279,8 +291,8 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 						'Message' => 'There is no order by that ID. You can <a href="' . $accountPageLink . '">edit your personal details and view your orders.</a>.'
 					);
 				}
-
 				return $this->renderWith(array('StandingOrdersPage_view', 'Page'), $params);
+
 		}
 
 	}
@@ -306,6 +318,20 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		$order->MemberID = Member::currentUserID();
 
 		return $order;
+	}
+
+	function admin() {
+		if(!Permission::check('ADMIN')) {
+			return Security::permissionFailure($this, _t('OrderReport.PERMISSIONFAILURE', 'Sorry you do not have permission for this function. Please login as an Adminstrator'));
+		}
+		StandingOrder::create_automatically_created_orders();
+		$params = array(
+			"AllStandingOrders" => DataObject::get("StandingOrder", "`Status` = 'Active'")
+		);
+		Requirements::javascript("ecommerce_standingorders/javascript/StandingOrdersPage_admin.js");
+		Requirements::themedCSS("StandingOrdersPage_admin");
+		return $this->renderWith(array('StandingOrdersPage_admin', 'Page'), $params);
+
 	}
 
 }

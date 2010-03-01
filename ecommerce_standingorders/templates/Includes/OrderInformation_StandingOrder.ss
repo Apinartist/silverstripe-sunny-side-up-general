@@ -17,19 +17,19 @@
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Start</td>
-			<td>$Start</td>
+			<td>$Start.Long</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">End</td>
-			<td>$End</td>
+			<td>$End.Long</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Period</td>
 			<td>$Period</td>
 		</tr>
 		<tr class="summary">
-			<td scope="row" class="left">Delivery Days</td>
-			<td>$DeliveryDay</td>
+			<td scope="row" class="left">Delivery Day</td>
+			<td>$TableDeliveryDay</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Notes</td>
@@ -65,6 +65,12 @@
 			</td>
 		</tr>
 		<% end_control %>
-
+		<tr class="gap">
+			<th colspan="4" scope="row" class="left">Schedule</th>
+		</tr>
+		<tr class="summary">
+			<td scope="row" class="left">Planned Delivery Schedule</td>
+			<td>$DeliverySchedule</td>
+		</tr>
 	</tbody>
 </table>

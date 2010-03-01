@@ -1,5 +1,5 @@
 <div id="Account">
-	<div class="typography">
+	<div>
 		<h2>$Title</h2>
 		<% if Content %>
 			$Content

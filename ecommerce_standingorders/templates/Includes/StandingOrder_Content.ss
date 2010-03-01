@@ -13,11 +13,11 @@
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Start</td>
-			<td>$Start.Nice &nbsp;</td>
+			<td>$Start.Long &nbsp;</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">End</td>
-			<td>$End.Nice &nbsp;</td>
+			<td>$End.Long &nbsp;</td>
 		</tr>
 		<tr class="summary">
 			<td scope="row" class="left">Period</td>
@@ -33,7 +33,7 @@
 		</tr>
 		<tr>
 			<th scope="col" class="left">Products</th>
-			<th scope="col" class="center"><% _t("QUANTITY", "Quantity") %></th>
+			<th scope="col"><% _t("QUANTITY", "Quantity") %></th>
 		</tr>
 		<% control OrderItems %>
 		<tr id="$IDForTable" class="$ClassForTable">
@@ -44,7 +44,7 @@
 					$ProductTitle
 				<% end_if %>
 			</td>
-			<td class="center quantity">$Quantity</td>
+			<td>$Quantity</td>
 		</tr>
 		<% end_control %>
 		<tr>
