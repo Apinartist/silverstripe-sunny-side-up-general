@@ -13,17 +13,21 @@
 			<div class="block">
 				<h3>Overview</h3>
 				<% if CanModify %>
-					<input class="action" type="button" value="Amend standing order" onclick="window.location='$ModifyLink';" />
-					<input class="action" type="button" value="Cancel this Standing Order" onclick="window.location='$CancelLink';" />
-					<input class="action" type="button" value="Done" onclick="window.location='$DoneLink';" />
+					<div class="Actions">
+						<input class="action" type="button" value="Amend standing order" onclick="window.location='$ModifyLink';" />
+						<input class="action" type="button" value="Cancel this Standing Order" onclick="window.location='$CancelLink';" />
+						<input class="action" type="button" value="Done" onclick="window.location='$DoneLink';" />
+					</div>
 				<% end_if %>
 
 				<% include StandingOrder_Content %>
 
 				<% if CanModify %>
+				<div class="Actions">
 					<input class="action" type="button" value="Make changes to your Standing Order" onclick="window.location='$ModifyLink';" />
 					<input class="action" type="button" value="Cancel your Standing Order" onclick="window.location='$CancelLink';" />
 					<input class="action" type="button" value="Done" onclick="window.location='$DoneLink';" />
+				</div>
 					<% end_if %>
 			</div>
 

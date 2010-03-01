@@ -93,7 +93,7 @@
 		<% if StandingOrderID %>
 		<p>This Order was based on Standing Order # $StandingOrderID.</p>
 		<% else %>
-		<input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" />
+		<div class="Actions"><input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" /></div>
 		<div id="WhatAreStandingOrders">
 			$WhatAreStandingOrders
 		</div>

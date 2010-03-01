@@ -24,7 +24,7 @@ class StandingOrderModifier extends OrderModifier {
 			if($order->CanModify()) {
 				 $fields->push(new LiteralField('modifyStandingOrder',
 <<<HTML
-					<input id="ModifyStandingOrderUpdate"  class="action" type="button" value="Save changes to your Standing Order #$orderID" onclick="window.location='{$updateLink}';" />
+					<div class="Actions"><input id="ModifyStandingOrderUpdate"  class="action" type="button" value="Save changes to your Standing Order #$orderID" onclick="window.location='{$updateLink}';" /></div>
 HTML
 					)
 				);
@@ -33,7 +33,7 @@ HTML
 			else {
 				$fields->push(new LiteralField('createStandingOrder',
 <<<HTML
-						<input id="ModifyStandingOrderCreate" class="action" type="button" value="Create a new Standing Order" onclick="window.location='{$createLink}';" />
+						<div class="Actions"><input id="ModifyStandingOrderCreate" class="action" type="button" value="Create a new Standing Order" onclick="window.location='{$createLink}';" /></div>
 HTML
 					)
 				);
@@ -44,7 +44,7 @@ HTML
 			if(!Session::get("DraftOrderID")) {
 				$fields->push(new LiteralField('createStandingOrder',
 <<<HTML
-					<input  id="ModifyStandingOrderCreate" class="action" type="button" value="Turn this Order into a Standing Order" onclick="window.location='{$createLink}';" />
+					<div class="Actions"><input  id="ModifyStandingOrderCreate" class="action" type="button" value="Turn this Order into a Standing Order" onclick="window.location='{$createLink}';" /></div>
 HTML
 					)
 				);

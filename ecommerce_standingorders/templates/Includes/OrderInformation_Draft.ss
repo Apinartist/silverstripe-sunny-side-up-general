@@ -127,7 +127,7 @@
 					<% end_if %>
 
 					<% if Published %><% else %>
-						<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/><br />
+						<div class="Actions><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/></div>
 					<% end_if %>
 
 					<h2>Standing Order Information</h2>
@@ -136,7 +136,7 @@
 					<% end_control %>
 
 					<% if Published %><% else %>
-						<br /><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/><br />
+						<div class="Actions><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/></div>
 					<% end_if %>
 
 					<h2>Draft Order Information</h2>

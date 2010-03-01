@@ -112,7 +112,7 @@
 				<div id="OrderInformation">
 					<h2>Draft Order</h2>
 					<p>Modifiers will not be added until after the Order is Publsihed</p>
-					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
+					<div class="Actions"><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/></div>
 					<br />
 					<br />
 
@@ -122,7 +122,7 @@
 					<% end_control %>
 
 					<br />
-					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
+					<div class="Actions"><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/></div>
 					<br />
 					<br />
 
@@ -132,7 +132,7 @@
 					<% end_control %>
 
 					<br />
-					<input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/>
+					<div class="Actions"><input onclick="window.location = '$PublishLink'" type="button" title="Publish this Order" value="Publish this Order" class="action"/></div>
 				</div>
 		</body>
 </html>
