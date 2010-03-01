@@ -87,7 +87,7 @@ class DpsPxPayPayment extends Payment {
 		return $url;
 	}
 
-	function executeURL() {
+	function executeURL($url) {
 		$url = str_replace("&", "&amp;", $url);
 		$url = str_replace("&amp;&amp;", "&amp;", $url);
 		if($url) {

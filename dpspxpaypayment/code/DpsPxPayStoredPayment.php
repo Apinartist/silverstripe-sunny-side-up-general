@@ -67,6 +67,10 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 	}
 
 	function processPayment($data, $form) {
+		if(!isset($data["DPSUseStoredCard"])) {$data["DPSUseStoredCard"] = null;}
+		if(!isset($data["DPSStoreCard"])) {$data["DPSStoreCard"] = null;}
+		if(!isset($data["Amount"])) {USER_ERROR("There was no amount information for processing the payment.", E_USER_WARNING);}
+
 		$url = $this->buildURL($data["Amount"], $data["DPSUseStoredCard"], $data["DPSStoreCard"]);
 		return $this->executeURL($url);
 	}
@@ -109,9 +113,13 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
 }
 
-class DpsPxPayStoredPayment_Handler extends Controller {
+class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 
 	static $url_segment = 'dpspxpaystoredpayment';
+
+	static function absolute_complete_link() {
+		return parent::absolute_complete_link();
+	}
 
 	function paid() {
 		$commsObject = new DpsPxPayComs();
