@@ -186,10 +186,8 @@ class AutomaticallyCreatedOrderDecorator extends DataObjectDecorator {
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		if($id = Session::get("DraftOrderID")) {
-			echo "OK 1";
 			$oldOne = DataObject::get_by_id("Order", $id);
 			if($oldOne && $this->owner->MemberID = $oldOne->MemberID) {
-				echo "OK 2";
 				$this->owner->OrderDate = $oldOne->OrderDate;
 				$this->owner->OrderDateInteger = $oldOne->OrderDateInteger;
 				$this->owner->UIDHash = $oldOne->UIDHash;
