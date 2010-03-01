@@ -94,11 +94,12 @@
 		<p>This Order was based on Standing Order # $StandingOrderID.</p>
 		<% else %>
 		<div class="Actions"><input class="action" type="button" value="Convert to standing order" onclick="window.location='$CreateLink';" /></div>
+
+		<% end_if %>
+	<% end_control %>
 		<div id="WhatAreStandingOrders">
 			$WhatAreStandingOrders
 		</div>
-		<% end_if %>
-	<% end_control %>
 
 <% else %>
 	<p><strong>$Message</strong></p>
