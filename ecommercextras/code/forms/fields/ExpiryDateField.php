@@ -113,8 +113,8 @@ JS;
 		return $list;
 	}
 
-	protected function makeSelectList() {
-		$array = $this->yearArray();
+
+	protected function makeSelectList($array) {
 		$string = '';
 		foreach($array as $key => $value) {
 			$string .= '<option value="'.$key.'">'.$value.'</option>';
