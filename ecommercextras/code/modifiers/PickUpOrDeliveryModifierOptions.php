@@ -17,11 +17,12 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"WeightMultiplier" => "Double",
 		"Percentage" => "Double",
 		"FixedCost" => "Currency",
-		"Sort" => "Int"
+		"Sort" => "Int",
+		"AcceptablePaymentMethods" => "Varchar(255)"
 	);
 
 	public static $many_many = array(
-		"AvailableInCountries" => "PickUpOrDeliveryModifierOptionsCountry",
+		"AvailableInCountries" => "PickUpOrDeliveryModifierOptionsCountry"
 	);
 
 	public static $indexes = array(
