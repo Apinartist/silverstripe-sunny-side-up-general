@@ -9,6 +9,7 @@
 
 class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
+
 	function getPaymentFormFields() {
 		$logo = '<img src="' . self::$logo . '" alt="Credit card payments powered by DPS"/>';
 		$privacyLink = '<a href="' . self::$privacy_link . '" target="_blank" title="Read DPS\'s privacy policy">' . $logo . '</a><br/>';
@@ -117,8 +118,8 @@ class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 
 	static $url_segment = 'dpspxpaystoredpayment';
 
-	static function absolute_complete_link() {
-		return parent::absolute_complete_link();
+	static function complete_link() {
+		return self::$url_segment . '/paid/';
 	}
 
 	function paid() {
