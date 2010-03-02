@@ -100,7 +100,6 @@ class StandingOrderForm extends Form {
 		else {
 			$order = $form->Controller()->BlankOrder();
 		}
-		print_r($data);
 		if($order) {
 			$params = $this->dataCheck($data);
 			$standingOrder = StandingOrder::createFromOrder($order, $params);
