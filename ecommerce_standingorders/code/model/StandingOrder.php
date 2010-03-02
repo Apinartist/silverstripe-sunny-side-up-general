@@ -14,13 +14,16 @@ class StandingOrder extends DataObject {
 		'Period' => 'Varchar',
 
 		'PaymentMethod' => 'Varchar',
+		"CreditCardOnFile" => "Boolean",
+		"PaymentNote" => "Text",
 
 		//Guytons.co.nz specific
 		'DeliveryDay' => 'Text', //Serialized Array
 		'Alternatives' => 'Text', //Serialized Array
 		'Items' => 'Text', //FOR SEARCH PURPOSES ONLY!
 
-		'Notes' => 'Text',
+		'Notes' => 'Text'
+
 	);
 
 	public static $has_one = array(
@@ -234,9 +237,11 @@ class StandingOrder extends DataObject {
 	public function OutstandingAutomaticallyCreatedOrders() {
 		$orders = DataObject::get("Order", "StandingOrderID = ".$this->ID, "OrderDate ASC");
 		$dos = new DataObjectSet();
-		foreach($orders as $order) {
-			if(!$order->Completed()) {
-				$dos->push($order);
+		if($orders) {
+			foreach($orders as $order) {
+				if(!$order->Completed()) {
+					$dos->push($order);
+				}
 			}
 		}
 		return $dos;
@@ -532,7 +537,6 @@ class StandingOrder extends DataObject {
 HTML
 					),
 					new DropdownField('Status', 'Status', self::$status_nice),
-					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
 					new CalendarDateField('Start', 'Start'),
 					new CalendarDateField('End', 'End (Optional)'),
 					new ListboxField('Period', 'Period', self::get_period_fields(), null, count(self::get_period_fields())),
@@ -560,6 +564,11 @@ HTML
 					new ReadonlyField("LastCreatedFormatted", "Last Order", $lastCreated),
 					new ReadonlyField("NextCreatedFormatted", "Next Order", $nextCreated),
 					new ReadonlyField("FinalCreatedFormatted", "Final Order", $finalCreated)
+				),
+				new Tab('Payment',
+					new CheckboxField("CreditCardOnFile", "Credit Card on File"),
+					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
+					new TextareaField('PaymentNote', 'Payment Note')
 				)
 			)
 		);
@@ -759,6 +768,7 @@ HTML
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
+
 		$this->Items = $this->OrderItemList();
 		if(isset($_REQUEST['DeliveryDay'])) {
 			$this->DeliveryDay = $_REQUEST['DeliveryDay'];
@@ -852,6 +862,12 @@ HTML
 				$a[] = $item->Quantity . " x " . $item->Title();
 			}
 		}
+		if(!count($a)) {
+			return "No products listed";
+		}
+		if(count($a) == 1) {
+			return "Product: ".implode(", ", $a).".";
+		}
 		return "Products: ".implode(", ", $a).".";
 	}
 
@@ -863,8 +879,10 @@ HTML
 
 	function FirstOrderDate() {
 		$a = $this->workOutSchedule();
-		foreach($a as $k => $v) {
-			return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+		if(count($a)) {
+			foreach($a as $k => $v) {
+				return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+			}
 		}
 	}
 
@@ -876,12 +894,14 @@ HTML
 		$a = $this->workOutSchedule();
 		$today = strtotime(Date("Y-m-d"));
 		$i = 0;
-		foreach($a as $k => $v) {
-			if($k > $today && $i > 0 && $previousK < $today) {
-				return Date::create($className = "Date", $value = Date("Y-m-d", $previousK));
+		if(count($a)) {
+			foreach($a as $k => $v) {
+				if($k > $today && $i > 0 && $previousK < $today) {
+					return Date::create($className = "Date", $value = Date("Y-m-d", $previousK));
+				}
+				$previousK = $k;
+				$i++;
 			}
-			$previousK = $k;
-			$i++;
 		}
 	}
 
@@ -892,9 +912,11 @@ HTML
 	function NextOrderDate() {
 		$a = $this->workOutSchedule();
 		$today = strtotime(Date("Y-m-d"));
-		foreach($a as $k =>$v) {
-			if($k > $today) {
-				return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+		if(count($a)) {
+			foreach($a as $k =>$v) {
+				if($k > $today) {
+					return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+				}
 			}
 		}
 	}
@@ -905,10 +927,14 @@ HTML
 
 	function FinalOrderDate() {
 		$a = $this->workOutSchedule();
-		foreach($a as $k =>$v) {
-			//do nothing wait for last one...
+		if(count($a)) {
+			foreach($a as $k =>$v) {
+				//do nothing wait for last one...
+			}
+			if($k) {
+				return Date::create($className = "Date", $value = Date("Y-m-d", $k));
+			}
 		}
-		return Date::create($className = "Date", $value = Date("Y-m-d", $k));
 	}
 
 	function getFinalOrderDate() {
@@ -1020,8 +1046,8 @@ class StandingOrder_OrderItem extends DataObject {
 	public function onAfterWrite() {
 		parent::onAfterWrite();
 
-		if($this->SendRecipt) $standingOrder->sendReceipt();
-		if($this->SendUpdate) $standingOrder->sendUpdate();
+		//if($this->SendRecipt) $standingOrder->sendReceipt();
+		//if($this->SendUpdate) $standingOrder->sendUpdate();
 	}
 
 	public function onBeforeDelete() {

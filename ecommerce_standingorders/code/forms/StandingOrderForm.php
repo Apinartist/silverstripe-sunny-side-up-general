@@ -16,7 +16,7 @@ class StandingOrderForm extends Form {
 
 		$fields = new FieldSet();
 
-		$fields->push(new HeaderField('AlternativesHeader', 'Alternative Products'));
+		$fields->push(new HeaderField('AlternativesHeader', 'Products'));
 
 		$items = $order->Items();
 
@@ -25,11 +25,13 @@ class StandingOrderForm extends Form {
 
 		if($items) {
 			foreach($items as $item) {
-				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][0]', $item->ProductTitle(), $productsMap));
-				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][1]', '', $productsMap));
-				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][2]', '', $productsMap));
-				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][3]', '', $productsMap));
-				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][4]', '', $productsMap));
+				$fields->push(new DropdownField('Product[ID]['.$item->getProductID().']', "Preferred Product", $productsMap, $item->getProductID()));
+				$fields->push(new NumericField('Product[Quantity]['.$item->getProductID().']', " ... quantity", $item->Quantity));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][0]', " ... alternative 1", $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][1]', " ... alternative 2", $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][2]', " ... alternative 3", $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][3]', " ... alternative 4", $productsMap));
+				$fields->push(new DropdownField('_Alternatives['.$item->getProductID().'][4]', " ... alternative 5", $productsMap));
 			}
 		}
 
@@ -98,11 +100,24 @@ class StandingOrderForm extends Form {
 		else {
 			$order = $form->Controller()->BlankOrder();
 		}
-
+		print_r($data);
 		if($order) {
-
 			$params = $this->dataCheck($data);
 			$standingOrder = StandingOrder::createFromOrder($order, $params);
+			$orderItems = $standingOrder->OrderItems();
+			if($orderItems) {
+				foreach($orderItems as $orderItem) {
+					if(isset($data["Product"]["ID"][$orderItem->ProductID])) {$newProductID = $data["Product"]["ID"][$orderItem->ProductID];}
+					if(isset($data["Product"]["Quantity"][$orderItem->ProductID])) {$newQuantity = $data["Product"]["Quantity"][$orderItem->ProductID];}
+					$change = false;
+					if($newProductID != $orderItem->ProductID && $newProductID) {$orderItem->ProductID = $newProductID; $change = true;}
+					if($newQuantity != $orderItem->ProductID && ($newQuantity || $newQuantity === 0)) {$orderItem->Quantity = $newQuantity; $change = true;}
+					if($change) {
+						$orderItem->write();
+					}
+				}
+			}
+
 			Director::redirect(StandingOrdersPage::get_standing_order_link('view', $standingOrder->ID));
 		}
 		else {
@@ -135,16 +150,14 @@ class StandingOrderForm extends Form {
 					$orderItem->delete();
 				}
 			}
-
 			$orderItems = $form->Controller()->BlankOrder()->Items();
-
 			if($orderItems) {
 				foreach($orderItems as $orderItem) {
 					$standingOrderItem = new StandingOrder_OrderItem();
 					$standingOrderItem->OrderID = $standingOrder->ID;
 					$standingOrderItem->OrderVersion = $standingOrder->Version;
-					$standingOrderItem->ProductID = $orderItem->ProductID;
-					$standingOrderItem->Quantity = $orderItem->Quantity;
+					$standingOrderItem->ProductID = $data["Product"]["ID"][$orderItem->ProductID];
+					$standingOrderItem->Quantity = $data["Product"]["Quantity"][$orderItem->ProductID];
 					$standingOrderItem->write();
 				}
 			}

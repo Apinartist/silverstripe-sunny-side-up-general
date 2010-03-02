@@ -25,8 +25,24 @@ var StandingOrdersPage_admin = {
 
 	standingOrderFirstLinkSelector: "#firstStandingOrderLink",
 
+	completeStandingOrderSelector: ".completeStandingOrder",
+
+	newWindowName: ".completeStandingOrder",
+
 	init: function() {
 		jQuery(StandingOrdersPage_admin.detailClassSelector).hide();
+		jQuery(StandingOrdersPage_admin.completeStandingOrderSelector).attr("target", StandingOrdersPage_admin.newWindowName);
+		jQuery(StandingOrdersPage_admin.completeStandingOrderSelector).click(
+			function() {
+				var url = jQuery(this).attr("href");
+				jQuery(this).removeAttr("href");
+				jQuery(this).text("COMPLETED");
+				window.open(url, StandingOrdersPage_admin.newWindowName, 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=1024,height=600');
+				return false;
+			}
+
+
+		)
 		jQuery(StandingOrdersPage_admin.standingOrderLinkSelector).click(
 			function(){
 				var rel = jQuery(this).attr("rel");

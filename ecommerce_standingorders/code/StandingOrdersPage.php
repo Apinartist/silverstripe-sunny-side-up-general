@@ -231,6 +231,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				break;
 			case 'modify':
 				if(isset($orderID)) {
+					/*
 					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
 
 					$items = ShoppingCart::get_items();
@@ -256,11 +257,11 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 							));
 						}
 					}
-
+					*/
 					//save session identifier for editing standing order
 					Session::set('StandingOrder', $orderID);
 
-					Director::redirect(CheckoutPage::find_link());
+					Director::redirect(StandingOrdersPage::get_standing_order_link("update", $orderID));
 
 					$params = array();
 				}
@@ -314,8 +315,11 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 	public function BlankOrder() {
 		//Create an Order to use
 		$order = new Order();
-
-		$order->MemberID = Member::currentUserID();
+		$MemberID = Member::currentUserID();
+		if(!$MemberID) {
+			E_USER_ERROR("Trying to create order without related user");
+		}
+		$order->MemberID = $MemberID;
 
 		return $order;
 	}

@@ -10,7 +10,7 @@
 			<ul class="DraftOrderList">
 				<% control OutstandingAutomaticallyCreatedOrders %>
 					<li class="$FuturePast">
-						Date: $OrderDate.Long, Status: $Status<% if FuturePast = future %><% else %>, next: <a href="$LoadLink" target="_ordercompletion">complete now</a><% end_if %>
+						Date: $OrderDate.Long, Status: $Status<% if FuturePast = future %><% else %>, next: <a href="$LoadLink" class="completeStandingOrder">complete now</a><% end_if %>
 					</li>
 				<% end_control %>
 			</ul>
