@@ -11,11 +11,11 @@ class ExpiryDateField extends TextField {
 		$parts = array_pad($parts, 2, "");
 		$field = "
 			<span id=\"{$this->name}_Holder\" class=\"expiryDateField\">
-				<select class=\"expiryDate expiryDateFirst\" autocomplete=\"off\" name=\"{$this->name}[0]\" value=\"$parts[0]\" " . $this->getTabIndexHTML(0) . ">
-					<option value=\"\">Month</option>".$this->makeSelectList($this->monthArray())."
+				<select class=\"expiryDate expiryDateFirst\" name=\"{$this->name}[0]\" value=\"$parts[0]\" >
+					<option value=\"\" selected=\"selected\">Month</option>".$this->makeSelectList($this->monthArray())."
 				</select>
-				<select class=\"expiryDate expiryDateLast\"autocomplete=\"off\" name=\"{$this->name}[1]\" value=\"$parts[1]\" " . $this->getTabIndexHTML(1) . " />
-					<option value=\"\">Year</option>".$this->makeSelectList($this->yearArray())."
+				<select class=\"expiryDate expiryDateLast\" name=\"{$this->name}[1]\" value=\"$parts[1]\" >
+					<option value=\"\" selected=\"selected\">Year</option>".$this->makeSelectList($this->yearArray())."
 				</select>
 			</span>";
 		return $field;
