@@ -18,10 +18,10 @@ class InStorePayment extends ChequePayment {
 		if(!self::$custom_message_for_in_store_payment) {
 			$page = DataObject::get_one("CheckoutPage");
 			if($page) {
-				self::$set_custom_message_for_in_store_payment = $page->ChequeMessage;
+				self::$custom_message_for_in_store_payment = $page->ChequeMessage;
 			}
 		}
-		$this->Message = '<p class="warningMessage">'.self::$set_custom_message_for_in_store_payment.'</p>';
+		$this->Message = '<p class="warningMessage">'.self::$custom_message_for_in_store_payment.'</p>';
 		$this->write();
 		return new Payment_Success();
 	}
