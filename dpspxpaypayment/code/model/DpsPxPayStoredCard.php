@@ -15,7 +15,7 @@ class DpsPxPayStoredCard extends DataObject {
 
 	public static $searchable_fields = array(
 		'CardHolder' => 'PartialMatchFilter',
-		'BillingID' => 'PartialMatchFilter'
+		'CardNumber' => 'PartialMatchFilter'
 	);
 
 	//database related settings
@@ -23,14 +23,12 @@ class DpsPxPayStoredCard extends DataObject {
 		'CardName' => 'Card Name',
 		'CardHolder' => 'Card Holder',
 		'CardNumber' => 'Card Number',
-		'BillingID' => 'Billing ID',
 		'MemberID' => 'Card Owner'
 	);
 	public static $summary_fields = array(
 		'CardName' => 'Card Name',
 		'CardHolder' => 'Card Holder',
 		'CardNumber' => 'Card Number',
-		'BillingID' => 'Billing ID',
 		'Member.Title' => 'Card Owner'
 	);
 

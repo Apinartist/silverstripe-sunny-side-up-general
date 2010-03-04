@@ -9,9 +9,12 @@
 
 class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
+	protected static $add_card_explanation = "Storing a Card means your Credit Card will be kept on file for your next purchase. ";
+		function set_add_card_explanation($v) {self::$add_card_explanation = $v;}
+		function get_add_card_explanation() {return self::$add_card_explanation;}
 
 	function getPaymentFormFields() {
-		$logo = '<img src="' . self::$logo . '" alt="Credit card payments powered by DPS"/>';
+		$logo = '<img src="' . self::$logo . '" alt="Credit Card Payments Powered by DPS"/>';
 		$privacyLink = '<a href="' . self::$privacy_link . '" target="_blank" title="Read DPS\'s privacy policy">' . $logo . '</a><br/>';
 		$paymentsList = '';
 		foreach(self::$credit_cards as $name => $image) {
@@ -19,25 +22,27 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 		}
 
 		$fields = new FieldSet();
-
+		$storedCards = null;
 		if($m = Member::currentMember()) {
 			$storedCards = DataObject::get('DpsPxPayStoredCard', 'MemberID = '.$m->ID);
 		}
-		else {
-			$storedCards = null;
-		}
 
-		$cardsDropdown = array('' => '');
+		$cardsDropdown = array('' => ' --- Select Stored Card ---');
 
 		if($storedCards) {
 			foreach($storedCards as $card) {
 				$cardsDropdown[$card->BillingID] = $card->CardHolder.' - '.$card->CardNumber.' ('.$card->CardName.')';
 			}
-
+			$s = "";
+			if($storedCards->count()>1) {
+				$s = "s";
+			}
+			$cardsDropdown["deletecards"] = " --- Delete Stored Card$s --- ";
 			$fields->push(new DropdownField('DPSUseStoredCard', 'Use a stored card?', $cardsDropdown, $value = $card->BillingID, $form = null, $emptyString = "--- use new Credit Card ---"));
 		}
 		else {
 			$fields->push(new DropdownField('DPSStoreCard', '', array(1 => 'Store Credit Card', 0 => 'Do NOT Store Credit Card')));
+			$fields->push(new LiteralField("AddCardExplanation", "<p>".self::get_add_card_explanation()."</p>"));
 		}
 		$fields->push(new LiteralField('DPSInfo', $privacyLink));
 		$fields->push(new LiteralField('DPSPaymentsList', $paymentsList));
@@ -72,6 +77,21 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 		if(!isset($data["DPSUseStoredCard"])) {$data["DPSUseStoredCard"] = null;}
 		if(!isset($data["DPSStoreCard"])) {$data["DPSStoreCard"] = null;}
 		if(!isset($data["Amount"])) {USER_ERROR("There was no amount information for processing the payment.", E_USER_WARNING);}
+		if($data["DPSUseStoredCard"] == "deletecards") {
+			//important!!!
+			$data["DPSUseStoredCard"] = null;
+			if($m = Member::currentMember()) {
+				$storedCards = DataObject::get('DpsPxPayStoredCard', 'MemberID = '.$m->ID);
+				if($storedCards) {
+					foreach($storedCards as $card) {
+						$card->delete();
+					}
+					if($storedCards = DataObject::get('DpsPxPayStoredCard', 'MemberID = '.$m->ID)) {
+						DB::query("DELETE FROM DpsPxPayStoredCard WHERE MemberID = ".$m->ID);
+					}
+				}
+			}
+		}
 		$url = $this->buildURL($data["Amount"], $data["DPSUseStoredCard"], $data["DPSStoreCard"]);
 		return $this->executeURL($url);
 	}

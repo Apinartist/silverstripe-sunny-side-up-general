@@ -28,6 +28,9 @@ else{
 //DpsPxPayPayment::remove_credit_card("American Express");
 //DpsPxPayPayment::remove_credit_card("Dinners Club");
 //DpsPxPayPayment::remove_credit_card("JCB");
+//DpsPxPayStoredPayment::set_add_card_explanation("Storing a Card means your Credit Card will be kept on file for your next purchase. ");
+
+
 //*** must have!
 Director::addRules(50, array(
 	DpsPxPayPayment_Handler::$url_segment . '/$Action/$ID' => 'DpsPxPayPayment_Handler',
