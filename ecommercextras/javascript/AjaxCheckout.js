@@ -48,8 +48,10 @@ var AjaxCheckout = {
 						var setQuantityLink = jQuery('[name=' + name + ']');
 						if(jQuery(setQuantityLink).length > 0) {
 							setQuantityLink = jQuery(setQuantityLink).get(0);
-							if(! this.value) this.value = 0;
-							else this.value = this.value.replace(/[^0-9]+/g, '');
+							this.value = parseInt(this.value);
+							if(! this.value || this.value == 'undefined') {
+								this.value = 0;
+							}
 							var url = jQuery('base').attr('href') + setQuantityLink.value + '?quantity=' + this.value;
 							AjaxCheckout.startUpdate(url);;
 						}
