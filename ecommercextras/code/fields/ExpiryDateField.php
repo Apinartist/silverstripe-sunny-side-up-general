@@ -11,99 +11,87 @@ class ExpiryDateField extends TextField {
 		static function get_short_months() {return self::$short_months;}
 
 	function Field() {
-		$parts = explode("\n", chunk_split($this->value,2,"\n"));
-		$parts = array_pad($parts, 2, "");
+		$monthValue = '';
+		$yearValue = '';
+		if(strlen($this->value) == 4) {
+			$monthValue = substr($this->value, 0, 2);
+			$yearValue = "20".substr($this->value, 2, 2);
+		}
 		$field = "
 			<span id=\"{$this->name}_Holder\" class=\"expiryDateField\">
-				<select class=\"expiryDate expiryDateFirst\" name=\"{$this->name}[0]\" value=\"$parts[0]\" >
-					<option value=\"\" selected=\"selected\">Month</option>".$this->makeSelectList($this->monthArray())."
+				<select class=\"expiryDate expiryDateMonth\" name=\"{$this->name}_month\" >
+					<option value=\"\" selected=\"selected\">Month</option>".$this->makeSelectList($this->monthArray(), $monthValue)."
 				</select>
-				<select class=\"expiryDate expiryDateLast\" name=\"{$this->name}[1]\" value=\"$parts[1]\" >
-					<option value=\"\" selected=\"selected\">Year</option>".$this->makeSelectList($this->yearArray())."
+				<select class=\"expiryDate expiryDateYear\" name=\"{$this->name}_year\" >
+					<option value=\"\" selected=\"selected\">Year</option>".$this->makeSelectList($this->yearArray(), $yearValue)."
 				</select>
 			</span>";
 		return $field;
 	}
 	function dataValue() {
-		if(is_array($this->value)) return implode("", $this->value);
-		else return $this->value;
+		if(is_array($this->value)) {
+			$string = '';
+			foreach($this->value as $part) {
+				$part = str_pad($part, 2, "0");
+				$string .= trim($part);
+			}
+			return trim($string);
+		}
+		else {
+			return $this->value;
+		}
 	}
 
 	function jsValidation() {
 		$formID = $this->form->FormName();
-		$error1 = _t('ExpiryDateField.VALIDATIONJS1', 'Please ensure you have entered the');
-		$error2 = _t('ExpiryDateField.VALIDATIONJS2', 'expiry date correctly.');
-		$first = _t('ExpiryDateField.FIRST', 'first');
-		$second = _t('ExpiryDateField.SECOND', 'second');
 		$jsFunc =<<<JS
 Behaviour.register({
 	"#$formID": {
 		validateExpiryDate: function(fieldName) {
 			if(!$(fieldName + "_Holder")) return true;
 
-			// Creditcards are split into multiple values, so get the inputs from the form.
-			var expiryParts = $(fieldName + "_Holder").getElementsByTagName('input');
-
-			var cardisnull = true;
-			var i=0;
-
-			for(i=0; i < expiryParts.length ; i++ ){
-				if(expiryParts[i].value == null || expiryParts[i].value == "")
-					cardisnull = cardisnull && true;
-				else
-					cardisnull = false;
+			// Expiry Dates are split into multiple values, so get the inputs from the form.
+			var monthField = $(fieldName + "_Holder").getElementsByTagName('input.expiryDateMonth');
+			var yearField = $(fieldName + "_Holder").getElementsByTagName('input.expiryDateYear');
+			var error = false;
+			if(monthField.value == null || monthField.value == "" || yearField.value == null || yearField.value == "") {
+				error = true;
 			}
-			if(!cardisnull){
-				// Concatenate the string values from the parts of the input.
-				for(i=0; i < expiryParts.length ; i++ ){
-					// The expirydate cannot be null, nor have less than 2 digits.
-					if(
-						expiryParts[i].value == null || expiryParts[i].value == "" ||
-						expiryParts[i].value.length < 2 ||
-						!expiryParts[i].value.match(/[0-9]{2}/)
-					){
-						switch(i){
-							case 0: number = "$first"; break;
-							case 1: number = "$second"; break;
-						}
-						validationError(expiryParts[i],"$error1 " + number + " $error2","validation",false);
-					return false;
-					}
-				}
+			if(error){
+				validationError(monthField,"Make sure to enter a valid expiration date.","validation",false);
+				return false;
 			}
 			return true;
 		}
 	}
 });
 JS;
-		Requirements :: customScript($jsFunc, 'func_validateExpiryDate');
-
+		Requirements::customScript($jsFunc, 'func_validateExpiryDate');
 		return "\$('$formID').validateExpiryDate('$this->name');";
 	}
 
 	function validate($validator){
 		// If the field is empty then don't return an invalidation message
 		if(!trim(implode("", $this->value))) return true;
-
-		$i=0;
-		if($this->value) foreach($this->value as $part){
-			if(!$part || !(strlen($part) == 2) || !ereg("([0-9]{2})",$part)){
-				switch($i){
-				  case 0: $number = _t('ExpiryDateField.FIRST', 'first'); break;
-					case 1: $number = _t('ExpiryDateField.SECOND', 'second'); break;
-				}
+		// months are entered as a simple number (e.g. 1,2,3, we add a leading zero if needed)
+		if($this->value) {
+			$monthValue = '00';
+			$yearValue = '00';
+			if(strlen($this->value) == 4) {
+				$monthValue = substr($this->value, 0, 2);
+				$yearValue = "20".substr($this->value, 2, 2);
+			}
+			$ts = strtotime(Date("Y-m-01"))-(60*60*24);
+			$expiryTs = strtotime("20".$yearValue."-".$monthValue."-01");
+			if($ts > $expiryTs) {
 				$validator->validationError(
 					$this->name,
-					sprintf(
-						_t('Form.VALIDATIONEXPIRYDATE', "Please ensure you have entered the %s expiry date correctly."),
-						$number
-					),
+					"Please ensure you have entered the expiry date correctly.",
 					"validation",
 					false
 				);
 				return false;
 			}
-		$i++;
 		}
 	}
 
@@ -118,10 +106,14 @@ JS;
 	}
 
 
-	protected function makeSelectList($array) {
+	protected function makeSelectList($array, $currentValue) {
 		$string = '';
 		foreach($array as $key => $value) {
-			$string .= '<option value="'.$key.'">'.$value.'</option>';
+			$select = '';
+			if($key == $currentValue) {
+				$select = ' selected="selected"';
+			}
+			$string .= '<option value="'.$key.'"'.$select.'>'.$value.'</option>';
 		}
 		return $string;
 	}
@@ -129,34 +121,34 @@ JS;
 	protected function monthArray() {
 		if(self::$short_months) {
 		  return array(
-				"01" => "01 Jan",
-				"02" => "02 Feb",
-				"03" => "03 Mar",
-				"04" => "04 Apr",
-				"05" => "05 May",
-				"06" => "06 Jun",
-				"07" => "07 Jul",
-				"08" => "08 Aug",
-				"09" => "09 Sep",
-				"10" => "10 Oct",
-				"11" => "11 Nov",
-				"12" => "12 Dec"
+				1 => "01 Jan",
+				2 => "02 Feb",
+				3 => "03 Mar",
+				4 => "04 Apr",
+				5 => "05 May",
+				6 => "06 Jun",
+				7 => "07 Jul",
+				8 => "08 Aug",
+				9 => "09 Sep",
+				10 => "10 Oct",
+				11 => "11 Nov",
+				12 => "12 Dec"
 			);
 		}
 		else {
 		  return array(
-				"01" => "January",
-				"02" => "February",
-				"03" => "March",
-				"04" => "April",
-				"05" => "May",
-				"06" => "June",
-				"07" => "July",
-				"08" => "August",
-				"09" => "September",
-				"10" => "October",
-				"11" => "November",
-				"12" => "December"
+				1 => "January",
+				2 => "February",
+				3 => "March",
+				4 => "April",
+				5 => "May",
+				6 => "June",
+				7 => "July",
+				8 => "August",
+				9 => "September",
+				10 => "October",
+				11 => "November",
+				12 => "December"
 			);
 		}
 	}
