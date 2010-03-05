@@ -6,6 +6,10 @@
  */
 class ExpiryDateField extends TextField {
 
+	protected static $short_months = 1;
+		static function set_short_months($boolean) {self::$short_months = $boolean;}
+		static function get_short_months() {return self::$short_months;}
+
 	function Field() {
 		$parts = explode("\n", chunk_split($this->value,2,"\n"));
 		$parts = array_pad($parts, 2, "");
@@ -123,20 +127,38 @@ JS;
 	}
 
 	protected function monthArray() {
-		return array(
-			"01" => "January",
-			"02" => "February",
-			"03" => "March",
-			"04" => "April",
-			"05" => "May",
-			"06" => "June",
-			"07" => "July",
-			"08" => "August",
-			"09" => "September",
-			"10" => "October",
-			"11" => "November",
-			"12" => "December"
-		);
+		if(self::$short_months) {
+		  return array(
+				"01" => "01 Jan",
+				"02" => "02 Feb",
+				"03" => "03 Mar",
+				"04" => "04 Apr",
+				"05" => "05 May",
+				"06" => "06 Jun",
+				"07" => "07 Jul",
+				"08" => "08 Aug",
+				"09" => "09 Sep",
+				"10" => "10 Oct",
+				"11" => "11 Nov",
+				"12" => "12 Dec"
+			);
+		}
+		else {
+		  return array(
+				"01" => "January",
+				"02" => "February",
+				"03" => "March",
+				"04" => "April",
+				"05" => "May",
+				"06" => "June",
+				"07" => "July",
+				"08" => "August",
+				"09" => "September",
+				"10" => "October",
+				"11" => "November",
+				"12" => "December"
+			);
+		}
 	}
 
 }
