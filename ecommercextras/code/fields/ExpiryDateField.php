@@ -19,10 +19,10 @@ class ExpiryDateField extends TextField {
 		}
 		$field = "
 			<span id=\"{$this->name}_Holder\" class=\"expiryDateField\">
-				<select class=\"expiryDate expiryDateMonth\" name=\"{$this->name}_month\" >
+				<select class=\"expiryDate expiryDateMonth\" name=\"{$this->name}[0]\" >
 					<option value=\"\" selected=\"selected\">Month</option>".$this->makeSelectList($this->monthArray(), $monthValue)."
 				</select>
-				<select class=\"expiryDate expiryDateYear\" name=\"{$this->name}_year\" >
+				<select class=\"expiryDate expiryDateYear\" name=\"{$this->name}[1]\" >
 					<option value=\"\" selected=\"selected\">Year</option>".$this->makeSelectList($this->yearArray(), $yearValue)."
 				</select>
 			</span>";
@@ -51,10 +51,9 @@ Behaviour.register({
 			if(!$(fieldName + "_Holder")) return true;
 
 			// Expiry Dates are split into multiple values, so get the inputs from the form.
-			var monthField = $(fieldName + "_Holder").getElementsByTagName('input.expiryDateMonth');
-			var yearField = $(fieldName + "_Holder").getElementsByTagName('input.expiryDateYear');
+			var fields = $(fieldName + "_Holder").getElementsByTagName('input');
 			var error = false;
-			if(monthField.value == null || monthField.value == "" || yearField.value == null || yearField.value == "") {
+			if(fields[0].value == null || fields[0].value == "" || fields[1].value == null || fields[1].value == "") {
 				error = true;
 			}
 			if(error){
@@ -72,7 +71,8 @@ JS;
 
 	function validate($validator){
 		// If the field is empty then don't return an invalidation message
-		if(!trim(implode("", $this->value))) return true;
+		$this->value = trim(implode("", $this->value));
+		if(!$this->value) return true;
 		// months are entered as a simple number (e.g. 1,2,3, we add a leading zero if needed)
 		if($this->value) {
 			$monthValue = '00';
@@ -82,7 +82,9 @@ JS;
 				$yearValue = "20".substr($this->value, 2, 2);
 			}
 			$ts = strtotime(Date("Y-m-01"))-(60*60*24);
+			print_r($ts);
 			$expiryTs = strtotime("20".$yearValue."-".$monthValue."-01");
+			print_r($expiryTs);
 			if($ts > $expiryTs) {
 				$validator->validationError(
 					$this->name,
@@ -121,18 +123,18 @@ JS;
 	protected function monthArray() {
 		if(self::$short_months) {
 		  return array(
-				1 => "01 Jan",
-				2 => "02 Feb",
-				3 => "03 Mar",
-				4 => "04 Apr",
-				5 => "05 May",
-				6 => "06 Jun",
-				7 => "07 Jul",
-				8 => "08 Aug",
-				9 => "09 Sep",
-				10 => "10 Oct",
-				11 => "11 Nov",
-				12 => "12 Dec"
+				1 => "01 | Jan",
+				2 => "02 | Feb",
+				3 => "03 | Mar",
+				4 => "04 | Apr",
+				5 => "05 | May",
+				6 => "06 | Jun",
+				7 => "07 | Jul",
+				8 => "08 | Aug",
+				9 => "09 | Sep",
+				10 => "10 | Oct",
+				11 => "11 | Nov",
+				12 => "12 | Dec"
 			);
 		}
 		else {
