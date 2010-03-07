@@ -6,6 +6,10 @@ var LiveEmailCheckModifier = {
 
 	emailFieldCheckingMessage: "checking email address",
 
+	url: "liveemailcheckmodifier/checkemail/?email=",
+
+	alternativeValidationSelector: "#Email validation",
+
 	init: function () {
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
 			function () {
@@ -13,11 +17,13 @@ var LiveEmailCheckModifier = {
 				jQuery(this).addClass("loading");
 				jQuery(this).val(LiveEmailCheckModifier.emailFieldCheckingMessage);
 				var base = jQuery("base").attr("href");
-				url = base + "liveemailcheckmodifier/checkemail/?email=" + email;
+				url = base + LiveEmailCheckModifier.url + email;
 				jQuery.get(
 					url,
 					function(response) {
+						jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 						jQuery(LiveEmailCheckModifier.emailFieldSelector).val(email);
+						jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 						jQuery(LiveEmailCheckModifier.emailFieldSelector).removeClass("loading");
 						if(response != "ok") {
 							if(response == "invalid") {
