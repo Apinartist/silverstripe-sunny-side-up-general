@@ -165,8 +165,16 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	function LiveName() {
 		$obj = $this->PickupOrDeliveryTypeObject();
 		if(is_object($obj)) {
-			return $obj->Name;
+			$v = $obj->Name;
+			if($obj->ExplanationPageID) {
+				$page = $obj->ExplanationPage();
+				if($page) {
+					$v .= '<div id="PickUpOrDeliveryModifierExplanationLink"><a href="'.$page->Link().'">'.$page->Title.'</a></div>';
+				}
+			}
+			return $v;
 		}
+		return "Postage and Handling";
 	}
 
 	function Name() {

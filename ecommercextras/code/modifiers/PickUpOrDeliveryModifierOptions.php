@@ -18,7 +18,8 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"Percentage" => "Double",
 		"FixedCost" => "Currency",
 		"Sort" => "Int",
-		"AcceptablePaymentMethods" => "Varchar(255)"
+		"AcceptablePaymentMethods" => "Varchar(255)",
+		"ExplanationPage" => "SiteTree"
 	);
 
 	public static $many_many = array(
