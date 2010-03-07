@@ -23,7 +23,7 @@ class PaymentDecorator extends DataObjectDecorator {
 			'searchable_fields' => array(
 				'OrderID' => array('title' => 'Order ID'),
 				'Amount' => array('title' => 'Amount'),
-				'IP' => array('title' => 'Customer Email', 'filter' => 'PartialMatchFilter'),
+				'IP' => array('title' => 'IP Address', 'filter' => 'PartialMatchFilter'),
 				'Status'
 			)
 		);
