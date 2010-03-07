@@ -15,6 +15,7 @@
 //Order::set_email("websales@silverstripe.co.nz");
 //Order::set_subject("Thank you for your order at silverstripe.co.nz");
 
+
 // *** EXTENSIONS
 //Object::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
