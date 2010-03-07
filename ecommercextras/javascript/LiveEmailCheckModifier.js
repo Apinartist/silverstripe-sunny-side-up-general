@@ -11,6 +11,11 @@ var LiveEmailCheckModifier = {
 	alternativeValidationSelector: "#Email span.validation",
 
 	init: function () {
+		jQuery(LiveEmailCheckModifier.emailFieldSelector).blur(
+			function () {
+				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldCheckingMessage);
+			}
+		);
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
 			function () {
 				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldCheckingMessage);
