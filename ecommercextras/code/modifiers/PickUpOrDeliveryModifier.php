@@ -22,6 +22,9 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	);
 
 	static $casting = array(
+		'TableTitle' => 'HTMLText',
+		'Name' => 'HTMLText',
+		'LiveName' => 'HTMLText',
 		'TaxableAmount' => 'Currency',
 		"TableValue" => "Currency"
 	);
@@ -36,6 +39,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 	protected static $form_header = 'Pick-up / Deliver';
 		static function set_form_header($v) {self::$form_header = $v;}
+
 
 //--------------------------------------------------------------------*** static functions
 
