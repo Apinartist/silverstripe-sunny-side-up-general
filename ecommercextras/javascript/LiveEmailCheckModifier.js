@@ -13,6 +13,7 @@ var LiveEmailCheckModifier = {
 	init: function () {
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
 			function () {
+				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldCheckingMessage);
 				var email = jQuery(this).val();
 				jQuery(this).addClass("loading");
 				jQuery(this).val(LiveEmailCheckModifier.emailFieldCheckingMessage);
