@@ -13,7 +13,7 @@ var LiveEmailCheckModifier = {
 	init: function () {
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).blur(
 			function () {
-				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldCheckingMessage);
+				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 			}
 		);
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
