@@ -41,8 +41,8 @@ class OrderDecorator extends DataObjectDecorator {
 				'MemberSummary' => 'Text',
 			),
 			'searchable_fields' => array(
-				'Member.FirstName' => array('title' => 'Customer Name'),
-				'Member.Email' => array('title' => 'Customer Email'),
+				'Member.FirstName' => array('title' => 'Customer Name', 'filter' => 'PartialMatchFilter'),
+				'Member.Email' => array('title' => 'Customer Email', 'filter' => 'PartialMatchFilter'),
 				'Status'/*,
 				'From' => array(
 					'field' => 'CalendarDateField',

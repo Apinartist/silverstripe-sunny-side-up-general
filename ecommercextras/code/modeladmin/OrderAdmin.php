@@ -5,7 +5,7 @@ class OrderAdmin extends ModelAdmin {
 	static $url_segment = 'orders';
 	static $menu_title = 'Orders';
 
-	public static $managed_models = array('Order');
+	public static $managed_models = array('Order', 'Payment');
 
 	public static $collection_controller_class = 'OrderAdmin_CollectionController';
 	public static $record_controller_class = 'OrderAdmin_RecordController';
