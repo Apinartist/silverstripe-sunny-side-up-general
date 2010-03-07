@@ -173,7 +173,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			if($obj->ExplanationPageID) {
 				$page = $obj->ExplanationPage();
 				if($page) {
-					$v .= '<div id="PickUpOrDeliveryModifierExplanationLink" class="externalLink"><a href="'.$page->Link().'">'.$page->Title.'</a></div>';
+					$v .= '<div id="PickUpOrDeliveryModifierExplanationLink"><a href="'.$page->Link().'" class="externalLink">'.$page->Title.'</a></div>';
 				}
 			}
 			return $v;
