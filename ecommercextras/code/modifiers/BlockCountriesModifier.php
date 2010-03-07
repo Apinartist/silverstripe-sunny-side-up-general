@@ -100,8 +100,8 @@ class BlockCountriesModifier extends OrderModifier {
 					$stop = true;
 				}
 			}
-			if(count(self::$must_not_include_country_codes)) {
-				if(in_array($countryCode, self::$must_not_include_country_codes)) {
+			if(count(self::$must_not_country_codes)) {
+				if(in_array($countryCode, self::$must_not_country_codes)) {
 					$stop = true;
 				}
 			}
