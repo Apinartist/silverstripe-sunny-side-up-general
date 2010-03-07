@@ -2,7 +2,9 @@ var LiveEmailCheckModifier = {
 
 	emailFieldSelector: "input[name='Email']",
 
-	emailFieldError: "Please check your email address.",
+	emailFieldError: "Please check your email address",
+
+	emailFieldRequired: "An email address is required",
 
 	emailFieldCheckingMessage: "checking email address",
 
@@ -47,6 +49,9 @@ var LiveEmailCheckModifier = {
 							}
 						}
 					);
+				}
+				else {
+					jQuery(LiveEmailCheckModifier.alternativeValidationSelector).text(LiveEmailCheckModifier.emailFieldRequired).show();
 				}
 			}
 		);
