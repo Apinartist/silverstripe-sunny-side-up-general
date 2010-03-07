@@ -11,46 +11,43 @@ var LiveEmailCheckModifier = {
 	alternativeValidationSelector: "#Email span.validation",
 
 	init: function () {
-		jQuery(LiveEmailCheckModifier.emailFieldSelector).blur(
-			function () {
-				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
-			}
-		);
+		if(jQuery(LiveEmailCheckModifier.alternativeValidationSelector).length < 1) {
+			jQuery("#Email .middleColumn").append('<span class="message validation" style="display: none;"></span>');
+		}
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
 			function () {
-				jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldCheckingMessage);
 				var email = jQuery(this).val();
-				jQuery(this).addClass("loading");
-				jQuery(this).val(LiveEmailCheckModifier.emailFieldCheckingMessage);
-				var base = jQuery("base").attr("href");
-				url = base + LiveEmailCheckModifier.url + email;
-				jQuery.get(
-					url,
-					function(response) {
-						jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
-						jQuery(LiveEmailCheckModifier.emailFieldSelector).val(email);
-
-						jQuery(LiveEmailCheckModifier.emailFieldSelector).removeClass("loading");
-						if(response != "ok") {
-							if(response == "invalid") {
-								jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldError);
-								jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
-							}
-							else {
-								jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(response);
-								if(confirm(response)) {
-									window.location = base + "Security/login/?BackURL=" + escape(window.location);
-								}
-								else {
+				if(email) {
+					jQuery(LiveEmailCheckModifier.alternativeValidationSelector).text(LiveEmailCheckModifier.emailFieldCheckingMessage).show().addClass("loading");
+					var base = jQuery("base").attr("href");
+					url = base + LiveEmailCheckModifier.url + email;
+					jQuery.get(
+						url,
+						function(response) {
+							jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide().removeClass("loading");
+							jQuery(LiveEmailCheckModifier.emailFieldSelector);
+							if(response != "ok") {
+								if(response == "invalid") {
+									jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldError);
 									jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
 								}
+								else {
+									jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
+									if(confirm(response)) {
+										window.location = base + "Security/login/?BackURL=" + escape(window.location);
+									}
+									else {
+										jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
+										jQuery(LiveEmailCheckModifier.emailFieldSelector).val("");
+									}
+								}
+							}
+							else {
+								jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 							}
 						}
-						else {
-							jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
-						}
-					}
-				);
+					);
+				}
 			}
 		);
 	}
