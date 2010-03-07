@@ -82,9 +82,7 @@ JS;
 				$yearValue = "20".substr($this->value, 2, 2);
 			}
 			$ts = strtotime(Date("Y-m-01"))-(60*60*24);
-			print_r($ts);
 			$expiryTs = strtotime("20".$yearValue."-".$monthValue."-01");
-			print_r($expiryTs);
 			if($ts > $expiryTs) {
 				$validator->validationError(
 					$this->name,
