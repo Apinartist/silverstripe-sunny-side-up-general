@@ -8,7 +8,7 @@ var LiveEmailCheckModifier = {
 
 	url: "liveemailcheckmodifier/checkemail/?email=",
 
-	alternativeValidationSelector: "#Email validation",
+	alternativeValidationSelector: "#Email span.validation",
 
 	init: function () {
 		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
@@ -23,14 +23,15 @@ var LiveEmailCheckModifier = {
 					function(response) {
 						jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 						jQuery(LiveEmailCheckModifier.emailFieldSelector).val(email);
-						jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
+
 						jQuery(LiveEmailCheckModifier.emailFieldSelector).removeClass("loading");
 						if(response != "ok") {
 							if(response == "invalid") {
-								alert(LiveEmailCheckModifier.emailFieldError);
+								jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(LiveEmailCheckModifier.emailFieldError);
 								jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
 							}
 							else {
+								jQuery(LiveEmailCheckModifier.alternativeValidationSelector).show().text(response);
 								if(confirm(response)) {
 									window.location = base + "Security/login/?BackURL=" + escape(window.location);
 								}
@@ -38,6 +39,9 @@ var LiveEmailCheckModifier = {
 									jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
 								}
 							}
+						}
+						else {
+							jQuery(LiveEmailCheckModifier.alternativeValidationSelector).hide();
 						}
 					}
 				);
