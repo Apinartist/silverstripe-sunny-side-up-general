@@ -15,29 +15,29 @@ var LiveEmailCheckModifier = {
 	emailFieldCheckingMessage: "checking email address",
 
 	init: function () {
-		jQuery(AjaxCheckout.emailFieldSelector).change(
+		jQuery(LiveEmailCheckModifier.emailFieldSelector).change(
 			function () {
 				var email = jQuery(this).val();
 				jQuery(this).addClass("loading");
-				jQuery(this).val(AjaxCheckout.emailFieldCheckingMessage);
+				jQuery(this).val(LiveEmailCheckModifier.emailFieldCheckingMessage);
 				var base = jQuery("base").attr("href");
 				url = base + "liveemailcheckmodifier/checkemail/?email=" + email;
 				jQuery.get(
 					url,
 					function(response) {
-						jQuery(AjaxCheckout.emailFieldSelector).val(email);
-						jQuery(AjaxCheckout.emailFieldSelector).removeClass("loading");
+						jQuery(LiveEmailCheckModifier.emailFieldSelector).val(email);
+						jQuery(LiveEmailCheckModifier.emailFieldSelector).removeClass("loading");
 						if(response != "ok") {
 							if(response == "invalid") {
-								alert(AjaxCheckout.emailFieldError);
-								jQuery(AjaxCheckout.emailFieldSelector).focus();
+								alert(LiveEmailCheckModifier.emailFieldError);
+								jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
 							}
 							else {
 								if(confirm(response)) {
 									window.location = base + "Security/login/?BackURL=" + escape(window.location);
 								}
 								else {
-									jQuery(AjaxCheckout.emailFieldSelector).focus();
+									jQuery(LiveEmailCheckModifier.emailFieldSelector).focus();
 								}
 							}
 						}
