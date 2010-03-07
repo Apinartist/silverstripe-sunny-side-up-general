@@ -68,6 +68,8 @@ class TemplateOverviewPage extends Page {
 		}
 	}
 
+
+
 }
 
 class TemplateOverviewPage_Controller extends Page_Controller {
@@ -199,6 +201,25 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 			}
 		}
 		return true;
+	}
+
+
+	function ConfigurationDetails() {
+		$m = Member::CurrentMember();
+		if($m) {
+			if($m->IsAdmin()) {
+				$baseFolder = Director::baseFolder();
+				$myFile = $baseFolder."/".$this->project()."/_config.php";
+				$fh = fopen($myFile, 'r');
+				$string = '';
+				while(!feof($fh)) {
+					$string .= fgets($fh, 1024);
+				}
+				fclose($fh);
+				return $string;
+			}
+		}
+
 	}
 
 }
