@@ -10,4 +10,5 @@ class GoogleAnalytics extends SiteTreeDecorator {
 		}
 		return array();
 	}
+
 }
