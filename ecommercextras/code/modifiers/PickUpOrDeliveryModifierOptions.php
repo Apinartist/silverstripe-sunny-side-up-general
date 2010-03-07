@@ -19,6 +19,9 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 		"FixedCost" => "Currency",
 		"Sort" => "Int",
 		"AcceptablePaymentMethods" => "Varchar(255)",
+	);
+
+	public static $has_one = array(
 		"ExplanationPage" => "SiteTree"
 	);
 
