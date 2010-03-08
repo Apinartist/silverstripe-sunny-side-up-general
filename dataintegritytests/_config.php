@@ -3,7 +3,8 @@
 
 /**
  *
- * @#author: Nicolaas - modules [at] sunnysideup.co.nz
+ * @author: Nicolaas - modules [at] sunnysideup.co.nz
+ * @help: // to see in action, add _configs per below, and go to http://www.mysite.com/dbintegritycheck/
  **/
 
 
