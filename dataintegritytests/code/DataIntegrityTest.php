@@ -36,6 +36,11 @@ class DataIntegrityTest extends DatabaseAdmin {
 				$dataObject = singleton($dataClass);
 				$requiredFields = $this->swapArray($dataObject->databaseFields());
 				if(count($requiredFields)) {
+					foreach($requiredFields as $field) {
+						if(!$dataObject->hasOwnTableDatabaseField($field)) {
+							Database::alteration_message("  **** $dataClass.$field DOES NOT EXIST BUT IT SHOULD BE THERE!", "deleted");
+						}
+					}
 					$actualFields = $this->swapArray(DB::fieldList($dataClass));
 					if($actualFields) {
 						foreach($actualFields as $actualField) {
@@ -53,6 +58,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 					}
 				}
 				else {
+					print_r(DB::query("SHOW TABLES LIKE $dataClass"));
 					$notCheckedArray[] = $dataClass;
 				}
 			}
