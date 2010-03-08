@@ -15,6 +15,34 @@
 
 class GSTTaxModifier extends TaxModifier {
 
+	//-------------------------------------------------------------------- *** model admin
+
+	public static $searchable_fields = array(
+		"OrderID",
+		'Country',
+		'Rate',
+		'Amount',
+		'TableValue',
+		'DebugString' => "PartialMatchFilter"
+	);
+	public static $summary_fields = array(
+		"Created",
+		"OrderID",
+		'Country',
+		'Rate',
+		'Amount',
+		'TableValue'
+	);
+	public static $singular_name = "Tax Charge";
+	public static $plural_name = "Tax Charges";
+	//CRUD settings
+	public function canCreate() {return false;}
+	public function canView() {return true;}
+	public function canEdit() {return false;}
+	public function canDelete() {return false;}
+	//defaults
+	public static $default_sort = "Created DESC";
+
 	//-------------------------------------------------------------------- *** static variables
 	static $db = array(
 		'Country' => 'Text',
@@ -244,6 +272,17 @@ class GSTTaxModifier extends TaxModifier {
 		}
 	}
 
+	function Charge() {
+		if($this->ID) {
+			$this->TableValue;
+		}
+		else {
+			$rate = ($this->IsExclusive() ? $this->Rate() : (1 - (1 / (1 + $this->Rate()))));
+			return $this->TaxableAmount() * $rate;
+		}
+	}
+
+
 	function getAmount() {
 		if($this->IsExclusive() || $this->IsRefundSituation()) {
 			if($this->ID) {
@@ -263,6 +302,7 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function TableValue() {
+		return $this->Charge();
 		return DBField::create('Currency', $this->Charge())->Nice();
 	}
 

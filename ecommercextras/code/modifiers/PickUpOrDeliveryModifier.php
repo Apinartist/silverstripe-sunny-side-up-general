@@ -10,6 +10,33 @@
  */
 class PickUpOrDeliveryModifier extends OrderModifier {
 
+	//-------------------------------------------------------------------- *** model admin
+
+	public static $searchable_fields = array(
+		"Name" => "PartialMatchFilter",
+		"OrderID",
+		"PickupOrDeliveryType" => "PartialMatchFilter",
+		"TotalWeight",
+		"Amount",
+		'DebugString' => "PartialMatchFilter"
+	);
+	public static $summary_fields = array(
+		"Created",
+		"OrderID",
+		"PickupOrDeliveryType",
+		"TotalWeight",
+		"Amount"
+	);
+	public static $singular_name = "Pickup / Delivery Charge";
+	public static $plural_name = "Pickup / Delivery Charges";
+	//CRUD settings
+	public function canCreate() {return false;}
+	public function canView() {return true;}
+	public function canEdit() {return false;}
+	public function canDelete() {return false;}
+	//defaults
+	public static $default_sort = "Created DESC";
+
 //--------------------------------------------------------------------*** static variables
 
 	static $db = array(
@@ -18,7 +45,6 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		"TotalWeight" => "Double",
 		"SerializedCalculationObject" => "Text",
 		'DebugString' => 'HTMLText'
-
 	);
 
 	static $casting = array(

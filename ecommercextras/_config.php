@@ -95,7 +95,7 @@ LiveEmailCheckModifier::set_account_exists_message("There is already an account 
 
 // *** MODEL ADMIN
 //ProductsAndGroupsModelAdmin::set_managed_models(Array("Product", "ProductGroup"));
-//EcommerceModifiersModelAdmin::set_managed_models(array("PickUpOrDeliveryModifierOptions", "GSTTaxModifierOptions"));
+//EcommerceModifiersModelAdmin::set_managed_models(array("PickUpOrDeliveryModifierOptions", "PickUpOrDeliveryModifier", "GSTTaxModifierOptions", "GSTTaxModifier"));
 
 
 // *** REPORTS

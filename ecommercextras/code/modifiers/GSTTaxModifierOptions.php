@@ -45,9 +45,9 @@ class GSTTaxModifierOptions extends DataObject {
 		"Rate"
 	);
 
-	public static $singular_name = "Tax";
+	public static $singular_name = "Tax Option";
 
-	public static $plural_name = "Taxes";
+	public static $plural_name = "Tax Options";
 
 
 	function getCMSFields() {

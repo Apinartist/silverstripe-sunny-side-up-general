@@ -32,10 +32,10 @@ class ExpiryDateField extends TextField {
 		if(is_array($this->value)) {
 			$string = '';
 			foreach($this->value as $part) {
-				$part = str_pad($part, 2, "0");
+				$part = str_pad($part, 2, "0", STR_PAD_LEFT);
 				$string .= trim($part);
 			}
-			return trim($string);
+			return $string;
 		}
 		else {
 			return $this->value;
@@ -70,29 +70,43 @@ JS;
 	}
 
 	function validate($validator){
-		// If the field is empty then don't return an invalidation message
-		$this->value = trim(implode("", $this->value));
-		if(!$this->value) return true;
-		// months are entered as a simple number (e.g. 1,2,3, we add a leading zero if needed)
-		if($this->value) {
-			$monthValue = '00';
-			$yearValue = '00';
-			if(strlen($this->value) == 4) {
-				$monthValue = substr($this->value, 0, 2);
-				$yearValue = "20".substr($this->value, 2, 2);
-			}
-			$ts = strtotime(Date("Y-m-01"))-(60*60*24);
-			$expiryTs = strtotime("20".$yearValue."-".$monthValue."-01");
-			if($ts > $expiryTs) {
-				$validator->validationError(
-					$this->name,
-					"Please ensure you have entered the expiry date correctly.",
-					"validation",
-					false
-				);
-				return false;
-			}
+		// If the field is empty then don't return an invalidation message'
+		if(!isset($this->value[0])) {
+			$validator->validationError(
+				$this->name,
+				"Please ensure you have entered the expiry date month correctly.",
+				"validation",
+				false
+			);
+			return false;
 		}
+		if(!isset($this->value[1])) {
+			$validator->validationError(
+				$this->name,
+				"Please ensure you have entered the expiry date year correctly.",
+				"validation",
+				false
+			);
+			return false;
+		}
+		$value = str_pad($this->value[0], 2, "0", STR_PAD_LEFT);
+		$value .= str_pad($this->value[1], 2, "0", STR_PAD_LEFT);
+		$this->value = $value;
+		// months are entered as a simple number (e.g. 1,2,3, we add a leading zero if needed)
+		$monthValue = substr($this->value, 0, 2);
+		$yearValue = "20".substr($this->value, 2, 2);
+		$ts = strtotime(Date("Y-m-01"))-(60*60*24);
+		$expiryTs = strtotime("20".$yearValue."-".$monthValue."-01");
+		if($ts > $expiryTs) {
+			$validator->validationError(
+				$this->name,
+				"Please ensure you have entered the expiry date correctly.",
+				"validation",
+				false
+			);
+			return false;
+		}
+		return true;
 	}
 
 	protected function yearArray() {
