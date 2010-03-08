@@ -58,12 +58,8 @@ class DataIntegrityTest extends DatabaseAdmin {
 					}
 				}
 				else {
-					$query = DB::query("SHOW TABLES LIKE \"$dataClass\";");
-					print_r($query);
-					if(count($query)) {
-						foreach($query as $row) {
-							Database::alteration_message("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
-						}
+					if( mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$dataClass."'"))) {
+						Database::alteration_message("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
 					}
 					else {
 						$notCheckedArray[] = $dataClass;
