@@ -43,6 +43,11 @@ class DataIntegrityTest extends DatabaseAdmin {
 									Database::alteration_message("$dataClass.$actualField ", "deleted");
 								}
 							}
+							if($actualField == "Version") {
+								if(!isset($dataObject::$versioning)) {
+									Database::alteration_message("$dataClass.$actualField ", "deleted");
+								}
+							}
 						}
 					}
 				}
