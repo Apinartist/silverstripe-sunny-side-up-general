@@ -84,15 +84,16 @@ class DataIntegrityTest extends DatabaseAdmin {
 
 	protected function deleteField($table, $field) {
 		$fields = $this->swapArray(DB::fieldList($table));
-		print_r($fields);
-		$tables = DB::tableList();
+		if(!mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$table."'"))) {
+			Database::alteration_message("tried to delete $table.$field but $table does not exist", "deleted");
+			return false;
+		}
+		if(!class_exists($table)){
+			Database::alteration_message("tried to delete $table.$field but $table class does not exist", "deleted");
+			return false;
+		}
 		if(!in_array($field, $fields)) {
-			return false;
-		}
-		elseif(!in_array($table, $tables)) {
-			return false;
-		}
-		elseif(!class_exists($table)){
+			Database::alteration_message("tried to delete $table.$field but $field does not exist", "deleted");
 			return false;
 		}
 		else {
