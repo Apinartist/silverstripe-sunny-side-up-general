@@ -26,6 +26,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 
 	public function obsoletefields() {
 		$dataClasses = ClassInfo::subclassesFor('DataObject');
+		$notCheckedArray = array();
 		//remove dataobject
 		array_shift($dataClasses);
 		Database::alteration_message("<h1>Report of fields that may not be required.</h1><p>  NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only</p>", "created");
@@ -52,8 +53,13 @@ class DataIntegrityTest extends DatabaseAdmin {
 					}
 				}
 				else {
-					Database::alteration_message("did not check $dataClass - it appears no fields are required", "created");
+					$notCheckedArray[] = $dataClass;
 				}
+			}
+		}
+		if(count($notCheckedArray)) {
+			foreach($notCheckedArray as $table) {
+				Database::alteration_message("did not check $table - it appears no fields are required", "created");
 			}
 		}
 
