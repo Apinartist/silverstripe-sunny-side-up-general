@@ -21,23 +21,28 @@ class DataIntegrityTest extends DatabaseAdmin {
 	function index() {
 		echo "<h2>Database Administration Helpers</h2>";
 		echo "<p><a href=\"obsoletefields\">Prepare a list of obsolete fields.</a></p>";
-		echo "<p><a href=\"deletefields\">Delete marked fields.</a></p>";
+		echo "<p><a href=\"deletefields\" onclick=\"return confirm('are you sure - this step is irreversible!');\">Delete marked fields.</a></p>";
 	}
 
 	public function obsoletefields() {
 		$dataClasses = ClassInfo::subclassesFor('DataObject');
 		//remove dataobject
 		array_shift($dataClasses);
+		Database::alteration_message("<h1>Report of fields that may not be required.</h1><p>  NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only</p>", "created");
 		foreach($dataClasses as $dataClass) {
 			// Check if class exists before trying to instantiate - this sidesteps any manifest weirdness
 			if(class_exists($dataClass)) {
 				$dataObject = singleton($dataClass);
-				$requireFields = $dataObject->databaseFields();
-				$actualFields = DB::fieldList($dataClass);
-				if($actualFields) {
-					foreach($actualFields as $actualField) {
-						if(!in_array($actualField, $requiredField)) {
-							Database::alteration_message("$actualField in $dataClass might not be required. HOWEVER - THIS IS ONLY A GUESS, PLEASE DOUBLE-CHECK!", "deleted");
+				$requiredFields = $this->swapArray($dataObject->databaseFields());
+				if(count($requiredFields)) {
+					$actualFields = $this->swapArray(DB::fieldList($dataClass));
+					if($actualFields) {
+						foreach($actualFields as $actualField) {
+							if(!in_array($actualField, array("ID"))) {
+								if(!in_array($actualField, $requiredFields)) {
+									Database::alteration_message("$dataClass.$actualField ", "deleted");
+								}
+							}
 						}
 					}
 				}
@@ -54,15 +59,16 @@ class DataIntegrityTest extends DatabaseAdmin {
 	}
 
 	protected function deleteField($table, $field) {
-		$fields = DB::fieldList($table);
-		$tables = DB::tableList()
+		$fields = $this->swapArray(DB::fieldList($table));
+		print_r($fields);
+		$tables = DB::tableList();
 		if(!in_array($field, $fields)) {
 			return false;
 		}
 		elseif(!in_array($table, $tables)) {
 			return false;
 		}
-		elseif(!class_exists($table) {
+		elseif(!class_exists($table)){
 			return false;
 		}
 		else {
@@ -77,6 +83,16 @@ class DataIntegrityTest extends DatabaseAdmin {
 				Database::alteration_message("Deleted $field in {$table}_versions", "deleted");
 			}
 		}
+	}
+
+	protected function swapArray($array) {
+		$newArray = array();
+		if(is_array($array)) {
+			foreach($array as $key => $value) {
+				$newArray[] = $key;
+			}
+		}
+		return $newArray;
 	}
 
 }
