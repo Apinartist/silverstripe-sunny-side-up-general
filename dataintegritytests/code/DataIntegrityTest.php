@@ -38,7 +38,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 					$actualFields = $this->swapArray(DB::fieldList($dataClass));
 					if($actualFields) {
 						foreach($actualFields as $actualField) {
-							if(!in_array($actualField, array("ID"))) {
+							if(!in_array($actualField, array("ID", "Version"))) {
 								if(!in_array($actualField, $requiredFields)) {
 									Database::alteration_message("$dataClass.$actualField ", "deleted");
 								}
