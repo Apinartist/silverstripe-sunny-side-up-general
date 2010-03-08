@@ -44,12 +44,15 @@ class DataIntegrityTest extends DatabaseAdmin {
 								}
 							}
 							if($actualField == "Version") {
-								if(!isset($dataObject::$versioning)) {
+								if(!($dataObject->stat('versioning') {
 									Database::alteration_message("$dataClass.$actualField ", "deleted");
 								}
 							}
 						}
 					}
+				}
+				else {
+					Database::alteration_message("did not check $dataClass - it appears no fields are required", "created");
 				}
 			}
 		}
