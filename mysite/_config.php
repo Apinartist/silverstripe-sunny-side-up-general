@@ -16,6 +16,7 @@ Email::setAdminEmail('swd@sunnysideup.co.nz');
 Member::set_password_validator("NZGovtPasswordValidator");
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
+Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 //===================---------------- END sapphire MODULE ----------------===================
 
 
