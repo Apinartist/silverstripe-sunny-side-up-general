@@ -58,7 +58,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 					}
 				}
 				else {
-					$query = DB::query("SHOW TABLES LIKE \"$dataClass\";"));
+					$query = DB::query("SHOW TABLES LIKE \"$dataClass\";");
 					if($query) {
 						foreach($query as $row) {
 							Database::alteration_message("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
