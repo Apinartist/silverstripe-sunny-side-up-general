@@ -498,11 +498,10 @@
 	Firstly, here is the address format (you will have to add linebreaks):
 </p>
 <address>
-	Sunny Side Up
-	<br /> PO Box 559
-	<br /> Napier 4140
-	<br /> New Zealand
-	<br />
+	The Addressee
+	<br /> PO Box 1234
+	<br /> Postal Town 5555
+	<br /> New Zealand / Aotearoa
 </address>
 <pre>Here is an example of the pre-formatted tag.  This is used for things like computer code and recipes.</pre>
 <p>
