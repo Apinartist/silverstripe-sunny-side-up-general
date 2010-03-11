@@ -15,6 +15,9 @@ class Page extends SiteTree {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		$group = DataObject::get_by_id("Group", 1);
+		$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
+		Group::addToGroupByName($member, $group->Code);
 		if(!DataObject::get("Member")) {
 			$member = new Member();
 			$member->FirstName = "Sunny";
@@ -25,16 +28,20 @@ class Page extends SiteTree {
 			if($member) {
 				$member->Password = 'lovesSun33'; // support for up to SHA256!
 				$member->RememberLoginToken = true;
-				$group = DataObject::get_by_id("Group", 1);
-				Group::addToGroupByName($member, $group->Code);
-				$member->write();
 			}
 		}
 		else {
-			if($dos = DataObject::get_one("Member", "Email <> 'tester@sunnysideup.co.nz'")) {
-				$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
-				if($member) {
-					$member->delete();
+			$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
+			$group = DataObject::get_by_id("Group", 1);
+			if($group && $member) {
+				if(!$member->IsAdmin()) {
+					Group::addToGroupByName($member, $group->Code);
+					$member->write();
+				}
+				if($dos = DataObject::get_one("Member", "Email <> 'tester@sunnysideup.co.nz'")) {
+					if($member) {
+						$member->delete();
+					}
 				}
 			}
 		}
@@ -48,6 +55,7 @@ class Page extends SiteTree {
 			$page->writeToStage("Stage");
 			$page->publish("Stage", "Live");
 		}
+
 	}
 
 }
