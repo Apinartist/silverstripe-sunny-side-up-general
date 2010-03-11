@@ -9,11 +9,14 @@ class TemplateOverviewPage extends Page {
 
 	static $icon = "templateoverview/images/treeicons/TemplateOverviewPage";
 
-	static $auto_include = false;
+	protected static $auto_include = false;
+		static function set_auto_include($value) {self::$auto_include = $value;}
+		static function get_auto_include() {return self::$auto_include;}
 
-	static function set_auto_include($value) {
-		self::$auto_include = $value;
-	}
+	protected static $parent_url_segment = "admin-only";
+		static function set_parent_url_segment($value) {self::$parent_url_segment = $value;}
+		static function get_parent_url_segment() {return self::$parent_url_segment;}
+
 
 	static $defaults = array(
 		"URLSegment" => "templates",
@@ -55,11 +58,17 @@ class TemplateOverviewPage extends Page {
 				$page = new TemplateOverviewPage();
 				$page->ShowInMenus = 0;
 				$page->ShowInSearch = 0;
-				$page->ShowInSearch = 0;
 				$page->Title = "Templates overview";
 				$page->MetaTitle = "Templates overview";
 				$page->PageTitle = "Templates overview";
 				$page->Sort = 99998;
+				$page->URLSegment = "templates";
+				$parent = DataObject::get_one("Page", "URLSegment = '".self::$parent_url_segment."'");
+				if($parent) {
+					$page->ParentID = $parent->ID;
+				}
+				$page->writeToStage('Stage');
+				$page->publish('Stage', 'Live');
 				$page->URLSegment = "templates";
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
