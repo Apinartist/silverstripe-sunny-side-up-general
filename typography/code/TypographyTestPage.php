@@ -10,11 +10,17 @@ class TypographyTestPage extends Page {
 
 	static $icon = "typography/images/treeicons/TypographyTestPage";
 
-	protected static $auto_include = false;
+	//legacy
+	static function setAutoInclude($v) {return self::set_auto_include($v);}
 
-	static function setAutoInclude($value) {
-		self::$auto_include = $value;
-	}
+	protected static $auto_include = false;
+		static function set_auto_include($value) {self::$auto_include = $value;}
+		static function get_auto_include() {return self::$auto_include;}
+
+	protected static $parent_url_segment = "admin-only";
+		static function set_parent_url_segment($value) {self::$parent_url_segment = $value;}
+		static function get_parent_url_segment() {return self::$parent_url_segment;}
+
 
 	static $defaults = array(
 		"URLSegment" => "typo",
@@ -36,14 +42,21 @@ class TypographyTestPage extends Page {
 				$page = new TypographyTestPage();
 				$page->ShowInMenus = 0;
 				$page->ShowInSearch = 0;
-				$page->ShowInSearch = 0;
 				$page->Title = "typography test page";
 				$page->MetaTitle = "typography test page";
 				$page->PageTitle = "typography test page";
 				$page->Sort = 99999;
 				$page->URLSegment = "typo";
+				$parent = DataObject::get_one("Page", "URLSegment = '".self::$parent_url_segment."'");
+				if($parent) {
+					$page->ParentID = $parent->ID;
+				}
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
+				$page->URLSegment = "typo";
+				$page->writeToStage('Stage');
+				$page->publish('Stage', 'Live');
+
 				Database::alteration_message("TypographyTestPage","created");
 			}
 		}
