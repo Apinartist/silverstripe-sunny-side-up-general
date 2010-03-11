@@ -11,6 +11,45 @@ class Page extends SiteTree {
 		$fields->addFieldToTab("Root.Content.Widgets", new WidgetAreaEditor("Sidebar"));
 		return $fields;
 	}
+
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		if(!DataObject::get("Member")) {
+			$member = new Member();
+			$member->FirstName = "Sunny";
+			$member->Surname = 'Tester';
+			$member->Email = 'tester@sunnysideup.co.nz';
+			$member->write();
+			$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
+			if($member) {
+				$member->Password = 'lovesSun33'; // support for up to SHA256!
+				$member->RememberLoginToken = true;
+				$group = DataObject::get_by_id("Group", 1);
+				Group::addToGroupByName($member, $group->Code);
+				$member->write();
+			}
+		}
+		else {
+			if($dos = DataObject::get_one("Member", "Email <> 'tester@sunnysideup.co.nz'")) {
+				$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
+				if($member) {
+					$member->delete();
+				}
+			}
+		}
+		$page = DataObject::get_one("Page", "`URLSegment` = 'admin-only'");
+		if(!$page) {
+			$page = new Page();
+			$page->URLSegment = "admin-only";
+			$page->Title = "Admin Only";
+			$page->ShowInMenus = 0;
+			$page->ShowInSearch = 0;
+			$page->writeToStage("Stage");
+			$page->publish("Stage", "Live");
+		}
+	}
+
 }
 
 class Page_Controller extends ContentController {

@@ -13,9 +13,9 @@
 
 	var initFunctions = {
 		imageFixes: function() {
-			$("img").removeAttr("title", "");
-			$("img[align='left']").addClass("left");
-			$("img[align='right']").addClass("right");
+			$(".typography img[align='left']").css("float", "left");
+			$(".typography img[align='right']").css("float", "right");
+			$("img").removeAttr("title", "").removeAttr("align");
 		},
 
 		setupRemoveDefault: function () {

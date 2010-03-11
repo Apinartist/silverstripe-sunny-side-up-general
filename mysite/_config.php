@@ -13,7 +13,7 @@ SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
-Member::set_password_validator("NZGovtPasswordValidator");
+Member::set_password_validator( new NZGovtPasswordValidator());
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
@@ -100,5 +100,16 @@ SimplestSpamField::set_explanation_message("this question is here to prevent spa
 SimplestSpamField::set_wrong_answer_message("please check anti-spam field to proceed");
 //===================---------------- END simplestspam MODULE ----------------===================
 
+
 //===================---------------- START templateoverview MODULE ----------------===================
+TemplateOverviewPage::set_auto_include(true);
+if(Director::isDev()) {
+	Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
+}
 //===================---------------- END templateoverview MODULE ----------------===================
+
+
+
+//===================---------------- START typography MODULE ----------------===================
+TypographyTestPage::set_auto_include(true);
+//===================---------------- END typography MODULE ----------------===================
