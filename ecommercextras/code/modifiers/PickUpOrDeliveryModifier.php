@@ -37,6 +37,13 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	//defaults
 	public static $default_sort = "Created DESC";
 
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->replaceField("CountryCode", new DropDownField("CountryCode", self::$field_labels["CountryCode"], Geoip::getCountryDropDown()));
+		return $fields;
+	}
+
 //--------------------------------------------------------------------*** static variables
 
 	static $db = array(
