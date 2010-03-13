@@ -2,7 +2,7 @@
 
 /**
  *@author nicolaas[at]sunnysideup.co.nz
- *@description contains a list of form field and their explantions
+ *@description contains a list of form fields and their explantions, is added to SiteTree
  *
  **/
 
@@ -17,14 +17,13 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 		);
 	}
 
-	/*
 	function updateCMSFields(FieldSet &$fields) {
 		if(DataObject::get_one("FormFieldExplanation", "`ParentID` = ".$this->owner->ID)) {
 			$fields->addFieldToTab("Root.Content.FormExplanations", $this->getFormFieldExplanationHasManyTable());
 		}
 		return $fields;
 	}
-	*/
+
 
 	function getFormFieldExplanationHasManyTable() {
 		$field = new HasManyComplexTableField(

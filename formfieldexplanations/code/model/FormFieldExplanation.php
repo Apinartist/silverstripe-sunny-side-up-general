@@ -12,7 +12,10 @@ class FormFieldExplanation extends DataObject {
 	public static $db = array(
 		"Name" => "Varchar(255)",
 		"Title" => "Varchar(255)",
-		"Explanation" => "HTMLText"
+		"Explanation" => "Varchar(255)",
+		"AlternativeFieldLabel" => "Varchar(100)",
+		"CustomErrorMessage" => "Varchar(100)",
+		"CustomErrorMessageAdditional" => "Varchar(200)"
 	);
 
 	public static $has_one = array(
@@ -30,7 +33,11 @@ class FormFieldExplanation extends DataObject {
 	public static $field_labels = array(
 		"Name" => "Field Name",
 		"Title" => "Label",
-		"Explanation" => "Explanation"
+		"Explanation" => "Explanation",
+		"AlternativeFieldLabel" => "Alternative Field Label (if any - replaces standard field label)",
+		"CustomErrorMessage" => "Custom Error Message, shown when field is not entered",
+		"CustomErrorMessageAdditional" => "Additional (sub-heading) Custom Error Message, shown when field is not entered"
+
 	);
 	public static $summary_fields = array(
 		"Title" => "Title"
@@ -40,6 +47,7 @@ class FormFieldExplanation extends DataObject {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("ParentID");
 		$fields->removeByName("Name");
+		$fields->replaceField("Title", new LiteralField("Title", "<h3>Edit the details for ".$this->Title."</h3>"));
 		return $fields;
 	}
 
@@ -47,6 +55,7 @@ class FormFieldExplanation extends DataObject {
 		$fields = parent::getFrontEndFields();
 		$fields->removeByName("ParentID");
 		$fields->removeByName("Name");
+		$fields->replaceField("Title", new LiteralField("Title", "<h3>Edit the details for ".$this->Title."</h3>"));
 		return $fields;
 	}
 

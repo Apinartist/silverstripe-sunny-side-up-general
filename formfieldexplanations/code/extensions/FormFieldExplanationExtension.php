@@ -12,13 +12,17 @@ class FormFieldExplanationExtension extends Extension{
 	static $allowed_actions = array("addfieldexplanation");
 
 	static function add_explanations($form, $datarecord) {
-		$js = '';
+		$js = '
+			var formFieldExplanationErrorMessage = new Array();';
 		$dos = DataObject::get("FormFieldExplanation", "`ParentID` = ".$datarecord->ID);
 		$explanations = array();
 		if($dos) {
 			foreach($dos as $do) {
-				$explanations[$do->Name]["Explanation"] = $do->Explanation;
-				$explanations[$do->Name]["ID"] = $do->ID;
+				if($do->Explanation) {$explanations[$do->Name]["Explanation"] = $do->Explanation;}
+				if($do->CustomErrorMessage) {$explanations[$do->Name]["CustomErrorMessage"] = $do->CustomErrorMessage;}
+				if($do->CustomErrorMessageAdditional) {$explanations[$do->Name]["CustomErrorMessageAdditional"] = $do->CustomErrorMessageAdditional;}
+				if($do->AlternativeFieldLabel) {$explanations[$do->Name]["AlternativeFieldLabel"] = $do->AlternativeFieldLabel;}
+				if($do->ID) {$explanations[$do->Name]["ID"] = $do->ID;}
 			}
 		}
 		$dos = $do = null;
@@ -28,7 +32,9 @@ class FormFieldExplanationExtension extends Extension{
 				if($name = $field->Name()) {
 					$message = '';
 					if(isset($explanations[$name])) {
-						$message .= $explanations[$name]["Explanation"];
+						if(isset($explanations[$name]["Explanation"])) {
+							$message .= $explanations[$name]["Explanation"];
+						}
 						if($datarecord->canEdit() && isset($explanations[$name]["ID"])) {
 							$message .= ' | '.self::CMSLink($datarecord->ID, $explanations[$name]["ID"]);
 						}
@@ -38,7 +44,7 @@ class FormFieldExplanationExtension extends Extension{
 						if(!$title) {
 							$title = $name;
 						}
-						$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">add explanation</a>';
+						$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">customise field</a>';
 					}
 					$do = true;
 					switch($field->class) {
@@ -55,8 +61,27 @@ class FormFieldExplanationExtension extends Extension{
 						formfieldexplanations.add_info('".$name."', '".$message."', '".$id."');";
 					}
 				}
+				$errorMessage = '';
+				if(isset($explanations[$name]["CustomErrorMessage"])) {
+					$errorMessage = $explanations[$name]["CustomErrorMessage"];
+					if(isset($explanations[$name]["CustomErrorMessageAdditional"])) {
+						$errorMessage .= '<span class="additionalValidationErrorMessage">'.$explanations[$name]["CustomErrorMessageAdditional"].'</span>';
+					}
+					$field->addExtraClass("customErrorMessage");
+					$field->setCustomValidationMessage($errorMessage);
+				}
+				if($field->Required() && $errorMessage) {
+					$js .= "
+						formFieldExplanationErrorMessage['$name'] = '".str_replace("/", "\/", Convert::raw2js($errorMessage))."';";
+				}
+				if(isset($explanations[$name]["AlternativeFieldLabel"])) {
+					$field->setTitle($explanations[$name]["AlternativeFieldLabel"]);
+				}
 			}
 		}
+		// block prototype validation
+		Requirements::block("sapphire/javascript/Validator.js");
+		Requirements::javascript("formfieldexplanations/javascript/Silvertripe-2.3-Validator.js");
 		Requirements::javascript("formfieldexplanations/javascript/formfieldexplanations.js");
 		Requirements::customScript($js, "FormFieldExplanationExtension");
 		Requirements::themedCSS("formfieldexplanations");
@@ -93,17 +118,28 @@ class FormFieldExplanationExtension extends Extension{
 	}
 
 	protected static function CMSLink ($pageID, $itemID) {
-		if(class_exists("DataObjectOneFieldOneRecordUpdateController")) {
-			return DataObjectOneFieldOneRecordUpdateController::popup_link(
+		if(class_exists("DataObjectOneRecordUpdateController")) {
+			$link = DataObjectOneRecordUpdateController::popup_link(
 				$className = "FormFieldExplanation",
-				$FieldName = "Explanation",
-				$recordID = $itemID
+				$recordID = $itemID,
+				$linkText = "edit customisation"
 			);
+			return $link;
 		}
 		else {
-			return '<a href="admin/show/'.$id.'" class="editFieldExplanation">edit description in CMS</a>';
+			return '<a href="admin/show/'.$pageID.'" class="editFieldExplanation">edit description in CMS</a>';
 		}
 	}
 
+	protected function array2json($array) {
+		foreach($array as $key => $value)
+			if(is_array( $value )) {
+				$result[] = "$key:" . $this->array2json($value);
+			} else {
+				$value = (is_bool($value)) ? $value : "\"$value\"";
+				$result[] = "$key:$value \n";
+			}
+		return (isset($result)) ? "{\n".implode( ', ', $result ) ."} \n": '{}';
+	}
 
 }
