@@ -7,22 +7,26 @@ class StandingOrderForm extends Form {
 
 		if($update) {
 			$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
+			//we have to make sure that order items are loaded into memory...
+			$items = $standingOrder->OrderItems();
 			$order = $controller->BlankOrder();
+			$standingOrderID = $standingOrder->ID;
 		}
 		else {
 			$order = $orderID ? DataObject::get_by_id('Order', $orderID) : $controller->BlankOrder();
+			$items = $order->Items();
 			$standingOrder = null;
+			$standingOrderID = 0;
 		}
-
-		$fields = new FieldSet();
-
-		$fields->push(new HeaderField('AlternativesHeader', 'Products'));
-
 		$items = $order->Items();
+		$fields = new FieldSet();
+		$fields->push(new HeaderField('AlternativesHeader', 'Products'));
 
 		$products = DataObject::get('FishProduct');
 		$productsMap = $products->map('ID', 'Title', ' ');
-
+		if($standingOrder) {
+			//$fields->push($this->complexTableField($standingOrder));
+		}
 		if($items) {
 			foreach($items as $item) {
 				$fields->push(new DropdownField('Product[ID]['.$item->getProductID().']', "Preferred Product", $productsMap, $item->getProductID()));
@@ -188,6 +192,20 @@ class StandingOrderForm extends Form {
 		if(isset($data['PaymentMethod'])) {$params['PaymentMethod'] = $data['PaymentMethod'];} else {$data['PaymentMethod'] = StandingOrder::default_payment_method_key();}
 		if(isset($data['Notes'])) $params['Notes'] = $data['Notes'];
 		return Convert::raw2sql($params);
+	}
+
+	function complexTableField($controller) {
+		$t = new HasManyComplexTableField(
+			$controller,
+			$name = "OrderItems",
+			$sourceClass = "StandingOrder_OrderItem",
+			$fieldList = array("Quantity" => "Quantity"),
+			$detailFormFields = null,
+			$sourceFilter = "StandingOrder_OrderItem.OrderID = ".$controller->ID,
+			$sourceSort = "",
+			$sourceJoin = ""
+		);
+		return $t;
 	}
 
 }

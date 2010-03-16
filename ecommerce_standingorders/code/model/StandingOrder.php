@@ -48,12 +48,15 @@ class StandingOrder extends DataObject {
 		"Member.Email" => "PartialMatchFilter",
 		"Member.Surname" => "PartialMatchFilter",
 		"Items" => "PartialMatchFilter",
+		"Period",
+		"DeliveryDay",
 		"Status"
 	);
 
 	public static $summary_fields = array(
-		'Member.Email' => 'First Name',
+		'ID' => 'Standing Order ID',
 		'Member.Surname' => 'Surname',
+		'Member.Email' => 'Email',
 		'OrderItemList' => 'Order Item List',
 		'Start' => 'Start',
 		'End' => 'End',
@@ -517,7 +520,7 @@ class StandingOrder extends DataObject {
 		}
 		$page = DataObject::get_one("StandingOrdersPage");
 		if($page) {
-			$StandingOrdersPageLink = '<p><a href="'.$page->Link().'admin">please click here to create orders and execute them....</a></p>';
+			$StandingOrdersPageLink = '<h3>Create Orders</h3><p><a href="'.$page->Link().'admin" target="_blank">please click here to create and execute actual orders for this STANDING order ....</a></p><h3>Review Orders</h3>';
 		}
 		else {
 			$StandingOrdersPageLink = '<p>You must create a Standing Orders Page before you can execute orders.</p>';
@@ -525,6 +528,7 @@ class StandingOrder extends DataObject {
 		$fields = new FieldSet(
 			new TabSet('Root',
 				new Tab('Main',
+					new LiteralField('Readonly[ID]', '<p>Standing Order Number: '.$this->ID.'</p>'),
 					new LiteralField('Readonly[Member]',
 <<<HTML
 	<div class="field readonly " id="Readonly[Member]">
@@ -593,7 +597,7 @@ HTML
 
 		$fields->addFieldToTab('Root', new Tab(
 			'HistoryOfChanges',
-			new HeaderField("HistoryTableHeader", "List of updates to the standing order with date of update and version"),
+			new HeaderField("HistoryTableHeader", "List of updates to the standing order"),
 			$this->getCMSHistoryTable()
 		));
 
@@ -769,6 +773,14 @@ HTML
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
+		$currentTime = (strtotime(date('Y-m-d'))-1);
+		$startTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
+		$endTime = strtotime($this->End);
+
+		if($currentTime > $startTime) {
+			$this->Start = $currentTime;
+		}
+
 		$this->Items = $this->OrderItemList();
 		if(isset($_REQUEST['DeliveryDay'])) {
 			$this->DeliveryDay = $_REQUEST['DeliveryDay'];
@@ -811,7 +823,8 @@ HTML
 
 			if($member) {
 				$member->update($data);
-			} else {
+			}
+			else {
 				$member = new Member();
 				$member->update($data);
 			}
@@ -993,7 +1006,7 @@ class StandingOrder_OrderItem extends DataObject {
 
 	public static $has_one = array(
 		'Product' => 'Product',
-		'Order' => 'StandingOrder',
+		'Order' => 'StandingOrder'
 	);
 
 	public static $versioning = array(
@@ -1018,6 +1031,10 @@ class StandingOrder_OrderItem extends DataObject {
 
 	public function ProductVersion() {
 		return $this->Product()->Version;
+	}
+
+	public function getProductID() {
+		return $this->Product()->ID;
 	}
 
 	/**

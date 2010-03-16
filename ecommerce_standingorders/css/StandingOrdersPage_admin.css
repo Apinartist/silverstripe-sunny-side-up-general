@@ -1,3 +1,4 @@
+.StandingOrderList li {background-image: none; list-style: none;}
 .StandingOrderList h2 {margin-top: 0!important; padding-top: 0!important;}
 .DraftOrderList li.future {color: #aaa!important; }
 .DraftOrderList li.current {color: green!important;}
