@@ -779,9 +779,14 @@ HTML
 
 		$currentTime = strtotime(date('Y-m-d')) + (60 * 60 * 24 * self::get_minimum_days_in_the_future());
 		$startTime = strtotime($this->Start);
+		$endTime = strtotime($this->End);
 
 		if($currentTime > $startTime) {
 			$this->Start = $currentTime;
+		}
+
+		if(($startTime + ( 7 * 60 * 60 * 24)) > $endTime) {
+			$this->End = $startTime + ( 7 * 60 * 60 * 24);
 		}
 
 		$this->Items = $this->OrderItemList();
