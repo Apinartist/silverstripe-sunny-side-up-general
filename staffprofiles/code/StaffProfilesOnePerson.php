@@ -23,7 +23,7 @@ class StaffProfilesOnePerson extends Page {
 	);
 
 	static $has_one = array(
-		"Photo" => "Image"
+		"ProfilePicture" => "Image"
 	);
 
 	function getCMSFields() {
