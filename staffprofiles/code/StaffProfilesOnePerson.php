@@ -28,10 +28,20 @@ class StaffProfilesOnePerson extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->replaceField("Title", new TextField("Title", "Name"));
+		$fields->replaceField("MenuTitle", new TextField("MenuTitle", "Name for use in menus"));
 		$fields->addFieldToTab("Root.Content.PersonalDetails", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Content.PersonalDetails", new TextField("Title", "Title"));
-		$fields->addFieldToTab("Root.Content.PersonalDetails", new ImageField("Photo", "Photo"));
+		$fields->addFieldToTab("Root.Content.PersonalDetails", new ImageField("ProfilePicture", "ProfilePicture"));
 		return $fields;
+	}
+
+	function Description() {
+		return $this->Content;
+	}
+
+	function Name() {
+		return $this->Title;
 	}
 
 }

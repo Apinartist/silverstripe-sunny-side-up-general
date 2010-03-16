@@ -1,8 +1,10 @@
 <h1>$Title</h1>
 $Content
+<% if StaffProfilesAll %>
 <ul id="StaffProfiles">
-<% control StaffProfiles %>
-	<% include StaffProfileOne %>
-<% end_control %>
+	<% control StaffProfilesAll %>
+		<% include StaffProfileOne %>
+	<% end_control %>
 </ul>
+<% end_if %>
 $Form

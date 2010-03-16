@@ -23,17 +23,19 @@ class StaffProfilesPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab(
-			"Root.Content.Profiles",
-			new HasManyComplexTableField(
-				$controller = $this,
-				$name = "StaffProfiles",
-				$sourceClass = "StaffProfile",
-				StaffProfile::$summary_fields,
-				$detailFormFields = null,
-				$sourceFilter = "ParentID = ".$this->ID
-			)
-		);
+		if(!self::get_use_child_pages_rather_than_dataobject()) {
+			$fields->addFieldToTab(
+				"Root.Content.Profiles",
+				new HasManyComplexTableField(
+					$controller = $this,
+					$name = "StaffProfiles",
+					$sourceClass = "StaffProfile",
+					StaffProfile::$summary_fields,
+					$detailFormFields = null,
+					$sourceFilter = "ParentID = ".$this->ID
+				)
+			);
+		}
 		return $fields;
 	}
 
@@ -45,6 +47,16 @@ class StaffProfilesPage_Controller extends Page_Controller {
 		parent::init();
 		Requirements::themedCSS("StaffProfilesPage");
 	}
+
+	function StaffProfilesAll() {
+		if(StaffProfilesPage::get_use_child_pages_rather_than_dataobject()) {
+			return DataObject::get("StaffProfilesOnePerson", "ParentID = ".$this->ID);
+		}
+		else {
+			$this->StaffProfiles();
+		}
+	}
+
 
 }
 
