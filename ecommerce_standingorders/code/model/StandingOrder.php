@@ -7,8 +7,8 @@
 class StandingOrder extends DataObject {
 
 	protected static $minimum_days_in_the_future = 1;
-		static set_minimum_days_in_the_future($v) {self::$minimum_days_in_the_future = intval($v); }
-		static get_minimum_days_in_the_future() {return self::$minimum_days_in_the_future;}
+		static function set_minimum_days_in_the_future($v) {self::$minimum_days_in_the_future = intval($v); }
+		static function get_minimum_days_in_the_future() {return self::$minimum_days_in_the_future;}
 
 	public static $db = array(
 		'Status' => "Enum('Pending, Active, MemberCancelled, AdminCancelled, Finished', 'Pending')",
