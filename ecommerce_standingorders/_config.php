@@ -9,6 +9,7 @@
 //StandingOrder::set_payment_methods(array('DirectCreditPayment'  => 'Direct Credit (payment into bank account)', 'DpsPxPayStoredPayment'  => 'Saved Credit Card using DPS'));
 //StandingOrder::set_receipt_email("sales@shop.com"); //defaults to Email::getAdminEmail()
 //StandingOrder::set_receipt_subject("Standing Order Update"); //defaults to Standing Order Confirmation (#$this->ID)
+//StandingOrder::set_minimum_days_in_the_future(3);
 //add the following modifier: StandingOrderModifier
 //===================---------------- END ecommerce_standingorders MODULE ----------------===================
 

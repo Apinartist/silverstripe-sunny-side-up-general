@@ -6,6 +6,10 @@
 
 class StandingOrder extends DataObject {
 
+	protected static $minimum_days_in_the_future = 1;
+		static set_minimum_days_in_the_future($v) {self::$minimum_days_in_the_future = intval($v); }
+		static get_minimum_days_in_the_future() {return self::$minimum_days_in_the_future;}
+
 	public static $db = array(
 		'Status' => "Enum('Pending, Active, MemberCancelled, AdminCancelled, Finished', 'Pending')",
 
@@ -773,9 +777,8 @@ HTML
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
-		$currentTime = (strtotime(date('Y-m-d'))-1);
-		$startTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
-		$endTime = strtotime($this->End);
+		$currentTime = strtotime(date('Y-m-d')) + (60 * 60 * 24 * self::get_minimum_days_in_the_future());
+		$startTime = strtotime($this->Start);
 
 		if($currentTime > $startTime) {
 			$this->Start = $currentTime;
