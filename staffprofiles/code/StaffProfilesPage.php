@@ -39,14 +39,7 @@ class StaffProfilesPage extends Page {
 		return $fields;
 	}
 
-	function requireDefaultRecords() {
-		parent::requireDefaultRecords();
 
-		DB::query("ALTER TABLE `StaffProfilesOnePerson` DROP `Title`");
-		DB::query("ALTER TABLE `StaffProfilesOnePerson_Live` DROP `Title`");
-		DB::query("ALTER TABLE `StaffProfilesOnePerson_versions` DROP `Title`");
-
-	}
 
 }
 
