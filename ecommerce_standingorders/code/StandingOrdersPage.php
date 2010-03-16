@@ -231,7 +231,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 				break;
 			case 'modify':
 				if(isset($orderID)) {
-					/*
+
 					$standingOrder = DataObject::get_by_id('StandingOrder', $orderID);
 
 					$items = ShoppingCart::get_items();
@@ -257,7 +257,6 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 							));
 						}
 					}
-					*/
 					//save session identifier for editing standing order
 					Session::set('StandingOrder', $orderID);
 
