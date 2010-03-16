@@ -53,7 +53,7 @@ class StaffProfilesPage_Controller extends Page_Controller {
 			return DataObject::get("StaffProfilesOnePerson", "ParentID = ".$this->ID);
 		}
 		else {
-			$this->StaffProfiles();
+			return $this->StaffProfiles();
 		}
 	}
 
