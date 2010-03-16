@@ -31,6 +31,13 @@
 //OrderFormWithoutShippingAddress::set_fixed_country_code("NZ");
 //OrderFormWithoutShippingAddress::set_postal_code_url("http://www.nzpost.co.nz/Cultures/en-NZ/OnlineTools/PostCodeFinder");
 //OrderFormWithoutShippingAddress::set_postal_code_label("find postcode");
+/*
+//adding /?BackURL= as part of the string will automatically add the right back URL!
+OrderFormWithoutShippingAddress::set_login_invite_alternative_text('
+	If you have ordered from us before you will need to <a href="Security/login/?BackURL=">log in</a>.
+	To have your password reset link sent to you please go to the <a href="Security/lostpassword/?BackURL=">password recovery page</a>.
+');
+*/
 
 // *** PICK UP OR DELIVERY
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface

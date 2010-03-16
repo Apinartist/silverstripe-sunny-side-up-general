@@ -302,8 +302,16 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function TableValue() {
-		return $this->Charge();
-		return DBField::create('Currency', $this->Charge())->Nice();
+		if($this->ID) {
+			$value = $this->TableValue;
+		}
+		else {
+			$value = $this->Charge();
+		}
+		if(!$value) {
+			$value = 0;
+		}
+		return DBField::create('Currency', $value)->Nice();
 	}
 
 //-------------------------------------------------------------------- *** title function

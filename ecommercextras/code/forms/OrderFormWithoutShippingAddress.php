@@ -31,6 +31,18 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		self::$postal_code_label = $v;
 	}
 
+	protected static $login_invite_alternative_text = '';
+		static function set_login_invite_alternative_text($v) {self::$login_invite_alternative_text = $v;}
+		static function get_login_invite_alternative_text() {
+			if(!self::$login_invite_alternative_text) {
+				self::$login_invite_alternative_text = 'Please <a href="Security/login?BackURL=/">log in now</a> to retrieve your account details or create an account below.';
+			}
+
+			return str_replace("/?BackURL=", "/?BackURL=".(CheckoutPage::find_link(true)), self::$login_invite_alternative_text) ;
+		}
+
+
+
 	function __construct($controller, $name) {
 
 		Requirements::javascript('ecommercextras/javascript/OrderFormWithoutShippingAddress.js');
@@ -42,7 +54,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 		$this->unsetActionByName("useDifferentShippingAddress");
 		$member = Member::currentMember();
 		if(!$member || !$member->ID || $member->Password == '') {
-			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">Please <a href="Security/login?BackURL=' . CheckoutPage::find_link(true) . '/">log-in now</a> to retrieve your account details or create an account below.</p>', $this), "FirstName");
+			$this->fields->addFieldToTab("", new LiteralField('MemberInfoAlso', '<p class="message good LoginCallToAction">'.self::get_login_invite_alternative_text().'</p>', $this), "FirstName");
 			//improve password field TEMPORARY HACK!
 			//$passwordField = new OptionalConfirmedPasswordField('Password', 'Password', '', null, true);
 			//$passwordField->minLength = 6;
