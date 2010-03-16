@@ -10,7 +10,7 @@ class StaffProfile extends DataObject {
 
 	public static $db = array(
 		"Name" => "Varchar(255)",
-		"Title" => "Varchar(255)",
+		"Position" => "Varchar(255)",
 		"Description" => "Text",
 		"Email" => "Varchar(255)",
 		"Sort" => "Int"

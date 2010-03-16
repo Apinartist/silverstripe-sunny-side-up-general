@@ -19,7 +19,7 @@ class StaffProfilesOnePerson extends Page {
 
 	static $db = array(
 		"Email" => "Varchar(100)",
-		"Title" => "Varchar(100)"
+		"Position" => "Varchar(100)"
 	);
 
 	static $has_one = array(
@@ -31,7 +31,7 @@ class StaffProfilesOnePerson extends Page {
 		$fields->replaceField("Title", new TextField("Title", "Name"));
 		$fields->replaceField("MenuTitle", new TextField("MenuTitle", "Name for use in menus"));
 		$fields->addFieldToTab("Root.Content.PersonalDetails", new TextField("Email", "Email"));
-		$fields->addFieldToTab("Root.Content.PersonalDetails", new TextField("Title", "Title"));
+		$fields->addFieldToTab("Root.Content.PersonalDetails", new TextField("Position", "Position"));
 		$fields->addFieldToTab("Root.Content.PersonalDetails", new ImageField("ProfilePicture", "ProfilePicture"));
 		return $fields;
 	}
