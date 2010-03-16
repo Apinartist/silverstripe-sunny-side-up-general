@@ -9,6 +9,14 @@
 
 class DpsPxPayStoredPayment extends DpsPxPayPayment {
 
+	protected static $pxpost_url = 'http://www.paymentexpress.com/pxpost.aspx';
+
+	protected static $username = '';
+		static function set_username($v) {self::$username = $v;}
+
+	protected static $password = '';
+		static function set_password($v) {self::$password = $v;}
+
 	protected static $add_card_explanation = "Storing a Card means your Credit Card will be kept on file for your next purchase. ";
 		function set_add_card_explanation($v) {self::$add_card_explanation = $v;}
 		function get_add_card_explanation() {return self::$add_card_explanation;}
@@ -92,9 +100,121 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 				}
 			}
 		}
+		elseif($data["DPSUseStoredCard"]) {
+			return $this->processViaPostRatherThanPxPay($data, $form, $data["DPSUseStoredCard"]);
+		}
 		$url = $this->buildURL($data["Amount"], $data["DPSUseStoredCard"], $data["DPSStoreCard"]);
 		return $this->executeURL($url);
 	}
+
+
+
+
+	function processViaPostRatherThanPxPay($data, $form, $cardToUse) {
+
+		// 1) Main Settings
+
+		$inputs['PostUsername'] = self::$username;
+		$inputs['PostPassword'] = self::$password;
+
+		// 2) Payment Informations
+
+		$inputs['Amount'] = $this->Amount;
+		$inputs['InputCurrency'] = $this->Currency;
+		$inputs['TxnId'] = $this->ID;
+		$inputs['TxnType'] = 'Purchase';
+		$inputs["MerchantReference"] = $this->ID;
+
+		// 3) Credit Card Informations
+		$inputs["DpsBillingId"] = $cardToUse;
+
+
+		// 4) DPS Transaction Sending
+
+		$responseFields = $this->doPayment($inputs);
+
+		// 5) DPS Response Management
+
+		if(isset($responseFields['SUCCESS']) && $responseFields['SUCCESS']) {
+			$this->Status = 'Success';
+			$result = new Payment_Success();
+		}
+		else {
+			$this->Status = 'Failure';
+			$result = new Payment_Failure();
+		}
+
+		if($transactionRef = $responseFields['DPSTXNREF']) $this->TxnRef = $transactionRef;
+
+		if($helpText = $responseFields['HELPTEXT']) $this->Message = $helpText;
+		else if($responseText = $responseFields['RESPONSETEXT']) $this->Message = $responseText;
+
+		$this->write();
+		return $result;
+	}
+
+	function doPayment(array $inputs) {
+
+		// 1) Transaction Creation
+		$transaction = "<Txn>";
+		foreach($inputs as $name => $value) {
+			if($name == "Amount") {
+				$value = number_format($value, 2, '.', '');
+			}
+			$transaction .= "<$name>$value</$name>";
+		}
+		$transaction .= "</Txn>";
+
+		// 2) CURL Creation
+
+		$clientURL = curl_init();
+		curl_setopt($clientURL, CURLOPT_URL, self::$pxpost_url);
+		curl_setopt($clientURL, CURLOPT_POST, 1);
+		curl_setopt($clientURL, CURLOPT_POSTFIELDS, $transaction);
+		curl_setopt($clientURL, CURLOPT_RETURNTRANSFER, 1);
+		//curl_setopt($clientURL, CURLOPT_SSLVERSION, 3);
+
+		// 3) CURL Execution
+
+		$resultXml = curl_exec($clientURL);
+
+		// 4) CURL Closing
+
+		curl_close ($clientURL);
+
+		// 5) XML Parser Creation
+
+		$xmlParser = xml_parser_create();
+		$values = null;
+		$indexes = null;
+		xml_parse_into_struct($xmlParser, $resultXml, $values, $indexes);
+		xml_parser_free($xmlParser);
+
+		// 6) XML Result Parsed In A PHP Array
+
+		$resultPhp = array();
+		$level = array();
+		foreach($values as $xmlElement) {
+			if($xmlElement['type'] == 'open') {
+				if(array_key_exists('attributes', $xmlElement)) list($level[$xmlElement['level']], $extra) = array_values($xmlElement['attributes']);
+				else $level[$xmlElement['level']] = $xmlElement['tag'];
+			}
+			else if ($xmlElement['type'] == 'complete') {
+				$startLevel = 1;
+				$phpArray = '$resultPhp';
+				while($startLevel < $xmlElement['level']) $phpArray .= '[$level['. $startLevel++ .']]';
+				$phpArray .= '[$xmlElement[\'tag\']] = array_key_exists(\'value\', $xmlElement)? $xmlElement[\'value\'] : null;';
+				eval($phpArray);
+			}
+		}
+		if(!isset($resultPhp['TXN'])) {
+			return false;
+		}
+		$result = $resultPhp['TXN'];
+		return $result;
+	}
+
+
 
 	protected function buildURL($amount, $cardToUse = '', $storeCard = false) {
 		$commsObject = new DpsPxPayComs();
@@ -118,8 +238,9 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 		/**
 		* details of the redirection
 		**/
-		$commsObject->setUrlFail(DpsPxPayStoredPayment_Handler::absolute_complete_link());
-		$commsObject->setUrlSuccess(DpsPxPayStoredPayment_Handler::absolute_complete_link());
+		$link = DpsPxPayStoredPayment_Handler::absolute_complete_link();
+		$commsObject->setUrlFail($link);
+		$commsObject->setUrlSuccess($link);
 
 		/**
 		* process payment data (check if it is OK and go forward if it is...
@@ -130,22 +251,25 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 	}
 
 
-
-
 }
 
 class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 
-	static $url_segment = 'dpspxpaystoredpayment';
+	protected static $url_segment = 'dpspxpaystoredpayment';
+		static function set_url_segment($v) { self::$url_segment = $v;}
+		static function get_url_segment() { return self::$url_segment;}
 
 	static function complete_link() {
 		return self::$url_segment . '/paid/';
 	}
 
+	static function absolute_complete_link() {
+		return Director::AbsoluteURL(self::complete_link());
+	}
+
 	function paid() {
 		$commsObject = new DpsPxPayComs();
 		$response = $commsObject->processRequestAndReturnResultsAsObject();
-
 		if($payment = DataObject::get_by_id('DpsPxPayStoredPayment', $response->getMerchantReference())) {
 			if(1 == $response->getSuccess()) {
 				$payment->Status = 'Success';

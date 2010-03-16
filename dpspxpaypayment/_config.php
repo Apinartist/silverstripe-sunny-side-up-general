@@ -29,12 +29,14 @@ else{
 //DpsPxPayPayment::remove_credit_card("Dinners Club");
 //DpsPxPayPayment::remove_credit_card("JCB");
 //DpsPxPayStoredPayment::set_add_card_explanation("Storing a Card means your Credit Card will be kept on file for your next purchase. ");
+//DpsPxPayStoredPayment::set_username("xxx");
+//DpsPxPayStoredPayment::set_password("xxx");
 
 
 //*** must have!
 Director::addRules(50, array(
-	DpsPxPayPayment_Handler::$url_segment . '/$Action/$ID' => 'DpsPxPayPayment_Handler',
-	DpsPxPayStoredPayment_Handler::$url_segment . '/$Action/$ID' => 'DpsPxPayStoredPayment_Handler',
+	DpsPxPayPayment_Handler::get_url_segment() . '/$Action/$ID' => 'DpsPxPayPayment_Handler',
+	DpsPxPayStoredPayment_Handler::get_url_segment() . '/$Action/$ID' => 'DpsPxPayStoredPayment_Handler',
 ));
 
 

@@ -2,11 +2,7 @@
 
 /**
  *@author nicolaas[at]sunnysideup.co.nz
- * unique identifier: OrderNumber and PaymentID
- *
- *
- *
- *
+ *@description: OrderNumber and PaymentID
  *
  *
  **/
@@ -129,7 +125,9 @@ HTML;
 
 class DpsPxPayPayment_Handler extends Controller {
 
-	static $url_segment = 'dpspxpaypayment';
+	protected static $url_segment = 'dpspxpaypayment';
+		static function set_url_segment($v) { self::$url_segment = $v;}
+		static function get_url_segment() { return self::$url_segment;}
 
 	static function complete_link() {
 		return self::$url_segment . '/paid/';
