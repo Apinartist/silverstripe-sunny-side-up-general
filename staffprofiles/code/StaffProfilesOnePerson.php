@@ -7,8 +7,7 @@
  */
 class StaffProfilesOnePerson extends Page {
 
-	public static $icon = "mysite/images/treeicons/StaffProfilesOnePerson";
-	//parents and children in sitetree
+	static $icon = "mysite/images/treeicons/StaffProfilesOnePerson";
 
 	static $allowed_children = "none"; //can also be "none";
 
@@ -43,6 +42,18 @@ class StaffProfilesOnePerson extends Page {
 	function Name() {
 		return $this->Title;
 	}
+
+
+  public function EmailObfuscatorName() {
+		$obj = HideEmail::convert_email($this->Email);
+		return $obj->text;
+	}
+
+	public function EmailObfuscatorLink() {
+		$obj = HideEmail::convert_email($this->Email);
+		return $obj->mailto;
+	}
+
 
 }
 
