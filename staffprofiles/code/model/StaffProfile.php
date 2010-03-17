@@ -48,15 +48,14 @@ class StaffProfile extends DataObject {
 		parent::populateDefaults();
 	}
 
-  public function EmailObfuscator() {
-		if($email = $this->Email) {
-			$array = split("@", $this->Email);
-			if(is_array($array)) {
-				if(count($array) == 2) {
-					return $array[0]." [at] ".$array[1];
-				}
-			}
-		}
+  public function EmailObfuscatorName() {
+		$obj = HideEmail::convert_email($this->Email);
+		return $obj->text;
+	}
+
+	public function EmailObfuscatorLink() {
+		$obj = HideEmail::convert_email($this->Email);
+		return $obj->mailto;
 	}
 
 	function onBeforeWrite() {
