@@ -38,7 +38,7 @@ class OrderFormWithoutShippingAddress extends OrderForm {
 				self::$login_invite_alternative_text = 'Please <a href="Security/login?BackURL=/">log in now</a> to retrieve your account details or create an account below.';
 			}
 
-			return str_replace("/?BackURL=", "/?BackURL=".(CheckoutPage::find_link(true)), self::$login_invite_alternative_text) ;
+			return str_replace("/?BackURL=", "/?BackURL=/".(CheckoutPage::find_link(true)), self::$login_invite_alternative_text) ;
 		}
 
 
