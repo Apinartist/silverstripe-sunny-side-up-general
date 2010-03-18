@@ -1,7 +1,8 @@
-#TemplateOverviewPageDevelopmentFooter {margin-top: 100px; clear: both; background-color: #999; border-top: 10px solid #fff; text-align: left; font-size: 1.5em; color:#fff;padding: 2em;}
+#TemplateOverviewPageDevelopmentFooter {margin-top: 100px; clear: both; background-color: #999; border-top: 10px solid #fff; text-align: left; font-size: 0.7em; color:#fff;padding: 2em;}
 	#TemplateOverviewPageDevelopmentFooter ul, #TemplateOverviewPageDevelopmentFooter  p {}
 	#TemplateOverviewPageDevelopmentFooter ul{margin-top: 0.5em;}
 		#TemplateOverviewPageDevelopmentFooter ul li a, #TemplateOverviewPageDevelopmentFooter  p a {color: #fff; font-weight: bold; text-decoration: underline;}
 		#TemplateOverviewPageDevelopmentFooter ul li a:hover, #TemplateOverviewPageDevelopmentFooter  p a:hover {color: yellow;}
-		#TemplateOverviewPageDevelopmentFooter ul li{list-style: none; border-bottom: 1px dotted #fff; padding: 0.5em 0 }
+		#TemplateOverviewPageDevelopmentFooter ul li{list-style: none; padding: 0.5em 0 }
 			#TemplateOverviewPageDevelopmentFooter ul li.hiddenListItem{display: none;}
+#TemplateOverviewPrevNextList li {background-repeat: no-repeat; clear: both; padding-left: 20px!important;}

@@ -34,6 +34,11 @@ class TemplateOverviewPage extends Page {
 		return !DataObject::get("SiteTree", "`ClassName` = 'TemplateOverviewPage'");
 	}
 
+
+	protected $counter = 0;
+
+	protected $ShowAll = false;
+
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$tablefield = new HasManyComplexTableField(
@@ -78,46 +83,6 @@ class TemplateOverviewPage extends Page {
 	}
 
 
-
-}
-
-class TemplateOverviewPage_Controller extends Page_Controller {
-
-	var $counter = 0;
-
-	var $ShowAll = false;
-
-	function init() {
-		parent::init();
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-		Requirements::javascript('templateoverview/javascript/TemplateOverviewPage.js');
-		Requirements::css("templateoverview/css/TemplateOverviewPage.css");
-		if(class_exists("PrettyPhoto")) {
-			PrettyPhoto::include_code();
-		}
-		else {
-			user_error("It is recommended that you install the Sunny Side Up Pretty Photo Module", E_USER_NOTICE);
-		}
-	}
-
-	function showall () {
-		$this->ShowAll = true;
-		return array();
-	}
-
-	function showmore() {
-		$id = Director::URLParam("ID");
-		$obj = DataObject::get_by_id("SiteTree", $id);
-		if($obj) {
-			$data = DataObject::get($obj->ClassName, $where = "`ClassName` = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
-		}
-		$array = array(
-			"Results" => $data,
-			"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
-		);
-		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
-	}
-
 	public function ListOfAllClasses() {
 		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
@@ -160,6 +125,12 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $doSet;
 	}
 
+	function showall () {
+		$this->ShowAll = true;
+		return array();
+	}
+
+
 	protected function TemplateDetails($className) {
 		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'" AND ParentID = '.$this->ID);
 		if(!$obj) {
@@ -200,6 +171,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		return $object;
 	}
 
+	//not used!
 	function NoSubClasses($obj) {
 		$array = ClassInfo::subclassesFor($obj->ClassName);
 		if(count($array)) {
@@ -211,6 +183,39 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		}
 		return true;
 	}
+
+}
+
+class TemplateOverviewPage_Controller extends Page_Controller {
+
+
+	function init() {
+		parent::init();
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript('templateoverview/javascript/TemplateOverviewPage.js');
+		Requirements::css("templateoverview/css/TemplateOverviewPage.css");
+		if(class_exists("PrettyPhoto")) {
+			PrettyPhoto::include_code();
+		}
+		else {
+			user_error("It is recommended that you install the Sunny Side Up Pretty Photo Module", E_USER_NOTICE);
+		}
+	}
+
+	function showmore() {
+		$id = Director::URLParam("ID");
+		$obj = DataObject::get_by_id("SiteTree", $id);
+		if($obj) {
+			$data = DataObject::get($obj->ClassName, $where = "`ClassName` = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
+		}
+		$array = array(
+			"Results" => $data,
+			"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
+		);
+		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
+	}
+
+
 
 
 	function ConfigurationDetails() {
