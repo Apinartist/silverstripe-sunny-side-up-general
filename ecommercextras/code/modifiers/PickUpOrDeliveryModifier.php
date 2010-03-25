@@ -247,7 +247,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				else {
 					if( is_object($obj)) {
 						// no need to charge, order is big enough
-						if(floatval($obj->MinimumOrderAmountForZeroRate) < floatval($amount)) {
+						if(floatval($obj->MinimumOrderAmountForZeroRate) > floatval($amount)) {
 							self::$actual_charges =  0;
 							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$actual_charges;
 						}
@@ -297,6 +297,10 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 			self::$calculations_done = true;
 		}
 		$this->debugMessage .= "<hr />final score: ".self::$actual_charges;
+		if(isset($_GET["debug"])) {
+			print_r($this->debugMessage);
+		}
+
 		return self::$actual_charges;
 
 	}
