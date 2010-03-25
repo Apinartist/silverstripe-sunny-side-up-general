@@ -247,9 +247,10 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 				else {
 					if( is_object($obj)) {
 						// no need to charge, order is big enough
+						$this->debugMessage .= "<hr />option selected ".$obj->Title;
 						if(floatval($obj->MinimumOrderAmountForZeroRate) < floatval($amount)) {
 							self::$actual_charges =  0;
-							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate is lower than amount".self::$actual_charges;
+							$this->debugMessage .= "<hr />MinimumOrderAmountForZeroRate: ".$obj->MinimumOrderAmountForZeroRate." is lower than amount ".self::$actual_charges;
 						}
 						else {
 							// add weight based shipping
