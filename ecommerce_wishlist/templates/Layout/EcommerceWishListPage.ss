@@ -1,0 +1,3 @@
+$Content
+<% include WishListList %>
+$Form
