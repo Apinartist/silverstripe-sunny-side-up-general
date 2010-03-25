@@ -240,7 +240,7 @@ class ProductWithVariations extends Product {
 
 class ProductWithVariations_Controller extends Product_Controller {
 
-	static $allowed_actions = array("showsimplecart", "ProductVariationsForm", "deleteallvariations", "createallvariations");
+	static $allowed_actions = array("showsimplecart" => true, "ProductVariationsForm" => true, "deleteallvariations" => true, "createallvariations" => true, "addVariation" => true);
 
 	protected $optionArray = null;
 
