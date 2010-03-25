@@ -260,7 +260,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 							if(!$obj->WeightUnit) { $obj->WeightUnit = 1;}
 							if($weight && $obj->WeightMultiplier && $obj->WeightUnit ) {
 								$units = ceil($weight / $obj->WeightUnit);
-								self::$actual_charges += $unit * $obj->WeightMultiplier;
+								self::$actual_charges += $units * $obj->WeightMultiplier;
 								$this->debugMessage .= "<hr />weight charge: ".self::$actual_charges;
 							}
 							// add percentage
