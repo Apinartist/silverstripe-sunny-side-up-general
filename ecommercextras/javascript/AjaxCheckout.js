@@ -85,7 +85,7 @@ var AjaxCheckout = {
 			var change = changes[i];
 			if(typeof(change.parameter) != 'undefined' && typeof(change.value) != 'undefined') {
 				var parameter = change.parameter;
-				var value = AjaxCheckout.escapeHTML(change.value);
+				var value = change.value;
 				if(change.id) {
 					var id = '#' + change.id;
 					jQuery(id).attr(parameter, value);
