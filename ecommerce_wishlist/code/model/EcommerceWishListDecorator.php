@@ -35,8 +35,8 @@ class EcommerceWishListDecorator extends Extension {
 		static function get_session_variable_name () {return self::$session_variable_name;}
 
 	protected static $wish_list_array = array();
-		static function set_wish_list_array($v){self::$wish_list_array = $v;}
-		static function get_wish_list_array () {return self::$wish_list_array;}
+		protected static function set_wish_list_array($v){self::$wish_list_array = $v;}
+		protected static function get_wish_list_array () {return self::$wish_list_array;}
 
 	function IsOnWishList() {
 		$array = Session::get(self::get_session_variable_name());
