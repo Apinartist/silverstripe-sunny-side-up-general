@@ -1,4 +1,4 @@
-<% require javascript(ecommerce_wishlist/javascript/EcommerceWishList.js) %>
+
 <div class="addToWishListHolder">
 <% if WishListMessage %><span class="wishListMessage">$WishListMessage</span><% end_if %>
 <% if IsOnWishList %>

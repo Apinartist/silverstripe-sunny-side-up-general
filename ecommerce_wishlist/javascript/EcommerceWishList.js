@@ -15,8 +15,6 @@ var EcommerceWishList = {
 
 	ConfirmDeleteText: 'Are you sure you would like to remove this item from your wish list?',
 
-	LoadingText: "updating wish list... ",
-
 	LoadingClass: "loading",
 
 	showClass: "show",
@@ -34,9 +32,6 @@ var EcommerceWishList = {
 		jQuery(element).addWishListRemoveLinks();
 	},
 
-	set_LoadingText: function(v) {
-		this.LoadingText = v;
-	},
 
 	set_ConfirmDeleteText: function(v) {
 		this.ConfirmDeleteText = v;
@@ -49,6 +44,7 @@ var EcommerceWishList = {
 			{},
 			function(data) {
 				jQuery(el).text(data);
+				jQuery(this).removeClass(EcommerceWishList.LoadingClass);
 			}
 		);
 		return true;
@@ -65,6 +61,7 @@ jQuery.fn.extend({
 	addWishListAddLinks: function() {
 		jQuery(this).find(EcommerceWishList.addLinkSelector).click(
 			function(){
+				jQuery(this).addClass(EcommerceWishList.LoadingClass);
 				var url = jQuery(this).attr("href");
 				EcommerceWishList.loadAjax(url, this);
 				return false;
@@ -76,6 +73,7 @@ jQuery.fn.extend({
 		jQuery(this).find(EcommerceWishList.removeLinkSelector).click(
 			function(){
 				if(EcommerceWishList.UnconfirmedDelete || confirm(EcommerceWishList.ConfirmDeleteText)) {
+					jQuery(this).addClass(EcommerceWishList.LoadingClass);
 					var url = jQuery(this).attr("href");
 					EcommerceWishList.loadAjax(url, this);
 				}

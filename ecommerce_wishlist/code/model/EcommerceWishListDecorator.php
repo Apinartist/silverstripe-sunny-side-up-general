@@ -14,6 +14,7 @@ class EcommerceWishListDecorator extends Extension {
 
 	function getAddedToListText () {return $this->EcommerceWishListPage()->AddedToListText;}
 	function getCouldNotAddedToListText () {return $this->EcommerceWishListPage()->CouldNotAddedToListText;}
+	function getRemovedFromListConfirmation () {return $this->EcommerceWishListPage()->RemovedFromListConfirmation;}
 	function getRemovedFromListText () {return $this->EcommerceWishListPage()->RemovedFromListText ;}
 	function getCouldNotRemovedFromListText () {return $this->EcommerceWishListPage()->CouldNotRemovedFromListText;}
 	function getClearWishList () {return $this->EcommerceWishListPage()->ClearWishList;}
@@ -31,6 +32,9 @@ class EcommerceWishListDecorator extends Extension {
 		protected static function get_wish_list_array () {return self::$wish_list_array;}
 
 	function IsOnWishList() {
+		Requirements::javascript("ecommerce_wishlist/javascript/EcommerceWishList.js");
+		$msg = $this->getRemovedFromListConfirmation();
+		Requirements::customScript("EcommerceWishList.set_ConfirmDeleteText('".Convert::raw2js($msg)."')");
 		$array = Session::get(self::get_session_variable_name());
 		if(isset($array[$this->owner->ID])) {
 			return true;
