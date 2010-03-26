@@ -7,28 +7,28 @@ class EcommerceWishListDecorator extends Extension {
 	static $allowed_actions = array(
 		"addtowishlist" => true,
 		"removefromwishlist" => true,
-		"clearwishlist" => true
+		"clearwishlist" => true,
+		"savewishlist" => true,
+		"retrievewishlist" => true
 	);
 
-	protected static $added_to_list_text = "added to wish list";
-		static function set_added_to_list_text($v){self::$added_to_list_text = $v;}
-		static function get_added_to_list_text () {return self::$added_to_list_text;}
+	function getAddedToListText () {return $this->owner->renderWith("EcommerceWishList_added_to_list_text");}
 
-	protected static $could_not_added_to_list_text = "could not add to wish list";
-		static function set_could_not_added_to_list_text($v){self::$could_not_added_to_list_text = $v;}
-		static function get_could_not_added_to_list_text () {return self::$could_not_added_to_list_text;}
+	function getCouldNotAddedToListText () {return $this->owner->renderWith("EcommerceWishList_could_not_added_to_list_text");}
 
-	protected static $removed_from_list_text = "removed from wish list";
-		static function set_removed_from_list_text($v){self::$removed_from_list_text = $v;}
-		static function get_removed_from_list_text () {return self::$removed_from_list_text;}
+	function getRemovedFromListText () {return $this->owner->renderWith("EcommerceWishList_removed_from_list_text");}
 
-	protected static $could_not_removed_from_list_text = "could not be removed from wish list";
-		static function set_could_not_removed_from_list_text($v){self::$could_not_removed_from_list_text = $v;}
-		static function get_could_not_removed_from_list_text () {return self::$could_not_removed_from_list_text;}
+	function getCouldNotRemovedFromListText () {return $this->owner->renderWith("EcommerceWishList_could_not_removed_from_list_text");}
 
-	protected static $clear_wish_list = "cleared wish list";
-		static function set_clear_wish_list($v){self::$clear_wish_list = $v;}
-		static function get_clear_wish_list () {return self::$clear_wish_list;}
+	function getClearWishList () {return $this->owner->renderWith("EcommerceWishList_clear_wish_list");}
+
+	function getSavedWishListText () {return $this->owner->renderWith("EcommerceWishList_saved_wish_list_text");}
+
+	function getSavedErrorWishListText () {return $this->owner->renderWith("EcommerceWishList_saved_error_wish_list_text");}
+
+	function getRetrievedWishListText () {return $this->owner->renderWith("EcommerceWishList_retrieved_wish_list_text");}
+
+	function getRetrievedErrorWishListText () {return $this->owner->renderWith("EcommerceWishList_retrieved_error_wish_list_text");}
 
 	protected static $session_variable_name = "EcommerceWishListDecoratorArray";
 		static function set_session_variable_name($v){self::$session_variable_name = $v;}
@@ -56,6 +56,16 @@ class EcommerceWishListDecorator extends Extension {
 		return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
 	}
 
+	function CanSaveWishList() {
+		return $this->WishList() && Member::currentMember();
+	}
+
+	function CanRetrieveWishList() {
+		if($member = Member::currentMember()) {
+			return $member->EcommerceWishList;
+		}
+	}
+
 	function WishListMessage() {
 		//retrieve message
 		$msg = Session::get(self::get_session_variable_name()."_message");
@@ -73,20 +83,20 @@ class EcommerceWishListDecorator extends Extension {
 				$array[$id]= $id;
 				$this->setWishListArray($array);
 				if(Director::is_ajax()) {
-					return self::get_added_to_list_text();
+					return $this->getAddedToListText();
 				}
 				else {
-					Session::set(self::get_session_variable_name()."_message", self::get_added_to_list_text());
+					Session::set(self::get_session_variable_name()."_message", $this->getAddedToListText());
 					Director::redirectBack();
 					return;
 				}
 			}
 		}
 		if(Director::is_ajax()) {
-			return self::get_could_not_added_to_list_text();
+			return $this->getCouldNotAddedToListText;
 		}
 		else {
-			Session::set(self::get_session_variable_name()."_message", self::get_could_not_added_to_list_text());
+			Session::set(self::get_session_variable_name()."_message", $this->getCouldNotAddedToListText());
 			Director::redirectBack();
 			return;
 		}
@@ -104,10 +114,10 @@ class EcommerceWishListDecorator extends Extension {
 				//reset
 				$this->setWishListArray($array);
 				if(Director::is_ajax()) {
-					return self::get_removed_from_list_text();
+					return $this->getRemovedFromListText();
 				}
 				else {
-					Session::set(self::get_session_variable_name()."_message", self::get_removed_from_list_text());
+					Session::set(self::get_session_variable_name()."_message", $this->getRemovedFromListText());
 					Director::redirectBack();
 					return;
 				}
@@ -122,26 +132,68 @@ class EcommerceWishListDecorator extends Extension {
 		}
 		//soemthing did not work...
 		if(Director::is_ajax()) {
-			return self::get_could_not_removed_from_list_text().": ".$error;
+			return $this->getCouldNotRemovedFromListText().": ".$error;
 		}
 		else {
-			Session::set(self::get_session_variable_name()."_message", self::get_could_not_removed_from_list_text().": ".$error);
+			Session::set(self::get_session_variable_name()."_message", $this->getCouldNotRemovedFromListText().": ".$error);
 			Director::redirectBack();
 			return;
 		}
 	}
 
 	function savewishlist() {
-
+		if($this->CanSaveWishList()) {
+			$member = Member::currentMember();
+			$member->EcommerceWishList = serialize($this->getWishListArray());
+			$member->write();
+			if(Director::is_ajax()) {
+				return $this->getSavedWishListText();
+			}
+			else {
+				Session::set(self::get_session_variable_name()."_message", $this->getSavedWishListText());
+				Director::redirectBack();
+				return;
+			}
+		}
+		if(Director::is_ajax()) {
+			return $this->getSavedErrorWishListText();
+		}
+		else {
+			Session::set(self::get_session_variable_name()."_message", $this->getSavedErrorWishListText());
+			Director::redirectBack();
+			return;
+		}
+	}
+	function retrievewishlist() {
+		if($this->CanRetrieveWishList()) {
+			$member = Member::currentMember();
+			$this->setWishListArray(unserialize($member->EcommerceWishList));
+			if(Director::is_ajax()) {
+				return $this->getRetrievedWishListText();
+			}
+			else {
+				Session::set(self::get_session_variable_name()."_message", $this->getRetrievedWishListText());
+				Director::redirectBack();
+				return;
+			}
+		}
+		if(Director::is_ajax()) {
+			return $this->getRetrievedErrorWishListText();
+		}
+		else {
+			Session::set(self::get_session_variable_name()."_message", $this->getRetrievedErrorWishListText());
+			Director::redirectBack();
+			return;
+		}
 	}
 
 	function clearwishlist() {
 		Session::clear(self::get_session_variable_name());
 		if(Director::is_ajax()) {
-			return self::get_clear_wish_list();
+			return $this->getClearWishList();
 		}
 		else {
-			Session::set(self::get_session_variable_name()."_message", self::get_clear_wish_list());
+			Session::set(self::get_session_variable_name()."_message", $this->getClearWishList());
 			Director::redirectBack();
 			return;
 		}
@@ -181,7 +233,7 @@ class EcommerceWishListDecorator extends Extension {
 			//set session variable
 			Session::clear(self::get_session_variable_name());
 			Session::set(self::get_session_variable_name(), null);
-			Session::set(self::get_session_variable_name(), "");
+			Session::set(self::get_session_variable_name(), "clear");
 			Session::set(self::get_session_variable_name(), array());
 			Session::set(self::get_session_variable_name(), $array);
 		}

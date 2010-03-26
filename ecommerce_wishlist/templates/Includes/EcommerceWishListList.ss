@@ -1,3 +1,4 @@
+<div class="wishListHolder"><% if WishListMessage %><span class="wishListMessage">$WishListMessage</span><% end_if %></div>
 <% if WishList %>
 <ul id="WishListList">
 	<% control WishList %>

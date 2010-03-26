@@ -17,4 +17,8 @@ class EcommerceWishListPage extends Page {
 class EcommerceWishListPage_Controller extends Page_Controller {
 
 
+	function test() {
+		return $this->renderWith("EcommerceWishListTest");
+	}
+
 }
