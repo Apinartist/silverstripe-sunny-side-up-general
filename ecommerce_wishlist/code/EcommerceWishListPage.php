@@ -11,9 +11,11 @@ class EcommerceWishListPage extends Page {
 
 	static $icon = "mysite/images/treeicons/EcommerceWishListPage";
 
+
 	static $db = array(
 		"AddedToListText" => "Varchar(255)",
 		"CouldNotAddedToListText" => "Varchar(255)",
+		"RemovedFromListConfirmation" => "Varchar(255)",
 		"RemovedFromListText" => "Varchar(255)",
 		"CouldNotRemovedFromListText" => "Varchar(255)",
 		"ClearWishList" => "Varchar(255)",
@@ -28,6 +30,7 @@ class EcommerceWishListPage extends Page {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "AddedToListText", $title = "Added to list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotAddedToListText", $title = "could not add to list"));
+		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListConfirmation", $title = "Remove from list confirmation"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListText", $title = "removed from list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotRemovedFromListText", $title = "could not remove from list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "ClearWishList", $title = "cleared list"));
@@ -54,6 +57,7 @@ class EcommerceWishListPage extends Page {
 		if($page) {
 			if(!$page->AddedToListText){$page->AddedToListText = "added to wish list"; $update .= "updated AddedToListText, ";}
 			if(!$page->CouldNotAddedToListText){$page->CouldNotAddedToListText = "could not add to wish list"; $update .= "updated CouldNotAddedToListText, ";}
+			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to rempve it from your wish list?"; $update .= "updated RemovedFromListConfirmation, ";}
 			if(!$page->RemovedFromListText){$page->RemovedFromListText = "removed from wish list"; $update .= "updated RemovedFromListText, ";}
 			if(!$page->CouldNotRemovedFromListText){$page->CouldNotRemovedFromListText = "could not be removed from wish list"; $update .= "updated CouldNotRemovedFromListText, ";}
 			if(!$page->ClearWishList){$page->ClearWishList = "cleared wish list"; $update .= "updated ClearWishList, ";}
@@ -75,8 +79,5 @@ class EcommerceWishListPage extends Page {
 class EcommerceWishListPage_Controller extends Page_Controller {
 
 
-	function test() {
-		return $page->renderWith("EcommerceWishListTest");
-	}
 
 }
