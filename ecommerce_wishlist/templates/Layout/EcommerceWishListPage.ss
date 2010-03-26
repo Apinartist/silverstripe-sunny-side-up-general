@@ -1,3 +1,3 @@
 $Content
-<% include WishListList %>
+<% include EcommerceWishListList %>
 $Form

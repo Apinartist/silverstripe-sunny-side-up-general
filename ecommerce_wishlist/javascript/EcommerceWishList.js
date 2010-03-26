@@ -48,6 +48,7 @@ var EcommerceWishList = {
 			url,
 			{},
 			function(data) {
+				jQuery(el).text(data);
 			}
 		);
 		return true;
