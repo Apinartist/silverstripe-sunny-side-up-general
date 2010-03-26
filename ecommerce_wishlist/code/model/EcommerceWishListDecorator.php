@@ -12,23 +12,15 @@ class EcommerceWishListDecorator extends Extension {
 		"retrievewishlist" => true
 	);
 
-	function getAddedToListText () {return $this->owner->renderWith("EcommerceWishList_added_to_list_text");}
-
-	function getCouldNotAddedToListText () {return $this->owner->renderWith("EcommerceWishList_could_not_added_to_list_text");}
-
-	function getRemovedFromListText () {return $this->owner->renderWith("EcommerceWishList_removed_from_list_text");}
-
-	function getCouldNotRemovedFromListText () {return $this->owner->renderWith("EcommerceWishList_could_not_removed_from_list_text");}
-
-	function getClearWishList () {return $this->owner->renderWith("EcommerceWishList_clear_wish_list");}
-
-	function getSavedWishListText () {return $this->owner->renderWith("EcommerceWishList_saved_wish_list_text");}
-
-	function getSavedErrorWishListText () {return $this->owner->renderWith("EcommerceWishList_saved_error_wish_list_text");}
-
-	function getRetrievedWishListText () {return $this->owner->renderWith("EcommerceWishList_retrieved_wish_list_text");}
-
-	function getRetrievedErrorWishListText () {return $this->owner->renderWith("EcommerceWishList_retrieved_error_wish_list_text");}
+	function getAddedToListText () {return $this->EcommerceWishListPage()->AddedToListText;}
+	function getCouldNotAddedToListText () {return $this->EcommerceWishListPage()->CouldNotAddedToListText;}
+	function getRemovedFromListText () {return $this->EcommerceWishListPage()->RemovedFromListText ;}
+	function getCouldNotRemovedFromListText () {return $this->EcommerceWishListPage()->CouldNotRemovedFromListText;}
+	function getClearWishList () {return $this->EcommerceWishListPage()->ClearWishList;}
+	function getSavedWishListText () {return $this->EcommerceWishListPage()->SavedWishListText;}
+	function getSavedErrorWishListText () {return $this->EcommerceWishListPage()->SavedErrorWishListText;}
+	function getRetrievedWishListText () {return $this->EcommerceWishListPage()->RetrievedWishListText;}
+	function getRetrievedErrorWishListText () {return $this->EcommerceWishListPage()->RetrievedErrorWishListText;}
 
 	protected static $session_variable_name = "EcommerceWishListDecoratorArray";
 		static function set_session_variable_name($v){self::$session_variable_name = $v;}
@@ -239,5 +231,8 @@ class EcommerceWishListDecorator extends Extension {
 		}
 	}
 
+	protected function EcommerceWishListPage() {
+		return DataObject::get_one("EcommerceWishListPage");
+	}
 
 }

@@ -1,1 +1,0 @@
-The wish list has been retrieved

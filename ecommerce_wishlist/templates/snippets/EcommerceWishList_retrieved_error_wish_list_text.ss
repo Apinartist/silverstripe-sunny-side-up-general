@@ -1,1 +1,0 @@
-The wish list could NOT be retrieved
