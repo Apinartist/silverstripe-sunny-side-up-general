@@ -18,7 +18,7 @@ Please note: this site is currently undergoing maintenance.
 	Please <a href="/admin/show/$ID" style="color: red;">edit this page in CMS.</a>
 	<% end_if  %>
 <% else  %>
-	You are not logged-in.
+	You are not logged in.
 <% end_if  %>
 </div>
 <% end_if %>
