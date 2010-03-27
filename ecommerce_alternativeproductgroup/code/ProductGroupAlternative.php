@@ -16,6 +16,7 @@ class ProductGroupAlternative_Controller extends ProductGroup_Controller {
 
 	function init() {
 		parent::init();
+		Requirements::themedCSS("ProductGroupAlternative");
 	}
 
 }
