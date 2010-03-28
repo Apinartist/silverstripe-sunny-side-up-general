@@ -10,6 +10,13 @@ class SearchableOrderReport extends SalesReport {
 
 	protected $description = 'This shows all orders with the ability to search them';
 
+	protected static $default_from_time = "00:00";
+		static function set_default_from_time($v) { self::$default_from_time = $v;}
+		static function get_default_from_time() { return self::$default_from_time;}
+	protected static $default_until_time = "23:59";
+		static function set_default_until_time($v) { self::$default_until_time = $v;}
+		static function get_default_until_time() { return self::$default_until_time;}
+
 	/**
 	 * Return a {@link ComplexTableField} that shows
 	 * all Order instances that are not printed. That is,
@@ -36,13 +43,18 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", OrderDecorator::get_order_status_options()));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("From", "From..."));
+		$fields->addFieldToTab("Root.Search", new DropdownTimeField("ExportUntilTime", "End time...", self::get_default_from_time()));
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("Until", "Until..."));
+		$fields->addFieldToTab("Root.Search", new DropdownTimeField("ExportFromTime", "Start time...", self::get_default_from_time()));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
+		$fields->addFieldToTab("Root.ExportDetails", $this->getExportTable()));
+
+		$fields->addFieldToTab("Root.ExportDetails", new FormAction('doExport', 'Export Now'));
 		return $fields;
 	}
 
@@ -137,6 +149,48 @@ class SearchableOrderReport extends SalesReport {
 		$c->setValue($v);
 		return $c->Nice();
 	}
+
+
+	protected function getExportTable() {
+
+		$fields = array(
+			"Order.ID" => "Order number",
+			"Order.Created" => "Order date and time",
+			"Payment.Reference" => "Payment Reference",
+			"Order.Total" => "Total Order Amount",
+			"Member.FirstName" => "Customer first name",
+			"Member.Surname" => "Customer last name",
+			"Member.Phone" => "Customer phone",
+			"Member.Email" => "Customer phone",
+			"Member.Address" => "Customer address 1",
+			"Member.Address2" => "Customer address 2",
+			"Member.City" => "Customer City",
+			"Order.Status" => "Order Status"
+			"Order.PlaintextProductSummary" => "Products"
+			//"Order.PlaintextModifierSummary" => "Additions",
+			//"Order.PlaintextLogDescription" => "Dispatch Notes"
+		);
+
+		$where "1 == 1";
+
+		$tableField = new TableListField(
+			$name ="ExportTable",
+			$sourceClass = "Order",
+			$fieldList = $fields,
+			$sourceFilter = $where,
+			$sourceSort = null,
+			$sourceJoin = "INNER JOIN Payment on Payment.OrderID = Order.ID INNER JOIN Member.ID ON Order.MemberID"
+		);
+		//$tableField->setFieldListCsv($fields);
+
+		return $tableField;
+
+
+	}
+
+
+
+
 
 }
 

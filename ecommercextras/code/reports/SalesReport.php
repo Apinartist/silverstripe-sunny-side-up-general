@@ -172,4 +172,8 @@ class SalesReport_Handler extends Controller {
 		}
 		return "updated to ".$newStatus;
 	}
+
+	function doExport() {
+
+	}
 }

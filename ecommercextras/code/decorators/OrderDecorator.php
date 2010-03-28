@@ -150,6 +150,10 @@ class OrderDecorator extends DataObjectDecorator {
 		$text = DBField::create('Text', implode(', ', $summary));
 		return $text->LimitCharacters($limit);
 	}
+
+	function PlaintextProductSummary() {
+		return "Summary of products goes here";
+	}
 }
 
 class OrderDecorator_EqualOrGreaterFilter extends ExactMatchFilter {
