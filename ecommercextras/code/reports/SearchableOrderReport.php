@@ -34,7 +34,9 @@ class SearchableOrderReport extends SalesReport {
 		$stats[] = "Avg: ".$this->currencyFormat($this->statistic("avg"));
 		$stats[] = "Min: ".$this->currencyFormat($this->statistic("min"));
 		$stats[] = "Max: ".$this->currencyFormat($this->statistic("max"));
-		$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<h2>Payment Statistics</h2><ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
+		if($this->statistic("count") > 3) {
+			$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<h2>Payment Statistics</h2><ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
+		}
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
 			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
@@ -52,7 +54,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
-		$fields->addFieldToTab("Root.ExportDetails", $this->getExportTable()));
+		//$fields->addFieldToTab("Root.ExportDetails", $this->getExportTable());
 
 		$fields->addFieldToTab("Root.ExportDetails", new FormAction('doExport', 'Export Now'));
 		return $fields;
@@ -144,49 +146,69 @@ class SearchableOrderReport extends SalesReport {
 		return $query;
 	}
 
+	function getExportFields() {
+
+		$fields = array(
+			"Order.ID" => "Order ID",
+			"Order.Created" => "Order date and time",
+			"Payment.Message" => " Reference",
+			//"Total" => "Total Order Amount",
+			"Member.FirstName" => "Customer first name",
+			"Member.Surname" => "Customer last name",
+			"Member.HomePhone" => "Customer home phone",
+			"Member.MobilePhone" => "Customer mobile phone",
+			"Member.Email" => "Customer phone",
+			"Member.Address" => "Customer address 1",
+			"Member.AddressLine2" => "Customer address 2",
+			"Member.City" => "Customer City",
+			"Order.Status" => "Order Status"
+			//"PlaintextProductSummary" => "Products"
+			//"PlaintextModifierSummary" => "Additions",
+			//"PlaintextLogDescription" => "Dispatch Notes"
+		);
+		return $fields;
+	}
+
+	function getExportQuery() {
+		if("SalesReport" == $this->class) {
+			user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+			$where = Session::get("SearchableOrderReport.where");
+			if(trim($where)) {
+			 $where = " ( $where ) AND ";
+			}
+			$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` = "Pending" OR  `Payment`.`Status` IS NULL)';
+			$query = singleton('Order')->buildSQL(
+				$where,
+				$sort = '`Order`.`Created` DESC',
+				$limit = "",
+				$join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`"
+			);
+			$fieldArray = $this->getExportFields();
+			if(is_array($fieldArray)) {
+				if(count($fieldArray)) {
+					foreach($fieldArray as $key => $field) {
+						$query->select[] = $key;
+					}
+				}
+			}
+			$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
+			if($having = Session::get("SearchableOrderReport.having")) {
+				$query->having($having);
+			}
+			$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
+			return $query;
+		}
+	}
+
 	protected function currencyFormat($v) {
 		$c = new Currency("date");
 		$c->setValue($v);
 		return $c->Nice();
 	}
 
-
-	protected function getExportTable() {
-
-		$fields = array(
-			"Order.ID" => "Order number",
-			"Order.Created" => "Order date and time",
-			"Payment.Reference" => "Payment Reference",
-			"Order.Total" => "Total Order Amount",
-			"Member.FirstName" => "Customer first name",
-			"Member.Surname" => "Customer last name",
-			"Member.Phone" => "Customer phone",
-			"Member.Email" => "Customer phone",
-			"Member.Address" => "Customer address 1",
-			"Member.Address2" => "Customer address 2",
-			"Member.City" => "Customer City",
-			"Order.Status" => "Order Status"
-			"Order.PlaintextProductSummary" => "Products"
-			//"Order.PlaintextModifierSummary" => "Additions",
-			//"Order.PlaintextLogDescription" => "Dispatch Notes"
-		);
-
-		$where "1 == 1";
-
-		$tableField = new TableListField(
-			$name ="ExportTable",
-			$sourceClass = "Order",
-			$fieldList = $fields,
-			$sourceFilter = $where,
-			$sourceSort = null,
-			$sourceJoin = "INNER JOIN Payment on Payment.OrderID = Order.ID INNER JOIN Member.ID ON Order.MemberID"
-		);
-		//$tableField->setFieldListCsv($fields);
-
-		return $tableField;
-
-
-	}
 
 
 

@@ -72,6 +72,14 @@ class SalesReport extends SSReport {
 			'export',
 		));
 		$table->setPageSize(250);
+
+
+		$table->setFieldListCsv($this->getExportFields());
+
+		$table->setCustomCsvQuery($this->getExportQuery());
+
+		//$tableField->removeCsvHeader();
+
 		return $table;
 	}
 
@@ -81,6 +89,26 @@ class SalesReport extends SSReport {
 		}
 		else {
 				//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+			$query = singleton('Order')->buildSQL('', 'Order.Created DESC');
+			$query->groupby[] = 'Order.Created';
+			return $query;
+		}
+	}
+
+	function getExportFields() {
+		if("SalesReport" == $this->class) {
+			user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			return array("Order.ID" => "Order ID", "Order.Total" => "Order Total");
+		}
+	}
+
+	function getExportQuery() {
+		if("SalesReport" == $this->class) {
+			user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
 			$query = singleton('Order')->buildSQL('', 'Order.Created DESC');
 			$query->groupby[] = 'Order.Created';
 			return $query;

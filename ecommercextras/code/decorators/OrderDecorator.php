@@ -119,6 +119,7 @@ class OrderDecorator extends DataObjectDecorator {
 
 	function updateCMSFields(FieldSet &$fields) {
 		$member = $this->owner->Member();
+		$fields->addFieldToTab('Root.Export', $this->getExportTable());
 		$fields->addFieldToTab('Root.Main', new HeaderField('MainDetails', 'Main Details'), 'Status');
 		$fields->addFieldToTab('Root.Main', new ReadonlyField('OrderNo', 'Order No', "#{$this->owner->ID}"), 'Status');
 		$fields->addFieldToTab('Root.Main', new ReadonlyField('Date', 'Date', date('l jS F Y h:i:s A', strtotime($this->owner->Created))), 'Status');
@@ -154,7 +155,15 @@ class OrderDecorator extends DataObjectDecorator {
 	function PlaintextProductSummary() {
 		return "Summary of products goes here";
 	}
+
+	function order() {
+		return "hello";
+	}
+
+
 }
+
+
 
 class OrderDecorator_EqualOrGreaterFilter extends ExactMatchFilter {
 
