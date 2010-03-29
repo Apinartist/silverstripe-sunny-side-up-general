@@ -10,7 +10,6 @@
 //===================---------------- START ecommercextra MODULE ----------------===================
 
 // *** REMINDERS FOR THINGS TO SET IN ECOMMERCE:
-//ShoppingCart::set_country("NZ");
 //Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier', 'LiveEmailCheckModifier'));
 //Order::set_email("websales@silverstripe.co.nz");
 //Order::set_subject("Thank you for your order at silverstripe.co.nz");
