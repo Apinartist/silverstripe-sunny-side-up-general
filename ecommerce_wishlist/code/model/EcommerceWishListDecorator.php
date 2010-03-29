@@ -147,6 +147,7 @@ class EcommerceWishListDecorator extends Extension {
 			}
 			else {
 				Session::set(self::get_session_variable_name()."_message", $this->getSavedWishListText());
+				Session::save();
 				Director::redirectBack();
 				return;
 			}
@@ -156,6 +157,7 @@ class EcommerceWishListDecorator extends Extension {
 		}
 		else {
 			Session::set(self::get_session_variable_name()."_message", $this->getSavedErrorWishListText());
+			Session::save();
 			Director::redirectBack();
 			return;
 		}
@@ -185,6 +187,7 @@ class EcommerceWishListDecorator extends Extension {
 
 	function clearwishlist() {
 		Session::clear(self::get_session_variable_name());
+		Session::save();
 		if(Director::is_ajax()) {
 			return $this->getClearWishList();
 		}
@@ -232,6 +235,7 @@ class EcommerceWishListDecorator extends Extension {
 			Session::set(self::get_session_variable_name(), "clear");
 			Session::set(self::get_session_variable_name(), array());
 			Session::set(self::get_session_variable_name(), $array);
+			Session::save();
 		}
 	}
 
