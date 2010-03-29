@@ -22,7 +22,7 @@ It has a page type that lists all templates used on the website (with links and 
 
 It also allows you to add:
 
-<% include TemplateDevelopment %> at the bottom of your Page.ss file.
+<% include TemplateOverviewPageDevelopmentFooter %> at the bottom of your Page.ss file.
 
 When logged-in as admin, the TemplateDevelopment template include allows you to
 visit the front-end of the website and:

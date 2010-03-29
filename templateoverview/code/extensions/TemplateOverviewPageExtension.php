@@ -28,12 +28,14 @@ class TemplateOverviewPageExtension extends Extension {
 	function NextTemplateOverviewPage() {
 		$list = $this->TemplateList();
 		$doIt = false;
-		foreach($list as $page) {
-			if($doIt) {
-				return $page;
-			}
-			if($page->ClassName == $this->owner->ClassName) {
-				$doIt = true;
+		if($list) {
+			foreach($list as $page) {
+				if($doIt) {
+					return $page;
+				}
+				if($page->ClassName == $this->owner->ClassName) {
+					$doIt = true;
+				}
 			}
 		}
 	}
@@ -41,16 +43,17 @@ class TemplateOverviewPageExtension extends Extension {
 	function PrevTemplateOverviewPage() {
 		$list = $this->TemplateList();
 		$doIt = false;
-		foreach($list as $page) {
-			if($page->ClassName == $this->owner->ClassName) {
-				$doIt = true;
+		if($list) {
+			foreach($list as $page) {
+				if($page->ClassName == $this->owner->ClassName) {
+					$doIt = true;
+				}
+				if($doIt) {
+					return $previousPage;
+				}
+				$previousPage = $page;
 			}
-			if($doIt) {
-				return $previousPage;
-			}
-			$previousPage = $page;
 		}
-
 	}
 
 	function TemplateList() {
