@@ -266,17 +266,18 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 							// add percentage
 							if($obj->Percentage) {
 								self::$actual_charges += $amount * $obj->Percentage;
-								$this->debugMessage .= "<hr />percentage charge: ".self::$actual_charges;
+								$this->debugMessage .= "<hr />percentage charge: ".$amount * $obj->Percentage;
 							}
 							// add fixed price
 							if($obj->FixedCost) {
 								self::$actual_charges += $obj->FixedCost;
-								$this->debugMessage .= "<hr />fixed charge: ".self::$actual_charges;
+								$this->debugMessage .= "<hr />fixed charge: ". $obj->FixedCost;
 							}
 							//is it enough?
 							if(self::$actual_charges < $obj->MinimumDeliveryCharge) {
+								$oldActualCharge = self::$actual_charges;
 								self::$actual_charges = $obj->MinimumDeliveryCharge;
-								$this->debugMessage .= "<hr />too little".self::$actual_charges;
+								$this->debugMessage .= "<hr />too little: actual charge: ".$oldActualCharge.", minimum delivery charge: ".$obj->MinimumDeliveryCharge;
 							}
 							// is it too much
 							if(self::$actual_charges > $obj->MaximumDeliveryCharge) {
