@@ -1,3 +1,5 @@
+<% require javascript(ecommerce_vote/javascript/EcommerceVote.js) %>
+<% require themedCSS(EcommerceVote) %>
 <div class="addToEcommerceVote">
 <% if HasEcommerceVote %>
 	<span>voted</span>
