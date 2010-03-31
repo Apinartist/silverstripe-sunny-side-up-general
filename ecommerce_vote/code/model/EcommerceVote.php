@@ -23,8 +23,6 @@ class EcommerceVote extends DataObject {
 		"SessionID" => true,
 	);
 
-	protected $DoubleEntry = false;
-
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->SessionID = Session_ID();
@@ -32,17 +30,12 @@ class EcommerceVote extends DataObject {
 		if($this->DoubleEntry) {
 			$this->DoubleEntry = false;
 		}
-		$vote = DataObject::get("EcommerceVote", "SessionID = '".Session_ID()."' AND PageID =".intval($this->PageID)-0);
-		if($vote) {
-			$this->DoubleEntry = true;
-		}
 	}
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-		if($this->DoubleEntry) {
+		if(DataObject::get_one("EcommerceVote", "SessionID = '".Session_ID()."' AND PageID =".$this->PageID." AND ID <> ".$this->ID)) {
 			$this->delete();
-			$this->DoubleEntry = false;
 		}
 	}
 

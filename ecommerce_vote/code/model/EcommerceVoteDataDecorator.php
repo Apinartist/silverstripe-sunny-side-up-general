@@ -13,5 +13,4 @@ class EcommerceVoteDataDecorator extends DataObjectDecorator {
 		return DataObject::get_one("EcommerceVote", "SessionID = '".Session_ID()."' AND PageID = ".$this->owner->ID);
 	}
 
-
 }
