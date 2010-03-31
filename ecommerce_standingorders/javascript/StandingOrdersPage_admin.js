@@ -29,8 +29,20 @@ var StandingOrdersPage_admin = {
 
 	newWindowName: ".completeStandingOrder",
 
+	standingOrderWithoutOutstandingSelector: ".standingOrderWithoutOutstanding",
+
+	showHideWithoutOutstandingSelector: ".showHideWithoutOutstanding",
+
+	showHideAllStandingOrdersSelector: ".showHideAllStandingOrders",
+
+	showHideFutureOrdersSelector: ".showHideFutureOrders",
+
+	futureOrdersSelector: ".TestDraftOrderList li.future, .DraftOrderList li.future",
+
 	init: function() {
+		jQuery(StandingOrdersPage_admin.standingOrderWithoutOutstandingSelector).hide();
 		jQuery(StandingOrdersPage_admin.detailClassSelector).hide();
+		jQuery(StandingOrdersPage_admin.futureOrdersSelector).hide();
 		jQuery(StandingOrdersPage_admin.completeStandingOrderSelector).attr("target", StandingOrdersPage_admin.newWindowName);
 		jQuery(StandingOrdersPage_admin.completeStandingOrderSelector).click(
 			function() {
@@ -40,28 +52,52 @@ var StandingOrdersPage_admin = {
 				window.open(url, StandingOrdersPage_admin.newWindowName, 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=1024,height=600');
 				return false;
 			}
-
-
-		)
+		);
 		jQuery(StandingOrdersPage_admin.standingOrderLinkSelector).click(
 			function(){
 				var rel = jQuery(this).attr("rel");
-				var id = StandingOrdersPage_admin.detailIDSelectorPrefix+rel;
-				var slideUp = 0;
-				if(jQuery(id).is(':visible')) {
-					var slideUp = 1;
-				}
-				jQuery(StandingOrdersPage_admin.detailClassSelector).slideUp(
-					function() {
-						if(!slideUp) {
-							jQuery(id).slideDown();
-						}
-					}
-				);
+				var id = StandingOrdersPage_admin.detailIDSelectorPrefix + rel;
+				jQuery(id).slideToggle();
 				return false;
 			}
 		);
-		jQuery(StandingOrdersPage_admin.standingOrderFirstLinkSelector).click();
+		jQuery(StandingOrdersPage_admin.showHideAllStandingOrdersSelector).click(
+			function() {
+				var originalText = jQuery(this).text();
+				var newText = StandingOrdersPage_admin.replaceHideShow(originalText);
+				jQuery(this).text(newText);
+				jQuery(StandingOrdersPage_admin.detailClassSelector).slideToggle();
+				return false;
+			}
+		);
+		jQuery(StandingOrdersPage_admin.showHideWithoutOutstandingSelector).click(
+			function() {
+				var originalText = jQuery(this).text();
+				var newText = StandingOrdersPage_admin.replaceHideShow(originalText);
+				jQuery(this).text(newText);
+				jQuery(StandingOrdersPage_admin.standingOrderWithoutOutstandingSelector).slideToggle();
+				return false;
+			}
+		);
+		jQuery(StandingOrdersPage_admin.showHideFutureOrdersSelector).click(
+			function() {
+				var originalText = jQuery(this).text();
+				var newText = StandingOrdersPage_admin.replaceHideShow(originalText);
+				jQuery(this).text(newText);
+				jQuery(StandingOrdersPage_admin.futureOrdersSelector).slideToggle();
+				return false;
+			}
+		);
+
+	},
+
+	replaceHideShow: function(text) {
+		var oldText = text;
+		var newText = text.replace("hide", "show");
+		if(oldText == newText) {
+			var newText = text.replace("show", "hide");
+		}
+		return newText;
 	}
 
 

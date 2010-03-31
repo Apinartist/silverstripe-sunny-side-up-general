@@ -1,12 +1,33 @@
 <% if AllStandingOrders %>
-<ul class="StandingOrderList">
+<h2>Instructions</h2>
+<p>
+	Click on the individual orders below to complete them (<em>complete now</em> link).
+	The orders will open in a separate window/tab.
+	Complete the order at hand and then come back to this page to complete the next order.
+</p>
+<p>
+	The colour scheme shows you if the individual orders are to be completed in the:
+</p>
+<ul class="TestDraftOrderList">
+	<li class="past">past: should have been completed before today</li>
+	<li class="current">current: to be completed today</li>
+	<li class="future">future: to be completed some time in the future</li>
+</ul>
+
+<h2>Display Options</h2>
+<ul class="standingOrdersGeneralOptions">
+	<li><a href="" class="showHideAllStandingOrders">show all details for each standing order</a> - details are hidden by default, you can click on individual standing order title to view its details</li>
+	<li><a href="" class="showHideWithoutOutstanding">show standing orders without outstanding orders</a> - these are hidden by default</li>
+	<li><a href="" class="showHideFutureOrders">show future orders</a> - these are hidden by default</li>
+</ul>
+<h2>Standing Orders</h2>
+<ul class="standingOrderList">
 	<% control AllStandingOrders %>
-	<li>
-		<h2><a href="#StandingOrderDetails-$ID" rel="$ID" class="standingOrderLink" <% if First %>id="firstStandingOrderLink"<% end_if %>>Standing Order # $ID</a></h2>
-		<div id="StandingOrderDetails-$ID" class="standingOrderDetails">
-			<% include StandingOrder_Content %>
+	<li class="standingOrdersMainListItem">
+		<h2><a href="#StandingOrderDetails-$ID" rel="$ID" class="standingOrderLink <% if OutstandingAutomaticallyCreatedOrders %>standingOrderWithOutstanding<% else %>standingOrderWithoutOutstanding<% end_if %>" <% if First %>id="firstStandingOrderLink"<% end_if %>>Standing Order # $ID</a></h2>
+		<div>
+			<div id="StandingOrderDetails-$ID" class="standingOrderDetails"><% include StandingOrder_Content %></div>
 			<% if OutstandingAutomaticallyCreatedOrders %>
-			<h5>Orders to be completed for Standing Order # $ID</h5>
 			<ul class="DraftOrderList">
 				<% control OutstandingAutomaticallyCreatedOrders %>
 					<li class="$FuturePast">
