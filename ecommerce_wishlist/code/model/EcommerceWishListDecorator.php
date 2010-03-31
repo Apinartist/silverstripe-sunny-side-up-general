@@ -49,6 +49,7 @@ class EcommerceWishListDecorator extends Extension {
 		$stage = Versioned::current_stage();
 		$baseClass = "SiteTree";
 		$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
+		$array[0] = 0;
 		return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
 	}
 
@@ -193,6 +194,7 @@ class EcommerceWishListDecorator extends Extension {
 		}
 		else {
 			Session::set(self::get_session_variable_name()."_message", $this->getClearWishList());
+			Session::save();
 			Director::redirectBack();
 			return;
 		}
@@ -231,9 +233,7 @@ class EcommerceWishListDecorator extends Extension {
 		else {
 			//set session variable
 			Session::clear(self::get_session_variable_name());
-			Session::set(self::get_session_variable_name(), null);
-			Session::set(self::get_session_variable_name(), "clear");
-			Session::set(self::get_session_variable_name(), array());
+			Session::save();
 			Session::set(self::get_session_variable_name(), $array);
 			Session::save();
 		}
