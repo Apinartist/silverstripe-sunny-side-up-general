@@ -68,7 +68,8 @@ class EcommerceVoteDecorator extends Extension {
 				$array[$result["MyPageID"]] = $result["MyPageID"];
 			}
 			if(count($array)) {
-				return DataObject::get("SiteTree", "$stageTable.ID IN (".implode($array).")");
+				$where = "$stageTable.ID IN (".implode(",", $array).")";
+				return DataObject::get("SiteTree", $where);
 			}
 		}
 	}
