@@ -5,7 +5,7 @@
  *
  */
 ul#SiteMap{}
-	ul#SiteMap li {list-style: none; }
+	ul#SiteMap li {list-style: none; list-style-image: none;}
 		ul#SiteMap li.SiteMapLevel1 {margin-top: 1em;}
 			ul#SiteMap a.SiteMapLevel1 { border-bottom: 1px solid #efefef;padding:5px 0 1em 10px;}
 			ul#SiteMap li a.siteMapPageExpander { border-bottom: none;padding:0;margin-top:4px;}
@@ -13,6 +13,6 @@ a.siteMapPageExpander{background-image: url(../images/plusMinus.png); background
 	a.siteMapPageExpander:hover{text-decoration: none; }
 	a.SiteMapNodeExpanded{background-position: 0 -16px;}
 	a.SiteMapNodeImploded{background-position: 0 0;}
-a.pageTitle {display: block;}
+a.pageTitle {display: block; }
 a.SiteMapLevel2 {padding:5px;}
 
