@@ -43,6 +43,7 @@ class SearchPlusSearchForm extends Extension {
 
 			$form->setFormAction($page->Link()."results/");
 			$form->setPageLength(SearchPlusPage::get_result_length());
+			$form->unsetValidator();
 			return $form;
 		}
 		elseif(!$page) {
