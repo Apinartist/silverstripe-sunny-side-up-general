@@ -9,7 +9,7 @@ class SalesReport extends SSReport {
 
 	protected static $sales_array = array();
 
-	protected $description = 'Show all orders in the system.';
+	protected $description = 'Search Orders';
 
 	/**
 	 * Return a {@link ComplexTableField} that shows
@@ -90,7 +90,7 @@ class SalesReport extends SSReport {
 		else {
 				//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 			$query = singleton('Order')->buildSQL('', 'Order.Created DESC');
-			$query->groupby[] = 'Order.Created';
+			$query->groupby[] = 'Order.ID';
 			return $query;
 		}
 	}
@@ -161,6 +161,7 @@ class SalesReport extends SSReport {
 			die($_REQUEST);
 		}
 	}
+
 
 }
 

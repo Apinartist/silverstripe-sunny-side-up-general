@@ -8,24 +8,16 @@ class SearchableOrderReport extends SalesReport {
 
 	protected $title = 'Searchable Orders';
 
-	protected $description = 'This shows all orders with the ability to search them';
+	protected $description = 'Search all orders';
 
-	protected static $default_from_time = "00:00";
+	protected static $default_from_time = "11:00 am";
 		static function set_default_from_time($v) { self::$default_from_time = $v;}
 		static function get_default_from_time() { return self::$default_from_time;}
-	protected static $default_until_time = "23:59";
+		static function get_default_from_time_as_full_date_time() {return date("Y-m-d",time()) . " " . date("H:i",strtotime(self::get_default_from_time()));}
+	protected static $default_until_time = "10:00 pm";
 		static function set_default_until_time($v) { self::$default_until_time = $v;}
 		static function get_default_until_time() { return self::$default_until_time;}
-
-	/**
-	 * Return a {@link ComplexTableField} that shows
-	 * all Order instances that are not printed. That is,
-	 * Order instances with the property "Printed" value
-	 * set to "0".
-	 *
-	 * @return ComplexTableField
-	 */
-
+		static function get_default_until_time_as_full_date_time() {return date("Y-m-d",time()) . " " . date("H:i",strtotime(self::get_default_until_time()));}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -45,9 +37,9 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", OrderDecorator::get_order_status_options()));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("From", "From..."));
-		$fields->addFieldToTab("Root.Search", new DropdownTimeField("ExportUntilTime", "End time...", self::get_default_from_time()));
+		$fields->addFieldToTab("Root.Search", new DropdownTimeField("FromTime", "Start time...", self::get_default_from_time_as_full_date_time(), "H:i a"));
 		$fields->addFieldToTab("Root.Search", new CalendarDateField("Until", "Until..."));
-		$fields->addFieldToTab("Root.Search", new DropdownTimeField("ExportFromTime", "Start time...", self::get_default_from_time()));
+		$fields->addFieldToTab("Root.Search", new DropdownTimeField("UntilTime", "End time...", self::get_default_until_time_as_full_date_time(), "H:i a"));
 		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
 		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
 		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
@@ -75,14 +67,22 @@ class SearchableOrderReport extends SalesReport {
 					case "From":
 						$d = new Date("date");
 						$d->setValue($value);
-						$where[] = ' `Order`.`Created` >= "'.$d->format("Y-m-d").'"';
-						$humanWhere[] = ' Order after or on '.$d->long();
+						$t = new Time("time");
+						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
+						$t->setValue($cleanTime); //
+						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
+						$where[] = ' UNIX_TIMESTAMP(`Order`.`Created`) >= "'.$exactTime.'"';
+						$humanWhere[] = ' Order on or after '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 						break;
 					case "Until":
 						$d = new Date("date");
 						$d->setValue($value);
-						$where[] = ' `Order`.`Created` <= "'.$d->format("Y-m-d").'"';
-						$humanWhere[] = ' Order before or on '.$d->long();
+						$t = new Time("time");
+						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
+						$t->setValue($cleanTime); //
+						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
+						$where[] = ' UNIX_TIMESTAMP(`Order`.`Created`) <= "'.$exactTime.'"';
+						$humanWhere[] = ' Order before or on '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 						break;
 					case "Email":
 						$where[] = ' `Member`.`Email` = "'.$value.'"';
@@ -114,11 +114,21 @@ class SearchableOrderReport extends SalesReport {
 						$having[] = ' RealPayments < '.intval($value);
 						$humanWhere[] = ' Real Payment of no more than '.$this->currencyFormat($value);
 						break;
+					//this has been included for SearchableProductSalesReport
+					case "Product":
+						$where[] = " IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) LIKE \"%".$value."%\"";
+						$humanWhere[] = ' Product includes the phrase '.$value.'"';
+						break;
+
 					default:
 					 break;
 				}
 			}
 		}
+		return $this->saveProcessedForm($having, $where, $humanWhere);
+	}
+
+	protected function saveProcessedForm($having, $where, $humanWhere) {
 		Session::set("SearchableOrderReport.having", implode(" AND ", $having));
 		Session::set("SearchableOrderReport.where",implode(" AND", $where));
 		Session::set("SearchableOrderReport.humanWhere", implode(", ", $humanWhere));
@@ -136,13 +146,15 @@ class SearchableOrderReport extends SalesReport {
 			$where,
 			$sort = '`Order`.`Created` DESC',
 			$limit = "",
-			$join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`"
+			$join = "
+				INNER JOIN `Member` ON `Member`.`ID` = `Order`.`MemberID`
+				LEFT JOIN Payment ON `Payment`.`OrderID` = `Order`.`ID`
+			"
 		);
 		$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
 		if($having = Session::get("SearchableOrderReport.having")) {
 			$query->having($having);
 		}
-		$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
 		return $query;
 	}
 
@@ -152,7 +164,7 @@ class SearchableOrderReport extends SalesReport {
 			"Order.ID" => "Order ID",
 			"Order.Created" => "Order date and time",
 			"Payment.Message" => " Reference",
-			//"Total" => "Total Order Amount",
+			"RealPayments" => "Total Payment",
 			"Member.FirstName" => "Customer first name",
 			"Member.Surname" => "Customer last name",
 			"Member.HomePhone" => "Customer home phone",
@@ -162,9 +174,6 @@ class SearchableOrderReport extends SalesReport {
 			"Member.AddressLine2" => "Customer address 2",
 			"Member.City" => "Customer City",
 			"Order.Status" => "Order Status"
-			//"PlaintextProductSummary" => "Products"
-			//"PlaintextModifierSummary" => "Additions",
-			//"PlaintextLogDescription" => "Dispatch Notes"
 		);
 		return $fields;
 	}
@@ -184,7 +193,10 @@ class SearchableOrderReport extends SalesReport {
 				$where,
 				$sort = '`Order`.`Created` DESC',
 				$limit = "",
-				$join = " INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`"
+				$join = "
+					INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`
+					LEFT JOIN PAYMENT ON `Payment`.`OrderID` = `Order`.`ID`
+				"
 			);
 			$fieldArray = $this->getExportFields();
 			if(is_array($fieldArray)) {
@@ -194,17 +206,16 @@ class SearchableOrderReport extends SalesReport {
 					}
 				}
 			}
-			$query->select[] = 'SUM(`Payment`.`Amount`) RealPayments';
+			$query->select[] = "SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments";
 			if($having = Session::get("SearchableOrderReport.having")) {
 				$query->having($having);
 			}
-			$query->leftJoin("Payment", '`Payment`.`OrderID` = `Order`.`ID`');
 			return $query;
 		}
 	}
 
 	protected function currencyFormat($v) {
-		$c = new Currency("date");
+		$c = new Currency("currency");
 		$c->setValue($v);
 		return $c->Nice();
 	}

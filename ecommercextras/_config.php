@@ -104,14 +104,17 @@ LiveEmailCheckModifier::set_account_exists_message("There is already an account 
 //EcommerceModifiersModelAdmin::set_managed_models(array("PickUpOrDeliveryModifierOptions", "PickUpOrDeliveryModifier", "GSTTaxModifierOptions", "GSTTaxModifier"));
 
 
+
 // *** REPORTS
 Director::addRules(50, array(
 	'SalesReport_Handler//$Action/$ID' => 'SalesReport_Handler',
+	'PaymentsReport_Handler//$Action/$ID' => 'PaymentsReport_Handler'
 	//'silverstripe/HourlyTask/$Action/$ID' => 'HourlyTask' // optional..
 	// setup cron job 0 * * * * wget http://www.mysite.com/silverstripe/HourlyTask/
 	//if you add the OrderDecorator then this also runs this task at Order::onAfterWrite();
 ));
-
+//SearchableOrderReport::set_default_from_time("10:00pm");
+//SearchableOrderReport::set_default_until_time("10:00pm");
 //===================---------------- END ecommercextra MODULE ----------------===================
 /*
  * NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE :: NOTA BENE ::

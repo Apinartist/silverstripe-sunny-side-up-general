@@ -186,4 +186,12 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 		return FormResponse::respond();
 	}
 
+
+	protected function currencyFormat($v) {
+		$c = new Currency("currency");
+		$c->setValue($v);
+		return $c->Nice();
+	}
+
+
 }

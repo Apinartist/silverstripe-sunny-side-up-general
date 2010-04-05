@@ -7,14 +7,14 @@ class PaymentsReport extends SSReport {
 
 	protected $title = 'All Payments';
 
-	protected static $sales_array = array();
+	protected static $payment_array = array();
 
-	protected $description = 'Show all payments.';
+	protected $description = 'Show all payments';
 
 	/**
 	 * Return a {@link ComplexTableField} that shows
-	 * all payment instances that are not printed. That is,
-	 * payment instances with the property "Printed" value
+	 * all Order instances that are not printed. That is,
+	 * Order instances with the property "Printed" value
 	 * set to "0".
 	 *
 	 * @return ComplexTableField
@@ -24,25 +24,46 @@ class PaymentsReport extends SSReport {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/PaymentsReport.js");
 		Requirements::customScript('var PaymentsReportURL = "'.Director::baseURL()."PaymentsReport_Handler".'/";', 'PaymentsReport_Handler_Base_URL');
+		$list = singleton('Payment')->dbObject('Status')->enumValues();
+		$js = '';
+		foreach($list as $key => $value) {
+			if($key && $value) {
+				$js .= 'PaymentsReport.addStatus("'.$value.'");';
+			}
+		}
+		Requirements::customScript($js, "PaymentsReport_Handler_PaymentStatusList");
+		// Get the fields used for the table columns
 		$fields = array(
-			'Created' => "Created",
-			'Status' => "Status",
-			'Amount' => "Amount",
-			'Currency' => "Currency",
-			'IP' => "IP",
-			'ProxyIP' => "ProxyIP",
-			'OrderID' => "OrderID"
+			'Created' => 'Time',
+			'Amount' => 'Amount',
+			'Currency' => 'Currency',
+			'Message' => 'Note',
+			'IP' => 'Purchaser IP',
+			'ProxyIP' => 'Purchaser Proxy'
 		);
+		$fields['ChangeStatus'] = '';
+
 		$table = new TableListField(
 			'Payments',
 			'Payment',
 			$fields
 		);
-		$payments = DataObject::get("Payment", "", "Created DESC");
-		$table->setCustomSourceItems($payments);
+
+		// Customise the SQL query for Order, because we don't want it querying
+		// all the fields. Invoice and Printed are dummy fields that just have some
+		// text in them, which would be automatically queried if we didn't specify
+		// a custom query.
+
+		$table->setCustomQuery($this->getCustomQuery());
+
+		// Set the links to the Invoice and Print fields allowing a user to view
+		// another template for viewing an Order instance
+		$table->setFieldFormatting(array(
+			'ChangeStatus' => '<a href=\"#\" class=\"statusDropdownChange\" rel=\"$ID\">$Status</a><span class=\"outcome\"></span>'
+		));
+
 		$table->setFieldCasting(array(
-			'Created' => 'Date',
-			'Amount' => 'Currency->Nice',
+			'Amount' => 'Currency->Nice'
 		));
 
 		$table->setPermissions(array(
@@ -51,19 +72,114 @@ class PaymentsReport extends SSReport {
 			'export',
 		));
 		$table->setPageSize(250);
+
+
+		$table->setFieldListCsv($this->getExportFields());
+
+		$table->setCustomCsvQuery($this->getExportQuery());
+
+		//$tableField->removeCsvHeader();
+
 		return $table;
 	}
 
 	function getCustomQuery() {
-			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
-		$query = singleton('Payment')->buildSQL('', 'Payment.Created DESC');
-		return $query;
+		if("PaymentsReport" == $this->class) {
+			//user_error('Please implement getCustomQuery() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+				//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+			$query = singleton('Payment')->buildSQL('', 'Payment.Created DESC');
+			$query->groupby[] = 'Payment.ID';
+			return $query;
+		}
+	}
+
+	function getExportFields() {
+		if("PaymentsReport" == $this->class) {
+			//user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			return array("Order.ID" => "Order ID", "Order.Total" => "Order Total");
+		}
+	}
+
+	function getExportQuery() {
+		if("PaymentsReport" == $this->class) {
+			//user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			$query = singleton('Payment')->buildSQL('', 'Payment.Created DESC');
+			$query->groupby[] = 'Payment.ID';
+			return $query;
+		}
+	}
+
+	protected function statistic($type) {
+		if(!count(self::$payment_array)) {
+			$data = $this->getCustomQuery()->execute();
+			if($data) {
+				$array = array();
+				foreach($data as $row) {
+					if($row["Amount"] && $row["Status"] == "Success") {
+						self::$payment_array[] = $row["Amount"];
+					}
+				}
+			}
+		}
+		if(count(self::$payment_array)) {
+			switch($type) {
+				case "count":
+					return count(self::$payment_array);
+					break;
+				case "sum":
+					return array_sum(self::$payment_array);
+					break;
+				case "avg":
+					return array_sum(self::$payment_array) / count(self::$payment_array);
+					break;
+				case "min":
+					asort(self::$payment_array);
+					foreach(self::$payment_array as $item) {return $item;}
+					break;
+				case "max":
+					arsort(self::$payment_array);
+					foreach(self::$payment_array as $item) {return $item;}
+					break;
+				default:
+					user_error("Wrong statistic type speficied in PaymentsReport::statistic", E_USER_ERROR);
+			}
+		}
+		return -1;
+	}
+
+	function processform() {
+		if("PaymentsReport" == $this->class) {
+			//user_error('Please implement processform() on ' . $this->class, E_USER_ERROR);
+		}
+		else {
+			die($_REQUEST);
+		}
+	}
+
+
+	protected function currencyFormat($v) {
+		$c = new Currency("currency");
+		$c->setValue($v);
+		return $c->Nice();
 	}
 
 
 }
 
 class PaymentsReport_Handler extends Controller {
+
+	function processform() {
+		$ClassName = Director::URLParam("ID");
+		$object = new $ClassName;
+		return $object->processform();
+	}
+
 
 	function setstatus() {
 		$id = $this->urlParams['ID'];
@@ -77,10 +193,11 @@ class PaymentsReport_Handler extends Controller {
 			if($oldStatus != $newStatus) {
 				$payment->Status = $newStatus;
 				$payment->write();
-				$paymentlog = new OrderStatusLog();
-				$paymentlog->OrderID = $payment->OrderID;
-				$paymentLog->Status = "Payment Status changed from ".$oldStatus." to ".$newStatus.".";
-				$paymentlog->write();
+				$orderLog = new OrderStatusLog();
+				$orderLog->OrderID = $orderLog->OrderID;
+				$orderLog->Status = "Payment status changed from ".$oldStatus." to ".$newStatus.".";
+				$orderLog->Note = "Payment changed from ".$oldStatus." to ".$newStatus.".";
+				$orderLog->write();
 			}
 			else {
 				return "no change";
@@ -91,4 +208,5 @@ class PaymentsReport_Handler extends Controller {
 		}
 		return "updated to ".$newStatus;
 	}
+
 }
