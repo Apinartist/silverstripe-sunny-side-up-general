@@ -30,3 +30,8 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 (rather than using the "unthemed" default provided.
 
 
+USE:
+
+$EmailAFriendLink
+ and
+EmailAFriendForm

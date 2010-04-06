@@ -17,7 +17,7 @@ class EmailAFriendForm extends Form {
 
 	function __construct($controller, $name, $id) {
 		$fields[] = new TextField('To', self::$friend_email_address_label);
-		$fields[] = new TextareaField('Message', self::$message_label, 5, 20, EmailAFriendExtension::$default_message ? EmailAFriendExtension::$default_message : '');
+		$fields[] = new TextareaField('Message', self::$message_label, 5, 20, EmailAFriendExtension::get_default_message() ? EmailAFriendExtension::get_default_message() : '');
 		$fields[] = new EmailField('YourMailAddress', self::$your_email_address_label);
 		$fields[] = new HiddenField('PageID', 'PageID', $id);
 
@@ -40,20 +40,20 @@ class EmailAFriendForm extends Form {
 		if($data['YourMailAddress']) $toList[] = $data['YourMailAddress'];
 		$ip = EmailAFriendExtension::get_ip_user();
 		$count = 0;
-		if(EmailAFriendExtension::$max_message_phour_pip) {
+		if(EmailAFriendExtension::get_max_message_phour_pip()) {
 			$anHourAgo = date('Y-m-d H:i:s', mktime(date('G') - 1, date('i'), date('s'), date('n'), date('j'), date('Y')));
 			if($friendMails = DataObject::get('FriendEmail', "`IPAddress` = '$ip' AND `Created` > '$anHourAgo'")) $count = $friendMails->Count();
 		}
 
-		if(EmailAFriendExtension::$sender_name) {
-			$mailFrom = EmailAFriendExtension::$sender_name;
-			if(EmailAFriendExtension::$sender_email_address) $mailFrom .= ' <' . EmailAFriendExtension::$sender_email_address . '>';
+		if(EmailAFriendExtension::get_sender_name()) {
+			$mailFrom = EmailAFriendExtension::get_sender_name();
+			if(EmailAFriendExtension::get_sender_email_address()) $mailFrom .= ' <' . EmailAFriendExtension::get_sender_email_address() . '>';
 		}
-		else if(EmailAFriendExtension::$sender_email_address) $mailFrom = EmailAFriendExtension::$sender_email_address;
+		else if(EmailAFriendExtension::get_sender_email_address()) $mailFrom = EmailAFriendExtension::get_sender_email_address();
 		else $mailFrom = 'Unknown Sender';
 
 		foreach($toList as $index => $to) {
-			if(! EmailAFriendExtension::$max_message_phour_pip || $count < EmailAFriendExtension::$max_message_phour_pip) {
+			if(! EmailAFriendExtension::get_max_message_phour_pip() || $count < EmailAFriendExtension::get_max_message_phour_pip()) {
 				$friendEmail = new FriendEmail();
 				$friendEmail->To = $to;
 				$friendEmail->Message = $data['Message'];
@@ -61,8 +61,8 @@ class EmailAFriendForm extends Form {
 				$friendEmail->IPAddress = $ip;
 				$friendEmail->PageID = $data['PageID'];
 				$friendEmail->write();
-				$subject = EmailAFriendExtension::$mail_subject ? EmailAFriendExtension::$mail_subject : '';
-				$subject .= ' | sent by '.$data['YourMailAddress'];
+				$subject = EmailAFriendExtension::get_mail_subject() ? EmailAFriendExtension::get_mail_subject() : '';
+				$subject .= ' | from '.$data['YourMailAddress'];
 				$count++;
 				$email = new Email(
 					$mailFrom,
@@ -99,7 +99,7 @@ class EmailAFriendForm extends Form {
 		$page = $this->controller;
 		$page->Content = $content;
 
-	  	return $page->renderWith('Page', 'Page_emailsent');
+		return $page->renderWith('Page', 'Page_emailsent');
 	}
 }
 
