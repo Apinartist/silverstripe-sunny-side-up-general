@@ -16,6 +16,8 @@ class EmailAFriendForm extends Form {
 	static function set_send_label($v) {self::$send_label = $v;}
 
 	function __construct($controller, $name, $id) {
+		Requiredments::themedCSS("EmailReferral");
+		Requiredments::javascript("emailreferral/javascript/EmailReferral.js");
 		$fields[] = new TextField('To', self::$friend_email_address_label);
 		$fields[] = new TextareaField('Message', self::$message_label, 5, 20, EmailAFriendExtension::get_default_message() ? EmailAFriendExtension::get_default_message() : '');
 		$fields[] = new EmailField('YourMailAddress', self::$your_email_address_label);
