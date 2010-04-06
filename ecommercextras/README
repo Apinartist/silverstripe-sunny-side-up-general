@@ -156,3 +156,43 @@ SimpleCartList.ss
 This should be embedded like this;
 
 <% if IsCheckoutPage %><% else %><% include SimpleCartList %><% end_if %>
+
+
+
+HOW TO START A PROJECT
+-----------------------------------------------------------
+The following tables may need a fresh start:
+
+"BlockCountriesModifier",
+"BonusProductModifier",
+"GSTTaxModifier",
+"ModifierRulesModifier",
+"NewsletterSignupModifier",
+"Order",
+"OrderAttribute",
+"OrderItem",
+"OrderModifier",
+"OrderStatusLog",
+"OrderStatusLogWithDetails",
+"PickUpOrDeliveryModifier",
+"ProductVariation_OrderItem",
+"Product_OrderItem",
+"Product_Testimonial",
+"SimpleShippingModifier",
+"TaxModifier"
+
+PAYMENT
+"DPSPayment",
+"Payment",
+"PayPalPayment",
+"PaystationPayment",
+
+OTHERS
+"BlogComment",
+"LoginAttempt",
+"Email_BounceRecord",
+"PageComment",
+"QueuedEmail",
+"SubmittedFileField",
+"SubmittedForm",
+"SubmittedFormField",
