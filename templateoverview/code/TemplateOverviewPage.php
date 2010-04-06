@@ -91,7 +91,7 @@ class TemplateOverviewPage extends Page {
 		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
 		foreach($classes as $className) {
-			if(!in_array($className, self::$classes_to_exclude))) {
+			if(!in_array($className, self::$classes_to_exclude)) {
 				if($this->ShowAll) {
 					$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
 					$count = 0;
