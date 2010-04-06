@@ -90,7 +90,6 @@ class ShopManagerPage_Controller extends Page_Controller {
 				$from = $order->getReceiptEmail();
 				$to = $order->Member()->Email;
 				$subject = $order->getReceiptSubject();
-
 				$purchaseCompleteMessage = DataObject::get_one('CheckoutPage')->PurchaseComplete;
 
 				$data = array(
@@ -102,6 +101,47 @@ class ShopManagerPage_Controller extends Page_Controller {
 				);
 				Requirements::clear();
 				return $this->customise($data)->renderWith("Order_ReceiptEmail");
+			}
+		}
+		else {
+			$this->Content = "<h1>NO ORDER FOUND!</h1>";
+		}
+		return array();
+	}
+
+
+	function teststatusupdatemail() {
+		$orderID = intval(Director::URLParam("ID"));
+		if(!$orderID) {
+			$o = DataObject::get_one("Order", "", "Created DESC");
+			if($o) {
+				$orderID = $o->ID;
+			}
+		}
+		if($orderID) {
+			$order = DataObject::get_by_id("Order", $orderID);
+			if($order) {
+				$from = $order->getReceiptEmail();
+				$to = $order->Member()->Email;
+				$subject = "Your order status";
+				$logs = DataObject::get('OrderStatusLog', "OrderID = {$this->ID}", "Created DESC", null, 1);
+				if($logs) {
+					$latestLog = $logs->First();
+					$note = $latestLog->Note;
+				}
+				else {
+					$note = "Note goes here";
+				}
+				$member = $order->Member();
+				$data = array(
+					'Order' => $order,
+					'From' => $from,
+					'To' => $to,
+					"Member" => $member,
+					"Note" => $note
+				);
+				Requirements::clear();
+				return $this->customise($data)->renderWith("Order_StatusEmail");
 			}
 		}
 		else {

@@ -3,6 +3,7 @@
 <div class="enterOrderNumber"><label>enter order number: <input name="ShopManagerPageOrderID" id="ShopManagerPageOrderID" /></label></div>
 <ul id="ShopManagerPageOptionList">
 	<li><a href="{$Link}testorderreceipt">check email receipt</a></li>
+	<li><a href="{$Link}teststatusupdatemail">check status update receipt</a></li>
 	<li><a href="{$Link}showorder">view order details</a></li>
 	<li><a href="{$Link}getorderdetailsforadmin">show order debug information</a></li>
 </ul>
