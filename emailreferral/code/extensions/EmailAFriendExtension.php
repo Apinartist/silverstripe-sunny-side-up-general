@@ -28,15 +28,45 @@ class EmailAFriendExtension extends DataObjectDecorator {
 	}
 
 	function EmailAFriendLink() {
-		return $this->owner->Link() . 'emailafriend';
+		if(Director::URLParam("Action") != "emailafriend") {
+			return $this->owner->Link('emailafriend');
+		}
 	}
 
-	function EmailAFriendForm() {
-		return new EmailAFriendForm($this->owner, 'EmailAFriendForm', $this->owner->ID);
+	protected $emailAFriendThankYouContent = "";
+
+	function setEmailAFriendThankYouContent($v) {
+		$this->emailAFriendThankYouContent = $v;
+	}
+
+	function EmailAFriendThankYouContent() {
+		return $this->emailAFriendThankYouContent;
 	}
 }
 
 
 class EmailAFriendExtension_Controller extends Extension {
-	static $allowed_actions = array('EmailAFriendForm');
+
+	static $allowed_actions = array('EmailAFriendForm', 'emailafriend');
+
+	protected $emailAFriendShowForm = false;
+
+	function emailafriend() {
+		$this->showForm = true;
+		return $this->owner->renderWith('EmailAFriendHolder', 'Page_emailafriend');
+	}
+
+
+	function EmailAFriendForm() {
+		return new EmailAFriendForm($this->owner, 'EmailAFriendForm', $this->owner->ID);
+	}
+
+
+	function EmailAFriendShowForm() {
+		return $this->emailAFriendShowForm;
+	}
+
+
+
+
 }

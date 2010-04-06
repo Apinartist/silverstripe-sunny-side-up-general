@@ -2,24 +2,33 @@
 
 class EmailAFriendForm extends Form {
 
-	protected static $friend_email_address_label = "Friend#039;s Email Address";
+	protected static $friend_email_address_label = "Friend's Email Address";
+		static function set_friend_email_address_label($v) {self::$friend_email_address_label = $v;}
+		static function get_friend_email_address_label() {return self::$friend_email_address_label;}
 
 	protected static $message_label = "Message";
+		static function set_message_label($v) {self::$message_label = $v;}
+		static function get_message_label() {return self::$message_label;}
 
 	protected static $your_email_address_label = "Your email address";
+		static function set_your_email_address_label($v) {self::$your_email_address_label = $v;}
+		static function get_your_email_address_label() {return self::$your_email_address_label;}
 
 	protected static $send_label = 'Send';
+		static function set_send_label($v) {self::$send_label = $v;}
+		static function get_send_label() {return self::$send_label;}
 
-	static function set_friend_email_address_label($v) {self::$friend_email_address_label = $v;}
-	static function set_message_label($v) {self::$message_label = $v;}
-	static function set_your_email_address_label($v) {self::$your_email_address_label = $v;}
-	static function set_send_label($v) {self::$send_label = $v;}
+
+
 
 	function __construct($controller, $name, $id) {
-		Requiredments::themedCSS("EmailReferral");
-		Requiredments::javascript("emailreferral/javascript/EmailReferral.js");
-		$fields[] = new TextField('To', self::$friend_email_address_label);
+		Requirements::themedCSS("EmailReferral");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("emailreferral/javascript/EmailReferralForm.js");
+
+		$fields[] = new EmailField('To', self::$friend_email_address_label);
 		$fields[] = new TextareaField('Message', self::$message_label, 5, 20, EmailAFriendExtension::get_default_message() ? EmailAFriendExtension::get_default_message() : '');
+		$fields[] = new LiteralField('AdditionalMessage', '<div id="additionalMessageStuff"><p>'.Director::absoluteURL($controller->Link()).'</p><p>Sent by: <span id="emailReplacer">[your email address]</span></p></div>');
 		$fields[] = new EmailField('YourMailAddress', self::$your_email_address_label);
 		$fields[] = new HiddenField('PageID', 'PageID', $id);
 
@@ -72,7 +81,7 @@ class EmailAFriendForm extends Form {
 					$subject,
 					Convert::raw2xml($data['Message']) . '<br/><br/>Page Link : ' . $pageLink. '<br /><br />Sent by: '.$data['YourMailAddress']
 				);
-				$email->send();
+				//$email->send();
 			}
 			else {
 				$stopIndex = $index;
@@ -96,12 +105,8 @@ class EmailAFriendForm extends Form {
 		}
 		else $content = '<p class="message required">This page has not been emailed to anyone.</p>';
 
-		$content .= '<br/><p>Click <a href="' . $this->controller->Link() . '">here</a> to go back to the previous page.</p>';
-
-		$page = $this->controller;
-		$page->Content = $content;
-
-		return $page->renderWith('Page', 'Page_emailsent');
+		$templateData = array("EmailAFriendThankYouContent" => $content);
+		return $this->customise($templateData)->renderWith('EmailAFriendHolder');
 	}
 }
 
