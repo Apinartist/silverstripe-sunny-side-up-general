@@ -17,6 +17,10 @@ class TemplateOverviewPage extends Page {
 		static function set_parent_url_segment($value) {self::$parent_url_segment = $value;}
 		static function get_parent_url_segment() {return self::$parent_url_segment;}
 
+	protected static $classes_to_exclude = array("SiteTree", "TemplateOverviewPage", "RedirectorPage", "VirtualPage", "GhostPage") {
+		static function set_classes_to_exclude($array) {self::$classes_to_exclude = $array;}
+		static function get_classes_to_exclude() {return self::$classes_to_exclude;}
+
 
 	static $defaults = array(
 		"URLSegment" => "templates",
@@ -87,7 +91,7 @@ class TemplateOverviewPage extends Page {
 		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
 		foreach($classes as $className) {
-			if($className != "SiteTree" && $className != "TemplateOverviewPage" ) {
+			if(!in_array($className, self::$classes_to_exclude))) {
 				if($this->ShowAll) {
 					$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
 					$count = 0;
