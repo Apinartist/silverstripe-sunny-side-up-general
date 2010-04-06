@@ -7,19 +7,14 @@ class EcommerceAlsoRecommendedDOD extends DataObjectDecorator {
 	public function extraStatics() {
 		return array (
 			'many_many' => array(
-				'RecommendedProducts' => 'Product'
+				'EcommerceRecommendedProducts' => 'Product'
 			)
 		);
 	}
 
-	function RecommendedProducts() {
-		return $this->owner->RecommendedProducts();
-	}
-
 	function updateCMSFields(FieldSet &$fields) {
 		if($this->owner instanceOf Product) {
-			$field->addFieldToTab("Root.Content.RecommendedProducts",
-
+			$fields->addFieldToTab('Root.Content.RecommendedProducts', new TreeMultiselectField ("EcommerceRecommendedProducts", "Recommended Products", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title"));
 		}
 	}
 
