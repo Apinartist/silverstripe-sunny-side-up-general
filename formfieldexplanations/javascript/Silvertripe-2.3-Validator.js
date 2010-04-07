@@ -147,12 +147,21 @@ function require(fieldName,cachedError) {
 				fieldlabel = "this field";
 			}
 
+			// ============================ START OF HACK ============================
 			if (typeof(formFieldExplanationErrorMessage[fieldName])=='undefined' || formFieldExplanationErrorMessage[fieldName]===null) {
-				var errorMessage = ss.i18n.sprintf(ss.i18n._t('VALIDATOR.FIELDREQUIRED', 'Please fill out "%s", it is required.'), fieldLabel);
+				if (typeof(formFieldExplanationErrorMessage[fieldName.name])=='undefined' || formFieldExplanationErrorMessage[fieldName.name]===null) {
+					var errorMessage = ss.i18n.sprintf(ss.i18n._t('VALIDATOR.FIELDREQUIRED', 'Please fill in "%s", it is required.'), fieldLabel);
+				}
+				else {
+					var errorMessage = formFieldExplanationErrorMessage[fieldName.name];
+				}
 			}
 			else {
 				var errorMessage = formFieldExplanationErrorMessage[fieldName];
 			}
+
+			// ============================ START OF HACK ============================
+
 			if(baseEl.requiredErrorMsg) errorMessage = baseEl.requiredErrorMsg;
 			else if(_CURRENT_FORM.requiredErrorMsg) errorMessage = _CURRENT_FORM.requiredErrorMsg;
 
