@@ -31,10 +31,7 @@ class FormFieldExplanationExtension extends Extension{
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($field InstanceOf CompositeField) {
-					$littleFields = $field->FieldSet();
-					foreach($littleFields as $littleField) {
-						$extraFields->push($littleField);
-					}
+					self::find_composite_fields($dataFields, $extraFields);
 				}
 			}
 		}
@@ -55,6 +52,19 @@ class FormFieldExplanationExtension extends Extension{
 		Requirements::customScript($js, "FormFieldExplanationExtension");
 		Requirements::themedCSS("formfieldexplanations");
 		return $form;
+	}
+
+	protected static find_composite_fields function($dataFields, &$extraFields) {
+		if($dataFields){
+			foreach($dataFields as $field) {
+				if($field InstanceOf CompositeField) {
+					self::find_composite_fields($field->FieldSet(), $extraFields);
+				}
+				else {
+					$extraFields->push($littleField);
+				}
+			}
+		}
 	}
 
 	protected static function process_field($field, $explanations, $datarecord, &$js) {
