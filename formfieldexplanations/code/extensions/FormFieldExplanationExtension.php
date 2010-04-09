@@ -61,10 +61,11 @@ class FormFieldExplanationExtension extends Extension{
 					self::find_composite_fields($field->FieldSet(), $extraFields);
 				}
 				else {
-					$extraFields->push($littleField);
+					$extraFields->push($field);
 				}
 			}
 		}
+		return $extraFields;
 	}
 
 	protected static function process_field($field, $explanations, $datarecord, &$js) {
