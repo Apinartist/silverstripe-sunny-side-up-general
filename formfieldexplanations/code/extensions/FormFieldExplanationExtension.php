@@ -27,56 +27,25 @@ class FormFieldExplanationExtension extends Extension{
 		}
 		$dos = $do = null;
 		$dataFields = $form->fields();
+		$extraFields = new FieldSet();
 		if($dataFields){
 			foreach($dataFields as $field) {
-				if($name = $field->Name()) {
-					$message = '';
-					if(isset($explanations[$name])) {
-						if(isset($explanations[$name]["Explanation"])) {
-							$message .= $explanations[$name]["Explanation"];
-						}
-						if($datarecord->canEdit() && isset($explanations[$name]["ID"])) {
-							$message .= ' | '.self::CMSLink($datarecord->ID, $explanations[$name]["ID"]);
-						}
-					}
-					elseif($datarecord->canEdit() && $name) {
-						$title = $field->Title();
-						if(!$title) {
-							$title = $name;
-						}
-						$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">customise field</a>';
-					}
-					$do = true;
-					switch($field->class) {
-						case "HeaderField":
-							$do = false;
-							break;
-						default:
-							break;
-					}
-					$id = $field->id();
-					$message = str_replace("/", "\/", Convert::raw2js($message));
-					if($do && $message && $name && $id) {
-						$js .= "
-						formfieldexplanations.add_info('".$name."', '".$message."', '".$id."');";
+				if($field InstanceOf CompositeField) {
+					$littleFields = $field->FieldSet();
+					foreach($littleFields as $littleField) {
+						$extraFields->push($littleField);
 					}
 				}
-				$errorMessage = '';
-				if(isset($explanations[$name]["CustomErrorMessage"])) {
-					$errorMessage = $explanations[$name]["CustomErrorMessage"];
-					if(isset($explanations[$name]["CustomErrorMessageAdditional"])) {
-						$errorMessage .= '<span class="additionalValidationErrorMessage">'.$explanations[$name]["CustomErrorMessageAdditional"].'</span>';
-					}
-					$field->addExtraClass("customErrorMessage");
-					$field->setCustomValidationMessage($errorMessage);
-				}
-				if($field->Required() && $errorMessage) {
-					$js .= "
-						formFieldExplanationErrorMessage['$name'] = '".str_replace("/", "\/", Convert::raw2js($errorMessage))."';";
-				}
-				if(isset($explanations[$name]["AlternativeFieldLabel"])) {
-					$field->setTitle($explanations[$name]["AlternativeFieldLabel"]);
-				}
+			}
+		}
+		if($dataFields){
+			foreach($dataFields as $field) {
+				self::process_field($field, $explanations, $datarecord, $js);
+			}
+		}
+		if($extraFields) {
+			foreach($extraFields as $field) {
+				self::process_field($field, $explanations, $datarecord, $js);
 			}
 		}
 		// block prototype validation
@@ -86,6 +55,58 @@ class FormFieldExplanationExtension extends Extension{
 		Requirements::customScript($js, "FormFieldExplanationExtension");
 		Requirements::themedCSS("formfieldexplanations");
 		return $form;
+	}
+
+	protected static function process_field($field, $explanations, $datarecord, &$js) {
+		$dos = $do = null;
+		if($name = $field->Name()) {
+			$message = '';
+			if(isset($explanations[$name])) {
+				if(isset($explanations[$name]["Explanation"])) {
+					$message .= $explanations[$name]["Explanation"];
+				}
+				if($datarecord->canEdit() && isset($explanations[$name]["ID"])) {
+					$message .= ' | '.self::CMSLink($datarecord->ID, $explanations[$name]["ID"]);
+				}
+			}
+			elseif($datarecord->canEdit() && $name) {
+				$title = $field->Title();
+				if(!$title) {
+					$title = $name;
+				}
+				$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($title).'/" class="addFieldExplanation">customise field</a>';
+			}
+			$do = true;
+			switch($field->class) {
+				case "HeaderField":
+					$do = false;
+					break;
+				default:
+					break;
+			}
+			$id = $field->id();
+			$message = str_replace("/", "\/", Convert::raw2js($message));
+			if($do && $message && $name && $id) {
+				$js .= "
+				formfieldexplanations.add_info('".$name."', '".$message."', '".$id."');";
+			}
+		}
+		$errorMessage = '';
+		if(isset($explanations[$name]["CustomErrorMessage"])) {
+			$errorMessage = $explanations[$name]["CustomErrorMessage"];
+			if(isset($explanations[$name]["CustomErrorMessageAdditional"])) {
+				$errorMessage .= '<span class="additionalValidationErrorMessage">'.$explanations[$name]["CustomErrorMessageAdditional"].'</span>';
+			}
+			$field->addExtraClass("customErrorMessage");
+			$field->setCustomValidationMessage($errorMessage);
+		}
+		if($field->Required() && $errorMessage) {
+			$js .= "
+				formFieldExplanationErrorMessage['$name'] = '".str_replace("/", "\/", Convert::raw2js($errorMessage))."';";
+		}
+		if(isset($explanations[$name]["AlternativeFieldLabel"])) {
+			$field->setTitle($explanations[$name]["AlternativeFieldLabel"]);
+		}
 	}
 
 	public function addfieldexplanation(HTTPRequest $HTTPRequest) {

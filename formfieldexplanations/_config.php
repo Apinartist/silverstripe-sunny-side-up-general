@@ -10,5 +10,6 @@
 //===================---------------- START formfieldexplanations MODULE ----------------===================
 //Object::add_extension('SiteTree', 'FormFieldExplanationDecorator');
 //Object::add_extension('ContentController', 'FormFieldExplanationExtension');
+//FormFieldExplanationDecorator::set_show_fields_in_cms(true);
 //===================---------------- END formfieldexplanations MODULE ----------------===================
 

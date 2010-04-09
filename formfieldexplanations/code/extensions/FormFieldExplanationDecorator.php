@@ -9,6 +9,10 @@
 
 class FormFieldExplanationDecorator extends DataObjectDecorator{
 
+	protected static $show_fields_in_cms = false;
+		static function set_show_fields_in_cms($v) {self::$show_fields_in_cms = $v;}
+		static function get_show_fields_in_cms() {return self::$show_fields_in_cms;}
+
 	public function extraStatics() {
 		return array (
 			'has_many' => array(
