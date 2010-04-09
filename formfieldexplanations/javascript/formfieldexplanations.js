@@ -96,7 +96,17 @@ var formfieldexplanations = {
 			forID = id;
 		}
 		jQuery("#"+id).append('<div class="formfieldexplanations '+formfieldexplanations.moreInfoPrefix+forID+'" id="'+formfieldexplanations.moreInfoPrefix+''+id+'">'+html+'</div>');
+	},
+
+	replace_title: function(id, html, forID) {
+		if(jQuery("#"+forID).length < 1) {
+			forID = id;
+		}
+		jQuery("#"+id).children("label.left").html(html);
 	}
+
+
+
 }
 
 

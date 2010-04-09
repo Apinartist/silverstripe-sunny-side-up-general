@@ -117,7 +117,9 @@ class FormFieldExplanationExtension extends Extension{
 				formFieldExplanationErrorMessage['$name'] = '".str_replace("/", "\/", Convert::raw2js($errorMessage))."';";
 		}
 		if(isset($explanations[$name]["AlternativeFieldLabel"])) {
-			$field->setTitle($explanations[$name]["AlternativeFieldLabel"]);
+			$js .= "
+				formfieldexplanations.replace_title('".$name."', '".str_replace("/", "\/", Convert::raw2js($explanations[$name]["AlternativeFieldLabel"]))."', '".$id."');";
+			}
 		}
 	}
 
