@@ -31,7 +31,7 @@ class FormFieldExplanationExtension extends Extension{
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($field InstanceOf CompositeField) {
-					self::find_composite_fields($dataFields, $extraFields);
+					self::find_composite_fields($field, $extraFields);
 				}
 			}
 		}
@@ -54,11 +54,12 @@ class FormFieldExplanationExtension extends Extension{
 		return $form;
 	}
 
-	protected static function find_composite_fields ($dataFields, &$extraFields) {
+	protected static function find_composite_fields ($compositeField, &$extraFields) {
+		$dataFields = $compositeField->FieldSet();
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($field InstanceOf CompositeField) {
-					self::find_composite_fields($field->FieldSet(), $extraFields);
+					self::find_composite_fields($field, $extraFields);
 				}
 				else {
 					$extraFields->push($field);
