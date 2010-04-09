@@ -119,7 +119,6 @@ class FormFieldExplanationExtension extends Extension{
 		if(isset($explanations[$name]["AlternativeFieldLabel"])) {
 			$js .= "
 				formfieldexplanations.replace_title('".$name."', '".str_replace("/", "\/", Convert::raw2js($explanations[$name]["AlternativeFieldLabel"]))."', '".$id."');";
-			}
 		}
 	}
 
