@@ -54,7 +54,7 @@ class FormFieldExplanationExtension extends Extension{
 		return $form;
 	}
 
-	protected static find_composite_fields function($dataFields, &$extraFields) {
+	protected static function find_composite_fields ($dataFields, &$extraFields) {
 		if($dataFields){
 			foreach($dataFields as $field) {
 				if($field InstanceOf CompositeField) {
