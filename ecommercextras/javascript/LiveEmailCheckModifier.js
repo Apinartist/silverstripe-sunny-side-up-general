@@ -1,3 +1,7 @@
+jQuery(document).ready(function() {
+	LiveEmailCheckModifier.init();
+});
+
 var LiveEmailCheckModifier = {
 
 	emailFieldSelector: "input[name='Email']",
