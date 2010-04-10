@@ -4,7 +4,7 @@
 	<% base_tag %>
 	$ExtendedMetatags
 </head>
-<body id="top">
+<body id="body$ClassName">
 <div id="Wrapper">
 	<div id="Container">
 		<% include Navigation %>

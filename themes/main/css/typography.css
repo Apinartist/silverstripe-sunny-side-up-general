@@ -72,10 +72,12 @@
 	.typography a[href^="http://"]{ background:transparent url(../images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
 
 /* images */
-.typography img{float: right; margin-left: 10px; margin-bottom: 10px; border: 10px solid #BFC1C1;}
-.typography img.left{float: left; margin: 1em 1em 1em 0;}
-.typography img.right{float: right; margin: 1em 0 1em 1em;}
-
+.typography img{float: right; margin-left: 10px; margin-bottom: 10px; display: block;}
+/* images for CMS formatting */
+.typography img.left{float: left!important; margin: 1em 1em 1em 0!important;}
+.typography img.right{float: right!important; margin: 1em 0 1em 1em!important;}
+.typography img.center{float: none!important; display: block!important;margin: 1em auto 1em auto!important;}
+.typography img.leftAlone{float: none!important; display: block!important;margin: 1em 0 1em 0!important; }
 /* misc */
 .smallFont{
 	font-size: 0.7em;
@@ -94,3 +96,19 @@
 .fontcolour3 {color: #FFCC33!important;}  /* yellow */
 .fontcolour4 {color: #B5AB8B!important;}  /* sandy grey */
 .fontcolour5 {color: #82274B!important;} /* red */
+
+
+/* WYSIWYG EDITOR ALIGNMENT CLASSES
+-------------------------------------------- */
+.typography .left {text-align: left;}
+.typography .center {text-align: center;}
+.typography .right {text-align: right;}
+
+/* IMAGES
+-------------------------------------------- */
+.typography img {border: none;}
+.typography img.right {float: right;margin-left: 20px;}
+.typography img.left {float: left;}
+.typography img.leftAlone {float: left;margin-right: 100%;}
+.typography img.center {float: none;margin-left: auto;margin-right: auto;display: block;}
+
