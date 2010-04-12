@@ -271,32 +271,32 @@ class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 		$commsObject = new DpsPxPayComs();
 		$response = $commsObject->processRequestAndReturnResultsAsObject();
 		if($payment = DataObject::get_by_id('DpsPxPayStoredPayment', $response->getMerchantReference())) {
-			if($payment->Status != 'Success') {
-				if(1 == $response->getSuccess()) {
-					$payment->Status = 'Success';
+			if(1 == $response->getSuccess()) {
+				$payment->Status = 'Success';
 
-					if($response->DpsBillingId) {
-						$existingCard = DataObject::get_one('DpsPxPayStoredCard', 'BillingID = '.$response->DpsBillingId);
+				if($response->DpsBillingId) {
+					$existingCard = DataObject::get_one('DpsPxPayStoredCard', 'BillingID = '.$response->DpsBillingId);
 
-						if($existingCard == false) {
-							$storedCard = new DpsPxPayStoredCard();
-							$storedCard->BillingID = $response->DpsBillingId;
-							$storedCard->CardName = $response->CardName;
-							$storedCard->CardHolder = $response->CardHolderName;
-							$storedCard->CardNumber = $response->CardNumber;
-							$storedCard->MemberID = $payment->Order()->MemberID;
-							$storedCard->write();
-						}
+					if($existingCard == false) {
+						$storedCard = new DpsPxPayStoredCard();
+						$storedCard->BillingID = $response->DpsBillingId;
+						$storedCard->CardName = $response->CardName;
+						$storedCard->CardHolder = $response->CardHolderName;
+						$storedCard->CardNumber = $response->CardNumber;
+						$storedCard->MemberID = $payment->Order()->MemberID;
+						$storedCard->write();
 					}
 				}
-				else {
-					$payment->Status = 'Failure';
-				}
-				if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
-				if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
-				$payment->write();
-				$payment->redirectToOrder();
 			}
+			else {
+				$payment->Status = 'Failure';
+			}
+			if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
+			if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
+			if($payment->Status != 'Success') {
+				$payment->write();
+			}
+			$payment->redirectToOrder();
 		}
 		else {
 			USER_ERROR("could not find payment with matching ID", E_USER_WARNING);
