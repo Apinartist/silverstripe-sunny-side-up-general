@@ -14,7 +14,7 @@ class Affiliation extends DataObject {
 		"Logo" => "Image"
 	);
 
-	static function get_complex_table_field($controller, $name) {
+	static function get_has_many_complex_table_field($controller, $name) {
 		return new HasManyComplexTableField(
 			$controller,
 			$name,
@@ -35,8 +35,8 @@ class Affiliation extends DataObject {
 	}
 
 	public static $searchable_fields = array(
-		"Title" => "PartialMatchFilter"
-		"Code" => "PartialMatchFilter"
+		"Title" => "PartialMatchFilter",
+		"Code" => "PartialMatchFilter",
 		"Hyperlink" => "PartialMatchFilter"
 	);
 
@@ -47,7 +47,7 @@ class Affiliation extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Sort" => "Sorting Index Number (lower numbers show first)");
+		"Sort" => "Sorting Index Number (lower numbers show first)")
 	);
 
 	public static $singular_name = "Affiliation";
