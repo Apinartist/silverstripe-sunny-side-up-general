@@ -12,7 +12,7 @@ class ImageGalleryEntry extends DataObject {
 		"Image" => "Image"
 	);
 
-	static function get_complex_table_field($controller, $name) {
+	static function get_has_many_complex_table_field($controller, $name) {
 		return new HasManyComplexTableField(
 			$controller,
 			$name,
