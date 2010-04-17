@@ -21,9 +21,9 @@ class ImageGalleryPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Root.Content.Images", ImageGalleryEntry::get_has_many_complex_table_field($this, "ImageGalleryEntries"));
 		return $fields;
 	}
-
 
 
 }
