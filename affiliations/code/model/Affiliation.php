@@ -5,7 +5,7 @@ class Affiliation extends DataObject {
 	static $db = array(
 		"Title" => "Varchar(100)",
 		"Code" => "Varchar(100)",
-		"Hyperlink" => "Varchar(100)",
+		"Link" => "Varchar(100)",
 		"Sort" => "Int"
 	);
 
@@ -37,13 +37,13 @@ class Affiliation extends DataObject {
 	public static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
 		"Code" => "PartialMatchFilter",
-		"Hyperlink" => "PartialMatchFilter"
+		"Link" => "PartialMatchFilter"
 	);
 
 	public static $summary_fields = array(
 		"Title" => "Title",
 		"Code" => "Code",
-		"Hyperlink" => "Hyperlink"
+		"Link" => "Link"
 	);
 
 	public static $field_labels = array(
@@ -58,7 +58,7 @@ class Affiliation extends DataObject {
 	public static $default_sort = "Sort ASC, Title ASC";
 
 	public static $defaults = array(
-		"Sort" = 100
+		"Sort" => 100
 	);
 
 	public function populateDefaults() {
