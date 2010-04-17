@@ -34,7 +34,7 @@ class ImageGalleryEntry extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Sort" => "Sorting Index Number (lower numbers show first)");
+		"Sort" => "Sorting Index Number (lower numbers show first)"
 	);
 
 	public static $singular_name = "ImageGalleryEntry";
@@ -45,7 +45,7 @@ class ImageGalleryEntry extends DataObject {
 	public static $default_sort = "Sort ASC, Title ASC";
 
 	public static $defaults = array(
-		"Sort" = 100
+		"Sort" => 100
 	);
 
 	public function populateDefaults() {
