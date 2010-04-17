@@ -47,7 +47,7 @@ class Affiliation extends DataObject {
 	);
 
 	public static $field_labels = array(
-		"Sort" => "Sorting Index Number (lower numbers show first)")
+		"Sort" => "Sorting Index Number (lower numbers show first)"
 	);
 
 	public static $singular_name = "Affiliation";
