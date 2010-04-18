@@ -16,6 +16,10 @@ class SearchHistory Extends DataObject {
 		"RedirectTo" => "Varchar(255)"
 	);
 
+	static $has_many = array(
+		"LogEntries" => "SearchHistoryLog"
+	);
+
 	static $many_many = array(
 		"Recommendations" => "SiteTree"
 	);
@@ -53,25 +57,22 @@ class SearchHistory Extends DataObject {
 		"Recommendations" => "Recommended Pages - must already be part of the natural result set",
 	);
 
-
-	function canDelete() {
-		return false;
-	}
-
 	static function add_entry($KeywordString) {
 		$KeywordString = self::clean_keywordstring($KeywordString);
-		$obj = new SearchHistoryLog();
-		$obj->Title = $KeywordString;
-		$obj->write();
-		if($obj = DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'")) {
+		if($parent = DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'")) {
 			//do nothing
 		}
 		else {
-			$obj = new SearchHistory();
-			$obj->Title = $KeywordString;
-			$obj->write();
+			$parent = new SearchHistory();
+			$parent->Title = $KeywordString;
+			$parent->write();
 		}
-		return $obj;
+		if($parent) {
+			$obj = new SearchHistoryLog();
+			$obj->SearchedForID = $parent->ID;
+			$obj->write();
+			return $parent;
+		}
 	}
 
 	static function find_entry($KeywordString) {
@@ -93,7 +94,8 @@ class SearchHistory Extends DataObject {
 		if(!$this->RedirectTo) {
 			$source = DataObject::get("SiteTree", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
 			$sourceArray = $source->toDropdownMap();
-			$fields->addFieldToTab("Root.Main", new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceArray));
+			//$fields->addFieldToTab("Root.Main", new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceArray));
+			$fields->addFieldToTab("Root.Main", new TreeMultiselectField($name = "Recommendations", $title = "Recommendations", "SiteTree"));
 		}
 		else {
 			$fields->addFieldToTab("Root.Main", new LiteralField($name = "Recommendations", '<p>This search phrase cannot have recommendations, because it redirects to <i>'.$this->RedirectTo.'</i></p>'));
@@ -132,7 +134,6 @@ class SearchHistory Extends DataObject {
 						if(stripos($page->MetaTitle." ", $title) === false) {
 							$page->MetaTitle = $page->MetaTitle . $title;
 							$changed = true;
-							echo $page->Title." updated to ".$page->MetaTitle;
 						}
 						$multipliedTitle = self::get_separator().str_repeat($this->getTitle(), self::get_number_of_keyword_repeats());
 						if(stripos($page->MetaKeywords." ", $multipliedTitle) === false) {
@@ -153,7 +154,7 @@ class SearchHistory Extends DataObject {
 			}
 		}
 		//delete useless ones
-		if(!strlen($this->Title) < self::get_minimum_length()) {
+		if(strlen($this->Title) < self::get_minimum_length()) {
 			$this->delete();
 		}
 	}
@@ -175,8 +176,8 @@ class SearchHistory Extends DataObject {
 
 class SearchHistoryLog Extends DataObject {
 
-	static $db = array(
-		"Title" => "Varchar(255)"
+	static $has_one = array(
+		"SearchedFor" => "SearchHistory"
 	);
 
 	static $singular_name = 'Search History Log Entry';
@@ -184,26 +185,5 @@ class SearchHistoryLog Extends DataObject {
 	static $plural_name = 'Search History Log Entries';
 
 	static $default_sort = 'Created DESC';
-
-	public static $searchable_fields = array(
-		"Title"
-	);
-
-	public static $summary_fields = array(
-		"Title"
-	);
-
-	public static $field_labels = array(
-		"Search Phrase Entered"
-	);
-
-	function canCreate() {
-		return false;
-	}
-
-	function canDelete() {
-		return false;
-	}
-
 
 }

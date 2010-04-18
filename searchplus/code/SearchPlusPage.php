@@ -76,6 +76,7 @@ class SearchPlusPage_Controller extends Page_Controller {
 
 	function results($data){
 		if(isset($data["Search"]) || isset($data["MainSearch"])) {
+			// there is a search
 			Requirements::themedCSS("searchpluspage_searchresults");
 			if(isset($data["MainSearch"]) || !isset($data["Search"])) {
 				$data["Search"] = $data["MainSearch"];
@@ -85,14 +86,16 @@ class SearchPlusPage_Controller extends Page_Controller {
 			$form = $this->SearchPlusForm();
 			if(!isset($_GET["redirect"])) {
 				self::$search_history_object = SearchHistory::add_entry($data["Search"]);
-				if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
-					Director::redirect(
-						str_replace(
-							"Search=".urlencode(self::$search_history_object->Title),
-							"Search=".urlencode(self::$search_history_object->RedirectTo),
-							HTTP::RAW_setGetVar('redirect', 1, null)
-						)
-					);
+				if(self::$search_history_object) {
+					if(self::$search_history_object->RedirectTo && self::$search_history_object->RedirectTo != self::$search_history_object->Title) {
+						Director::redirect(
+							str_replace(
+								"Search=".urlencode(self::$search_history_object->Title),
+								"Search=".urlencode(self::$search_history_object->RedirectTo),
+								HTTP::RAW_setGetVar('redirect', 1, null)
+							)
+						);
+					}
 				}
 			}
 			else {
@@ -195,11 +198,14 @@ class SearchPlusPage_Controller extends Page_Controller {
 		$data = DB::query("
 			SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`RedirectTo` RedirectTo, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id
 			FROM `SearchHistoryLog`
-				INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title`
+				INNER JOIN `SearchHistory` ON `SearchHistory`.`ID` = `SearchHistoryLog`.`SearchedForID`
 			WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) ".$extraWhere."
-			GROUP BY `SearchHistoryLog`.`Title` ORDER BY count DESC LIMIT 0, $limit");
+			GROUP BY `SearchHistory`.`ID`
+			ORDER BY count DESC
+			LIMIT 0, $limit
+		");
 		$do = new DataObject();
-		$do->Title = "Search Phrase Popularity, $days days $limit entries";
+		$do->Title = "Search phrase popularity, $days days $limit entries";
 		$do->DataByCount = new DataObjectSet();
 		$do->DataByTitle = new DataObjectSet();
 		$do->Limit = $limit;
@@ -213,9 +219,12 @@ class SearchPlusPage_Controller extends Page_Controller {
 				$data = DB::query("
 					SELECT COUNT(`SearchHistoryLog`.`ID`) count
 					FROM `SearchHistoryLog`
-						INNER JOIN `SearchHistory` ON `SearchHistory`.`Title` = `SearchHistoryLog`.`Title`
+						INNER JOIN `SearchHistory` ON `SearchHistory`.`ID` = `SearchHistoryLog`.`SearchedForID`
 					WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) AND `SearchHistory`.`RedirectTo` = '".$row["title"]."'
-					GROUP BY `SearchHistory`.`RedirectTo` ORDER BY count DESC LIMIT 1");
+					GROUP BY `SearchHistory`.`RedirectTo`
+					ORDER BY count
+					DESC LIMIT 1
+				");
 				if($data) {
 					$extraCounts = $data->value();
 				}
