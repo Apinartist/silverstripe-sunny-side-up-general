@@ -86,7 +86,12 @@ class FormFieldExplanationExtension extends Extension{
 				if(!$title) {
 					$title = $name;
 				}
-				$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode(strip_tags($title)).'/" class="addFieldExplanation">customise field</a>';
+				$cleanTitle = strip_tags($title);
+				if(class_exists("UserDefinedForm")) {
+					$cleanTitle = str_replace(UserDefinedForm::$required_identifier, "", $cleanTitle);
+					$cleanTitle = str_replace("+", "", $cleanTitle);
+				}
+				$message .= ' | <a href="'.$datarecord->Link().'addfieldexplanation/'.urlencode($name).'/'.urlencode($cleanTitle).'/" class="addFieldExplanation">customise field</a>';
 			}
 			$do = true;
 			switch($field->class) {
