@@ -32,7 +32,9 @@ class OrderDecorator extends DataObjectDecorator {
 		return array(
 			'db' => array(
 				"CustomerOrderNote" => "Text",
-				"POBox" => "Text"
+				"POBox" => "Text",
+				'ShippingPhone' => 'Varchar(30)',
+				'ShippingPostalCode' => 'Varchar(30)'
 			),
 			'has_many' => array(
 				"OrderStatusLogWithDetails" => "OrderStatusLogWithDetails"
