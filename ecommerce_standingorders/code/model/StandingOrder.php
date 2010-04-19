@@ -282,9 +282,16 @@ class StandingOrder extends DataObject {
 	public function addAutomaticallyCreatedOrders() {
 		//current time + period is less than LastCreated and less then end
 		$currentTime = (strtotime(date('Y-m-d'))-1);
-		$startTime = strtotime($this->FirstOrderDate()->format("Y-m-d"));
+		$firstOrderDate = $this->FirstOrderDate();
+		if($firstOrderDate) {
+			$startTime = strtotime($firstOrderDate->format("Y-m-d"));
+		}
 		$endTime = strtotime($this->End);
-		if($currentTime > $endTime && $this->Status != "Finished") {
+		if(!$firstOrderDate) {
+			$this->Status = 'Pending';
+			$this->write();
+		}
+		elseif($currentTime > $endTime && $this->Status != "Finished") {
 			$this->Status = 'Finished';
 			$this->write();
 			//$this->sendUpdate();
