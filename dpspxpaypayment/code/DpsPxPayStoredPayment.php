@@ -295,7 +295,7 @@ class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 				if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
 				if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
 				$payment->write();
-				$payment->redirectToOrder();
+				//$payment->redirectToOrder();
 			}
 		}
 		else {
@@ -303,6 +303,4 @@ class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 		}
 		return;
 	}
-
-
 }
