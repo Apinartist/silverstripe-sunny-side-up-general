@@ -295,8 +295,8 @@ class DpsPxPayStoredPayment_Handler extends DpsPxPayPayment_Handler {
 				if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
 				if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
 				$payment->write();
-				//$payment->redirectToOrder();
 			}
+			$payment->redirectToOrder();
 		}
 		else {
 			USER_ERROR("could not find payment with matching ID", E_USER_WARNING);
