@@ -47,7 +47,7 @@ SuperFish::set_config("
 ");
 
 JS
-
+;
 	}
 
 }
