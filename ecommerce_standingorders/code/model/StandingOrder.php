@@ -788,9 +788,6 @@ HTML
 		$startTime = strtotime($this->Start);
 		$endTime = strtotime($this->End);
 
-		if($currentTime > $startTime) {
-			$this->Start = $currentTime;
-		}
 
 		if(($startTime + ( 7 * 60 * 60 * 24)) > $endTime) {
 			$this->End = $startTime + ( 7 * 60 * 60 * 24);
