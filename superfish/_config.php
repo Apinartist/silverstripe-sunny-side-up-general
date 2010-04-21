@@ -7,6 +7,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START superfish MODULE ----------------===================
+//SuperFish::include_code();
 /*
 SuperFish::set_config("
 	$(document).ready(function() {
