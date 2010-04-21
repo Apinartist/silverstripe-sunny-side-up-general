@@ -5,7 +5,7 @@
  *
  **/
 
-class PrettyPhoto extends Object {
+class SuperFish extends Object {
 
 
 	protected static $config = "";
