@@ -790,7 +790,7 @@ HTML
 
 
 		if(($startTime + ( 7 * 60 * 60 * 24)) > $endTime) {
-			$this->End = $startTime + ( 7 * 60 * 60 * 24);
+			$this->End = date('Y-m-d', $startTime + ( 7 * 60 * 60 * 24));
 		}
 
 		$this->Items = $this->OrderItemList();
