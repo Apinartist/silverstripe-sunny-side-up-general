@@ -41,7 +41,7 @@ class ShareThisDataObject extends DataObject {
 	}
 
 	public function canDelete() {
-		return false;
+		return true;
 	}
 
 	public function canEdit($member = false) {
