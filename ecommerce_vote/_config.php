@@ -10,4 +10,8 @@
 //===================---------------- START ecommerce_vote MODULE ----------------===================
 //Object::add_extension('SiteTree', 'EcommerceVoteDataDecorator');
 //Object::add_extension('ContentController', 'EcommerceVoteDecorator');
+//EcommerceVote::set_array_of_classes_used(array("Product"));
+//EcommerceVote::set_create_defaults(true);
+//EcommerceVote::set_default_votes(100);
+//EcommerceVote::set_random_size_to_add_to_default(10);
 //===================---------------- END ecommerce_vote MODULE ----------------===================

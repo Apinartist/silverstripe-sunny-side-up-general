@@ -16,10 +16,6 @@ class EcommerceVoteDecorator extends Extension {
 	);
 
 
-	protected static $session_variable_name = "EcommerceVoteDecorator";
-		static function set_session_variable_name($v){self::$session_variable_name = $v;}
-		static function get_session_variable_name () {return self::$session_variable_name;}
-
 
 	function addecommercevote() {
 		$id = intval(Director::URLParam("ID"));
@@ -52,7 +48,7 @@ class EcommerceVoteDecorator extends Extension {
 			$select = "SiteTree.ID MyPageID, COUNT(EcommerceVote.ID) c",
 			$from = array('SiteTree INNER JOIN EcommerceVote ON SiteTree.ID = EcommerceVote.PageID'),
 			$where = "",
-			$orderby = "c",
+			$orderby = "c DESC",
 			$groupby = "SiteTree.ID",
 			$having = "",
 			$limit = "0, $numberOfEntries"
@@ -62,15 +58,13 @@ class EcommerceVoteDecorator extends Extension {
 			$stage = Versioned::current_stage();
 			$baseClass = "SiteTree";
 			$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
-			$array = array();
-			$array[0] = 0;
+			$dataObjectSet = new DataObjectSet();
 			foreach($results as $result) {
-				$array[$result["MyPageID"]] = $result["MyPageID"];
+				$page = DataObject::get_by_id("SiteTree", $result["MyPageID"]);
+				$page->EcommerceVoteCounter =  $result["c"];
+				$dataObjectSet->push($page);
 			}
-			if(count($array)) {
-				$where = "$stageTable.ID IN (".implode(",", $array).")";
-				return DataObject::get("SiteTree", $where);
-			}
+			return $dataObjectSet;
 		}
 	}
 
@@ -78,19 +72,5 @@ class EcommerceVoteDecorator extends Extension {
 		return $this->TopEcommerceVotes(5);
 	}
 
-	function requireDefaultRecords() {
-		parent::requireDefaultRecords();
-		$objects = DataObject::get("EcommerceVote");
-		$array = array();
-		if($objects) {
-			foreach($objects as $obj) {
-				if(isset($array[$obj->PageID]) && $array[$obj->PageID] == $obj->SessionID) {
-					$obj->delete();
-					Database::alteration_message("deleting double vote", "deleted");
-				}
-				$array[$obj->PageID] = $obj->SessionID;
-			}
-		}
-	}
 
 }
