@@ -21,7 +21,7 @@ class SuperFish extends Object {
 			Requirements::javascript('superfish/javascript/hoverIntent.js');
 			Requirements::javascript('superfish/javascript/superfish.js');
 			Requirements::ThemedCSS('superfish');
-			Requirements::customScript('superfishconfig', self::get_config());
+			Requirements::customScript(self::get_config(), 'superfishconfig');
 		}
 	}
 
