@@ -133,7 +133,9 @@ class ShareThis extends DataObjectDecorator {
 	protected $variablesAssigned = false;
 
 	function updateCMSFields(FieldSet &$fields) {
-		$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?"));
+		if(!self::$always_include) {
+			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?", self::$include_by_default));
+		}
 		$addedLinks = array();
 		if($this->EditLink()) {
 			$addedLinks["edit"]  = $this->EditLink();
