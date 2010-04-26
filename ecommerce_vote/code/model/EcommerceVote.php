@@ -49,7 +49,7 @@ class EcommerceVote extends DataObject {
 	function onAfterWrite() {
 		parent::onAfterWrite();
 		if(DataObject::get_one("EcommerceVote", "SessionID = '".Session_ID()."' AND PageID =".$this->PageID." AND ID <> ".$this->ID)) {
-			//$this->delete();
+			$this->delete();
 		}
 	}
 
@@ -74,7 +74,6 @@ class EcommerceVote extends DataObject {
 		}
 		unset($array);
 		$array = null;
-		DB::query("Delete FROM EcommerceVote");
 		if(self::get_create_defaults()) {
 			$array = self::get_array_of_classes_used();
 			if(!is_array($array)|| !count($array)) {
@@ -84,23 +83,18 @@ class EcommerceVote extends DataObject {
 			if(count($array)) {
 				foreach($array as $className) {
 					if(Director::isDev()) {debug::show("setting up votes for $className");}
-					$pages = DataObject::get($className);
+					$pages = DataObject::get($className, "EcommerceVote.ID IS NULL", $sort = "", $join = "LEFT JOIN EcommerceVote on EcommerceVote.PageID = SiteTree.ID");
 					if($pages) {
 						foreach($pages as $page) {
-							if(!DataObject::get_one("EcommerceVote", "PageID = ".$page->ID)) {
-								$number = intval(self::get_default_votes() + rand(0, self::get_random_size_to_add_to_default()));
-								$i = 0;
-								while($i < $number) {
-									$obj = new EcommerceVote();
-									$obj->PageID = $page->ID;
-									$obj->SessionID = "default_votes_".$i;
-									$obj->write();
-									Database::alteration_message("creating vote $i for ".$page->Title, "created");
-									$i++;
-								}
-							}
-							else {
-								if(Director::isDev()) {debug::show("there are already votes for ".$page->Title);}
+							$number = intval(self::get_default_votes() + rand(0, self::get_random_size_to_add_to_default()));
+							$i = 0;
+							while($i < $number) {
+								$obj = new EcommerceVote();
+								$obj->PageID = $page->ID;
+								$obj->SessionID = "default_votes_".$i;
+								$obj->write();
+								Database::alteration_message("creating vote $i for ".$page->Title, "created");
+								$i++;
 							}
 						}
 					}
