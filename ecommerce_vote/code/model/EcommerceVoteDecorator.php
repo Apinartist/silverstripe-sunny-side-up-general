@@ -72,5 +72,8 @@ class EcommerceVoteDecorator extends Extension {
 		return $this->TopEcommerceVotes(5);
 	}
 
+	function removeallecommercevotes() {
+
+	}
 
 }
