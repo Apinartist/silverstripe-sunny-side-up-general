@@ -19,7 +19,7 @@ class EmailAFriendExtension extends DataObjectDecorator {
 		public static function get_max_message_phour_pip() {return self::$max_message_phour_pip;}
 
 	protected static $mail_subject;
-		public static function set_mail_subject($mailSubject) {self::$mail_subject = $mailSubject;}
+		public static function set_mail_subject($mail_subject) {self::$mail_subject = $mail_subject;}
 		public static function get_mail_subject() {return self::$mail_subject;}
 
 	public static function get_ip_user() {

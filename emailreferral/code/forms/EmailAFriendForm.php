@@ -81,7 +81,7 @@ class EmailAFriendForm extends Form {
 					$subject,
 					Convert::raw2xml($data['Message']) . '<br/><br/>Page Link : ' . $pageLink. '<br /><br />Sent by: '.$data['YourMailAddress']
 				);
-				//$email->send();
+				$email->send();
 			}
 			else {
 				$stopIndex = $index;
