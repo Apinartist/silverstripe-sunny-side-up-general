@@ -20,18 +20,6 @@ class PaymentsReport extends SSReport {
 	 * @return ComplexTableField
 	 */
 	function getReportField() {
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
-		Requirements::javascript("ecommercextras/javascript/PaymentsReport.js");
-		Requirements::customScript('var PaymentsReportURL = "'.Director::baseURL()."PaymentsReport_Handler".'/";', 'PaymentsReport_Handler_Base_URL');
-		$list = singleton('Payment')->dbObject('Status')->enumValues();
-		$js = '';
-		foreach($list as $key => $value) {
-			if($key && $value) {
-				$js .= 'PaymentsReport.addStatus("'.$value.'");';
-			}
-		}
-		Requirements::customScript($js, "PaymentsReport_Handler_PaymentStatusList");
 		// Get the fields used for the table columns
 		$fields = array(
 			'Created' => 'Time',

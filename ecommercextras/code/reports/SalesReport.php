@@ -20,18 +20,6 @@ class SalesReport extends SSReport {
 	 * @return ComplexTableField
 	 */
 	function getReportField() {
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
-		Requirements::javascript("ecommercextras/javascript/SalesReport.js");
-		Requirements::customScript('var SalesReportURL = "'.Director::baseURL()."SalesReport_Handler".'/";', 'SalesReport_Handler_Base_URL');
-		$list = OrderDecorator::get_order_status_options();
-		$js = '';
-		foreach($list as $key => $value) {
-			if($key && $value) {
-				$js .= 'SalesReport.addStatus("'.$value.'");';
-			}
-		}
-		Requirements::customScript($js, "SalesReport_Handler_OrderStatusList");
 		// Get the fields used for the table columns
 		$fields = Order::$table_overview_fields;
 

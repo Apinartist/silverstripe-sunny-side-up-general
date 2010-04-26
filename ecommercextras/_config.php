@@ -10,7 +10,7 @@
 //===================---------------- START ecommercextra MODULE ----------------===================
 
 // *** REMINDERS FOR THINGS TO SET IN ECOMMERCE:
-//Order::set_modifiers(array('PickUpOrDelivery', 'RecommendedProducts','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier', 'LiveEmailCheckModifier'));
+//Order::set_modifiers(array('PickUpOrDeliveryModifier', 'RecommendedProductsModifier','BonusProductModifier','GSTTaxModifier', 'NewsletterSignupModifier', 'LiveEmailCheckModifier'));
 //Order::set_email("websales@silverstripe.co.nz");
 //Order::set_subject("Thank you for your order at silverstripe.co.nz");
 
