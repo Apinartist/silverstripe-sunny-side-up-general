@@ -12,7 +12,8 @@ class EcommerceVoteDecorator extends Extension {
 
 
 	static $allowed_actions = array(
-		"addecommercevote" => true
+		"addecommercevote" => true,
+		"removeallecommercevotes" => true
 	);
 
 
@@ -73,7 +74,13 @@ class EcommerceVoteDecorator extends Extension {
 	}
 
 	function removeallecommercevotes() {
-
+		if($m = Member::currentUser()) {
+			if($m->isAdmin()) {
+				DB::query("DELETE FROM EcommerceVote");
+				die("all votes have been deleted");
+			}
+		}
+		die("you have to be logged in as an administrator");
 	}
 
 }
