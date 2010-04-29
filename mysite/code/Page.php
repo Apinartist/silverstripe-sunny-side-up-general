@@ -15,9 +15,6 @@ class Page extends SiteTree {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		$group = DataObject::get_by_id("Group", 1);
-		$member = DataObject::get_one("Member", "Email = 'tester@sunnysideup.co.nz'");
-		Group::addToGroupByName($member, $group->Code);
 		if(!DataObject::get("Member")) {
 			$member = new Member();
 			$member->FirstName = "Sunny";

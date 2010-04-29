@@ -113,3 +113,7 @@ if(Director::isDev()) {
 //===================---------------- START typography MODULE ----------------===================
 TypographyTestPage::set_auto_include(true);
 //===================---------------- END typography MODULE ----------------===================
+
+//===================---------------- START userdefinedforms MODULE ----------------===================
+UserDefinedForm::$required_identifier = "*";
+//===================---------------- END userdefinedforms MODULE ----------------===================
