@@ -60,7 +60,7 @@
 .typography strong, .typography b {color: #82274B; font-weight: bold;}
 .typography em{font-style: italic;}
 .typography u{}
-.typography q {font-style: italic; color: #B5AB8B;}
+.typography q {}
 
 /* links */
 .typography a{color: #555;  border-bottom: 1px dotted transparent;}
