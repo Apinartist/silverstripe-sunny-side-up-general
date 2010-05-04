@@ -27,6 +27,19 @@ class SalesReport extends SSReport {
 		static function set_full_export_select_statement($v) {self::$full_export_select_statement = $v;}
 		static function get_full_export_select_statement() {return self::$full_export_select_statement;}
 
+	protected static $full_export_join_statement = '
+			INNER JOIN `Order` ON `Order`.`ID` = `OrderAttribute`.`OrderID`
+			INNER JOIN `Member` On `Order`.`MemberID` = `Member`.`ID`
+			LEFT JOIN `Payment` ON `Payment`.`OrderID` = `Order`.`ID`
+			LEFT JOIN `Product_versions` ProductForProducts ON `Product_OrderItem`.`ProductID` = ProductForProducts.`RecordID` AND `Product_OrderItem`.`ProductVersion` = ProductForProducts.`Version`
+			LEFT JOIN `SiteTree_versions` SiteTreeForProducts ON SiteTreeForProducts.`RecordID` = `Product_OrderItem`.`ProductID` AND `Product_OrderItem`.`ProductVersion` = SiteTreeForProducts.`Version`
+			LEFT JOIN `ProductVariation_versions` ProductVariationsForVariations ON `ProductVariation_OrderItem`.`ProductVariationID` = ProductVariationsForVariations.`RecordID` AND `ProductVariation_OrderItem`.`ProductVariationVersion` = ProductVariationsForVariations.`Version`
+			LEFT JOIN `SiteTree_versions` ProductSiteTreeForVariations ON `ProductSiteTreeForVariations`.`RecordID` = `Product_OrderItem`.`ProductID` AND `Product_OrderItem`.`ProductVersion` = `ProductSiteTreeForVariations`.`Version`
+			LEFT JOIN `OrderStatusLog` ON `OrderStatusLog`.`OrderID` = `Order`.`ID`
+			LEFT JOIN `OrderStatusLogWithDetails` ON `OrderStatusLogWithDetails`.`ID` = `OrderStatusLog`.`ID`';
+		static function set_full_export_join_statement($v) {self::$full_export_join_statement = $v;}
+		static function get_full_export_join_statement() {return self::$full_export_join_statement;}
+
 	protected static $full_export_file_name = "SalesExport";
 		static function set_full_export_file_name($v) {self::$full_export_file_name = $v;}
 		static function get_full_export_file_name() {return self::$full_export_file_name;}

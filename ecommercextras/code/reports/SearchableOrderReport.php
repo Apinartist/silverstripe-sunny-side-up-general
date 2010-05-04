@@ -46,7 +46,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
-		$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details</a>'));
+		$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details (do a search first to limit results)</a>'));
 		return $fields;
 	}
 

@@ -28,27 +28,15 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 			$where,
 			$sort = '`Order`.`Created` DESC',
 			$limit = "",
-			$join = "
-				INNER JOIN `Order` ON `Order`.`ID` = `OrderAttribute`.`OrderID`
-				INNER JOIN `Member` On `Order`.`MemberID` = `Member`.`ID`
-				LEFT JOIN `Payment` ON `Payment`.`OrderID` = `Order`.`ID`
-				LEFT JOIN `Product_versions` ProductForProducts ON `Product_OrderItem`.`ProductID` = ProductForProducts.`RecordID` AND `Product_OrderItem`.`ProductVersion` = ProductForProducts.`Version`
-				LEFT JOIN `SiteTree_versions` SiteTreeForProducts ON SiteTreeForProducts.`RecordID` = `Product_OrderItem`.`ProductID` AND `Product_OrderItem`.`ProductVersion` = SiteTreeForProducts.`Version`
-				LEFT JOIN `ProductVariation_versions` ProductVariationsForVariations ON `ProductVariation_OrderItem`.`ProductVariationID` = ProductVariationsForVariations.`RecordID` AND `ProductVariation_OrderItem`.`ProductVariationVersion` = ProductVariationsForVariations.`Version`
-				LEFT JOIN `SiteTree_versions` ProductSiteTreeForVariations ON `ProductSiteTreeForVariations`.`RecordID` = `Product_OrderItem`.`ProductID` AND `Product_OrderItem`.`ProductVersion` = `ProductSiteTreeForVariations`.`Version`
-				LEFT JOIN `OrderStatusLog` ON `OrderStatusLog`.`OrderID` = `Order`.`ID`
-				LEFT JOIN `OrderStatusLogWithDetails` ON `OrderStatusLogWithDetails`.`ID` = `OrderStatusLog`.`ID`
-			"
+			$join = SalesReport::get_full_export_join_statement();
 		);
 		//make sure to do variations first
-		$query->select[] = "SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments";
-		$query->select[] = "IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) ProductOrModifierName";
-		$query->select[] = "IF(ProductSiteTreeForVariations.ID IS NOT NULL, ProductVariationsForVariations.Price, IF(ProductForProducts.Price IS NOT NULL, ProductForProducts.Price, IF(OrderModifier.Amount IS NOT NULL, OrderModifier.Amount, 'n/a'))) ProductOrModifierPrice";
-		$query->select[] = "IF(OrderItem.Quantity IS NOT NULL, OrderItem.Quantity, 1)  ProductOrModifierQuantity";
-		$query->select[] = "CONCAT( Order.ID, ' :: ', Order.Created, ' :: ', Order.Status) as OrderDetails";
-		$query->select[] = "CONCAT(Member.FirstName, ' ', Member.Surname, ' (', Member.Email,')') MemberDetails";
-		$query->select[] = "CONCAT(Member.Address, ' ', Member.AddressLine2,' ', Member.City, ' ', Member.Country,' ', Member.HomePhone,' ', Member.MobilePhone,' ', Member.Notes,' ', Member.Notes ) MemberContactDetails";
-		$query->select[] = "IF(`Order`.`UseShippingAddress`, CONCAT(`Order`.`ShippingName`, ' ',`Order`.`ShippingAddress`, ' ',`Order`.`ShippingAddress2`, ' ',`Order`.`ShippingCity`, ' ',`Order`.`ShippingCountry`), 'no alternative delivery address') MemberShippingDetailsAddress";
+		$fieldArrayToAdd = SalesReport::get_full_export_select_statement();
+		if(is_array($fieldArrayToAdd) && count($fieldArrayToAdd)) {
+			foreach($fieldArrayToAdd as $sql => $name) {
+				$query->select[] = $sql;
+			}
+		}
 		$query->groupby("OrderAttribute.ID");
 		if($having = Session::get("SearchableProductSalesReport.having")) {
 			$query->having($having);
