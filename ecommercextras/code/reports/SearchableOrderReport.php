@@ -46,6 +46,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
+		$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details</a>'));
 		return $fields;
 	}
 
@@ -158,6 +159,7 @@ class SearchableOrderReport extends SalesReport {
 		if($having = Session::get("SearchableOrderReport.having")) {
 			$query->having($having);
 		}
+		$query->groupby("`Order`.`ID`");
 		return $query;
 	}
 
@@ -211,6 +213,7 @@ class SearchableOrderReport extends SalesReport {
 				$query->select[$key] = "CONCAT(`Order`.`ID`, ' :: ', `Order`.`Created`, ' :: ', `Order`.`Status`) AS OrderSummary";
 			}
 		}
+		$query->groupby("`Order`.`ID`");
 		if($having = Session::get("SearchableOrderReport.having")) {
 			$query->having($having);
 		}

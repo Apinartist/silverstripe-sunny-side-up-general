@@ -342,7 +342,11 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 								$this->debugMessage .= "<hr />product without weight: ".$product->Weight;
 							}
 							elseif(!$item->Quantity) {
-								$this->debugMessage .= "<hr />item without quanty: ".$item->Quantity.$item->quantity;
+								$this->debugMessage .= "<hr />item without uc quanty: ".$item->Quantity;
+								if($this->quanty) {
+									$this->debugMessage .= "<hr />item does have lc quanty: ".$item->quanty;
+								}
+
 							}
 						}
 					}

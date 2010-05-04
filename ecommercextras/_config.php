@@ -113,6 +113,14 @@ Director::addRules(50, array(
 	// setup cron job 0 * * * * wget http://www.mysite.com/silverstripe/HourlyTask/
 	//if you add the OrderDecorator then this also runs this task at Order::onAfterWrite();
 ));
+/*
+SalesReport::set_full_export_select_statement(
+	array(
+		"`Order`.`ID`" => "Order ID",
+		"`Order`.`Created`" => "Created"
+	)
+);
+*/
 //SearchableOrderReport::set_default_from_time("10:00pm");
 //SearchableOrderReport::set_default_until_time("10:00pm");
 //===================---------------- END ecommercextra MODULE ----------------===================

@@ -5,6 +5,32 @@
  */
 class SalesReport extends SSReport {
 
+
+	protected static $full_export_select_statement =
+		array(
+			"`Order`.`ID`" => "Order number",
+			"`Order`.`Created`" => "Order date and time",
+			"GROUP_CONCAT(`Payment`.`Message` SEPARATOR ', ')" => "Egate merchant reference",
+			"GROUP_CONCAT(`Payment`.`ID` SEPARATOR ', ')" =>  "Transaction Id",
+			"SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments" => "Total Order Amount",
+			"IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) ProductOrModifierName" => "Product Name",
+			"IF(OrderItem.Quantity IS NOT NULL, OrderItem.Quantity, 1)  ProductOrModifierQuantity" => "Quantity",
+			"IF(ProductSiteTreeForVariations.ID IS NOT NULL, ProductVariationsForVariations.Price, IF(ProductForProducts.Price IS NOT NULL, ProductForProducts.Price, IF(OrderModifier.Amount IS NOT NULL, OrderModifier.Amount, 'n/a'))) ProductOrModifierPrice" => "Amount",
+			"CONCAT(Member.Address, ' ', Member.AddressLine2,' ', Member.City, ' ', Member.Country,' ', Member.HomePhone,' ', Member.MobilePhone,' ', Member.Notes,' ', Member.Notes ) MemberContactDetails" => "Customer contact details",
+			"IF(`Order`.`UseShippingAddress`, CONCAT(`Order`.`ShippingName`, ' ',`Order`.`ShippingAddress`, ' ',`Order`.`ShippingAddress2`, ' ',`Order`.`ShippingCity`, ' ',`Order`.`ShippingCountry`), 'no alternative delivery address') MemberShippingDetailsAddress" => "Costumer delivery",
+			"`Order`.`Status`" => "Order status",
+			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchTicket` SEPARATOR ', ')" => "Dispatch ticket code",
+			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchedOn` SEPARATOR ', ')" => "Dispatch date",
+			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchedBy` SEPARATOR ', ')" => "Dispatched by",
+			"GROUP_CONCAT(`OrderStatusLog`.`Note` SEPARATOR ', ')" => "Dispatched by"
+		);
+		static function set_full_export_select_statement($v) {self::$full_export_select_statement = $v;}
+		static function get_full_export_select_statement() {return self::$full_export_select_statement;}
+
+	protected static $full_export_file_name = "SalesExport";
+		static function set_full_export_file_name($v) {self::$full_export_file_name = $v;}
+		static function get_full_export_file_name() {return self::$full_export_file_name;}
+
 	protected $title = 'All Orders';
 
 	protected static $sales_array = array();
@@ -189,7 +215,42 @@ class SalesReport_Handler extends Controller {
 		return "updated to ".$newStatus;
 	}
 
-	function doExport() {
-		die("doExport");
+	function fullsalesexport() {
+		$exportReport = new SearchableProductSalesReport();
+		$query = $exportReport->getCustomQuery();
+		$query->select = null;
+		$array = SalesReport::get_full_export_select_statement();
+		if(is_array($array) && count($array)) {
+			$fileData = '"row number"';
+			foreach($array as $sql => $name) {
+				$query->select[] = $sql;
+				$fileData .= ',"'.$name.'"';
+			}
+			$data = $query->execute();
+			if($data) {
+				$i = 0;
+				foreach($data as $row) {
+					$i++;
+					$fileData .= "\r\n".'"'.$i.'"';
+					foreach($row as $fieldName => $value) {
+						$fileData .= ',"'.$value.'"';
+					}
+				}
+			}
+			else {
+				$fileData = "no data available";
+			}
+		}
+		else {
+			$fileData = "please select fields first";
+		}
+		$fileName = SalesReport::get_full_export_file_name()."-".date("Y-m-d", strtotime("today")).".csv";
+		header("Content-Type: text/csv; name=\"" . addslashes($fileName) . "\"");
+		header("Content-Disposition: attachment; filename=\"" . addslashes($fileName) . "\"");
+		header("Content-length: " . strlen($fileData));
+		echo $fileData;
+		exit();
+
 	}
+
 }
