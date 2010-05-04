@@ -17,11 +17,13 @@
 		<% include OrderInformation %>
 	<% end_control %>
 <% else %>
-	<% if LastOrders %>
 <h3>Last Orders</h3>
+	<% if LastOrders %>
 <p class="showHideNext"><a href="#">show now</a></p>
 <ul id="ShopManagerPageLastOrders">
 	<% control LastOrders %><li>#$ID, $Created.Nice, $Status, $Member.Firstname $Member.Surname, $Member.Email</li><% end_control %>
 </ul>
+	<% else %>
+<p>There are no orders</p>
 	<% end_if %>
 <% end_if %>

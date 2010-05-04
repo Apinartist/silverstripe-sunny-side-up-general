@@ -14,8 +14,34 @@ class EnhancedCheckoutPage extends CheckoutPage {
 
 	static $add_action = 'The Checkout Page';
 
+	protected static $autocreate_enhancedcheckoutpage = false;
+		static function set_autocreate_enhancedcheckoutpage($v) {self::$autocreate_enhancedcheckoutpage = $v;}
+		static function get_autocreate_enhancedcheckoutpage($v) {return self::$autocreate_enhancedcheckoutpage;}
+
 	function canCreate() {
 		return !DataObject::get_one("Page", "`ClassName`= 'EnhancedCheckoutPage'");
+	}
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		if(self::get_autocreate_enhancedcheckoutpage()) {
+			$update = '';
+			$page = DataObject::get_one("EnhancedCheckoutPage");
+			if(!$page) {
+				$page = new EnhancedCheckoutPage();
+				$page->Title = "checkout-page";
+				$page->MenuTitle = "checkout";
+				$page->URLSegment = "checkout";
+				$update .= "created page itself, ";
+			}
+			if($page) {
+				if($update) {
+					$page->writeToStage('Stage');
+					$page->publish('Stage', 'Live');
+					Database::alteration_message($page->ClassName." created/updated: ".$update.' DONE', 'created');
+				}
+			}
+		}
 	}
 
 }

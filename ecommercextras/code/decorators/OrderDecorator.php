@@ -162,6 +162,10 @@ class OrderDecorator extends DataObjectDecorator {
 		return "hello";
 	}
 
+	//hack for the sales report
+	function Payment() {
+		return DataObject::get("Payment", "OrderID = ".$this->owner->ID);
+	}
 
 }
 

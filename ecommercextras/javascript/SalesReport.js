@@ -110,8 +110,8 @@ var SalesReport = {
 				jQuery(myControlSelector).next("span.outcome").fadeOut(3000);
 			}
 		});
-
 	}
+
 }
 
 

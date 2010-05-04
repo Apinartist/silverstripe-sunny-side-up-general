@@ -188,11 +188,19 @@ class ShopManagerPage_Controller extends Page_Controller {
 
 	}
 
+	function export($request) {
+		$after = $request->param('ID');
+
+
+	}
+
 
 	function smcheck() {
 		$x = new ShopManagerPage_Check();
 		$x->smcheck();
 	}
+
+
 
 }
 

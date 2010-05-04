@@ -127,8 +127,6 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 
 
 
-
-
 }
 
 

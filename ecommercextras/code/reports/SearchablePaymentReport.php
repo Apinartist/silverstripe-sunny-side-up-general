@@ -48,9 +48,7 @@ class SearchablePaymentReport extends PaymentsReport {
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Amout at least..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Amount no more than ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
-		//$fields->addFieldToTab("Root.ExportDetails", $this->getExportTable());
 
-		$fields->addFieldToTab("Root.ExportDetails", new FormAction('doExport', 'Export Now'));
 		return $fields;
 	}
 
@@ -136,8 +134,54 @@ class SearchablePaymentReport extends PaymentsReport {
 	}
 
 
+	function getReportField() {
+		$report = parent::getReportField();
+		$report->setCustomCsvQuery($this->getExportQuery());
+		return $report;
+	}
 
 
+	function getExportFields() {
+		return array(
+			"OrderSummary" => "Order Details",
+			'Amount' => 'Amount',
+			'Currency' => 'Currency',
+			'Message' => 'Message',
+			'IP' => 'Varchar',
+			'ProxyIP' => 'Varchar'
+		);
+	}
+
+	function getExportQuery() {
+		//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+		$where = Session::get("SearchablePaymentReport.where");
+		if(trim($where)) {
+		 $where = " ( $where ) AND ";
+		}
+		$query = singleton('Payment')->buildSQL(
+			$where,
+			$sort = '`Payment`.`Created` DESC',
+			$limit = "",
+			$join = " INNER JOIN `Order` on `Order`.`ID` = `Payment`.`OrderID`"
+		);
+		$fieldArray = $this->getExportFields();
+		if(is_array($fieldArray)) {
+			if(count($fieldArray)) {
+				foreach($fieldArray as $key => $field) {
+					$query->select[] = $key;
+				}
+			}
+		}
+		foreach($query->select as $key=>$value) {
+			if($value == "OrderSummary") {
+				$query->select[$key] = "CONCAT(`Order`.`ID`, ' :: ', `Order`.`Created`, ' :: ', `Order`.`Status`) AS OrderSummary";
+			}
+		}
+		if($having = Session::get("SearchableOrderReport.having")) {
+			$query->having($having);
+		}
+		return $query;
+	}
 
 
 

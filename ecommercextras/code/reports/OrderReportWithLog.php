@@ -111,7 +111,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 			'StatusTable',
 			'OrderStatusLogWithDetails',
 			array(
-				'Created' => 'Created',
+				'Received' => 'Created',
 				'Status' => 'Status',
 				'Note' => 'Note',
 				'DispatchedBy' => 'Dispatched By',
@@ -125,7 +125,6 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 		);
 
 		$table->setFieldCasting(array(
-			'Created' => 'Date',
 			'PaymentOK' => 'Boolean->Nice',
 			'SentToCustomer' => 'Boolean->Nice',
 		));

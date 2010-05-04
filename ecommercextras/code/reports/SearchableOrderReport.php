@@ -46,9 +46,6 @@ class SearchableOrderReport extends SalesReport {
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
-		//$fields->addFieldToTab("Root.ExportDetails", $this->getExportTable());
-
-		$fields->addFieldToTab("Root.ExportDetails", new FormAction('doExport', 'Export Now'));
 		return $fields;
 	}
 
@@ -135,6 +132,12 @@ class SearchableOrderReport extends SalesReport {
 		return "ok";
 	}
 
+	function getReportField() {
+		$report = parent::getReportField();
+		$report->setCustomCsvQuery($this->getExportQuery());
+		return $report;
+	}
+
 	function getCustomQuery() {
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 		$where = Session::get("SearchableOrderReport.where");
@@ -159,12 +162,10 @@ class SearchableOrderReport extends SalesReport {
 	}
 
 	function getExportFields() {
-
-		$fields = array(
-			"Order.ID" => "Order ID",
-			"Order.Created" => "Order date and time",
-			"Payment.Message" => " Reference",
-			"RealPayments" => "Total Payment",
+		return array(
+			"OrderSummary" => "Order Details",
+			"RealPayments" => "Payments",
+			"Payment.Message" => "Reference",
 			"Member.FirstName" => "Customer first name",
 			"Member.Surname" => "Customer last name",
 			"Member.HomePhone" => "Customer home phone",
@@ -173,45 +174,47 @@ class SearchableOrderReport extends SalesReport {
 			"Member.Address" => "Customer address 1",
 			"Member.AddressLine2" => "Customer address 2",
 			"Member.City" => "Customer City",
-			"Order.Status" => "Order Status"
 		);
-		return $fields;
 	}
 
 	function getExportQuery() {
-		if("SalesReport" == $this->class) {
-			user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
+		//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
+		$where = Session::get("SearchableOrderReport.where");
+		if(trim($where)) {
+		 $where = " ( $where ) AND ";
 		}
-		else {
-			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
-			$where = Session::get("SearchableOrderReport.where");
-			if(trim($where)) {
-			 $where = " ( $where ) AND ";
-			}
-			$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` = "Pending" OR  `Payment`.`Status` IS NULL)';
-			$query = singleton('Order')->buildSQL(
-				$where,
-				$sort = '`Order`.`Created` DESC',
-				$limit = "",
-				$join = "
-					INNER JOIN `Member` on `Member`.`ID` = `Order`.`MemberID`
-					LEFT JOIN PAYMENT ON `Payment`.`OrderID` = `Order`.`ID`
-				"
-			);
-			$fieldArray = $this->getExportFields();
-			if(is_array($fieldArray)) {
-				if(count($fieldArray)) {
-					foreach($fieldArray as $key => $field) {
-						$query->select[] = $key;
-					}
+		$where .= '(`Payment`.`Status` = "Success" OR `Payment`.`Status` = "Pending" OR  `Payment`.`Status` IS NULL)';
+		$query = singleton('Order')->buildSQL(
+			$where,
+			$sort = '`Order`.`Created` DESC',
+			$limit = "",
+			$join = "
+				INNER JOIN `Member` ON `Member`.`ID` = `Order`.`MemberID`
+				LEFT JOIN Payment ON `Payment`.`OrderID` = `Order`.`ID`
+			"//
+		);
+		$fieldArray = $this->getExportFields();
+		if(is_array($fieldArray)) {
+			if(count($fieldArray)) {
+				foreach($fieldArray as $key => $field) {
+					$query->select[] = $key;
 				}
 			}
-			$query->select[] = "SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments";
-			if($having = Session::get("SearchableOrderReport.having")) {
-				$query->having($having);
-			}
-			return $query;
 		}
+		foreach($query->select as $key=>$value) {
+			if($value == "RealPayments") {
+				$query->select[$key] = "SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments";
+			}
+		}
+		foreach($query->select as $key=>$value) {
+			if($value == "OrderSummary") {
+				$query->select[$key] = "CONCAT(`Order`.`ID`, ' :: ', `Order`.`Created`, ' :: ', `Order`.`Status`) AS OrderSummary";
+			}
+		}
+		if($having = Session::get("SearchableOrderReport.having")) {
+			$query->having($having);
+		}
+		return $query;
 	}
 
 	protected function currencyFormat($v) {
@@ -219,11 +222,6 @@ class SearchableOrderReport extends SalesReport {
 		$c->setValue($v);
 		return $c->Nice();
 	}
-
-
-
-
-
 
 }
 

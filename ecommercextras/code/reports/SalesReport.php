@@ -21,6 +21,7 @@ class SalesReport extends SSReport {
 	 */
 	function getReportField() {
 		// Get the fields used for the table columns
+		Order::$table_overview_fields["Created"] = "Received";
 		$fields = Order::$table_overview_fields;
 
 		// Add some fields specific to this report
@@ -50,14 +51,13 @@ class SalesReport extends SSReport {
 		));
 
 		$table->setFieldCasting(array(
-			'Created' => 'Date',
 			'Total' => 'Currency->Nice'
 		));
 
 		$table->setPermissions(array(
 			'edit',
 			'show',
-			'export',
+			'export'
 		));
 		$table->setPageSize(250);
 
@@ -88,7 +88,6 @@ class SalesReport extends SSReport {
 			user_error('Please implement getExportFields() on ' . $this->class, E_USER_ERROR);
 		}
 		else {
-			return array("Order.ID" => "Order ID", "Order.Total" => "Order Total");
 		}
 	}
 
@@ -191,6 +190,6 @@ class SalesReport_Handler extends Controller {
 	}
 
 	function doExport() {
-
+		die("doExport");
 	}
 }
