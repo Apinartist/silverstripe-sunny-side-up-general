@@ -22,7 +22,7 @@ class SalesReport extends SSReport {
 			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchTicket` SEPARATOR ', ')" => "Dispatch ticket code",
 			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchedOn` SEPARATOR ', ')" => "Dispatch date",
 			"GROUP_CONCAT(`OrderStatusLogWithDetails`.`DispatchedBy` SEPARATOR ', ')" => "Dispatched by",
-			"GROUP_CONCAT(`OrderStatusLog`.`Note` SEPARATOR ', ')" => "Dispatched by"
+			"GROUP_CONCAT(`OrderStatusLog`.`Note` SEPARATOR ', ')" => "Dispatch notes"
 		);
 		static function set_full_export_select_statement($v) {self::$full_export_select_statement = $v;}
 		static function get_full_export_select_statement() {return self::$full_export_select_statement;}
