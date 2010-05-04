@@ -16,7 +16,7 @@ class EnhancedCheckoutPage extends CheckoutPage {
 
 	protected static $autocreate_enhancedcheckoutpage = false;
 		static function set_autocreate_enhancedcheckoutpage($v) {self::$autocreate_enhancedcheckoutpage = $v;}
-		static function get_autocreate_enhancedcheckoutpage($v) {return self::$autocreate_enhancedcheckoutpage;}
+		static function get_autocreate_enhancedcheckoutpage() {return self::$autocreate_enhancedcheckoutpage;}
 
 	function canCreate() {
 		return !DataObject::get_one("Page", "`ClassName`= 'EnhancedCheckoutPage'");
