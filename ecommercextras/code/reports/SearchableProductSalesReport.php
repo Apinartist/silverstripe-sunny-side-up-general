@@ -28,7 +28,7 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 			$where,
 			$sort = '`Order`.`Created` DESC',
 			$limit = "",
-			$join = SalesReport::get_full_export_join_statement();
+			$join = SalesReport::get_full_export_join_statement()
 		);
 		//make sure to do variations first
 		$fieldArrayToAdd = SalesReport::get_full_export_select_statement();

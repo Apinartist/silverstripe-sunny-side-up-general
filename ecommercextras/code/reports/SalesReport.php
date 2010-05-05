@@ -10,7 +10,7 @@ class SalesReport extends SSReport {
 		array(
 			"`Order`.`ID`" => "Order number",
 			"`Order`.`Created`" => "Order date and time",
-			"GROUP_CONCAT(`Payment`.`Message` SEPARATOR ', ')" => "Egate merchant reference",
+			"GROUP_CONCAT(`Payment`.`Message` SEPARATOR ', ')" => "payment gateway reference",
 			"GROUP_CONCAT(`Payment`.`ID` SEPARATOR ', ')" =>  "Transaction Id",
 			"SUM(IF(Payment.Status = 'Success',`Payment`.`Amount`, 0)) RealPayments" => "Total Order Amount",
 			"IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) ProductOrModifierName" => "Product Name",
