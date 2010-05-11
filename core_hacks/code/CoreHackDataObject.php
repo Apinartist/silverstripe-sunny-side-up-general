@@ -39,10 +39,10 @@ class CoreHackDataObject extends DataObject {
 									$oldStringIsPresent = strpos($string, $change["fromString"]);
 									$newStringIsPresent = strpos($string, $change["toString"]);
 									if(!$oldStringIsPresent && $newStringIsPresent) {
-										$error .= "OK: replacement has been made";
+										$error .= "<br />OK: replacement has been made";
 									}
 									elseif(!$oldStringIsPresent && !$newStringIsPresent) {
-										$error .= "ERROR:  -- from -- string is not available, but neither is --- to ---";
+										$error .= "<br />ERROR:  -- from -- string is not available, but neither is --- to ---";
 									}
 									elseif($oldStringIsPresent && !$newStringIsPresent) {
 										$newString = str_replace($change["fromString"], $change["toString"], $string);
@@ -50,21 +50,21 @@ class CoreHackDataObject extends DataObject {
 											$handle = fopen($fullFile, "w");
 											if($handle) {
 												if(!fwrite($handle, $newString)) {
-													$error .= "ERROR:  could not be written";
+													$error .= "<br />ERROR:  could not be written";
 												}
 												else {
-													$error .= "<hr />SUCCESS";
+													$error .= "<br /><hr />SUCCESS";
 													$hasBeenChanged = true;
 												}
 												fclose($handle);
 											}
 											else {
-												$error .= "ERROR:  could not be loaded";
+												$error .= "<br />ERROR:  could not be loaded";
 											}
 										}
 									}
 									elseif($oldStringIsPresent && $newStringIsPresent) {
-										$error .= "ERROR:  both --- from --- and --- to ---- are in the file.";
+										$error .= "<br />ERROR:  both --- from --- and --- to ---- are in the file.";
 									}
 									if($hasBeenChanged) {
 										$handle = fopen($fullFile, "r");
@@ -74,35 +74,35 @@ class CoreHackDataObject extends DataObject {
 											if($string) {
 												$newString = str_replace($change["fromString"], $change["toString"], $string);
 												if(!strpos($string, $change["toString"])) {
-													$error .= "ERROR: Could NOT make change even though it seemed that way";
+													$error .= "<br />ERROR: Could NOT make change even though it seemed that way";
 												}
 												else {
-													$error .= "SUCCESS: double-check OK";
+													$error .= "<br />SUCCESS: double-check OK";
 												}
 											}
 											else {
-												$error .= "ERROR:  does not contain any text";
+												$error .= "<br />ERROR:  does not contain any text";
 											}
 										}
 										else {
-											$error .= "ERROR:  can not be loaded for checking purposes";
+											$error .= "<br />ERROR:  can not be loaded for checking purposes";
 										}
 									}
 								}
 								else {
-									$error .= "ERROR:  does not contain any text";
+									$error .= "<br />ERROR:  does not contain any text";
 								}
 							}
 							else {
-								$error .= "ERROR:  can not be written";
+								$error .= "<br />ERROR:  can not be written";
 							}
 						}
 						else {
-							$error .= "ERROR:  can not be loaded";
+							$error .= "<br />ERROR:  can not be loaded";
 						}
 					}
 					else {
-						$error .= "ERROR:  does not exist";
+						$error .= "<br />ERROR:  does not exist";
 					}
 					Database::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: <br /><b>".$error."</b>", "deleted");
 					$obj = new CoreHackDataObject();
