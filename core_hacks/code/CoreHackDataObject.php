@@ -73,8 +73,11 @@ class CoreHackDataObject extends DataObject {
 											fclose($handle);
 											if($string) {
 												$newString = str_replace($change["fromString"], $change["toString"], $string);
-												if(!strpos($string, $newString)) {
+												if(!strpos($string, $change["toString"])) {
 													$error .= "ERROR: Could NOT make change even though it seemed that way";
+												}
+												else {
+													$error .= "SUCCESS: double-check OK";
 												}
 											}
 											else {
@@ -101,7 +104,7 @@ class CoreHackDataObject extends DataObject {
 					else {
 						$error .= "ERROR:  does not exist";
 					}
-					Database::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: ".$error, "deleted");
+					Database::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: <br /><b>".$error."</b>", "deleted");
 					$obj = new CoreHackDataObject();
 					$obj->From = $change["fromString"];
 					$obj->To = $change["toString"];
