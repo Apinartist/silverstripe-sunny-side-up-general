@@ -2,6 +2,12 @@
 
 class CoreHackDataObject extends DataObject {
 
+	static $db = array(
+		"AbsoluteFile" => "Text",
+		"From" => "Text",
+		"To" => "Text"
+	);
+
 	protected static $change_array = array();
 		static function add_change_array($folderAndFile, $fromString, $toString) {
 			self::$change_array[] =
@@ -15,33 +21,97 @@ class CoreHackDataObject extends DataObject {
 
 
 	function requireDefaultRecords() {
-		parent::requireDefaultRecords;
+		parent::requireDefaultRecords();
 		$array = self::get_change_array();
 		if(is_array($array)) {
 			if(count($array)) {
 				foreach($array as $change) {
+					$hasBeenChanged = false;
+					$error = '';
 					$fullFile = Director::getAbsFile($change["folderAndFile"]);
-					$handle = fopen($fullFile, "w");
-					if($handle) {
-						$string = '';
-						while($string .= fread($handle)) {
-							//do nothing
-						}
-						if($string) {
-							$newString = str_replace($change["fromString"], $change["toString"], $string);
-							fwrite($handle, $string);
-							Database::alterationMessage("change $fullFile from: <i>".$change["fromString"].'</i> to  <i>'.$change["toString"].'</i>', "created");
+					if(file_exists($fullFile)) {
+						$handle = fopen($fullFile, "r");
+						if($handle) {
+							if(is_writable($fullFile)) {
+								$string = fread($handle, filesize($fullFile));
+								fclose($handle);
+								if($string) {
+									$oldStringIsPresent = strpos($string, $change["fromString"]);
+									$newStringIsPresent = strpos($string, $change["toString"]);
+									if(!$oldStringIsPresent && $newStringIsPresent) {
+										$error .= "OK: replacement has been made";
+									}
+									elseif(!$oldStringIsPresent && !$newStringIsPresent) {
+										$error .= "ERROR:  -- from -- string is not available, but neither is --- to ---";
+									}
+									elseif($oldStringIsPresent && !$newStringIsPresent) {
+										$newString = str_replace($change["fromString"], $change["toString"], $string);
+										if($newString) {
+											$handle = fopen($fullFile, "w");
+											if($handle) {
+												if(!fwrite($handle, $newString)) {
+													$error .= "ERROR:  could not be written";
+												}
+												else {
+													$error .= "<hr />SUCCESS";
+													$hasBeenChanged = true;
+												}
+												fclose($handle);
+											}
+											else {
+												$error .= "ERROR:  could not be loaded";
+											}
+										}
+									}
+									elseif($oldStringIsPresent && $newStringIsPresent) {
+										$error .= "ERROR:  both --- from --- and --- to ---- are in the file.";
+									}
+									if($hasBeenChanged) {
+										$handle = fopen($fullFile, "r");
+										if($handle) {
+											$string = fread($handle, filesize($fullFile));
+											fclose($handle);
+											if($string) {
+												$newString = str_replace($change["fromString"], $change["toString"], $string);
+												if(!strpos($string, $newString)) {
+													$error .= "ERROR: Could NOT make change even though it seemed that way";
+												}
+											}
+											else {
+												$error .= "ERROR:  does not contain any text";
+											}
+										}
+										else {
+											$error .= "ERROR:  can not be loaded for checking purposes";
+										}
+									}
+								}
+								else {
+									$error .= "ERROR:  does not contain any text";
+								}
+							}
+							else {
+								$error .= "ERROR:  can not be written";
+							}
 						}
 						else {
-							user_error("$fullFile does not contain any text", E_USER_ERROR);
+							$error .= "ERROR:  can not be loaded";
 						}
 					}
 					else {
-						user_error("$fullFile can not be read", E_USER_ERROR);
+						$error .= "ERROR:  does not exist";
 					}
+					Database::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: ".$error, "deleted");
+					$obj = new CoreHackDataObject();
+					$obj->From = $change["fromString"];
+					$obj->To = $change["toString"];
+					$obj->AbsoluteFile = $fullFile;
+					$obj->write();
 				}
 			}
-
+			$newString = null;
+			$string = null;
+		}
 	}
 
 }
