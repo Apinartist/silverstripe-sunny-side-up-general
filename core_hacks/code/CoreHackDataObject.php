@@ -44,13 +44,4 @@ class CoreHackDataObject extends DataObject {
 
 	}
 
-
-
-
-
-
-
-
-
-
 }
