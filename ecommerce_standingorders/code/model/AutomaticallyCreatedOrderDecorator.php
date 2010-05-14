@@ -65,43 +65,12 @@ class AutomaticallyCreatedOrderDecorator extends DataObjectDecorator {
 		if($this->owner->OrderItemsAdded()) {return  true;} else {return false;}
 	}
 
-	/*
-	public function sendReceipt() {
-		//$this->owner->sendEmail('AutomaticallyCreatedOrderDecorator_ReceiptEmail');
-	}
-	*/
-
-
 
 	/**
 	 * Publish the order
 	 * @return null
 	 */
 	public function publishOrder() {
-		//$this->ClassName = 'Order';
-		/*
-		$modifiers = ShoppingCart::get_modifiers();
-
-		if($modifiers) {
-			 $this->createModifiers($modifiers, true);
-		}
-
-		$this->write();
-		/* TO DO: implement....
-		$paymentClass = $this->StandingOrder()->PaymentMethod;
-		$payment = new $paymentClass();
-		// Save payment data from form and process payment
-		$payment->OrderID = $this->ID;
-		$payment->Amount = $this->Total();
-		$payment->write();
-
-		// Process payment, get the result back
-		$result = $payment->autoProcessPayment();
-		if($result->isSuccess()) {
-			$this->sendReceipt();
-		}
-		*/
-
 	}
 
 	function ViewHTMLLink() {
@@ -208,11 +177,5 @@ class AutomaticallyCreatedOrderDecorator extends DataObjectDecorator {
 	function onAfterWrite() {
 		parent::onAfterWrite();
 	}
-
-}
-
-class AutomaticallyCreatedOrderDecorator_ReceiptEmail extends Email {
-
-	protected $ss_template = 'AutomaticallyCreatedOrderDecorator_ReceiptEmail';
 
 }

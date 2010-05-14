@@ -126,23 +126,7 @@ class StandingOrder extends DataObject {
 	);
 
 	/**
-	 * This is the from address that the receipt
-	 * email contains. e.g. "info@shopname.com"
-	 *
-	 * @var string
-	 */
-	protected static $receipt_email;
-
-	/**
-	 * This is the subject that the receipt
-	 * email will contain. e.g. "Joe's Shop Receipt".
-	 *
-	 * @var string
-	 */
-	protected static $receipt_subject;
-
-	/**
-	 * Guytons.co.nz specific, set the delivery days options
+	 * set the delivery days options
 	 * @param $days array of days
 	 * @return null
 	 */
@@ -191,21 +175,6 @@ class StandingOrder extends DataObject {
 		}
 	}
 
-	public static function set_receipt_email($receipt_email) {
-		self::$receipt_email = $receipt_email;
-	}
-
-	public static function receipt_email() {
-		return self::$receipt_email;
-	}
-
-	public static function set_receipt_subject($receipt_subject) {
-		self::$receipt_subject = $receipt_subject;
-	}
-
-	public static function receipt_subject() {
-		return self::$receipt_subject;
-	}
 
 
 	public function CanModify() {
@@ -294,7 +263,6 @@ class StandingOrder extends DataObject {
 		elseif($currentTime > $endTime && $this->Status != "Finished") {
 			$this->Status = 'Finished';
 			$this->write();
-			//$this->sendUpdate();
 		}
 		elseif($startTime < $currentTime) {
 			$a = $this->workOutSchedule();
@@ -333,7 +301,6 @@ class StandingOrder extends DataObject {
 			$order->MemberID = $this->MemberID;
 			$order->write();
 		}
-		//$order->sendReceipt();
 
 		if($redirect) Director::redirect($order->Link());
 		return $order->ID;
@@ -371,41 +338,12 @@ class StandingOrder extends DataObject {
 
 		$standingOrder->write();
 
-		//$standingOrder->sendReceipt();
 
 		return $standingOrder;
 	}
 
-	/*
-	public function sendReceipt() {
-		$this->sendEmail('StandingOrder_ReceiptEmail');
-	}
 
 
-	public function sendUpdate() {
-		$this->sendEmail('StandingOrder_UpdateEmail');
-	}
-
-	protected function sendEmail($emailClass, $copyToAdmin = true) {
- 		$from = self::$receipt_email ? self::$receipt_email : Email::getAdminEmail();
- 		$to = $this->Member()->Email;
-		$subject = self::$receipt_subject ? self::$receipt_subject : "Standing Order Confirmation (#$this->ID)";
-
- 		$email = new $emailClass();
- 		$email->setFrom($from);
- 		$email->setTo($to);
- 		$email->setSubject($subject);
-		if($copyToAdmin) $email->setBcc(Email::getAdminEmail());
-
-		$email->populateTemplate(
-			array(
-				'StandingOrder' => $this
-			)
-		);
-
-		$email->send();
-	}
-	*/
 
 
 //================================================================================================================================================================================
@@ -1075,8 +1013,6 @@ class StandingOrder_OrderItem extends DataObject {
 	public function onAfterWrite() {
 		parent::onAfterWrite();
 
-		//if($this->SendRecipt) $standingOrder->sendReceipt();
-		//if($this->SendUpdate) $standingOrder->sendUpdate();
 	}
 
 	public function onBeforeDelete() {
@@ -1091,16 +1027,4 @@ class StandingOrder_OrderItem extends DataObject {
 			}
 		}
 	}
-}
-
-class StandingOrder_ReceiptEmail extends Email {
-
-	protected $ss_template = 'StandingOrder_ReceiptEmail';
-
-}
-
-class StandingOrder_UpdateEmail extends Email {
-
-	protected $ss_template = 'StandingOrder_UpdateEmail';
-
 }

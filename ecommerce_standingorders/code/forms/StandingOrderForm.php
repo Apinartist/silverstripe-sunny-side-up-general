@@ -173,9 +173,6 @@ class StandingOrderForm extends Form {
 			$standingOrder->update($params);
 			$standingOrder->Status = 'Pending';
 			$standingOrder->write();
-
-			//$standingOrder->sendUpdate();
-
 			Session::set('StandingOrder', null);
 		}
 
