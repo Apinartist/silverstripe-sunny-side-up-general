@@ -149,9 +149,7 @@ class DpsPxPayPayment_Handler extends Controller {
 			}
 			if($DpsTxnRef = $response->getDpsTxnRef()) $payment->TxnRef = $DpsTxnRef;
 			if($ResponseText = $response->getResponseText()) $payment->Message = $ResponseText;
-			if(!$payment->ID) {
-				$payment->write();
-			}
+			$payment->write();
 			$payment->redirectToOrder();
 		}
 		else {
