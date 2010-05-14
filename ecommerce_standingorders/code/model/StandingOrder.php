@@ -21,7 +21,6 @@ class StandingOrder extends DataObject {
 		"CreditCardOnFile" => "Boolean",
 		"PaymentNote" => "Text",
 
-		//Guytons.co.nz specific
 		'DeliveryDay' => 'Text', //Serialized Array
 		'Alternatives' => 'Text', //Serialized Array
 		'Items' => 'Text', //FOR SEARCH PURPOSES ONLY!
@@ -108,7 +107,6 @@ class StandingOrder extends DataObject {
 	);
 
 	/**
-	 * delivery days options for guytons.co.nz
 	 * @var array
 	 */
 	protected static $delivery_days = array(
