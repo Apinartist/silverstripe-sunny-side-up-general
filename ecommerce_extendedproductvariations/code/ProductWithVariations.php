@@ -97,70 +97,6 @@ class ProductWithVariations extends Product {
 		return $v;
 	}
 
-	function cleanupvariations() {
-		if(!Permission::check("ADMIN")) {
-			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
-			return false;
-		}
-		else {
-			DB::query("Delete FROM ProductVariation WHERE ProductID = 0 OR ProductID = ".$this->ID);
-			DB::query("Delete FROM ProductVariation_versions WHERE ProductID = 0 OR ProductID = ".$this->ID);
-			return true;
-		}
-	}
-
-	public function deleteallvariations() {
-		if($this->cleanupvariations()) {
-			$count = 0;
-			$v = $this->Variations();
-			foreach($v as $variation) {
-				$count++;
-				$variation->delete();
-			}
-			return 'deleted  variations for '.$this->Title;
-		}
-	}
-
-
-	function createallvariations() {
-		if($this->cleanupvariations()) {
-			if($this->Price) {
-				$combinations = $this->getParentExtendedProductVariationGroups();
-				if($combinations) {
-					$groupsDataObject = new DataObjectSet();
-					foreach($combinations as $combination) {
-						//getting basic group data
-						$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
-						$groupsDataObject->push($group);
-						//making sole ones
-						if($group->IncludeOptionsAsSoleProductVariations) {
-							$options = $group->ExtendedProductVariationOptions();
-							if($options) {
-								foreach($options as $option) {
-									$optionsDos = new DataObjectSet();
-									$optionsDos->push($option);
-									$this->createExtendedProductVariations($optionsDos);
-								}
-							}
-						}
-					}
-					$obj = new ExtendedProductVariationOptionComboMaker();
-					$obj->addGroups($groupsDataObject);
-					$array = $obj->finalise();
-					if(is_array($array) && count($array)) {
-						//going through each ID list of option combos...
-						foreach($array as $IDlist) {
-							$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
-							$this->createExtendedProductVariations($optionsDos);
-						}
-					}
-				}
-			}
-			else {
-				die("you need to specify a price for the product first");
-			}
-		}
-	}
 
 	protected function createExtendedProductVariations($optionsDos) {
 		//does it exist?
@@ -236,9 +172,81 @@ class ProductWithVariations extends Product {
 		//LeftAndMain::ForceReload();
 	}
 
+
+	function cleanupvariations() {
+		if(!Permission::check("ADMIN")) {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+			return false;
+		}
+		else {
+			DB::query("Delete FROM ProductVariation WHERE ProductID = 0 OR ProductID = ".$this->ID);
+			DB::query("Delete FROM ProductVariation_versions WHERE ProductID = 0 OR ProductID = ".$this->ID);
+			return true;
+		}
+	}
+
+	public function deleteallvariations() {
+		if($this->cleanupvariations()) {
+			$count = 0;
+			$v = $this->Variations();
+			foreach($v as $variation) {
+				$count++;
+				$variation->delete();
+			}
+			return 'deleted  variations for '.$this->Title;
+		}
+	}
+
+
+	function createallvariations() {
+		if($this->cleanupvariations()) {
+			if($this->Price) {
+				$combinations = $this->getParentExtendedProductVariationGroups();
+				if($combinations) {
+					$groupsDataObject = new DataObjectSet();
+					foreach($combinations as $combination) {
+						//getting basic group data
+						$group = DataObject::get_by_id("ExtendedProductVariationGroup", $combination->ExtendedProductVariationGroupID);
+						$groupsDataObject->push($group);
+						//making sole ones
+						if($group->IncludeOptionsAsSoleProductVariations) {
+							$options = $group->ExtendedProductVariationOptions();
+							if($options) {
+								foreach($options as $option) {
+									$optionsDos = new DataObjectSet();
+									$optionsDos->push($option);
+									$this->createExtendedProductVariations($optionsDos);
+								}
+							}
+						}
+					}
+					$obj = new ExtendedProductVariationOptionComboMaker();
+					$obj->addGroups($groupsDataObject);
+					$array = $obj->finalise();
+					if(is_array($array) && count($array)) {
+						//going through each ID list of option combos...
+						foreach($array as $IDlist) {
+							$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
+							$this->createExtendedProductVariations($optionsDos);
+						}
+					}
+				}
+			}
+			else {
+				die("you need to specify a price for the product first");
+			}
+		}
+	}
+
 }
 
 class ProductWithVariations_Controller extends Product_Controller {
+
+	static $allowed_actions = array(
+		"createallvariations",
+		"deleteallvariations",
+		"ProductVariationsForm"
+	);
 
 	protected $optionArray = null;
 
@@ -361,6 +369,9 @@ class ProductWithVariations_Controller extends Product_Controller {
 		Requirements::customScript($js,'ProductWithVariationsArray');
 		return $variations;
 	}
+
+
+
 
 
 }
