@@ -37,7 +37,6 @@
 			jQuery(SecurePayTechPayment.testCardSelector).change(
 				function () {
 					var cardString = jQuery(SecurePayTechPayment.testCardSelector+" option:selected").text();
-					alert(cardString);
 					if(cardString !== "") {
 						var cardArray = cardString.split(",");
 						jQuery(SecurePayTechPayment.cardNameSelector).val("Tester Chester");
