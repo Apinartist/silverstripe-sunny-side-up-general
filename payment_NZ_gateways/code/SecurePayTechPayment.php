@@ -39,12 +39,24 @@ class SecurePayTechPayment extends Payment {
 
 	function getPaymentFormFields() {
 		$site_currency = Payment::site_currency();
-		$paymentsList = '<div style="vertical-align: middle;">';
+		$paymentsList = '<div id="SecurePayTechCardsAvailable">';
+		$count = 0;
 		foreach(self::$credit_cards as $name => $image) {
-			$paymentsList .= '<img src="' . $image . '" alt="' . $name . '"/>';
+			$count++;
+			$class = '';
+			if($count == 1) {
+				$class = "first";
+			}
+			if($count % 2) {
+				$class .= " even";
+			}
+			else {
+				$class .= " odd";
+			}
+			$paymentsList .= '<img src="' . $image . '" alt="' . $name . '" class="SecurePayTechCardImage'.$count.'" />';
 		}
 		$paymentsList .= '<script type="text/javascript">function paymark_verify(merchant) { window.open ("http://www.paymark.co.nz/dart/darthttp.dll?etsl&tn=verify&merchantid=" + merchant, "verify", "scrollbars=yes, width=400, height=400"); }</script>';
-		$paymentsList.='<img height="30" src="payment_NZ_gateways/images/paymark.png" alt="Paymark Certified" onclick="paymark_verify (' . "'" . self::get_spt_merchant_id() . "'" . ')"/></div>';
+		$paymentsList.='<img height="50" src="payment_NZ_gateways/images/paymark.png" alt="Paymark Certified" onclick="paymark_verify (' . "'" . self::get_spt_merchant_id() . "'" . ')" class="last" /></div>';
 		$fieldSet = new FieldSet();
 		if(Director::isDev()) {
 			$fieldSet->push(
@@ -87,17 +99,17 @@ class SecurePayTechPayment extends Payment {
 	 * payment method.
 	 */
 	function getPaymentFormRequirements() {
-			return array (
-				"js" => "
-					require('SecurePayTechCardHolderName');
-					require('SecurePayTechCreditCardNumber');
-					require('SecurePayTechCardExpiry');
-				",
+		return array (
+			"js" => "
+				require('SecurePayTechCardHolderName');
+				require('SecurePayTechCreditCardNumber');
+				require('SecurePayTechCardExpiry');
+			",
 			"php" => '
 				$this->requireField("SecurePayTechCardHolderName", $data);
 				$this->requireField("SecurePayTechCreditCardNumber", $data);
 				$this->requireField("SecurePayTechCardExpiry", $data);
-			',
+			'
 		);
 	}
 
@@ -105,6 +117,28 @@ class SecurePayTechPayment extends Payment {
 	 * Process payment using HTTPS POST
 	 */
 	function processPayment($data, $form) {
+		$data = Convert::raw2sql($data);
+		if(Director::isDev()) {
+			if(isset($data["SecurePayTechAmountValue"])) {
+				if($data["SecurePayTechTestAmountValue"] !== "") {
+					if($data["SecurePayTechTestAmountValue"] == 0) {
+						$numberString = "99";
+					}
+					else {
+						$numberString = "0.".$data["SecurePayTechTestAmountValue"];
+					}
+					$nicelyFormatted = number_format($numberString,2);
+					$this->Amount = floatval($nicelyFormatted);
+				}
+			}
+			if(isset($data["SecurePayTechCardsToUse"])) {
+				if($data["SecurePayTechCardsToUse"] !== "") {
+					$cardArray = explode(",", $this->getCardData($data["SecurePayTechCardsToUse"]));
+					$data['SecurePayTechCreditCardNumber'] = trim($cardArray[1]);
+					$data['SecurePayTechCardExpiry'] = trim($cardArray[2]).trim($cardArray[3]);
+				}
+			}
+		}
 		$orderRef = $this->ID;
 		$cardNo = $data['SecurePayTechCardHolderName'];
 		$cardExp = $data['SecurePayTechCreditCardNumber'];
@@ -126,6 +160,16 @@ class SecurePayTechPayment extends Payment {
 		);
 
 		$response = $this->http_post('https','tx.securepaytech.com',8443,'/web/HttpPostPurchase', $postvars);
+		if(!$response) {
+			$this->Status = 'Failure';
+			$this->Message = "Communication Failure";
+			if(Director::isDev()) {
+				$this->Message .= " (".curl_error($ch).")";
+			}
+			$this->write();
+			$result = new Payment_Failure();
+			return $result;
+		}
 		$responses = explode (',', $response);
 		//var_dump ($responses);
 		if(!isset($responses[0])) {
