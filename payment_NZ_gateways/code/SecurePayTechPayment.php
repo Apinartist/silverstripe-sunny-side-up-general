@@ -140,9 +140,9 @@ class SecurePayTechPayment extends Payment {
 			}
 		}
 		$orderRef = $this->ID;
-		$cardNo = $data['SecurePayTechCardHolderName'];
-		$cardExp = $data['SecurePayTechCreditCardNumber'];
-		$cardHolder = $data['SecurePayTechCardExpiry'];
+		$cardNo = $data['SecurePayTechCreditCardNumber'];
+		$cardExp = $data['SecurePayTechCardExpiry'];
+		$cardHolder = $data['SecurePayTechCardHolderName'];
 		$cardType = 0;
 		$amt = $this->Amount;
 		$currency = $this->Currency;
