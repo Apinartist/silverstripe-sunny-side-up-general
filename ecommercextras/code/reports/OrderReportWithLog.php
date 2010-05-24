@@ -111,7 +111,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 			'StatusTable',
 			'OrderStatusLogWithDetails',
 			array(
-				'Received' => 'Created',
+				'Created' => 'Received',
 				'Status' => 'Status',
 				'Note' => 'Note',
 				'DispatchedBy' => 'Dispatched By',
