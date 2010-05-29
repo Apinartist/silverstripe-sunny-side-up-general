@@ -14,7 +14,7 @@
  *  Configuration
  *  =============
  *  You need to define the merchant id and key in the _config.php of your
- *  project:
+ *  project
  */
 class SecurePayTechPayment extends Payment {
 
@@ -119,7 +119,7 @@ class SecurePayTechPayment extends Payment {
 	function processPayment($data, $form) {
 		$data = Convert::raw2sql($data);
 		if(Director::isDev()) {
-			if(isset($data["SecurePayTechAmountValue"])) {
+			if(isset($data["SecurePayTechTestAmountValue"])) {
 				if($data["SecurePayTechTestAmountValue"] !== "") {
 					if($data["SecurePayTechTestAmountValue"] == 0) {
 						$numberString = "99";
