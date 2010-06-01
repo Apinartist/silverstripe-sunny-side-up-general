@@ -19,16 +19,50 @@ adds the photoviewer - pretty photo
 
 Installation Instructions
 -----------------------------------------------
-add module as per usual
-use PrettyPhoto::include_code()
-OR
-PrettyPhoto::block() to
-add and remove code
+1. add module as per usual
 
-any link like this:
-<a href="mylargepicture.gif" rel="prettyPhoto"><img src="mysmallpicture.gif" /></a>
-will automatically have a fancy pop-up link.
+2. add the following stuff to controller class:
 
+class Page_Controller extends ContentController {
+
+	function init(){
+		parent::init();
+		PrettyPhoto::include_code();
+	}
+
+}
+
+OR TO REMOVE IT:
+
+class MyPageWithoutPrettyPhoto_Controller extends Page_Controller {
+
+	function init(){
+		parent::init();
+		PrettyPhoto::block();
+	}
+
+}
+
+
+3. in your templates, add
+
+ <a href="mylargepicture.gif" rel="prettyPhoto"><img src="mysmallpicture.gif" /></a>
+
+ OR FOR A SET OF PHOTOS:
+
+ <a href="mylargepicture.gif" rel="prettyPhoto[gallery]"><img src="mysmallpicture.gif" /></a>
+ <a href="mylargepicture.gif" rel="prettyPhoto[gallery]"><img src="mysmallpicture.gif" /></a>
+
+4. go to mysite/_config.php and add the lines as detailed in /prettyphoto/_config.php
+
+e.g.
+
+
+//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+//===================---------------- START prettyphoto MODULE ----------------===================
+PrettyPhoto::set_theme("dark_rounded");
+PrettyPhoto::set_more_config("AnimationSpeed: 'slow');
+//===================---------------- END prettyphoto MODULE ----------------===================
 
 Config Examples
 ------------------------------------------------
