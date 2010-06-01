@@ -32,7 +32,7 @@ class Page_Controller extends ContentController {
 
 }
 
-OR TO REMOVE IT:
+OR TO REMOVE IT LIKE THIS:
 
 class MyPageWithoutPrettyPhoto_Controller extends Page_Controller {
 
@@ -44,7 +44,7 @@ class MyPageWithoutPrettyPhoto_Controller extends Page_Controller {
 }
 
 
-3. in your templates, add
+3. in your templates, add (the rel="prettPhoto" is the magic part):
 
  <a href="mylargepicture.gif" rel="prettyPhoto"><img src="mysmallpicture.gif" /></a>
 
@@ -57,12 +57,12 @@ class MyPageWithoutPrettyPhoto_Controller extends Page_Controller {
 
 e.g.
 
-
-//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START prettyphoto MODULE ----------------===================
 PrettyPhoto::set_theme("dark_rounded");
 PrettyPhoto::set_more_config("AnimationSpeed: 'slow');
 //===================---------------- END prettyphoto MODULE ----------------===================
+
+
 
 Config Examples
 ------------------------------------------------
