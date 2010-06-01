@@ -118,6 +118,7 @@ class SecurePayTechPayment extends Payment {
 	 */
 	function processPayment($data, $form) {
 		$data = Convert::raw2sql($data);
+		$realPayment = $this->Amount;
 		if(Director::isDev()) {
 			if(isset($data["SecurePayTechTestAmountValue"])) {
 				if($data["SecurePayTechTestAmountValue"] !== "") {
@@ -158,7 +159,7 @@ class SecurePayTechPayment extends Payment {
 			'Amount' => $amt,
 			'Currency' => $currency
 		);
-
+		$this->Amount = $realPayment;
 		$response = $this->http_post('https','tx.securepaytech.com',8443,'/web/HttpPostPurchase', $postvars);
 		if(!$response) {
 			$this->Status = 'Failure';
