@@ -31,7 +31,8 @@ class TypographyTestPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get("SiteTree", "`ClassName` = 'TypographyTestPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get("SiteTree", "{$bt}ClassName{$bt} = 'TypographyTestPage'");
 	}
 
 	public function requireDefaultRecords() {
