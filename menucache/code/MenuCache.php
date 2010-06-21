@@ -100,21 +100,22 @@ class MenuCache extends DataObjectDecorator {
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 
 	function clearfieldcache ($showoutput = false) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fieldsToClear = array();
 		foreach(self::get_fields() as $key => $field) {
 			$fieldName = self::field_maker($key);
-			$fieldsToClear[] = "`".$fieldName."` = ''";
+			$fieldsToClear[] = "{$bt}".$fieldName."{$bt} = ''";
 		}
 		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
 				$msg = '';
-				$sql = 'UPDATE `'.$table.'` SET '.implode(", ", $fieldsToClear);
+				$sql = 'UPDATE {$bt}'.$table.'{$bt} SET '.implode(", ", $fieldsToClear);
 				if(Director::URLParam("ID") == "days" && $days = intval(Director::URLParam("OtherID"))) {
-					$sql .= ' WHERE `LastEdited` > ( NOW() - INTERVAL '.$days.' DAY )';
+					$sql .= ' WHERE {$bt}LastEdited{$bt} > ( NOW() - INTERVAL '.$days.' DAY )';
 					$msg .= ', created before the last '.$days.' days';
 				}
 				elseif(Director::URLParam("ID") == "thispage") {
-					$sql .= ' WHERE  `'.$table.'`.`ID` = '.$this->owner->ID.'';
+					$sql .= ' WHERE  {$bt}'.$table.'{$bt}.{$bt}ID{$bt} = '.$this->owner->ID.'';
 					$msg .= ', for page with ID = '.$this->owner->ID.'';
 				}
 				if($showoutput) {
@@ -154,6 +155,7 @@ class MenuCache_controller extends Extension {
 	}
 
 	function CachedField($fieldNumber) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fieldName = MenuCache::field_maker($fieldNumber);
 		if(isset($_REQUEST["flush"])) {
 			$this->owner->clearfieldcache();
@@ -168,7 +170,7 @@ class MenuCache_controller extends Extension {
 					return '';
 				}
 				$content = $this->getHtml($fieldNumber);
-				$sql = 'Update `SiteTree_Live` Set `'.$fieldName.'` = "'.$this->compressAndPrepareHTML($content).'" WHERE `ID` = '.$this->owner->ID.' LIMIT 1';
+				$sql = 'Update {$bt}SiteTree_Live{$bt} Set {$bt}'.$fieldName.'{$bt} = "'.$this->compressAndPrepareHTML($content).'" WHERE {$bt}ID{$bt} = '.$this->owner->ID.' LIMIT 1';
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
 			}
