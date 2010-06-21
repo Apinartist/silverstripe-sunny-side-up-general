@@ -29,7 +29,8 @@ class AnyPriceProductPage extends Product {
 	static $icon = 'ecommerceanypriceproduct/images/treeicons/AnyPriceProductPage';
 
 	function canCreate() {
-		return !DataObject::get("SiteTree", '`ClassName` = "AnyPriceProductPage"');
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get("SiteTree", "{$bt}ClassName{$bt} = 'AnyPriceProductPage'");
 	}
 
 	function getCMSFields() {
@@ -111,11 +112,12 @@ class AnyPriceProductPage_Controller extends Product_Controller {
 	}
 
 	function doAddNewPriceForm($data, $form) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$amount = floatval($data["Amount"]);
 		if($amount < $this->MinimimAmount) {
 			die("minimum amount is ....");
 		}
-		$alreadyExistingVariations = DataObject::get_one("ProductVariation", "`ProductID` = ".$this->ID." AND `Price` = ".$amount);
+		$alreadyExistingVariations = DataObject::get_one("ProductVariation", "{$bt}ProductID{$bt} = ".$this->ID." AND {$bt}Price{$bt} = ".$amount);
 		//create new one if needed
 		if(!$alreadyExistingVariations) {
 			Currency::setCurrencySymbol(Payment::site_currency());
@@ -130,7 +132,7 @@ class AnyPriceProductPage_Controller extends Product_Controller {
 			//$componentSet->add($obj);
 		}
 		//check if we have one now
-		$ourVariation = DataObject::get_one("ProductVariation", "`ProductID` = ".$this->ID." AND `Price` = ".$amount);
+		$ourVariation = DataObject::get_one("ProductVariation", "{$bt}ProductID{$bt} = ".$this->ID." AND {$bt}Price{$bt} = ".$amount);
 		if($ourVariation) {
 			ShoppingCart::add_new_item(new ProductVariation_OrderItem($ourVariation));
 		}
