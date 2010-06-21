@@ -3,17 +3,17 @@
  * This is a standard Product page-type with fields like
  * Price, Weight, Model/Author and basic management of
  * groups.
- * 
+ *
  * It also has an associated Product_OrderItem class,
  * an extension of OrderItem, which is the mechanism
  * that links this page type class to the rest of the
  * eCommerce platform. This means you can add an instance
  * of this page type to the shopping cart.
- * 
+ *
  * @package ecommerce
  */
 class Product extends Page {
-	
+
 	public static $db = array(
 		'Price' => 'Currency',
 		'Weight' => 'Decimal(9,2)',
@@ -22,34 +22,34 @@ class Product extends Page {
 		'AllowPurchase' => 'Boolean',
 		'InternalItemID' => 'Varchar(30)'
 	);
-	
+
 	public static $has_one = array(
 		'Image' => 'Product_Image'
 	);
-	
+
 	public static $has_many = array(
 		'Variations' => 'ProductVariation',
 		'Testimonials' => 'Product_Testimonial'
 	);
-	
+
 	public static $many_many = array(
 		'ProductGroups' => 'ProductGroup'
 	);
-	
+
 	public static $belongs_many_many = array();
-	
+
 	public static $defaults = array(
 		'AllowPurchase' => true
 	);
-	
+
 	public static $casting = array();
-	
+
 	static $default_parent = 'ProductGroup';
-	
+
 	static $add_action = 'a Product Page';
-	
+
 	static $icon = 'cms/images/treeicons/book';
-	
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 
@@ -78,19 +78,19 @@ class Product extends Page {
 		);
 
 		$fields->addFieldsToTab(
-			'Root.Content.Variations', 
+			'Root.Content.Variations',
 			array(
 				new HeaderField(_t('Product.VARIATIONSSET', 'This product has the following variations set')),
 				new LiteralField('VariationsNote', '<p class="message good">If this product has active variations, the price of the product will be the price of the variation added by the member to the shopping cart.</p>'),
 				$this->getVariationsTable()
 			)
 		);
-		
-		$fields->addFieldToTab('Root.Content.Testimonials', 
+
+		$fields->addFieldToTab('Root.Content.Testimonials',
 			new ComplexTableField(
-				$this, 
-				'Testimonials', 
-				'Product_Testimonial', 
+				$this,
+				'Testimonials',
+				'Product_Testimonial',
 				array(
 					'Author' => _t('Product.Author', 'Author'),
 					'Testimonial' => _t('Product.Testimonial', 'Testimonial')
@@ -103,17 +103,18 @@ class Product extends Page {
 				$this->getProductGroupsTable()
 			)
 		);
-		
+
 		return $fields;
 	}
-	
+
 	function getVariationsTable() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$singleton = singleton('ProductVariation');
-		$query = $singleton->buildVersionSQL("`ProductID` = '{$this->ID}'");
+		$query = $singleton->buildVersionSQL("{$bt}ProductID{$bt} = '{$this->ID}'");
 		$variations = $singleton->buildDataObjectSet($query->execute());
-		$filter = $variations ? "`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ID` < '0'";
-		//$filter = "`ProductID` = '{$this->ID}'";
-		
+		$filter = $variations ? "{$bt}ID{$bt} IN ('" . implode("','", $variations->column('RecordID')) . "')" : "{$bt}ID{$bt} < '0'";
+		//$filter = "{$bt}ProductID{$bt} = '{$this->ID}'";
+
 		$tableField = new HasManyComplexTableField(
 			$this,
 			'Variations',
@@ -125,14 +126,14 @@ class Product extends Page {
 			'getCMSFields_forPopup',
 			$filter
 		);
-		
+
 		if(method_exists($tableField, 'setRelationAutoSetting')) {
 			$tableField->setRelationAutoSetting(true);
 		}
-		
+
 		return $tableField;
 	}
-	
+
 	protected function getProductGroupsTable() {
 		$tableField = new ManyManyComplexTableField(
 			$this,
@@ -142,48 +143,48 @@ class Product extends Page {
 				'Title' => 'Product Group Page Title'
 			)
 		);
-		
+
 		$tableField->setPageSize(30);
 		$tableField->setPermissions(array());
-		
+
 		return $tableField;
 	}
-	
+
 	/**
 	 * Returns the shopping cart.
 	 * @todo Does HTTP::set_cache_age() still need to be set here?
-	 * 
+	 *
 	 * @return Order
 	 */
 	function Cart() {
 		HTTP::set_cache_age(0);
 		return ShoppingCart::current_order();
 	}
-	
+
 	/**
 	 * Conditions for whether a product can be purchased.
-	 * 
+	 *
 	 * If it has the checkbox for 'Allow this product to be purchased',
 	 * as well as having a price, it can be purchased. Otherwise a user
 	 * can't buy it.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function AllowPurchase() {
 		return $this->AllowPurchase && $this->Price;
 	}
-	
+
 	/**
 	 * Returns if the product is already in the shopping cart.
 	 * Note : This function is usable in the Product context because a
 	 * Product_OrderItem only has a Product object in attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function IsInCart() {
 		return $this->Item() ? true : false;
 	}
-	
+
 	/**
 	 * Returns the order item which contains the product
 	 * Note : This function is usable in the Product context because a
@@ -199,7 +200,7 @@ class Product extends Page {
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the currency being used on the site.
 	 * @return string Currency code, e.g. "NZD" or "USD"
@@ -209,7 +210,7 @@ class Product extends Page {
 			return Payment::site_currency();
 		}
 	}
-	
+
 	/**
 	 * Return the global tax information of the site.
 	 * @return TaxModifier
@@ -218,7 +219,7 @@ class Product extends Page {
 		$currentOrder = ShoppingCart::current_order();
 		return $currentOrder->TaxInfo();
 	}
-	
+
 	function addLink() {
 		return $this->Link() . 'add';
 	}
@@ -226,19 +227,19 @@ class Product extends Page {
 	function addVariationLink($id) {
 		return $this->Link() . 'addVariation/' . $id;
 	}
-	
+
 	/**
 	 * When the ecommerce module is first installed, and db/build
 	 * is invoked, create some default records in the database.
 	 */
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		
-		if(!DataObject::get_one('Product')) {		
+
+		if(!DataObject::get_one('Product')) {
 			if(!DataObject::get_one('ProductGroup')) singleton('ProductGroup')->requireDefaultRecords();
 			if($group = DataObject::get_one('ProductGroup', '', true, '"ParentID" DESC')) {
 				$content = '<p>This is a <em>product</em>. It\'s description goes into the Content field as a standard SilverStripe page would have it\'s content. This is an ideal place to describe your product.</p>';
-				
+
 				$page1 = new Product();
 				$page1->Title = 'Example product';
 				$page1->Content = $content . '<p>You may also notice that we have checked it as a featured product and it will be displayed on the main Products page.</p>';
@@ -251,7 +252,7 @@ class Product extends Page {
 				$page1->writeToStage('Stage');
 				$page1->publish('Stage', 'Live');
 				if(method_exists('DB', 'alteration_message')) DB::alteration_message('Product page \'Example product\' created', 'created');
-				
+
 				$page2 = new Product();
 				$page2->Title = 'Example product 2';
 				$page2->Content = $content;
@@ -262,35 +263,36 @@ class Product extends Page {
 				$page2->Model = 'Jane Bloggs';
 				$page2->writeToStage('Stage');
 				$page2->publish('Stage', 'Live');
-				if(method_exists('DB', 'alteration_message')) DB::alteration_message('Product page \'Example product 2\' created', 'created');		
+				if(method_exists('DB', 'alteration_message')) DB::alteration_message('Product page \'Example product 2\' created', 'created');
 			}
 		}
 	}
-	
+
 }
 
 class Product_Controller extends Page_Controller {
-	
+
 	function init() {
 		parent::init();
-		
+
 		Requirements::themedCSS('Product');
 		Requirements::themedCSS('Cart');
 	}
-	
+
 	function add() {
 		if($this->AllowPurchase() && $this->Variations()->Count() == 0) {
 			ShoppingCart::add_new_item(new Product_OrderItem($this->dataRecord));
 			if(!$this->isAjax()) Director::redirectBack();
 		}
 	}
-	
+
 	function addVariation() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->AllowPurchase && $this->urlParams['ID']) {
 			$variation = DataObject::get_one(
-				'ProductVariation', 
+				'ProductVariation',
 				sprintf(
-					"`ID` = %d AND `ProductID` = %d",
+					"{$bt}ID{$bt} = %d AND {$bt}ProductID{$bt} = %d",
 					(int)$this->urlParams['ID'],
 					(int)$this->ID
 				)
@@ -303,81 +305,81 @@ class Product_Controller extends Page_Controller {
 			}
 		}
 	}
-	
+
 }
 class Product_Image extends Image {
 
 	public static $db = array();
-	
+
 	public static $has_one = array();
-	
+
 	public static $has_many = array();
-	
+
 	public static $many_many = array();
-	
+
 	public static $belongs_many_many = array();
-	
+
 	function generateThumbnail($gd) {
 		$gd->setQuality(80);
 		return $gd->paddedResize(140,100);
 	}
-	
+
 	function generateContentImage($gd) {
 		$gd->setQuality(90);
 		return $gd->resizeByWidth(200);
 	}
-	
+
 	function generateLargeImage($gd) {
 		$gd->setQuality(90);
 		return $gd->resizeByWidth(600);
 	}
-	
+
 }
 class Product_OrderItem extends OrderItem {
-	
+
 	protected $_productID;
-	
+
 	protected $_productVersion;
-	
+
 	static $db = array(
 		'ProductVersion' => 'Int'
 	);
-	
+
 	static $has_one = array(
 		'Product' => 'Product'
 	);
-	
+
 	public function __construct($product = null, $quantity = 1) {
 		// Case 1: Constructed by getting OrderItem from DB
 		if(is_array($product)) {
 			$this->ProductID = $this->_productID = $product['ProductID'];
 			$this->ProductVersion = $this->_productVersion = $product['ProductVersion'];
 		}
-		
+
 		// Case 2: Constructed in memory
-		if(is_object($product)) {		
+		if(is_object($product)) {
 			$this->_productID = $product->ID;
  			$this->_productVersion = $product->Version;
- 			
+
 		}
-		
+
  		parent::__construct($product, $quantity);
 	}
-	
+
 	function getProductID() {
 		return $this->_productID;
 	}
-	
+
 	/**
 	 * Overloaded Product accessor method.
-	 *  
+	 *
 	 * Overloaded from the default has_one accessor to
 	 * retrieve a product by it's version, this is extremely
 	 * useful because we can set in stone the version of
 	 * a product at the time when the user adds the item to
 	 * their cart, so if the CMS admin changes the price, it
 	 * remains the same for this order.
-	 * 
+	 *
 	 * @param boolean $current If set to TRUE, returns the latest published version of the Product,
 	 * 								If set to FALSE, returns the set version number of the Product
 	 * 						 		(instead of the latest published version)
@@ -387,16 +389,16 @@ class Product_OrderItem extends OrderItem {
 		if($current) return DataObject::get_by_id('Product', $this->_productID);
 		else return Versioned::get_version('Product', $this->_productID, $this->_productVersion);
 	}
-	
+
 	function hasSameContent($orderItem) {
 		$equals = parent::hasSameContent($orderItem);
 		return $equals && $orderItem instanceof Product_OrderItem && $this->_productID == $orderItem->_productID && $this->_productVersion == $orderItem->_productVersion;
 	}
-	
+
 	function UnitPrice() {
 		return $this->Product()->Price;
 	}
-	
+
 	function TableTitle() {
 		return $this->Product()->Title;
 	}
@@ -404,19 +406,19 @@ class Product_OrderItem extends OrderItem {
 	function Link() {
 		if($product = $this->Product(true)) return $product->Link();
 	}
-	
+
 	function addLink() {
 		return ShoppingCart_Controller::add_item_link($this->_productID);
 	}
-	
+
 	function removeLink() {
 		return ShoppingCart_Controller::remove_item_link($this->_productID);
 	}
-	
+
 	function removeallLink() {
 		return ShoppingCart_Controller::remove_all_item_link($this->_productID);
 	}
-	
+
 	function setquantityLink() {
 		return ShoppingCart_Controller::set_quantity_item_link($this->_productID);
 	}
@@ -427,7 +429,7 @@ class Product_OrderItem extends OrderItem {
 		$this->ProductID = $this->_productID;
 		$this->ProductVersion = $this->_productVersion;
 	}
-	
+
 	public function debug() {
 		$title = $this->TableTitle();
 		$productID = $this->_productID;
@@ -444,19 +446,19 @@ HTML;
 }
 
 /**
- * Product Testimonial 
- * 
+ * Product Testimonial
+ *
  * @package ecommerce
  */
 
 class Product_Testimonial extends DataObject {
-	
+
 	static $db = array(
 		'Author' => 'Varchar(200)',
 		'URL' => 'Varchar(200)',
 		'Testimonial' => 'Text'
 	);
-	
+
 	static $has_one = array(
 		'Product' => 'Product'
 	);

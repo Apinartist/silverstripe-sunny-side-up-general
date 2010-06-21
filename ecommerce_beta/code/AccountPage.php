@@ -2,13 +2,13 @@
 /**
  * Account page shows order history and a form to allow
  * the member to edit his/her details.
- * 
+ *
  * @package ecommerce
  */
 class AccountPage extends Page {
-	
+
 	static $add_action = 'an Account Page';
-	
+
 	/**
 	 * Returns the link or the URLSegment to the account page on this site
 	 * @param boolean $urlSegment Return the URLSegment only
@@ -17,10 +17,10 @@ class AccountPage extends Page {
 		if(!$page = DataObject::get_one('AccountPage')) {
 			user_error('No AccountPage was found. Please create one in the CMS!', E_USER_ERROR);
 		}
-		
+
 		return ($urlSegment) ? $page->URLSegment : $page->Link();
 	}
-	
+
 	/**
 	 * Return a link to view the order on the account page.
 	 *
@@ -31,10 +31,10 @@ class AccountPage extends Page {
 		if(!$page = DataObject::get_one('AccountPage')) {
 			user_error('No AccountPage was found. Please create one in the CMS!', E_USER_ERROR);
 		}
-		
+
 		return ($urlSegment ? $page->URLSegment . '/' : $page->Link()) . 'order/' . $orderID;
 	}
-	
+
 	/**
 	 * Returns all {@link Order} records for this
 	 * member that are completed.
@@ -42,11 +42,12 @@ class AccountPage extends Page {
 	 * @return DataObjectSet
 	 */
 	function CompleteOrders() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$memberID = Member::currentUserID();
-		$statusFilter = "Status IN ('" . implode("','", Order::$paid_status) . "')";
-		return DataObject::get('Order', "MemberID = '$memberID' AND $statusFilter", "Created DESC");
+		$statusFilter = "{$bt}Status{$bt} IN ('" . implode("','", Order::$paid_status) . "')";
+		return DataObject::get("Order", "MemberID = '$memberID' AND ".$statusFilter, "{$bt}Created{$bt} DESC");
 	}
-	
+
 	/**
 	 * Returns all {@link Order} records for this
 	 * member that are incomplete.
@@ -54,18 +55,19 @@ class AccountPage extends Page {
 	 * @return DataObjectSet
 	 */
 	function IncompleteOrders() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$memberID = Member::currentUserID();
-		$statusFilter = "Status NOT IN ('" . implode("','", Order::$paid_status) . "')";
-		return DataObject::get('Order', "MemberID = '$memberID' AND $statusFilter", "Created DESC");
+		$statusFilter = "{$bt}Statu{$bt}s NOT IN ('" . implode("','", Order::$paid_status) . "')";
+		return DataObject::get("Order", "{$bt}MemberID{$bt} = '$memberID' AND ".$statusFilter, "{$bt}Created{$bt} DESC");
 	}
-	
+
 	/**
 	 * Automatically create an AccountPage if one is not found
 	 * on the site at the time the database is built (dev/build).
 	 */
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		
+
 		if(!DataObject::get_one('AccountPage')) {
 			$page = new AccountPage();
 			$page->Title = 'Account';
@@ -74,7 +76,7 @@ class AccountPage extends Page {
 			$page->ShowInMenus = 0;
 			$page->writeToStage('Stage');
 			$page->publish('Stage', 'Live');
-			
+
 
 			if(method_exists('DB', 'alteration_message')) DB::alteration_message('Account page \'Account\' created', 'created');
 		}
@@ -82,23 +84,23 @@ class AccountPage extends Page {
 }
 
 class AccountPage_Controller extends Page_Controller {
-	
+
 	function init() {
 		parent::init();
-		
+
 		Requirements::themedCSS('AccountPage');
-		
+
 		if(!Member::currentUserID()) {
 			$messages = array(
 				'default' => '<p class="message good">' . _t('AccountPage.Message', 'You\'ll need to login before you can access the account page. If you are not registered, you won\'t be able to access it until you make your first order, otherwise please enter your details below.') . '</p>',
 				'logInAgain' => 'You have been logged out. If you would like to log in again, please do so below.'
 			);
-			
+
 			Security::permissionFailure($this, $messages);
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Return the {@link Order} details for the current
 	 * Order ID that we're viewing (ID parameter in URL).
@@ -108,10 +110,10 @@ class AccountPage_Controller extends Page_Controller {
 	function order($request) {
 		Requirements::themedCSS('Order');
 		Requirements::themedCSS('Order_print', 'print');
-		
+
 		$memberID = Member::currentUserID();
 		$accountPageLink = AccountPage::find_link();
-		
+
 		if($orderID = $request->param('ID')) {
 			if($order = DataObject::get_one('Order', "Order.ID = '$orderID' AND MemberID = '$memberID'")) {
 				return array('Order' => $order);
@@ -138,7 +140,7 @@ class AccountPage_Controller extends Page_Controller {
 	function MemberForm() {
 		return new ShopAccountForm($this, 'MemberForm');
 	}
-	
+
 	/**
 	 * Returns the form to cancel the current order,
 	 * checking to see if they can cancel their order
@@ -148,13 +150,13 @@ class AccountPage_Controller extends Page_Controller {
 	 */
 	function CancelForm() {
 		return null; // This needs to be fixed, URL routing is broken so ID doesn't get picked up
-		
+
 		if($order = DataObject::get_by_id('Order', (int) Director::urlParam('ID'))) {
 			if($order->canCancel()) {
 				return new Order_CancelForm($this, 'CancelForm', $order->ID);
 			}
 		}
 	}
-	
+
 }
 ?>
