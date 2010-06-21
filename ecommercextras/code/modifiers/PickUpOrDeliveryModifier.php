@@ -175,6 +175,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	function PickupOrDeliveryTypeObject() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->ID) {
 			$object = unserialize($this->SerializedCalculationObject);
 			if(is_object($object)) {
@@ -183,7 +184,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		}
 		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
-			return DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = '`Code` = "'.$currentOption.'"');
+			return DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = '{$bt}Code{$bt} = "'.$currentOption.'"');
 		}
 		user_error("could not retrieve Pickup Or Delivery Type", E_USER_ERROR);
 	}

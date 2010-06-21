@@ -67,17 +67,18 @@ class OrderDecorator extends DataObjectDecorator {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		//set starting order number ID
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+//set starting order number ID
 		$number = intval(self::$order_id_start_number);
 		$currentMax = 0;
 		//TO DO: use proper DB language
 		if($number) {
-			$count = DB::query("SELECT COUNT( ID ) FROM `Order` ")->value();
+			$count = DB::query("SELECT COUNT( ID ) FROM {$bt}Order{$bt} ")->value();
 		 	if($count > 0) {
-				$currentMax = DB::Query("SELECT MAX( ID ) FROM `Order`")->value();
+				$currentMax = DB::Query("SELECT MAX( ID ) FROM {$bt}Order{$bt}")->value();
 			}
 			if($number > $currentMax) {
-				DB::query("ALTER TABLE `Order`  AUTO_INCREMENT = $number ROW_FORMAT = DYNAMIC ");
+				DB::query("ALTER TABLE {$bt}Order{$bt}  AUTO_INCREMENT = $number ROW_FORMAT = DYNAMIC ");
 				//Database::alteration_message("Change OrderID start number to ".$number, "created");
 			}
 		}
@@ -174,22 +175,24 @@ class OrderDecorator extends DataObjectDecorator {
 class OrderDecorator_EqualOrGreaterFilter extends ExactMatchFilter {
 
 	public function apply(SQLQuery $query) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$query = $this->applyRelation($query);
 		$value = $this->getValue();
 		$date = explode('/', $value);
 		$value = "$date[2]-$date[1]-$date[0]";
-		return $query->where("`Order`.`Created` >= '$value'");
+		return $query->where("{$bt}Order{$bt}.{$bt}Created{$bt} >= '$value'");
 	}
 }
 
 class OrderDecorator_EqualOrLessFilter extends ExactMatchFilter {
 
 	public function apply(SQLQuery $query) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$query = $this->applyRelation($query);
 		$value = $this->getValue();
 		$date = explode('/', $value);
 		$value = "$date[2]-$date[1]-$date[0]";
-		return $query->where("`Order`.`Created` <= '$value'");
+		return $query->where("{$bt}Order{$bt}.{$bt}Created{$bt} <= '$value'");
 	}
 }
 

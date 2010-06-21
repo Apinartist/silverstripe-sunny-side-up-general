@@ -13,6 +13,7 @@ class HourlyEcommerceGroupUpdate extends HourlyTask {
 		static function get_group_name(){return self::$group_name;}
 
 	static function add_members_to_customer_group() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$gp = DataObject::get_one("Group", "Title = '".self::get_group_name()."'");
 		if(!$gp) {
 			$gp = new Group();
@@ -32,9 +33,9 @@ class HourlyEcommerceGroupUpdate extends HourlyTask {
 		$extraWhere =
 		$unlistedMembers = DataObject::get(
 			"Member",
-			$where = "`Member`.`ID` NOT IN (".implode(",",$alreadyAdded).")",
+			$where = "{$bt}Member{$bt}.{$bt}ID{$bt} NOT IN (".implode(",",$alreadyAdded).")",
 			$sort = null,
-			$join = "INNER JOIN `Order` ON `Order`.`MemberID` = `Member`.`ID`"
+			$join = "INNER JOIN {$bt}Order{$bt} ON {$bt}Order{$bt}.{$bt}MemberID{$bt} = {$bt}Member{$bt}.{$bt}ID{$bt}"
 		);
 
 		//add combos

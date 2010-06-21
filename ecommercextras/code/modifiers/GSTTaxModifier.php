@@ -156,10 +156,11 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function LivetaxObjects() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(!self::$tax_objects) {
 			if($countryCode = $this->LiveCountry()) {
 				$this->debugMessage .= "<hr />There is a current live country: ".$countryCode;
-				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$countryCode.'"');
+				$objects = DataObject::get("GSTTaxModifierOptions", '{$bt}CountryCode{$bt} = "'.$countryCode.'"');
 				if($objects) {
 					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
 					self::$tax_objects = $objects;
@@ -177,11 +178,12 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function DefaultLivetaxObjects() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(!self::$tax_objects) {
 			$defaultCountryCode = GSTTaxModifier::$default_country_code;
 			if($defaultCountryCode) {
 				$this->debugMessage .= "<hr />There are current live DEFAULT country code: ".$defaultCountryCode;
-				$objects = DataObject::get("GSTTaxModifierOptions", '`CountryCode` = "'.$defaultCountryCode.'"');
+				$objects = DataObject::get("GSTTaxModifierOptions", '{$bt}CountryCode{$bt} = "'.$defaultCountryCode.'"');
 				if($objects){
 					$this->debugMessage .= "<hr />there are DEFAULT tax objects available for ".$defaultCountryCode;
 					self::$tax_objects = $objects;

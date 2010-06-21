@@ -19,7 +19,8 @@ class EnhancedCheckoutPage extends CheckoutPage {
 		static function get_autocreate_enhancedcheckoutpage() {return self::$autocreate_enhancedcheckoutpage;}
 
 	function canCreate() {
-		return !DataObject::get_one("Page", "`ClassName`= 'EnhancedCheckoutPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get_one("Page", "{$bt}ClassName{$bt} = 'EnhancedCheckoutPage'");
 	}
 
 	function requireDefaultRecords() {

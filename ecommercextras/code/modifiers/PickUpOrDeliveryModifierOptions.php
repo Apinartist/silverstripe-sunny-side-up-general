@@ -80,7 +80,8 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	public static $default_sort = "IsDefault DESC, Sort ASC, Name ASC";
 
 	static function default_object() {
-		if($obj = DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = "`IsDefault` = 1")) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if($obj = DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = "{$bt}IsDefault{$bt} = 1")) {
 			return $obj;
 		}
 		else {
@@ -120,6 +121,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 	}
 
 	private function createManyManyComplexTableField() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$title = '';
 		$field = null;
 		if(class_exists("MultiSelectField")) {
@@ -143,7 +145,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 				array('Name' => 'Name'),
 				null,
 				null,
-				"`Checked` DESC, `Name` ASC"
+				"{$bt}Checked{$bt} DESC, {$bt}Name{$bt} ASC"
 			);
 			$field->setAddTitle("Select Countries for which this delivery / pick-up option is available");
 			$field->setPermissions(array("export"));
@@ -156,13 +158,14 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 
 
 	function onBeforeWrite() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		// no other record but current one is not default
-		if(!$this->IsDefault && !DataObject::get_one("PickUpOrDeliveryModifierOptions", "`ID` <> ".intval($this->ID))) {
+		if(!$this->IsDefault && !DataObject::get_one("PickUpOrDeliveryModifierOptions", "{$bt}ID{$bt} <> ".intval($this->ID))) {
 			$this->IsDefault = 1;
 		}
 		//current default -> reset others
 		elseif($this->IsDefault) {
-			DB::query('UPDATE `PickUpOrDeliveryModifierOptions` SET `IsDefault` = 0 WHERE `ID` <> '.intval($this->ID).';');
+			DB::query('UPDATE {$bt}PickUpOrDeliveryModifierOptions{$bt} SET {$bt}IsDefault{$bt} = 0 WHERE {$bt}ID{$bt} <> '.intval($this->ID).';');
 		}
 		$this->Code = eregi_replace("[^[:alnum:]]", " ", $this->Code );
 		$this->Code = trim(eregi_replace(" +", "", $this->Code));
@@ -171,7 +174,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 			$this->Code = self::$defaults["Code"];
 		}
 		$baseCode = $this->Code;
-		while($other = DataObject::get_one("PickUpOrDeliveryModifierOptions", '`Code` = "'.$this->Code.'" AND `ID` <> '.$this->ID)){
+		while($other = DataObject::get_one("PickUpOrDeliveryModifierOptions", '{$bt}Code{$bt} = "'.$this->Code.'" AND {$bt}ID{$bt} <> '.$this->ID)){
 			$this->Code = $baseCode.'_'.$i;
 		}
 		parent::onBeforeWrite();

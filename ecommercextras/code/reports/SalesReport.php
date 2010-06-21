@@ -41,11 +41,28 @@ class SalesReport extends SSReport {
 			LEFT JOIN `OrderStatusLog` ON `OrderStatusLog`.`OrderID` = `Order`.`ID`
 			LEFT JOIN `OrderStatusLogWithDetails` ON `OrderStatusLogWithDetails`.`ID` = `OrderStatusLog`.`ID`';
 		static function set_full_export_join_statement($v) {self::$full_export_join_statement = $v;}
-		static function get_full_export_join_statement() {return self::$full_export_join_statement;}
+		static function get_full_export_join_statement() {
+			$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+			if($bt == '"') {
+				return str_replace('`', '"', self::$full_export_join_statement);
+			}
+			else {
+				return self::$full_export_join_statement;
+			}
+		}
 
 	protected static $full_export_file_name = "SalesExport";
 		static function set_full_export_file_name($v) {self::$full_export_file_name = $v;}
-		static function get_full_export_file_name() {return self::$full_export_file_name;}
+		static function get_full_export_file_name() {
+			$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+			if($bt == '"') {
+				return str_replace('`', '"', self::$full_export_file_name);
+			}
+			else {
+				return self::$full_export_file_name;
+			}
+		}
+}
 
 	protected $title = 'All Orders';
 

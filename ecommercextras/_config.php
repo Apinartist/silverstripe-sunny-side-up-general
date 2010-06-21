@@ -113,7 +113,7 @@ Director::addRules(50, array(
 	// setup cron job 0 * * * * wget http://www.mysite.com/silverstripe/HourlyTask/
 	//if you add the OrderDecorator then this also runs this task at Order::onAfterWrite();
 ));
-/*
+/*  ` will automatically be replaced by " if needed (i.e. SS 2.4+)
 SalesReport::set_full_export_select_statement(
 	array(
 		"`Order`.`ID`" => "Order ID",

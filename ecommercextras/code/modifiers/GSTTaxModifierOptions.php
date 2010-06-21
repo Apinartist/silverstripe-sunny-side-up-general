@@ -57,7 +57,8 @@ class GSTTaxModifierOptions extends DataObject {
 	}
 
 	function onBeforeWrite() {
-		if($this->ID && DataObject::get_one("GSTTaxModifierOptions", '`CountryCode` = "'.$this->CountryCode.'" AND `ID` <> '.$this->ID)) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if($this->ID && DataObject::get_one("GSTTaxModifierOptions", "{$bt}CountryCode{$bt} = '".$this->CountryCode."' AND {$bt}ID{$bt} <> ".$this->ID)) {
 			die("can not save two taxes for one country!");
 		}
 		parent::onBeforeWrite();

@@ -18,6 +18,7 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 	}
 
 	function getCustomQuery() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 		$where = Session::get("SearchableProductSalesReport.where");
 		if(trim($where)) {
@@ -26,7 +27,7 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 		$where .= ' (OrderModifier.Amount <> 0 OR OrderModifier.Amount IS NULL)';
 		$query = singleton('OrderAttribute')->buildSQL(
 			$where,
-			$sort = '`Order`.`Created` DESC',
+			$sort = '{$bt}Order{$bt}.{$bt}Created{$bt} DESC',
 			$limit = "",
 			$join = SalesReport::get_full_export_join_statement()
 		);

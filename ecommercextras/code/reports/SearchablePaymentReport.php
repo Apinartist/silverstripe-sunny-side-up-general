@@ -53,6 +53,7 @@ class SearchablePaymentReport extends PaymentsReport {
 	}
 
 	function processform() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$where = array();
 		$having = array();
 		$humanWhere = array();
@@ -61,7 +62,7 @@ class SearchablePaymentReport extends PaymentsReport {
 			if($value) {
 				switch($key) {
 					case "OrderID":
-						$where[] = ' `Order`.`ID` = '.intval($value);
+						$where[] = ' {$bt}Order{$bt}.{$bt}ID{$bt} = '.intval($value);
 						$humanWhere[] = ' OrderID equals '.intval($value);
 						break;
 					case "From":
@@ -71,7 +72,7 @@ class SearchablePaymentReport extends PaymentsReport {
 						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
 						$t->setValue($cleanTime); //
 						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
-						$where[] = ' UNIX_TIMESTAMP(`Payment`.`Created`) >= "'.$exactTime.'"';
+						$where[] = ' UNIX_TIMESTAMP({$bt}Payment{$bt}.{$bt}Created{$bt}) >= "'.$exactTime.'"';
 						$humanWhere[] = ' Order on or after '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 						break;
 					case "Until":
@@ -81,14 +82,14 @@ class SearchablePaymentReport extends PaymentsReport {
 						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
 						$t->setValue($cleanTime); //
 						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
-						$where[] = ' UNIX_TIMESTAMP(`Payment`.`Created`) <= "'.$exactTime.'"';
+						$where[] = ' UNIX_TIMESTAMP({$bt}Payment{$bt}.{$bt}Created{$bt}) <= "'.$exactTime.'"';
 						$humanWhere[] = ' Order before or on '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 
 						break;
 					case "Status":
 						$subWhere = array();
 						foreach($value as $item) {
-							$subWhere[] = ' `Payment`.`Status` = "'.$item.'"';
+							$subWhere[] = ' {$bt}Payment{$bt}.{$bt}Status{$bt} = "'.$item.'"';
 							$humanWhere[] = ' Payment Status equals "'.$item.'"';
 						}
 						if(count($subWhere)) {
@@ -115,6 +116,7 @@ class SearchablePaymentReport extends PaymentsReport {
 	}
 
 	function getCustomQuery() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 			//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 		$where = Session::get("SearchablePaymentReport.where");
 		if(trim($where)) {
@@ -123,9 +125,9 @@ class SearchablePaymentReport extends PaymentsReport {
 		$where .= " 1 = 1";
 		$query = singleton('Payment')->buildSQL(
 			$where,
-			$sort = '`Payment`.`Created` DESC',
+			$sort = '{$bt}Payment{$bt}.{$bt}Created{$bt} DESC',
 			$limit = "",
-			$join = " INNER JOIN `Order` on `Order`.`ID` = `Payment`.`OrderID`"
+			$join = " INNER JOIN {$bt}Order{$bt} on {$bt}Order{$bt}.{$bt}ID{$bt} = {$bt}Payment{$bt}.{$bt}OrderID{$bt}"
 		);
 		if($having = Session::get("SearchablePaymentReport.having")) {
 			$query->having($having);
@@ -153,6 +155,7 @@ class SearchablePaymentReport extends PaymentsReport {
 	}
 
 	function getExportQuery() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		//buildSQL($filter = "", $sort = "", $limit = "", $join = "", $restrictClasses = true, $having = "")
 		$where = Session::get("SearchablePaymentReport.where");
 		if(trim($where)) {
@@ -160,9 +163,9 @@ class SearchablePaymentReport extends PaymentsReport {
 		}
 		$query = singleton('Payment')->buildSQL(
 			$where,
-			$sort = '`Payment`.`Created` DESC',
+			$sort = '{$bt}Payment{$bt}.{$bt}Created{$bt} DESC',
 			$limit = "",
-			$join = " INNER JOIN `Order` on `Order`.`ID` = `Payment`.`OrderID`"
+			$join = " INNER JOIN {$bt}Order{$bt} on {$bt}Order{$bt}.{$bt}ID{$bt} = {$bt}Payment{$bt}.{$bt}OrderID{$bt}"
 		);
 		$fieldArray = $this->getExportFields();
 		if(is_array($fieldArray)) {
@@ -174,7 +177,7 @@ class SearchablePaymentReport extends PaymentsReport {
 		}
 		foreach($query->select as $key=>$value) {
 			if($value == "OrderSummary") {
-				$query->select[$key] = "CONCAT(`Order`.`ID`, ' :: ', `Order`.`Created`, ' :: ', `Order`.`Status`) AS OrderSummary";
+				$query->select[$key] = "CONCAT({$bt}Order{$bt}.{$bt}ID{$bt}, ' :: ', {$bt}Order{$bt}.{$bt}Created{$bt}, ' :: ', {$bt}Order{$bt}.{$bt}Status{$bt}) AS OrderSummary";
 			}
 		}
 		if($having = Session::get("SearchableOrderReport.having")) {
