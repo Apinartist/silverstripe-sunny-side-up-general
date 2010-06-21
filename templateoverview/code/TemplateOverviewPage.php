@@ -35,7 +35,8 @@ class TemplateOverviewPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get("SiteTree", "`ClassName` = 'TemplateOverviewPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get("SiteTree", "{$bt}ClassName{$bt} = 'TemplateOverviewPage'");
 	}
 
 
@@ -44,6 +45,7 @@ class TemplateOverviewPage extends Page {
 	protected $ShowAll = false;
 
 	public function getCMSFields() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fields = parent::getCMSFields();
 		$tablefield = new HasManyComplexTableField(
 			$controller = $this,
@@ -51,8 +53,8 @@ class TemplateOverviewPage extends Page {
 			$sourceClass = 'TemplateOverviewDescription',
 			null,
 			$detailFormFields = 'getCMSFields_forPopup',
-			$sourceFilter = "`ParentID` = ".$this->ID,
-			$sourceSort = "`ClassNameLink` ASC"
+			$sourceFilter = "{$bt}ParentID{$bt} = ".$this->ID,
+			$sourceSort = "{$bt}ClassNameLink{$bt} ASC"
 			//$sourceJoin = null
 		);
 		$fields->addFieldToTab('Root.Content.Descriptions', $tablefield);
@@ -61,6 +63,7 @@ class TemplateOverviewPage extends Page {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(self::$auto_include) {
 			$check = DataObject::get_one("TemplateOverviewPage");
 			if(!$check) {
@@ -72,7 +75,7 @@ class TemplateOverviewPage extends Page {
 				$page->PageTitle = "Templates overview";
 				$page->Sort = 99998;
 				$page->URLSegment = "templates";
-				$parent = DataObject::get_one("Page", "URLSegment = '".self::$parent_url_segment."'");
+				$parent = DataObject::get_one("Page", "{$bt}URLSegment{$bt} = '".self::$parent_url_segment."'");
 				if($parent) {
 					$page->ParentID = $parent->ID;
 				}
@@ -88,6 +91,7 @@ class TemplateOverviewPage extends Page {
 
 
 	public function ListOfAllClasses() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$ArrayOfAllClasses =  Array();
 		$classes = ClassInfo::subclassesFor("SiteTree");
 		foreach($classes as $className) {
@@ -104,10 +108,10 @@ class TemplateOverviewPage extends Page {
 				}
 				else {
 					$obj = null;
-					$objects = DataObject::get($className, 'ClassName = "'.$className.'"', 'RAND() ASC', '', 1);
+					$objects = DataObject::get($className, "ClassName = '".$className."'", 'RAND() ASC', '', 1);
 					if(is_object($objects) && $objects->count()) {
 						$obj = $objects->First();
-						$count = DB::query('Select COUNT(*) from SiteTree_Live where ClassName = "'.$obj->ClassName.'"')->value();
+						$count = DB::query("Select COUNT(*) from {$bt}SiteTree_Live{$bt} where {$bt}ClassName{$bt} = '".$obj->ClassName."'")->value();
 					}
 					else {
 						$obj = singleton($className);
@@ -136,7 +140,8 @@ class TemplateOverviewPage extends Page {
 
 
 	protected function TemplateDetails($className) {
-		$obj = DataObject::get_one("TemplateOverviewDescription", 'ClassNameLink = "'.$className.'" AND ParentID = '.$this->ID);
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$obj = DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$className."' AND ParentID = ".$this->ID);
 		if(!$obj) {
 			$obj = new TemplateOverviewDescription();
 			$obj->ClassNameLink = $className;
@@ -210,7 +215,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", $id);
 		if($obj) {
-			$data = DataObject::get($obj->ClassName, $where = "`ClassName` = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
+			$data = DataObject::get($obj->ClassName, $where = "{$bt}ClassName{$bt} = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
 		}
 		$array = array(
 			"Results" => $data,
