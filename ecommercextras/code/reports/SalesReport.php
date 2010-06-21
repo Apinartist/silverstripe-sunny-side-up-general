@@ -62,7 +62,6 @@ class SalesReport extends SSReport {
 				return self::$full_export_file_name;
 			}
 		}
-}
 
 	protected $title = 'All Orders';
 

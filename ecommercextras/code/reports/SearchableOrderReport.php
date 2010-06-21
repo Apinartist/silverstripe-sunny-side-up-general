@@ -147,7 +147,7 @@ class SearchableOrderReport extends SalesReport {
 		if(trim($where)) {
 		 $where = " ( $where ) AND ";
 		}
-		$where .= '({$bt}Payment{$bt}.{$bt}Status{$bt} = "Success" OR {$bt}Payment{$bt}.{$bt}Status{$bt} = "Pending" OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)';
+		$where .= "({$bt}Payment{$bt}.{$bt}Status{$bt} = 'Success' OR {$bt}Payment{$bt}.{$bt}Status{$bt} = 'Pending' OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)";
 		$query = singleton('Order')->buildSQL(
 			$where,
 			$sort = '{$bt}Order{$bt}.{$bt}Created{$bt} DESC',
@@ -155,7 +155,7 @@ class SearchableOrderReport extends SalesReport {
 			$join = "
 				INNER JOIN {$bt}Member{$bt} ON {$bt}Member{$bt}.{$bt}ID{$bt} = {$bt}Order{$bt}.{$bt}MemberID{$bt}
 				LEFT JOIN Payment ON {$bt}Payment{$bt}.{$bt}OrderID{$bt} = {$bt}Order{$bt}.{$bt}ID{$bt}
-			"{$bt}
+			"
 		);
 		$query->select[] = 'SUM({$bt}Payment{$bt}.{$bt}Amount{$bt}) RealPayments';
 		if($having = Session::get("SearchableOrderReport.having")) {

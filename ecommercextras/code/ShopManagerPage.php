@@ -70,9 +70,9 @@ class ShopManagerPage_Controller extends Page_Controller {
 
 
 	function getorderdetailsforadmin() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";{$bt}
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$orderID = intval(Director::URLParam("ID"));
-		$dos = DataObject::get('OrderModifier', "{$bt}OrderID{$bt} = '$orderID'");
+		$dos = DataObject::get("OrderModifier", "{$bt}OrderID{$bt} = '$orderID'");
 		$v = print_r($dos);
 		$this->Content = $v;
 		return array();
