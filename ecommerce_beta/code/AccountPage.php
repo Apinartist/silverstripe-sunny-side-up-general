@@ -57,7 +57,7 @@ class AccountPage extends Page {
 	function IncompleteOrders() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$memberID = Member::currentUserID();
-		$statusFilter = "{$bt}Statu{$bt}s NOT IN ('" . implode("','", Order::$paid_status) . "')";
+		$statusFilter = "{$bt}Status{$bt} NOT IN ('" . implode("','", Order::$paid_status) . "')";
 		return DataObject::get("Order", "{$bt}MemberID{$bt} = '$memberID' AND ".$statusFilter, "{$bt}Created{$bt} DESC");
 	}
 
