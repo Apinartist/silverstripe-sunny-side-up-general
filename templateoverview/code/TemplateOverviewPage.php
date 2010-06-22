@@ -217,6 +217,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 	}
 
 	function showmore() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", $id);
 		if($obj) {
