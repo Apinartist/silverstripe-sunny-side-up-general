@@ -12,12 +12,15 @@ class MembersOnlyPage extends Page {
 
 	protected static $group_code = "intranet-users";
 		static function set_group_code($v) {self::$group_code = $v;}
+		static function get_group_code() {return self::$group_code;}
 
 	protected static $group_name = "intranet users";
 		static function set_group_name($v) {self::$group_name = $v;}
+		static function get_group_name() {return self::$group_name;}
 
 	protected static $permission_code = "INTRANET_USERS";
 		static function set_permission_code($v) {self::$permission_code = $v;}
+		static function get_permission_code() {return self::$permission_code;}
 
 	static $defaults = array(
 		"ProvideComments" => 1,
@@ -57,17 +60,18 @@ class MembersOnlyPage extends Page {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!$intranetGroup = DataObject::get_one("Group", "Code = '".self::$group_code."'")) {
+		if(!$intranetGroup = DataObject::get_one("Group", "Code = '".self::get_group_code()."'")) {
 			$group = new Group();
-			$group->Code = self::$group_code;
-			$group->Title = self::$group_name;
+			$group->Code = self::get_group_code();
+			$group->Title = self::get_group_name();
 			$group->write();
 
-			Permission::grant( $group->ID, self::$permission_code );
-			Database::alteration_message(self::$group_name.'group created',"created");
+			Permission::grant( $group->ID, self::get_permission_code());
+			Database::alteration_message(self::get_group_name().' group created',"created");
 		}
-		else if(DB::query("SELECT * FROM Permission WHERE `GroupID` = '".$intranetGroup->ID."' AND `Code` LIKE '".self::$permission_code."'")->numRecords() == 0 ) {
-			Permission::grant($intranetGroup->ID, self::$permission_code);
+		else if(DB::query("SELECT * FROM Permission WHERE `GroupID` = '".$intranetGroup->ID."' AND `Code` LIKE '".self::get_permission_code()."'")->numRecords() == 0 ) {
+			Permission::grant($intranetGroup->ID, self::get_permission_code());
+			Database::alteration_message(self::get_group_name().' permissions granted',"created");
 		}
 	}
 
