@@ -53,9 +53,9 @@ class ShareThisDataObject extends DataObject {
 		"Show" => "Show"
 	);
 
-	public static $singular_name = "Share This Option to Show";
+	public static $singular_name = "Link to promote page";
 
-	public static $plural_name = "Share This Options to Show";
+	public static $plural_name = "Links to promote page";
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
