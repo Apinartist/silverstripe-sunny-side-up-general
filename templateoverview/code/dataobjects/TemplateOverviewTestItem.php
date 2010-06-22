@@ -1,5 +1,13 @@
 <?php
 
+
+/**
+ *@author nicolaas [at] sunnysideup . co . nz
+ *@description: a test item is something that needs to be checked everytime the site has a new release
+ * - e.g. "home page opens when you are logged in"
+ * - e.g. "blog entry can be added"
+ *
+ **/
 class TemplateOverviewTestItem extends DataObject {
 
 	static $db = array(
