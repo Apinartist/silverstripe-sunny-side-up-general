@@ -81,7 +81,7 @@ class CampaignMonitorSignupPage extends Page {
 			if(count($update)) {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
-				SS_Database::alteration_message($page->ClassName." created/updated: ".implode(" --- ",$update), 'created');
+				DB::alteration_message($page->ClassName." created/updated: ".implode(" --- ",$update), 'created');
 			}
 		}
 	}
