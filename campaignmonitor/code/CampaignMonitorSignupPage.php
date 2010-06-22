@@ -18,6 +18,7 @@ class CampaignMonitorSignupPage extends Page {
 		"AlternativeTitle" => "Varchar(255)",
 		"AlternativeMenuTitle" => "Varchar(255)",
 		"AlternativeMetaTitle" => "Varchar(255)",
+		"SignUpButtonLabel" => "Varchar(20)"
 	);
 
 	public function CanCreate() {
@@ -27,6 +28,8 @@ class CampaignMonitorSignupPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.FormCode', new TextareaField("FormHTML", "Copy form html code here (use CTRL+V)"));
+		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page to complete all the details."));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextFied("SignUpButtonLabel", "Sign Up Button Label for Start Form"));
 		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField("ReturnURL", "Return URL after form is submitted - supply this to Campaign Monitor", Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeTitle", "AlternativeTitle"));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeMenuTitle", "AlternativeMenuTitle"));
@@ -35,6 +38,28 @@ class CampaignMonitorSignupPage extends Page {
 		return $fields;
 	}
 
+	/**
+	* you can add this function to other pages to have a form that starts the basic after which the client needs to complete the rest.
+	*
+	**/
+
+	static function CampaignMonitorStarterForm($controller) {
+		$page = DataObject::get_one("CampaignMonitorSignupPage");
+		$fields = new FieldSet(new TextField("Email", ""));
+		$actions = new FieldSet(new FormAction("CampaignMonitorStarterFormStartAction", $page->SignUpButtonLabel));
+		$form = new Form(
+			$controller,
+			"CampaignMonitorStarterForm",
+			$fields,
+			$actions
+		);
+		$form->setFormAction($page->Link("CampaignMonitorStarterFormStartAction"));
+		return $form;
+	}
+
+
+
+
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->FormHTML = str_replace("<br>", " ", $this->FormHTML);
@@ -42,11 +67,33 @@ class CampaignMonitorSignupPage extends Page {
 	}
 
 
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$update = array();
+		$page = DataObject::get_one("CampaignMonitorSignupPage");
+
+		if($page) {
+			if(!$page->SignUpButtonLabel) {
+				$page->SignUpButtonLabel = 'Register Now';
+				$update[]= "created default entry for SignUpButtonLabel";
+			}
+			if(count($update)) {
+				$page->writeToStage('Stage');
+				$page->publish('Stage', 'Live');
+				SS_Database::alteration_message($page->ClassName." created/updated: ".implode(" --- ",$update), 'created');
+			}
+		}
+	}
 }
 
 class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
-	static $allowed_actions = array("thankyou");
+	protected static $get_email_field_selector = "#Email";
+		static function set_email_field_selector($v){self::$get_email_field_selector = $v;}
+		static function get_email_field_selector(){return self::$get_email_field_selector;}
+
+	static $allowed_actions = array("thankyou", "CampaignMonitorStarterFormStartAction");
 
 	var $ShowThankYouMessage = false;
 
@@ -61,6 +108,18 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		if($this->AlternativeMenuTitle) {$this->MetaTitle = $this->AlternativeMenuTitle;}
 		if($this->AlternativeMetaTitle) {$this->MetaTitle = $this->AlternativeMetaTitle;}
 		$this->Content = $this->ThankYouMessage;
+		return array();
+	}
+
+	function CampaignMonitorStarterFormStartAction(SS_HTTPRequest $request){
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+		$data = $request->requestVars();
+		if(isset($data["Email"])) {
+			$email = $data["Email"];
+			if($email) {
+				Requirements::customScript('jQuery("'.self::get_email_field_selector().'").val("'.Convert::raw2js($email).'")');
+			}
+		}
 		return array();
 	}
 
