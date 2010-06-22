@@ -7,6 +7,11 @@
 
 class TemplateOverviewPage extends Page {
 
+	//parents and children in sitetree
+	static $allowed_children = array("TemplateOverviewTestPage"); //can also be "none";
+	static $default_child = "TemplateOverviewTestPage";
+	static $can_be_root = true;
+
 	static $icon = "templateoverview/images/treeicons/TemplateOverviewPage";
 
 	protected static $auto_include = false;

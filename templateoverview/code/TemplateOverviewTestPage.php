@@ -1,15 +1,14 @@
 <?php
 
 class TemplateOverviewTestPage extends Page {
+
+	//parents and children in sitetree
+	static $allowed_children = "none"; //can also be "none";
+	static $can_be_root = false;
+
 	//appearance
-	static $icon = "mysite/images/treeicons/TemplateOverviewTestPage-file.gif";
+	static $icon = "templateoverview/images/treeicons/TemplateOverviewTestPage";
 
-	static $allowed_children = "non"; //can also be "none";
-
-	static $default_child = "Blog";
-
-	static $can_be_root = true; //default is true
-	//parents and children in classes
 
 }
 
