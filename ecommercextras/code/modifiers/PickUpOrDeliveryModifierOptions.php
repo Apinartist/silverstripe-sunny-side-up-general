@@ -174,7 +174,7 @@ class PickUpOrDeliveryModifierOptions extends DataObject {
 			$this->Code = self::$defaults["Code"];
 		}
 		$baseCode = $this->Code;
-		while($other = DataObject::get_one("PickUpOrDeliveryModifierOptions", '{$bt}Code{$bt} = "'.$this->Code.'" AND {$bt}ID{$bt} <> '.$this->ID)){
+		while($other = DataObject::get_one("PickUpOrDeliveryModifierOptions", "{$bt}Code{$bt} = '".$this->Code."' AND {$bt}ID{$bt} <> ".$this->ID)){
 			$this->Code = $baseCode.'_'.$i;
 		}
 		parent::onBeforeWrite();

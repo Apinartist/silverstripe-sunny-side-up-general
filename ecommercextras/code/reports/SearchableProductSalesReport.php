@@ -27,7 +27,7 @@ class SearchableProductSalesReport extends SearchableOrderReport {
 		$where .= ' (OrderModifier.Amount <> 0 OR OrderModifier.Amount IS NULL)';
 		$query = singleton('OrderAttribute')->buildSQL(
 			$where,
-			$sort = '{$bt}Order{$bt}.{$bt}Created{$bt} DESC',
+			$sort = "{$bt}Order{$bt}.{$bt}Created{$bt} DESC",
 			$limit = "",
 			$join = SalesReport::get_full_export_join_statement()
 		);

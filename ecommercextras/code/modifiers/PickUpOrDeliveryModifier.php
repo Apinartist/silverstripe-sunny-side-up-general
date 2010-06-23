@@ -184,7 +184,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		}
 		$currentOption = $this->LivePickupOrDeliveryType();
 		if($currentOption) {
-			return DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = '{$bt}Code{$bt} = "'.$currentOption.'"');
+			return DataObject::get_one("PickUpOrDeliveryModifierOptions", $filter = "{$bt}Code{$bt} = '".$currentOption."'");
 		}
 		user_error("could not retrieve Pickup Or Delivery Type", E_USER_ERROR);
 	}

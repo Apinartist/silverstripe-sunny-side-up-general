@@ -150,7 +150,7 @@ class SearchableOrderReport extends SalesReport {
 		$where .= "({$bt}Payment{$bt}.{$bt}Status{$bt} = 'Success' OR {$bt}Payment{$bt}.{$bt}Status{$bt} = 'Pending' OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)";
 		$query = singleton('Order')->buildSQL(
 			$where,
-			$sort = '{$bt}Order{$bt}.{$bt}Created{$bt} DESC',
+			$sort = "{$bt}Order{$bt}.{$bt}Created{$bt} DESC",
 			$limit = "",
 			$join = "
 				INNER JOIN {$bt}Member{$bt} ON {$bt}Member{$bt}.{$bt}ID{$bt} = {$bt}Order{$bt}.{$bt}MemberID{$bt}
@@ -191,7 +191,7 @@ class SearchableOrderReport extends SalesReport {
 		$where .= '({$bt}Payment{$bt}.{$bt}Status{$bt} = "Success" OR {$bt}Payment{$bt}.{$bt}Status{$bt} = "Pending" OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)';
 		$query = singleton('Order')->buildSQL(
 			$where,
-			$sort = '{$bt}Order{$bt}.{$bt}Created{$bt} DESC',
+			$sort = "{$bt}Order{$bt}.{$bt}Created{$bt} DESC",
 			$limit = "",
 			$join = "
 				INNER JOIN {$bt}Member{$bt} ON {$bt}Member{$bt}.{$bt}ID{$bt} = {$bt}Order{$bt}.{$bt}MemberID{$bt}

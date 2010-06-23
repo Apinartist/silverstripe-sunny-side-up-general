@@ -125,7 +125,7 @@ class SearchablePaymentReport extends PaymentsReport {
 		$where .= " 1 = 1";
 		$query = singleton('Payment')->buildSQL(
 			$where,
-			$sort = '{$bt}Payment{$bt}.{$bt}Created{$bt} DESC',
+			$sort = "{$bt}Payment{$bt}.{$bt}Created{$bt} DESC",
 			$limit = "",
 			$join = " INNER JOIN {$bt}Order{$bt} on {$bt}Order{$bt}.{$bt}ID{$bt} = {$bt}Payment{$bt}.{$bt}OrderID{$bt}"
 		);
@@ -163,7 +163,7 @@ class SearchablePaymentReport extends PaymentsReport {
 		}
 		$query = singleton('Payment')->buildSQL(
 			$where,
-			$sort = '{$bt}Payment{$bt}.{$bt}Created{$bt} DESC',
+			$sort = "{$bt}Payment{$bt}.{$bt}Created{$bt} DESC",
 			$limit = "",
 			$join = " INNER JOIN {$bt}Order{$bt} on {$bt}Order{$bt}.{$bt}ID{$bt} = {$bt}Payment{$bt}.{$bt}OrderID{$bt}"
 		);
