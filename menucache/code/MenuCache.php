@@ -109,14 +109,14 @@ class MenuCache extends DataObjectDecorator {
 		if(count($fieldsToClear)) {
 			foreach(self::get_tables_to_clear() as $table) {
 				$msg = '';
-				$sql = 'UPDATE {$bt}'.$table.'{$bt} SET '.implode(", ", $fieldsToClear);
+				$sql = "UPDATE {$bt}".$table."{$bt} SET ".implode(", ", $fieldsToClear);
 				if(Director::URLParam("ID") == "days" && $days = intval(Director::URLParam("OtherID"))) {
 					$sql .= ' WHERE {$bt}LastEdited{$bt} > ( NOW() - INTERVAL '.$days.' DAY )';
 					$msg .= ', created before the last '.$days.' days';
 				}
 				elseif(Director::URLParam("ID") == "thispage") {
-					$sql .= ' WHERE  {$bt}'.$table.'{$bt}.{$bt}ID{$bt} = '.$this->owner->ID.'';
-					$msg .= ', for page with ID = '.$this->owner->ID.'';
+					$sql .= " WHERE  {$bt}".$table."{$bt}.{$bt}ID{$bt} = ".$this->owner->ID;
+					$msg .= ', for page with ID = '.$this->owner->ID;
 				}
 				if($showoutput) {
 					Database::alteration_message("Deleting cached data from $table, ".$msg);
@@ -170,7 +170,7 @@ class MenuCache_controller extends Extension {
 					return '';
 				}
 				$content = $this->getHtml($fieldNumber);
-				$sql = 'Update {$bt}SiteTree_Live{$bt} Set {$bt}'.$fieldName.'{$bt} = "'.$this->compressAndPrepareHTML($content).'" WHERE {$bt}ID{$bt} = '.$this->owner->ID.' LIMIT 1';
+				$sql = "Update {$bt}SiteTree_Live{$bt} Set {$bt}".$fieldName."{$bt} = '".$this->compressAndPrepareHTML($content)."' WHERE {$bt}ID{$bt} = ".$this->owner->ID." LIMIT 1";
 				DB::query($sql);
 				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
 			}
