@@ -5,10 +5,11 @@
 
 
 //===================---------------- start testmailer ----------------===================
+/*
 Director::addRules(50, array(
 	'testifemailsareworking//$Action/$ID/$Batch' => 'TestIfEmailsAreWorking'
 ));
-/*
+
 $protocolAndHost = Director::protocolAndHost();
 $devsitearray = array("http://localhost");
 if(in_array($protocolAndHost, $devsitearray)) {
@@ -17,6 +18,6 @@ if(in_array($protocolAndHost, $devsitearray)) {
 unset($devsitearray);
 unset($protocolAndHost);
 */
-//TestEmail::set_file_to_write_to("assets/emails.txt");
-//TestEmail::set_separation_string("---");
+//TestMailerToFile::set_file_to_write_to("assets/emails.txt");
+//TestMailerToFile::set_separation_string("---");
 //===================---------------- end testmailer ----------------===================
