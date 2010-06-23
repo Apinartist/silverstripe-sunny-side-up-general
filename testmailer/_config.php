@@ -5,6 +5,9 @@
 
 
 //===================---------------- start testmailer ----------------===================
+Director::addRules(50, array(
+	'testifemailsareworking//$Action/$ID/$Batch' => 'TestIfEmailsAreWorking'
+));
 /*
 $protocolAndHost = Director::protocolAndHost();
 $devsitearray = array("http://localhost");
