@@ -324,6 +324,7 @@ class ShareThis extends DataObjectDecorator {
 	 **/
 
 	protected function makeBookmarks() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(!count($this->bookmarks)) {
 			if($this->makeBookmarkIndependentVariables()) {
 				$bookmarks = array(
@@ -441,7 +442,7 @@ class ShareThis extends DataObjectDecorator {
 				if(self::$use_data_object) {
 					$this->bookmarks = null;
 					$this->bookmarks = array();
-					$objects = DataObject::get("ShareThisDataObject", "`Show` = 1", "`Sort` ASC, `Title` ASC");
+					$objects = DataObject::get("ShareThisDataObject", "{$bt}Show{$bt} = 1", "{$bt}Sort{$bt} ASC, {$bt}Title{$bt} ASC");
 					if($objects) {
 						if($objects->count()) {
 							foreach($objects as $obj) {

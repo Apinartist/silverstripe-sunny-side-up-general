@@ -34,7 +34,7 @@ class ShareThisDataObject extends DataObject {
 		"Sort" => "Sort Index (lower numbers shown first)"
 	);
 
-	public static $default_sort = "`Show` DESC, `Sort` ASC, `Title` ASC";
+	public static $default_sort = "Show DESC, Sort ASC, Title ASC";
 
 	public function canView($member = false) {
 		return Permission::check('CMS_ACCESS_CMSMain');
@@ -59,7 +59,8 @@ class ShareThisDataObject extends DataObject {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-		if($obj = DataObject::get("ShareThisDataObject", "`Title` = '".$this->Title."' AND ID <> ".$this->ID)) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if($obj = DataObject::get("ShareThisDataObject", "{$bt}Title{$bt} = '".$this->Title."' AND ID <> ".$this->ID)) {
 			$obj->delete();
 		}
 	}
