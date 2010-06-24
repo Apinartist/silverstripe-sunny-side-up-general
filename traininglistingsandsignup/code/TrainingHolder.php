@@ -25,16 +25,17 @@ class TrainingHolder extends Page {
 class TrainingHolder_Controller extends Page_Controller {
 
 	function MonthlyCourses() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$results = new DataObjectSet();
 
 		$stage = Versioned::current_stage();
 		$suffix = (!$stage || $stage == 'Stage') ? "" : "_$stage";
 
 		$sqlResults = DB::query("
-			SELECT DISTINCT MONTH(`Date`) AS `Month`, YEAR(`Date`) AS `Year`
-			FROM `SiteTree$suffix` NATURAL JOIN `TrainingPage$suffix`
-			WHERE `ParentID` = ".$this->ID." AND `Date` > CONVERT_TZ(now(),'+00:00','+13:00')
-			ORDER BY `Year` DESC, `Month` ASC;"
+			SELECT DISTINCT MONTH({$bt}Date{$bt}) AS {$bt}Month{$bt}, YEAR({$bt}Date{$bt}) AS {$bt}Year{$bt}
+			FROM {$bt}SiteTree$suffix{$bt} NATURAL JOIN {$bt}TrainingPage$suffix{$bt}
+			WHERE {$bt}ParentID{$bt} = ".$this->ID." AND {$bt}Date{$bt} > CONVERT_TZ(now(),'+00:00','+13:00')
+			ORDER BY {$bt}Year{$bt} DESC, {$bt}Month{$bt} ASC;"
 		);
 
 		if($sqlResults) foreach($sqlResults as $sqlResult) {
@@ -50,7 +51,7 @@ class TrainingHolder_Controller extends Page_Controller {
 
 			$results->push(new ArrayData(array(
 				'Date' => $date,
-				'Courses' => DataObject::get("TrainingPage", "`ShowInMenus` = 1 AND MONTH(`TrainingPage`.Date) = $month AND YEAR(`TrainingPage`.Date) = $year")
+				'Courses' => DataObject::get("TrainingPage", "{$bt}ShowInMenus{$bt} = 1 AND MONTH({$bt}TrainingPage{$bt}.Date) = $month AND YEAR({$bt}TrainingPage{$bt}.Date) = $year")
 			)));
 		}
 		return $results;
