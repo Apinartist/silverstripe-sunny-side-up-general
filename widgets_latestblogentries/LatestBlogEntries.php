@@ -35,8 +35,9 @@ class LatestBlogEntries extends Widget {
 	}
 
 	function Links() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		Requirements::themedCSS("widgets_latestblogentries");
-		return DataObject::get("BlogEntry", null, "`Created` DESC", null, $this->NumberOfItems);
+		return DataObject::get("BlogEntry", null, "{$bt}Created{$bt} DESC", null, $this->NumberOfItems);
 	}
 
 }
