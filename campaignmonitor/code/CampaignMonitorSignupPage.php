@@ -93,8 +93,6 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		static function set_email_field_selector($v){self::$get_email_field_selector = $v;}
 		static function get_email_field_selector(){return self::$get_email_field_selector;}
 
-	static $allowed_actions = array("thankyou", "CampaignMonitorStarterFormStartAction");
-
 	var $ShowThankYouMessage = false;
 
 	function init() {
