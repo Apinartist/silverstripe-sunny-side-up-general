@@ -59,6 +59,7 @@ class MembersOnlyPage extends Page {
 	}
 
 	public function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
 		if(!$intranetGroup = DataObject::get_one("Group", "Code = '".self::get_group_code()."'")) {
 			$group = new Group();
@@ -69,7 +70,7 @@ class MembersOnlyPage extends Page {
 			Permission::grant( $group->ID, self::get_permission_code());
 			Database::alteration_message(self::get_group_name().' group created',"created");
 		}
-		else if(DB::query("SELECT * FROM Permission WHERE `GroupID` = '".$intranetGroup->ID."' AND `Code` LIKE '".self::get_permission_code()."'")->numRecords() == 0 ) {
+		else if(DB::query("SELECT * FROM Permission WHERE {$bt}GroupID{$bt} = '".$intranetGroup->ID."' AND {$bt}Code{$bt} LIKE '".self::get_permission_code()."'")->numRecords() == 0 ) {
 			Permission::grant($intranetGroup->ID, self::get_permission_code());
 			Database::alteration_message(self::get_group_name().' permissions granted',"created");
 		}
