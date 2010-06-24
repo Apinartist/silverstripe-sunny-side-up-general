@@ -27,7 +27,8 @@ class WidgetAdvertisement extends Widget {
 	static $description = 'Adds a simple image + link (advertisement) to your widget area.';
 
 	function getCMSFields() {
-		$dataSet = DataObject::get("File", '`ClassName` = "Image"', "`Title`");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$dataSet = DataObject::get("File", "{$bt}ClassName{$bt} = 'Image'", "{$bt}Title{$bt}");
 		$dropDownSource = $dataSet->toDropDownMap($index = 'ID', $titleField = 'Title', "--- select file from files and images ---");
 		$fields = new FieldSet();
 		$fields->push(new TextField("Hyperlink","Hyperlink (e.g. http://www.sunnysideup.co.nz)"));
