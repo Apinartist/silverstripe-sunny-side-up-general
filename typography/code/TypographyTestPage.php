@@ -79,7 +79,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 	}
 
 	public function index() {
-		$this->Content .= $this->typographyhtml();
+		$this->Content = $this->typographyhtml();
 		return array();
 	}
 
