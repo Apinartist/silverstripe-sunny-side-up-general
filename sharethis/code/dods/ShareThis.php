@@ -160,7 +160,7 @@ class ShareThis extends DataObjectDecorator {
 			}
 		}
 		else {
-			USER_ERROR("you may want to install the DataObjectSorter module", E_USER_NOTICE);
+			//USER_ERROR("you may want to install the DataObjectSorter module", E_USER_NOTICE);
 		}
 	}
 
