@@ -12,7 +12,7 @@ class ShareThisDataObject extends DataObject {
 
 	public static $db = array(
 		'Title' => 'Varchar(20)',
-		'Show' => 'Boolean',
+		'IncludeThisIcon' => 'Boolean',
 		"Sort" => "Int"
 	);
 
@@ -30,11 +30,11 @@ class ShareThisDataObject extends DataObject {
 
 	public static $field_labels = array(
 		"Title" => "Name",
-		"Show" => "Show",
+		"IncludeThisIcon" => "Include this icon",
 		"Sort" => "Sort Index (lower numbers shown first)"
 	);
 
-	public static $default_sort = "Show DESC, Sort ASC, Title ASC";
+	public static $default_sort = "IncludeThisIcon DESC, Sort ASC, Title ASC";
 
 	public function canView($member = false) {
 		return Permission::check('CMS_ACCESS_CMSMain');
@@ -50,7 +50,7 @@ class ShareThisDataObject extends DataObject {
 
 	public static $summary_fields = array(
 		"Title" => "Name",
-		"Show" => "Show"
+		"IncludeThisIcon" => "IncludeThisIcon"
 	);
 
 	public static $singular_name = "Link to promote page";
@@ -68,28 +68,23 @@ class ShareThisDataObject extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(ShareThis::get_use_data_object()) {
-			//must be after the line below
-			ShareThis::set_use_data_object(0);
-			ShareThis::set_always_include(1);
+			$actualArray = ShareThisOptions::get_general_data();
 			ShareThis::set_icons_to_include(array());
 			ShareThis::set_icons_to_exclude(array());
-			$page = DataObject::get_one("SiteTree");
-			if($page) {
-				if(method_exists($page, "ShareIconsKeys")) {
-					$keys = $page->ShareIconsKeys();
-					if(count($keys)) {
-						foreach($keys as $key) {
-							if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
-								$o = new ShareThisDataObject();
-								$o->Title = $key;
-								$o->Show = 1;
-								$o->write();
-							}
-						}
+			ShareThisOptions::set_general_data(null);
+			$fullArray = ShareThisOptions::get_general_data();
+			foreach($fullArray as $key) {
+				if(!DataObject::get("ShareThisDataObject", "Title = '".$key."'")) {
+					$o = new ShareThisDataObject();
+					$o->Title = $key;
+					$style = "excluded";
+					$o->IncludeThisIcon = 0;
+					if(in_array($key, $actualArray)) {
+						$o->IncludeThisIcon = 1;
+						$style = "included";
 					}
-					else {
-						debug::show("there are no social bookmark icons listed");
-					}
+					$o->write();
+					DB::alteration_message("Added Bookmark Icon for ".$key." (".$style.")", "created");
 				}
 			}
 		}
