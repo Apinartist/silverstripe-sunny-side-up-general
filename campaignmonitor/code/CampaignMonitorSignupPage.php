@@ -18,7 +18,9 @@ class CampaignMonitorSignupPage extends Page {
 		"AlternativeTitle" => "Varchar(255)",
 		"AlternativeMenuTitle" => "Varchar(255)",
 		"AlternativeMetaTitle" => "Varchar(255)",
-		"SignUpButtonLabel" => "Varchar(20)"
+		"SignUpHeader" => "Varchar(100)",
+		"SignUpIntro" => "HTMLText",
+		"SignUpButtonLabel" => "Varchar(20)",
 	);
 
 	public function CanCreate() {
@@ -28,8 +30,12 @@ class CampaignMonitorSignupPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.FormCode', new TextareaField("FormHTML", "Copy form html code here (use CTRL+V)"));
-		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page to complete all the details."));
-		$fields->addFieldToTab('Root.Content.StartForm', new TextFied("SignUpButtonLabel", "Sign Up Button Label for Start Form"));
+
+		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details."));
+			$fields->addFieldToTab('Root.Content.StartForm', new TextFied("SignUpHeader", "Sign up header (e.g. sign up now)"));
+		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField("SignUpIntro", "Sign up form intro (e.g. sign up for our monthly newsletter ..."));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextFied("SignUpButtonLabel", "Sign up button label for start form (e.g. register now)"));
+
 		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField("ReturnURL", "Return URL after form is submitted - supply this to Campaign Monitor", Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeTitle", "AlternativeTitle"));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeMenuTitle", "AlternativeMenuTitle"));
@@ -74,6 +80,14 @@ class CampaignMonitorSignupPage extends Page {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
 
 		if($page) {
+			if(!$page->SignUpHeader) {
+				$page->SignUpHeader = 'Sign Up Now';
+				$update[]= "created default entry for SignUpHeader";
+			}
+			if(strlen($page->SignUpIntro) < strlen("<p> </p>")) {
+				$page->SignUpIntro = '<p>Enter your email to sign up for our newsletter</p>';
+				$update[]= "created default entry for SignUpIntro";
+			}
 			if(!$page->SignUpButtonLabel) {
 				$page->SignUpButtonLabel = 'Register Now';
 				$update[]= "created default entry for SignUpButtonLabel";
