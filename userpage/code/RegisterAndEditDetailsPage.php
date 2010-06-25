@@ -62,7 +62,8 @@ class RegisterAndEditDetailsPage extends Page {
 	}
 
 	public function canCreate() {
-		return !DataObject::get_one("SiteTree", "`ClassName` = 'RegisterAndEditDetailsPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get_one("SiteTree", "{$bt}ClassName{$bt} = 'RegisterAndEditDetailsPage'");
 	}
 
 	public function canDelete() {
@@ -71,15 +72,16 @@ class RegisterAndEditDetailsPage extends Page {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		if(!$group = DataObject::get_one("Group", '`Code` = \''.self::$register_group_code.'\'')) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if(!$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".self::$register_group_code."'")) {
 			$group = new Group();
 			$group->Code = self::$register_group_code;
 			$group->Title = self::$register_group_title;
 			$group->write();
 			Permission::grant( $group->ID, self::$register_group_access_key);
-			Database::alteration_message("GROUP: ".self::$register_group_code.' ('.self::$register_group_title.')' ,"created");
+			DB::alteration_message("GROUP: ".self::$register_group_code.' ('.self::$register_group_title.')' ,"created");
 		}
-		elseif(DB::query('SELECT * FROM Permission WHERE `GroupID` = '.$group->ID.' AND `Code` = \''.self::$register_group_access_key.'\'')->numRecords() == 0) {
+		elseif(DB::query("SELECT * FROM Permission WHERE {$bt}GroupID{$bt} = ".$group->ID." AND {$bt}Code{$bt} = '".self::$register_group_access_key."'")->numRecords() == 0) {
 			Permission::grant($group->ID, self::$register_group_access_key);
 		}
 	}
@@ -88,7 +90,7 @@ class RegisterAndEditDetailsPage extends Page {
 class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 
 	function index() {
-		if(isset($_GET["ajax"])) {
+		if($this->isAjax()) {
 			return $this->renderWith(array("Thickbox", "RegisterAndEditDetailsPage"));
 		}
 		return array();
@@ -144,6 +146,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		* Save the changes to the form
 		*/
 	function submit($data, $form) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$member = Member::currentUser();
 		$newPerson = false;
 		if(!$member) {
@@ -157,7 +160,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$form->saveInto($member);
 		$member->write();
 
-		$group = DataObject::get_one("Group", '`Code` = "'.RegisterAndEditDetailsPage::$register_group_code.'"');
+		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
 		if($group) {
 			$member->Groups()->add($group);
 		}
