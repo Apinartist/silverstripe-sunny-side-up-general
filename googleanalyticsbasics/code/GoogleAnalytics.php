@@ -2,13 +2,21 @@
 
 class GoogleAnalytics extends SiteTreeDecorator {
 
-	static $googleAnalyticsCode;
+	public static $googleAnalyticsCode;
+	public static $googleAnalyticsCodeTwo;
 
 	function GoogleAnalyticsCode() {
 		if(Director::isLive()) {
 			return self::$googleAnalyticsCode;
 		}
-		return array();
+		return null;
+	}
+
+	function GoogleAnalyticsCodeTwo(){
+		if(Director::isLive()) {
+			return self::$googleAnalyticsCodeTwo;
+		}
+		return null;
 	}
 
 }

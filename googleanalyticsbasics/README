@@ -14,9 +14,8 @@ SilverStripe 2.3.0 or greater.
 Documentation
 -----------------------------------------------
 Adds GoogleAnalyticsCode to the bottom of your page
-by adding
-
-<% include Analytics %>
+by adding <% include Analytics %> to the end of your
+page template (but before </body>)
 
 Installation Instructions
 -----------------------------------------------
