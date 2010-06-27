@@ -1,0 +1,3 @@
+#PageRaterStars .stars { display: inline-block; position: relative; width: 83px;}
+#PageRaterStars .stars img { position: relative; z-index: 2; display: block;}
+#PageRaterStars .stars .stars-bg { background-color: #997f54; height: 16px; max-width: 83px; position: absolute; top: 0; left; z-index: 1; }
