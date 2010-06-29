@@ -32,9 +32,9 @@ class CampaignMonitorSignupPage extends Page {
 		$fields->addFieldToTab('Root.Content.FormCode', new TextareaField("FormHTML", "Copy form html code here (use CTRL+V)"));
 
 		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details."));
-			$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpHeader", "Sign up header (e.g. sign up now)"));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpHeader", "Sign up header (e.g. sign up now)"));
 		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField("SignUpIntro", "Sign up form intro (e.g. sign up for our monthly newsletter ..."));
-		$fields->addFieldToTab('Root.Content.StartForm', new TextFied("SignUpButtonLabel", "Sign up button label for start form (e.g. register now)"));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpButtonLabel", "Sign up button label for start form (e.g. register now)"));
 
 		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField("ReturnURL", "Return URL after form is submitted - supply this to Campaign Monitor", Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeTitle", "AlternativeTitle"));
