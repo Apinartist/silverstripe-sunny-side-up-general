@@ -32,7 +32,7 @@ class PageRating extends DataObject {
 			$array = self::get_stars();
 			$newArray = array();
 			if(count($array)) {
-				foreach($array as $star) {
+				foreach($array as $key => $star) {
 					$newArray[$key] = $star["Title"];
 				}
 			}

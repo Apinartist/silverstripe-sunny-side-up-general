@@ -109,22 +109,24 @@ class PageRater extends DataObjectDecorator {
 			$sort = "",
 			$join = "LEFT JOIN {$bt}PageRating{$bt} ON {$bt}PageRating{$bt}.{$bt}ParentID{$bt} = {$bt}SiteTree{$bt}.{$bt}ID{$bt}"
 		);
-		foreach($pages as $page) {
-			$count = 0;
-			$max = PageRating::get_number_of_stars();
-			$goingBackTo = ($max / rand(1, $max)) - 1;
-			$stepsBack = $max - $goingBackTo;
-			$ratings = PageRater::get_number_of_default_records_to_be_added() / $stepsBack;
-			for($i = 1; $i <= $ratings; $i++) {
-				for($j = $max; $j > $goingBackTo; $j--) {
-					$PageRating = new PageRating();
-					$PageRating->Rating = round(rand(1, $j));
-					$PageRating->ParentID = $page->ID;
-					$PageRating->write();
-					$count++;
+		if($pages) {
+			foreach($pages as $page) {
+				$count = 0;
+				$max = PageRating::get_number_of_stars();
+				$goingBackTo = ($max / rand(1, $max)) - 1;
+				$stepsBack = $max - $goingBackTo;
+				$ratings = PageRater::get_number_of_default_records_to_be_added() / $stepsBack;
+				for($i = 1; $i <= $ratings; $i++) {
+					for($j = $max; $j > $goingBackTo; $j--) {
+						$PageRating = new PageRating();
+						$PageRating->Rating = round(rand(1, $j));
+						$PageRating->ParentID = $page->ID;
+						$PageRating->write();
+						$count++;
+					}
 				}
+				DB::alteration_message("Created Initial Ratings for Page with title ".$page->Title.". Ratings created: $count","created");
 			}
-			DB::alteration_message("Created Initial Ratings for Page with title ".$page->Title.". Ratings created: $count","created");
 		}
 	}
 
