@@ -58,7 +58,7 @@ class PageRater extends DataObjectDecorator {
 				}
 				$percentage = round($score * (100/PageRating::get_number_of_stars()) );
 				$reversePercentage = 100 - $percentage;
-				$StarClass = PageRating::get_star_entry($stars);
+				$StarClass = PageRating::get_star_entry_code($stars);
 				$record = array(
 					'Rating' => "Stars",
 					'Stars' => $stars,
@@ -131,6 +131,8 @@ class PageRater extends DataObjectDecorator {
 		}
 	}
 
+
+
 }
 
 class PageRater_Controller extends Extension {
@@ -149,7 +151,7 @@ class PageRater_Controller extends Extension {
 		Requirements::javascript('mysite/javascript/formSubmit.js');
 		$fields = new FieldSet(
 			new OptionsetField('Rating', 'Rate '.$this->owner->dataRecord->Title, PageRating::get_star_dropdowndown()),
-			new HiddenField('ParentID', "ParentID", $this->ID)
+			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
 		);
 		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));//
 		return new Form($this, 'PageRatingForm', $fields, $actions);
@@ -166,6 +168,27 @@ class PageRater_Controller extends Extension {
 		}
 		else {
 			Director::redirectBack();
+		}
+	}
+
+
+	function removedefaultpageratings() {
+		if(Permission::check("ADMIN")) {
+			DB::query("DELETE FROM PageRating WHERE IsDefault = 1;");
+			debug::show("removed all ratings for all pages");
+		}
+		else {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+		}
+	}
+
+	function removeallpageratings() {
+		if(Permission::check("ADMIN")) {
+			DB::query("DELETE FROM PageRating;");
+			debug::show("removed all ratings for all pages");
+		}
+		else {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
 	}
 
