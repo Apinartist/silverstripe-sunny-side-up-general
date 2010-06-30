@@ -183,7 +183,7 @@ class ShareThisOptions extends Object {
 
 	public static function get_share_all($title, $link, $description = "") {
 		self::set_variables($title, $link, $description);
-		self::$share_all_script = '
+		self::$share_all_data = '
 <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
 <script type="text/javascript">
 SHARETHIS.addEntry(
@@ -196,7 +196,7 @@ SHARETHIS.addEntry(
 	{button:true}
 );
 </script>';
-		return self::$share_all_script;
+		return self::$share_all_data;
 	}
 
 	public static function get_general_data(){
