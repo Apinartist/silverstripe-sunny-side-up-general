@@ -42,6 +42,7 @@ class PageRating extends DataObject {
 
 	static $db = array(
  		"Rating" => "Int",
+ 		"IsDefault" => "Boolean"
 	);
 
 	static $has_one = array(

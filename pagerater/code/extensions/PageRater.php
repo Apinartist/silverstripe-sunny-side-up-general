@@ -12,7 +12,7 @@ class PageRater extends DataObjectDecorator {
 		static function set_round_rating($v) {self::$round_rating = $v;}
 		static function get_round_rating() {return self::$round_rating;}
 
-	protected static $number_of_default_records_to_be_added = true;
+	protected static $number_of_default_records_to_be_added = 5;
 		static function set_number_of_default_records_to_be_added($v) {self::$number_of_default_records_to_be_added = $v;}
 		static function get_number_of_default_records_to_be_added() {return self::$number_of_default_records_to_be_added;}
 
@@ -120,6 +120,7 @@ class PageRater extends DataObjectDecorator {
 					for($j = $max; $j > $goingBackTo; $j--) {
 						$PageRating = new PageRating();
 						$PageRating->Rating = round(rand(1, $j));
+						$PageRating->IsDefault = 1;
 						$PageRating->ParentID = $page->ID;
 						$PageRating->write();
 						$count++;
