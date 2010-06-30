@@ -53,19 +53,19 @@ class PageRater extends DataObjectDecorator {
 			foreach($data as $record) {
 				$score = $record["RatingAverage"];
 				$stars = ($score);
-				if(PageRater::get_round_rating() {
+				if(PageRater::get_round_rating()) {
 					$stars = round($stars);
 				}
 				$percentage = round($score * (100/PageRating::get_number_of_stars()) );
 				$reversePercentage = 100 - $percentage;
-				$StarClass = PageRating::get_star_entry[$stars];
+				$StarClass = PageRating::get_star_entry($stars);
 				$record = array(
 					'Rating' => "Stars",
 					'Stars' => $stars,
 					'Percentage' => $percentage,
 					'ReversePercentage' => $reversePercentage,
 					'Percentage' => $percentage,
-					'StarClass' => $StarClass
+					'StarClass' => $StarClass,
 					'Page' => DataObject::get_by_id("SiteTree", $record["ParentID"])
 				);
 				$doSet->push(new ArrayData($record));
