@@ -27,3 +27,13 @@ into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module at all, but instead customise
 it from your mysite folder, so that you can upgrade the module without redoing the settings.
 SEE CONFIG file!
+
+3. IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+add the following code to your Page.php Page Class (NOT CONTROLLER CLASS):
+
+	function SiteMapPages() {
+		return DataObject::get("SiteTree", "ParentID = ".$this->ID." AND ShowInMenus = 1 AND ClassName <> '".$this->ClassName."'");
+	}
+
+
+you can edit this function as you see fit!
