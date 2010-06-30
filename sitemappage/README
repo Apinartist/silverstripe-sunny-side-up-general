@@ -32,7 +32,7 @@ SEE CONFIG file!
 add the following code to your Page.php Page Class (NOT CONTROLLER CLASS):
 
 	function SiteMapPages() {
-		return DataObject::get("SiteTree", "ParentID = ".$this->ID." AND ShowInMenus = 1 AND ClassName <> '".$this->ClassName."'");
+		return DataObject::get("SiteTree", "ParentID = ".$this->ID." AND ShowInMenus = 1 AND ClassName <> 'SiteMapPage'");
 	}
 
 
