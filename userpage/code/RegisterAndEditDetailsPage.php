@@ -66,10 +66,6 @@ class RegisterAndEditDetailsPage extends Page {
 		return !DataObject::get_one("SiteTree", "{$bt}ClassName{$bt} = 'RegisterAndEditDetailsPage'");
 	}
 
-	public function canDelete() {
-		false;
-	}
-
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
