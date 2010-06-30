@@ -39,7 +39,6 @@ class PageRating extends DataObject {
 			return $newArray;
 		}
 		static function get_number_of_stars() {return count(self::$stars);}
-		static function get_star_entry($value) {return self::get_star_entry_code();}
 
 	static $db = array(
  		"Rating" => "Int",
