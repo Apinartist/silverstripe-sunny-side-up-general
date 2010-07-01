@@ -129,7 +129,13 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		if(isset($data["Email"])) {
 			$email = $data["Email"];
 			if($email) {
-				Requirements::customScript('jQuery("'.self::get_email_field_selector().'").val("'.Convert::raw2js($email).'")');
+				Requirements::customScript('
+					jQuery(document).ready(
+						function() {
+							jQuery("'.self::get_email_field_selector().'").val("'.Convert::raw2js($email).'");
+						}
+					);
+				');
 			}
 		}
 		return array();
