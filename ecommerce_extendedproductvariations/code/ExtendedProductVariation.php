@@ -102,8 +102,8 @@ class ExtendedProductVariation extends ProductVariation {
 		$variationsWithouthProduct = DataObject::get("ProductVariation", "`Product`.`ID` IS NULL", "", "LEFT JOIN `Product` ON `Product`.`ID` = `ProductVariation`.`ID`");
 		if($variationsWithouthProduct) {
 			foreach($variationsWithouthProduct as $obj) {
-				$obj->delete();
-				Database::alteration_message("Deleting ".$obj->Title.", as it does not link to any Product", "deleted");
+				//$obj->delete();
+				Database::alteration_message("The following variation should be deleted ".$obj->Title.", as it does not link to any product", "deleted");
 			}
 		}
 	}
