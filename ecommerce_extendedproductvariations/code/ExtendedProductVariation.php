@@ -98,8 +98,9 @@ class ExtendedProductVariation extends ProductVariation {
 	}
 
 	function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
-		$variationsWithouthProduct = DataObject::get("ProductVariation", "`Product`.`ID` IS NULL", "", "LEFT JOIN `Product` ON `Product`.`ID` = `ProductVariation`.`ID`");
+		$variationsWithouthProduct = DataObject::get("ProductVariation", "{$bt}Product{$bt}.{$bt}ID{$bt} IS NULL", "", "LEFT JOIN {$bt}Product{$bt} ON {$bt}Product{$bt}.{$bt}ID{$bt} = {$bt}ProductVariation{$bt}.{$bt}ProductID{$bt}");
 		if($variationsWithouthProduct) {
 			foreach($variationsWithouthProduct as $obj) {
 				//$obj->delete();
