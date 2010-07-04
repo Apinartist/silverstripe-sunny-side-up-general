@@ -6,34 +6,32 @@ jQuery(document).ready(
 
 var PageRater = {
 
+	formSelector: "#Form_PageRatingForm",
+	submitButtonSelector: "#Form_PageRatingForm .Actions input",
+	loadingMessage: "loading ...",
+
 	init: function() {
 		var options = {
-			target:        '#PageRating'   // target element(s) to be updated with server response
+			target: "#Form_PageRatingForm" // target element(s) to be updated with server response
 			//dataType:  'xml'        // 'xml', 'script', or 'json' (expected server response type)
 		};
-		jQuery("#Form_PageRatingForm_action_doPageRating").click(
+		jQuery(PageRater.submitButtonSelector).click(
 			function() {
-				jQuery("#Form_PageRatingForm").ajaxSubmit(options);
+				jQuery(PageRater.formSelector).ajaxSubmit(options);
 				return false;
 			}
-		);
-		jQuery(".optionset input").click(
-			function() {
-				jQuery("#Form_PageRatingForm_action_doPageRating").click();
-				return false;
-			}
-		);
-	}
+		)
+	},
 
 
 	showRequest: function (formData, jqForm, options) {
-		jQuery("#PageRating").html("loading ...");
+		jQuery(PageRater.formSelector).html(PageRater.loadingMessage);
 		return true;
-	}
+	},
 
 	showResponse: function (responseText, statusText)  {
 		alert(responseText);
-		jQuery("#PageRating").html(responseText);
+		jQuery(PageRater.formSelector).html(responseText);
 	}
 
 }

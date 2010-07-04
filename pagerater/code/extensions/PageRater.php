@@ -31,6 +31,20 @@ class PageRater extends DataObjectDecorator {
 		return $this->turnSQLIntoDoset($sqlQuery);
 	}
 
+	function CurrentUserRating() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$doSet = new DataObjectSet();
+    $sqlQuery = new SQLQuery(
+			$select = "AVG({$bt}PageRating{$bt}.{$bt}Rating{$bt}) RatingAverage, ParentID",
+			$from = " {$bt}PageRating{$bt} ",
+			$where = "{$bt}ParentID{$bt} = ".$this->owner->ID." AND {$bt}Rating{$bt} = '".Session::set('PageRated'.$this->owner->ID)."'",
+			$orderby = "RatingAverage DESC",
+			$groupby = "{$bt}ParentID{$bt}",
+			$having = "",
+			$limit = "1"
+		);
+		return $this->turnSQLIntoDoset($sqlQuery);
+	}
 
 	function PageRaterList(){
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
@@ -43,7 +57,6 @@ class PageRater extends DataObjectDecorator {
 			$groupby = "{$bt}ParentID{$bt}"
 		);
 		return $this->turnSQLIntoDoset($sqlQuery);
-
 	}
 
 	protected function turnSQLIntoDoset(SQLQuery $sqlQuery) {
@@ -137,6 +150,8 @@ class PageRater extends DataObjectDecorator {
 
 class PageRater_Controller extends Extension {
 
+	static $allowed_actions = array("PageRatingForm");
+
 	function rateagain (){
 		Session::set('PageRated'.$this->owner->dataRecord->ID, false);
 		Session::clear('PageRated'.$this->owner->dataRecord->ID);
@@ -147,14 +162,14 @@ class PageRater_Controller extends Extension {
 		if($this->owner->PageHasBeenRatedByUser()) {
 			return false;
 		}
-		Requirements::javascript('sapphire/thirdparty/jquery-form/form/jquery.form.js');
-		Requirements::javascript('mysite/javascript/formSubmit.js');
+		Requirements::javascript(THIRDPARTY_DIR .'/jquery-form/jquery.form.js');
+		Requirements::javascript('pagerater/javascript/formSubmit.js');
 		$fields = new FieldSet(
 			new OptionsetField('Rating', 'Rate '.$this->owner->dataRecord->Title, PageRating::get_star_dropdowndown()),
 			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
 		);
 		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));//
-		return new Form($this, 'PageRatingForm', $fields, $actions);
+		return new Form($this->owner, 'PageRatingForm', $fields, $actions);
 	}
 
 	function dopagerating($data, $form) {
@@ -162,7 +177,7 @@ class PageRater_Controller extends Extension {
 		$PageRating = new PageRating();
 		$form->saveInto($PageRating);
 		$PageRating->write();
-		Session::set('PageRated'.$this->owner->dataRecord->ID, true);
+		Session::set('PageRated'.$this->owner->dataRecord->ID, intval($data["Rating"]));
 		if($this->owner->isAjax()) {
 			return $this->owner->renderWith("PageRaterAjaxReturn");
 		}
