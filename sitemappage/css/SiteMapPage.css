@@ -4,15 +4,21 @@
  *
  *
  */
+ 
 ul#SiteMap{}
-	ul#SiteMap li {list-style: none; list-style-image: none;}
-		ul#SiteMap li.SiteMapLevel1 {margin-top: 1em;}
-			ul#SiteMap a.SiteMapLevel1 { border-bottom: 1px solid #efefef;padding:5px 0 1em 10px;}
-			ul#SiteMap li a.siteMapPageExpander { border-bottom: none;padding:0;margin-top:4px;}
-a.siteMapPageExpander{background-image: url(../images/plusMinus.png); background-repeat: no-repeat; width: 16px; height: 16px;display: block; float: left; text-indent: -2000px; margin-left: -19px;}
-	a.siteMapPageExpander:hover{text-decoration: none; }
-	a.SiteMapNodeExpanded{background-position: 0 -16px;}
-	a.SiteMapNodeImploded{background-position: 0 0;}
-a.pageTitle {display: block; }
-a.SiteMapLevel2 {padding:5px;}
+	ul#SiteMap li {position: relative; list-style: none; list-style-image: none;}
+		ul#SiteMap li.SiteMapLevel1 {}
+			ul#SiteMap li a.siteMapPageExpander {}
+			ul#SiteMap a.pageTitle{display: block; font-size: 12px; padding:12px 0 12px 18px;}
+				ul#SiteMap a.SiteMapLevel1{font-size: 14px; font-weight: bold; border-bottom: 1px solid #efefef; padding:12px 0 12px 18px;}
+				ul#SiteMap a.SiteMapLevel2{border-bottom: 1px solid #f8f8f8;}
+				
+			a.siteMapPageExpander{position: absolute; top: 10px; left: 0; border-bottom: none; padding:0; background-image: url(../images/plusMinus.png); background-repeat: no-repeat; width: 16px; height: 16px;display: block;
+									/* browser-safe hide text */ text-indent: -2000px; outline: 0; line-height: 0; font-size: 0px;}
+				a.siteMapPageExpander:hover{text-decoration: none; }
+				a.SiteMapNodeExpanded{background-position: 0 -16px;}
+				a.SiteMapNodeImploded{background-position: 0 0;}
 
+	ul#SiteMap ul.SubListLevel2{padding-left: 15px;}
+	ul#SiteMap ul.SubListLevel3{padding-left: 30px;}
+	ul#SiteMap ul.SubListLevel4{padding-left: 45px;}
