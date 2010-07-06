@@ -164,6 +164,8 @@ class PageRater_Controller extends Extension {
 		}
 		Requirements::javascript(THIRDPARTY_DIR .'/jquery-form/jquery.form.js');
 		Requirements::javascript('pagerater/javascript/formSubmit.js');
+		Requirements::javascript('pagerater/thirdparty/jquery-star-rating-plugin/jquery.rating.pack.js');
+		Requirements::themedCSS('jquery.rating');
 		$fields = new FieldSet(
 			new OptionsetField('Rating', 'Rate '.$this->owner->dataRecord->Title, PageRating::get_star_dropdowndown()),
 			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
