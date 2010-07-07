@@ -144,7 +144,16 @@ class PageRater extends DataObjectDecorator {
 		}
 	}
 
-
+    function getStarRating(){
+		$ratings = $this->PageRatingResults();	
+		$rating = 0;
+		if($ratings->Count() > 0){
+			foreach($ratings as $ratingItem){
+				$rating = $ratingItem->Stars;
+			}
+		}
+		return $rating;   
+	}
 
 }
 
@@ -162,15 +171,12 @@ class PageRater_Controller extends Extension {
 		if($this->owner->PageHasBeenRatedByUser()) {
 			return false;
 		}
-		Requirements::javascript(THIRDPARTY_DIR .'/jquery-form/jquery.form.js');
-		Requirements::javascript('pagerater/javascript/formSubmit.js');
-		Requirements::javascript('pagerater/thirdparty/jquery-star-rating-plugin/jquery.rating.pack.js');
-		Requirements::themedCSS('jquery.rating');
-		$fields = new FieldSet(
-			new OptionsetField('Rating', 'Rate '.$this->owner->dataRecord->Title, PageRating::get_star_dropdowndown()),
+		
+		$fields = new FieldSet( 
+			new HiddenField('Rating', "Rate", $this->owner->getStarRating(), PageRating::get_number_of_stars()),
 			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
 		);
-		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));//
+		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));
 		return new Form($this->owner, 'PageRatingForm', $fields, $actions);
 	}
 
