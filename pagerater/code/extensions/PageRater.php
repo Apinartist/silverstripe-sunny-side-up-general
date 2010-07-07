@@ -173,7 +173,7 @@ class PageRater_Controller extends Extension {
 		}
 		
 		$fields = new FieldSet( 
-			new HiddenField('Rating', "Rate", $this->owner->getStarRating(), PageRating::get_number_of_stars()),
+			new PageRaterStarField('Rating', "Rate", $this->owner->getStarRating(), PageRating::get_number_of_stars()),
 			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
 		);
 		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));
