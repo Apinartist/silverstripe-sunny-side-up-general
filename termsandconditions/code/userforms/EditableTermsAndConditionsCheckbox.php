@@ -19,7 +19,7 @@ class EditableTermsAndConditionsCheckbox extends EditableFormField {
 	public function getFieldConfiguration() {
 		$options = parent::getFieldConfiguration();
 		$options->push(new CheckboxField("Fields[$this->ID][CustomSettings][Default]", _t('EditableFormField.CHECKEDBYDEFAULT', 'Checked by Default?'), $this->getSetting('Default')));
-		$options->push(new DropdownField("Fields[$this->ID][CustomSettings][TandCPageID]", "What is your Terms and Conditions page?  This will be added as a link to the end of your field title.", DataObject::get("SiteTree", "ParentID < 1")));
+		$options->push(new DropdownField("Fields[$this->ID][CustomSettings][TandCPageID]", "What is your Terms and Conditions page?  This will be added as a link to the end of your field title.", DataObject::get("TermsAndConditionsPage")->toDropdown()));
 		return $options;
 	}
 
