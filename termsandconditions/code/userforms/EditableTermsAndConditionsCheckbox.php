@@ -37,7 +37,7 @@ class EditableTermsAndConditionsCheckbox extends EditableFormField {
 		$page = DataObject::get_by_id("TermsAndConditionsPage", $id);
 		$extraHTML = '';
 		if($page) {
-			$extraHTML = ' <span class="linkToTermsAndConditionsPage"><a href="'.$page->Link().'" rel="external">'.$page->Title.'</a></span>';
+			$extraHTML = ' <span class="linkToTermsAndConditionsPage"><a href="'.$page->Link().'" class="externalLink">'.$page->Title.'</a></span>';
 		}
 		return new CheckboxField( $this->Name, $this->Title.$extraHTML, $this->getSetting('Default'));
 	}
