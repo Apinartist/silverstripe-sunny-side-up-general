@@ -12,18 +12,18 @@
 	<% control NextTemplateOverviewPage %>
 		<% if Count %>
 		<li style="background-image: url({$Icon}); " class="TemplateOverviewNext">
-			<span class="typo-fullLink"><em>NEXT PAGE TO CHECK:</em> <a href="$FullLink">$Title (template #$Pos)  - $ClassName</a></span>
+			<span class="typo-fullLink"><em>NEXT PAGE TO CHECK:</em> <a href="{$FullLink}?flush=1">$Title (template #$Pos) - $ClassName</a></span>
 		</li>
 		<% end_if %>
 	<% end_control %>
 	<% control PrevTemplateOverviewPage %>
 		<% if Count %>
 		<li style="background-image: url({$Icon}); " class="TemplateOverviewPrevious">
-			<span class="typo-fullLink"><em>PREVIOUS PAGE TO CHECK:</em> <a href="$FullLink">$Title (template #$Pos) - $ClassName</a> </span>
+			<span class="typo-fullLink"><em>PREVIOUS PAGE TO CHECK:</em> <a href="{$FullLink}?flush=1">$Title (template #$Pos) - $ClassName</a> </span>
 		</li>
 		<% end_if %>
 	<% end_control %>
-		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="$FullLink" title="$ClassName.ATT - $Title.ATT">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
+		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName.ATT - $Title.ATT">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
 	</ul>
 
 </div>
