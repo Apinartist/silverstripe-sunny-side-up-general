@@ -1,1 +1,1 @@
-<% include PageRaterStars %>
+<% include PageRaterStarsLarge %>

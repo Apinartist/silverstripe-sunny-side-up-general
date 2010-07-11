@@ -8,6 +8,22 @@
 
 class PageRater extends DataObjectDecorator {
 
+	public function extraStatics() {
+		return array (
+			'db' => array(
+				'PageRating' => 'Double'
+			),
+			'indexes' => array(
+				'PageRating' => true
+			)
+		);
+	}
+
+
+	protected static $add_default_rating = false;
+		static function set_add_default_rating($v) {self::$add_default_rating = $v;}
+		static function get_add_default_rating() {return self::$add_default_rating;}
+
 	protected static $round_rating = true;
 		static function set_round_rating($v) {self::$round_rating = $v;}
 		static function get_round_rating() {return self::$round_rating;}
@@ -28,7 +44,7 @@ class PageRater extends DataObjectDecorator {
 			$having = "",
 			$limit = "1"
 		);
-		return $this->turnSQLIntoDoset($sqlQuery);
+		return $this->turnSQLIntoDoset($sqlQuery, "PageRatingResults");
 	}
 
 	function CurrentUserRating() {
@@ -37,13 +53,13 @@ class PageRater extends DataObjectDecorator {
     $sqlQuery = new SQLQuery(
 			$select = "AVG({$bt}PageRating{$bt}.{$bt}Rating{$bt}) RatingAverage, ParentID",
 			$from = " {$bt}PageRating{$bt} ",
-			$where = "{$bt}ParentID{$bt} = ".$this->owner->ID." AND {$bt}Rating{$bt} = '".Session::set('PageRated'.$this->owner->ID)."'",
+			$where = "{$bt}ParentID{$bt} = ".$this->owner->ID." AND {$bt}Rating{$bt} = '".Session::get('PageRated'.$this->owner->ID)."'",
 			$orderby = "RatingAverage DESC",
 			$groupby = "{$bt}ParentID{$bt}",
 			$having = "",
 			$limit = "1"
 		);
-		return $this->turnSQLIntoDoset($sqlQuery);
+		return $this->turnSQLIntoDoset($sqlQuery, "CurrentUserRating");
 	}
 
 	function PageRaterList(){
@@ -56,10 +72,10 @@ class PageRater extends DataObjectDecorator {
 			$orderby = "RatingAverage DESC",
 			$groupby = "{$bt}ParentID{$bt}"
 		);
-		return $this->turnSQLIntoDoset($sqlQuery);
+		return $this->turnSQLIntoDoset($sqlQuery, "PageRaterList");
 	}
 
-	protected function turnSQLIntoDoset(SQLQuery $sqlQuery) {
+	protected function turnSQLIntoDoset(SQLQuery $sqlQuery, $method = "unknown") {
 		$data = $sqlQuery->execute();
 		$doSet = new DataObjectSet();
 		if($data) {
@@ -69,18 +85,39 @@ class PageRater extends DataObjectDecorator {
 				if(PageRater::get_round_rating()) {
 					$stars = round($stars);
 				}
-				$percentage = round($score * (100/PageRating::get_number_of_stars()) );
-				$reversePercentage = 100 - $percentage;
-				$StarClass = PageRating::get_star_entry_code($stars);
+				$widthOutOfOneHundredForEachStar = 100 / PageRating::get_number_of_stars();
+				$percentage = round($score * $widthOutOfOneHundredForEachStar );
+				$roundedPercentage = round($stars * $widthOutOfOneHundredForEachStar);
+				$reversePercentage = round(100 - $percentage);
+				$reverseRoundedPercentage = round(100 - $roundedPercentage);
+				$starClass = PageRating::get_star_entry_code($stars);
+				$page = DataObject::get_by_id("SiteTree", $record["ParentID"]);
 				$record = array(
 					'Rating' => "Stars",
+					'Method' => $method,
+					'Score' => $score,
 					'Stars' => $stars,
 					'Percentage' => $percentage,
+					'RoundedPercentage' => $percentage,
 					'ReversePercentage' => $reversePercentage,
-					'Percentage' => $percentage,
-					'StarClass' => $StarClass,
-					'Page' => DataObject::get_by_id("SiteTree", $record["ParentID"])
+					'ReverseRoundedPercentage' => $reverseRoundedPercentage,
+					'StarClass' => $starClass,
+					'Page' => $page
 				);
+				if(isset($_GET["debug"])) {
+					debug::show("
+						width out of 100 for each star: ".$widthOutOfOneHundredForEachStar."<br />
+						Method: ".$method."<br />
+						Score: ".$score."<br />
+						Stars: ".$stars."<br />
+						Percentage: ".$percentage."<br />
+						RoundedPercentage: ".$roundedPercentage."<br />
+						ReversePercentage: ".$reversePercentage."<br />
+						ReverseRoundedPercentage: ".$reverseRoundedPercentage."<br />
+						StarClass: ".$starClass."<br />
+						Page: ".$page->Title
+					);
+				}
 				$doSet->push(new ArrayData($record));
 			}
 			Requirements::themedCSS("PageRater");
@@ -116,50 +153,60 @@ class PageRater extends DataObjectDecorator {
 	function requireDefaultRecords() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
-		$pages = DataObject::get(
-			$className = "SiteTree",
-			$where = "{$bt}PageRating{$bt}.{$bt}ID{$bt} IS NULL",
-			$sort = "",
-			$join = "LEFT JOIN {$bt}PageRating{$bt} ON {$bt}PageRating{$bt}.{$bt}ParentID{$bt} = {$bt}SiteTree{$bt}.{$bt}ID{$bt}"
-		);
-		if($pages) {
-			foreach($pages as $page) {
-				$count = 0;
-				$max = PageRating::get_number_of_stars();
-				$goingBackTo = ($max / rand(1, $max)) - 1;
-				$stepsBack = $max - $goingBackTo;
-				$ratings = PageRater::get_number_of_default_records_to_be_added() / $stepsBack;
-				for($i = 1; $i <= $ratings; $i++) {
-					for($j = $max; $j > $goingBackTo; $j--) {
-						$PageRating = new PageRating();
-						$PageRating->Rating = round(rand(1, $j));
-						$PageRating->IsDefault = 1;
-						$PageRating->ParentID = $page->ID;
-						$PageRating->write();
-						$count++;
+		if(self::get_add_default_rating()) {
+			$pages = DataObject::get(
+				$className = "SiteTree",
+				$where = "{$bt}PageRating{$bt}.{$bt}ID{$bt} IS NULL",
+				$sort = "",
+				$join = "LEFT JOIN {$bt}PageRating{$bt} ON {$bt}PageRating{$bt}.{$bt}ParentID{$bt} = {$bt}SiteTree{$bt}.{$bt}ID{$bt}"
+			);
+			if($pages) {
+				foreach($pages as $page) {
+					$count = 0;
+					$max = PageRating::get_number_of_stars();
+					$goingBackTo = ($max / rand(1, $max)) - 1;
+					$stepsBack = $max - $goingBackTo;
+					$ratings = PageRater::get_number_of_default_records_to_be_added() / $stepsBack;
+					for($i = 1; $i <= $ratings; $i++) {
+						for($j = $max; $j > $goingBackTo; $j--) {
+							$PageRating = new PageRating();
+							$PageRating->Rating = round(rand(1, $j));
+							$PageRating->IsDefault = 1;
+							$PageRating->ParentID = $page->ID;
+							$PageRating->write();
+							$count++;
+						}
 					}
+					DB::alteration_message("Created Initial Ratings for Page with title ".$page->Title.". Ratings created: $count","created");
 				}
-				DB::alteration_message("Created Initial Ratings for Page with title ".$page->Title.". Ratings created: $count","created");
 			}
 		}
 	}
 
-    function getStarRating(){
-		$ratings = $this->PageRatingResults();	
+   function getStarRating(){
+		$ratings = $this->PageRatingResults();
 		$rating = 0;
 		if($ratings->Count() > 0){
 			foreach($ratings as $ratingItem){
 				$rating = $ratingItem->Stars;
 			}
 		}
-		return $rating;   
+		return $rating;
 	}
 
 }
 
 class PageRater_Controller extends Extension {
 
-	static $allowed_actions = array("PageRatingForm");
+	protected static $field_title = "Click on any star to rate:";
+		static function set_field_title($v) {self::$field_title = $v;}
+		static function get_field_title() {return self::$field_title;}
+
+	protected static $field_right_title = "On a scale from 1 to 5, with 5 being the best";
+		static function set_field_right_title($v){self::$field_right_title = $v;}
+		static function get_field_right_title(){return self::$field_right_title;}
+
+	static $allowed_actions = array("PageRatingForm", "dopagerating", "removedefaultpageratings", "removeallpageratings" );
 
 	function rateagain (){
 		Session::set('PageRated'.$this->owner->dataRecord->ID, false);
@@ -171,9 +218,10 @@ class PageRater_Controller extends Extension {
 		if($this->owner->PageHasBeenRatedByUser()) {
 			return false;
 		}
-		
-		$fields = new FieldSet( 
-			new PageRaterStarField('Rating', "Rate", $this->owner->getStarRating(), PageRating::get_number_of_stars()),
+		$ratingField = new PageRaterStarField('Rating', PageRater_Controller::get_field_title(), $this->owner->getStarRating(), PageRating::get_number_of_stars());
+		$ratingField->setRightTitle(PageRater_Controller::get_field_right_title());
+		$fields = new FieldSet(
+			$ratingField,
 			new HiddenField('ParentID', "ParentID", $this->owner->dataRecord->ID)
 		);
 		$actions = new FieldSet(new FormAction('dopagerating', 'Submit'));
