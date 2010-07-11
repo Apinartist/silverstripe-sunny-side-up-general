@@ -262,7 +262,9 @@ class ShareThis extends DataObjectDecorator {
 				if($objects) {
 					if($objects->count()) {
 						foreach($objects as $obj) {
-							$this->bookmarks[$obj->Title] = $bookmarks[$obj->Title];
+							if(isset($bookmarks[$obj->Title])) {
+								$this->bookmarks[$obj->Title] = $bookmarks[$obj->Title];
+							}
 						}
 					}
 				}

@@ -88,6 +88,26 @@ class ShareThisDataObject extends DataObject {
 				}
 			}
 		}
+		$inc = ShareThis::get_icons_to_include();
+		$exc = ShareThis::get_icons_to_exclude();
+		if(count($inc)) {
+			foreach($inc as $key) {
+				if($obj = DataObject::get("ShareThisDataObject", "Title = '".$key."' AND IncludeThisIcon = 0")) {
+					$obj->IncludeThisIcon = 1;
+					$obj->write();
+					DB::alteration_message("updated inclusion for ".$key, "created");
+				}
+			}
+		}
+		if(count($exc)) {
+			foreach($exc as $key) {
+				if($obj = DataObject::get("ShareThisDataObject", "Title = '".$key."' AND IncludeThisIcon = 1")) {
+					$obj->IncludeThisIcon = 0;
+					$obj->write();
+					DB::alteration_message("updated inclusion for ".$key, "created");
+				}
+			}
+		}
 	}
 
 }

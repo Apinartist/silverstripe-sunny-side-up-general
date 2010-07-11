@@ -139,8 +139,8 @@ class ShareThisOptions extends Object {
 			$originalArray = self::$page_specific_data;
 		}
 		$finalArray = array();
-		$inc = ShareThis::get_icons_to_include(array());
-		$exc = ShareThis::get_icons_to_exclude(array());
+		$inc = ShareThis::get_icons_to_include();
+		$exc = ShareThis::get_icons_to_exclude();
 		if(count($inc)) {
 			$new_array_of_icons_to_include = array();
 			foreach($inc as $key => $value) {
