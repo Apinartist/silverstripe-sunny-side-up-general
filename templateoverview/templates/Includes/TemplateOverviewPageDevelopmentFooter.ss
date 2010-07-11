@@ -23,7 +23,7 @@
 		</li>
 		<% end_if %>
 	<% end_control %>
-		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="$FullLink">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
+		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="$FullLink" title="$ClassName.ATT - $Title.ATT">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
 	</ul>
 
 </div>
