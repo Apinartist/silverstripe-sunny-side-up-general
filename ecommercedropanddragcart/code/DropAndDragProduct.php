@@ -51,16 +51,16 @@ class DropAndDragProduct extends Product {
 	}
 
 	function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
 		if(self::$can_create) {
+			Db::query("Update SiteTree_versions Set {$bt}ClassName{$bt} = 'DropAndDragProductGroup' where {$bt}ClassName{$bt} = 'ProductGroup';");
+			Db::query("Update SiteTree_Live Set {$bt}ClassName{$bt} = 'DropAndDragProductGroup' where {$bt}ClassName{$bt} = 'ProductGroup';");
+			Db::query("Update SiteTree Set {$bt}ClassName{$bt} = 'DropAndDragProductGroup' where {$bt}ClassName{$bt} = 'ProductGroup';");
 
-			Db::query('Update SiteTree_versions Set `ClassName` = "DropAndDragProductGroup" where `ClassName` = "ProductGroup";');
-			Db::query('Update SiteTree_Live Set `ClassName` = "DropAndDragProductGroup" where `ClassName` = "ProductGroup";');
-			Db::query('Update SiteTree Set `ClassName` = "DropAndDragProductGroup" where `ClassName` = "ProductGroup";');
-
-			Db::query('Update SiteTree_Live Set `ClassName` = "DropAndDragProduct" where `ClassName` = "Product";');
-			Db::query('Update SiteTree_versions Set `ClassName` = "DropAndDragProduct" where `ClassName` = "Product";');
-			Db::query('Update SiteTree Set `ClassName` = "DropAndDragProduct" where `ClassName` = "Product";');
+			Db::query("Update SiteTree_Live Set {$bt}ClassName{$bt} = 'DropAndDragProduct' where {$bt}ClassName{$bt} = 'Product';");
+			Db::query("Update SiteTree_versions Set {$bt}ClassName{$bt} = 'DropAndDragProduct' where {$bt}ClassName{$bt} = 'Product';");
+			Db::query("Update SiteTree Set {$bt}ClassName{$bt} = 'DropAndDragProduct' where {$bt}ClassName{$bt} = 'Product';");
 
 		}
 	}

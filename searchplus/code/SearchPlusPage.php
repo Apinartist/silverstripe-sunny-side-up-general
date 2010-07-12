@@ -191,16 +191,17 @@ class SearchPlusPage_Controller extends Page_Controller {
 	}
 
 	protected function getPopularSearchWords($days, $limit, $mergeRedirects = false) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$extraWhere = '';
 		if($mergeRedirects) {
-			$extraWhere = " AND `RedirectTo` = '' OR `RedirectTo` IS NULL";
+			$extraWhere = " AND {$bt}RedirectTo{$bt} = '' OR {$bt}RedirectTo{$bt} IS NULL";
 		}
 		$data = DB::query("
-			SELECT COUNT(`SearchHistoryLog`.`ID`) count, `SearchHistory`.`RedirectTo` RedirectTo, `SearchHistory`.`Title` title, `SearchHistory`.`ID` id
-			FROM `SearchHistoryLog`
-				INNER JOIN `SearchHistory` ON `SearchHistory`.`ID` = `SearchHistoryLog`.`SearchedForID`
-			WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) ".$extraWhere."
-			GROUP BY `SearchHistory`.`ID`
+			SELECT COUNT({$bt}SearchHistoryLog{$bt}.{$bt}ID{$bt}) count, {$bt}SearchHistory{$bt}.{$bt}RedirectTo{$bt} RedirectTo, {$bt}SearchHistory{$bt}.{$bt}Title{$bt} title, {$bt}SearchHistory{$bt}.{$bt}ID{$bt} id
+			FROM {$bt}SearchHistoryLog{$bt}
+				INNER JOIN {$bt}SearchHistory{$bt} ON {$bt}SearchHistory{$bt}.{$bt}ID{$bt} = {$bt}SearchHistoryLog{$bt}.{$bt}SearchedForID{$bt}
+			WHERE {$bt}SearchHistoryLog{$bt}.{$bt}Created{$bt} > ( NOW() - INTERVAL $days DAY ) ".$extraWhere."
+			GROUP BY {$bt}SearchHistory{$bt}.{$bt}ID{$bt}
 			ORDER BY count DESC
 			LIMIT 0, $limit
 		");
@@ -217,11 +218,13 @@ class SearchPlusPage_Controller extends Page_Controller {
 			}
 			if($mergeRedirects) {
 				$data = DB::query("
-					SELECT COUNT(`SearchHistoryLog`.`ID`) count
-					FROM `SearchHistoryLog`
-						INNER JOIN `SearchHistory` ON `SearchHistory`.`ID` = `SearchHistoryLog`.`SearchedForID`
-					WHERE `SearchHistoryLog`.`Created` > ( NOW() - INTERVAL $days DAY ) AND `SearchHistory`.`RedirectTo` = '".$row["title"]."'
-					GROUP BY `SearchHistory`.`RedirectTo`
+					SELECT COUNT({$bt}SearchHistoryLog{$bt}.{$bt}ID{$bt}) count
+					FROM {$bt}SearchHistoryLog{$bt}
+						INNER JOIN {$bt}SearchHistory{$bt}
+							ON {$bt}SearchHistory{$bt}.{$bt}ID{$bt} = {$bt}SearchHistoryLog{$bt}.{$bt}SearchedForID{$bt}
+					WHERE {$bt}SearchHistoryLog{$bt}.{$bt}Created{$bt} > ( NOW() - INTERVAL $days DAY )
+						AND {$bt}SearchHistory{$bt}.{$bt}RedirectTo{$bt} = '".$row["title"]."'
+					GROUP BY {$bt}SearchHistory{$bt}.{$bt}RedirectTo{$bt}
 					ORDER BY count
 					DESC LIMIT 1
 				");

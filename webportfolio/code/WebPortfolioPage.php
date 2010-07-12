@@ -22,6 +22,7 @@ class WebPortfolioPage extends Page {
 	);
 
 	public function getCMSFields() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Content.Portfolio",
 			new HasManyComplexTableField(
@@ -30,7 +31,7 @@ class WebPortfolioPage extends Page {
 				$sourceClass = "PortfolioItem",
 				$fieldList,
 				$detailFormFields = null,
-				$sourceFilter = "`PortfolioItem`.`ParentID` = ".$this->ID,
+				$sourceFilter = "{$bt}PortfolioItem{$bt}.{$bt}ParentID{$bt} = ".$this->ID,
 				$sourceSort = "",
 				$sourceJoin = ""
 			)
@@ -39,7 +40,8 @@ class WebPortfolioPage extends Page {
 	}
 
 	function canCreate() {
-		return !DataObject::get("SiteTree", "`ClassName` = 'WebPortfolioPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get("SiteTree", "{$bt}ClassName{$bt} = 'WebPortfolioPage'");
 	}
 
 	function canDelete() {

@@ -324,12 +324,13 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 	}
 
 	function admin() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(!Permission::check('ADMIN')) {
 			return Security::permissionFailure($this, _t('OrderReport.PERMISSIONFAILURE', 'Sorry you do not have permission for this function. Please login as an Adminstrator'));
 		}
 		StandingOrder::create_automatically_created_orders();
 		$params = array(
-			"AllStandingOrders" => DataObject::get("StandingOrder", "`Status` = 'Active'")
+			"AllStandingOrders" => DataObject::get("StandingOrder", "{$bt}Status{$bt} = 'Active'")
 		);
 		Requirements::javascript("ecommerce_standingorders/javascript/StandingOrdersPage_admin.js");
 		Requirements::themedCSS("StandingOrdersPage_admin");

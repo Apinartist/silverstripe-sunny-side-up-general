@@ -42,6 +42,7 @@ class EmailAFriendForm extends Form {
 	}
 
 	function sendEmailAFriend($RAW_data, $form) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$data = Convert::raw2sql($RAW_data);
 		if($page = DataObject::get_by_id('Page', $data['PageID'])) $pageLink = $page->AbsoluteLink();
 
@@ -53,7 +54,9 @@ class EmailAFriendForm extends Form {
 		$count = 0;
 		if(EmailAFriendExtension::get_max_message_phour_pip()) {
 			$anHourAgo = date('Y-m-d H:i:s', mktime(date('G') - 1, date('i'), date('s'), date('n'), date('j'), date('Y')));
-			if($friendMails = DataObject::get('FriendEmail', "`IPAddress` = '$ip' AND `Created` > '$anHourAgo'")) $count = $friendMails->Count();
+			if($friendMails = DataObject::get('FriendEmail', "{$bt}IPAddress{$bt} = '$ip' AND {$bt}Created{$bt} > '$anHourAgo'")) {
+				$count = $friendMails->Count();
+			}
 		}
 
 		if(EmailAFriendExtension::get_sender_name()) {

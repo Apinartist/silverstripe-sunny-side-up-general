@@ -136,13 +136,14 @@ class StockControlPage_Controller extends Page_Controller {
 	}
 
 	function history($request = null) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$table = $request->param("ID");
 		$id = intval($request->param("OtherID"));
 		if($table == "product") {
-			$parent = DataObject::get_one("ProductStockCalculatedQuantity", "`ProductID` = '".$id."'");
+			$parent = DataObject::get_one("ProductStockCalculatedQuantity", "{$bt}ProductID{$bt} = '".$id."'");
 		}
 		elseif($table == "variation") {
-			$parent = DataObject::get_one("ProductStockCalculatedQuantity", "`ProductVariationID` = '".$id."'");
+			$parent = DataObject::get_one("ProductStockCalculatedQuantity", "{$bt}ProductVariationID{$bt} = '".$id."'");
 		}
 		else {
 			user_error("could not find class: derived from ($table) for history", E_ERROR);

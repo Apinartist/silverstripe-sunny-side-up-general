@@ -12,9 +12,10 @@ class FormFieldExplanationExtension extends Extension{
 	static $allowed_actions = array("addfieldexplanation");
 
 	static function add_explanations($form, $datarecord) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$js = '
 			var formFieldExplanationErrorMessage = new Array();';
-		$dos = DataObject::get("FormFieldExplanation", "`ParentID` = ".$datarecord->ID);
+		$dos = DataObject::get("FormFieldExplanation", "{$bt}ParentID{$bt} = ".$datarecord->ID);
 		$explanations = array();
 		if($dos) {
 			foreach($dos as $do) {
@@ -128,9 +129,10 @@ class FormFieldExplanationExtension extends Extension{
 	}
 
 	public function addfieldexplanation(HTTPRequest $HTTPRequest) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fieldName = $HTTPRequest->param("ID");
 		$fieldTitle = $HTTPRequest->param("OtherID");
-		$obj = DataObject::get_one("FormFieldExplanation", "`Name` = '".$fieldName."' AND ParentID = ".$this->owner->ID);
+		$obj = DataObject::get_one("FormFieldExplanation", "{$bt}Name{$bt} = '".$fieldName."' AND ParentID = ".$this->owner->ID);
 		if(!$obj) {
 			$obj = new FormFieldExplanation();
 		}

@@ -14,6 +14,7 @@ class Page extends SiteTree {
 
 
 	function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
 		if(!DataObject::get("Member")) {
 			$member = new Member();
@@ -42,7 +43,7 @@ class Page extends SiteTree {
 				}
 			}
 		}
-		$page = DataObject::get_one("Page", "`URLSegment` = 'admin-only'");
+		$page = DataObject::get_one("Page", "{$bt}URLSegment{$bt} = 'admin-only'");
 		if(!$page) {
 			$page = new Page();
 			$page->URLSegment = "admin-only";

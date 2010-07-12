@@ -45,6 +45,7 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 	}
 
 	public function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
 		$parents = DataObject::get("BrowseContinentsPage");
 		if($parents && isset($_GET["geobuild"]) && $_GET["geobuild"] && $this->allowBrowseChildren()) {
@@ -53,7 +54,7 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 					echo "<li>creating countries for ".$parent->Title."<ul>";
 					$countries = $this->getDataFromTable("countries", "ContinentID = ".$parent->HiddenDataID, "Country");
 					foreach($countries as $country) {
-						if(!DataObject::get_one("BrowseCountriesPage", "`HiddenDataID` = ".$country["CountryID"])) {
+						if(!DataObject::get_one("BrowseCountriesPage", "{$bt}HiddenDataID{$bt} = ".$country["CountryID"])) {
 							$page = new BrowseCountriesPage();
 							$page->CreateCountry($country, $parent);
 							$page->destroy();
@@ -65,6 +66,7 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 		}
 	}
 	public function CreateContinent(array $continent, BrowseWorldPage $parent) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($parent && isset($continent["Continent"])) {
 			$name = htmlentities($continent["Continent"]);
 			if($name) {

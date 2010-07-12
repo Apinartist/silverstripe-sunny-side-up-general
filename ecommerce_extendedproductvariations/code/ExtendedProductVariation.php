@@ -25,6 +25,7 @@ class ExtendedProductVariation extends ProductVariation {
 	}
 
 	static function return_existing_or_create_new($optionsDos, $productID) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		//look for it ...
 		$optionsDosArray = array();
 		if(!isset(self::$EPVOptionIDArray["optionsFromEPV"])) {
@@ -34,7 +35,7 @@ class ExtendedProductVariation extends ProductVariation {
 			$optionsDosArray[$option->ID] = $option->ID;
 		}
 		if(!isset(self::$EPVOptionIDArray[$productID])) {
-			self::$EPVOptionIDArray[$productID] = DataObject::get("ExtendedProductVariation", '`ProductID` = '.$productID);
+			self::$EPVOptionIDArray[$productID] = DataObject::get("ExtendedProductVariation", "{$bt}ProductID{$bt} = ".$productID);
 		}
 		if(self::$EPVOptionIDArray[$productID]) {
 			foreach(self::$EPVOptionIDArray[$productID] as $EPV) {

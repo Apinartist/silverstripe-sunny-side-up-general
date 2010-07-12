@@ -223,12 +223,13 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function showCustomMapXML() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$array = Array();
 		if(isset($_SESSION["addCustomGoogleMap"])) {
 			$array = $_SESSION["addCustomGoogleMap"];
 		}
 		//print_r($array);
-		$where = " `SiteTree`.`ID` IN (-1 ";
+		$where = " {$bt}SiteTree{$bt}.{$bt}ID{$bt} IN (-1 ";
 		if(is_array($array)) {
 			foreach($array as $id) {
 				if($id > 0) {
@@ -242,6 +243,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function showAroundMeXML($classNameForParent = "") {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$lon = 0;
 		$lat = 0;
 		$excludeIDList = array();
@@ -272,14 +274,14 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 		if($lon && $lat) {
 			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
-			$where = "(".$orderByRadius.") > 0 AND `GoogleMapLocationsObject`.`Latitude` <> 0 AND `GoogleMapLocationsObject`.`Longitude` <> 0";
+			$where = "(".$orderByRadius.") > 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} <> 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} <> 0";
 			if($classNameForParent) {
-				$where .= " AND `SiteTree_Live`.`ClassName` = '".$classNameForParent."'";
+				$where .= " AND {$bt}SiteTree_Live{$bt}.{$bt}ClassName{$bt} = '".$classNameForParent."'";
 			}
 			if(count($excludeIDList)) {
-				$where .= ' AND `GoogleMapLocationsObject`.`ID` NOT IN ('.implode(",",$excludeIDList).') ';
+				$where .= " AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} NOT IN (".implode(",",$excludeIDList).") ";
 			}
-			$join = 'Left Join SiteTree_Live On SiteTree_Live.ID = GoogleMapLocationsObject.ParentID';
+			$join = "LEFT JOIN {$bt}SiteTree_Live ON{$bt} {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} = {$bt}GoogleMapLocationsObject{$bt}.{$bt}ParentID{$bt}";
 			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, $join, self::$number_shown_in_around_me );
 			if(is_object($objects)) {
 				return $this->makeXMLData(null, $objects, $title, self::$number_shown_in_around_me . " closest points");

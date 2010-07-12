@@ -23,14 +23,15 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
 	static function get_clostest_city_page($addressArray, $maxradius = 5000) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$existingDistance = $maxradius+1;
 		$newDistance = $maxradius+1;
 		$existingPage = null;
 		$newPage = null;
 		$radiusSelectionSQL = self::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "BrowseCitiesPage", "Latitude", "Longitude");
 		$sqlQuery = new SQLQuery();
-		$sqlQuery->select = array("`BrowseCitiesPage`.`ID`, ". $radiusSelectionSQL." as distance");
-		$sqlQuery->from[] = "`BrowseCitiesPage`";
+		$sqlQuery->select = array("{$bt}BrowseCitiesPage{$bt}.{$bt}ID{$bt}, ". $radiusSelectionSQL." as distance");
+		$sqlQuery->from[] = "{$bt}BrowseCitiesPage{$bt}";
 		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxradius;
 		$sqlQuery->orderby = " distance ";
 		$sqlQuery->limit = "1";
@@ -43,7 +44,7 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 		$radiusSelectionSQL = self::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "cities", "Latitude", "Longitude");
 		$sqlQuery = new SQLQuery();
 		$sqlQuery->select = array("cities.CityID", $radiusSelectionSQL." as distance");
-		$sqlQuery->from[] = "`cities`";
+		$sqlQuery->from[] = "{$bt}cities{$bt}";
 		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxradius;
 		$sqlQuery->orderby = " distance ";
 		$sqlQuery->limit = "1";
@@ -72,7 +73,8 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 	}
 
 	static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
-		return '(6378.137 * ACOS( ( SIN( PI( ) * '.$lat.' /180 ) * SIN( PI( ) * `'.$table.'`.`'.$latitudeField.'` /180 ) ) + ( COS( PI( ) * '.$lat.' /180 ) * cos( PI( ) * `'.$table.'`.`'.$latitudeField.'` /180 ) * COS( (PI( ) * `'.$table.'`.`'.$longitudeField.'` /180 ) - ( PI( ) *'.$lon.' /180 ) ) ) ) ) ';
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} /180 ) - ( PI( ) *".$lon." /180 ) ) ) ) ) ";
 	}
 
 	public function allowBrowseChildren() {

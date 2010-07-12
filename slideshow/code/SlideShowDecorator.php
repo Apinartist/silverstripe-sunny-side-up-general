@@ -51,14 +51,15 @@ class SlideShowDecorator extends SiteTreeDecorator {
 	}
 
 	function SlideShowTableField() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$tablefield = new HasManyComplexTableField(
 			$controller = $this->owner,
 			$name = 'SlideShowObject',
 			$sourceClass = 'SlideShowObject',
 			$fieldList =  array("Link" => "Link", "Title" => "Title"),
 			$detailFormFields = 'getCMSFields_forPopup',
-			$sourceFilter = "`ParentID` = ".$this->owner->ID
-			//$sourceSort = "`Show`, `Code` ASC"
+			$sourceFilter = "{$bt}ParentID{$bt} = ".$this->owner->ID
+			//$sourceSort = "{$bt}Show{$bt}, {$bt}Code{$bt} ASC"
 			//$sourceJoin = null
 		);
 		$tablefield->setAddTitle("select images for slideshow");
@@ -69,8 +70,9 @@ class SlideShowDecorator extends SiteTreeDecorator {
 
 
 	function SlideShowObjectsToShow() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->owner->SlideShowIDList) {
-			return DataObject::get("SlideShowObject", '`ID` IN ('.$this->owner->SlideShowIDList.')');
+			return DataObject::get("SlideShowObject", "{$bt}ID{$bt} IN (".$this->owner->SlideShowIDList.")");
 		}
 	}
 
@@ -91,10 +93,11 @@ class SlideShowDecorator extends SiteTreeDecorator {
 	}
 
 	public function onBeforeWrite() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($parentID = $this->owner->ID) {
 			$objects = array(0 => 0);
 			$images = array(0 => 0);
-			$dos1 = DataObject::get("SlideShowObject", "`SlideShowObject`.`ParentID` = ".$parentID, "RAND()");
+			$dos1 = DataObject::get("SlideShowObject", "{$bt}SlideShowObject{$bt}.{$bt}ParentID{$bt} = ".$parentID, "RAND()");
 			if($dos1) {
 				foreach($dos1 as $obj) {
 					$images[$obj->ID] = $obj->ImageID;
@@ -111,7 +114,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 				}
 			}
 			if($this->owner->SlideShowFolderID) {
-				$dos2 = DataObject::get("Image", "ParentID = ".$this->owner->SlideShowFolderID." AND ID NOT IN (".implode(",", $images).")");
+				$dos2 = DataObject::get("Image", "{$bt}ParentID{$bt} = ".$this->owner->SlideShowFolderID." AND {$bt}ID{$bt} NOT IN (".implode(",", $images).")");
 				if($dos2) {
 					foreach($dos2 as $obj) {
 						$item = new SlideShowObject();
@@ -123,7 +126,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 						$objects[$item->ID] = $item->ID;
 					}
 				}
-				$dos1 = DataObject::get("SlideShowObject", "`SlideShowObject`.`ID` IN (".implode(",", $objects).")", "RAND()");
+				$dos1 = DataObject::get("SlideShowObject", "{$bt}SlideShowObject{$bt}.{$bt}ID{$bt} IN (".implode(",", $objects).")", "RAND()");
 			}
 			if(!$dos1 && $this->owner->UseParentSlides) {
 				$parent = DataObject::get_by_id("SiteTree", $parentID);
@@ -131,7 +134,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 					$this->owner->SlideShowIDList = $parent->SlideShowIDList;
 				}
 				elseif($this->URLSegment != "home") {
-					$home = DataObject::get_one("SiteTree", '`URLSegment` = "home"');
+					$home = DataObject::get_one("SiteTree", "{$bt}URLSegment{$bt} = 'home'");
 					if($home) {
 						$this->owner->SlideShowIDList = $home->SlideShowIDList;
 					}

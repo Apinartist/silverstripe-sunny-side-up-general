@@ -44,7 +44,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"Title" => "Title"
 	);
 
-	public static $default_sort = "`Sort` ASC, `Title` ASC";
+	public static $default_sort = "Sort ASC, Title ASC";
 
 	public static $singular_name = "Social networkig page";
 

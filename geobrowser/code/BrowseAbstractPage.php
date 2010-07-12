@@ -12,11 +12,12 @@ class BrowseAbstractPage extends Page {
 	public static $breadcrumbs_delimiter = " &raquo; ";
 
 	public function canCreate() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if("BrowseAbstractPage" == $this->ClassName) {
 			return false;
 		}
 		else {
-			return DataObject::get_one("SiteTree", "`ClassName` = '".self::$default_parent."'");
+			return DataObject::get_one("SiteTree", "{$bt}ClassName{$bt} = '".self::$default_parent."'");
 		}
 	}
 

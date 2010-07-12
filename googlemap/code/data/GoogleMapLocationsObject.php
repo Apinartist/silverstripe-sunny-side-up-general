@@ -54,11 +54,13 @@ class GoogleMapLocationsObject extends DataObject {
 	var $ParentData = null;
 
 	static function radiusDefinition($lon, $lat) {
-		return '(6378.137 * ACOS( ( SIN( PI( ) * '.$lat.' /180 ) * SIN( PI( ) * `GoogleMapLocationsObject`.`Latitude` /180 ) ) + ( COS( PI( ) * '.$lat.' /180 ) * cos( PI( ) * `GoogleMapLocationsObject`.`Latitude` /180 ) * COS( (PI( ) * `GoogleMapLocationsObject`.`Longitude` /180 ) - ( PI( ) *'.$lon.' /180 ) ) ) ) ) ';
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * '.$lat.' /180 ) * SIN( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) ) + ( COS( PI( ) * '.$lat.' /180 ) * cos( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) * COS( (PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} /180 ) - ( PI( ) *'.$lon.' /180 ) ) ) ) ) ";
 	}
 
 	static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
-		return '(6378.137 * ACOS( ( SIN( PI( ) * '.$lat.' /180 ) * SIN( PI( ) * `'.$table.'`.`'.$latitudeField.'` /180 ) ) + ( COS( PI( ) * '.$lat.' /180 ) * cos( PI( ) * `'.$table.'`.`'.$latitudeField.'` /180 ) * COS( (PI( ) * `'.$table.'`.`'.$longitudeField.'` /180 ) - ( PI( ) *'.$lon.' /180 ) ) ) ) ) ';
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} /180 ) - ( PI( ) "*.$lon." /180 ) ) ) ) ) ";
 	}
 
 	static function pointExists($addressArray) {
@@ -95,13 +97,14 @@ class GoogleMapLocationsObject extends DataObject {
 	}
 
 	function addParentData() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$parent = $this->Parent();
 		$this->AjaxInfoWindowLink = $parent->AjaxInfoWindowLink();
 		$this->URLSegment = $parent->URLSegment;
 		$this->ParentClassName = $parent->ClassName;
 		$this->ParentData = $parent;
 		if(!isset(self::$parent_point_counts[$this->ParentID + 0])) {
-			$result = DB::query("Select Count(*) from `GoogleMapLocationsObject` where ParentID = ".$parent->ID);
+			$result = DB::query("Select Count(*) from {$bt}GoogleMapLocationsObject{$bt} where ParentID = ".$parent->ID);
 			$count = $result->value();
 			self::$parent_point_counts[$this->ParentID] = $count;
 		}
@@ -141,7 +144,26 @@ class GoogleMapLocationsObject extends DataObject {
 	}
 
 	function completePoints() {
-		$uncompletedPoints = DataObject::get("GoogleMapLocationsObject", '((`GoogleMapLocationsObject`.`Address` <> `GoogleMapLocationsObject`.`FullAddress`) OR (`GoogleMapLocationsObject`.`Address` = IsNull OR `GoogleMapLocationsObject`.`Address` = "")) AND `GoogleMapLocationsObject`.`Manual` <> 1 AND `GoogleMapLocationsObject`.`Address` <> IsNull AND ((`GoogleMapLocationsObject`.`Address`) <> "" OR (`GoogleMapLocationsObject`.`Longitude`<> 0 AND `GoogleMapLocationsObject`.`Latitude` <> 0 AND (`GoogleMapLocationsObject`.`Address` = "" OR `GoogleMapLocationsObject`.`Address` = IsNull))');
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$uncompletedPoints = DataObject::get("GoogleMapLocationsObject", "
+			(
+				({$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} <> {$bt}GoogleMapLocationsObject{$bt}.{$bt}FullAddress{$bt})
+				OR (
+					{$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} = IsNull
+					OR {$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} = ''
+				)
+			)
+			AND
+				{$bt}GoogleMapLocationsObject{$bt}.{$bt}Manual{$bt} <> 1
+				AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} <> IsNull
+				AND (({$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt}) <> '' OR ({$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt}<> 0
+				AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} <> 0
+				AND (
+					{$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} = ''
+					OR {$bt}GoogleMapLocationsObject{$bt}.{$bt}Address{$bt} = IsNull
+				)
+			)"
+		);
 		if($uncompletedPoints) {
 			foreach($uncompletedPoints as $point) {
 				$point->findGooglePoints(false);

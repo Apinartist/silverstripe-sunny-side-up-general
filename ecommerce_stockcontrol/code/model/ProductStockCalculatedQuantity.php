@@ -80,21 +80,22 @@ class ProductStockCalculatedQuantity extends DataObject {
 	//END MODEL ADMIN STUFF
 
 	static function add_all_products() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		//add ones that have not been added yet
-		$sql = '
-			INSERT INTO `ProductStockCalculatedQuantity` (ProductID, BaseQuantity, Name)
-			SELECT `Product`.`ID` AS ProductID, 0 AS BaseQuantity, `SiteTree`.`Title` AS Name
-			FROM `Product`
-				INNER JOIN `SiteTree` ON `Product`.`ID` = `SiteTree`.`ID`
-				LEFT JOIN `ProductStockCalculatedQuantity` ON `ProductStockCalculatedQuantity`.`ProductID` = `Product`.`ID`
-			WHERE `ProductStockCalculatedQuantity`.`ID` IS NULL;';
+		$sql = "
+			INSERT INTO {$bt}ProductStockCalculatedQuantity{$bt} (ProductID, BaseQuantity, Name)
+			SELECT {$bt}Product{$bt}.{$bt}ID{$bt} AS ProductID, 0 AS BaseQuantity, {$bt}SiteTree{$bt}.{$bt}Title{$bt} AS Name
+			FROM {$bt}Product{$bt}
+				INNER JOIN {$bt}SiteTree{$bt} ON {$bt}Product{$bt}.{$bt}ID{$bt} = {$bt}SiteTree{$bt}.{$bt}ID{$bt}
+				LEFT JOIN {$bt}ProductStockCalculatedQuantity{$bt} ON {$bt}ProductStockCalculatedQuantity{$bt}.{$bt}ProductID{$bt} = {$bt}Product{$bt}.{$bt}ID{$bt}
+			WHERE {$bt}ProductStockCalculatedQuantity{$bt}.{$bt}ID{$bt} IS NULL;";
 		DB::query($sql);
 		//delete ones that are no longer required
-		$sql = '
-			UPDATE `ProductStockCalculatedQuantity`
-				LEFT JOIN `Product` ON `Product`.`ID` = `ProductStockCalculatedQuantity`.`ProductID`
-			SET `ProductStockCalculatedQuantity`.`ProductPresent` = 0
-			WHERE `Product`.`ID` IS NULL;';
+		$sql = "
+			UPDATE {$bt}ProductStockCalculatedQuantity{$bt}
+				LEFT JOIN {$bt}Product{$bt} ON {$bt}Product{$bt}.{$bt}ID{$bt} = {$bt}ProductStockCalculatedQuantity{$bt}.{$bt}ProductID{$bt}
+			SET {$bt}ProductStockCalculatedQuantity{$bt}.{$bt}ProductPresent{$bt} = 0
+			WHERE {$bt}Product{$bt}.{$bt}ID{$bt} IS NULL;";
 		DB::query($sql);
 	}
 
@@ -152,28 +153,29 @@ class ProductStockCalculatedQuantity extends DataObject {
 	}
 
 	function onBeforeWrite() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->ProductID && $this->ID && !isset(self::$calculation_done[$this->ID])) {
 			if($product = DataObject::get_by_id("Product", $this->ProductID)) {
 				//set name
 				$this->Name = $product->Title;
 
 				//add total order quantities
-				$data = DB::query('
+				$data = DB::query("
 					SELECT
-						`Product_OrderItem`.`ProductID`,
-						Sum(`OrderItem`.`Quantity`)+0 QuantitySum,
-						`Order`.`ID` OrderID
+						{$bt}Product_OrderItem{$bt}.{$bt}ProductID{$bt},
+						Sum({$bt}OrderItem{$bt}.{$bt}Quantity{$bt})+0 QuantitySum,
+						{$bt}Order{$bt}.{$bt}ID{$bt} OrderID
 					FROM
-						`Order`
-						INNER JOIN `OrderAttribute` ON `OrderAttribute`.`OrderID` = `Order`.ID
-						INNER JOIN `OrderItem` ON `OrderAttribute`.`ID` = `OrderItem`.`ID`
-						INNER JOIN `Product_OrderItem` ON `Product_OrderItem`.`ID` = `OrderAttribute`.`ID`
-						INNER JOIN `Payment` ON `Payment`.`OrderID` = `Order`.`ID`
+						{$bt}Order{$bt}
+						INNER JOIN {$bt}OrderAttribute{$bt} ON {$bt}OrderAttribute{$bt}.{$bt}OrderID{$bt} = {$bt}Order{$bt}.ID
+						INNER JOIN {$bt}OrderItem{$bt} ON {$bt}OrderAttribute{$bt}.{$bt}ID{$bt} = {$bt}OrderItem{$bt}.{$bt}ID{$bt}
+						INNER JOIN {$bt}Product_OrderItem{$bt} ON {$bt}Product_OrderItem{$bt}.{$bt}ID{$bt} = {$bt}OrderAttribute{$bt}.{$bt}ID{$bt}
+						INNER JOIN {$bt}Payment{$bt} ON {$bt}Payment{$bt}.{$bt}OrderID{$bt} = {$bt}Order{$bt}.{$bt}ID{$bt}
 					GROUP BY
-						`Order`.`ID`, `ProductID`
+						{$bt}Order{$bt}.{$bt}ID{$bt}, {$bt}ProductID{$bt}
 					HAVING
-						(`Product_OrderItem`.`ProductID` = '.(intval($this->ProductID) + 0).')
-				');
+						({$bt}Product_OrderItem{$bt}.{$bt}ProductID{$bt} = ".(intval($this->ProductID) + 0).")
+				");
 				if($data) {
 					foreach($data as $row) {
 						if($row["OrderID"] && $this->ID && $row["QuantitySum"]) {
@@ -196,9 +198,9 @@ class ProductStockCalculatedQuantity extends DataObject {
 				}
 				//work out additional purchases
 				$sqlQuery = new SQLQuery(
-					 "SUM(`Quantity`)", // Select
+					 "SUM({$bt}Quantity{$bt})", // Select
 					 "ProductStockOrderEntry", // From
-					 "`ParentID` = ".$this->ID." AND `IncludeInCurrentCalculation` = 1" // Where (optional)
+					 "{$bt}ParentID{$bt} = ".$this->ID." AND {$bt}IncludeInCurrentCalculation{$bt} = 1" // Where (optional)
 				);
 				$OrderQuantityToDeduct = $sqlQuery->execute()->value();
 
@@ -208,7 +210,7 @@ class ProductStockCalculatedQuantity extends DataObject {
 				//nullify order quantities that were entered before last adjustment
 				if($LatestManualUpdate) {
 					$LatestManualUpdateQuantity = $LatestManualUpdate->Quantity;
-					DB::query("UPDATE `ProductStockOrderEntry` SET `IncludeInCurrentCalculation` = 0 WHERE `LastEdited` < '".$LatestManualUpdate->LastEdited."' AND `ParentID` = ".$this->ID);
+					DB::query("UPDATE {$bt}ProductStockOrderEntry{$bt} SET {$bt}IncludeInCurrentCalculation{$bt} = 0 WHERE {$bt}LastEdited{$bt} < '".$LatestManualUpdate->LastEdited."' AND {$bt}ParentID{$bt} = ".$this->ID);
 				}
 				else {
 					$LatestManualUpdateQuantity = 0;

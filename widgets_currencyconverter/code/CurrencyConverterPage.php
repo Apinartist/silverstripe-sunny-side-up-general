@@ -13,7 +13,8 @@ class CurrencyConverterPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get_one("SiteTree", "`ClassName` = 'CurrencyConverterPage'");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return !DataObject::get_one("SiteTree", "{$bt}ClassName{$bt} = 'CurrencyConverterPage'");
 	}
 
 	function getCMSFields() {

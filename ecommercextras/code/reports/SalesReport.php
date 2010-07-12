@@ -28,7 +28,15 @@ class SalesReport extends SSReport {
 			"GROUP_CONCAT(`OrderStatusLog`.`Note` SEPARATOR ', ')" => "Dispatch notes"
 		);
 		static function set_full_export_select_statement($v) {self::$full_export_select_statement = $v;}
-		static function get_full_export_select_statement() {return self::$full_export_select_statement;}
+		static function get_full_export_select_statement() {
+			$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+			if($bt == '"') {
+				return str_replace('`', '"', self::$full_export_select_statement);
+			}
+			else {
+				return self::$full_export_select_statement;
+			}
+		}
 
 	protected static $full_export_join_statement = '
 			INNER JOIN `Order` ON `Order`.`ID` = `OrderAttribute`.`OrderID`

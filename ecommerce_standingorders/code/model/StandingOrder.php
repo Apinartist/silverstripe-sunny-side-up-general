@@ -247,6 +247,7 @@ class StandingOrder extends DataObject {
 
 
 	public function addAutomaticallyCreatedOrders() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		//current time + period is less than LastCreated and less then end
 		$currentTime = (strtotime(date('Y-m-d'))-1);
 		$firstOrderDate = $this->FirstOrderDate();
@@ -266,7 +267,7 @@ class StandingOrder extends DataObject {
 			$a = $this->workOutSchedule();
 			if(count($a)) {
 				foreach($a as $orderDateInteger => $orderDateLong) {
-					if($obj = DataObject::get_one("Order", "`OrderDateInteger` = ".$orderDateInteger." AND StandingOrderID = ".$this->ID)) {
+					if($obj = DataObject::get_one("Order", "{$bt}OrderDateInteger{$bt} = ".$orderDateInteger." AND StandingOrderID = ".$this->ID)) {
 						//do nothing
 					}
 					else {
@@ -707,8 +708,9 @@ HTML
 	}
 
 	public function getVersionedComponents($component) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$baseTable = ClassInfo::baseDataClass(self::$has_many[$component]);
-		$query = singleton(self::$has_many[$component])->buildVersionSQL("`{$baseTable}`.OrderID = {$this->ID} AND `{$baseTable}`.OrderVersion = {$this->Version}");
+		$query = singleton(self::$has_many[$component])->buildVersionSQL("{$bt}{$baseTable}{$bt}.OrderID = {$this->ID} AND {$bt}{$baseTable}{$bt}.OrderVersion = {$this->Version}");
 		$result = singleton(self::$has_many[$component])->buildDataObjectSet($query->execute());
 
 		return $result;

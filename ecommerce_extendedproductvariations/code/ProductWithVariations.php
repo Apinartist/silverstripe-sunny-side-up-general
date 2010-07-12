@@ -56,11 +56,12 @@ class ProductWithVariations extends Product {
 
 
 	function getVariationsTable() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$singleton = singleton('ExtendedProductVariation');
-		$query = $singleton->buildVersionSQL("`ProductID` = ".$this->ID);
+		$query = $singleton->buildVersionSQL("{$bt}ProductID{$bt} = ".$this->ID);
 		$variations = $singleton->buildDataObjectSet($query->execute());
-		$filter = $variations ? "`ID` IN ('" . implode("','", $variations->column('RecordID')) . "')" : "`ID` < '0'";
-		//$filter = "`ProductID` = '{$this->ID}'";
+		$filter = $variations ? "{$bt}ID{$bt} IN ('" . implode("','", $variations->column('RecordID')) . "')" : "{$bt}ID{$bt} < '0'";
+		//$filter = "{$bt}ProductID{$bt} = '{$this->ID}'";
 		$field = new HasManyComplexTableField(
 			$this,
 			'Variations',
@@ -150,10 +151,11 @@ class ProductWithVariations extends Product {
 	}
 
 	function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
 
 		//delete example product pages
-		$pages = DataObject::get("Product", "`URLSegment` = 'example-product' OR `URLSegment` = 'example-product-2'");
+		$pages = DataObject::get("Product", "{$bt}URLSegment{$bt} = 'example-product' OR {$bt}URLSegment{$bt} = 'example-product-2'");
 		if($pages) {
 			if(2 == $pages->count() ) {
 				foreach($pages as $page) {
@@ -199,6 +201,7 @@ class ProductWithVariations extends Product {
 
 
 	function createallvariations() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->cleanupvariations()) {
 			if($this->Price) {
 				$combinations = $this->getParentExtendedProductVariationGroups();
@@ -226,7 +229,7 @@ class ProductWithVariations extends Product {
 					if(is_array($array) && count($array)) {
 						//going through each ID list of option combos...
 						foreach($array as $IDlist) {
-							$optionsDos = DataObject::get("ExtendedProductVariationOption", '`ID` IN('.$IDlist.') ');
+							$optionsDos = DataObject::get("ExtendedProductVariationOption", "{$bt}ID{$bt} IN(".$IDlist.") ");
 							$this->createExtendedProductVariations($optionsDos);
 						}
 					}
@@ -255,6 +258,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 	}
 
 	function addVariation($data, $form) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$msg = '';
 		$update = "Item could not be added, please try again.";
 		if(isset($data["CurrentVariation"])) {
@@ -264,7 +268,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 				$update = "Added to Cart, ";
 			}
 			else {
-				$variation = DataObject::get_one('ProductVariation','`ID` = '.(int)$data["CurrentVariation"].' AND `ProductID` = '.(int)$this->ID);
+				$variation = DataObject::get_one('ProductVariation',"{$bt}ID{$bt} = ".(int)$data["CurrentVariation"]." AND {$bt}ProductID{$bt} = ".(int)$this->ID);
 				if($variation) {
 					if($variation->AllowPurchase()) {
 						ShoppingCart::add_new_item(new ProductVariation_OrderItem($variation));
@@ -296,6 +300,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 	}
 
 	public function ProductVariationsForm() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$buttonTitle = "Add To Cart";
 		$fancyPrice = Payment::site_currency().$this->dbObject("Price")->Nice();
 		if($variationsAvailable = $this->VariationsAvailable()) {
@@ -306,7 +311,7 @@ class ProductWithVariations_Controller extends Product_Controller {
 					if(count($this->optionArray[$group->ID])) {
 						$idList = implode(",",$this->optionArray[$group->ID]);
 					}
-					$options = DataObject::get("ExtendedProductVariationOption", "`ID` IN ( ".$idList.")");
+					$options = DataObject::get("ExtendedProductVariationOption", "{$bt}ID{$bt} IN ( ".$idList.")");
 					//what options are actually available:
 					if($options) {
 						$selectFields->push(new DropdownField("ExtendedProductVariationGroup[".$group->ID."]", $group->DisplayName, $options->toDropDownMap("ID", "Name")));

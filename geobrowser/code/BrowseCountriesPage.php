@@ -54,6 +54,7 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$parents = DataObject::get("BrowseCountriesPage");
 		if($parents && isset($_GET["geobuild"]) && $_GET["geobuild"] && $this->allowBrowseChildren()) {
 			foreach($parents as $parent) {
@@ -61,7 +62,7 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 					echo "<li>creating regions for ".$parent->Title."<ul>";
 					$regions = $this->getDataFromTable("regions", "CountryID = ".$parent->HiddenDataID, "Region");
 					foreach($regions as $region) {
-						if(!DataObject::get("BrowseRegionsPage", "`BrowseAbstractPage`.`HiddenDataID` = ".$region["RegionID"])) {
+						if(!DataObject::get("BrowseRegionsPage", "{$bt}BrowseAbstractPage{$bt}.{$bt}HiddenDataID{$bt} = ".$region["RegionID"])) {
 							$page = new BrowseRegionsPage();
 							$page->CreateRegion($region, $parent);
 							$page->destroy();

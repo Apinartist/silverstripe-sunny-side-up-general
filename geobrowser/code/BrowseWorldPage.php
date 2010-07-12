@@ -40,6 +40,7 @@ class BrowseWorldPage extends BrowseAbstractPage {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$parents = DataObject::get("BrowseWorldPage");
 		if($parents && isset($_GET["geobuild"]) && $_GET["geobuild"]) {
 			foreach($parents as $parent) {
@@ -47,7 +48,7 @@ class BrowseWorldPage extends BrowseAbstractPage {
 					echo "<li>creating continents for ".$parent->Title."<ul>";
 					$continents = $this->getDataFromTable("continents", null, "Continent");
 					foreach($continents as $continent) {
-						if(!DataObject::get("BrowseContinentsPage", "`BrowseAbstractPage`.`HiddenDataID` = ".$continent["ContinentID"])) {
+						if(!DataObject::get("BrowseContinentsPage", "{$bt}BrowseAbstractPage{$bt}.{$bt}HiddenDataID{$bt} = ".$continent["ContinentID"])) {
 							$page = new BrowseContinentsPage();
 							$page->CreateContinent($continent, $parent);
 							$page->destroy();

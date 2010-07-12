@@ -58,8 +58,9 @@ class SearchHistory Extends DataObject {
 	);
 
 	static function add_entry($KeywordString) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$KeywordString = self::clean_keywordstring($KeywordString);
-		if($parent = DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'")) {
+		if($parent = DataObject::get_one("SearchHistory", "{$bt}Title{$bt} = '".$KeywordString."'")) {
 			//do nothing
 		}
 		else {
@@ -76,8 +77,9 @@ class SearchHistory Extends DataObject {
 	}
 
 	static function find_entry($KeywordString) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$KeywordString = self::clean_keywordstring($KeywordString);
-		return DataObject::get_one("SearchHistory", "`Title` = '".$KeywordString."'");
+		return DataObject::get_one("SearchHistory", "{$bt}Title{$bt} = '".$KeywordString."'");
 	}
 
 	static function clean_keywordstring($KeywordString) {
@@ -87,12 +89,13 @@ class SearchHistory Extends DataObject {
 	}
 
 	function getCMSFields() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Title");
 		$fields->addFieldToTab("Root.Main", new HeaderField($name = "TitleHeader", "search for: '".$this->Title."'", 1), "RedirectTo");
 		$fields->removeByName("Recommendations");
 		if(!$this->RedirectTo) {
-			$source = DataObject::get("SiteTree", "`ShowInSearch` = 1 AND `ClassName` <> 'SearchPlusPage'");
+			$source = DataObject::get("SiteTree", "{$bt}ShowInSearch{$bt} = 1 AND {$bt}ClassName{$bt} <> 'SearchPlusPage'");
 			$sourceArray = $source->toDropdownMap();
 			//$fields->addFieldToTab("Root.Main", new MultiSelectField($name = "Recommendations", $title = "Recommendations", $sourceArray));
 			$fields->addFieldToTab("Root.Main", new TreeMultiselectField($name = "Recommendations", $title = "Recommendations", "SiteTree"));
@@ -118,6 +121,7 @@ class SearchHistory Extends DataObject {
 	}
 
 	function onAfterWrite() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::onAfterWrite();
 		//add recommendations that are not actually matching
 		$combos = $this->Recommendations();
@@ -127,7 +131,7 @@ class SearchHistory Extends DataObject {
 				$idArray[$combo->SiteTreeID] = $combo->SiteTreeID;
 			}
 			if(count($idArray)) {
-				if($pages = DataObject::get("SiteTree", "`SiteTree`.`ID` IN (".implode(",", $idArray).")")) {
+				if($pages = DataObject::get("SiteTree", "{$bt}SiteTree{$bt}.{$bt}ID{$bt} IN (".implode(",", $idArray).")")) {
 					foreach($pages as $page) {
 						$changed = false;
 						$title = self::get_separator().$this->getTitle();
@@ -160,8 +164,9 @@ class SearchHistory Extends DataObject {
 	}
 
 	function requireDefaultRecords() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
-		$dos = DataObject::get("SearchHistory", "`Title` = '' OR `Title` IS NULL OR LENGTH(`Title`) < ".self::get_minimum_length());
+		$dos = DataObject::get("SearchHistory", "{$bt}Title{$bt} = '' OR {$bt}Title{$bt} IS NULL OR LENGTH({$bt}Title{$bt}) < ".self::get_minimum_length());
 		if($dos) {
 			foreach($dos as $do) {
 				Database::alteration_message("deleting #".$do->ID." from SearchHistory as it does not have a search phrase", "deleted");

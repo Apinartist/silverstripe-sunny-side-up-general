@@ -58,7 +58,8 @@ class DropAndDragProductGroup extends ProductGroup {
 	 * @return DataObjectSet
 	 */
 	function DropAndDragProducts() {
-		return DataObject::get('DropAndDragProduct', "`ShowInMenus` = 1");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return DataObject::get('DropAndDragProduct', "{$bt}ShowInMenus{$bt} = 1");
 	}
 
 	/**
@@ -66,7 +67,8 @@ class DropAndDragProductGroup extends ProductGroup {
 	 * @return DataObjectSet
 	 */
 	function ChildGroups() {
-		return DataObject::get('DropAndDragProductGroup', "`ParentID` = '$this->ID' AND `ShowInMenus` = 1");
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return DataObject::get("DropAndDragProductGroup", "{$bt}ParentID{$bt} = '$this->ID' AND {$bt}ShowInMenus{$bt} = 1");
 	}
 
 	/**

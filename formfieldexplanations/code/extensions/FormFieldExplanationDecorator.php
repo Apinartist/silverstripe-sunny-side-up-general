@@ -22,7 +22,8 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 	}
 
 	function updateCMSFields(FieldSet &$fields) {
-		if(DataObject::get_one("FormFieldExplanation", "`ParentID` = ".$this->owner->ID)) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if(DataObject::get_one("FormFieldExplanation", "{$bt}ParentID{$bt} = ".$this->owner->ID)) {
 			$fields->addFieldToTab("Root.Content.FormExplanations", $this->getFormFieldExplanationHasManyTable());
 		}
 		return $fields;
@@ -30,13 +31,14 @@ class FormFieldExplanationDecorator extends DataObjectDecorator{
 
 
 	function getFormFieldExplanationHasManyTable() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$field = new HasManyComplexTableField(
 			$controller = $this->owner,
 			$name = "FormFieldExplanation",
 			$sourceClass = "FormFieldExplanation",
 			$fieldList = array("Title" => "Title"),
 			$detailFormFields = null,
-			$sourceFilter = "`ParentID` =".$this->owner->ID,
+			$sourceFilter = "{$bt}ParentID{$bt} =".$this->owner->ID,
 			$sourceSort = "",
 			$sourceJoin = ""
 		);

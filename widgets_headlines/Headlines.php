@@ -28,12 +28,13 @@ class Headlines extends Widget {
 	}
 
 	function Links() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		Requirements::themedCSS("widgets_headlines");
 		$where = null;
 		if(self::$boolean_field_used_to_identify_headline) {
-			$where = "`".self::$boolean_field_used_to_identify_headline."` = 1";
+			$where = "{$bt}".self::$boolean_field_used_to_identify_headline."{$bt} = 1";
 		}
-		$dos = DataObject::get("BlogEntry",$where, "`Date` DESC", null, "0, ".$this->NumberOfHeadlinesShown);
+		$dos = DataObject::get("BlogEntry",$where, "{$bt}Date{$bt} DESC", null, "0, ".$this->NumberOfHeadlinesShown);
 		return $dos;
 	}
 

@@ -137,7 +137,7 @@ class PageRater extends DataObjectDecorator {
 			$from = " {$bt}PageRating{$bt} ",
 			$where = "{$bt}ParentID{$bt} = ".$this->owner->ID."",
 			$orderby = "RatingCount",
-			$groupby = "`ParentID`",
+			$groupby = "{$bt}ParentID{$bt}",
 			$having = "",
 			$limit = "1"
 		);

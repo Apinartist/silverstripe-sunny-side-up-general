@@ -24,7 +24,7 @@ class MySQLDump extends DatabaseAdmin {
 
 
 	function export() {
-
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		global $databaseConfig;
 
 		$database = $databaseConfig["database"];
@@ -93,16 +93,16 @@ class MySQLDump extends DatabaseAdmin {
 
 			// Structure Header
 			$structure .= "-- \n";
-			$structure .= "-- Table structure for table `{$table}` \n";
+			$structure .= "-- Table structure for table {$bt}{$table}{$bt} \n";
 			$structure .= "-- \n\n";
 
 			// Dump Structure
-			$structure .= "DROP TABLE IF EXISTS `{$table}`; \n";
-			$structure .= "CREATE TABLE `{$table}` (\n";
-			$result = mysql_db_query($database, "SHOW FIELDS FROM `{$table}`");
+			$structure .= "DROP TABLE IF EXISTS {$bt}{$table}{$bt}; \n";
+			$structure .= "CREATE TABLE {$bt}{$table}{$bt} (\n";
+			$result = mysql_db_query($database, "SHOW FIELDS FROM {$bt}{$table}{$bt}");
 			while($row = mysql_fetch_object($result)) {
 
-				$structure .= "  `{$row->Field}` {$row->Type}";
+				$structure .= "  {$bt}{$row->Field}{$bt} {$row->Type}";
 				$structure .= (!empty($row->Default)) ? " DEFAULT '{$row->Default}'" : false;
 				$structure .= ($row->Null != "YES") ? " NOT NULL" : false;
 				$structure .= (!empty($row->Extra)) ? " {$row->Extra}" : false;
@@ -114,7 +114,7 @@ class MySQLDump extends DatabaseAdmin {
 
 			// Save all Column Indexes in array
 			unset($index);
-			$result = mysql_db_query($database, "SHOW KEYS FROM `{$table}`");
+			$result = mysql_db_query($database, "SHOW KEYS FROM {$bt}{$table}{$bt}");
 			while($row = mysql_fetch_object($result)) {
 
 				if (($row->Key_name == 'PRIMARY') AND ($row->Index_type == 'BTREE')) {
@@ -146,10 +146,10 @@ class MySQLDump extends DatabaseAdmin {
 
 						$c++;
 
-						$structure .= ($xy == "PRIMARY") ? "  PRIMARY KEY  (`{$column_name}`)" : false;
-						$structure .= ($xy == "UNIQUE") ? "  UNIQUE KEY `{$column_key}` (`{$column_name}`)" : false;
-						$structure .= ($xy == "INDEX") ? "  KEY `{$column_key}` (`{$column_name}`)" : false;
-						$structure .= ($xy == "FULLTEXT") ? "  FULLTEXT `{$column_key}` (`{$column_name}`)" : false;
+						$structure .= ($xy == "PRIMARY") ? "  PRIMARY KEY  ({$bt}{$column_name}{$bt})" : false;
+						$structure .= ($xy == "UNIQUE") ? "  UNIQUE KEY {$bt}{$column_key}{$bt} ({$bt}{$column_name}{$bt})" : false;
+						$structure .= ($xy == "INDEX") ? "  KEY {$bt}{$column_key}{$bt} ({$bt}{$column_name}{$bt})" : false;
+						$structure .= ($xy == "FULLTEXT") ? "  FULLTEXT {$bt}{$column_key}{$bt} ({$bt}{$column_name}{$bt})" : false;
 
 						$structure .= ($c < (count($index[$xy]))) ? ",\n" : false;
 
@@ -163,13 +163,13 @@ class MySQLDump extends DatabaseAdmin {
 
 			// Header
 			$structure .= "-- \n";
-			$structure .= "-- Dumping data for table `$table` \n";
+			$structure .= "-- Dumping data for table {$bt}{$table}{$bt} \n";
 			$structure .= "-- \n\n";
 
 			// Dump data
 			unset($data);
 			$data = '';
-			$result     = mysql_query("SELECT * FROM `$table`");
+			$result     = mysql_query("SELECT * FROM {$bt}{$table}{$bt}");
 			$num_rows   = mysql_num_rows($result);
 			$num_fields = mysql_num_fields($result);
 
@@ -180,12 +180,12 @@ class MySQLDump extends DatabaseAdmin {
 					if($i) {
 						$data .= ';';
 					}
-					$data .= "INSERT INTO `$table` (";
+					$data .= "INSERT INTO {$bt}{$table}{$bt} (";
 
 					// Field names
 					for ($x = 0; $x < $num_fields; $x++) {
 						$field_name = mysql_field_name($result, $x);
-						$data .= "`{$field_name}`";
+						$data .= "{$bt}{$field_name}{$bt}";
 						$data .= ($x < ($num_fields - 1)) ? ", " : false;
 					}
 					$data .= ") VALUES (";
@@ -204,9 +204,9 @@ class MySQLDump extends DatabaseAdmin {
 
 			$data .= ";\n";
 			if($num_rows > 0) {
-				$structure = "DELETE FROM `{$table}`;";
+				$structure = "DELETE FROM {$bt}{$table}{$bt};";
 				if(in_array($table."_versions", $excludeTables)) {
-					$structure .= "DELETE FROM `{$table}_versions`;";
+					$structure .= "DELETE FROM {$bt}{$table}_versions{$bt};";
 				}
 				echo $structure . $data;
 			}

@@ -97,14 +97,15 @@ class DataIntegrityTest extends DatabaseAdmin {
 			return false;
 		}
 		else {
-			DB::query('ALTER TABLE `'.$table.'` DROP `'.$field.'`;');
+			$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+			DB::query("ALTER TABLE {$bt}'.$table.' DROP {$bt}'.$field.'{$bt};");
 			Database::alteration_message("Deleted $field in $table", "deleted");
 			$obj = singleton($table);
 			//to do: make this more reliable - checking for versioning rather than SiteTree
 			if($obj instanceof SiteTree) {
-				DB::query('ALTER TABLE `'.$table.'_Live` DROP `'.$field.'`;');
+				DB::query("ALTER TABLE {$bt}'.$table.'_Live{$bt} DROP {$bt}'.$field.'{$bt};");
 				Database::alteration_message("Deleted $field in {$table}_Live", "deleted");
-				DB::query('ALTER TABLE `'.$table.'_versions` DROP `'.$field.'`;');
+				DB::query("ALTER TABLE {$bt}'.$table.'_versions{$bt} DROP {$bt}'.$field.'{$bt};");
 				Database::alteration_message("Deleted $field in {$table}_versions", "deleted");
 			}
 		}

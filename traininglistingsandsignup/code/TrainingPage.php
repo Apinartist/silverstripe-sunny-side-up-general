@@ -60,14 +60,15 @@ class TrainingPage extends Page {
 	}
 
 	function MemberField() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$memberField = new ManyManyComplexTableField(
 			$controller = $this,
 			$name = "Attendees",
 			$sourceClass = "Member",
 			$fieldList = null,
 			$detailFormFields = null,
-			$sourceFilter = "`TrainingPageID` = ".$this->ID,
-			$sourceSort = "`TrainingPage_Attendees`.`ID` DESC",
+			$sourceFilter = "{$bt}TrainingPageID{$bt} = ".$this->ID,
+			$sourceSort = "{$bt}TrainingPage_Attendees{$bt}.{$bt}ID{$bt} DESC",
 			$sourceJoin = ""
 		);
 		$memberField->setAddTitle("Attendees");
@@ -95,7 +96,8 @@ class TrainingPage extends Page {
 	}
 
 	function ActualPlacesAvailable() {
-		return intval($this->PlacesAvailable - $this->PeopleSignedUpElseWhere - $this->Attendees('`TrainingPageID` = '.$this->ID)->count());
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		return intval($this->PlacesAvailable - $this->PeopleSignedUpElseWhere - $this->Attendees("{$bt}TrainingPageID{$bt} = ".$this->ID)->count());
 	}
 
 }
@@ -123,8 +125,9 @@ class TrainingPage_Controller extends Page_Controller {
 	}
 
 	function MemberAlreadySignedUp() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($id = Member::currentUserID()) {
-			if($this->Attendees("`MemberID` = ".$id.' AND `TrainingPageID` = '.$this->ID)->count()) {
+			if($this->Attendees("{$bt}MemberID{$bt} = ".$id.' AND {$bt}TrainingPageID{$bt} = '.$this->ID)->count()) {
 				return true;
 			}
 		}

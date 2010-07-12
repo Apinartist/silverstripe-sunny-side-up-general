@@ -134,7 +134,8 @@ class ExtendedProductVariationGroup extends DataObject {
 	}
 
 	public function onBeforeDelete() {
-		if($children = DataObject::get("ExtendedProductVariationOption", '`ParentID` = "'.$this->ID.'"')) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		if($children = DataObject::get("ExtendedProductVariationOption", "{$bt}ParentID{$bt} = ".$this->ID)) {
 			foreach($children as $child) {
 				$child->delete();
 			}

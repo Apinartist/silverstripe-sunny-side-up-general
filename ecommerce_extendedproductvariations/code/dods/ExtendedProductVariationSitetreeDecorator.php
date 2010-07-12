@@ -47,6 +47,7 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 	}
 
 	function getExtendedProductVariationGroupsTable() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		/*
 		$ExtendedProductVariationGroupArray = DataObject::get("ExtendedProductVariationGroup")->toDropdownMap('ID','Name');
 		new MultiSelectField(
@@ -62,7 +63,7 @@ class ExtendedProductVariationSitetreeDecorator extends SiteTreeDecorator {
 			array('Name' => 'Name'),
 			null,
 			null,
-			"`Checked` DESC, `Sort` ASC, `Name` ASC"
+			"{$bt}Checked{$bt} DESC, {$bt}Sort{$bt} ASC, {$bt}Name{$bt} ASC"
 		);
 		$field->setPermissions(array());
 		$field->pageSize = 1000;
