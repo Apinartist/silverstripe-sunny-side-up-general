@@ -20,11 +20,11 @@ class MemberManagementGroupCleanup extends HourlyTask {
 		static function get_automatically_delete_members_without_group () {return self::$automatically_delete_members_without_group === TRUE;}
 
 	function cleanup() {
-
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		//basic cleanup of useless entries in Group_Members
-		$sql = 'DELETE `Group_Members` FROM `Group_Members` LEFT JOIN `Member` ON `Group_Members`.`MemberID` = `Member`.`ID` WHERE `Member`.`ID` IS NULL;';
+		$sql = "DELETE {$b{$bt}t}Group_Members{$bt} FROM {$bt}Group_Members{$bt} LEFT JOIN {$bt}Member{$bt} ON {$bt}Group_Members{$bt}.{$bt}MemberID{$bt} = {$bt}Member{$bt}.{$bt}ID{$bt} WHERE {$bt}Member{$bt}.{$bt}ID{$bt} IS NULL;";
 		DB::query($sql);
-		$sql = 'DELETE `Group_Members` FROM `Group_Members` LEFT JOIN `Group` ON `Group_Members`.`GroupID` = `Group`.`ID` WHERE `Group`.`ID` IS NULL;';
+		$sql = "DELETE {$bt}Group_Members{$bt} FROM {$bt}Group_Members{$bt} LEFT JOIN {$bt}Group{$bt} ON {$bt}Group_Members{$bt}.{$bt}GroupID{$bt} = {$bt}Group{$bt}.{$bt}ID{$bt} WHERE {$bt}Group{$bt}.{$bt}ID{$bt} IS NULL;";
 		DB::query($sql);
 
 		$allUsersGroup = DataObject::get_one("Group", "Title = '".self::$name_for_all_users_group."'");
@@ -45,13 +45,13 @@ class MemberManagementGroupCleanup extends HourlyTask {
 			DB::query($sql);
 			$unlistedMembers = DataObject::get(
 				"Member",
-				$where = "Group_Members.ID IS NULL",
+				$where = "{$bt}Group_Members{$bt}.{$bt}ID{$bt} IS NULL",
 				$sort = null,
-				$join = "LEFT JOIN Group_Members ON Group_Members.MemberID = Member.ID"
+				$join = "LEFT JOIN {$bt}Group_Members{$bt} ON {$bt}Group_Members{$bt}.{$bt}MemberID{$bt} = {$bt}Member{$bt}.{$bt}ID{$bt}"
 			);
 			if($unlistedMembers) {
 				foreach($unlistedMembers as $member) {
-					Database::alteration_message("Deleting Member: <i>".$member->getName()."</i> as he/she is not listed in any groups.", "deleted");
+					DB::alteration_message("Deleting Member: <i>".$member->getName()."</i> as he/she is not listed in any groups.", "deleted");
 					$member->delete();
 				}
 			}
@@ -103,7 +103,7 @@ class MemberManagementGroupCleanup extends HourlyTask {
 			$query = new SQLQuery('*', array('Group_Members'), 'ID IN('.implode(",",$groupMemberCombosToDelete).')');
 			$query->delete = true;
 			$query->execute();
-			Database::alteration_message("deleted double entries (".$count.") in group members table", "deleted");
+			DB::alteration_message("deleted double entries (".$count.") in group members table", "deleted");
 		}
 
 
