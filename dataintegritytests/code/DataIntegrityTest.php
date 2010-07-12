@@ -3,6 +3,8 @@
 
 class DataIntegrityTest extends DatabaseAdmin {
 
+	protected $warning = "are you sure - this step is irreversible! - MAKE SURE TO MAKE A BACKUP OF YOUR DATABASE FIRST";
+
 	protected static $test_array = array(
 		"In SiteTree_Live but not in SiteTree" =>
     	"SELECT SiteTree.ID, SiteTree.Title FROM SiteTree_Live RIGHT JOIN SiteTree ON SiteTree_Live.ID = SiteTree.ID WHERE SiteTree.ID IS NULL;",
@@ -18,40 +20,67 @@ class DataIntegrityTest extends DatabaseAdmin {
 	protected static $fields_to_delete = array();
 		static function set_fields_to_delete($array) {self::$fields_to_delete = $array;}
 
+	function init() {
+		parent::init();
+	}
+
 	function index() {
 		echo "<h2>Database Administration Helpers</h2>";
 		echo "<p><a href=\"obsoletefields\">Prepare a list of obsolete fields.</a></p>";
-		echo "<p><a href=\"deletefields\" onclick=\"return confirm('are you sure - this step is irreversible!');\">Delete marked fields.</a></p>";
+		echo "<p><a href=\"deletemarkedfields\" onclick=\"return confirm('".$warning."');\">Delete marked fields.</a></p>";
+		echo "<p><a href=\"obsoletefields/immediately/destroyed\ onclick=\"return confirm('".$warning."');\">Delete obsolete fields now!</a></p>";
 	}
 
-	public function obsoletefields() {
+	public function obsoletefields(SS_HTTPRequest $request) {
+		$check1 = $request->param("ID");
+		$check2 = $request->param("OtherID");
+		$deleteNow = false;
+		if($check1 == "immediately" && $check2 = "destroyed") {
+			$deleteNow = true;
+			increase_time_limit_to(600);
+		}
 		$dataClasses = ClassInfo::subclassesFor('DataObject');
 		$notCheckedArray = array();
 		//remove dataobject
 		array_shift($dataClasses);
-		DB::alteration_message("<h1>Report of fields that may not be required.</h1><p>  NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only</p>", "created");
+		DB::alteration_message ("
+			<h1>Report of fields that may not be required.</h1>
+			<p>  NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only</p>"
+		, "created");
 		foreach($dataClasses as $dataClass) {
 			// Check if class exists before trying to instantiate - this sidesteps any manifest weirdness
 			if(class_exists($dataClass)) {
 				$dataObject = singleton($dataClass);
-				$requiredFields = $this->swapArray($dataObject->databaseFields());
+				$requiredFields = $this->swapArray(DataObject::database_fields($dataObject->ClassName));
 				if(count($requiredFields)) {
 					foreach($requiredFields as $field) {
 						if(!$dataObject->hasOwnTableDatabaseField($field)) {
-							DB::alteration_message("  **** $dataClass.$field DOES NOT EXIST BUT IT SHOULD BE THERE!", "deleted");
+							DB::alteration_message ("  **** $dataClass.$field DOES NOT EXIST BUT IT SHOULD BE THERE!", "deleted");
 						}
 					}
 					$actualFields = $this->swapArray(DB::fieldList($dataClass));
 					if($actualFields) {
 						foreach($actualFields as $actualField) {
+							if($deleteNow) {
+								$link = " !!!!!!!!!!! DELETED !!!!!!!!!";
+							}
+							else {
+								$link = "<a href=\"deleteonefield/".$dataClass."/".$actualField."/\" onclick=\"return confirm('".$warning."');\">delete field</a><br /><br />";
+							}
 							if(!in_array($actualField, array("ID", "Version"))) {
 								if(!in_array($actualField, $requiredFields)) {
-									DB::alteration_message("$dataClass.$actualField ", "deleted");
+									DB::alteration_message ("$dataClass.$actualField $link", "deleted");
+									if($deleteNow) {
+										$this->deleteField($dataClass, $actualField);
+									}
 								}
 							}
 							if($actualField == "Version") {
 								if(!$dataObject->stat('versioning')) {
-									DB::alteration_message("$dataClass.$actualField ", "deleted");
+									DB::alteration_message ("$dataClass.$actualField $link", "deleted");
+									if($deleteNow) {
+										$this->deleteField($dataClass, $actualField);
+									}
 								}
 							}
 						}
@@ -59,7 +88,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 				}
 				else {
 					if( mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$dataClass."'"))) {
-						DB::alteration_message("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
+						DB::alteration_message ("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
 					}
 					else {
 						$notCheckedArray[] = $dataClass;
@@ -69,44 +98,62 @@ class DataIntegrityTest extends DatabaseAdmin {
 		}
 		if(count($notCheckedArray)) {
 			foreach($notCheckedArray as $table) {
-				DB::alteration_message("did not check $table - it appears no fields are required", "created");
+				DB::alteration_message ("did not check $table - it appears no fields are required", "created");
 			}
 		}
 
 	}
 
-	public function deletefields() {
-		foreach(self::$fields_to_delete as $key => $tableDotField) {
-			$tableFieldArray = explode(".", $tableDotField);
-			$this->deleteField($tableFieldArray[0], $tableFieldArray[1]);
+	public function deletemarkedfields() {
+		if(is_array(self::$fields_to_delete)) {
+			if(count(self::$fields_to_delete)) {
+				foreach(self::$fields_to_delete as $key => $tableDotField) {
+					$tableFieldArray = explode(".", $tableDotField);
+					$this->deleteField($tableFieldArray[0], $tableFieldArray[1]);
+				}
+			}
+			else {
+				DB::alteration_message("there are no fields to delete", "created");
+			}
 		}
+		else {
+			user_error("you need to select these fields to be deleted first (DataIntegrityTest::set_fields_to_delete)");
+		}
+	}
+
+	public function deleteonefield(SS_HTTPRequest $request) {
+		$table = $request->param("ID");
+		$field = $request->param("OtherID");
+		$this->deleteField($table, $field);
+		DB::alteration_message("deleting $field from $table now", "deleted");
+		DB::alteration_message("<a href=\"".Director::absoluteURL("dbintegritycheck/obsoletefields")."\">return to list of obsolete fields</a>", "created");
+
 	}
 
 	protected function deleteField($table, $field) {
 		$fields = $this->swapArray(DB::fieldList($table));
 		if(!mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$table."'"))) {
-			DB::alteration_message("tried to delete $table.$field but TABLE does not exist", "created");
+			DB::alteration_message ("tried to delete $table.$field but TABLE does not exist", "created");
 			return false;
 		}
 		if(!class_exists($table)){
-			DB::alteration_message("tried to delete $table.$field but CLASS does not exist", "created");
+			DB::alteration_message ("tried to delete $table.$field but CLASS does not exist", "created");
 			return false;
 		}
 		if(!in_array($field, $fields)) {
-			DB::alteration_message("tried to delete $table.$field but FIELD does not exist", "created");
+			DB::alteration_message ("tried to delete $table.$field but FIELD does not exist", "created");
 			return false;
 		}
 		else {
-			$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-			DB::query("ALTER TABLE {$bt}'.$table.' DROP {$bt}'.$field.'{$bt};");
-			DB::alteration_message("Deleted $field in $table", "deleted");
+			DB::query('ALTER TABLE `'.$table.'` DROP `'.$field.'`;');
+			DB::alteration_message ("Deleted $field in $table", "deleted");
 			$obj = singleton($table);
 			//to do: make this more reliable - checking for versioning rather than SiteTree
 			if($obj instanceof SiteTree) {
-				DB::query("ALTER TABLE {$bt}'.$table.'_Live{$bt} DROP {$bt}'.$field.'{$bt};");
-				DB::alteration_message("Deleted $field in {$table}_Live", "deleted");
-				DB::query("ALTER TABLE {$bt}'.$table.'_versions{$bt} DROP {$bt}'.$field.'{$bt};");
-				DB::alteration_message("Deleted $field in {$table}_versions", "deleted");
+				DB::query('ALTER TABLE `'.$table.'_Live` DROP `'.$field.'`;');
+				DB::alteration_message ("Deleted $field in {$table}_Live", "deleted");
+				DB::query('ALTER TABLE `'.$table.'_versions` DROP `'.$field.'`;');
+				DB::alteration_message ("Deleted $field in {$table}_versions", "deleted");
 			}
 		}
 	}
