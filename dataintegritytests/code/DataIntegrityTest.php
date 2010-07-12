@@ -3,7 +3,7 @@
 
 class DataIntegrityTest extends DatabaseAdmin {
 
-	protected $warning = "are you sure - this step is irreversible! - MAKE SURE TO MAKE A BACKUP OF YOUR DATABASE FIRST";
+	protected static $warning = "are you sure - this step is irreversible! - MAKE SURE TO MAKE A BACKUP OF YOUR DATABASE FIRST";
 
 	protected static $test_array = array(
 		"In SiteTree_Live but not in SiteTree" =>
@@ -27,8 +27,8 @@ class DataIntegrityTest extends DatabaseAdmin {
 	function index() {
 		echo "<h2>Database Administration Helpers</h2>";
 		echo "<p><a href=\"obsoletefields\">Prepare a list of obsolete fields.</a></p>";
-		echo "<p><a href=\"deletemarkedfields\" onclick=\"return confirm('".$warning."');\">Delete marked fields.</a></p>";
-		echo "<p><a href=\"obsoletefields/immediately/destroyed\ onclick=\"return confirm('".$warning."');\">Delete obsolete fields now!</a></p>";
+		echo "<p><a href=\"deletemarkedfields\" onclick=\"return confirm('".self::$warning."');\">Delete fields listed in _config.</a></p>";
+		echo "<p><a href=\"obsoletefields/immediately/destroyed\" onclick=\"return confirm('".self::$warning."');\">Delete obsolete fields now!</a></p>";
 	}
 
 	public function obsoletefields(SS_HTTPRequest $request) {
@@ -65,7 +65,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 								$link = " !!!!!!!!!!! DELETED !!!!!!!!!";
 							}
 							else {
-								$link = "<a href=\"deleteonefield/".$dataClass."/".$actualField."/\" onclick=\"return confirm('".$warning."');\">delete field</a><br /><br />";
+								$link = "<a href=\"deleteonefield/".$dataClass."/".$actualField."/\" onclick=\"return confirm('".self::$warning."');\">delete field</a><br /><br />";
 							}
 							if(!in_array($actualField, array("ID", "Version"))) {
 								if(!in_array($actualField, $requiredFields)) {
@@ -101,7 +101,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 				DB::alteration_message ("did not check $table - it appears no fields are required", "created");
 			}
 		}
-
+		DB::alteration_message( "<p><a href=\"".Director::absoluteURL("/dbintegritycheck")."\">back to main menu.</a></p>");
 	}
 
 	public function deletemarkedfields() {
