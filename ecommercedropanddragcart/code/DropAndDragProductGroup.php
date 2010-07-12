@@ -99,7 +99,7 @@ class DropAndDragProductGroup extends ProductGroup {
 				$page1->URLSegment = 'products';
 				$page1->writeToStage('Stage');
 				$page1->publish('Stage', 'Live');
-				Database::alteration_message('Product group page \'Products\' created', 'created');
+				DB::alteration_message('Product group page \'Products\' created', 'created');
 
 				$page2 = new DropAndDragProductGroup();
 				$page2->Title = 'Example product group';
@@ -108,7 +108,7 @@ class DropAndDragProductGroup extends ProductGroup {
 				$page2->ParentID = $page1->ID;
 				$page2->writeToStage('Stage');
 				$page2->publish('Stage', 'Live');
-				Database::alteration_message('Product group page \'Example product group\' created', 'created');
+				DB::alteration_message('Product group page \'Example product group\' created', 'created');
 			}
 		}
 	}

@@ -105,7 +105,7 @@ class ExtendedProductVariation extends ProductVariation {
 		if($variationsWithouthProduct) {
 			foreach($variationsWithouthProduct as $obj) {
 				//$obj->delete();
-				Database::alteration_message("The following variation should be deleted ".$obj->Title.", as it does not link to any product", "deleted");
+				DB::alteration_message("The following variation should be deleted ".$obj->Title.", as it does not link to any product", "deleted");
 			}
 		}
 	}

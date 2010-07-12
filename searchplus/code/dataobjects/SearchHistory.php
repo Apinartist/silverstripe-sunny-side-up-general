@@ -169,7 +169,7 @@ class SearchHistory Extends DataObject {
 		$dos = DataObject::get("SearchHistory", "{$bt}Title{$bt} = '' OR {$bt}Title{$bt} IS NULL OR LENGTH({$bt}Title{$bt}) < ".self::get_minimum_length());
 		if($dos) {
 			foreach($dos as $do) {
-				Database::alteration_message("deleting #".$do->ID." from SearchHistory as it does not have a search phrase", "deleted");
+				DB::alteration_message("deleting #".$do->ID." from SearchHistory as it does not have a search phrase", "deleted");
 				$do->delete();
 			}
 		}

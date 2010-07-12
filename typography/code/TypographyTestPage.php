@@ -58,7 +58,7 @@ class TypographyTestPage extends Page {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
 
-				Database::alteration_message("TypographyTestPage","created");
+				DB::alteration_message("TypographyTestPage","created");
 			}
 		}
 	}

@@ -39,7 +39,7 @@ class EnhancedCheckoutPage extends CheckoutPage {
 				if($update) {
 					$page->writeToStage('Stage');
 					$page->publish('Stage', 'Live');
-					Database::alteration_message($page->ClassName." created/updated: ".$update.' DONE', 'created');
+					DB::alteration_message($page->ClassName." created/updated: ".$update.' DONE', 'created');
 				}
 			}
 		}

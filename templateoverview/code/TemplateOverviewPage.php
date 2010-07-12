@@ -89,7 +89,7 @@ class TemplateOverviewPage extends Page {
 				$page->URLSegment = "templates";
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
-				Database::alteration_message("TemplateOverviewPage","created");
+				DB::alteration_message("TemplateOverviewPage","created");
 			}
 		}
 	}

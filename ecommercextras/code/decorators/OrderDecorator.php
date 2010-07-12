@@ -20,11 +20,11 @@ class OrderDecorator extends DataObjectDecorator {
 	public static function check_data_integrity_for_orders() {
 		$list = self::get_order_status_options();
 		$firstOption = current($list);
-		$badOrders = DataObject::get("Order", 'Status = ""');
+		$badOrders = DataObject::get("Order", "Status = ''");
 		foreach($badOrders as $order) {
 			$order->Status = $firstOption;
 			$order->write();
-			Database::alteration_message("No order status for order number #".$order->ID." reverting to: $firstOption.","error");
+			DB::alteration_message("No order status for order number #".$order->ID." reverting to: $firstOption.","error");
 		}
 	}
 
@@ -79,7 +79,7 @@ class OrderDecorator extends DataObjectDecorator {
 			}
 			if($number > $currentMax) {
 				DB::query("ALTER TABLE {$bt}Order{$bt}  AUTO_INCREMENT = $number ROW_FORMAT = DYNAMIC ");
-				//Database::alteration_message("Change OrderID start number to ".$number, "created");
+				//DB::alteration_message("Change OrderID start number to ".$number, "created");
 			}
 		}
 	}

@@ -68,11 +68,11 @@ class MembersOnlyPage extends Page {
 			$group->write();
 
 			Permission::grant( $group->ID, self::get_permission_code());
-			Database::alteration_message(self::get_group_name().' group created',"created");
+			DB::alteration_message(self::get_group_name().' group created',"created");
 		}
 		else if(DB::query("SELECT * FROM Permission WHERE {$bt}GroupID{$bt} = '".$intranetGroup->ID."' AND {$bt}Code{$bt} LIKE '".self::get_permission_code()."'")->numRecords() == 0 ) {
 			Permission::grant($intranetGroup->ID, self::get_permission_code());
-			Database::alteration_message(self::get_group_name().' permissions granted',"created");
+			DB::alteration_message(self::get_group_name().' permissions granted',"created");
 		}
 	}
 

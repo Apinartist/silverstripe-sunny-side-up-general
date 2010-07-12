@@ -111,7 +111,7 @@ class CoreHackDataObject extends DataObject {
 							else {
 								$error .= "<br />ERROR:  does not exist";
 							}
-							Database::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: <br /><b>".$error."</b>", "deleted");
+							DB::alteration_message("<hr /><h3>core hack!</h3>trying to change $fullFile from: <br /><i>".$change["fromString"]."</i> to <br /><i>".$change["toString"]."</i>: <br /><b>".$error."</b>", "deleted");
 							$obj = new CoreHackDataObject();
 							$obj->From = $change["fromString"];
 							$obj->To = $change["toString"];

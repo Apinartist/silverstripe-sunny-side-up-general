@@ -120,7 +120,7 @@ class ProductWithVariations extends Product {
 			if($obj) {
 				if($obj instanceOf ExtendedProductVariation) {
 					$obj->Title = $title;
-					//Database::alteration_message("Creating &quot;".$obj->Title."&quot; for &quot;".$this->Title."&quot;");
+					//DB::alteration_message("Creating &quot;".$obj->Title."&quot; for &quot;".$this->Title."&quot;");
 					$obj->Price = $this->Price;
 					$obj->ProductID = $this->ID;
 					$obj->write();

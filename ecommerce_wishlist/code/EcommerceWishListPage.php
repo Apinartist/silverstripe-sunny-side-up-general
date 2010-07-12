@@ -68,7 +68,7 @@ class EcommerceWishListPage extends Page {
 			if($update) {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
-				Database::alteration_message($page->ClassName." created/updated: ".$update, 'created');
+				DB::alteration_message($page->ClassName." created/updated: ".$update, 'created');
 			}
 		}
 	}

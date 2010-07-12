@@ -64,7 +64,7 @@ class EcommerceVote extends DataObject {
 				if(isset($array[$obj->PageID])) {
 					if($array[$obj->PageID] == $obj->SessionID) {
 						$obj->delete();
-						Database::alteration_message("deleting double vote", "deleted");
+						DB::alteration_message("deleting double vote", "deleted");
 					}
 				}
 				else {
@@ -93,7 +93,7 @@ class EcommerceVote extends DataObject {
 								$obj->PageID = $page->ID;
 								$obj->SessionID = "default_votes_".$i;
 								$obj->write();
-								Database::alteration_message("creating vote $i for ".$page->Title, "created");
+								DB::alteration_message("creating vote $i for ".$page->Title, "created");
 								$i++;
 							}
 						}
