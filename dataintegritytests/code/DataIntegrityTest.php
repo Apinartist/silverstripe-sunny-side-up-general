@@ -26,9 +26,9 @@ class DataIntegrityTest extends DatabaseAdmin {
 
 	function index() {
 		echo "<h2>Database Administration Helpers</h2>";
-		echo "<p><a href=\"obsoletefields\">Prepare a list of obsolete fields.</a></p>";
-		echo "<p><a href=\"deletemarkedfields\" onclick=\"return confirm('".self::$warning."');\">Delete fields listed in _config.</a></p>";
-		echo "<p><a href=\"obsoletefields/immediately/destroyed\" onclick=\"return confirm('".self::$warning."');\">Delete obsolete fields now!</a></p>";
+		echo "<p><a href=\"dbintegritycheck/obsoletefields\">Prepare a list of obsolete fields.</a></p>";
+		echo "<p><a href=\"dbintegritycheck/deletemarkedfields\" onclick=\"return confirm('".self::$warning."');\">Delete fields listed in _config.</a></p>";
+		echo "<p><a href=\"dbintegritycheck/obsoletefields/immediately/destroyed\" onclick=\"return confirm('".self::$warning."');\">Delete obsolete fields now!</a></p>";
 	}
 
 	public function obsoletefields(SS_HTTPRequest $request) {
