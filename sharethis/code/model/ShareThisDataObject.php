@@ -53,9 +53,9 @@ class ShareThisDataObject extends DataObject {
 		"IncludeThisIcon" => "IncludeThisIcon"
 	);
 
-	public static $singular_name = "Link to promote page";
+	public static $singular_name = "Share this page icon";
 
-	public static $plural_name = "Links to promote page";
+	public static $plural_name = "Share this page icons";
 
 	function onAfterWrite() {
 		parent::onAfterWrite();

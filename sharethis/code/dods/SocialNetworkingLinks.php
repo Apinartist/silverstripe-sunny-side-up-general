@@ -57,8 +57,8 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 		}
 		else {
 			return array(
-				'db' =>  array('HasSocialNetworkingLinks' => 'Boolean' ),
-				'defaults' =>  array('HasSocialNetworkingLinks' => self::$include_by_default),
+				'db' => array('HasSocialNetworkingLinks' => 'Boolean' ),
+				'defaults' => array('HasSocialNetworkingLinks' => self::$include_by_default),
 			);
 		}
 	}
