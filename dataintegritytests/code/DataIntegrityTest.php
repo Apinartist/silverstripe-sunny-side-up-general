@@ -14,6 +14,11 @@ class DataIntegrityTest extends DatabaseAdmin {
 			"SELECT SiteTree_Live.ID, SiteTree_Live.Title FROM SiteTree_Live RIGHT JOIN SiteTree_Live Parent ON SiteTree_Live.ParentID = Parent.ID Where SiteTree_Live.ID IS NULL and SiteTree_Live.ParentID <> 0;",
 	);
 
+	protected static $global_exceptions = array(
+		"EditableFormField" => "Version",
+		"EditableOption" => "Version"
+	);
+
 	/**
 	*@param array = should be provided as follows: array("Member.UselessField1", "Member.UselessField2", "SiteTree.UselessField3")
 	*/
@@ -124,14 +129,23 @@ class DataIntegrityTest extends DatabaseAdmin {
 	public function deleteonefield(SS_HTTPRequest $request) {
 		$table = $request->param("ID");
 		$field = $request->param("OtherID");
-		$this->deleteField($table, $field);
-		DB::alteration_message("deleting $field from $table now", "deleted");
+		if($this->deleteField($table, $field)) {
+			DB::alteration_message("successfully deleted $field from $table now", "deleted");
+		}
 		DB::alteration_message("<a href=\"".Director::absoluteURL("dbintegritycheck/obsoletefields")."\">return to list of obsolete fields</a>", "created");
 
 	}
 
 	protected function deleteField($table, $field) {
 		$fields = $this->swapArray(DB::fieldList($table));
+		if(count(self::$global_exceptions)) {
+			foreach(self::$global_exceptions as $exceptionTable => $exceptionField) {
+				if($exceptionTable == $table && $exceptionField == $field) {
+					DB::alteration_message ("tried to delete $table.$field but this is listed as a global exception and can not be deleted", "created");
+					return false;
+				}
+			}
+		}
 		if(!mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$table."'"))) {
 			DB::alteration_message ("tried to delete $table.$field but TABLE does not exist", "created");
 			return false;
@@ -155,6 +169,7 @@ class DataIntegrityTest extends DatabaseAdmin {
 				DB::query('ALTER TABLE `'.$table.'_versions` DROP `'.$field.'`;');
 				DB::alteration_message ("Deleted $field in {$table}_versions", "deleted");
 			}
+			return true;
 		}
 	}
 
