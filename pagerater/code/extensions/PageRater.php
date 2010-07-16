@@ -249,7 +249,7 @@ class PageRater_Controller extends Extension {
 			debug::show("removed all ratings for all pages");
 		}
 		else {
-			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+			Security::permissionFailure($this->owner, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
 	}
 
@@ -259,7 +259,7 @@ class PageRater_Controller extends Extension {
 			debug::show("removed all ratings for all pages");
 		}
 		else {
-			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+			Security::permissionFailure($this->owner, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
 	}
 
