@@ -137,7 +137,7 @@ class MenuCache extends DataObjectDecorator {
 
 }
 
-class MenuCache_controller extends Extension {
+class MenuCache_Controller extends Extension {
 
 	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield", "clearallfieldcaches");
 
