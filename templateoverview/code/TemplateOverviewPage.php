@@ -130,8 +130,20 @@ class TemplateOverviewPage extends Page {
 		}
 		ksort($ArrayOfAllClasses);
 		$doSet =  new DataObjectSet();
+		$d = null;
+		if($c = Controller::curr()) {
+			if($d = $c->dataRecord) {
+				$currentClassname = $d->ClassName;
+			}
+		}
 		if(count($ArrayOfAllClasses)) {
 			foreach($ArrayOfAllClasses as $item) {
+				if($item->ClassName == $currentClassname) {
+					$item->LinkingMode = "current";
+				}
+				else {
+					$item->LinkingMode = "link";
+				}
 				$doSet->push($item);
 			}
 		}
