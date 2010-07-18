@@ -1,4 +1,4 @@
-s<% if IncludeTemplateOverviewDevelopmentFooter %><% if ID %>
+<% if IncludeTemplateOverviewDevelopmentFooter %><% if ID %>
 <div id="TemplateOverviewPageDevelopmentFooter">
 	<p>
 		The template for this page is called <a href="{$TemplateOverviewPage.Link}#sectionFor-$ClassName">$ClassName</a>.
