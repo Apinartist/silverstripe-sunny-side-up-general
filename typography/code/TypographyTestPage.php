@@ -102,6 +102,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 			$fields = new FieldSet(
 				// List the your fields here
 				new HeaderField($name = "HeaderField1", $title = "HeaderField Level 1", 1),
+				new LiteralField($name = "LiteralField", "<p>NOTE: All fields up to EmailField are required and should be marked as such</p>"),
 				new TextField($name = "TextField1", $title = "Text Field Example 1"),
 				new TextField($name = "TextField2", $title = "Text Field Example 2"),
 				new TextField($name = "TextField3", $title = "Text Field Example 3"),
@@ -128,7 +129,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 
 			),
 			$requiredFields = new RequiredFields(
-					"ErrorField1","ErrorField2", "EmailField", "TextField3"// List the required fields here: "Email", "FirstName"
+				"TextField1","TextField2", "TextField3","ErrorField1","ErrorField2", "EmailField", "TextField3", "RightTitleField", "CheckboxField", "CheckboxSetField"
 			)
 		);
 		$form->setMessage("good message", "good");
