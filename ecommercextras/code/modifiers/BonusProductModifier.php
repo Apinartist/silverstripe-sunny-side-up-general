@@ -137,6 +137,9 @@ class BonusProductModifier extends OrderModifier {
 						if($product && !array_key_exists($product->ID, $oldBonusProductArray)) {
 							unset($tempIDArray);
 							$tempIDArray = array();
+							if(!method_exists($product, "BonusProductsForCart")) {
+								user_error("BonusProductsForCart is not a function of the class for ".$product->Title." (member of the ".$product->ClassName." class). In order to make the bonus products work, you either need to extend the class and add the function to the class extension OR you need to decorate it.", E_USER_NOTICE);
+							}
 							$tempIDArray = $product->BonusProductsForCart();
 							foreach($tempIDArray as $bonusItemID) {
 								if($quantity = $item->getQuantity()) {
