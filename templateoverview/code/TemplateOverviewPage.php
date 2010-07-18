@@ -130,7 +130,7 @@ class TemplateOverviewPage extends Page {
 		}
 		ksort($ArrayOfAllClasses);
 		$doSet =  new DataObjectSet();
-		$d = null;
+		$currentClassname = '';
 		if($c = Controller::curr()) {
 			if($d = $c->dataRecord) {
 				$currentClassname = $d->ClassName;
