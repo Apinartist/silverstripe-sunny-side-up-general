@@ -165,7 +165,7 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(is_array($URLSegments) && count($URLSegments)) {
-			$itemsToAdd = DataObject::get("Product", "{$bt}URLSegment{$bt} IN ('".implode('","', $URLSegments).'")');
+			$itemsToAdd = DataObject::get("Product", "{$bt}URLSegment{$bt} IN ('".implode('","', $URLSegments)."')");
 			foreach($itemsToAdd as $item) {
 				ShoppingCart::add_new_item(new self::$order_item_classname($item));
 			}
