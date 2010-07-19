@@ -24,8 +24,6 @@ var RecommendedProductsModifier = {
 
 	msgIfNoBoxIsTicked: "please select at least one product to add",
 
-	msgToConfirmAdding: "you are about to add more products to your cart, this will erase any data you have entered on this page - are you happy with that?",
-
 	anyBoxTicked: false,
 
 	cartHolderSelector: "OrderInformationEditableOuter",
@@ -46,11 +44,13 @@ var RecommendedProductsModifier = {
 			function() {
 				if(jQuery(this).is(":checked")) {
 					RecommendedProductsModifier.anyBoxTicked = true;
+					var id = jQuery(this).attr("name");
+					jQuery("#" + id).fadeOut();
 				}
 			}
 		);
 		if(true == RecommendedProductsModifier.anyBoxTicked) {
-			return confirm(RecommendedProductsModifier.msgToConfirmAdding);
+			return true;
 		}
 		else {
 			alert(RecommendedProductsModifier.msgIfNoBoxIsTicked);
