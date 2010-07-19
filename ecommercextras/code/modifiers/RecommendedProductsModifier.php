@@ -156,6 +156,7 @@ class RecommendedProductsModifier_Form extends Form {
 
 
 	public function processOrder($data, $form) {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$items = ShoppingCart::get_items();
 		$URLSegments = array();
 		foreach($data as $key => $value) {
@@ -164,7 +165,7 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(is_array($URLSegments) && count($URLSegments)) {
-			$itemsToAdd = DataObject::get("Product", 'URLSegment IN ("'.implode('","', $URLSegments).'")');
+			$itemsToAdd = DataObject::get("Product", "{$bt}URLSegment{$bt} IN ('".implode('","', $URLSegments).'")');
 			foreach($itemsToAdd as $item) {
 				ShoppingCart::add_new_item(new self::$order_item_classname($item));
 			}

@@ -60,7 +60,7 @@ class SearchableOrderReport extends SalesReport {
 			if($value) {
 				switch($key) {
 					case "OrderID":
-						$where[] = ' {$bt}Order{$bt}.{$bt}ID{$bt} = '.intval($value);
+						$where[] = " {$bt}Order{$bt}.{$bt}ID{$bt} = ".intval($value);
 						$humanWhere[] = ' OrderID equals '.intval($value);
 						break;
 					case "From":
@@ -70,7 +70,7 @@ class SearchableOrderReport extends SalesReport {
 						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
 						$t->setValue($cleanTime); //
 						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
-						$where[] = ' UNIX_TIMESTAMP({$bt}Order{$bt}.{$bt}Created{$bt}) >= "'.$exactTime.'"';
+						$where[] = " UNIX_TIMESTAMP({$bt}Order{$bt}.{$bt}Created{$bt}) >= '".$exactTime."'";
 						$humanWhere[] = ' Order on or after '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 						break;
 					case "Until":
@@ -80,25 +80,25 @@ class SearchableOrderReport extends SalesReport {
 						$cleanTime = trim(preg_replace('/([ap]m)/', "", Convert::raw2sql($_REQUEST["FromTime"])));
 						$t->setValue($cleanTime); //
 						$exactTime = strtotime($d->format("Y-m-d")." ".$t->Nice24());
-						$where[] = ' UNIX_TIMESTAMP({$bt}Order{$bt}.{$bt}Created{$bt}) <= "'.$exactTime.'"';
+						$where[] = " UNIX_TIMESTAMP({$bt}Order{$bt}.{$bt}Created{$bt}) <= '".$exactTime."'";
 						$humanWhere[] = ' Order before or on '.Date("r", $exactTime);//r = Example: Thu, 21 Dec 2000 16:01:07 +0200 // also consider: l jS \of F Y H:i Z(e)
 						break;
 					case "Email":
-						$where[] = ' {$bt}Member{$bt}.{$bt}Email{$bt} = "'.$value.'"';
+						$where[] = " {$bt}Member{$bt}.{$bt}Email{$bt} = '".$value."'";
 						$humanWhere[] = ' Customer Email equals "'.$value.'"';
 						break;
 					case "FirstName":
-						$where[] = ' {$bt}Member{$bt}.{$bt}FirstName{$bt} LIKE "%'.$value.'%"';
+						$where[] = " {$bt}Member{$bt}.{$bt}FirstName{$bt} LIKE '%".$value."%'";
 						$humanWhere[] = ' Customer First Name equals '.$value.'"';
 						break;
 					case "Surname":
-						$where[] = ' {$bt}Member{$bt}.{$bt}Surname{$bt} LIKE "%'.$value.'%"';
+						$where[] = " {$bt}Member{$bt}.{$bt}Surname{$bt} LIKE '%".$value."%'";
 						$humanWhere[] = ' Customer Surname equals "'.$value.'"';
 						break;
 					case "Status":
 						$subWhere = array();
 						foreach($value as $item) {
-							$subWhere[] = ' {$bt}Order{$bt}.{$bt}Status{$bt} = "'.$item.'"';
+							$subWhere[] = " {$bt}Order{$bt}.{$bt}Status{$bt} = '".$item."'";
 							$humanWhere[] = ' Order Status equals "'.$item.'"';
 						}
 						if(count($subWhere)) {
@@ -115,7 +115,7 @@ class SearchableOrderReport extends SalesReport {
 						break;
 					//this has been included for SearchableProductSalesReport
 					case "Product":
-						$where[] = " IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) LIKE \"%".$value."%\"";
+						$where[] = " IF(ProductVariationsForVariations.Title IS NOT NULL, CONCAT(ProductSiteTreeForVariations.Title,' : ', ProductVariationsForVariations.Title), IF(SiteTreeForProducts.Title IS NOT NULL, SiteTreeForProducts.Title, OrderAttribute.ClassName)) LIKE '%".$value."%'";
 						$humanWhere[] = ' Product includes the phrase '.$value.'"';
 						break;
 
@@ -157,7 +157,7 @@ class SearchableOrderReport extends SalesReport {
 				LEFT JOIN Payment ON {$bt}Payment{$bt}.{$bt}OrderID{$bt} = {$bt}Order{$bt}.{$bt}ID{$bt}
 			"
 		);
-		$query->select[] = 'SUM({$bt}Payment{$bt}.{$bt}Amount{$bt}) RealPayments';
+		$query->select[] = "SUM({$bt}Payment{$bt}.{$bt}Amount{$bt}) RealPayments";
 		if($having = Session::get("SearchableOrderReport.having")) {
 			$query->having($having);
 		}
@@ -188,7 +188,7 @@ class SearchableOrderReport extends SalesReport {
 		if(trim($where)) {
 		 $where = " ( $where ) AND ";
 		}
-		$where .= '({$bt}Payment{$bt}.{$bt}Status{$bt} = "Success" OR {$bt}Payment{$bt}.{$bt}Status{$bt} = "Pending" OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)';
+		$where .= "({$bt}Payment{$bt}.{$bt}Status{$bt} = 'Success' OR {$bt}Payment{$bt}.{$bt}Status{$bt} = 'Pending' OR  {$bt}Payment{$bt}.{$bt}Status{$bt} IS NULL)";
 		$query = singleton('Order')->buildSQL(
 			$where,
 			$sort = "{$bt}Order{$bt}.{$bt}Created{$bt} DESC",
