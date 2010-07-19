@@ -55,7 +55,7 @@ var RecommendedProductsModifier = {
 			jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").addClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
 			return false;
 		}
-	}
+	},
 
 
 	ajaxForm: function() {
