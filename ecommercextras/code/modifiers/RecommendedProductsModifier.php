@@ -153,8 +153,6 @@ class RecommendedProductsModifier_Form extends Form {
 		return parent::__construct($controller, $name, $fields, $actions, $requiredFields);
 	}
 
-
-
 	public function processOrder($data, $form) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$items = ShoppingCart::get_items();
@@ -165,9 +163,11 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(is_array($URLSegments) && count($URLSegments)) {
-			$itemsToAdd = DataObject::get("Product", "{$bt}URLSegment{$bt} IN ('".implode('","', $URLSegments)."')");
-			foreach($itemsToAdd as $item) {
-				ShoppingCart::add_new_item(new self::$order_item_classname($item));
+			$itemsToAdd = DataObject::get("Product", "{$bt}URLSegment{$bt} IN ('".implode("','", $URLSegments)."')");
+			if($itemsToAdd) {
+				foreach($itemsToAdd as $item) {
+					ShoppingCart::add_new_item(new self::$order_item_classname($item));
+				}
 			}
 		}
 		if(Director::is_ajax()) {
