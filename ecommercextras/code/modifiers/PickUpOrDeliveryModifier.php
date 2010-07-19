@@ -92,7 +92,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 	}
 
 	static function get_form($controller) {
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery-form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 		AjaxOrder::include_basic_module_requirements();
 		Requirements::block("ecommerce/javascript/ecommerce.js");

@@ -253,7 +253,7 @@ class GoogleMap extends ViewableData {
 		ContentNegotiator::disable();
 		if(!self::$includesDone) {
 			Requirements::themedCSS("googleMap");
-			//Requirements::javascript("mysite/javascript/jQuery.js");
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript('googlemap/javascript/googleMapStatic.js');
 			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
 			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');

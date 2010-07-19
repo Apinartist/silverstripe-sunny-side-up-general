@@ -15,8 +15,8 @@ class SalesAdmin extends ReportAdmin {
 	public function init() {
 		parent::init();
 		//generic requirements
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/livequery/jquery.livequery.js");
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/plugins/form/jquery.form.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery-livequery/jquery.livequery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery-form/jquery.form.js");
 
 
 		//payment requirements
