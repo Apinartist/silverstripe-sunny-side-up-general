@@ -15,6 +15,7 @@
 
 var RecommendedProductsModifier = {
 
+	loadingClass: "loading",
 	formID: "RecommendedProductsModifier_Form_RecommendedProducts",
 
 	formButtonID: "RecommendedProductsModifier_Form_RecommendedProducts_action_processOrder",
@@ -37,10 +38,11 @@ var RecommendedProductsModifier = {
 	},
 
 	checkForTickedBoxes: function() {
+		RecommendedProductsModifier.ajaxForm();
 		RecommendedProductsModifier.anyBoxTicked = false;
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").each(
 			function() {
-				if(jQuery(this).is(':checked')) {
+				if(jQuery(this).is(":checked")) {
 					RecommendedProductsModifier.anyBoxTicked = true;
 				}
 			}
@@ -54,4 +56,30 @@ var RecommendedProductsModifier = {
 			return false;
 		}
 	}
+
+
+	ajaxForm: function() {
+		var options = {
+			beforeSubmit:  RecommendedProductsModifier.showRequest,  // pre-submit callback
+			success: RecommendedProductsModifier.showResponse,  // post-submit callback
+			dataType: "html"
+		};
+		jQuery("#" + RecommendedProductsModifier.formID).ajaxForm(options);
+	},
+
+	// pre-submit callback
+	showRequest: function (formData, jqForm, options) {
+		jQuery("#" + RecommendedProductsModifier.formID).addClass(RecommendedProductsModifier.loadingClass);
+		return true;
+	},
+
+	// post-submit callback
+	showResponse: function (responseText, statusText)  {
+		//redo quantity boxes
+		//jQuery("#" + PickUpOrDeliveryModifier.updatedDivID).css("height", "auto");
+		jQuery("#" + RecommendedProductsModifier.formID).removeClass(RecommendedProductsModifier.loadingClass);
+		//AjaxCheckout.setChanges(responseText);
+	},
+
+
 }
