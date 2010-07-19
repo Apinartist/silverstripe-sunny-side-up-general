@@ -28,6 +28,8 @@ var RecommendedProductsModifier = {
 
 	cartHolderSelector: "OrderInformationEditableOuter",
 
+	itemsToBeHidden: "",
+
 	init: function() {
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").removeClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
 		jQuery("#" + RecommendedProductsModifier.formButtonID).click(
@@ -40,12 +42,14 @@ var RecommendedProductsModifier = {
 	checkForTickedBoxes: function() {
 		RecommendedProductsModifier.ajaxForm();
 		RecommendedProductsModifier.anyBoxTicked = false;
+		RecommendedProductsModifier.itemsToBeHidden = "#NOTHINGHERE"
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").each(
 			function() {
 				if(jQuery(this).is(":checked")) {
 					RecommendedProductsModifier.anyBoxTicked = true;
 					var id = jQuery(this).attr("name");
-					jQuery("#" + id).fadeOut();
+					RecommendedProductsModifier.itemsToBeHidden += ", #" + id;
+
 				}
 			}
 		);
@@ -86,6 +90,7 @@ var RecommendedProductsModifier = {
 		//AjaxCheckout.setChanges(responseText);
 		AjaxCheckout.redoCartAjax();
 		AjaxCheckout.redoCountryQuery();
+		jQuery(RecommendedProductsModifier.itemsToBeHidden).fadeOut();
 	}
 
 
