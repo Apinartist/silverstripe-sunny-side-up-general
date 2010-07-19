@@ -84,7 +84,9 @@ var RecommendedProductsModifier = {
 		jQuery("#" + RecommendedProductsModifier.formID).removeClass(RecommendedProductsModifier.loadingClass);
 		jQuery("#" + RecommendedProductsModifier.cartHolderSelector).html(responseText);
 		//AjaxCheckout.setChanges(responseText);
-	},
+		AjaxCheckout.redoCartAjax();
+		AjaxCheckout.redoCountryQuery();
+	}
 
 
 }
