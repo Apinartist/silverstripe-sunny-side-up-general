@@ -41,6 +41,7 @@ var RecommendedProductsModifier = {
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").each(
 			function() {
 				if(jQuery(this).is(":checked")) {
+					jQuery(this).attr("checked", "");
 					RecommendedProductsModifier.anyBoxTicked = true;
 					var id = jQuery(this).attr("name");
 					RecommendedProductsModifier.itemsToBeHidden += ", #" + id;
@@ -72,6 +73,7 @@ var RecommendedProductsModifier = {
 	// pre-submit callback
 	showRequest: function (formData, jqForm, options) {
 		if(RecommendedProductsModifier.checkForTickedBoxes()) {
+
 			jQuery("#" + RecommendedProductsModifier.formID).addClass(RecommendedProductsModifier.loadingClass);
 			jQuery("#" + RecommendedProductsModifier.cartHolderSelector).html("updating...");
 			return true;
