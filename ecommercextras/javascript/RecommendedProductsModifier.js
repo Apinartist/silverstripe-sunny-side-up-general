@@ -28,7 +28,7 @@ var RecommendedProductsModifier = {
 
 	anyBoxTicked: false,
 
-	cartHolderSelector: "#OrderInformationEditableOuter",
+	cartHolderSelector: "OrderInformationEditableOuter",
 
 	init: function() {
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").removeClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
@@ -65,7 +65,7 @@ var RecommendedProductsModifier = {
 			beforeSubmit:  RecommendedProductsModifier.showRequest,  // pre-submit callback
 			success: RecommendedProductsModifier.showResponse,  // post-submit callback
 			dataType: "html",
-			target: RecommendedProductsModifier.cartHolderSelector
+			target: RecommendedProductsModifier.cartHolder
 		};
 		jQuery("#" + RecommendedProductsModifier.formID).ajaxForm(options);
 	},
