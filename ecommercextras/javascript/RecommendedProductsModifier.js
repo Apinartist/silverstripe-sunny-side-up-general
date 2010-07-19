@@ -82,6 +82,7 @@ var RecommendedProductsModifier = {
 		//redo quantity boxes
 		//jQuery("#" + PickUpOrDeliveryModifier.updatedDivID).css("height", "auto");
 		jQuery("#" + RecommendedProductsModifier.formID).removeClass(RecommendedProductsModifier.loadingClass);
+		jQuery("#" + RecommendedProductsModifier.cartHolderSelector).html(responseText);
 		//AjaxCheckout.setChanges(responseText);
 	},
 
