@@ -31,16 +31,11 @@ var RecommendedProductsModifier = {
 	itemsToBeHidden: "",
 
 	init: function() {
+		RecommendedProductsModifier.ajaxForm();
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").removeClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
-		jQuery("#" + RecommendedProductsModifier.formButtonID).click(
-			function() {
-				return RecommendedProductsModifier.checkForTickedBoxes();
-			}
-		);
 	},
 
 	checkForTickedBoxes: function() {
-		RecommendedProductsModifier.ajaxForm();
 		RecommendedProductsModifier.anyBoxTicked = false;
 		RecommendedProductsModifier.itemsToBeHidden = "#NOTHINGHERE"
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").each(
@@ -76,9 +71,12 @@ var RecommendedProductsModifier = {
 
 	// pre-submit callback
 	showRequest: function (formData, jqForm, options) {
-		jQuery("#" + RecommendedProductsModifier.formID).addClass(RecommendedProductsModifier.loadingClass);
-		jQuery("#" + RecommendedProductsModifier.cartHolderSelector).html("updating...");
-		return true;
+		if(RecommendedProductsModifier.checkForTickedBoxes()) {
+			jQuery("#" + RecommendedProductsModifier.formID).addClass(RecommendedProductsModifier.loadingClass);
+			jQuery("#" + RecommendedProductsModifier.cartHolderSelector).html("updating...");
+			return true;
+		}
+		return false;
 	},
 
 	// post-submit callback
