@@ -131,3 +131,9 @@ SalesReport::set_full_export_select_statement(
  * TO: <td id="$TableTotalID" class="price">$TableValue</td>
  * IN: OrderInformation_Editable.ss, Order_Content.ss
  **/
+
+if(class_exists("SS_Report")) {
+	SS_Report::register('SalesAdmin', 'SearchableOrderReport',10);
+	SS_Report::register('SalesAdmin', 'SearchableProductSalesReport',20);
+	SS_Report::register('SalesAdmin', 'SearchablePaymentReport',30);
+}
