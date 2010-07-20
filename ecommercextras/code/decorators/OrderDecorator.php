@@ -47,11 +47,11 @@ class OrderDecorator extends DataObjectDecorator {
 				'Member.Email' => array('title' => 'Customer Email', 'filter' => 'PartialMatchFilter'),
 				'Status'/*,
 				'From' => array(
-					'field' => 'CalendarDateField',
+					'field' => 'DateField',
 					'filter' => 'OrderDecorator_EqualOrGreaterFilter'
 				),
 				'To' => array(
-					'field' => 'CalendarDateField',
+					'field' => 'DateField',
 					'filter' => 'OrderDecorator_EqualOrLessFilter'
 				)*/
 			)

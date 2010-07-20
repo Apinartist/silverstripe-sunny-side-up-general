@@ -38,8 +38,8 @@ class TrainingPage extends Page {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new CalendarDateField("Date", "Start Date"));
-		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new CalendarDateField("EndDate", "End Date - can be left blank for one day events"));
+		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new DateField("Date", "Start Date"));
+		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new DateField("EndDate", "End Date - can be left blank for one day events"));
 		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new TextField("Location"));
 		$fields->addFieldToTab("Root.Content.WhoWhereWhat", new CurrencyField("Price"));
 		$fields->addFieldToTab("Root.Content.MoreInformation", new FileIFrameField("DownloadFile","Download File"));

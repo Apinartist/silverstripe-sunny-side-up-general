@@ -41,9 +41,9 @@ class SearchablePaymentReport extends PaymentsReport {
 		}
 		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Payment Status", $dropDownValues));
 		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
-		$fields->addFieldToTab("Root.Search", new CalendarDateField("From", "From..."));
+		$fields->addFieldToTab("Root.Search", new DateField("From", "From..."));
 		$fields->addFieldToTab("Root.Search", new DropdownTimeField("FromTime", "Start time...", self::get_default_from_time_as_full_date_time(), "H:i a"));
-		$fields->addFieldToTab("Root.Search", new CalendarDateField("Until", "Until..."));
+		$fields->addFieldToTab("Root.Search", new DateField("Until", "Until..."));
 		$fields->addFieldToTab("Root.Search", new DropdownTimeField("UntilTime", "End time...", self::get_default_until_time_as_full_date_time(), "H:i a"));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Amout at least..."));
 		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Amount no more than ..."));

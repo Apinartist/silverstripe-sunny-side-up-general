@@ -427,8 +427,8 @@ class StandingOrder extends DataObject {
 				new Tab('Main',
 					new AutocompleteTextField('Email', 'Email (Auto complete)', 'admin/security/autocomplete/Email'),
 					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
-					new CalendarDateField('Start', 'Start'),
-					new CalendarDateField('End', 'End (Optional)'),
+					new DateField('Start', 'Start'),
+					new DateField('End', 'End (Optional)'),
 					new ListboxField('Period', 'Period', self::get_period_fields(), null, count(self::get_period_fields())),
 					new ListboxField(
 						'DeliveryDay',
@@ -489,8 +489,8 @@ class StandingOrder extends DataObject {
 HTML
 					),
 					new DropdownField('Status', 'Status', self::$status_nice),
-					new CalendarDateField('Start', 'Start'),
-					new CalendarDateField('End', 'End (Optional)'),
+					new DateField('Start', 'Start'),
+					new DateField('End', 'End (Optional)'),
 					new ListboxField('Period', 'Period', self::get_period_fields(), null, count(self::get_period_fields())),
 					new ListboxField(
 						'DeliveryDay',
@@ -563,8 +563,8 @@ HTML
 					new ReadonlyField('Readonly[Member]', 'Member', $this->Member()->getTitle().' ('.$this->Member()->Email.')'),
 					new DropdownField('Status', 'Status', self::$status_nice),
 					new ListboxField('PaymentMethod', 'Payment Method', self::get_payment_methods(), null, count(self::get_payment_methods())),
-					new CalendarDateField('Start', 'Start'),
-					new CalendarDateField('End', 'End (Optional)'),
+					new DateField('Start', 'Start'),
+					new DateField('End', 'End (Optional)'),
 					new DropdownField('Period', 'Period', self::get_period_fields()),
 					new TextField('DeliveryDay', 'Delivery Day'),
 					new TextareaField('Notes', 'Notes')

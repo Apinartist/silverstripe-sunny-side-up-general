@@ -41,8 +41,8 @@ class StandingOrderForm extends Form {
 
 		$fields->push(new HeaderField('DetailsHeader', 'Standing Order Details'));
 		$fields->push(new ListboxField('PaymentMethod', 'Payment Method', StandingOrder::get_payment_methods(), null, count(StandingOrder::get_payment_methods())));
-		$fields->push(new CalendarDateField('Start', 'Start'));
-		$fields->push(new CalendarDateField('End', 'End'));
+		$fields->push(new DateField('Start', 'Start'));
+		$fields->push(new DateField('End', 'End'));
 		$fields->push(new ListboxField('Period', 'Period', StandingOrder::get_period_fields(), null, count(StandingOrder::get_period_fields())));
 
 		$fields->push(new ListboxField(

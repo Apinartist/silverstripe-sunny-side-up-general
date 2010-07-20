@@ -69,7 +69,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 					new HeaderField(_t('OrderReport.CHANGESTATUS', 'Change Order Status'), 3),
 					$order->obj('Status')->formField('Status', null, null, $order->Status),
 					new TextField('DispatchedBy', "Dispatched By"),
-					new CalendarDateField('DispatchedOn', "Dispatched On"),
+					new DateField('DispatchedOn', "Dispatched On"),
 					new TextField('DispatchTicket', "Dispatch Ticket Code"),
 					new TextField('PaymentCode', "Payment Code / Reference"),
 					new CheckboxField('PaymentOK', "Payment has cleared (NOTE: Pending Payments will be updated to Succesful - use with care)"),
