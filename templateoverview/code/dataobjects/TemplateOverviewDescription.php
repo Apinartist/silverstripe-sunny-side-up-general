@@ -24,6 +24,10 @@ class TemplateOverviewDescription extends DataObject {
 		"Image5" => "Image"
 	);
 
+	static $belongs_many_many = array(
+		"TemplateOverviewTestItems" => "TemplateOverviewTestItem"
+	);
+
 	public static $searchable_fields = array(
 		"ClassNameLink" => "PartialMatchFilter"
 	);

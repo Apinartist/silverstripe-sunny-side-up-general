@@ -16,6 +16,11 @@ class TemplateOverviewTestItem extends DataObject {
 		"Sort" => "Int"
 	);
 
+	static $many_many = array(
+		"TemplateOverviewDescriptions" => "TemplateOverviewDescription"
+	);
+
+
 	public static $casting = array(); //adds computed fields that can also have a type (e.g.
 
 	public static $searchable_fields = array(
