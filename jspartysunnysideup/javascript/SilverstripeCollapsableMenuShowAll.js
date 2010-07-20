@@ -34,6 +34,11 @@ initiate like this:
 
 */
 
+;(function($) {
+	$(document).ready(function() {
+		jQuery.SilverstripeCollapsableMenu.init();
+	});
+})(jQuery);
 
 jQuery.extend({
 
