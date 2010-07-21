@@ -19,8 +19,9 @@ class SearchableOrderReport extends SalesReport {
 		static function get_default_until_time() { return self::$default_until_time;}
 		static function get_default_until_time_as_full_date_time() {return date("Y-m-d",time()) . " " . date("H:i",strtotime(self::get_default_until_time()));}
 
-	function getCMSFields() {
-		$fields = parent::getCMSFields();
+	function parameterFields() {
+		//$fields = parent::getCMSFields();
+		$fields =new FieldSet();
 		$stats[] = "Count: ".$this->statistic("count");
 		$stats[] = "Sum: ".$this->currencyFormat($this->statistic("sum"));
 		$stats[] = "Avg: ".$this->currencyFormat($this->statistic("avg"));
@@ -32,21 +33,21 @@ class SearchableOrderReport extends SalesReport {
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
 			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
-			$fields->addFieldToTab("Root.Search", new FormAction('clearSearch', 'Clear Search'));
+			$fields->push( new FormAction('clearSearch', 'Clear Search'));
 		}
-		$fields->addFieldToTab("Root.Search", new CheckboxSetField("Status", "Order Status", OrderDecorator::get_order_status_options()));
-		$fields->addFieldToTab("Root.Search", new NumericField("OrderID", "Order ID"));
-		$fields->addFieldToTab("Root.Search", new DateField("From", "From..."));
-		$fields->addFieldToTab("Root.Search", new DropdownTimeField("FromTime", "Start time...", self::get_default_from_time_as_full_date_time(), "H:i a"));
-		$fields->addFieldToTab("Root.Search", new DateField("Until", "Until..."));
-		$fields->addFieldToTab("Root.Search", new DropdownTimeField("UntilTime", "End time...", self::get_default_until_time_as_full_date_time(), "H:i a"));
-		$fields->addFieldToTab("Root.Search", new TextField("Email", "Email"));
-		$fields->addFieldToTab("Root.Search", new TextField("FirstName", "First Name"));
-		$fields->addFieldToTab("Root.Search", new TextField("Surname", "Surname"));
-		$fields->addFieldToTab("Root.Search", new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
-		$fields->addFieldToTab("Root.Search", new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
-		$fields->addFieldToTab("Root.Search", new FormAction('doSearch', 'Apply Search'));
-		$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details (do a search first to limit results)</a>'));
+		$fields->push(new CheckboxSetField("Status", "Order Status", OrderDecorator::get_order_status_options()));
+		$fields->push(new NumericField("OrderID", "Order ID"));
+		$fields->push(new DateField("From", "From..."));
+		$fields->push(new TimeField("FromTime", "Start time...", self::get_default_from_time_as_full_date_time(), "H:i a"));
+		$fields->push(new DateField("Until", "Until..."));
+		$fields->push(new TimeField("UntilTime", "End time...", self::get_default_until_time_as_full_date_time(), "H:i a"));
+		$fields->push(new TextField("Email", "Email"));
+		$fields->push(new TextField("FirstName", "First Name"));
+		$fields->push(new TextField("Surname", "Surname"));
+		$fields->push(new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
+		$fields->push(new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
+		$fields->push(new FormAction('doSearch', 'Apply Search'));
+		//$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details (do a search first to limit results)</a>'));
 		return $fields;
 	}
 

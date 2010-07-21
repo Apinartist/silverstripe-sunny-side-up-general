@@ -3,7 +3,7 @@
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package ecommercextras
  */
-class SalesReport extends SSReport {
+class SalesReport extends SS_Report {
 
 
 	protected static $full_export_select_statement =

@@ -133,7 +133,9 @@ SalesReport::set_full_export_select_statement(
  **/
 
 if(class_exists("SS_Report")) {
-	SS_Report::register('SalesAdmin', 'SearchableOrderReport',10);
-	SS_Report::register('SalesAdmin', 'SearchableProductSalesReport',20);
-	SS_Report::register('SalesAdmin', 'SearchablePaymentReport',30);
+	SS_Report::register('ReportAdmin', 'SearchableOrderReport',10);
+	SS_Report::register('ReportAdmin', 'SearchableProductSalesReport',20);
+	SS_Report::register('ReportAdmin', 'SearchablePaymentReport',30);
+	SS_Report::register('ReportAdmin', 'SalesReport',30);
+	SS_Report::register('ReportAdmin', 'PaymentsReport',30);
 }
