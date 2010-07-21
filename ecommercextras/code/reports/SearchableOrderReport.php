@@ -28,10 +28,10 @@ class SearchableOrderReport extends SalesReport {
 		$stats[] = "Min: ".$this->currencyFormat($this->statistic("min"));
 		$stats[] = "Max: ".$this->currencyFormat($this->statistic("max"));
 		if($this->statistic("count") > 3) {
-			$fields->addFieldToTab("Root.Report", new LiteralField("stats", '<h2>Payment Statistics</h2><ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
+			$fields->push(new LiteralField("stats", '<h2>Payment Statistics</h2><ul><li>'.implode('</li><li>', $stats).'</li></ul>'));
 		}
 		if($humanWhere = Session::get("SearchableOrderReport.humanWhere")) {
-			$fields->addFieldToTab("Root.Report", new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
+			$fields->push(new LiteralField("humanWhere", "<p>Current Search: ".$humanWhere."</p>"), "ReportDescription");
 			$fields->removeByName("ReportDescription");
 			$fields->push( new FormAction('clearSearch', 'Clear Search'));
 		}
@@ -47,7 +47,7 @@ class SearchableOrderReport extends SalesReport {
 		$fields->push(new NumericField("HasMinimumPayment", "Has Minimum Payment of ..."));
 		$fields->push(new NumericField("HasMaximumPayment", "Has Maximum Payment of ..."));
 		$fields->push(new FormAction('doSearch', 'Apply Search'));
-		//$fields->addFieldToTab("Root.ExportDetails", new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details (do a search first to limit results)</a>'));
+		$fields->push(new LiteralField('doExport', '<a href="SalesReport_Handler/fullsalesexport/">export all details (do a search first to limit results)</a>'));
 		return $fields;
 	}
 
