@@ -7,7 +7,7 @@
 
 class TemplateOverviewDescriptionModelAdmin extends ModelAdmin {
 
-	public static $managed_models = array("TemplateOverviewDescription");
+	public static $managed_models = array("TemplateOverviewDescription", "TemplateOverviewTestItem", "TemplateOverviewTestItemEntry");
 
 	public static $url_segment = 'templates';
 

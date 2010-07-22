@@ -16,6 +16,10 @@ class TemplateOverviewTestItem extends DataObject {
 		"Sort" => "Int"
 	);
 
+	static $has_many = array(
+		"TemplateOverviewTestItemEntry" => "TemplateOverviewTestItemEntry"
+	);
+
 	static $many_many = array(
 		"TemplateOverviewDescriptions" => "TemplateOverviewDescription"
 	);

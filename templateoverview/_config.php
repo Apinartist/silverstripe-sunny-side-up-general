@@ -14,6 +14,5 @@ if(Director::isDev()) {
 	Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
 }
 */
-//SideBarOption::set_side_bar_options(array("Code", "Title"));
 //===================---------------- END templateoverview MODULE ----------------===================
 
