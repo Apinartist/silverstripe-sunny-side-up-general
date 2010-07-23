@@ -161,7 +161,8 @@ This should be embedded like this;
 
 HOW TO START A PROJECT
 -----------------------------------------------------------
-The following tables may need a fresh start:
+When you finish testing and you want to delete all orders,
+then following tables may need a fresh start:
 
 "BlockCountriesModifier",
 "BonusProductModifier",
