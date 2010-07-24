@@ -397,7 +397,7 @@ class PickUpOrDeliveryModifier_Form extends OrderModifierForm {
 		}
 		Order::save_current_order();
 		if(Director::is_ajax()) {
-			return ShoppingCartExtension_Controller::modifier_json_code();
+			return ShoppingCart_Controller::json_code();
 		}
 		else {
 			Director::redirect(CheckoutPage::find_link());
