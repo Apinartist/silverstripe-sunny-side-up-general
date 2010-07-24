@@ -18,7 +18,6 @@
 // *** EXTENSIONS
 //Object::add_extension('SiteTree', 'AjaxOrder');
 //Object::add_extension('ContentController', 'AjaxOrder_Controller');
-//Object::add_extension('Payment', 'PaymentDecorator');
 
 // *** ORDER ADDITIONS
 //Order::set_order_id_start_number(1000);
