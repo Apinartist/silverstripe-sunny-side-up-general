@@ -88,9 +88,9 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 					$fields,
 					$actions
 				);
-				$OrderStatusLogWithDetails = DataObject::get_one("OrderStatusLogWithDetails", "OrderStatusLog.OrderID = ".$order->ID, $cache = false, $sortBy = "Created DESC");
-				if($OrderStatusLogWithDetails) {
-					$form->loadDataFrom($OrderStatusLogWithDetails);
+				$OrderStatusLog = DataObject::get_one("OrderStatusLog", "OrderStatusLog.OrderID = ".$order->ID, $cache = false, $sortBy = "Created DESC");
+				if($OrderStatusLog) {
+					$form->loadDataFrom($OrderStatusLog);
 				}
 				return $form;
 			}
@@ -109,7 +109,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 	function StatusLog() {
 		$table = new TableListField(
 			'StatusTable',
-			'OrderStatusLogWithDetails',
+			'OrderStatusLog',
 			array(
 				'Created' => 'Received',
 				'Status' => 'Status',
@@ -133,7 +133,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 
 		return new Form(
 			$this,
-			'OrderStatusLogWithDetailsForm',
+			'OrderStatusLogForm',
 			new FieldSet(
 				new HeaderField('Order Status History',3),
 				new HiddenField('ID'),
@@ -165,7 +165,7 @@ class OrderReportWithLog_Popup extends OrderReport_Popup {
 			}
 		}
 	// if the status was changed or a note was added, create a new log-object
-		$orderlog = new OrderStatusLogWithDetails();
+		$orderlog = new OrderStatusLog();
 		$orderlog->OrderID = $order->ID;
 		$form->saveInto($orderlog);
 		$orderlog->write();
