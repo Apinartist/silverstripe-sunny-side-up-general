@@ -17,17 +17,17 @@ class AjaxOrderDecorator extends DataObjectDecorator {
 
 	/* why do we need this???
 	public function can($member) {
-		$this->addAjaxLinkRequirements();
+		AjaxOrderDecorator::included_basic_ajax_order_link_requirements();
 	}
 	*/
 
 	function addLinkAjax() {
-		$this->addAjaxLinkRequirements();
+		AjaxOrderDecorator_Controller::included_basic_ajax_order_link_requirements();
 		return $this->owner->URLSegment."/additemwithajax/".$this->owner->ID.'/'.$this->owner->ClassName;
 	}
 
 	function removeLinkAjax() {
-		$this->addAjaxLinkRequirements();
+		AjaxOrderDecorator_Controller::included_basic_ajax_order_link_requirements();
 		return $this->owner->URLSegment."/removeitemwithajax/".$this->owner->ID.'/';
 	}
 
@@ -57,6 +57,7 @@ class AjaxOrderDecorator_Controller extends Extension {
 		static function set_order_item_classname($v){self::$order_item_classname = $v;}
 
 	static $allowed_actions = array(
+		"showsimplecart",
 		"additemwithajax",
 		"removeitemwithajax",
 		"modifierformsubmit",
@@ -68,47 +69,14 @@ class AjaxOrderDecorator_Controller extends Extension {
 	);
 
 
-	public static function include_basic_module_requirements() {
+	public static function include_basic_ajax_order_requirements() {
 		Requirements::block("ecommerce/javascript/ecommerce.js");
 		Requirements::themedCSS("EcommerceXtras");
 	}
 
-	public static function add_ajax_requirements() {
+	function included_basic_ajax_order_link_requirements() {
 		if(!self::$added_ajax_links) {
-			self::include_basic_module_requirements();
-			if(Director::get_current_page() instanceOf CheckoutPage) {
-				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
-			}
-			else {
-				Requirements::javascript("ecommercextras/javascript/AjaxCart.js");
-				if(self::$loading_cart_text) {
-					Requirements::customScript(
-						'jQuery(document).ready(function() {AjaxCart.set_LoadingText("'.Convert::raw2js(self::$loading_cart_text).'")});',
-						"AjaxOrder_set_LoadingText"
-					);
-				}
-				if(self::$in_cart_text) {
-					Requirements::customScript(
-						'jQuery(document).ready(function() {AjaxCart.set_InCartText("'.Convert::raw2js(self::$in_cart_text).'")});',
-						"AjaxOrder_set_InCartText"
-					);
-				}
-				if(self::$confirm_delete_text) {
-					Requirements::customScript(
-						'jQuery(document).ready(function() {AjaxCart.set_ConfirmDeleteText("'.Convert::raw2js(self::$confirm_delete_text).'")});',
-						"AjaxOrder_set_ConfirmDeleteText"
-					);
-				}
-			}
-			self::$added_ajax_links = true;
-		}
-	}
-
-
-
-	function addAjaxLinkRequirements() {
-		if(!self::$added_ajax_links) {
-			self::include_basic_module_requirements();
+			self::include_basic_ajax_order_requirements();
 			if($this->owner instanceOf CheckoutPage) {
 				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 			}
@@ -153,14 +121,7 @@ class AjaxOrderDecorator_Controller extends Extension {
 	function showsimplecart() {
 		return $this->ajaxGetSimpleCart();
 	}
-	private function ajaxGetSimpleCart() {
-		if($this->owner->isAjax()) {
-			return $this->owner->renderWith("AjaxSimpleCart");
-		}
-		else {
-			Director::redirectBack();
-		}
-	}
+
 
 	function removeitemwithajax() {
 		$id = intval(Director::URLParam("ID"));
@@ -189,7 +150,7 @@ class AjaxOrderDecorator_Controller extends Extension {
 
 
 	public function Cart() {
-		$this->addAjaxLinkRequirements();
+		self::included_basic_ajax_order_link_requirements();
 		HTTP::set_cache_age(0);
 		return ShoppingCart::current_order();
 	}
@@ -237,6 +198,17 @@ class AjaxOrderDecorator_Controller extends Extension {
 		return CheckoutPage::find_link();
 	}
 
+
+	// ___ HELP FUNCTIONS
+
+	private function ajaxGetSimpleCart() {
+		if($this->owner->isAjax()) {
+			return $this->owner->renderWith("AjaxSimpleCart");
+		}
+		else {
+			Director::redirectBack();
+		}
+	}
 
 }
 
