@@ -53,9 +53,9 @@ class AjaxOrderDecorator extends DataObjectDecorator {
 	}
 
 	function addAjaxLinkRequirements() {
-		self::include_basic_module_requirements();
 		if(!self::$added_ajax_links) {
-			if($this->IsCheckoutPage()) {
+			self::include_basic_module_requirements();
+			if($this->owner instanceOf CheckoutPage) {
 				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 			}
 			else {
@@ -199,13 +199,6 @@ class AjaxOrderDecorator_Controller extends Extension {
 	public function SubTotalCartValue() {
 		$order = ShoppingCart::current_order();
 		return $order->SubTotal;
-	}
-
-	public function IsCheckoutPage() {
-		if($this->owner instanceOf CheckoutPage) {
-			return true;
-		}
-		return false;
 	}
 
 	public function AccountPage() {
