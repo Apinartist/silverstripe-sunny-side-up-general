@@ -15,23 +15,6 @@
 
 class AjaxOrderDecorator extends DataObjectDecorator {
 
-	protected static $loading_cart_text = "Loading Cart ...";
-		public static function set_loading_cart_text($v) {self::$loading_cart_text = $v;}
-
-	protected static $in_cart_text = "In Cart";
-		public static function set_in_cart_text($v) {self::$in_cart_text = $v;}
-
-	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
-		public static function set_confirm_delete_text($v) {self::$confirm_delete_text = $v;}
-
-	private static $added_ajax_links = false;
-
-	public static function include_basic_module_requirements() {
-		Requirements::block("ecommerce/javascript/ecommerce.js");
-		Requirements::themedCSS("EcommerceXtras");
-	}
-
-
 	/* why do we need this???
 	public function can($member) {
 		$this->addAjaxLinkRequirements();
@@ -51,6 +34,77 @@ class AjaxOrderDecorator extends DataObjectDecorator {
 	function retrieveSimpleCartLink() {
 		return $this->owner->URLSegment."/showsimplecart/";
 	}
+
+}
+
+class AjaxOrderDecorator_Controller extends Extension {
+
+	protected static $loading_cart_text = "Loading Cart ...";
+		public static function set_loading_cart_text($v) {self::$loading_cart_text = $v;}
+
+	protected static $in_cart_text = "In Cart";
+		public static function set_in_cart_text($v) {self::$in_cart_text = $v;}
+
+	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
+		public static function set_confirm_delete_text($v) {self::$confirm_delete_text = $v;}
+
+	private static $added_ajax_links = false;
+
+	protected static $product_classname = "Product";
+		static function set_product_classname($v){self::$product_classname = $v;}
+
+	protected static $order_item_classname = "Product_OrderItem";
+		static function set_order_item_classname($v){self::$order_item_classname = $v;}
+
+	static $allowed_actions = array(
+		"additemwithajax",
+		"removeitemwithajax",
+		"modifierformsubmit",
+		"getajaxcheckoutcart",
+		"RecommendedProducts",
+		"ModifierForm",
+		"OrderFormWithoutShippingAddress",
+		"OrderFormWithShippingAddress"
+	);
+
+
+	public static function include_basic_module_requirements() {
+		Requirements::block("ecommerce/javascript/ecommerce.js");
+		Requirements::themedCSS("EcommerceXtras");
+	}
+
+	public static function add_ajax_requirements() {
+		if(!self::$added_ajax_links) {
+			self::include_basic_module_requirements();
+			if(Director::get_current_page() instanceOf CheckoutPage) {
+				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
+			}
+			else {
+				Requirements::javascript("ecommercextras/javascript/AjaxCart.js");
+				if(self::$loading_cart_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_LoadingText("'.Convert::raw2js(self::$loading_cart_text).'")});',
+						"AjaxOrder_set_LoadingText"
+					);
+				}
+				if(self::$in_cart_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_InCartText("'.Convert::raw2js(self::$in_cart_text).'")});',
+						"AjaxOrder_set_InCartText"
+					);
+				}
+				if(self::$confirm_delete_text) {
+					Requirements::customScript(
+						'jQuery(document).ready(function() {AjaxCart.set_ConfirmDeleteText("'.Convert::raw2js(self::$confirm_delete_text).'")});',
+						"AjaxOrder_set_ConfirmDeleteText"
+					);
+				}
+			}
+			self::$added_ajax_links = true;
+		}
+	}
+
+
 
 	function addAjaxLinkRequirements() {
 		if(!self::$added_ajax_links) {
@@ -81,32 +135,6 @@ class AjaxOrderDecorator extends DataObjectDecorator {
 			}
 			self::$added_ajax_links = true;
 		}
-	}
-}
-
-class AjaxOrderDecorator_Controller extends Extension {
-
-	protected static $product_classname = "Product";
-
-	protected static $order_item_classname = "Product_OrderItem";
-
-	static $allowed_actions = array(
-		"additemwithajax",
-		"removeitemwithajax",
-		"modifierformsubmit",
-		"getajaxcheckoutcart",
-		"RecommendedProducts",
-		"ModifierForm",
-		"OrderFormWithoutShippingAddress",
-		"OrderFormWithShippingAddress"
-	);
-
-	static function set_order_item_classname($v){
-		self::$order_item_classname = $v;
-	}
-
-	static function set_product_classname($v){
-		self::$product_classname = $v;
 	}
 
 	function additemwithajax() {

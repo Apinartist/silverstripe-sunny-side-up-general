@@ -68,9 +68,9 @@ LiveEmailCheckModifier::set_account_exists_message("There is already an account 
 */
 
 // *** AJAX ORDER
-//AjaxOrderDecorator::set_loading_cart_text("Loading Cart");
-//AjaxOrderDecorator::set_in_cart_text("In Cart");
-//AjaxOrder::set_confirm_delete_text("Are you sure you want to delete this item?");
+//AjaxOrderDecorator_Controller::set_loading_cart_text("Loading Cart");
+//AjaxOrderDecorator_Controller::set_in_cart_text("In Cart");
+//AjaxOrderDecorator_Controller::set_confirm_delete_text("Are you sure you want to delete this item?");
 //AjaxOrderDecorator_Controller::set_order_item_classname("Product_OrderItem");
 //AjaxOrderDecorator_Controller::set_product_classname("Product");
 
