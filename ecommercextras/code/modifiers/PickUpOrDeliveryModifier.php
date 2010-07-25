@@ -96,7 +96,8 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-form/jquery.form.js");
 		Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
-		AjaxOrderDecorator_Controller::include_basic_module_requirements();
+		// DO WE NEED IT??????????????????????
+		AjaxOrderDecorator_Controller::included_basic_ajax_order_link_requirements();
 		Requirements::block("ecommerce/javascript/ecommerce.js");
 		Requirements::javascript("ecommercextras/javascript/PickUpOrDeliveryModifier.js");
 		$array = PickUpOrDeliveryModifierOptions::get_all_as_country_array();
