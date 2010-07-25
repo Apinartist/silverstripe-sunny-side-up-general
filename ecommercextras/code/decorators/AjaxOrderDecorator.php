@@ -2,9 +2,9 @@
 /**
 * @author Nicolaas [at] sunnysideup.co.nz
 * @package: ecommerce
-* @sub-package: ecommercextras
-* @description: main class for ecommercextras that kicks things into place.
+* @description:
 * it contains a whole bunch of useful functions (e.g. number of items in cart) and ajax functionality
+* that is added to any page within a site
 * ajax works as follows:
 * - there are three types of links: add to cart, remove from cart (within cart), remove from cart (link)
 * - when you click the link: add to cart or remove from cart two things change:
@@ -13,96 +13,30 @@
 */
 
 
-class AjaxOrder extends DataObjectDecorator {
+class AjaxOrderDecorator extends DataObjectDecorator {
 
 	protected static $loading_cart_text = "Loading Cart ...";
+		public static function set_loading_cart_text($v) {self::$loading_cart_text = $v;}
 
 	protected static $in_cart_text = "In Cart";
+		public static function set_in_cart_text($v) {self::$in_cart_text = $v;}
 
 	protected static $confirm_delete_text = "Are you sure you would like to remove this item from your cart?";
+		public static function set_confirm_delete_text($v) {self::$confirm_delete_text = $v;}
 
 	private static $added_ajax_links = false;
-
-	public static function set_loading_cart_text($v) {
-		self::$loading_cart_text = $v;
-	}
-
-	public static function set_in_cart_text($v) {
-		self::$in_cart_text = $v;
-	}
 
 	public static function include_basic_module_requirements() {
 		Requirements::block("ecommerce/javascript/ecommerce.js");
 		Requirements::themedCSS("EcommerceXtras");
 	}
 
-	public static function set_confirm_delete_text($v) {
-		self::$confirm_delete_text = $v;
-	}
 
 	/* why do we need this???
 	public function can($member) {
 		$this->addAjaxLinkRequirements();
 	}
 	*/
-
-	public function Cart() {
-		$this->addAjaxLinkRequirements();
-		HTTP::set_cache_age(0);
-		return ShoppingCart::current_order();
-	}
-
-	public function NumItemsInCart() {
-		if($cart = $this->Cart()) {
-			if($items = $cart->Items()) {
-				return $items->count();
-			}
-		}
-		return 0;
-	}
-
-	public function NumItemsTimesQuantityInCart() {
-		$total = 0;
-		if($cart = $this->Cart()) {
-			if($items = $cart->Items()) {
-				foreach($items as $item) {
-					$total += $item->getQuantity();
-				}
-			}
-		}
-		return $total;
-	}
-
-
-	public function MoreThanOneNumItemsTimesQuantityInCart() {
-		return $this->NumItemsTimesQuantityInCart() > 1;
-	}
-
-	public function MoreThanOneItemInCart() {
-		return $this->NumItemsInCart() > 1;
-	}
-
-
-
-	public function SubTotalCartValue() {
-		$order = ShoppingCart::current_order();
-		return $order->SubTotal;
-	}
-
-	public function IsCheckoutPage() {
-		if($this->owner instanceOf CheckoutPage) {
-			return true;
-		}
-		return false;
-	}
-
-	public function AccountPage() {
-		return DataObject::get_one("AccountPage");
-	}
-
-	public function CheckoutLink() {
-		return CheckoutPage::find_link();
-	}
 
 	function addLinkAjax() {
 		$this->addAjaxLinkRequirements();
@@ -150,7 +84,7 @@ class AjaxOrder extends DataObjectDecorator {
 	}
 }
 
-class AjaxOrder_Controller extends Extension {
+class AjaxOrderDecorator_Controller extends Extension {
 
 	protected static $product_classname = "Product";
 
@@ -212,6 +146,8 @@ class AjaxOrder_Controller extends Extension {
 		return $this->owner->renderWith("AjaxCheckoutCart");
 	}
 
+	//TEMPLATE CONTROLS ....
+
 	function AjaxOrder() {
 		if($orderID = intval(Director::urlParam('Action') + 0)) {
 			$order = DataObject::get_by_id('Order', $orderID);
@@ -223,13 +159,63 @@ class AjaxOrder_Controller extends Extension {
 		}
 	}
 
-	function OrderFormWithoutShippingAddress() {
-		return new OrderFormWithoutShippingAddress($this->owner, 'OrderFormWithoutShippingAddress');
+
+	public function Cart() {
+		$this->addAjaxLinkRequirements();
+		HTTP::set_cache_age(0);
+		return ShoppingCart::current_order();
 	}
 
-	function OrderFormWithShippingAddress() {
-		return new OrderFormWithShippingAddress($this->owner, 'OrderFormWithShippingAddress');
+	public function NumItemsInCart() {
+		if($cart = $this->Cart()) {
+			if($items = $cart->Items()) {
+				return $items->count();
+			}
+		}
+		return 0;
 	}
+
+	public function NumItemsTimesQuantityInCart() {
+		$total = 0;
+		if($cart = $this->Cart()) {
+			if($items = $cart->Items()) {
+				foreach($items as $item) {
+					$total += $item->getQuantity();
+				}
+			}
+		}
+		return $total;
+	}
+
+
+	public function MoreThanOneNumItemsTimesQuantityInCart() {
+		return $this->NumItemsTimesQuantityInCart() > 1;
+	}
+
+	public function MoreThanOneItemInCart() {
+		return $this->NumItemsInCart() > 1;
+	}
+
+	public function SubTotalCartValue() {
+		$order = ShoppingCart::current_order();
+		return $order->SubTotal;
+	}
+
+	public function IsCheckoutPage() {
+		if($this->owner instanceOf CheckoutPage) {
+			return true;
+		}
+		return false;
+	}
+
+	public function AccountPage() {
+		return AccountPage::find_link();
+	}
+
+	public function CheckoutLink() {
+		return CheckoutPage::find_link();
+	}
+
 
 }
 

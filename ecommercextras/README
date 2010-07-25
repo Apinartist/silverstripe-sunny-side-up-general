@@ -35,16 +35,6 @@ TO DO:
 * move the testing stuff to its own decorator.
 * provide more html snippets for ajax stuff
 
-FORMS:
-
-OrderFormWithoutShippingAddress: pretty much self-explainatory.
-It takes the standard OrderForm and changes it after it has been
-built.  We do it this way to allow easy ecommerce modules
-upgrades without having to hack the core.
-
-TO DO:
-* make it even more flexible
-* make sure that values are retained if bad data is entered
 
 MODIFIERS:
 
@@ -74,30 +64,12 @@ ModifierRulesModifier:  allows you to check rules like this
 > variables can also be functions (for both getting and setting)
 > it checks for the function first and then does the variable
 
-PAYMENT:
-
-DirectCreditPayment: the option for people who want to pay into
-a bank account rather than cheque payment.
-TO DO: move to a payment module
 
 PRODUCTS:
 
 ManageablePriceOrderItem: this class extends Product_OrderItem,
 allowing you to change the price of a product when it is being
 added to the cart.  This class is required by BonusProductModifier.
-
-REPORTS:
-
-SearchableOrderReport: this is for the report section of the CMS.
-Ideally, you would actually remove the report section and show
-the sales menu item instead.
-It gives you another report that helps you search for orders.
-TO DO: show sexier reports.
-
-
-
-
-
 
 
 Installation Instructions
@@ -113,31 +85,6 @@ If you just want one or two things from this module
 then of course you are free to copy them to your
 mysite folder and delete the rest of this module.
 
-
-
-
-
-tips
------------------------------------------------------------
-
-how to change order status options:
-
-create class in your mysite folder like this
-
-class OrderDecoratorCustom extends DataObjectDecorator {
-
-	function extraStatics() {
-		return array(
-			'db' => array(
-				'Status' => 'Enum("New,ConfirmingPayment,QueryForCustomer,ProductsOnOrder,Dispatching,CustomerReceiving,Completed,MemberCancelled,AdminCancelled","New")',
-			)
-		);
-	}
-}
-
-and then add the following to your _config.php file:
-
-DataObjectDecorator::add_extension('Order', 'OrderDecoratorCustom');
 
 
 
@@ -162,7 +109,7 @@ This should be embedded like this;
 HOW TO START A PROJECT
 -----------------------------------------------------------
 When you finish testing and you want to delete all orders,
-then following tables may need a fresh start:
+then following tables may need a fresh start (among others)
 
 "BlockCountriesModifier",
 "BonusProductModifier",
