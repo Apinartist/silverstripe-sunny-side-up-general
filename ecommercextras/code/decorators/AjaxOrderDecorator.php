@@ -77,7 +77,7 @@ class AjaxOrderDecorator_Controller extends Extension {
 	function included_basic_ajax_order_link_requirements() {
 		if(!self::$added_ajax_links) {
 			self::include_basic_ajax_order_requirements();
-			if($this->owner instanceOf CheckoutPage) {
+			if(Director::get_current_page() instanceOf CheckoutPage) {
 				Requirements::javascript("ecommercextras/javascript/AjaxCheckout.js");
 			}
 			else {
