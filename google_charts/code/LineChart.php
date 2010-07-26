@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This class is used to create a line chart as an image using google charts
+ * 
+ * @link http://code.google.com/apis/chart/docs/gallery/line_charts.html
+ * @see Chart
+ * @package googlecharts
+ * @author Romain Louis <romain@sunnysideup.co.nz>
+ */
 class LineChart extends Chart {
 	
 	protected $type = 'lc';
@@ -8,6 +16,7 @@ class LineChart extends Chart {
 	
 	protected $lines = array();
 	protected $factor;
+	protected $round = false;
 	
 	function addLine(array $y, array $x = null, $color = null, $legend = null) {
 		$line = array('y' => $y);
@@ -23,7 +32,11 @@ class LineChart extends Chart {
 				if($this->type == 'lxy' && isset($line['x'])) $coordinates[] = implode(',', $line['x']);
 				if($this->factor) {
 					$y = array();
-					foreach($line['y'] as $value) $y[] = $this->factor * $value;
+					foreach($line['y'] as $value) {
+						$yVal = $this->factor * $value;
+						if($this->round !== false) $yVal = round($yVal, $this->round);
+						$y[] = $yVal;
+					}
 					$coordinates[] = implode(',', $y);
 				}
 				else $coordinates[] = implode(',', $line['y']);
@@ -33,12 +46,15 @@ class LineChart extends Chart {
 			}
 			$params[Chart::$data_param] = 't:' . implode('|', $coordinates);
 			if(isset($colors)) $params[Chart::$color_param] = implode(',', $colors);
-			if(isset($legend)) $params[$this->stat('legend_labels_param')] = implode('|', $legend);
+			if(isset($legend)) $params[Chart::$legend_labels_param] = implode('|', $legend);
 		}
 		return parent::Link($params);
 	}
 	
-	function setFactor($factor) {$this->factor = $factor;}
+	function setFactor($factor, $round = false) {
+		$this->factor = $factor;
+		$this->round = $round;
+	}
 }
 
 ?>
