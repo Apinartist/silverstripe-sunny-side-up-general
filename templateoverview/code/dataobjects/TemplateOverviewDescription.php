@@ -56,6 +56,11 @@ class TemplateOverviewDescription extends DataObject {
 		return false;
 	}
 
+	function ClassNameLinkFancy() {
+		return implode(" ", preg_split('/(?<=\\w)(?=[A-Z])/', $this->ClassNameLink));
+		return preg_replace("/(?<=[^A-Z])([A-Z])/", "$1", $this->ClassNameLink);
+	}
+
 	function onBeforeWrite() {
 		if(!$this->ParentID) {
 			if($page = DataObject::get_one("TemplateOverviewPage")) {

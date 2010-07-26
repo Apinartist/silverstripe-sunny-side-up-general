@@ -52,6 +52,20 @@ class TemplateOverviewTestItem extends DataObject {
 		"Sort" => 100
 	);//use fieldName => Default Value
 
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$source = DataObject::get("TemplateOverviewDescription");
+		$fields->removeFieldFromTab("Root", "TemplateOverviewDescriptions");
+		$fields->removeFieldFromTab("Root", "TemplateOverviewTestItemEntry");
+		$fields->addFieldToTab("Root.TestOnTheseTemplates", new MultiSelectField(
+			"TemplateOverviewDescriptions",
+			"Test",
+			$source->toDropdownMap('ID','ClassNameLinkFancy')
+		));
+		return $fields;
+	}
+
 	public function populateDefaults() {
 		parent::populateDefaults();
 		$this->Sort = 100;

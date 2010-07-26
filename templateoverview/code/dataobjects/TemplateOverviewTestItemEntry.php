@@ -2,7 +2,7 @@
 
 class TemplateOverviewTestItemEntry extends DataObject {
 
-	static $status = array(
+	static $db = array(
 		"Completed" => "Boolean",
 		"PositiveResult" => "Boolean"
 	);
@@ -13,8 +13,8 @@ class TemplateOverviewTestItemEntry extends DataObject {
 	);
 
 	public static $searchable_fields = array(
-		"TemplateOverviewTestItem",
-		"Member",
+		"TemplateOverviewTestItemID",
+		"MemberID",
 		"Completed",
 		"PositiveResult"
 	);
@@ -22,7 +22,6 @@ class TemplateOverviewTestItemEntry extends DataObject {
 		"Completed" => "Test done",
 		"PositiveResult" => "Test OK",
 		"Member" => "Tested By",
-		"TemplateOverviewTestItem" => "Item Tested"
 	);
 
 	public static $singular_name = "Test Item Entry";
@@ -30,6 +29,7 @@ class TemplateOverviewTestItemEntry extends DataObject {
 	public static $plural_name = "Test Item Entries";
 	//CRUD settings
 	public static $default_sort = "LastEdited DESC, Created DESC";
+
 
 
 	function onBeforeWrite() {
