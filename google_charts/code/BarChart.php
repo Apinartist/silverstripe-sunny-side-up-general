@@ -20,6 +20,9 @@ class BarChart extends Chart {
 	protected $barSpace;
 	protected $barGroupSpace;
 	
+	protected $factor;
+	protected $round = false;
+	
 	function addSerie(array $y, $color = null, $legend = null) {
 		$serie = array('y' => $y);
 		if($color) $serie['color'] = $color;
@@ -30,7 +33,16 @@ class BarChart extends Chart {
 	function Link(array $params = null) {
 		if(count($this->series) > 0) {
 			foreach($this->series as $i => $serie) {
-				$series[] = implode(',', $serie['y']);
+				if($this->factor) {
+					$y = array();
+					foreach($serie['y'] as $value) {
+						$yVal = $this->factor * $value;
+						if($this->round !== false) $yVal = round($yVal, $this->round);
+						$y[] = $yVal;
+					}
+					$series[] = implode(',', $y);
+				}
+				else $series[] = implode(',', $serie['y']);
 				if(isset($serie['color'])) $colors[] = is_array($serie['color']) ? implode('|', $serie['color']) : $serie['color'];
 				else if($this->generateColor) $colors[] = Chart::get_hexa_color();
 				if(isset($serie['legend'])) {
@@ -42,7 +54,13 @@ class BarChart extends Chart {
 			$params[Chart::$data_param] = 't:' . implode('|', $series);
 			if(isset($colors)) $params[Chart::$color_param] = implode(',', $colors);
 			if(isset($legends)) $params[Chart::$legend_labels_param] = implode('|', $legends);
-			if($this->barWidthScale) $params[self::$bar_width_spacing_param] = "$this->barWidthScale,$this->barSpace,$this->barGroupSpace";
+			if($this->barWidthScale) {
+				$scale = $this->barWidthScale;
+				if($this->barSpace) $scale .= ",$this->barSpace";
+				else if($this->barGroupSpace) $scale .= ',1';
+				if($this->barGroupSpace) $scale .= ",$this->barGroupSpace";
+				$params[self::$bar_width_spacing_param] = $scale;
+			}
 		}
 		return parent::Link($params);
 	}
@@ -53,6 +71,11 @@ class BarChart extends Chart {
 			if($barSpace != null) $this->barSpace = $barSpace;
 			if($barGroupSpace != null) $this->barGroupSpace = $barGroupSpace;
 		}
+	}
+	
+	function setFactor($factor, $round = false) {
+		$this->factor = $factor;
+		$this->round = $round;
 	}
 }
 
