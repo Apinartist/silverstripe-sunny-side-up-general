@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This class is used to create an image chart using google charts
+ * 
+ * @link http://code.google.com/apis/chart/
+ * @link http://code.google.com/apis/visualization/documentation/gallery.html
+ * @package googlecharts
+ * @author Romain Louis <romain@sunnysideup.co.nz>
+ */
 class Chart extends ViewableData {
 	
 	static $base_url = 'http://chart.apis.google.com/chart?';
@@ -20,6 +28,7 @@ class Chart extends ViewableData {
 	static $margin_param = 'chma';
 	static $visible_axes_param = 'chxt';
 	static $axis_range_param = 'chxr';
+	static $axis_labels_param = 'chxl';
 	
 	static $legend_positions = array('b', 'bv', 't', 'tv', 'r', 'l');
 	static $legend_orders = array('l', 'r', 'a');
@@ -31,10 +40,19 @@ class Chart extends ViewableData {
 	protected $title, $titleColor, $titleSize;
 	protected $legendPosition, $legendOrder;
 	protected $marginLeft, $marginRight, $marginTop, $marginBottom, $legendWidth, $legendHeight;
-	protected $visibleAxes, $axisRange;
+	protected $visibleAxes, $axisRange, $axisLabels;
+	
+	static $cpt = 0;
+	protected $id;
+	
+	function __construct() {
+		parent::__construct();
+		$this->id = self::$cpt++;
+	}
 	
 	function forTemplate() {
-		return "<img src=\"{$this->Link()}\"/>";
+		$link = Convert::raw2xml($this->Link());
+		return "<img src=\"$link\"/>";
 	}
 	
 	function Link(array $params = null) {
@@ -66,6 +84,12 @@ class Chart extends ViewableData {
 				}
 				if(isset($ranges)) $params[self::$axis_range_param] = implode('|', $ranges);
 			}
+			if($this->axisLabels) {
+				foreach($this->axisLabels as $index => $labels) {
+					if($labels) $axesLabels[] = "$index:|" . implode('|', $labels);
+				}
+				if(isset($axesLabels)) $params[self::$axis_labels_param] = implode('', $axesLabels);
+			}
 		}
 		foreach($params as $name => $value) $paramValues[] = "$name=$value";
 		return self::$base_url . implode('&', $paramValues);
@@ -92,7 +116,7 @@ class Chart extends ViewableData {
 	}
 	
 	function setLegendPosition($position) {
-		if(in_array($position, self::$legend_positions)) $this->legendPosition = $position;
+		if(in_array($position, $this->stat('legend_positions'))) $this->legendPosition = $position;
 	}
 	
 	function setLegendOrder($order) {
@@ -115,17 +139,26 @@ class Chart extends ViewableData {
 		if(is_array($axes) && count(array_diff($axes, self::$visible_axes)) == 0) $this->visibleAxes = $axes;
 	}
 	
-	function setAxisRange($ranges) {
+	function setAxesRange($ranges) {
 		if(is_array($ranges)) {
-			foreach($ranges as $range) {
-				if($range && (! is_array($range) || count($range) < 2)) return;
+			foreach($ranges as $index => $range) {
+				if($range && is_array($range) && count($range) >= 2) $this->axisRange[$index] = $range;
 			}
-			$this->axisRange = $ranges;
+		}
+	}
+	
+	function setAxesLabels($axeslabels) {
+		if(is_array($axeslabels)) {
+			foreach($axeslabels as $index => $labels) {
+				if($labels && is_array($labels)) $this->axisLabels[$index] = $labels;
+			}
 		}
 	}
 	
 	static function get_hexa_color() {
-		return dechex(rand(0, hexdec('FFFFFF')));
+		$hexa = dechex(rand(0, hexdec('FFFFFF')));
+		while(strlen($hexa) < 6) $hexa = "0$hexa";
+		return $hexa;
 	}
 }
 
