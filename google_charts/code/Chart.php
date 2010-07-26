@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class is used to create an image chart using google charts
+ * This class is used as a parent class only to create an image chart using google charts
  * 
  * @link http://code.google.com/apis/chart/
  * @link http://code.google.com/apis/visualization/documentation/gallery.html
