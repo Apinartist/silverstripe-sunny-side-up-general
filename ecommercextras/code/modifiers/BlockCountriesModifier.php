@@ -93,7 +93,7 @@ class BlockCountriesModifier extends OrderModifier {
 //--------------------------------------------------------------------*** calculations
 	protected function checkCountry() {
 		$stop = false;
-		$countryCode = EcommerceRole::findCountry();
+		$countryCode = EcommerceRole::find_country();
 		if($countryCode) {
 			if(count(self::$must_include_country_codes)) {
 				if(!in_array($countryCode, self::$must_include_country_codes)) {
