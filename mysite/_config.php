@@ -17,6 +17,7 @@ Member::set_password_validator( new NZGovtPasswordValidator());
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
+Requirements::set_combined_files_folder("_cache");
 //===================---------------- END sapphire MODULE ----------------===================
 
 
@@ -28,7 +29,6 @@ CMSMenu::remove_menu_item("CommentAdmin");
 CMSMenu::remove_menu_item("ReportAdmin");
 CMSMenu::remove_menu_item("HelpAdmin");
 LeftAndMain::setLogo($location = "", $style = "");
-
 //===================---------------- ENBD cms MODULE  ----------------===================
 
 
@@ -36,7 +36,7 @@ LeftAndMain::setLogo($location = "", $style = "");
 $protocolAndHost = Director::protocolAndHost();
 $devsitearray = array("http://localhost");
 if(in_array($protocolAndHost, $devsitearray)) {
-	Email::set_mailer("TestMailer");
+	Email::set_mailer( new TestMailer());
 }
 unset($devsitearray);
 unset($protocolAndHost);
