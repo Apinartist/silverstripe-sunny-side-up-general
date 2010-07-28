@@ -32,19 +32,22 @@ var RecommendedProductsModifier = {
 
 	willBeAddedToCartClass: "willBeAddedToCart",
 
+	willNotBeAddedToCartClass: "willBeAddedToCart",
+
 	init: function() {
 		RecommendedProductsModifier.ajaxForm();
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").removeClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
+		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").addClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
 	},
 
 	changeOnTick: function() {
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").click(
 			function() {
 				if(jQuery(this).is(":checked")) {
-					if(jQuery(this).parent().addClass(RecommendedProductsModifier.willBeAddedToCartClass);
+					jQuery(this).parent().addClass(RecommendedProductsModifier.willBeAddedToCartClass);
 				}
 				else {
-					if(jQuery(this).parent().removeClass(RecommendedProductsModifier.willBeAddedToCartClass);
+					jQuery(this).parent().removeClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
 				}
 			}
 		);
