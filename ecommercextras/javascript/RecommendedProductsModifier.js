@@ -32,7 +32,7 @@ var RecommendedProductsModifier = {
 
 	willBeAddedToCartClass: "willBeAddedToCart",
 
-	willNotBeAddedToCartClass: "willBeAddedToCart",
+	willNotBeAddedToCartClass: "willNotBeAddedToCart",
 
 	init: function() {
 		RecommendedProductsModifier.ajaxForm();
@@ -46,9 +46,11 @@ var RecommendedProductsModifier = {
 			function() {
 				if(jQuery(this).is(":checked")) {
 					jQuery(this).parent().addClass(RecommendedProductsModifier.willBeAddedToCartClass);
+					jQuery(this).parent().removeClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
 				}
 				else {
-					jQuery(this).parent().removeClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
+					jQuery(this).parent().addClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
+					jQuery(this).parent().removeClass(RecommendedProductsModifier.willBeAddedToCartClass);
 				}
 			}
 		);
