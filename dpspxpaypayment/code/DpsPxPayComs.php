@@ -59,10 +59,10 @@ class DpsPxPayComs {
 	 * Details to use stored cards
 	 */
 	protected $EnableAddBillCard = 0;
-		public function setEnableAddBillCard($v)             {$this->EnableAddBillCard = $v;}	
+		public function setEnableAddBillCard($v)             {$this->EnableAddBillCard = $v;}
 	protected $BillingId = 0;
-		public function setBillingId($v)             {$this->BillingId = $v;}	
-	
+		public function setBillingId($v)             {$this->BillingId = $v;}
+
 	/**
 	* external object
 	**/
@@ -117,7 +117,7 @@ class DpsPxPayComs {
 
 		#Call makeRequest function to obtain input XML
 		$request_string = $this->PxPayObject->makeRequest($request);
-		
+
 		#Obtain output XML
 		$response = new MifMessage($request_string);
 

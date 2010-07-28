@@ -68,7 +68,12 @@ class DpsPxPayPayment extends Payment {
 		$commsObject->setMerchantReference($this->ID);
 		//replace any character that is NOT [0-9] or dot (.)
 		$commsObject->setAmountInput(floatval(preg_replace("/[^0-9\.]/", "", $amount)));
-		$commsObject->setCurrencyInput($this->Currency);
+		if($this->Currency) {
+			$commsObject->setCurrencyInput($this->Currency);
+		}
+		else {
+			$commsObject->setCurrencyInput(self::site_currency());
+		}
 
 		/**
 		* details of the redirection
