@@ -117,7 +117,7 @@ class RecommendedProductsModifier_Form extends Form {
 		}
 		if(count($recommendedProductsIDArray)) {
 			Requirements::javascript("ecommercextras/javascript/RecommendedProductsModifier.js");
-			Requirements::themedCSS("RecommendedProducts");
+			Requirements::themedCSS("RecommendedProductsModifier");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = DataObject::get_by_id("SiteTree", $ID);
