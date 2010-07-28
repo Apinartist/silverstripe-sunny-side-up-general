@@ -38,6 +38,7 @@ var RecommendedProductsModifier = {
 		RecommendedProductsModifier.ajaxForm();
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").removeClass(RecommendedProductsModifier.classToAddIfNoBoxesTicked);
 		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").addClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
+		RecommendedProductsModifier.changeOnTick();
 	},
 
 	changeOnTick: function() {
