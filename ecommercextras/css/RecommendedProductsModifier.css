@@ -1,1 +1,2 @@
-p.willBeAddedToCart{ border: 1px solid red;}
+p.willBeAddedToCart{ border-bottom: 7px solid grey;}
+p.willNotBeAddedToCart{ border-bottom: 7px solid transparent;}
