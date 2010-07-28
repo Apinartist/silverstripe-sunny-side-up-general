@@ -68,7 +68,7 @@ adding $CachedField(0) to your template will show
 Navigation.ss in the example above.
 
 *** NOTE: [0-4]: choose a number between 0 and 4, you can have up to
-five cached fields: 0,1,2,3, and 4
+five cached fields: 0, 1, 2, 3, and 4
 
 
 example htaccess file (NOTE .php as the extension)
