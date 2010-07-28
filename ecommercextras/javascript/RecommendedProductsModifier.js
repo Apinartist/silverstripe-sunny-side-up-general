@@ -42,7 +42,7 @@ var RecommendedProductsModifier = {
 	},
 
 	changeOnTick: function() {
-		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").click(
+		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").change(
 			function() {
 				if(jQuery(this).is(":checked")) {
 					jQuery(this).parent().addClass(RecommendedProductsModifier.willBeAddedToCartClass);
