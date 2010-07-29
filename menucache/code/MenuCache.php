@@ -128,7 +128,7 @@ class MenuCache extends DataObjectDecorator {
 		return array();
 	}
 
-
+	//add this function to your page class if needed
 	function onBeforeWrite() {
 		//$this->clearfieldcache(); // technically this should be done, but it puts a lot of strain on saving so instead we encourage people to use ?flush=1
 		parent::onBeforeWrite();
