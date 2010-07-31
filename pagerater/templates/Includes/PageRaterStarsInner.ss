@@ -11,11 +11,10 @@
 <% else %>
 <div class="pageRaterStars">
 <% control PageRatingResults %>
-	<label class="starLabel">Rating:</label>
+	<label class="starLabel">Average Rating:</label>
 	<div class="stars">
 		<div style="width: {$RoundedPercentage}%" class="stars-bg"></div>
-		<img alt="$Stars stars" src="pagerater/images/stars.png" title="be the first to rate &quot;$Parent.Title.ATT&quot;" />
-		<span>be the first to rate this page</span>
+		<img alt="$Stars stars" src="pagerater/images/stars.png" />
 	</div>
 <% end_control %>
 </div>
