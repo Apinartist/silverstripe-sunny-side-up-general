@@ -30,7 +30,7 @@ class ChildBlogEntries extends Widget {
 
 	function getCMSFields() {
 		return new FieldSet(
-			new NumericField("NumberOfItems","Number Of items shown (will always show newest ones)")
+			new NumericField("NumberOfItems","Number of items shown (will always show newest ones first)")
 		);
 	}
 
