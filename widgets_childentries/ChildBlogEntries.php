@@ -36,8 +36,12 @@ class ChildBlogEntries extends Widget {
 
 	function Links() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		Requirements::themedCSS("widgets_ChildBlogEntries");
-		return DataObject::get("BlogEntry", "{$bt}ParentID{bt} = ".$this->owner->ID, "{$bt}Created{$bt} DESC", null, $this->NumberOfItems);
+		$widgetAreaID = $this->ParentID;
+		$parent = DataObject::get_one("SiteTree", "NewsItemsID = ".$widgetAreaID);
+		if($parent) {
+			Requirements::themedCSS("widgets_ChildBlogEntries");
+			return DataObject::get("BlogEntry", "{$bt}ParentID{$bt} = ".$parent->ID, "{$bt}Created{$bt} DESC", null, $this->NumberOfItems);
+		}
 	}
 
 }
