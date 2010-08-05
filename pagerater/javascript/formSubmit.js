@@ -1,6 +1,7 @@
 jQuery(document).ready(
 	function() {
 		PageRater.init();
+		PageRater.relatedFormInit();
 	}
 );
 
@@ -9,15 +10,15 @@ var PageRater = {
 	formSelector: "#Form_PageRatingForm",
 	submitButtonSelector: "#Form_PageRatingForm .Actions input",
 	loadingMessage: "loading ...",
-
+	formOptions : {
+		target: "#Form_PageRatingForm" // target element(s) to be updated with server response
+		//dataType:  'xml'        // 'xml', 'script', or 'json' (expected server response type)
+	},
 	init: function() {
-		var options = {
-			target: "#Form_PageRatingForm" // target element(s) to be updated with server response
-			//dataType:  'xml'        // 'xml', 'script', or 'json' (expected server response type)
-		};
+
 		jQuery(PageRater.submitButtonSelector).click(
 			function() {
-				jQuery(PageRater.formSelector).ajaxSubmit(options);
+				jQuery(PageRater.formSelector).ajaxSubmit(PageRater.formOptions);
 				return false;
 			}
 		)
@@ -32,6 +33,17 @@ var PageRater = {
 	showResponse: function (responseText, statusText)  {
 		alert(responseText);
 		jQuery(PageRater.formSelector).html(responseText);
+	},
+
+	relatedFormInit: function() {
+		alert("start");
+		jQuery("form#PageCommentInterface_Form_PostCommentForm").submit(
+			function() {
+				alert("go");
+				return false;
+			}
+		)
+		//$(this).ajaxSubmit(options);
 	}
 
 }
