@@ -6,6 +6,10 @@ class PageRaterStarField extends FormField {
 
 	protected $starOptions = 0;
 
+	static protected $extra_form_selector = '';
+		static function set_extra_form_selector($v) {self::$extra_form_selector = $v;}//'form#PageCommentInterface_Form_PostCommentForm'
+		static function get_extra_form_selector() {return self::$extra_form_selector;}
+
 	/**
 	 * Returns an input field, class="start field" and type="hidden" with an optional maxlength
 	 */
@@ -19,10 +23,12 @@ class PageRaterStarField extends FormField {
 	function Field() {
 		Requirements::javascript(THIRDPARTY_DIR .'/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR .'/jquery-form/jquery.form.js');
-		Requirements::javascript('pagerater/javascript/formSubmit.js');
 		Requirements::javascript('pagerater/javascript/jquery.rating.pack.js');
+		Requirements::javascript('pagerater/javascript/PageRater.js');
+		if(self::get_extra_form_selector()) {
+			Requirements::customScript("PageRater.set_extra_form_selector(".self::get_extra_form_selector().");");
+		}
 		Requirements::themedCSS('jquery.rating');
-
 		$html = "";
 
 		$name = $this->Name();

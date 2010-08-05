@@ -14,5 +14,7 @@ PageRating::set_stars(array(
   2 => array("Code" => "twoStar", "Title" => "Two Stars")
  ));
  */
+ //embed rating within other form (e.g. page comments)
+ //PageRaterStarField::set_extra_form_selector('form#PageCommentInterface_Form_PostCommentForm');
 //===================---------------- END pageraterMODULE ----------------===================
 
