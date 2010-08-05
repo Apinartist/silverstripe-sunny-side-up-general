@@ -39,11 +39,12 @@ var PageRater = {
 		alert("start");
 		jQuery("form#PageCommentInterface_Form_PostCommentForm").submit(
 			function() {
-				alert("go");
+				alert(PageRater.formOptions.target);
+				jQuery(PageRater.formOptions.target).ajaxSubmit(PageRater.formOptions);
 				return false;
 			}
 		)
-		//$(this).ajaxSubmit(options);
+		//
 	}
 
 }
