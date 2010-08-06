@@ -380,7 +380,6 @@ class GSTTaxModifier extends TaxModifier {
 		$deduct = 0;
 		if($functionName = self::$order_item_function_for_tax_exclusive_portion) {
 			$items = ShoppingCart::get_items();
-			//get index numbers for bonus products - this can only be done now once they have actually been added
 			if($items) {
 				foreach($items as $itemIndex => $item) {
 					if(method_exists($item, $functionName)) {
@@ -394,6 +393,7 @@ class GSTTaxModifier extends TaxModifier {
 		$this->debugMessage .= "<hr />using sub-total: ".$subTotal;
 		$this->debugMessage .= "<hr />using modifer-total: ".$modifierTotal;
 		$this->debugMessage .= "<hr />using non-taxable portion: ".$deduct;
+		$this->debugMessage .= "<hr />value shown in table: ".$this->TableValue();
 		return  $subTotal + $modifierTotal - $deduct;
 	}
 
