@@ -304,10 +304,6 @@ class GSTTaxModifier extends TaxModifier {
 		return $this->Charge();
 	}
 
-	function getTableValue() {
-		return $this->TableValue();
-	}
-
 	function TableValue() {
 		if($this->ID) {
 			$value = $this->TableValue;
