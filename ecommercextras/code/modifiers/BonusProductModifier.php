@@ -75,7 +75,7 @@ class BonusProductModifier extends OrderModifier {
 	}
 
 	function TableValue() {
-		return "$".number_format(abs($this->Amount()), 2);
+		return $this->Amount;
 	}
 
 

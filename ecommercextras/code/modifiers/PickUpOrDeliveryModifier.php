@@ -195,7 +195,7 @@ class PickUpOrDeliveryModifier extends OrderModifier {
 
 //-------------------------------------------------------------------- *** table values
 	function TableValue() {
-		return "$".number_format(abs($this->Amount()), 2);
+		return $this->Amount;
 	}
 
 	function LiveAmount () {

@@ -43,7 +43,7 @@ class RecommendedProductsModifier extends OrderModifier {
 		return 0;
 	}
 	function TableValue() {
-		return "";
+		return 0;
 	}
 
 //-------------------------------------------------------------------- *** table titles

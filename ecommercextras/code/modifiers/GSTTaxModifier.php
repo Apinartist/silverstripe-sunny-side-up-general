@@ -313,7 +313,7 @@ class GSTTaxModifier extends TaxModifier {
 		if(!$value) {
 			$value = 0;
 		}
-		return DBField::create('Currency', $value)->Nice();
+		return $value;
 	}
 
 //-------------------------------------------------------------------- *** title function

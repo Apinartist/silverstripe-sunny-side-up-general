@@ -62,7 +62,7 @@ class ModifierRulesModifier extends OrderModifier {
 	}
 
 	function TableValue() {
-		return "";
+		return 0;
 	}
 
 
