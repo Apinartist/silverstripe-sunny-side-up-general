@@ -19,7 +19,7 @@ class GSTTaxModifier extends TaxModifier {
 	static $db = array(
 		'Country' => 'Text',
 		'Rate' => 'Double',
-		'TableValue' => 'Double',
+		'TableValue' => 'Currency',
 		'Name' => 'Text',
 		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
 		'DebugString' => 'HTMLText'
