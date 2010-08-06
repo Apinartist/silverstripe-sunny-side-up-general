@@ -15,6 +15,21 @@
 
 class GSTTaxModifier extends TaxModifier {
 
+	//-------------------------------------------------------------------- *** static variables
+	static $db = array(
+		'Country' => 'Text',
+		'Rate' => 'Double',
+		'TableValue' => 'Double',
+		'Name' => 'Text',
+		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
+		'DebugString' => 'HTMLText'
+	);
+
+	static $casting = array(
+		'TaxableAmount' => 'Currency'
+	);
+
+
 	//-------------------------------------------------------------------- *** model admin
 
 	public static $searchable_fields = array(
@@ -43,20 +58,6 @@ class GSTTaxModifier extends TaxModifier {
 	//defaults
 	public static $default_sort = "Created DESC";
 
-	//-------------------------------------------------------------------- *** static variables
-	static $db = array(
-		'Country' => 'Text',
-		'Rate' => 'Double',
-		'TableValue' => 'Double',
-		'Name' => 'Text',
-		'TaxType' => "Enum('Exclusive, Inclusive','Exclusive')",
-		'DebugString' => 'HTMLText'
-	);
-
-	static $casting = array(
-		'TaxableAmount' => 'Currency',
-		"TableValue" => "Currency"
-	);
 
 	protected static $default_country_code = "NZ";
 		static function set_default_country_code($v) {self::$default_country_code = $v;}
@@ -301,6 +302,10 @@ class GSTTaxModifier extends TaxModifier {
 
 	function TableAmount() {
 		return $this->Charge();
+	}
+
+	function getTableValue() {
+		return $this->TableValue();
 	}
 
 	function TableValue() {
