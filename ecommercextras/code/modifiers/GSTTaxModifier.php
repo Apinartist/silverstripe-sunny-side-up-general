@@ -421,7 +421,7 @@ class GSTTaxModifier extends TaxModifier {
 		$this->TaxType = $this->LiveIsExclusive() ? 'Exclusive' : 'Inclusive';
 		$this->DebugString = $this->debugMessage;
 		$this->Type = $this->IsChargable();
-
+		$this->DebugString .= "<hr />recording a table value of : ".$this->TableValue;
 	}
 
 	// ajax NEED TO OVERRIDE THE STANDARD ONE.
