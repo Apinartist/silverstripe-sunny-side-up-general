@@ -393,7 +393,6 @@ class GSTTaxModifier extends TaxModifier {
 		$this->debugMessage .= "<hr />using sub-total: ".$subTotal;
 		$this->debugMessage .= "<hr />using modifer-total: ".$modifierTotal;
 		$this->debugMessage .= "<hr />using non-taxable portion: ".$deduct;
-		$this->debugMessage .= "<hr />value shown in table: ".$this->TableValue();
 		return  $subTotal + $modifierTotal - $deduct;
 	}
 
