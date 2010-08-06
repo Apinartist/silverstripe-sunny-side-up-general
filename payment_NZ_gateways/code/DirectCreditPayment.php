@@ -21,7 +21,7 @@ class DirectCreditPayment extends ChequePayment {
 				self::$custom_message_for_direct_credit = $page->ChequeMessage;
 			}
 		}
-		$this->Message = '<p class="warningMessage">'.self::$custom_message_for_direct_credit.'</p>';
+		$this->Message = self::$custom_message_for_direct_credit;
 		$this->write();
 		return new Payment_Success();
 	}
