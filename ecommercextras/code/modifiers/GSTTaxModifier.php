@@ -305,8 +305,9 @@ class GSTTaxModifier extends TaxModifier {
 	}
 
 	function TableValue() {
+		$value = 0;
 		if($this->ID) {
-			$value = $this->TableValue;
+			return $this->TableValue;
 		}
 		else {
 			$value = $this->Charge();
@@ -314,7 +315,7 @@ class GSTTaxModifier extends TaxModifier {
 		if(!$value) {
 			$value = 0;
 		}
-		return $value;
+		return DBField::create('Currency', $value)->Nice();
 	}
 
 //-------------------------------------------------------------------- *** title function
