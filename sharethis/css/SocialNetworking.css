@@ -26,6 +26,6 @@
 	.SocialNetworkingLinksHeader{}
 	.SocialNetworkingLinksUL{}
 .shareAllExpandedList {position: relative;}
-.shareAllExpandedList .shareAllExpandedListUL {position: absolute; background-color: #fff; border: 3px solid blue; width: 410px; z-index: 99; top: 33px}
+.shareAllExpandedList .shareAllExpandedListUL {position: absolute; background-color: #fff; border: 3px solid blue; width: 410px; z-index: 99; top: 33px; display: none;}
 .shareAllExpandedList .shareAllExpandedListUL li {width: 180px; float: left; padding: 7px;}
 .shareAllExpandedList .shareAllExpandedListUL li a:link{text-decoration: none;}
