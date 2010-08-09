@@ -1,7 +1,7 @@
 <% if ThisPageHasShareThis %>
 <div class="shareAllExpandedList">
 	<% if shareAllExpandedList %>
-	<div class="shareAllExpandedListHeader"><h5><a href="#" class="shareAllExpandedListLink share">Share</h5></div>
+	<div class="shareAllExpandedListHeader"><h5><a href="#" class="shareAllExpandedListLink share">Share</a></h5></div>
 	<ul class="shareAllExpandedListUL">
 		<% control shareAllExpandedList %><li class="icon-for{$Key}"><a href="$URL" <% if OnClick %>onclick="$OnClick"<% end_if %> title="$Title"><img src="$ImageSource" alt="$Title"<% if UseStandardImage %> width="16" height="16"<% end_if %> /> $Title </a></li><% end_control %>
 	</ul>
