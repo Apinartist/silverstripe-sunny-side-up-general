@@ -232,6 +232,18 @@ class ShareThis extends DataObjectDecorator {
 		return $doSet;
 	}
 
+	public function ShareAllExpandedList() {
+		$originalUseDataObject = self::$use_data_object;
+		$originalIconsToInclude = self::$icons_to_include;
+		self::$icons_to_include = null;
+		self::$use_data_object = false;
+		$data = $this->ShareIcons();
+		self::$use_data_object = $originalUseDataObject;
+		self::$icons_to_include = $originalIconsToInclude;
+		Requirements::javascript("sharethis/javascript/ShareAllExpandedList.js");
+		return $data;
+	}
+
 	public function IncludeShareAll() {
 		return self::$share_this_all_in_one;
 	}
@@ -239,6 +251,7 @@ class ShareThis extends DataObjectDecorator {
 	public function ShareAll() {
 		return ShareThisOptions::get_share_all($title, $link, $description);
 	}
+
 
 	/**
 	 *returns array

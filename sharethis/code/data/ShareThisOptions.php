@@ -22,10 +22,8 @@ class ShareThisOptions extends Object {
 	protected static $encoded_description;
 	protected static $icon;
 
-	static function get_page_specific_data($title, $link, $description = "") {
-		if(!self::$page_specific_data) {
-			self::set_variables($title, $link, $description);
-			$originalArray = array(
+	static function get_all_options($title, $link, $description) {
+		self::$page_specific_data = array(
 
 "email" => array(
 	 "url" => "mailto:?".htmlentities("Subject=".self::$encoded_page_title."&Body=".self::$encoded_description."%0D%0A".self::$encoded_page_url),
@@ -134,6 +132,13 @@ class ShareThisOptions extends Object {
 
 
 			);
+		return self::$page_specific_data;
+	}
+
+	static function get_page_specific_data($title, $link, $description = "") {
+		self::set_variables($title, $link, $description);
+		if(!self::$page_specific_data) {
+			$originalArray = self::get_all_options($title, $link, $description);
 		}
 		else {
 			$originalArray = self::$page_specific_data;
