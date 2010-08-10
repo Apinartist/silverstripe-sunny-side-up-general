@@ -14,25 +14,45 @@
 
 var ShareAllExpandedList = {
 
+	shareAllExpandedListULSelector: ".shareAllExpandedListUL",
+
+	shareAllExpandedListULCloseSelector: ".shareAllExpandedListUL a",
+
+	mainLinkSelector: ".shareAllExpandedListHeader h5 a",
+
+	openSpeed: "slow",
+
+	closeSpeed: "slow",
+
+	listShownClass: "listShown",
+
+	listClosedClass: "listHidden",
+
 	init: function() {
-		jQuery(".shareAllExpandedListUL").css("display", "none");
-		jQuery(".shareAllExpandedListHeader a").click(
+		jQuery(ShareAllExpandedList.shareAllExpandedListUL).css("display", "none");
+		jQuery(ShareAllExpandedList.mainLinkSelector).click(
 			function() {
-				if(jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").is(":hidden")) {
-					jQuery(this).addClass("listShown");
-					jQuery(this).removeClass("listHidden");
-					jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").slideDown("slow");
+				if(jQuery(this).parent().parent().siblings(ShareAllExpandedList.shareAllExpandedListUL).is(":hidden")) {
+					jQuery(this).addClass(ShareAllExpandedList.listShownClass);
+					jQuery(this).removeClass(ShareAllExpandedList.listClosedClass);
+					jQuery(this).parent().parent().siblings(ShareAllExpandedList.shareAllExpandedListUL).slideDown(ShareAllExpandedList.openSpeed);
 				}
 				else {
-					jQuery(this).addClass("listHidden");
-					jQuery(this).removeClass("listShown");
-					jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").slideUp("fast");
+					jQuery(this).addClass(ShareAllExpandedList.listClosedClass);
+					jQuery(this).removeClass(ShareAllExpandedList.listShownClass);
+					jQuery(this).parent().parent().siblings(ShareAllExpandedList.shareAllExpandedListUL).slideUp(ShareAllExpandedList.closeSpeed);
 				}
 				return false;
 			}
 
 		)
-		.addClass("listHidden");
+		.addClass(ShareAllExpandedList.listClosedClass);
+		jQuery(ShareAllExpandedList.shareAllExpandedListULCloseSelector).click(
+			function(){
+				jQuery(this).parent().parent().parent().find(ShareAllExpandedList.mainLinkSelector).click();
+				return false;
+			}
+		);
 	}
 
 
