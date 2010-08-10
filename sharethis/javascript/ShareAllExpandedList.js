@@ -16,7 +16,7 @@ var ShareAllExpandedList = {
 
 	shareAllExpandedListULSelector: ".shareAllExpandedListUL",
 
-	shareAllExpandedListULCloseSelector: ".shareAllExpandedListUL a",
+	shareAllExpandedListULCloseSelector: ".shareAllExpandedListUL li.shareAllExpandedListULClose a",
 
 	mainLinkSelector: ".shareAllExpandedListHeader h5 a",
 
