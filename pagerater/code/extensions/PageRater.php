@@ -206,6 +206,10 @@ class PageRater_Controller extends Extension {
 		static function set_field_right_title($v){self::$field_right_title = $v;}
 		static function get_field_right_title(){return self::$field_right_title;}
 
+	protected static $show_average_rating_in_rating_field = false;
+		static function set_show_average_rating_in_rating_field($v){self::$show_average_rating_in_rating_field = $v;}
+		static function get_show_average_rating_in_rating_field(){return self::$show_average_rating_in_rating_field;}
+
 	static $allowed_actions = array("PageRatingForm", "dopagerating", "removedefaultpageratings", "removeallpageratings" );
 
 	function rateagain (){
@@ -218,7 +222,14 @@ class PageRater_Controller extends Extension {
 		if($this->owner->PageHasBeenRatedByUser()) {
 			return false;
 		}
-		$ratingField = new PageRaterStarField('Rating', PageRater_Controller::get_field_title(), $this->owner->getStarRating(), PageRating::get_number_of_stars());
+
+		if(self::get_show_average_rating_in_rating_field()) {
+			$defaultStart = $this->owner->getStarRating();
+		}
+		else {
+			$defaultStart = 0;
+		}
+		$ratingField = new PageRaterStarField('Rating', PageRater_Controller::get_field_title(), $defaultStart, PageRating::get_number_of_stars());
 		$ratingField->setRightTitle(PageRater_Controller::get_field_right_title());
 		$fields = new FieldSet(
 			$ratingField,
