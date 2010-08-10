@@ -117,23 +117,28 @@ class ShareThis extends DataObjectDecorator {
 	}
 
 
-	protected $bookmarks = array();
-
 	function updateCMSFields(FieldSet &$fields) {
 		if(!self::$always_include) {
 			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("ShareIcons","Show Share Icons on this page ?", self::$include_by_default));
 		}
 		$addedLinks = array();
-		if($this->EditLink()) {
-			$addedLinks["edit"]  = $this->EditLink();
+		if($this->CanEditShareIcons()) {
+			$addedLinksShort["edit"] = DataObjectOneFieldUpdateController::popup_link("ShareThisDataObject", "IncludeThisIcon");
+			$addedLinksLong["edit"] = DataObjectOneFieldUpdateController::popup_link("ShareThisDataObject", "IncludeThisIconInExtendedList");
+			$obj = singleton("ShareThisDataObject");
+			$addedLinksShort["sort"] = $obj->dataObjectSorterPopupLink("IncludeThisIcon", 1);
+			$addedLinksLong["sort"] = $obj->dataObjectSorterPopupLink("IncludeThisIconInExtendedList", 1);
 		}
-		if($this->SortLink()) {
-			$addedLinks["sort"]  = $this->SortLink();
-		}
-		if(count($addedLinks)) {
+		if(count($addedLinksShort)) {
 			$fields->addFieldToTab("Root.Behaviour", new LiteralField(
-				"ShareIconsExplanation",
-				'<p>Share Icon Settings: '.implode(", ",$addedLinks).'.</p>'
+				"ShareIconsExplanationShort",
+				'<p>Share Icon Settings - short list: '.implode(", ",$addedLinksShort).'.</p>'
+			));
+		}
+		if(count($addedLinksLong)) {
+			$fields->addFieldToTab("Root.Behaviour", new LiteralField(
+				"ShareIconsExplanationLong",
+				'<p>Share Icon Settings - long list: '.implode(", ",$addedLinksLong).'.</p>'
 			));
 		}
 		return $fields;
@@ -167,19 +172,6 @@ class ShareThis extends DataObjectDecorator {
 		}
 	}
 
-	public function EditLink() {
-		if($this->CanEditShareIcons()) {
-			return DataObjectOneFieldUpdateController::popup_link("ShareThisDataObject", "IncludeThisIcon");
-		}
-	}
-
-	public function SortLink() {
-		if($obj = $this->CanEditShareIcons()) {
-			$obj = singleton("ShareThisDataObject");
-			return $obj->dataObjectSorterPopupLink("IncludeThisIcon", 1);
-		}
-	}
-
 	public function ThisPageHasShareThis() {
 		if(self::$always_include) {
 			return true;
@@ -194,54 +186,15 @@ class ShareThis extends DataObjectDecorator {
 		return false;
 	}
 
-
-	public function ShareIcons(){
-		$doSet = new DataObjectSet();
-		if($this->ThisPageHasShareThis()){
-			Requirements::themedCSS("SocialNetworking");
-			Requirements::javascript("sharethis/javascript/shareThis.js");
-			if(self::$use_bw_effect) {
-				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
-			}
-			$this->bookmarks = $this->makeBookmarks();
-			if($this->bookmarks) {
-				foreach($this->bookmarks as $key => $bookmark){
-					if(isset($bookmark["title"]) && isset($bookmark["url"])) {
-						$itemArray = array();
-						$itemArray["OnClick"] = isset($bookmark['click']) ? $bookmark['click'] : "";
-						$itemArray["Title"] = $bookmark['title'];
-						$itemArray["ShowTitle"] = self::$show_title_with_icon;
-						$itemArray["URL"] = $bookmark["url"];
-						$itemArray["Key"] = $key;
-						if(isset($bookmark["icon"]) ) {
-							$itemArray["ImageSource"] = $bookmark["icon"];
-							$itemArray["UseStandardImage"] = 0;
-						}
-						else {
-							$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
-							$itemArray["UseStandardImage"] = 1;
-						}
-						$doSet->push(new ArrayData($itemArray));
-					}
-					else {
-						debug::show("title of url not defined for $key");
-					}
-				}
-			}
-		}
-		return $doSet;
+	public function ShareIcons() {
+		$bookmarks = $this->makeBookmarks($field = "IncludeThisIcon");
+		return $this->makeShareIcons($bookmarks);
 	}
 
 	public function ShareAllExpandedList() {
-		$originalUseDataObject = self::$use_data_object;
-		$originalIconsToInclude = self::$icons_to_include;
-		self::$icons_to_include = null;
-		self::$use_data_object = false;
-		$data = $this->ShareIcons();
-		self::$use_data_object = $originalUseDataObject;
-		self::$icons_to_include = $originalIconsToInclude;
 		Requirements::javascript("sharethis/javascript/ShareAllExpandedList.js");
-		return $data;
+		$bookmarks = $this->makeBookmarks($field = "IncludeThisIconInExtendedList");
+		return $this->makeShareIcons($bookmarks);
 	}
 
 	public function IncludeShareAll() {
@@ -257,56 +210,80 @@ class ShareThis extends DataObjectDecorator {
 	 *returns array
 	 **/
 
-	protected function makeBookmarks() {
+
+	protected function makeShareIcons($bookmarks){
+		$doSet = new DataObjectSet();
+		if($this->ThisPageHasShareThis() && $bookmarks){
+			Requirements::themedCSS("SocialNetworking");
+			Requirements::javascript("sharethis/javascript/shareThis.js");
+			if(self::$use_bw_effect) {
+				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
+			}
+			foreach($bookmarks as $key => $bookmark){
+				if(isset($bookmark["title"]) && isset($bookmark["url"])) {
+					$itemArray = array();
+					$itemArray["OnClick"] = isset($bookmark['click']) ? $bookmark['click'] : "";
+					$itemArray["Title"] = $bookmark['title'];
+					$itemArray["ShowTitle"] = self::$show_title_with_icon;
+					$itemArray["URL"] = $bookmark["url"];
+					$itemArray["Key"] = $key;
+					if(isset($bookmark["icon"]) ) {
+						$itemArray["ImageSource"] = $bookmark["icon"];
+						$itemArray["UseStandardImage"] = 0;
+					}
+					else {
+						$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
+						$itemArray["UseStandardImage"] = 1;
+					}
+					$doSet->push(new ArrayData($itemArray));
+				}
+				else {
+					debug::show("title of url not defined for $key");
+				}
+			}
+		}
+		return $doSet;
+	}
+
+	protected function makeBookmarks($field = "IncludeThisIcon") {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		if(!count($this->bookmarks) && $this->ThisPageHasShareThis()) {
+		$finalBookmarks = array();
+		if($this->ThisPageHasShareThis()) {
 			$title = $this->owner->Title;
 			$link = $this->owner->Link();
 			$description = $this->owner->MetaDescription;
 			$bookmarks = ShareThisOptions::get_page_specific_data($title, $link, $description);
-
-			//which ones do we include
-			$originalArray = array();
-			foreach($bookmarks as $key => $ignore) {
-				$originalArray[$key] = $key;
-			}
-			unset($ignore);
 			if(self::$use_data_object) {
-				$this->bookmarks = null;
-				$this->bookmarks = array();
-				$objects = DataObject::get("ShareThisDataObject", "{$bt}IncludeThisIcon{$bt} = 1", "{$bt}Sort{$bt} ASC, {$bt}Title{$bt} ASC");
+				$objects = DataObject::get("ShareThisDataObject", "{$bt}{$field}{$bt} = 1", "{$bt}Sort{$bt} ASC, {$bt}Title{$bt} ASC");
 				if($objects) {
 					if($objects->count()) {
 						foreach($objects as $obj) {
 							if(isset($bookmarks[$obj->Title])) {
-								$this->bookmarks[$obj->Title] = $bookmarks[$obj->Title];
+								$finalBookmarks[$obj->Title] = $bookmarks[$obj->Title];
 							}
 						}
 					}
 				}
 			}
 			else {
-				$this->bookmarks = $bookmarks;
+				$finalBookmarks = $bookmarks;
 			}
 			//find images
 			if(count(self::$alternate_icons)) {
 				foreach(self::$alternate_icons as $key => $file) {
-					if(!isset($originalArray[$key])) {
-						debug::show("Error in ShareIcons::set_alternate_icons, $key does not exist in bookmark list");
-					}
-					elseif(!Director::fileExists($file)) {
+					if(!Director::fileExists($file)) {
 						debug::show("Error in ShareIcons::set_alternate_icons, $file ($key) does not exist - should be a file name (e.g. images/icons/myicon.gif)");
 					}
-					elseif(isset($this->bookmarks[$key])) {
-						$this->bookmarks[$key]["icon"] = $file;
+					elseif(isset($finalBookmarks[$key]) && isset($finalBookmarks[$key])) {
+						$finalBookmarks[$key]["icon"] = $file;
 					}
 				}
 			}
 		}
-		if(!count($this->bookmarks)) {
-			$this->bookmarks = array();
+		if(!count($finalBookmarks)) {
+			$finalBookmarks = array();
 		}
-		return $this->bookmarks;
+		return $finalBookmarks;
 	}
 
 //DEPRECIATED!

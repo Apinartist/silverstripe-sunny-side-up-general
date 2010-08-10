@@ -13,6 +13,7 @@ class ShareThisDataObject extends DataObject {
 	public static $db = array(
 		'Title' => 'Varchar(20)',
 		'IncludeThisIcon' => 'Boolean',
+		'IncludeThisIconInExtendedList' => 'Boolean',
 		"Sort" => "Int"
 	);
 
@@ -31,10 +32,11 @@ class ShareThisDataObject extends DataObject {
 	public static $field_labels = array(
 		"Title" => "Name",
 		"IncludeThisIcon" => "Include this icon",
+		"IncludeThisIconInExtendedList" => "Include this icon in extended list",
 		"Sort" => "Sort Index (lower numbers shown first)"
 	);
 
-	public static $default_sort = "IncludeThisIcon DESC, Sort ASC, Title ASC";
+	public static $default_sort = "IncludeThisIcon DESC, IncludeThisIconInExtendedList, Sort ASC, Title ASC";
 
 	public function canView($member = false) {
 		return Permission::check('CMS_ACCESS_CMSMain');
@@ -50,12 +52,13 @@ class ShareThisDataObject extends DataObject {
 
 	public static $summary_fields = array(
 		"Title" => "Name",
-		"IncludeThisIcon" => "IncludeThisIcon"
+		"IncludeThisIcon" => "IncludeThisIcon",
+		"IncludeThisIconInExtendedList" => "IncludeThisIconInExtendedList"
 	);
 
-	public static $singular_name = "Share this page icon";
+	public static $singular_name = "Icon to share this page";
 
-	public static $plural_name = "Share this page icons";
+	public static $plural_name = "Icons to share this page";
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
