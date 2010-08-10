@@ -18,11 +18,19 @@ var ShareAllExpandedList = {
 		jQuery(".shareAllExpandedListUL").css("display", "none");
 		jQuery(".shareAllExpandedListHeader a").click(
 			function() {
-				jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").slideToggle();
+				if(jQuery(".shareAllExpandedListUL").is(":hidden")) {
+					jQuery(this).addClass("listShown");
+					jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").slideDown("slow");
+				}
+				else {
+					jQuery(this).addClass("listHidden");
+					jQuery(this).parent().parent().siblings(".shareAllExpandedListUL").slideUp("fast");
+				}
 				return false;
 			}
 
-		);
+		)
+		.addClass("listHidden");
 	}
 
 
