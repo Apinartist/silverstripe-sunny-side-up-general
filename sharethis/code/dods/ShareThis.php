@@ -187,13 +187,13 @@ class ShareThis extends DataObjectDecorator {
 	}
 
 	public function ShareIcons() {
-		$bookmarks = $this->makeBookmarks($field = "IncludeThisIcon");
+		$bookmarks = $this->makeBookmarks($field = "IncludeThisIcon", $useAlternativeIcons = true);
 		return $this->makeShareIcons($bookmarks);
 	}
 
 	public function ShareAllExpandedList() {
 		Requirements::javascript("sharethis/javascript/ShareAllExpandedList.js");
-		$bookmarks = $this->makeBookmarks($field = "IncludeThisIconInExtendedList");
+		$bookmarks = $this->makeBookmarks($field = "IncludeThisIconInExtendedList", $useAlternativeIcons = false);
 		return $this->makeShareIcons($bookmarks);
 	}
 
@@ -245,7 +245,7 @@ class ShareThis extends DataObjectDecorator {
 		return $doSet;
 	}
 
-	protected function makeBookmarks($field = "IncludeThisIcon") {
+	protected function makeBookmarks($field = "IncludeThisIcon", $useAlternativeIcons = true) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$finalBookmarks = array();
 		if($this->ThisPageHasShareThis()) {
@@ -269,7 +269,7 @@ class ShareThis extends DataObjectDecorator {
 				$finalBookmarks = $bookmarks;
 			}
 			//find images
-			if(count(self::$alternate_icons)) {
+			if(count(self::$alternate_icons) && $useAlternativeIcons) {
 				foreach(self::$alternate_icons as $key => $file) {
 					if(!Director::fileExists($file)) {
 						debug::show("Error in ShareIcons::set_alternate_icons, $file ($key) does not exist - should be a file name (e.g. images/icons/myicon.gif)");
