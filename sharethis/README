@@ -29,6 +29,7 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 Add the following to your templates:
 
 <% include ShareThis %>
+<% include ShareAllExpandedList %>
 <% include SocialNetworkingLinks %>
 
 Thank you

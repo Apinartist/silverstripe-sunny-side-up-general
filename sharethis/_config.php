@@ -17,7 +17,10 @@
 //ShareThis::set_show_title_with_icon(false);
 //ShareThis::set_alternate_icons(array("live" => "mysite/images/madgif.gif"));
 //ShareThis::set_use_bw_effect(true);
-//ShareThis::set_icons_to_include(array("facebook", "google", "linkedin")); OR ShareThis::set_icons_to_exclude(array("myspace"));
+
+//hide / add completely
+//ShareThis::set_icons_to_include(array("facebook", "google", "linkedin"));   //OR
+//ShareThis::set_icons_to_exclude(array("myspace"));
 
 //DataObject::add_extension('SiteTree', 'SocialNetworkingLinks');
 //SocialNetworkingLinks::set_always_include (false);
