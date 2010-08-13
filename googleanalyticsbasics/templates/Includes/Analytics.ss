@@ -8,7 +8,7 @@
 		var pageTracker = _gat._getTracker("{$googleAnalyticsCode}");
 		pageTracker._trackPageview();
 	<% if GoogleAnalyticsCodeTwo %>
-		var secondTracker = _gat._getTracker("{$GoogleAnalyticsCodeTwo}}");
+		var secondTracker = _gat._getTracker("{$GoogleAnalyticsCodeTwo}");
 		secondTracker._trackPageview();
 	<% end_if %>
 	}
