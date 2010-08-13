@@ -26,4 +26,8 @@
 //SocialNetworkingLinks::set_always_include (false);
 //SocialNetworkingLinks::set_include_by_default(true);
 //SocialNetworkingLinks::set_show_title_with_icon(false);
+
+//optional//requires: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+//Object::add_extension('ShareThisDataObject', 'DataObjectSorterDOD');
+//DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
 //===================---------------- END sharethis MODULE ----------------===================
