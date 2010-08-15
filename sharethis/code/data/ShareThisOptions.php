@@ -109,7 +109,7 @@ class ShareThisOptions extends Object {
 	 "url" => "http://www.spurl.net/spurl.php?".htmlentities("url=".self::$encoded_page_url."&title=".self::$encoded_page_title),
 	 "title" => "Spurl It"),
 "squidoo" => array(
-	 "url" => "	 http://www.squidoo.com/lensmaster/bookmark?".htmlentities(self::$encoded_page_url),
+	 "url" => "http://www.squidoo.com/lensmaster/bookmark?".htmlentities(self::$encoded_page_url),
 	 "title" => "Add to Squidoo"),
 "stumbleupon" => array(
 	 "url" => "http://www.stumbleupon.com/submit?".htmlentities("url=".self::$non_encoded_page_url."&title=".self::$encoded_page_title),
