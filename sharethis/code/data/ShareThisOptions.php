@@ -55,16 +55,16 @@ class ShareThisOptions extends Object {
 	 "url" => "http://digg.com/submit?".htmlentities("url=".self::$non_encoded_page_url."&title=".self::$encoded_page_title),
 	 "title" => "Digg this"),
 "dzone" => array(
-	 "url" => "	 http://www.dzone.com/links/add.html?".htmlentities("url=".self::$encoded_page_url."&title=".self::$encoded_page_title),
+	 "url" => "http://www.dzone.com/links/add.html?".htmlentities("url=".self::$encoded_page_url."&title=".self::$encoded_page_title),
 	 "title" => "Add to DZone"),
 "facebook" => array(
 	 "url" => "http://www.facebook.com/sharer.php?".htmlentities("u=".self::$encoded_page_url."&t=".self::$encoded_page_title),
 	 "title" => "Share on Facebook"),
 "fark" => array(
-	 "url" => "	 http://cgi.fark.com/cgi/fark/submit.pl?".htmlentities("new_url=".self::$encoded_page_url),
+	 "url" => "http://cgi.fark.com/cgi/fark/submit.pl?".htmlentities("new_url=".self::$encoded_page_url),
 	 "title" => "Fark It"),
 "friendfeed" => array(
-	 "url" => "	 http://friendfeed.com/share/bookmarklet/frame#".htmlentities("url=".self::$encoded_page_url."&title=".self::$encoded_page_title_space_encoded),
+	 "url" => "http://friendfeed.com/share/bookmarklet/frame#".htmlentities("url=".self::$encoded_page_url."&title=".self::$encoded_page_title_space_encoded),
 	 "title" => "Furl this"),
 "furl" => array(
 	 "url" => "http://www.furl.net/storeIt.jsp?".htmlentities("u=".self::$encoded_page_url."&t=".self::$encoded_page_title),
