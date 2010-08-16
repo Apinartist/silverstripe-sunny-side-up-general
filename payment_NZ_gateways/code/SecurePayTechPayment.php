@@ -55,7 +55,11 @@ class SecurePayTechPayment extends Payment {
 			}
 			$paymentsList .= '<img src="' . $image . '" alt="' . $name . '" class="SecurePayTechCardImage'.$count.'" />';
 		}
-		$paymentsList .= '<script type="text/javascript">function paymark_verify(merchant) { window.open ("http://www.paymark.co.nz/dart/darthttp.dll?etsl&tn=verify&merchantid=" + merchant, "verify", "scrollbars=yes, width=400, height=400"); }</script>';
+		Requirements::customScript('
+			function paymark_verify(merchant) {
+				window.open ("http://www.paymark.co.nz/dart/darthttp.dll?etsl&tn=verify&merchantid=" + merchant, "verify", "scrollbars=yes, width=400, height=400");
+			}
+		');
 		$paymentsList.='<img height="50" src="payment_NZ_gateways/images/paymark.png" alt="Paymark Certified" onclick="paymark_verify (' . "'" . self::get_spt_merchant_id() . "'" . ')" class="last" /></div>';
 		$fieldSet = new FieldSet();
 		if(Director::isDev()) {
