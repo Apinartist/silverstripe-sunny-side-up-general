@@ -15,7 +15,7 @@ class FlashObjectDOD extends SiteTreeDecorator {
 			$doSet = new DataObjectSet();
 			$browseSet = $this->AdvertisementsToShow();
 			if($browseSet) {
-				Requirements::javascript("mysite/advertisements/Advertisement.js");
+				Requirements::javascript("advertisements/javascript/Advertisement.js");
 				foreach($browseSet as $Advertisement) {
 					$imageID = intval($Advertisement->ImageID+ 0);
 					if($imageID) {
