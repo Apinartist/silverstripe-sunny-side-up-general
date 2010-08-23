@@ -1,6 +1,6 @@
-<% if FlashAd %>
+<% if Advertisements %>
 <div id="AdvertisementsHolder">
-<% control FlashAd %>
+<% control Advertisements %>
 	<div class="slide"><a href="$Link"><img src="$Image.FileName" alt="$Title.ATT" /></a></div>
 <% end_control %>
 </div>

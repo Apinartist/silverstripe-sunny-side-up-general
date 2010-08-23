@@ -6,7 +6,7 @@
  *
  **/
 
-class FlashObjectDOD extends SiteTreeDecorator {
+class AdvertisementDecorator extends SiteTreeDecorator {
 
 	protected static $advertisement_dos;
 
@@ -17,7 +17,7 @@ class FlashObjectDOD extends SiteTreeDecorator {
 			if($browseSet) {
 				Requirements::javascript("advertisements/javascript/Advertisement.js");
 				foreach($browseSet as $Advertisement) {
-					$imageID = intval($Advertisement->ImageID+ 0);
+					$imageID = intval($Advertisement->AdvertisementImageID+ 0);
 					if($imageID) {
 						$imageObject = DataObject::get_by_id("Image", $imageID);
 						if($imageObject) {
@@ -58,7 +58,7 @@ class FlashObjectDOD extends SiteTreeDecorator {
 
 	protected function AdvertisementsToShow() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$dos = DataObject::get("Advertisement", "({$bt}Advertisements{$bt}.{$bt}ParentID{$bt} = ".$this->owner->ID." OR {$bt}Advertisements{$bt}.{$bt}ParentID{$bt} IS NULL OR {$bt}Advertisements{$bt}.{$bt}ParentID{$bt} = 0) AND {$bt}Advertisements{$bt}.{$bt}Show{$bt} = 1", "RAND()");
+		$dos = DataObject::get("Advertisement", "({$bt}Advertisement{$bt}.{$bt}ParentID{$bt} = ".$this->owner->ID." OR {$bt}Advertisement{$bt}.{$bt}ParentID{$bt} IS NULL OR {$bt}Advertisement{$bt}.{$bt}ParentID{$bt} = 0) AND {$bt}Advertisement{$bt}.{$bt}Show{$bt} = 1", "RAND()");
 		return $dos;
 	}
 }

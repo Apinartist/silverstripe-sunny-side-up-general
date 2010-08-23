@@ -1,18 +1,18 @@
 ;(function($) {
 	$(document).ready(
 		function() {
-			$("#AdvertisementsHolder").cycle(
-				{
-					fx:    'fade',
-					sync:   1,
+			if($("#AdvertisementsHolder img").length > 1) {
+				$("#AdvertisementsHolder").cycle({
+					fx: 'fade',
+					sync: 1,
 					timeout: 7000,
 					speed: 2000,
-					pager:  '#AdvertisementsPreviousNext',
+					pager: '#AdvertisementsPreviousNext',
 					pagerAnchorBuilder: function(idx, slide) {
 						return '<a href="#">&nbsp;</a>';
 					}
-				}
-			);
+				});
+			}
 		}
 	);
 })(jQuery);

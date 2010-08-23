@@ -27,11 +27,11 @@ class Advertisement extends DataObject {
 	);
 
 	function getLink() {
-		if($this->owner->ExternalLink) {
-			$link = $this->owner->ExternalLink;
+		if($this->ExternalLink) {
+			$link = $this->ExternalLink;
 		}
-		elseif($this->owner->LinkedPage()) {
-			$link = $this->owner->LinkedPage()->Link();
+		elseif($this->LinkedPage()) {
+			$link = $this->LinkedPage()->Link();
 		}
 		else {
 			$link = "#";
@@ -50,10 +50,10 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Main", "LinkedPageID");
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
 		$fields->removeFieldFromTab("Root.Main", "ParentID");
-		$fields->addFieldToTab("Root.Image", new ImageField($name = "AdvertisementImage", $title = "advertisement image - width: ".Advertisement::get_width()."px - height: ".Advertisement::get_height()."px "));
-		$fields->addFieldToTab("Root.Links", new TreeDropdownField($name = "ParentID", $title = "only show on ... (leave blank to show on all advertisement pages)", $sourceObject = "SiteTree"));
-		$fields->addFieldToTab("Root.Links", new TextField($name = "ExternalLink", $title = "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link"));
-		$fields->addFieldToTab("Root.Links", new TreeDropdownField($name = "LinkedPageID", $title = "link to a page on this website", $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = "advertisement image - width: ".Advertisement::get_width()."px - height: ".Advertisement::get_height()."px "));
+		$fields->addFieldToTab("Root.from", new TreeDropdownField($name = "ParentID", $title = "only show on ... (leave blank to show on all advertisement pages)", $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.to", new TextField($name = "ExternalLink", $title = "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link"));
+		$fields->addFieldToTab("Root.to", new TreeDropdownField($name = "LinkedPageID", $title = "link to a page on this website", $sourceObject = "SiteTree"));
 	 	return $fields;
 	}
 
