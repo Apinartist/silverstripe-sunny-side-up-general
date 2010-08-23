@@ -41,7 +41,10 @@ class MemberManagementGroupCleanup extends HourlyTask {
 			$query = new SQLQuery('*', array('Group_Members'), 'GroupID = ' . $allUsersGroupID);
 			$query->delete = true;
 			$query->execute();
-			$sql = "Delete Group_Members From Group_Members  WHERE GroupID = ". $allUsersGroupID;
+			$sql = "
+				DELETE Group_Members
+				FROM Group_Members
+				WHERE GroupID = ". $allUsersGroupID;
 			DB::query($sql);
 			$unlistedMembers = DataObject::get(
 				"Member",
@@ -105,11 +108,6 @@ class MemberManagementGroupCleanup extends HourlyTask {
 			$query->execute();
 			DB::alteration_message("deleted double entries (".$count.") in group members table", "deleted");
 		}
-
-
-
 	}
-
-
 }
 
