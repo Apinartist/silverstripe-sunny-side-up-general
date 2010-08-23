@@ -1,5 +1,5 @@
 ###############################################
-CampaignMonitor Module
+Advertisements Module
 Pre 0.1 proof of concept
 ###############################################
 
@@ -23,4 +23,7 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module at all, but instead customise
 it from your mysite folder, so that you can upgrade the module without redoing the settings.
+3. add
+
+<% include Advertisements %> to your templates...
 
