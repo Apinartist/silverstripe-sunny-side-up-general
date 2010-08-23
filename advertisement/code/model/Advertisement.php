@@ -45,9 +45,12 @@ class Advertisement extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->removeFieldFromTab("Root.Main", "AdvertisementImage");
+		$fields->removeFieldFromTab("Root.Main", "AdvertisementImageID");
 		$fields->removeFieldFromTab("Root.Main", "LinkedPageID");
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
 		$fields->removeFieldFromTab("Root.Main", "ParentID");
+		$fields->addFieldToTab("Root.Image", new ImageField($name = "AdvertisementImage", $title = "advertisement image - width: ".Advertisement::get_width()."px - height: ".Advertisement::get_height()."px "));
 		$fields->addFieldToTab("Root.Links", new TreeDropdownField($name = "ParentID", $title = "only show on ... (leave blank to show on all advertisement pages)", $sourceObject = "SiteTree"));
 		$fields->addFieldToTab("Root.Links", new TextField($name = "ExternalLink", $title = "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link"));
 		$fields->addFieldToTab("Root.Links", new TreeDropdownField($name = "LinkedPageID", $title = "link to a page on this website", $sourceObject = "SiteTree"));
