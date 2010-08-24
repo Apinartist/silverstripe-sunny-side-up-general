@@ -34,19 +34,19 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 									$doSet->push(new ArrayData($record));
 								}
 								else {
-									debug::show("no resized image");
+									//debug::show("no resized image");
 								}
 							}
 							else {
-								debug::show("no image");
+								//debug::show("no image");
 							}
 						}
 						else {
-							debug::show("could not find image");
+							//debug::show("could not find image");
 						}
 					}
 					else {
-						//debug::show("no imageID ($imageID) or product (".$Product->ID.")");
+						//debug::show("no imageID ($imageID) ");
 					}
 				}
 			}
