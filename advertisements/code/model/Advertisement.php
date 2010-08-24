@@ -34,7 +34,7 @@ class Advertisement extends DataObject {
 			$link = $this->LinkedPage()->Link();
 		}
 		else {
-			$link = "#";
+			$link = '';
 		}
 		return $link;
 	}
