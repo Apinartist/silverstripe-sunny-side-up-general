@@ -12,6 +12,10 @@ class Quote extends Widget {
 		"PersonQuoted" => "Varchar(255)",
 	);
 
+	static $has_one = array(
+		"Photo" => "Image"
+	);
+
 	static $title = 'Quote';
 
 	static $cmsTitle = 'Quote';
@@ -26,32 +30,17 @@ class Quote extends Widget {
 			new TextField("PublishedIn", "Published"),
 			new TextField("ExtraPublishingInformation", "Extra publishing information, e.g date"),
 			new TextField("Quote", "Quote"),
-			new TextField("PersonQuoted", "Person quoted")
+			new TextField("PersonQuoted", "Person quoted"),
+			new ImageField("Photo", "Photo")
 	}
 
 	function Title() {
-		return $this->WidgetTitle ? $this->WidgetTitle : self::$title;
+		return $this->WidgetTitle ? $this->WidgetTitle : "";
 	}
 
 	function getTitle() {
 		return $this->Title;
 	}
 
-	function RandomDidYouKnowItem() {
-		Requirements::themedCSS("widgets_didyouknow");
-		$do = DataObject::get_one("DidYouKnow_Statement", null, $cache = true, "RAND() DESC");
-		if($do) {
-			return $do->Content;
-		}
-	}
-
 }
 
-class DidYouKnow_Statement extends DataObject {
-
-	static $db = array(
-		"Content" => "Varchar(255)"
-	);
-
-
-}
