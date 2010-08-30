@@ -6,9 +6,9 @@ class Quote extends Widget {
 
 	static $db = array(
 		"WidgetTitle" => "Varchar(255)",
+		"Quote" => "Varchar(255)",
 		"PublishedIn" => "Varchar(255)",
 		"ExtraPublishingInformation" => "Varchar(255)",
-		"Quote" => "Varchar(255)",
 		"PersonQuoted" => "Varchar(255)",
 	);
 
