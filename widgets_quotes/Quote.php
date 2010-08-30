@@ -23,7 +23,7 @@ class Quote extends Widget {
 	static $description = 'Allows you to add quote';
 
 	function getCMSFields() {
-		return new FieldSet(
+		$fields = new FieldSet(
 			new HeaderField("FieldExplanations", "Enter optional fields below..."),
 			new TextField("WidgetTitle", "Title"),
 			new TextField("PublishedIn", "Published In"),
@@ -31,8 +31,10 @@ class Quote extends Widget {
 			new TextField("ExtraPublishingInformation", "Extra publishing information, e.g date"),
 			new TextField("Quote", "Quote"),
 			new TextField("PersonQuoted", "Person quoted"),
-			new ImageField("Photo", "Photo")
 		);
+		if($this->ID) {
+			$fields->push(new ImageField("Photo", "Photo"));
+		}
 	}
 
 	function Title() {
