@@ -26,15 +26,33 @@ class Quote extends Widget {
 		$fields = new FieldSet(
 			new HeaderField("FieldExplanations", "Enter optional fields below..."),
 			new TextField("WidgetTitle", "Title"),
-			new TextField("PublishedIn", "Published In"),
-			new TextField("PublishedIn", "Published"),
-			new TextField("ExtraPublishingInformation", "Extra publishing information, e.g date"),
 			new TextField("Quote", "Quote"),
-			new TextField("PersonQuoted", "Person quoted"),
+			new TextField("PublishedIn", "Published In"),
+			new TextField("ExtraPublishingInformation", "Extra publishing information, e.g date"),
+			new TextField("PersonQuoted", "Person quoted")
 		);
+		$hasPhoto = false;
 		if($this->ID) {
-			$fields->push(new ImageField("Photo", "Photo"));
+			$images = DataObject::get("Image");
+			if($images) {
+				$list = $images->map();
+				$fields->push(new DropdownField("PhotoID", "Photo", $list, null, null, " --- select image --- "));
+				$hasPhoto = true;
+			}
 		}
+		if(!$hasPhoto) {
+			$fields->push(new LiteralField("PhotoExplanation", '
+				<p>NOTE: </p>
+				<ul>
+					<li>save this page</li>
+					<li>make sure you <a href="/admin/assets/">have uploaded</a> a photo</li>
+					<li>come back here and select a photo of the person quoted.</li>
+				</ul>'));
+		}
+		else {
+			$fields->push(new LiteralField("PhotoExplanation", 'test'));
+		}
+		return $fields;
 	}
 
 	function Title() {
