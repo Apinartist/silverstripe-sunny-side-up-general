@@ -32,6 +32,7 @@ class Quote extends Widget {
 			new TextField("Quote", "Quote"),
 			new TextField("PersonQuoted", "Person quoted"),
 			new ImageField("Photo", "Photo")
+		);
 	}
 
 	function Title() {
