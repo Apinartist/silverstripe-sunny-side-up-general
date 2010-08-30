@@ -1,10 +1,6 @@
 <?php
 
 class MenuCache extends DataObjectDecorator {
-
-	protected static $class_names_to_cache = array();
-	static function add_class_name_to_cache($className) {self::$class_names_to_cache[] = $className;}
-
 	/**
 	* fields are typicall header, menu, footer
 	*/
@@ -51,51 +47,6 @@ class MenuCache extends DataObjectDecorator {
 		$fields->addFieldToTab("Root.Caching", new CheckboxField("DoNotCacheMenu","Do Not Cache Menu"));
 		return $fields;
 	}
-
-	//------------------ static publisher ------------------ ------------------ ------------------ ------------------
-	/**
-	 * Return a list of all the pages to cache
-	 */
-	function allPagesToCache() {
-		// Get each page type to define its sub-urls
-		$urls = array();
-		// memory intensive depending on number of pages
-		foreach(self::$class_names_to_cache as $className) {
-			$pages = DataObject::get($className);
-			if($pages) {
-				foreach($pages as $page) {
-					$urls = array_merge($urls, (array)$page->subPagesToCache());
-				}
-			}
-		}
-		// add any custom URLs which are not SiteTree instances
-		//$urls[] = "sitemap.xml";
-		return $urls;
-	}
-
- /**
-	 * Get a list of URLs to cache related to this page
-	 */
-	function subPagesToCache() {
-		$urls = array();
-
-		// add current page
-		$urls[] = $this->owner->Link();
-
-		// cache the RSS feed if comments are enabled
-		if ($this->owner->ProvideComments) {
-			$urls[] = Director::absoluteBaseURL() . "pagecomment/rss/" . $this->ID;
-		}
-
-		return $urls;
-	}
-
-	function pagesAffectedByChanges() {
-		$urls = $this->subPagesToCache();
-		if($p = $this->owner->Parent()) $urls = array_merge((array)$urls, (array)$p->subPagesToCache());
-		return $urls;
-	}
-
 
 	//-------------------- menu cache ------------------ ------------------ ------------------ ------------------ ------------------ ------------------
 

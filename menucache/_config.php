@@ -8,11 +8,19 @@
 //===================---------------- START metatags MODULE ----------------===================
 //Object::add_extension('SiteTree', 'MenuCache');
 //Object::add_extension('ContentController', 'MenuCache_Controller');
-//-- static publishing --
-//Object::add_extension("SiteTree", "FilesystemPublisher('cache/', 'php')");
-//MenuCache::add_class_name_to_cache(array("SiteTree"));
-//-- field caching --
 //MenuCache::set_fields(array("Header", "Menu", "Footer", "LayoutSection"));
 //MenuCache::set_layout_field(3); //NOTA BENE - MAKE SURE TO SET TO ANYTHING BUT 0-4 IF YOU DO NOT INCLUDE A LAYOUT SECTION!
+
+//-- static publishing --
+//Object::add_extension('SiteTree', 'MenuCacheStatic');
+//Object::add_extension("SiteTree", "FilesystemPublisher('cache/', 'html')");
+//MenuCacheStatic::add_class_name_to_cache("SiteTree");
+//MenuCacheStatic::remove_class_name_from_cache("UserDefinedForm");
+//MenuCacheStatic::add_custom_url_to_cache("SiteTree");
+//StaticPublisher::$disable_realtime = false;
+//StaticPublisher::set_echo_progress(false);
+//StaticPublisher::set_static_publisher_theme(false);
+//FilesystemPublisher::set_static_base_url()
+//FilesystemPublisher::set_static_publisher_theme()
 //===================---------------- START metatags MODULE ----------------===================
 

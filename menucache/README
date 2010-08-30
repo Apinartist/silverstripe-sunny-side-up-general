@@ -72,7 +72,10 @@ five cached fields: 0, 1, 2, 3, and 4
 
 
 example htaccess file (NOTE .php as the extension)
+
+also see: http://svn.silverstripe.com/open/modules/cms/trunk/code/staticpublisher/
 -----------------------------------------------
+
 ### SILVERSTRIPE START ###
 # Cached content -
 RewriteCond %{REQUEST_METHOD} ^GET$
