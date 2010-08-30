@@ -18,6 +18,9 @@ SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 Requirements::set_combined_files_folder("_cache");
+Director::forceWWW();
+Debug::send_errors_to('errors@sunnysideup.co.nz', true);
+FulltextSearchable::enable();
 //===================---------------- END sapphire MODULE ----------------===================
 
 
@@ -29,6 +32,7 @@ CMSMenu::remove_menu_item("CommentAdmin");
 CMSMenu::remove_menu_item("ReportAdmin");
 CMSMenu::remove_menu_item("HelpAdmin");
 LeftAndMain::setLogo($location = "", $style = "");
+PageComment::enableModeration();
 //===================---------------- ENBD cms MODULE  ----------------===================
 
 
@@ -77,7 +81,7 @@ MetaTagAutomation_controller::set_copyright("www.sunnysideup.co.nz");
 MetaTagAutomation_controller::set_design("www.sunnysideup.co.nz");
 MetaTagAutomation_controller::set_coding("www.sunnysideup.co.nz");
 /* combined files */
-MetaTagAutomation_controller::set_folder_for_combined_files("assets");
+MetaTagAutomation_controller::set_folder_for_combined_files("cache");
 MetaTagAutomation_controller::set_combine_css_files_into_one(0);
 MetaTagAutomation_controller::set_combine_js_files_into_one(0);
 //===================---------------- END metatags MODULE ----------------===================
