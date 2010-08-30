@@ -1,1 +1,1 @@
-<pc class="didYouKnowParagraph">$RandomDidYouKnowItem</p>
+<p class="didYouKnowParagraph">$RandomDidYouKnowItem</p>
