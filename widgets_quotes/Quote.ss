@@ -3,4 +3,5 @@
 	<% if PublishedIn %><p id="publishedIn" class="quotes">$PublishedIn</p><% end_if %>
 	<% if ExtraPublishingInformation %><p id="extraPublishingInformation" class="quotes">$ExtraPublishingInformation</p><% end_if %>
 	<% if PersonQuoted %><p id="personQuoted" class="quotes">$PersonQuoted</p><% end_if %>
+	<% if Photo %><span id="photo" class="quotes">$Photo.SetWidth(180)</span><% end_if %>
 </div>
