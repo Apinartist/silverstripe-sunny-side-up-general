@@ -21,6 +21,7 @@ Requirements::set_combined_files_folder("_cache");
 Director::forceWWW();
 Debug::send_errors_to('errors@sunnysideup.co.nz', true);
 FulltextSearchable::enable();
+if(Director::isDev()) {SSViewer::set_source_file_comments(true);}
 //===================---------------- END sapphire MODULE ----------------===================
 
 
