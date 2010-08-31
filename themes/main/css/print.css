@@ -1,3 +1,10 @@
 @media print {
 	#Nav {display: none;}
+
+	a:link:after {content: "(" attr(href) ")";margin-left: 10px;}
+	a:link {
+		font-weight: bold;
+		text-decoration: underline;
+		color: #0066cc;
+	}
 }
