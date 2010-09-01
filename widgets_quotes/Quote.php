@@ -45,18 +45,16 @@ class Quote extends Widget {
 				$hasPhoto = true;
 			}
 		}
-		if(!$hasPhoto) {
-			$fields->push(new HeaderField("PhotoExplanation", '
-				<p>HOW TO ADD PHOTO?</p>
-				<ul>
-					<li>save this page</li>
-					<li>make sure you <a href="/admin/assets/show/'.$folder->ID.'">have uploaded</a> a photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
-					<li>come back here and select the photo.</li>
-				</ul>',
-				$headingLevel = 5,
-				$allowHTML = true
-			));
-		}
+		$fields->push(new HeaderField("PhotoExplanation", '
+			<p>HOW TO ADD PHOTO?</p>
+			<ul>
+				<li>save this page</li>
+				<li>make sure you <a href="/admin/assets/show/'.$folder->ID.'">have uploaded</a> the right photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
+				<li>come back here and select the photo.</li>
+			</ul>',
+			$headingLevel = 5,
+			$allowHTML = true
+		));
 		return $fields;
 	}
 
