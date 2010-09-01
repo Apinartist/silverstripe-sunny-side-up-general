@@ -27,6 +27,7 @@ class Quote extends Widget {
 		static function get_folder_name_for_images(){return self::$folder_name_for_images;}
 
 	function getCMSFields() {
+		$folder = Folder::findOrMake(self::get_folder_name_for_images());
 		$fields = new FieldSet(
 			new HeaderField("FieldExplanations", "Enter optional fields below..."),
 			new TextField("WidgetTitle", "Title"),
@@ -37,7 +38,6 @@ class Quote extends Widget {
 		);
 		$hasPhoto = false;
 		if($this->ID) {
-			$folder = Folder::findOrMake(self::get_folder_name_for_images());
 			$images = DataObject::get("Image", "ParentID = ".$folder->ID);
 			if($images) {
 				$list = $images->map();
@@ -50,7 +50,7 @@ class Quote extends Widget {
 				<p>HOW TO ADD PHOTO?</p>
 				<ul>
 					<li>save this page</li>
-					<li>make sure you <a href="/admin/assets/">have uploaded</a> a photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
+					<li>make sure you <a href="/admin/assets/show/'.$folder->ID.'">have uploaded</a> a photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
 					<li>come back here and select the photo.</li>
 				</ul>',
 				$headingLevel = 5,
