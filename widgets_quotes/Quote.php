@@ -46,6 +46,7 @@ class Quote extends Widget {
 			}
 		}
 		if(!$hasPhoto) {
+			$fields->push(new TextField("Test"));
 			$fields->push(new LiteralField("PhotoExplanation", '
 				<p>HOW TO ADD PHOTO?</p>
 				<ul>
