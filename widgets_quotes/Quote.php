@@ -46,10 +46,10 @@ class Quote extends Widget {
 			}
 		}
 		if(!$hasPhoto) {
-			$fields->push(new TextField("Test"));
-			$fields->push(new HeaderField("Test 2"));
-			$fields->push(new LiteralField("Test 4", "hello"));
-			$fields->push(new LiteralField("Test3", '
+			$fields->push(new TextField("Test1"));
+			$fields->push(new HeaderField("Test2"));
+			$fields->push(new LiteralField("Test3", "hello"));
+			$fields->push(new LiteralField("Test4", '
 				<p>HOW TO ADD PHOTO?</p>
 				<ul>
 					<li>save this page</li>
