@@ -52,7 +52,10 @@ class Quote extends Widget {
 					<li>save this page</li>
 					<li>make sure you <a href="/admin/assets/">have uploaded</a> a photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
 					<li>come back here and select the photo.</li>
-				</ul>'));
+				</ul>',
+				$headingLevel = 5,
+				$allowHTML = true
+			));
 		}
 		return $fields;
 	}
