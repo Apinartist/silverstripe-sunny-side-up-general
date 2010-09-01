@@ -4,7 +4,7 @@
  **/
 class Quote extends Widget {
 
-	static $db = array(
+	public static $db = array(
 		"WidgetTitle" => "Varchar(255)",
 		"Quote" => "Varchar(255)",
 		"PublishedIn" => "Varchar(255)",
@@ -12,15 +12,19 @@ class Quote extends Widget {
 		"PersonQuoted" => "Varchar(255)",
 	);
 
-	static $has_one = array(
+	public static $has_one = array(
 		"Photo" => "Image"
 	);
 
-	static $title = 'Quote';
+	public static $title = 'Quote';
 
-	static $cmsTitle = 'Quote';
+	public static $cmsTitle = 'Quote';
 
-	static $description = 'Allows you to add quote';
+	public static $description = 'Allows you to add quote';
+
+	protected static $folder_name_for_images = 'quote-images';
+		static function set_folder_name_for_images($v){self::$folder_name_for_images = $v;}
+		static function get_folder_name_for_images(){return self::$folder_name_for_images;}
 
 	function getCMSFields() {
 		$fields = new FieldSet(
@@ -33,7 +37,8 @@ class Quote extends Widget {
 		);
 		$hasPhoto = false;
 		if($this->ID) {
-			$images = DataObject::get("Image");
+			$folder = Folder::findOrMake(self::get_folder_name_for_images());
+			$images = DataObject::get("Image", "ParentID = ".$folder->ID);
 			if($images) {
 				$list = $images->map();
 				$fields->push(new DropdownField("PhotoID", "Photo", $list, null, null, " --- select image --- "));
@@ -42,15 +47,12 @@ class Quote extends Widget {
 		}
 		if(!$hasPhoto) {
 			$fields->push(new LiteralField("PhotoExplanation", '
-				<p>NOTE: </p>
+				<p>HOW TO ADD PHOTO?</p>
 				<ul>
 					<li>save this page</li>
-					<li>make sure you <a href="/admin/assets/">have uploaded</a> a photo</li>
-					<li>come back here and select a photo of the person quoted.</li>
+					<li>make sure you <a href="/admin/assets/">have uploaded</a> a photo in the following folder: <i>'.self::get_folder_name_for_images().'</i></li>
+					<li>come back here and select the photo.</li>
 				</ul>'));
-		}
-		else {
-			$fields->push(new LiteralField("PhotoExplanation", 'test'));
 		}
 		return $fields;
 	}
