@@ -6,6 +6,7 @@ class Quote extends Widget {
 
 	public static $db = array(
 		"WidgetTitle" => "Varchar(255)",
+		"SubTitle" => "Varchar(255)",
 		"Quote" => "Varchar(255)",
 		"PublishedIn" => "Varchar(255)",
 		"ExtraPublishingInformation" => "Varchar(255)",
@@ -31,8 +32,9 @@ class Quote extends Widget {
 		$fields = new FieldSet(
 			new HeaderField("FieldExplanations", "Enter optional fields below..."),
 			new TextField("WidgetTitle", "Title"),
+			new TextField("SubTitle", "Sub title"),
 			new TextField("Quote", "Quote"),
-			new TextField("PublishedIn", "Published In"),
+			new TextField("PublishedIn", "Published in"),
 			new TextField("ExtraPublishingInformation", "Extra publishing information, e.g date"),
 			new TextField("PersonQuoted", "Person quoted")
 		);
