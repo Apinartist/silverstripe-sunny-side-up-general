@@ -1,0 +1,17 @@
+sapphire http://svn.silverstripe.com/open/modules/sapphire/branches/2.4
+cms http://svn.silverstripe.com/open/modules/cms/branches/2.4
+userforms/ http://svn.silverstripe.com/open/modules/userforms/tags/0.3.0
+googlesitemaps/ http://svn.silverstripe.com/open/modules/googlesitemaps/trunk/
+spamprotection/ http://svn.silverstripe.com/open/modules/spamprotection/trunk
+campaignmonitor http://sunny.svnrepository.com/svn/sunny-side-up-general/campaignmonitor
+dataintegritytests/ http://sunny.svnrepository.com/svn/sunny-side-up-general/dataintegritytests
+dataobjectsorter http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+hidemailto http://sunny.svnrepository.com/svn/hidemailto
+googleanalyticsbasics/ http://sunny.svnrepository.com/svn/sunny-side-up-general/googleanalyticsbasics/
+metatags/ http://sunny.svnrepository.com/svn/sunny-side-up-general/metatags/
+menucache/ http://sunny.svnrepository.com/svn/sunny-side-up-general/menucache/
+prettyphoto/ http://sunny.svnrepository.com/svn/sunny-side-up-general/prettyPhoto/
+simplestspam http://sunny.svnrepository.com/svn/sunny-side-up-general/simplestspam/
+templateoverview/ http://sunny.svnrepository.com/svn/sunny-side-up-general/templateoverview/
+typography/ http://sunny.svnrepository.com/svn/sunny-side-up-general/typography/
+sharethis/ http://sunny.svnrepository.com/svn/sunny-side-up-general/sharethis/
