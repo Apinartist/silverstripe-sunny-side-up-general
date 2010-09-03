@@ -6,12 +6,12 @@
 ;(function($) {
 	$(document).ready(
 		function() {
-			EcommerceWishList.init(".addToWishListHolder");
+			WishList.init(".addToWishListHolder");
 		}
 	);
 })(jQuery);
 
-var EcommerceWishList = {
+var WishList = {
 
 	ConfirmDeleteText: 'Are you sure you would like to remove this item from your wish list?',
 
@@ -44,7 +44,7 @@ var EcommerceWishList = {
 			{},
 			function(data) {
 				jQuery(el).text(data);
-				jQuery(this).removeClass(EcommerceWishList.LoadingClass);
+				jQuery(this).removeClass(WishList.LoadingClass);
 			}
 		);
 		return true;
@@ -59,23 +59,23 @@ var EcommerceWishList = {
 jQuery.fn.extend({
 
 	addWishListAddLinks: function() {
-		jQuery(this).find(EcommerceWishList.addLinkSelector).click(
+		jQuery(this).find(WishList.addLinkSelector).click(
 			function(){
-				jQuery(this).addClass(EcommerceWishList.LoadingClass);
+				jQuery(this).addClass(WishList.LoadingClass);
 				var url = jQuery(this).attr("href");
-				EcommerceWishList.loadAjax(url, this);
+				WishList.loadAjax(url, this);
 				return false;
 			}
 		);
 	},
 
 	addWishListRemoveLinks: function () {
-		jQuery(this).find(EcommerceWishList.removeLinkSelector).click(
+		jQuery(this).find(WishList.removeLinkSelector).click(
 			function(){
-				if(EcommerceWishList.UnconfirmedDelete || confirm(EcommerceWishList.ConfirmDeleteText)) {
-					jQuery(this).addClass(EcommerceWishList.LoadingClass);
+				if(WishList.UnconfirmedDelete || confirm(WishList.ConfirmDeleteText)) {
+					jQuery(this).addClass(WishList.LoadingClass);
 					var url = jQuery(this).attr("href");
-					EcommerceWishList.loadAjax(url, this);
+					WishList.loadAjax(url, this);
 				}
 				return false;
 			}

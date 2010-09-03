@@ -7,9 +7,9 @@
  *
  **/
 
-class EcommerceWishListPage extends Page {
+class WishListPage extends Page {
 
-	static $icon = "mysite/images/treeicons/EcommerceWishListPage";
+	static $icon = "mysite/images/treeicons/WishListPage";
 
 
 	static $db = array(
@@ -45,10 +45,10 @@ class EcommerceWishListPage extends Page {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$update = '';
-		$page = DataObject::get_one("EcommerceWishListPage");
+		$page = DataObject::get_one("WishListPage");
 
 		if(!$page) {
-			$page = new EcommerceWishListPage();
+			$page = new WishListPage();
 			$page->Title = "Wish List";
 			$page->MetaTitle = "Wish List";
 			$page->URLSegment = "wish-list";
@@ -76,7 +76,7 @@ class EcommerceWishListPage extends Page {
 
 }
 
-class EcommerceWishListPage_Controller extends Page_Controller {
+class WishListPage_Controller extends Page_Controller {
 
 
 

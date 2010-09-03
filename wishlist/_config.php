@@ -10,5 +10,5 @@
 //===================---------------- START wishlist MODULE ----------------===================
 //Object::add_extension('ContentController', 'WishListDecorator');
 //Object::add_extension('Member', 'WishListMemberDecorator');
-//EcommerceWishListDecorator::set_session_variable_name("WishListDecoratorArray");
+//WishListDecorator::set_session_variable_name("WishListDecoratorArray");
 //===================---------------- END wishlist MODULE ----------------===================

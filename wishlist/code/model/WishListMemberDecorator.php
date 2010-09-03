@@ -6,14 +6,14 @@
  *
  **/
 
-class EcommerceWishListMemberDecorator extends DataObjectDecorator {
+class WishListMemberDecorator extends DataObjectDecorator {
 
 
 	function extraDBFields() {
 		return array(
 			'db' => array(
-				// We use Ecommerce fields for City, Suburb and Phone number
-				'EcommerceWishList' => 'Text'
+				// We use  fields for City, Suburb and Phone number
+				'WishList' => 'Text'
 			)
 		);
 	}

@@ -2,7 +2,7 @@
 
 
 
-class EcommerceWishListDecorator extends Extension {
+class WishListDecorator extends Extension {
 
 	static $allowed_actions = array(
 		"addtowishlist" => true,
@@ -12,18 +12,18 @@ class EcommerceWishListDecorator extends Extension {
 		"retrievewishlist" => true
 	);
 
-	function getAddedToListText () {return $this->EcommerceWishListPage()->AddedToListText;}
-	function getCouldNotAddedToListText () {return $this->EcommerceWishListPage()->CouldNotAddedToListText;}
-	function getRemovedFromListConfirmation () {return $this->EcommerceWishListPage()->RemovedFromListConfirmation;}
-	function getRemovedFromListText () {return $this->EcommerceWishListPage()->RemovedFromListText ;}
-	function getCouldNotRemovedFromListText () {return $this->EcommerceWishListPage()->CouldNotRemovedFromListText;}
-	function getClearWishList () {return $this->EcommerceWishListPage()->ClearWishList;}
-	function getSavedWishListText () {return $this->EcommerceWishListPage()->SavedWishListText;}
-	function getSavedErrorWishListText () {return $this->EcommerceWishListPage()->SavedErrorWishListText;}
-	function getRetrievedWishListText () {return $this->EcommerceWishListPage()->RetrievedWishListText;}
-	function getRetrievedErrorWishListText () {return $this->EcommerceWishListPage()->RetrievedErrorWishListText;}
+	function getAddedToListText () {return $this->WishListPage()->AddedToListText;}
+	function getCouldNotAddedToListText () {return $this->WishListPage()->CouldNotAddedToListText;}
+	function getRemovedFromListConfirmation () {return $this->WishListPage()->RemovedFromListConfirmation;}
+	function getRemovedFromListText () {return $this->WishListPage()->RemovedFromListText ;}
+	function getCouldNotRemovedFromListText () {return $this->WishListPage()->CouldNotRemovedFromListText;}
+	function getClearWishList () {return $this->WishListPage()->ClearWishList;}
+	function getSavedWishListText () {return $this->WishListPage()->SavedWishListText;}
+	function getSavedErrorWishListText () {return $this->WishListPage()->SavedErrorWishListText;}
+	function getRetrievedWishListText () {return $this->WishListPage()->RetrievedWishListText;}
+	function getRetrievedErrorWishListText () {return $this->WishListPage()->RetrievedErrorWishListText;}
 
-	protected static $session_variable_name = "EcommerceWishListDecoratorArray";
+	protected static $session_variable_name = "WishListDecoratorArray";
 		static function set_session_variable_name($v){self::$session_variable_name = $v;}
 		static function get_session_variable_name () {return self::$session_variable_name;}
 
@@ -32,9 +32,9 @@ class EcommerceWishListDecorator extends Extension {
 		protected static function get_wish_list_array () {return self::$wish_list_array;}
 
 	function IsOnWishList() {
-		Requirements::javascript("ecommerce_wishlist/javascript/EcommerceWishList.js");
+		Requirements::javascript("_wishlist/javascript/WishList.js");
 		$msg = $this->getRemovedFromListConfirmation();
-		Requirements::customScript("EcommerceWishList.set_ConfirmDeleteText('".Convert::raw2js($msg)."')");
+		Requirements::customScript("WishList.set_ConfirmDeleteText('".Convert::raw2js($msg)."')");
 		$array = Session::get(self::get_session_variable_name());
 		if(isset($array[$this->owner->ID])) {
 			return true;
@@ -59,7 +59,7 @@ class EcommerceWishListDecorator extends Extension {
 
 	function CanRetrieveWishList() {
 		if($member = Member::currentMember()) {
-			return $member->EcommerceWishList;
+			return $member->WishList;
 		}
 	}
 
@@ -141,7 +141,7 @@ class EcommerceWishListDecorator extends Extension {
 	function savewishlist() {
 		if($this->CanSaveWishList()) {
 			$member = Member::currentMember();
-			$member->EcommerceWishList = serialize($this->getWishListArray());
+			$member->WishList = serialize($this->getWishListArray());
 			$member->write();
 			if(Director::is_ajax()) {
 				return $this->getSavedWishListText();
@@ -166,7 +166,7 @@ class EcommerceWishListDecorator extends Extension {
 	function retrievewishlist() {
 		if($this->CanRetrieveWishList()) {
 			$member = Member::currentMember();
-			$this->setWishListArray(unserialize($member->EcommerceWishList));
+			$this->setWishListArray(unserialize($member->WishList));
 			if(Director::is_ajax()) {
 				return $this->getRetrievedWishListText();
 			}
@@ -239,8 +239,8 @@ class EcommerceWishListDecorator extends Extension {
 		}
 	}
 
-	protected function EcommerceWishListPage() {
-		return DataObject::get_one("EcommerceWishListPage");
+	protected function WishListPage() {
+		return DataObject::get_one("WishListPage");
 	}
 
 }
