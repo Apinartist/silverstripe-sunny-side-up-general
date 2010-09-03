@@ -3,10 +3,15 @@
 
 /* startup */
 global $project; $project = 'mysite';
+
+//NOTE THIS SHOULD ACTUALLY NOT CONTAIN THE STAGING_ PART - THIS NEEDS UPDATING! *********
 global $database; $database = "staging_silverstripe_webdevelopment_com";
 require_once("conf/ConfigureFromEnv.php");
 
 
+//===================---------------- START mysite MODULE ----------------===================
+Object::add_extension("SiteConfig", "SiteConfigExtras");
+//===================---------------- END mysite MODULE ----------------===================
 
 //===================---------------- START sapphire MODULE ----------------===================
 SSViewer::set_theme('main');
