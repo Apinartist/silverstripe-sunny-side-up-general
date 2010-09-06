@@ -19,7 +19,9 @@ class RegisterAndEditDetailsPage extends Page {
 		"TitleLoggedIn" => "Varchar(255)",
 		"MenuTitleLoggedIn" => "Varchar(255)",
 		"MetaTitleLoggedIn" => "Varchar(255)",
-		"ContentLoggedIn" => "HTMLText"
+		"ContentLoggedIn" => "HTMLText",
+		"ErrorEmailAddressAlreadyExists" => "Varchar(255)",
+		"ErrorPasswordDoNotMatch" => "Varchar(255)"
 	);
 
 	static $register_group_title = "Registered users";
@@ -46,8 +48,6 @@ class RegisterAndEditDetailsPage extends Page {
 		}
 	}
 
-
-
 	public function getCMSFields($cms) {
 		$fields = parent::getCMSFields($cms);
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('TitleLoggedIn', 'Title when user is Logged In'));
@@ -56,8 +56,8 @@ class RegisterAndEditDetailsPage extends Page {
 		$fields->addFieldToTab('Root.Content.Welcome', new TextField('WelcomeTitle', 'Welcome Title (afer user creates an account)'));
 		$fields->addFieldToTab('Root.Content.Welcome', new HTMLEditorField('WelcomeContent', 'Welcome message (afer user creates an account)'));
 
-		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
-		$fields->addFieldToTab('Root.Content.ThankYou', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
+		$fields->addFieldToTab('Root.Content.UpdatingDetails', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
+		$fields->addFieldToTab('Root.Content.UpdatingDetails', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
 		return $fields;
 	}
 
@@ -69,6 +69,7 @@ class RegisterAndEditDetailsPage extends Page {
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$update = '';
 		if(!$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".self::$register_group_code."'")) {
 			$group = new Group();
 			$group->Code = self::$register_group_code;
@@ -80,10 +81,40 @@ class RegisterAndEditDetailsPage extends Page {
 		elseif(DB::query("SELECT * FROM Permission WHERE {$bt}GroupID{$bt} = ".$group->ID." AND {$bt}Code{$bt} = '".self::$register_group_access_key."'")->numRecords() == 0) {
 			Permission::grant($group->ID, self::$register_group_access_key);
 		}
+		$page = DataObject::get_one("RegisterAndEditDetailsPage");
+		if(!$page) {
+			$page = new RegisterAndEditDetailsPage();
+			$page->Title = "Register";
+			$page->MetaTitle = "Register";
+			$page->URLSegment = "register";
+			$page->MenuTitle = "Register";
+		}
+		if($page) {
+			if(!$page->ThankYouTitle){$page->XXX = ""; $update .= "updated XXX, ";}
+			if(!strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update .= "updated ThankYouContent, ";}
+			if(!$page->WelcomeTitle){$page->WelcomeTitle = "Thank you for registering"; $update .= "updated WelcomeTitle, ";}
+			if(!strlen($page->WelcomeContent) < 17){$page->WelcomeContent = "<p>Thank you for registration. Please make sure to remember your username and password.</p>"; $update .= "updated WelcomeContent, ";}
+			if(!$page->TitleLoggedIn){$page->TitleLoggedIn = "Welcome back"; $update .= "updated TitleLoggedIn, ";}
+			if(!$page->MenuTitleLoggedIn){$page->MenuTitleLoggedIn = "Welcome back"; $update .= "updated MenuTitleLoggedIn, ";}
+			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update .= "updated MetaTitleLoggedIn, ";}
+			if(!strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ...."; $update .= "updated ContentLoggedIn, ";}
+			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update .= "updated ErrorEmailAddressAlreadyExists, ";}
+			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update .= "updated ErrorPasswordDoNotMatch, ";}
+			if($update) {
+				$page->writeToStage('Stage');
+				$page->publish('Stage', 'Live');
+				DB::alteration_message($page->ClassName." created/updated: ".$update, 'created');
+			}
+		}
+
+
 	}
 }
 
 class RegisterAndEditDetailsPage_Controller extends Page_Controller {
+
+	protected static $fields_to_remove = array("Locale","DateFormat", "TimeFormat", "State","Notes","WishList");
+	protected static $required_fields = array("FirstName","Email");
 
 	function index() {
 		if($this->isAjax()) {
@@ -100,62 +131,89 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$fields = new FieldSet();
 		$passwordField = new ConfirmedPasswordField("Password", "Password");
 		if($member) {
-			$name = $member->FirstName;
-			if($member->FirstName && $member->Surname) {
-				$name .= ' ';
-			}
-			$name .= $member->Surname;
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus LoggedIn">You are currently logged-in as '.$name.'. Click <a href="Security/logout">here</a> to log-out or log-in as someone else.</p>');
+			$name = $member->getName();
+			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus LoggedIn">You are currently logged-in as '.$name.'. You can <a href="Security/logout">log out now</a> if you need to log in as someone else.</p>');
 			if($member && $member->Password != '') {
 				$passwordField->setCanBeEmpty(true);
 			}
 			$actions = new FieldSet(new FormAction("submit", "Update your details"));
 		}
 		else {
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. Click <a href="Security/login?BackURL='.$this->Link().'">here</a> to log-in.</p>');
+			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. You <a href="Security/login?BackURL='.$this->Link().'">can log in now</a> if you have registerd before.</p>');
 			$actions = new FieldSet(new FormAction("submit", "Register"));
+			$member = new Member();
 		}
 		$fields->push($logoutField);
+		$memberFormFields = $member->getMemberFormFields();
 
-		if($memberFormFields = Member::getMemberFormFields()) {
+		if($memberFormFields) {
+			if(is_array(self::$fields_to_remove) && count(self::$fields_to_remove)) {
+				foreach(self::$fields_to_remove as $fieldName) {
+					$memberFormFields->removeByName($fieldName);
+				}
+			}
 			$fields->merge($memberFormFields);
 		}
 		$fields->push($passwordField);
-
-		$requiredFieldList = array(
-			"FirstName",
-			"Email",
-		);
-		foreach($requiredFieldList as $fieldName) {
+		foreach(self::$required_fields as $fieldName) {
 			$fields->fieldByName($fieldName)->addExtraClass("RequiredField");
 		}
-		$requiredFields = new CustomRequiredFields($requiredFieldList);
+		$requiredFields = new CustomRequiredFields(self::$required_fields);
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
 		// Load any data avaliable into the form.
 		if($member) {
-			$form->loadNonBlankDataFrom($member);
+			$form->loadDataFrom($member);
+		}
+		$data = Session::get("FormInfo.Form_Form.data");
+		if(is_array($data)) {
+			$form->loadDataFrom($data);
+		}
+
+		// Optional spam protection
+		if(class_exists('SpamProtectorManager')) {
+			SpamProtectorManager::update_form($form);
 		}
 		return $form;
 	}
 
+
 	/**
-		* Save the changes to the form
-		*/
+	 * Save the changes to the form
+	 */
 	function submit($data, $form) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$member = Member::currentUser();
 		$newPerson = false;
+		Session::set("FormInfo.Form_Form.data", $data);
 		if(!$member) {
 			$newPerson = true;
-			$member = new Member();
+			$member = Object::create('Member');
 			$form->sessionMessage($this->WelcomeTitle, 'good');
+			$id = 0;
 		}
 		else {
 			$form->sessionMessage($this->ThankYouTitle, 'good');
+			$id = $member->ID;
 		}
-		$form->saveInto($member);
-		$member->write();
 
+		//validation
+		if($existingMember = DataObject::get_one("Member", "{$bt}Email{$bt} = '". Convert::raw2sql($data['Email']) . "' AND {$bt}Member{$bt}.{$bt}ID{$bt} <> $id")) {
+			$form->addErrorMessage("Blurb",$this->ErrorEmailAddressAlreadyExists,"bad");
+			// Load errors into session and post back
+			Director::redirectBack();
+			return;
+		}
+		// check password fields are the same before saving
+		if($data['Password']["_Password"] != $data['Password']["_ConfirmPassword"]) {
+			$form->addErrorMessage("Password", $this->ErrorPasswordDoNotMatch,"bad");
+			// Load errors into session and post back
+			return Director::redirectBack();
+		}
+		//saving
+		$form->saveInto($member);
+		$member->Password = $data['Password']["_Password"];
+		$member->write();
+		//adding to group
 		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
 		if($group) {
 			$member->Groups()->add($group);
