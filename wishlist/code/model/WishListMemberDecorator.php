@@ -9,7 +9,7 @@
 class WishListMemberDecorator extends DataObjectDecorator {
 
 
-	function extraDBFields() {
+	function extraStatics() {
 		return array(
 			'db' => array(
 				// We use  fields for City, Suburb and Phone number

@@ -6,52 +6,108 @@
 ;(function($) {
 	$(document).ready(
 		function() {
-			WishList.init(".addToWishListHolder");
+			WishList.init();
 		}
 	);
 })(jQuery);
 
 var WishList = {
 
-	ConfirmDeleteText: 'Are you sure you would like to remove this item from your wish list?',
+	holderSelector: ".addToWishListHolder",
 
-	LoadingClass: "loading",
-
-	showClass: "show",
-
-	doNotShowClass: "doNotShow",
+	loadingClass: "loading",
 
 	addLinkSelector: ".addToWishListLink",
 
-	removeLinkSelector: ".removeToWishListLink",
+	removeLinkSelector: ".removeFromWishListLink",
 
-	UnconfirmedDelete: false,
+	fullListSelector: "#WishListList",
 
-	init: function(element) {
-		jQuery(element).addWishListAddLinks();
-		jQuery(element).addWishListRemoveLinks();
+	fullListItemSelector: "#WishListList li",
+
+	saveAndRetrieveSelector: ".wishListSaveAndRetrieve",
+
+	saveSelector: ".wishListSave",
+
+	retrieveSelector: ".wishListRetrieve",
+
+	noConfirmations: false,
+
+	ConfirmDeleteText: "Are you sure you would like to remove this item from your wish list?",
+	set_confirm_delete_text: function(v) {this.ConfirmDeleteText = v;},
+
+	ConfirmRetrieveText: "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?",
+	set_confirm_retrieve_text: function(v) {this.ConfirmRetrieveText = v;},
+
+	reloadListURL: "",
+	set_reload_list_url: function(v) {this.reloadListURL = v;},
+
+	init: function() {
+		jQuery(WishList.holderSelector)
+			.addWishListAddLinks()
+			.addWishListRemoveLinks();
+		jQuery(WishList.saveAndRetrieveSelector)
+			.addWishListSaveLink()
+			.addWishListRetrieveLink();
 	},
 
 
-	set_ConfirmDeleteText: function(v) {
-		this.ConfirmDeleteText = v;
-	},
-
-	loadAjax: function( url, el ) {
+	loadLinks: function( url, el ) {
 		var clickedElement = el;
+		jQuery(clickedElement).parents(WishList.holderSelector).addClass(WishList.loadingClass);
 		jQuery.get(
 			url,
 			{},
-			function(data) {
-				jQuery(el).text(data);
-				jQuery(this).removeClass(WishList.LoadingClass);
+			function(data, el) {
+				jQuery(clickedElement).parents(WishList.holderSelector)
+					.html(data)
+					.removeClass(WishList.loadingClass)
+					.addWishListAddLinks()
+					.addWishListRemoveLinks();
+
+			}
+		);
+		return true;
+	},
+
+
+	loadSaveAndRetrieve: function( url ) {
+		jQuery(WishList.saveAndRetrieveSelector).addClass(WishList.loadingClass);
+		jQuery.get(
+			url,
+			{},
+			function(data, el) {
+				jQuery(WishList.saveAndRetrieveSelector)
+					.html(data)
+					.removeClass(WishList.loadingClass)
+					.addWishListSaveLink()
+					.addWishListRetrieveLink();
+			}
+		);
+		return true;
+	},
+
+	loadList: function( url ) {
+		jQuery(WishList.fullListSelector).addClass(WishList.loadingClass);
+		jQuery.get(
+			url,
+			{},
+			function(data, el) {
+				jQuery(WishList.fullListSelector)
+					.html(data)
+					.removeClass(WishList.loadingClass)
+					.addWishListAddLinks()
+					.addWishListRemoveLinks();
+				if(WishList.reloadListURL) {
+					WishList.loadSaveAndRetrieve(WishList.reloadListURL);
+				}
+				else {
+					alert("no url available for reload");
+				}
 			}
 		);
 		return true;
 	}
-
-
-
 
 }
 
@@ -61,25 +117,57 @@ jQuery.fn.extend({
 	addWishListAddLinks: function() {
 		jQuery(this).find(WishList.addLinkSelector).click(
 			function(){
-				jQuery(this).addClass(WishList.LoadingClass);
 				var url = jQuery(this).attr("href");
-				WishList.loadAjax(url, this);
+				WishList.loadLinks(url, this);
+				if(jQuery(this).parents(WishList.fullListItemSelector).length > 0) {
+					jQuery(this).parents(WishList.fullListItemSelector).removeClass("strikeThrough");
+				}
+
 				return false;
 			}
 		);
+		return this;
 	},
 
 	addWishListRemoveLinks: function () {
 		jQuery(this).find(WishList.removeLinkSelector).click(
 			function(){
-				if(WishList.UnconfirmedDelete || confirm(WishList.ConfirmDeleteText)) {
-					jQuery(this).addClass(WishList.LoadingClass);
+				if(WishList.noConfirmations || confirm(WishList.ConfirmDeleteText)) {
 					var url = jQuery(this).attr("href");
-					WishList.loadAjax(url, this);
+					WishList.loadLinks(url, this);
+					//if it is part of a list, add line trough current item
+					if(jQuery(this).parents(WishList.fullListItemSelector).length > 0) {
+						jQuery(this).parents(WishList.fullListItemSelector).addClass("strikeThrough");
+					}
 				}
 				return false;
 			}
 		);
+		return this;
+	},
+
+	addWishListSaveLink: function () {
+		jQuery(this).find(WishList.saveSelector).click(
+			function(){
+				var url = jQuery(this).attr("href");
+				WishList.loadSaveAndRetrieve(url);
+				return false;
+			}
+		);
+		return this;
+	},
+
+	addWishListRetrieveLink: function () {
+		jQuery(this).find(WishList.retrieveSelector).click(
+			function(){
+				if(WishList.noConfirmations || confirm(WishList.ConfirmRetrieveText)) {
+					var url = jQuery(this).attr("href");
+					WishList.loadList(url);
+				}
+				return false;
+			}
+		);
+		return this;
 	}
 
 });

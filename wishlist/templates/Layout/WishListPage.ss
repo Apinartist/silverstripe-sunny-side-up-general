@@ -1,4 +1,5 @@
+<% require javascript(wishlist/javascript/WishList.js) %>
 $Content
-<% include WishListList %>
 <% include WishListSaveAndRetrieve %>
+<% include WishListList %>
 $Form

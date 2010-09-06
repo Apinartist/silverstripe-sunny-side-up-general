@@ -9,13 +9,14 @@
 
 class WishListPage extends Page {
 
-	static $icon = "mysite/images/treeicons/WishListPage";
+	static $icon = "wishlist/images/treeicons/WishListPage";
 
 
 	static $db = array(
 		"AddedToListText" => "Varchar(255)",
 		"CouldNotAddedToListText" => "Varchar(255)",
 		"RemovedFromListConfirmation" => "Varchar(255)",
+		"RetrieveListConfirmation" => "Varchar(255)",
 		"RemovedFromListText" => "Varchar(255)",
 		"CouldNotRemovedFromListText" => "Varchar(255)",
 		"ClearWishList" => "Varchar(255)",
@@ -28,9 +29,10 @@ class WishListPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "AddedToListText", $title = "Added to list"));
+		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "AddedToListText", $title = "added to list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotAddedToListText", $title = "could not add to list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListConfirmation", $title = "Remove from list confirmation"));
+		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListConfirmation", $title = "remove from list confirmation"));
+		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RetrieveListConfirmation", $title = ""));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListText", $title = "removed from list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotRemovedFromListText", $title = "could not remove from list"));
 		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "ClearWishList", $title = "cleared list"));
@@ -57,7 +59,8 @@ class WishListPage extends Page {
 		if($page) {
 			if(!$page->AddedToListText){$page->AddedToListText = "added to wish list"; $update .= "updated AddedToListText, ";}
 			if(!$page->CouldNotAddedToListText){$page->CouldNotAddedToListText = "could not add to wish list"; $update .= "updated CouldNotAddedToListText, ";}
-			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to rempve it from your wish list?"; $update .= "updated RemovedFromListConfirmation, ";}
+			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to remove it from your wish list?"; $update .= "updated RemovedFromListConfirmation, ";}
+			if(!$page->RetrieveListConfirmation){$page->RetrieveListConfirmation = "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?"; $update .= "updated RetrieveListConfirmation, ";}
 			if(!$page->RemovedFromListText){$page->RemovedFromListText = "removed from wish list"; $update .= "updated RemovedFromListText, ";}
 			if(!$page->CouldNotRemovedFromListText){$page->CouldNotRemovedFromListText = "could not be removed from wish list"; $update .= "updated CouldNotRemovedFromListText, ";}
 			if(!$page->ClearWishList){$page->ClearWishList = "cleared wish list"; $update .= "updated ClearWishList, ";}
