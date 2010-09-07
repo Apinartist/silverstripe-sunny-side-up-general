@@ -28,18 +28,17 @@ class WishListPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "AddedToListText", $title = "added to list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotAddedToListText", $title = "could not add to list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListConfirmation", $title = "remove from list confirmation"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RetrieveListConfirmation", $title = ""));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RemovedFromListText", $title = "removed from list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "CouldNotRemovedFromListText", $title = "could not remove from list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "ClearWishList", $title = "cleared list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "SavedWishListText", $title = "saved list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "SavedErrorWishListText", $title = "could not save list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RetrievedWishListText", $title = "retrieved list"));
-		$fields->addFieldToTab("Root.Content.WishListFeedbackMessages", new TextField($name = "RetrievedErrorWishListText", $title = "could not retrieve list"));
-
+		$fields->addFieldToTab("Root.Content.SaveAndRemoveMessages", new TextField($name = "AddedToListText", $title = "added to list"));
+		$fields->addFieldToTab("Root.Content.SaveAndRemoveMessages", new TextField($name = "CouldNotAddedToListText", $title = "could not add to list"));
+		$fields->addFieldToTab("Root.Content.SaveAndRemoveMessages", new TextField($name = "RemovedFromListText", $title = "removed from list"));
+		$fields->addFieldToTab("Root.Content.SaveAndRemoveMessages", new TextField($name = "CouldNotRemovedFromListText", $title = "could not remove from list"));
+		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "ClearWishList", $title = "cleared list"));
+		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "SavedWishListText", $title = "saved list"));
+		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "SavedErrorWishListText", $title = "could not save list"));
+		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "RetrievedWishListText", $title = "retrieved list"));
+		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "RetrievedErrorWishListText", $title = "could not retrieve list"));
+		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RemovedFromListConfirmation", $title = "Are you sure you want to remove item? Pop-up double-check question..."));
+		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RetrieveListConfirmation", $title = "Are you sure you want to retrieve your save list list? Pop-up double-check question..."));
 		return $fields;
 	}
 
