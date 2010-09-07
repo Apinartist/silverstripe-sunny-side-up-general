@@ -45,7 +45,8 @@ class WishListPage extends Page {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		$update = '';
+		/*
+		$update = array;
 		$page = DataObject::get_one("WishListPage");
 
 		if(!$page) {
@@ -56,21 +57,21 @@ class WishListPage extends Page {
 			$page->MenuTitle = "wish list";
 		}
 		if($page) {
-			if(!$page->AddedToListText){$page->AddedToListText = "added to wish list"; $update .= "updated AddedToListText, ";}
-			if(!$page->CouldNotAddedToListText){$page->CouldNotAddedToListText = "could not add to wish list"; $update .= "updated CouldNotAddedToListText, ";}
-			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to remove it from your wish list?"; $update .= "updated RemovedFromListConfirmation, ";}
-			if(!$page->RetrieveListConfirmation){$page->RetrieveListConfirmation = "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?"; $update .= "updated RetrieveListConfirmation, ";}
-			if(!$page->RemovedFromListText){$page->RemovedFromListText = "removed from wish list"; $update .= "updated RemovedFromListText, ";}
-			if(!$page->CouldNotRemovedFromListText){$page->CouldNotRemovedFromListText = "could not be removed from wish list"; $update .= "updated CouldNotRemovedFromListText, ";}
-			if(!$page->ClearWishList){$page->ClearWishList = "cleared wish list"; $update .= "updated ClearWishList, ";}
-			if(!$page->SavedWishListText){$page->SavedWishListText = "saved wish list"; $update .= "updated SavedWishListText, ";}
-			if(!$page->SavedErrorWishListText){$page->SavedErrorWishListText = "could not save wish list"; $update .= "updated SavedErrorWishListText, ";}
-			if(!$page->RetrievedWishListText){$page->RetrievedWishListText = "retrieved wish list"; $update .= "updated RetrievedWishListText, ";}
-			if(!$page->RetrievedErrorWishListText){$page->RetrievedErrorWishListText = "could not retrieve wish list"; $update .= "updated RetrievedErrorWishListText, ";}
-			if($update) {
+			if(!$page->AddedToListText){$page->AddedToListText = "added to wish list"; $update[] ="updated AddedToListText";}
+			if(!$page->CouldNotAddedToListText){$page->CouldNotAddedToListText = "could not add to wish list"; $update[] ="updated CouldNotAddedToListText";}
+			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to remove it from your wish list?"; $update[] ="updated RemovedFromListConfirmation";}
+			if(!$page->RetrieveListConfirmation){$page->RetrieveListConfirmation = "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?"; $update[] ="updated RetrieveListConfirmation";}
+			if(!$page->RemovedFromListText){$page->RemovedFromListText = "removed from wish list"; $update[] ="updated RemovedFromListText";}
+			if(!$page->CouldNotRemovedFromListText){$page->CouldNotRemovedFromListText = "could not be removed from wish list"; $update[] ="updated CouldNotRemovedFromListText";}
+			if(!$page->ClearWishList){$page->ClearWishList = "cleared wish list"; $update[] ="updated ClearWishList";}
+			if(!$page->SavedWishListText){$page->SavedWishListText = "saved wish list"; $update[] ="updated SavedWishListText";}
+			if(!$page->SavedErrorWishListText){$page->SavedErrorWishListText = "could not save wish list"; $update[] ="updated SavedErrorWishListText";}
+			if(!$page->RetrievedWishListText){$page->RetrievedWishListText = "retrieved wish list"; $update[] ="updated RetrievedWishListText";}
+			if(!$page->RetrievedErrorWishListText){$page->RetrievedErrorWishListText = "could not retrieve wish list"; $update[] ="updated RetrievedErrorWishListText";}
+			if(count($update)) {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
-				DB::alteration_message($page->ClassName." created/updated: ".$update, 'created');
+				DB::alteration_message($page->ClassName." created/updated: ".implode("<li>", $update), 'created');
 			}
 		}
 	}
