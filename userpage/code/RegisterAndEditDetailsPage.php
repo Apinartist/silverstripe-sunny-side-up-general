@@ -115,12 +115,12 @@ class RegisterAndEditDetailsPage extends Page {
 class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 
 	protected static $fields_to_remove = array("Locale","DateFormat", "TimeFormat");
-		static function set_fields_to_remove($v) = {self::$fields_to_remove = $v;}
-		static function get_fields_to_remove() = {return self::$fields_to_remove;}
+		static function set_fields_to_remove($v) {self::$fields_to_remove = $v;}
+		static function get_fields_to_remove() {return self::$fields_to_remove;}
 
 	protected static $required_fields = array("FirstName","Email");
-		static function set_required_fields($v) = {self::$required_fields = $v;}
-		static function get_required_fields() = {return self::$required_fields;}
+		static function set_required_fields($v) {self::$required_fields = $v;}
+		static function get_required_fields() {return self::$required_fields;}
 
 	function index() {
 		if($this->isAjax()) {
