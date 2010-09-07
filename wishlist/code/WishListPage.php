@@ -11,7 +11,6 @@ class WishListPage extends Page {
 
 	static $icon = "wishlist/images/treeicons/WishListPage";
 
-
 	static $db = array(
 		"AddedToListText" => "Varchar(255)",
 		"CouldNotAddedToListText" => "Varchar(255)",
@@ -81,6 +80,64 @@ class WishListPage extends Page {
 
 class WishListPage_Controller extends Page_Controller {
 
+	function init() {
+		parent::init();
+		Requirements::javascript("wishlist/javascript/WishList.js");
+		Requirements::themedCSS("WishList");
+	}
 
+	function WishList() {
+		WishListDecorator_Controller::set_inline_requirements();
+		$stage = Versioned::current_stage();
+		$baseClass = "SiteTree";
+		$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
+		$array = $this->wishListIDArray();
+		return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
+	}
+
+	function CanSaveWishList() {
+		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
+			if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+				if($savedOne == $sessionOne) {
+					//can't save beceause there is nothing new to save...
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	function CanRetrieveWishList() {
+		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+			if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
+				if($savedOne == $sessionOne) {
+					//can't retrieve beceause there is nothing new to retrieve...
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	function CanClearWishList() {
+		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+			return true;
+		}
+		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
+			return true;
+		}
+		return false;
+	}
+
+	protected function wishListIDArray() {
+		$array = WishListDecorator_Controller::get_wish_list_from_session_array();
+		if(!is_array($array)) {
+			$array = array();
+		}
+		$array[0] = 0;
+		return $array;
+	}
 
 }

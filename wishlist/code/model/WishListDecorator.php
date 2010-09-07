@@ -3,7 +3,7 @@
 class WishListDecorator_DataObject extends DataObjectDecorator {
 
 	function IsOnWishList() {
-		$array = WishListDecorator_Controller::get_wish_list_from_session();
+		$array = WishListDecorator_Controller::get_wish_list_from_session_array();
 		if(isset($array[$this->owner->ID])) {
 			return true;
 		}
@@ -11,8 +11,6 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 			return false;
 		}
 	}
-
-
 
 }
 
@@ -33,20 +31,38 @@ class WishListDecorator_Controller extends Extension {
 		static function set_session_variable_name($v){self::$session_variable_name = $v;}
 		static function get_session_variable_name () {return self::$session_variable_name;}
 
-	protected static $cached_wish_list_array = null;
-		protected static function set_cached_wish_list_array($v){self::$cached_wish_list_array = $v;}
-		protected static function get_cached_wish_list_array () {return self::$cached_wish_list_array;}
-
-
-	static function get_wish_list_from_session() {
+	public static function get_wish_list_from_session_array() {
 		//store in static variable so that you do not have to retrieve all the time...
-		if(!is_array(self::get_cached_wish_list_array())) {
-			$array = Session::get(self::get_session_variable_name()."_data");
-			//set static variable
-			self::set_cached_wish_list_array($array);
+		$string = self::get_wish_list_from_session_serialized();
+		//set static variable
+		return unserialize($string);
+	}
+
+	public static function get_wish_list_from_session_serialized() {
+		$string = Session::get(self::get_session_variable_name()."_data");
+		if(!is_string($string)) {
+			$string = '';
 		}
-		//return static variable
-		return unserialize(self::get_cached_wish_list_array());
+		return $string;
+	}
+
+	public static function get_wish_list_from_member_array() {
+		//store in static variable so that you do not have to retrieve all the time...
+		$string = self::get_wish_list_from_member_serialized();
+		//set static variable
+		return unserialize($string);
+	}
+
+	public static function get_wish_list_from_member_serialized() {
+		$member = Member::currentMember();
+		$string = '';
+		if($member) {
+			$string = $member->WishList;
+		}
+		if(!is_string($string)) {
+			$string = '';
+		}
+		return $string;
 	}
 
 	static function set_wish_list_to_session($array) {
@@ -58,10 +74,33 @@ class WishListDecorator_Controller extends Extension {
 			//set session variable
 			Session::clear(self::get_session_variable_name()."_data");
 			Session::save();
-			Session::set(self::get_session_variable_name()."_data", null);
-			Session::save();
+			//Session::set(self::get_session_variable_name()."_data", null);
+			//Session::save();
 			Session::set(self::get_session_variable_name()."_data", serialize($array));
 			Session::save();
+		}
+	}
+
+	static function set_wish_list_to_member($newArray) {
+		$member = Member::currentMember();
+		if($member) {
+			$member->WishList = serialize($newArray);
+			$member->write();
+			return true;
+		}
+		return false;
+	}
+
+	static function set_inline_requirements() {
+		if(!Director::is_ajax()) {
+			$wishListPage = DataObject::get_one("WishListPage");
+			if($wishListPage) {
+				$confirmDeleteText = $wishListPage->RemovedFromListConfirmation;
+				Requirements::customScript("WishList.set_confirm_delete_text('".Convert::raw2js($confirmDeleteText)."')", "set_confirm_delete_text");
+				$confirmRetrieveText = $wishListPage->RetrieveListConfirmation;
+				Requirements::customScript("WishList.set_confirm_retrieve_text('".Convert::raw2js($confirmRetrieveText)."')", "set_confirm_retrieve_text");
+				Requirements::customScript("WishList.set_reload_list_url('".Convert::raw2js(Director::absoluteURL($wishListPage->Link()."loadlist/"))."')", "set_reload_list_url");
+			}
 		}
 	}
 
@@ -73,7 +112,7 @@ class WishListDecorator_Controller extends Extension {
 		if($id) {
 			if($page = DataObject::get_by_id("SiteTree", $id)) {
 				$outcome = true;
-				$array = self::get_wish_list_from_session();
+				$array = self::get_wish_list_from_session_array();
 				$array[$id]= $id;
 				self::set_wish_list_to_session($array);
 			}
@@ -88,7 +127,7 @@ class WishListDecorator_Controller extends Extension {
 			if($page = DataObject::get_by_id("SiteTree", $id)) {
 				$outcome = true;
 				//get current wish list
-				$array = self::get_wish_list_from_session();
+				$array = self::get_wish_list_from_session_array();
 				//remove from wish list
 				unset($array[$id]);
 				//reset
@@ -99,19 +138,14 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 	function savewishlist() {
-		if($outcome = $this->CanSaveWishList()) {
-			$member = Member::currentMember();
-			$member->WishList = serialize(self::get_wish_list_from_session());
-			$member->write();
-		}
+		$outcome = self::set_wish_list_to_member(self::get_wish_list_from_session_array());
 		return $this->standardReturn($outcome, "SavedWishListText", "SavedErrorWishListText", "WishListSaveAndRetrieveInner");
 	}
 
 	function retrievewishlist() {
-		if($outcome = $this->CanRetrieveWishList()) {
-			$member = Member::currentMember();
-			self::set_wish_list_to_session(unserialize($member->WishList));
-		}
+		$outcome = false;
+		self::set_wish_list_to_session(self::get_wish_list_from_member_array());
+		$outcome = true;
 		return $this->standardReturn($outcome, "RetrievedWishListText", "RetrievedErrorWishListText", "WishListListInner");
 	}
 
@@ -122,38 +156,16 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 	function clearwishlist() {
-		Session::set_wish_list_to_session(array());
-		Session::save();
+		$newArray = array();
+		self::set_wish_list_to_session($newArray);
+		self::set_wish_list_to_member($newArray);
 		return $this->standardReturn(true, "ClearWishList", "", "WishListSaveAndRetrieveInner");
 	}
 
 	// ____ template variables
 
-	function WishList() {
-		$confirmRetrieveText = $this->getVariableFromwishListPage("RetrieveListConfirmation");
-		Requirements::customScript("WishList.set_confirm_retrieve_text('".Convert::raw2js($confirmRetrieveText)."')", "set_confirm_retrieve_text");
-		Requirements::customScript("WishList.set_reload_list_url('".Convert::raw2js(Director::absoluteURL($this->owner->Link()."loadlist/"))."')", "set_reload_list_url");
-		$array = self::get_wish_list_from_session();
-		$stage = Versioned::current_stage();
-		$baseClass = "SiteTree";
-		$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
-		$array[0] = 0;
-		return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
-	}
-
-	function CanSaveWishList() {
-		return $this->WishList() && Member::currentMember();
-	}
-
-	function CanRetrieveWishList() {
-		if($member = Member::currentMember()) {
-			return $member->WishList;
-		}
-	}
-
 	function WishListMessage() {
-		$confirmDeleteText = $this->getVariableFromwishListPage("RemovedFromListConfirmation");
-		Requirements::customScript("WishList.set_confirm_delete_text('".Convert::raw2js($confirmDeleteText)."')", "set_confirm_delete_text");
+		self::set_inline_requirements();
 		//retrieve message
 		$msg = Session::get(self::get_session_variable_name()."_message");
 		//remove it from session
@@ -163,17 +175,31 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 
+	function NumberOfItemsInSavedOnes() {
+		$array = self::get_wish_list_from_member_array();
+		if(is_array($array) && ($count = count($array))) {
+			return $count;
+		}
+	}
+
+	function NumberOfItemsInSessionOnes() {
+		$array = self::get_wish_list_from_session_array();
+		if(is_array($array) && ($count = count($array))) {
+			return $count;
+		}
+	}
+
 	// ____ internal functions
 
 	protected function getVariableFromwishListPage ($variableName) {return $this->wishListPage()->$variableName;}
 
 	protected function getIDForWishList() {
 		//check URL Param
-		$id = intval(Director::URLParam("ID"));
-		if(!$id) {
-			$id = $this->owner->ID;
-		}
-		return $id;
+		//$id = intval(Director::URLParam("ID"));
+		//if(!$id) {
+		return $this->owner->ID;
+		//}
+		//return $id;
 	}
 
 
@@ -194,15 +220,18 @@ class WishListDecorator_Controller extends Extension {
 				return;
 			}
 		}
-		Session::set(self::get_session_variable_name()."_message", $this->getVariableFromwishListPage($errorMessageName));
-		if(Director::is_ajax()) {
-			return $this->owner->renderWith($template);
-		}
 		else {
-			Session::save();
-			Director::redirectBack();
-			return;
+			Session::set(self::get_session_variable_name()."_message", $this->getVariableFromwishListPage($errorMessageName));
+			if(Director::is_ajax()) {
+				return $this->owner->renderWith($template);
+			}
+			else {
+				Session::save();
+				Director::redirectBack();
+				return;
+			}
 		}
 	}
+
 
 }
