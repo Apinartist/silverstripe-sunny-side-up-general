@@ -45,7 +45,7 @@ class WishListPage extends Page {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		$update = array;
+		$update = array();
 		$page = DataObject::get_one("WishListPage");
 		if(!$page) {
 			$page = new WishListPage();
