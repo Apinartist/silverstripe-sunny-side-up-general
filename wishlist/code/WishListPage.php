@@ -81,12 +81,10 @@ class WishListPage_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
-		Requirements::javascript("wishlist/javascript/WishList.js");
-		Requirements::themedCSS("WishList");
+		WishListDecorator_Controller::set_inline_requirements();
 	}
 
 	function WishList() {
-		WishListDecorator_Controller::set_inline_requirements();
 		$stage = Versioned::current_stage();
 		$baseClass = "SiteTree";
 		$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";

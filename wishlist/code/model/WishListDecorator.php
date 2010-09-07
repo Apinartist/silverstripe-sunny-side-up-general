@@ -94,6 +94,8 @@ class WishListDecorator_Controller extends Extension {
 	static function set_inline_requirements() {
 		if(!Director::is_ajax()) {
 			$wishListPage = DataObject::get_one("WishListPage");
+			Requirements::javascript("wishlist/javascript/WishList.js");
+			Requirements::themedCSS("WishList");
 			if($wishListPage) {
 				$confirmDeleteText = $wishListPage->RemovedFromListConfirmation;
 				Requirements::customScript("WishList.set_confirm_delete_text('".Convert::raw2js($confirmDeleteText)."')", "set_confirm_delete_text");
