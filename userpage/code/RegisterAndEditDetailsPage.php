@@ -68,6 +68,7 @@ class RegisterAndEditDetailsPage extends Page {
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
+		/*
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$update = array();
 		if(!$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".self::$register_group_code."'")) {
@@ -108,7 +109,7 @@ class RegisterAndEditDetailsPage extends Page {
 			}
 		}
 
-
+		*/
 	}
 }
 
