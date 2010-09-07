@@ -68,9 +68,9 @@ class WishListPage extends Page {
 			if(!$page->RetrievedWishListText){$page->RetrievedWishListText = "retrieved wish list"; $update[] ="updated RetrievedWishListText";}
 			if(!$page->RetrievedErrorWishListText){$page->RetrievedErrorWishListText = "could not retrieve wish list"; $update[] ="updated RetrievedErrorWishListText";}
 			if(count($update)) {
-				//$page->writeToStage('Stage');
-				//$page->publish('Stage', 'Live');
-				//DB::alteration_message($page->ClassName." created/updated: ".implode("<li>", $update), 'created');
+				$page->writeToStage('Stage');
+				$page->publish('Stage', 'Live');
+				DB::alteration_message($page->ClassName." created/updated: ".implode("<li>", $update), 'created');
 			}
 		}
 	}
