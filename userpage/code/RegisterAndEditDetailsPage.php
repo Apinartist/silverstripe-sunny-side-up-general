@@ -48,8 +48,8 @@ class RegisterAndEditDetailsPage extends Page {
 		}
 	}
 
-	public function getCMSFields($cms) {
-		$fields = parent::getCMSFields($cms);
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('TitleLoggedIn', 'Title when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('MenuTitleLoggedIn', 'Navigation Label when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.LoggedIn', new HTMLEditorField('ContentLoggedIn', 'Content when user is Logged In'));
@@ -91,7 +91,7 @@ class RegisterAndEditDetailsPage extends Page {
 			$update[] = "created RegisterAndEditDetailsPage";
 		}
 		if($page) {
-			if(!$page->ThankYouTitle){$page->XXX = ""; $update[] =  "updated XXX";}
+			if(!$page->ThankYouTitle){$page->ThankYouTitle = "Thank you for updating your details"; $update[] =  "updated ThankYouTitle";}
 			if(strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update[] =  "updated ThankYouContent";}
 			if(!$page->WelcomeTitle){$page->WelcomeTitle = "Thank you for registering"; $update[] =  "updated WelcomeTitle";}
 			if(strlen($page->WelcomeContent) < 17){$page->WelcomeContent = "<p>Thank you for registration. Please make sure to remember your username and password.</p>"; $update[] =  "updated WelcomeContent";}
