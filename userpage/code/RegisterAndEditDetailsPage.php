@@ -69,7 +69,7 @@ class RegisterAndEditDetailsPage extends Page {
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$update = '';
+		$update = array();
 		if(!$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".self::$register_group_code."'")) {
 			$group = new Group();
 			$group->Code = self::$register_group_code;
@@ -88,22 +88,23 @@ class RegisterAndEditDetailsPage extends Page {
 			$page->MetaTitle = "Register";
 			$page->URLSegment = "register";
 			$page->MenuTitle = "Register";
+			$update[] = "created RegisterAndEditDetailsPage";
 		}
 		if($page) {
-			if(!$page->ThankYouTitle){$page->XXX = ""; $update .= "updated XXX, ";}
-			if(!strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update .= "updated ThankYouContent, ";}
-			if(!$page->WelcomeTitle){$page->WelcomeTitle = "Thank you for registering"; $update .= "updated WelcomeTitle, ";}
-			if(!strlen($page->WelcomeContent) < 17){$page->WelcomeContent = "<p>Thank you for registration. Please make sure to remember your username and password.</p>"; $update .= "updated WelcomeContent, ";}
-			if(!$page->TitleLoggedIn){$page->TitleLoggedIn = "Welcome back"; $update .= "updated TitleLoggedIn, ";}
-			if(!$page->MenuTitleLoggedIn){$page->MenuTitleLoggedIn = "Welcome back"; $update .= "updated MenuTitleLoggedIn, ";}
-			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update .= "updated MetaTitleLoggedIn, ";}
-			if(!strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ...."; $update .= "updated ContentLoggedIn, ";}
-			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update .= "updated ErrorEmailAddressAlreadyExists, ";}
-			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update .= "updated ErrorPasswordDoNotMatch, ";}
-			if($update) {
+			if(!$page->ThankYouTitle){$page->XXX = ""; $update[] =  "updated XXX";}
+			if(strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update[] =  "updated ThankYouContent";}
+			if(!$page->WelcomeTitle){$page->WelcomeTitle = "Thank you for registering"; $update[] =  "updated WelcomeTitle";}
+			if(strlen($page->WelcomeContent) < 17){$page->WelcomeContent = "<p>Thank you for registration. Please make sure to remember your username and password.</p>"; $update[] =  "updated WelcomeContent";}
+			if(!$page->TitleLoggedIn){$page->TitleLoggedIn = "Welcome back"; $update[] =  "updated TitleLoggedIn";}
+			if(!$page->MenuTitleLoggedIn){$page->MenuTitleLoggedIn = "Welcome back"; $update[] =  "updated MenuTitleLoggedIn";}
+			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update[] =  "updated MetaTitleLoggedIn";}
+			if(strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ....</p>"; $update[] =  "updated ContentLoggedIn";}
+			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update[] =  "updated ErrorEmailAddressAlreadyExists";}
+			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update[] =  "updated ErrorPasswordDoNotMatch";}
+			if(count($update)) {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
-				DB::alteration_message($page->ClassName." created/updated: ".$update, 'created');
+				DB::alteration_message($page->ClassName." created/updated: <ul><li>".implode("</li><li>", $update)."</li></ul>", 'created');
 			}
 		}
 
@@ -113,8 +114,13 @@ class RegisterAndEditDetailsPage extends Page {
 
 class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 
-	protected static $fields_to_remove = array("Locale","DateFormat", "TimeFormat", "State","Notes","WishList");
+	protected static $fields_to_remove = array("Locale","DateFormat", "TimeFormat");
+		static function set_fields_to_remove($v) = {self::$fields_to_remove = $v;}
+		static function get_fields_to_remove() = {return self::$fields_to_remove;}
+
 	protected static $required_fields = array("FirstName","Email");
+		static function set_required_fields($v) = {self::$required_fields = $v;}
+		static function get_required_fields() = {return self::$required_fields;}
 
 	function index() {
 		if($this->isAjax()) {

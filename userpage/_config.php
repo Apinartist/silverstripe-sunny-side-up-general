@@ -11,4 +11,6 @@
 //RegisterAndEditDetailsPage::$register_group_title = "Registered users";
 //RegisterAndEditDetailsPage::$register_group_code = "registrations";
 //RegisterAndEditDetailsPage::$register_group_access_key = "REGISTRATIONS_ACCESS";
+//RegisterAndEditDetailsPage_Controller::fields_to_remove(array("Locale","DateFormat", "TimeFormat"));
+//RegisterAndEditDetailsPage_Controller::required_fields(array("FirstName", "Email"));
 //===================---------------- END userpage MODULE ----------------===================
