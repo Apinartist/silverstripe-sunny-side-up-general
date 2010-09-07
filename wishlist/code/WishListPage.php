@@ -47,6 +47,7 @@ class WishListPage extends Page {
 		parent::requireDefaultRecords();
 		$update = array();
 		$page = DataObject::get_one("WishListPage");
+		/*
 		if(!$page) {
 			$page = new WishListPage();
 			$page->Title = "Wish List";
@@ -72,6 +73,7 @@ class WishListPage extends Page {
 				DB::alteration_message($page->ClassName." created/updated: ".implode("<li>", $update), 'created');
 			}
 		}
+		*/
 	}
 
 
