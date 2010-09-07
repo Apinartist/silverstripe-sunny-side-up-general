@@ -74,6 +74,7 @@ class WishListPage extends Page {
 				DB::alteration_message($page->ClassName." created/updated: ".implode("<li>", $update), 'created');
 			}
 		}
+		*/
 	}
 
 
