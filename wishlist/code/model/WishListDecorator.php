@@ -43,6 +43,13 @@ class WishListDecorator_Controller extends Extension {
 		if(!is_string($string)) {
 			$string = '';
 		}
+		if(!$string) {
+			$string = self::get_wish_list_from_member_serialized();
+			if($string) {
+				$array = unserialize($string);
+				self::set_wish_list_to_session_and_member($array);
+			}
+		}
 		return $string;
 	}
 
@@ -65,7 +72,7 @@ class WishListDecorator_Controller extends Extension {
 		return $string;
 	}
 
-	static function set_wish_list_to_session($array) {
+	static function set_wish_list_to_session_and_member($array) {
 		//make sure it is an array
 		if(!is_array($array)) {
 			user_error("There is an error in storing your wish list, your variable should be an array", E_USER_WARNING);
@@ -78,13 +85,14 @@ class WishListDecorator_Controller extends Extension {
 			//Session::save();
 			Session::set(self::get_session_variable_name()."_data", serialize($array));
 			Session::save();
+			self::set_wish_list_to_member($array);
 		}
 	}
 
-	static function set_wish_list_to_member($newArray) {
+	static function set_wish_list_to_member($array) {
 		$member = Member::currentMember();
 		if($member) {
-			$member->WishList = serialize($newArray);
+			$member->WishList = serialize($array);
 			$member->write();
 			return true;
 		}
@@ -116,10 +124,10 @@ class WishListDecorator_Controller extends Extension {
 				$outcome = true;
 				$array = self::get_wish_list_from_session_array();
 				$array[$id]= $id;
-				self::set_wish_list_to_session($array);
+				self::set_wish_list_to_session_and_member($array);
 			}
 		}
-		return $this->standardReturn($outcome, "AddedToListText", "CouldNotAddedToListText", "WishListLinkInner");
+		return $this->standardReturn($outcome, "AddedToListText", "AddedToListTextError", "WishListLinkInner");
 	}
 
 	function removefromwishlist() {
@@ -133,22 +141,22 @@ class WishListDecorator_Controller extends Extension {
 				//remove from wish list
 				unset($array[$id]);
 				//reset
-				self::set_wish_list_to_session($array);
+				self::set_wish_list_to_session_and_member($array);
 			}
 		}
-		return $this->standardReturn($outcome, "RemovedFromListText", "CouldNotRemovedFromListText", "WishListLinkInner");
+		return $this->standardReturn($outcome, "RemovedFromListText", "RemovedFromListTextError", "WishListLinkInner");
 	}
 
 	function savewishlist() {
 		$outcome = self::set_wish_list_to_member(self::get_wish_list_from_session_array());
-		return $this->standardReturn($outcome, "SavedWishListText", "SavedErrorWishListText", "WishListSaveAndRetrieveInner");
+		return $this->standardReturn($outcome, "SavedWishListText", "SavedWishListTextError", "WishListSaveAndRetrieveInner");
 	}
 
 	function retrievewishlist() {
 		$outcome = false;
-		self::set_wish_list_to_session(self::get_wish_list_from_member_array());
+		self::set_wish_list_to_session_and_member(self::get_wish_list_from_member_array());
 		$outcome = true;
-		return $this->standardReturn($outcome, "RetrievedWishListText", "RetrievedErrorWishListText", "WishListListInner");
+		return $this->standardReturn($outcome, "RetrievedWishListText", "RetrievedWishListTextError", "WishListListInner");
 	}
 
 	function loadlist() {
@@ -159,12 +167,23 @@ class WishListDecorator_Controller extends Extension {
 
 	function clearwishlist() {
 		$newArray = array();
-		self::set_wish_list_to_session($newArray);
-		self::set_wish_list_to_member($newArray);
+		self::set_wish_list_to_session_and_member($newArray);
 		return $this->standardReturn(true, "ClearWishList", "", "WishListSaveAndRetrieveInner");
 	}
 
 	// ____ template variables
+
+
+	function WishList() {
+		$array = self::get_wish_list_from_session_array();
+		if(is_array($array) && count($array) ) {
+			$stage = Versioned::current_stage();
+			$baseClass = "SiteTree";
+			$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
+			return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
+		}
+		return null;
+	}
 
 	function WishListMessage() {
 		self::set_inline_requirements();
