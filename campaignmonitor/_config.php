@@ -12,4 +12,7 @@
 //===================---------------- START campaignmonitor MODULE ----------------===================
 //CampaignMonitorSignupPage::set_remove_linebreaks_from_original_code(TRUE);
 //CampaignMonitorSignupPage_Controller::set_email_field_selector("#EmailFieldID");
+//CampaignMonitorWrapper::set_campaign_monitor_url("http://yourcompany.createsend.com/");
+//CampaignMonitorWrapper::set_api_key("xxxxxxxxxxxxxxxxxxxx");
+//CampaignMonitorWrapper::set_client_ID("xxxxxxxxxxxxxxxxxxxx");
 //===================---------------- END campaignmonitor MODULE ----------------===================
