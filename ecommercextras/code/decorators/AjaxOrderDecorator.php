@@ -108,11 +108,13 @@ class AjaxOrderDecorator_Controller extends Extension {
 	function additemwithajax() {
 		$id = intval(Director::URLParam("ID"));
 		$productClassName = Director::URLParam("OtherID");
-		if($id && class_exists($productClassName)) {
-			$item = DataObject::get_by_id($productClassName, $id);
-			if($item) {
-				$orderItem = new self::$order_item_classname($item);
-				ShoppingCart::add_new_item($orderItem);
+		if($id && ClassInfo::exists($productClassName)) {
+			if(ClassInfo::is_subclass_of($productClassName, "DataObject")) {
+				$item = DataObject::get_by_id($productClassName, $id);
+				if($item) {
+					$orderItem = new self::$order_item_classname($item);
+					ShoppingCart::add_new_item($orderItem);
+				}
 			}
 		}
 		return $this->ajaxGetSimpleCart();
