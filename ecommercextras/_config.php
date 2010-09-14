@@ -14,10 +14,10 @@
 //Object::add_extension('SiteTree', 'AjaxOrderDecorator');
 //Object::add_extension('ContentController', 'AjaxOrderDecorator_Controller');
 
-
 // *** PICK UP OR DELIVERY
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
 //PickUpOrDeliveryModifier::set_form_header("Delivery Option (REQUIRED)");
+//StoreAdmin::add_managed_models("PickUpOrDeliveryModifierOptions");
 
 // *** RECOMMENDED PROCUCTS
 //RecommendedProductsModifier_Form::set_nothing_recommended_text(" ");
@@ -38,6 +38,7 @@
 //GSTTaxModifier::set_no_tax_description("tax-exempt");
 //GSTTaxModifier::set_refund_title("Tax Exemption");
 //GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
+//StoreAdmin::add_managed_models("GSTTaxModifierOptions");
 
 // *** NEWSLETTER SIGNUP MODIFIER
 //NewsletterSignupModifier::set_newsletter_tickbox_label("Would you like to receive our newsletter?");
