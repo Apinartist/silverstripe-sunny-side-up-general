@@ -1,4 +1,6 @@
+
 <div id="PageResultHolder">
+<% if Results %>
 	<h1>Search Results</h1>
 
 	<div id="Content">
@@ -38,4 +40,7 @@
 			</div>
 		<% end_if %>
 	</div>
+<% else %>
+<p id="NoSearchResults">Sorry, no results were found, please try a different keyword phrase.</p>
+<% end_if %>
 </div>
