@@ -55,7 +55,6 @@ class RegisterAndEditDetailsPage extends Page {
 		$fields->addFieldToTab('Root.Content.LoggedIn', new HTMLEditorField('ContentLoggedIn', 'Content when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.Welcome', new TextField('WelcomeTitle', 'Welcome Title (afer user creates an account)'));
 		$fields->addFieldToTab('Root.Content.Welcome', new HTMLEditorField('WelcomeContent', 'Welcome message (afer user creates an account)'));
-
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
 		return $fields;
@@ -136,18 +135,15 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$passwordField = new ConfirmedPasswordField("Password", "Password");
 		if($member) {
 			$name = $member->getName();
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus LoggedIn">You are currently logged-in as '.$name.'. You can <a href="Security/logout">log out now</a> if you need to log in as someone else.</p>');
 			if($member && $member->Password != '') {
 				$passwordField->setCanBeEmpty(true);
 			}
 			$actions = new FieldSet(new FormAction("submit", "Update your details"));
 		}
 		else {
-			$logoutField = new LiteralField('LogoutNote', '<p class="message good LogoutNoteStatus NotLoggedInYet">You are currently not logged-in. You <a href="Security/login?BackURL='.$this->Link().'">can log in now</a> if you have registerd before.</p>');
 			$actions = new FieldSet(new FormAction("submit", "Register"));
 			$member = new Member();
 		}
-		$fields->push($logoutField);
 		$memberFormFields = $member->getMemberFormFields();
 
 		if($memberFormFields) {
