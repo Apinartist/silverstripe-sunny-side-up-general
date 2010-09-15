@@ -113,15 +113,16 @@ class WishListPage_Controller extends Page_Controller {
 	}
 
 	function CanClearWishList() {
-		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
-			die("---".$saveOne."----");
-			return true;
+		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_array()) {
+			if(is_array($savedOne) && count($savedOne)) {
+				return true;
+			}
 		}
-		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
-			die("---".$sessionOne."----");
-			return true;
+		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_array()) {
+			if(is_array($sessionOne) && count($sessionOne)) {
+				return true;
+			}
 		}
-		die("AAAAAAAAAA");
 		return false;
 	}
 
