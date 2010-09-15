@@ -16,6 +16,7 @@ class WishListPage extends Page {
 		"AddedToListTextError" => "Varchar(255)",
 		"RemovedFromListConfirmation" => "Varchar(255)",
 		"RetrieveListConfirmation" => "Varchar(255)",
+		"ClearListConfirmation" => "Varchar(255)",
 		"RemovedFromListText" => "Varchar(255)",
 		"RemovedFromListTextError" => "Varchar(255)",
 		"ClearWishList" => "Varchar(255)",
@@ -37,8 +38,9 @@ class WishListPage extends Page {
 		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "SavedWishListTextError", $title = "could not save list"));
 		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "RetrievedWishListText", $title = "retrieved list"));
 		$fields->addFieldToTab("Root.Content.WholeListMessages", new TextField($name = "RetrievedWishListTextError", $title = "could not retrieve list"));
-		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RemovedFromListConfirmation", $title = "Are you sure you want to remove item? Pop-up double-check question..."));
-		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RetrieveListConfirmation", $title = "Are you sure you want to retrieve your save list list? Pop-up double-check question..."));
+		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RemovedFromListConfirmation", $title = "Are you sure you want to remove this item? Pop-up double-check question..."));
+		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "RetrieveListConfirmation", $title = "Are you sure you want to retrieve your saved list? Pop-up double-check question... We ask them because they will loose their currently shown list."));
+		$fields->addFieldToTab("Root.Content.DoubleChecksQuestions", new TextField($name = "ClearListConfirmation", $title = "Are you sure you want to clear your saved list? Pop-up double-check question..."));
 		return $fields;
 	}
 
@@ -58,6 +60,7 @@ class WishListPage extends Page {
 			if(!$page->AddedToListTextError){$page->AddedToListTextError = "could not add to wish list"; $update[] ="updated AddedToListTextError";}
 			if(!$page->RemovedFromListConfirmation){$page->RemovedFromListConfirmation = "are you sure you want to remove it from your wish list?"; $update[] ="updated RemovedFromListConfirmation";}
 			if(!$page->RetrieveListConfirmation){$page->RetrieveListConfirmation = "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?"; $update[] ="updated RetrieveListConfirmation";}
+			if(!$page->ClearListConfirmation){$page->ClearListConfirmation = "Are you sure you would like to clear your saved list? "; $update[] ="updated ClearListConfirmation";}
 			if(!$page->RemovedFromListText){$page->RemovedFromListText = "removed from wish list"; $update[] ="updated RemovedFromListText";}
 			if(!$page->RemovedFromListTextError){$page->RemovedFromListTextError = "could not be removed from wish list"; $update[] ="updated RemovedFromListTextError";}
 			if(!$page->ClearWishList){$page->ClearWishList = "cleared wish list"; $update[] ="updated ClearWishList";}

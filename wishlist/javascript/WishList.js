@@ -31,6 +31,8 @@ var WishList = {
 
 	retrieveSelector: ".wishListRetrieve",
 
+	clearSelector: ".wishListClear",
+
 	noConfirmations: false,
 
 	ConfirmDeleteText: "Are you sure you would like to remove this item from your wish list?",
@@ -38,6 +40,9 @@ var WishList = {
 
 	ConfirmRetrieveText: "Are you sure you would like to retrieve your saved list?  It will replace your current list.  Do you want to go ahead?",
 	set_confirm_retrieve_text: function(v) {this.ConfirmRetrieveText = v;},
+
+	ConfirmClearText: "Are you sure you would like to permanently delete your saved list?  ",
+	set_confirm_clear_text: function(v) {this.ConfirmRetrieveText = v;},
 
 	reloadListURL: "",
 	set_reload_list_url: function(v) {this.reloadListURL = v;},
@@ -163,6 +168,18 @@ jQuery.fn.extend({
 				if(WishList.noConfirmations || confirm(WishList.ConfirmRetrieveText)) {
 					var url = jQuery(this).attr("href");
 					WishList.loadList(url);
+				}
+				return false;
+			}
+		);
+		return this;
+	},
+
+	addWishListClearLink: function () {
+		jQuery(this).find(WishList.clearSelector).click(
+			function(){
+				if(WishList.noConfirmations || confirm(WishList.ConfirmClearText)) {
+					return true
 				}
 				return false;
 			}
