@@ -87,8 +87,8 @@ class WishListPage_Controller extends Page_Controller {
 	}
 
 	function CanSaveWishList() {
-		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
-			if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+			if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
 				if($savedOne == $sessionOne) {
 					//can't save beceause there is nothing new to save...
 					return false;

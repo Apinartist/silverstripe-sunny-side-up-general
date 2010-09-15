@@ -167,8 +167,7 @@ jQuery.fn.extend({
 		jQuery(this).find(WishList.retrieveSelector).click(
 			function(){
 				if(WishList.noConfirmations || confirm(WishList.ConfirmRetrieveText)) {
-					var url = jQuery(this).attr("href");
-					WishList.loadList(url);
+					return true;
 				}
 				return false;
 			}
