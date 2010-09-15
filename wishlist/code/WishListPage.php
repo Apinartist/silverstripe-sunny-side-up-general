@@ -114,9 +114,11 @@ class WishListPage_Controller extends Page_Controller {
 
 	function CanClearWishList() {
 		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
+			die("---".$saveOne."----");
 			return true;
 		}
 		if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
+			die("---".$sessionOne."----");
 			return true;
 		}
 		return false;
