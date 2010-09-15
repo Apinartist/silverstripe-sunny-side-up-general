@@ -53,7 +53,7 @@ var WishList = {
 			.addWishListRemoveLinks();
 		jQuery(WishList.saveAndRetrieveSelector)
 			.addWishListSaveLink()
-			.addWishListRetrieveLink();
+			.addWishListRetrieveLink()
 			.addWishListClearLink();
 	},
 
