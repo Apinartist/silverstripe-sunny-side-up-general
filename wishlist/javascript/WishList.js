@@ -54,6 +54,7 @@ var WishList = {
 		jQuery(WishList.saveAndRetrieveSelector)
 			.addWishListSaveLink()
 			.addWishListRetrieveLink();
+			.addWishListClearLink();
 	},
 
 
