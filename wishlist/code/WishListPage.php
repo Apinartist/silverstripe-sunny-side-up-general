@@ -121,6 +121,7 @@ class WishListPage_Controller extends Page_Controller {
 			die("---".$sessionOne."----");
 			return true;
 		}
+		die("AAAAAAAAAA");
 		return false;
 	}
 
