@@ -39,7 +39,7 @@
 		},
 
 		externalLinks: function () {
-			$('a[href^="http://"], a[href^="https://"], a.externalLink').each(
+			$("a[href^='http://'], a[href^='https://'], a.externalLink").each(
 				function(i){
 					var link = "" + $(this).attr("href");
 					var currentSite = "" + window.location;
