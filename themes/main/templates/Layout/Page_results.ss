@@ -21,7 +21,7 @@
 			<% control Results %>
 				<li class="$EvenOdd">
 					<h3><% if MenuTitle %> $MenuTitle<% else %>$Title<% end_if %></h3>
-					<p>$Content.LimitWordCountPlainText</p>
+					<p>$Content.Summary</p>
 					<a href="$Link" title="Read more about $Title">Read more &gt;&gt;</a>
 				</li>
 			<% end_control %>
