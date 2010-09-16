@@ -20,8 +20,9 @@ class RegisterAndEditDetailsPage extends Page {
 		"MenuTitleLoggedIn" => "Varchar(255)",
 		"MetaTitleLoggedIn" => "Varchar(255)",
 		"ContentLoggedIn" => "HTMLText",
-		"ErrorEmailAddressAlreadyExists" => "Varchar(255)",
-		"ErrorPasswordDoNotMatch" => "Varchar(255)"
+		"ErrorEmailAddressAlreadyExists" => "Varchar(50)",
+		"ErrorPasswordDoNotMatch" => "Varchar(50)",
+		"ErrorMustSupplyPassword" => "Varchar(50)"
 	);
 
 	static $register_group_title = "Registered users";
@@ -57,6 +58,9 @@ class RegisterAndEditDetailsPage extends Page {
 		$fields->addFieldToTab('Root.Content.Welcome', new HTMLEditorField('WelcomeContent', 'Welcome message (afer user creates an account)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
+		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorEmailAddressAlreadyExists', 'Error shown when email address is already registered'));
+		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorPasswordDoNotMatch', 'Error shown when passwords do not match'));
+		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorMustSupplyPassword', 'Error shown when new user does not supply password'));
 		return $fields;
 	}
 
@@ -100,6 +104,7 @@ class RegisterAndEditDetailsPage extends Page {
 			if(strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ....</p>"; $update[] =  "updated ContentLoggedIn";}
 			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update[] =  "updated ErrorEmailAddressAlreadyExists";}
 			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update[] =  "updated ErrorPasswordDoNotMatch";}
+			if(!$page->ErrorMustSupplyPassword){$page->ErrorMustSupplyPassword = "Your must supply a password."; $update[] =  "updated ErrorMustSupplyPassword";}
 			if(count($update)) {
 				$page->writeToStage('Stage');
 				$page->publish('Stage', 'Live');
@@ -132,17 +137,17 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 		$member = Member::currentUser();
 		$fields = new FieldSet();
-		$passwordField = new ConfirmedPasswordField("Password", "Password");
+
+		$passwordField = null;
 		if($member) {
 			$name = $member->getName();
-			if($member && $member->Password != '') {
-				$passwordField->setCanBeEmpty(true);
-			}
+			//if($member && $member->Password != '') {$passwordField->setCanBeEmpty(true);}
 			$action = new FormAction("submit", "Update your details");
 			$action->addExtraClass("updateButton");
 			$actions = new FieldSet($action);
 		}
 		else {
+			$passwordField = new ConfirmedPasswordField("Password", "Password");
 			$action = new FormAction("submit", "Register");
 			$action->addExtraClass("registerButton");
 			$actions = new FieldSet($action);
@@ -158,7 +163,9 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			}
 			$fields->merge($memberFormFields);
 		}
-		$fields->push($passwordField);
+		if($passwordField) {
+			$fields->push($passwordField);
+		}
 		foreach(self::$required_fields as $fieldName) {
 			$fields->fieldByName($fieldName)->addExtraClass("RequiredField");
 		}
@@ -166,7 +173,6 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
 		// Load any data avaliable into the form.
 		if($member) {
-			$member->Password = null;
 			$form->loadDataFrom($member);
 		}
 		$data = Session::get("FormInfo.Form_Form.data");
@@ -204,27 +210,20 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		//validation
 		if($existingMember = DataObject::get_one("Member", "{$bt}Email{$bt} = '". Convert::raw2sql($data['Email']) . "' AND {$bt}Member{$bt}.{$bt}ID{$bt} <> $id")) {
 			$form->addErrorMessage("Blurb",$this->ErrorEmailAddressAlreadyExists,"bad");
-			// Load errors into session and post back
 			Director::redirectBack();
 			return;
 		}
 		// check password fields are the same before saving
-		if(!isset($data['Password']["_Password"])) {$data['Password']["_Password"] = "";}
-		if(!isset($data['Password']["_ConfirmPassword"])) {$data['Password']["_ConfirmPassword"] = "";}
-		if($data['Password']["_Password"] != $data['Password']["_ConfirmPassword"]) {
+		if($data["Password"]["_Password"] != $data["Password"]["_ConfirmPassword"]) {
 			$form->addErrorMessage("Password", $this->ErrorPasswordDoNotMatch,"bad");
-			// Load errors into session and post back
 			return Director::redirectBack();
 		}
-		//saving
-		if($data['Password']["_Password"]) {
-			$member->Password = $data['Password']["_Password"];
-		}
-		else {
-			unset($data['Password']);
+
+		if(!$id && !$data["Password"]["_Password"]) {
+			$form->addErrorMessage("Password", $this->ErrorMustSupplyPassword,"bad");
+			return Director::redirectBack();
 		}
 		$form->saveInto($member);
-
 		$member->write();
 		//adding to group
 		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
