@@ -217,10 +217,14 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			return Director::redirectBack();
 		}
 		//saving
-		$form->saveInto($member);
 		if($data['Password']["_Password"]) {
 			$member->Password = $data['Password']["_Password"];
 		}
+		else {
+			unset($data['Password']);
+		}
+		$form->saveInto($member);
+
 		$member->write();
 		//adding to group
 		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
