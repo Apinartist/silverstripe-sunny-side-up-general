@@ -10,6 +10,9 @@ class PrettyPhoto extends Object {
 	protected static $more_config = "";
 		static function set_more_config($v) {self::$more_config = $v;}
 
+	protected static $selector = "body";
+		static function set_selector($v) {self::$selector = $v;}
+
 	static function include_code() {
 		if(Director::is_ajax()) {
 			self::block();
@@ -22,10 +25,13 @@ class PrettyPhoto extends Object {
 			if(self::$theme) {
 				$config .= "theme: '".self::$theme."'";
 			}
-			if(self::$more_config) {
-				$config .= ", " . self::$more_config;
+			if($config && self::$more_config) {
+				$config .= ", ";
 			}
-			Requirements::customScript('PrettyPhotoInitConfigs = {'.$config.'}; jQuery(document).ready(function(){PrettyPhotoLoader.load("body")});', "prettyPhotoCustomScript");
+			if(self::$more_config) {
+				$config .= self::$more_config;
+			}
+			Requirements::customScript('PrettyPhotoInitConfigs = {'.$config.'}; jQuery(document).ready(function(){PrettyPhotoLoader.load("'.self::$selector.'")});', "prettyPhotoCustomScript");
 		}
 	}
 
