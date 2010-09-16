@@ -166,6 +166,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
 		// Load any data avaliable into the form.
 		if($member) {
+			$member->Password = null;
 			$form->loadDataFrom($member);
 		}
 		$data = Session::get("FormInfo.Form_Form.data");
@@ -208,6 +209,8 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			return;
 		}
 		// check password fields are the same before saving
+		if(!isset($data['Password']["_Password"]) {$data['Password']["_Password"] = "";}
+		if(!isset($data['Password']["_ConfirmPassword"]) {$data['Password']["_ConfirmPassword"] = "";}
 		if($data['Password']["_Password"] != $data['Password']["_ConfirmPassword"]) {
 			$form->addErrorMessage("Password", $this->ErrorPasswordDoNotMatch,"bad");
 			// Load errors into session and post back
@@ -215,7 +218,9 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 		//saving
 		$form->saveInto($member);
-		$member->Password = $data['Password']["_Password"];
+		if($data['Password']["_Password"]) {
+			$member->Password = $data['Password']["_Password"];
+		}
 		$member->write();
 		//adding to group
 		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
