@@ -117,9 +117,6 @@ class MenuCache_Controller extends Extension {
 		else {
 			if(!$this->owner->$fieldName || $this->owner->DoNotCacheMenu) {
 				$fieldID = $fieldNumber;
-				if($this->owner->URLSegment == "Security") {
-					return '';
-				}
 				$content = $this->getHtml($fieldNumber);
 				$sql = "Update {$bt}SiteTree_Live{$bt} Set {$bt}".$fieldName."{$bt} = '".$this->compressAndPrepareHTML($content)."' WHERE {$bt}ID{$bt} = ".$this->owner->ID." LIMIT 1";
 				DB::query($sql);
