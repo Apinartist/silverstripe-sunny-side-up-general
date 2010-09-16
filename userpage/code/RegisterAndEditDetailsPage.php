@@ -121,7 +121,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 
 	function index() {
 		if($this->isAjax()) {
-			return $this->renderWith(array("Thickbox", "RegisterAndEditDetailsPage"));
+			return $this->renderWith(array("RegisterAndEditDetailsPageAjax", "RegisterAndEditDetailsPage"));
 		}
 		return array();
 	}
@@ -138,10 +138,14 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			if($member && $member->Password != '') {
 				$passwordField->setCanBeEmpty(true);
 			}
-			$actions = new FieldSet(new FormAction("submit", "Update your details"));
+			$action = new FormAction("submit", "Update your details");
+			$action->addExtraClass("updateButton");
+			$actions = new FieldSet($action);
 		}
 		else {
-			$actions = new FieldSet(new FormAction("submit", "Register"));
+			$action = new FormAction("submit", "Register");
+			$action->addExtraClass("registerButton");
+			$actions = new FieldSet($action);
 			$member = new Member();
 		}
 		$memberFormFields = $member->getMemberFormFields();
