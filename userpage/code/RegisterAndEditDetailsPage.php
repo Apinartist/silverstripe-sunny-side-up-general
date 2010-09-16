@@ -209,8 +209,8 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			return;
 		}
 		// check password fields are the same before saving
-		if(!isset($data['Password']["_Password"]) {$data['Password']["_Password"] = "";}
-		if(!isset($data['Password']["_ConfirmPassword"]) {$data['Password']["_ConfirmPassword"] = "";}
+		if(!isset($data['Password']["_Password"])) {$data['Password']["_Password"] = "";}
+		if(!isset($data['Password']["_ConfirmPassword"])) {$data['Password']["_ConfirmPassword"] = "";}
 		if($data['Password']["_Password"] != $data['Password']["_ConfirmPassword"]) {
 			$form->addErrorMessage("Password", $this->ErrorPasswordDoNotMatch,"bad");
 			// Load errors into session and post back
