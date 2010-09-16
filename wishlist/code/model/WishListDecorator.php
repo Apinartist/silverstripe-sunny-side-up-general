@@ -27,6 +27,8 @@ class WishListDecorator_Controller extends Extension {
 		"loadlist" => true
 	);
 
+	private static $requirements_added = false;
+
 	protected static $session_variable_name = "WishListDecoratorArray";
 		static function set_session_variable_name($v){self::$session_variable_name = $v;}
 		static function get_session_variable_name () {return self::$session_variable_name;}
@@ -100,7 +102,8 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 	static function set_inline_requirements() {
-		if(!Director::is_ajax()) {
+		if(!Director::is_ajax() && !self::$requirements_added) {
+			self::$requirements_added = true;
 			$wishListPage = DataObject::get_one("WishListPage");
 			Requirements::javascript("wishlist/javascript/WishList.js");
 			Requirements::themedCSS("WishList");
@@ -173,6 +176,9 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ template variables
 
+	function AddWishListRequirements() {
+		self::set_inline_requirements();
+	}
 
 	function WishList() {
 		$array = self::get_wish_list_from_session_array();
@@ -186,7 +192,6 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 	function WishListMessage() {
-		self::set_inline_requirements();
 		//retrieve message
 		$msg = Session::get(self::get_session_variable_name()."_message");
 		//remove it from session
