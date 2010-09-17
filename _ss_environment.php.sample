@@ -1,4 +1,5 @@
 <?php
+/* LOCAL */
 define('SS_ENVIRONMENT_TYPE', 'dev');
 define('SS_DATABASE_SERVER', 'localhost');
 define('SS_DATABASE_USERNAME', 'root');
@@ -6,3 +7,24 @@ define('SS_DATABASE_PASSWORD', '');
 define('SS_DATABASE_PREFIX', '');
 define('SS_DEFAULT_ADMIN_USERNAME', 'x');
 define('SS_DEFAULT_ADMIN_PASSWORD', 'x');
+define('SS_SEND_ALL_EMAILS_TO', 'info@mysite.com');
+
+/* STAGING */
+define('SS_ENVIRONMENT_TYPE', 'dev');
+define('SS_DATABASE_SERVER', 'master.mysql.myhost.com');
+define('SS_DATABASE_USERNAME', 'dd');
+define('SS_DATABASE_PASSWORD', 'xx');
+define('SS_DATABASE_PREFIX', 'staging_');
+define('SS_DEFAULT_ADMIN_USERNAME', 'info@mysite.com');
+define('SS_DEFAULT_ADMIN_PASSWORD', 'xx');
+define('SS_SEND_ALL_EMAILS_TO', 'errors@sunnysideup.co.nz');
+
+/* LIVE */
+define('SS_ENVIRONMENT_TYPE', 'live');
+define('SS_DATABASE_SERVER', 'master.mysql.myhost.com');
+define('SS_DATABASE_USERNAME', 'dd');
+define('SS_DATABASE_PASSWORD', 'xx');
+define('SS_DATABASE_PREFIX', 'live_');
+define('SS_DEFAULT_ADMIN_USERNAME', 'info@mysite.com');
+define('SS_DEFAULT_ADMIN_PASSWORD', 'xx');
+
