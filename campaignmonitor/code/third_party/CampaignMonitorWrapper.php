@@ -6,12 +6,13 @@
  *
  *what should we be able to do
  *1. check if client exists
- *2. if not, create cllient with data from CampaignMonitorPage (client editable stuff) + _config (web developer editable stuff
- *3. link from CampaignMonitorPage to CampaignMonitor Website
- *4. see list of campaigns
- *5. see list of lists
- *5a. synchronise list members with Silverstripe users
+ *1b. if not, create cllient with data from CampaignMonitorPage (client editable stuff) + _config (web developer editable stuff
+ *2. link from CampaignMonitorPage CMS view to CampaignMonitor Website so that client does not have to search for it.
+ *3. list of campaigns and basic statistics - to be shown in CampaignMonitorPage CMS view
+ *4. list of lists and basic list statistics - to be shown in CampaignMonitorPage CMS view
+ *5a. synchronise list members with Silverstripe users (HOW???????)
  *5b. update list config: listTitle,. unsubscribePage, confirmationSuccessPage, confirmOptIn
+ *5c. identify CampaignMonitor list that should synchronise with group Membership (Silverstripe Tables).
   **/
 
 class CampaignMonitorWrapper extends Object {
@@ -33,6 +34,15 @@ class CampaignMonitorWrapper extends Object {
 	protected static $client_ID = '';
 		public static function set_client_ID($v) {self::$client_ID = $v;}
 		public static function get_client_ID() {return self::$client_ID;}
+
+	protected $list_group_membership = array();
+		public static function add_list_group_membership($name, $code) {
+			self::$list_group_membership[] = array(
+				"Name" => $name,
+				"Code" => $code
+			);
+		}
+
 
 	//__________client config... ONLY set by web developer
 	// $accessLevel = '63';
