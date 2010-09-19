@@ -164,11 +164,11 @@ class ShareThis extends DataObjectDecorator {
 				return true;
 			}
 			else {
-				USER_ERROR("you have installed DataObjectSorterDOD, but you have not extended ShareThisDataObject with DataObjectSorterDOD", E_USER_NOTICE);
+				USER_ERROR("you have installed DataObjectSorterDOD, but you have not extended ShareThisDataObject with DataObjectSorterDOD, see sharethis/_config.php for more information.", E_USER_NOTICE);
 			}
 		}
 		else {
-			USER_ERROR("you may want to install the DataObjectSorter module", E_USER_NOTICE);
+			USER_ERROR("you need to install the DataObjectSorter module (see readme / _config.php file for more information)", E_USER_NOTICE);
 		}
 	}
 
