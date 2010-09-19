@@ -84,7 +84,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 		}
 	}
 
-	protectec function classHasSlideShow($className) {
+	protected function classHasSlideShow($className) {
 		//assumptions:
 		//1. in general YES
 		//2. if list of WITH is shown then it must be in that
