@@ -12,9 +12,17 @@ class SlideShowDecorator extends SiteTreeDecorator {
 		static function set_use_custom_javascript($v){self::$use_custom_javascript = $v;}
 
 	protected static $page_classes_without_slideshow = array();
+		static function get_page_classes_without_slideshow(){return self::$page_classes_without_slideshow;}
 		static function set_page_classes_without_slideshow(array $array){
 			if(!is_array($array)) {debug::show("argument needs to be an array in SlideShowDecorator::set_page_classes_without_slideshow()");}
 			self::$page_classes_without_slideshow = $array;
+		}
+
+	protected static $page_classes_with_slideshow = array();
+		static function get_page_classes_with_slideshow(){return self::$page_classes_with_slideshow;}
+		static function set_page_classes_with_slideshow(array $array){
+			if(!is_array($array)) {debug::show("argument needs to be an array in SlideShowDecorator::set_page_classes_with_slideshow()");}
+			self::$page_classes_with_slideshow = $array;
 		}
 
 	function extraStatics() {
@@ -33,7 +41,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 	}
 
 	public function updateCMSFields(FieldSet &$fields) {
-		if(!count(self::$page_classes_without_slideshow) || !in_array($this->owner->ClassName, self::$page_classes_without_slideshow)) {
+		if($this->classHasSlideShow($this->owner->ClassName)) {
 			$folders = DataObject::get("Folder");
 			if($this->owner->ParentID) {
 				$fields->addFieldToTab('Root.Content.SlideShow', new CheckboxField("UseParentSlides", "Use parent slides when this page has no slides itself"));
@@ -74,6 +82,24 @@ class SlideShowDecorator extends SiteTreeDecorator {
 		if($this->owner->SlideShowIDList) {
 			return DataObject::get("SlideShowObject", "{$bt}ID{$bt} IN (".$this->owner->SlideShowIDList.")");
 		}
+	}
+
+	protectec function classHasSlideShow($className) {
+		//assumptions:
+		//1. in general YES
+		//2. if list of WITH is shown then it must be in that
+		//3. otherwise check if it is specifically excluded (WITHOUT)
+		$result = true;
+		if(is_array(self::get_page_classes_with_slideshow()) && count(self::get_page_classes_with_slideshow())) {
+			$result = false;
+			if(in_array($className,self::get_page_classes_with_slideshow())) {
+				$result = true;
+			}
+		}
+		elseif(is_array(self::get_page_classes_without_slideshow()) && in_array($className,self::get_page_classes_without_slideshow()))  {
+			$result = false;
+		}
+		return $result;
 	}
 
 	function SlidesForShow() {
