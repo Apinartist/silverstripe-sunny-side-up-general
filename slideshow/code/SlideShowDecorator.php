@@ -42,6 +42,9 @@ class SlideShowDecorator extends SiteTreeDecorator {
 
 	public function updateCMSFields(FieldSet &$fields) {
 		if($this->classHasSlideShow($this->owner->ClassName)) {
+			$folder = new TreeDropdownField( 'SlideShowFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
+			$folder->setFilterFunction( create_function( '$obj', 'return $obj->class == "Folder";' ) );
+			$fields->addFieldToTab('Root.Content.SlideShow', $folder);
 			$folders = DataObject::get("Folder");
 			if($this->owner->ParentID) {
 				$fields->addFieldToTab('Root.Content.SlideShow', new CheckboxField("UseParentSlides", "Use parent slides when this page has no slides itself"));
@@ -50,10 +53,6 @@ class SlideShowDecorator extends SiteTreeDecorator {
 				$fields->addFieldToTab('Root.Content.SlideShow', new CheckboxField("UseParentSlides", "Use homepage slides IF this page has no slides and the homepage does"));
 			}
 			$fields->addFieldToTab('Root.Content.SlideShow', $this->SlideShowTableField());
-			$fields->addFieldToTab('Root.Content.SlideShow', new TextField("SlideShowIDList"));
-			$folder = new TreeDropdownField( 'SlideShowFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
-			$folder->setFilterFunction( create_function( '$obj', 'return $obj->class == "Folder";' ) );
-			$fields->addFieldToTab('Root.Content.SlideShow', $folder);
 		}
 		return $fields;
 	}
