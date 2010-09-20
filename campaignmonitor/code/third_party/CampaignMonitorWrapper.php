@@ -95,6 +95,7 @@ class CampaignMonitorWrapper extends Object {
 	// $confirmationSuccessPage = '';
 
 	function __construct() {
+		require_once("campaignmonitor/third_party/CMBase.php");
 		if(!self::$api_key) {user_error("You need to set an $api_key in your configs.", E_USER_WARNING);}
 		if(!self::$client_ID) {user_error("You need to set a $client_ID in your configs.", E_USER_WARNING);}
 		self::$cm = new CampaignMonitor( self::$api_key, self::$client_ID);
@@ -262,9 +263,6 @@ class CampaignMonitorWrapper extends Object {
 	// -------------------- SUBSCRIBER SECTION --------------------
 
 	public function subscriberAdd($subscriberEmail, $subscriberName) {
-		//Sample using the CMBase.php wrapper to call Subscriber.AddWithCustomFields from any version of PHP
-		//Relative path to CMBase.php. This example assumes the file is in the same folder
-		//Your API Key. Go to http://www.campaignmonitor.com/api/required/ to see where to find this and other required keys
 		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
 		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
@@ -289,9 +287,6 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberAddWithCustomFields($subscriberEmail, $subscriberName, $params) {
-		//Sample using the CMBase.php wrapper to call Subscriber.AddWithCustomFields from any version of PHP
-		//Relative path to CMBase.php. This example assumes the file is in the same folder
-		//Your API Key. Go to http://www.campaignmonitor.com/api/required/ to see where to find this and other required keys
 		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
 		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
@@ -313,9 +308,9 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberUnsubscribe($subscriberEmail) {
-		//Sample using the CMBase.php wrapper to call Subscriber.AddWithCustomFields from any version of PHP
-		//Relative path to CMBase.php. This example assumes the file is in the same folder
-		//Your API Key. Go to http://www.campaignmonitor.com/api/required/ to see where to find this and other required keys
+
+
+
 		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
 		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );

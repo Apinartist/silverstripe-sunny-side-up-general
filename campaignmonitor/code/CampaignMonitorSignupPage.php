@@ -8,12 +8,7 @@ class CampaignMonitorSignupPage extends Page {
 
 	static $icon = "campaignmonitor/images/treeicons/CampaignMonitorSignupPage";
 
-	private static $remove_linebreaks_from_original_code = false;
-		static function set_remove_linebreaks_from_original_code($v) { self::$remove_linebreaks_from_original_code = $v;}
-		static function get_remove_linebreaks_from_original_code() { return self::$remove_linebreaks_from_original_code; }
-
 	static $db = array(
-		"FormHTML" => "HTMLText",
 		"ThankYouMessage" => "HTMLText",
 		"AlternativeTitle" => "Varchar(255)",
 		"AlternativeMenuTitle" => "Varchar(255)",
@@ -29,7 +24,6 @@ class CampaignMonitorSignupPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab('Root.Content.FormCode', new TextareaField("FormHTML", "Copy form html code here (use CTRL+V)"));
 
 		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details."));
 		$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpHeader", "Sign up header (e.g. sign up now)"));
@@ -63,16 +57,9 @@ class CampaignMonitorSignupPage extends Page {
 		return $form;
 	}
 
-
-
-
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->FormHTML = str_replace("<br>", " ", $this->FormHTML);
-		$this->FormHTML = str_replace("<br />", " ", $this->FormHTML);
 	}
-
-
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
@@ -114,6 +101,38 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		Requirements::themedCSS("CampaignMonitorSignupPage");
 	}
 
+	//you can extend this class and enter more details....
+
+	function FormHTML() {
+		return new Form(
+			$this,
+			"FormHTML",
+			new FieldSet(
+				new TextField("Name", "Name"),
+				new EmailField("Email", "Email address")
+			),
+			new FieldSet(
+				new FormAction("thankyou", "Sign up")
+			),
+			new RequiredFields("Name", "Email")
+		);
+
+	}
+
+	function subscribe($data, $form) {
+		$member = Member::currentMember();
+		if(!$member) {
+			$member = new Member();
+		}
+
+		$form->saveInto($member);
+		$member->CampaignMonitorSubscribe = 1;
+		// Write it to the database.  This needs to happen before we add it to a group
+		$member->write();
+		Director::redirect($this->Link().'thankyou/');
+	}
+
+
 	function thankyou() {
 		$this->ShowThankYouMessage = true;
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
@@ -121,6 +140,8 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		if($this->AlternativeMetaTitle) {$this->MetaTitle = $this->AlternativeMetaTitle;}
 		return array();
 	}
+
+	//we use this if you reach the form with an email already...
 
 	function CampaignMonitorStarterFormStartAction(SS_HTTPRequest $request){
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');

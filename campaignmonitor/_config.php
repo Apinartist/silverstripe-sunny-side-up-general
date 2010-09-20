@@ -10,9 +10,9 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START campaignmonitor MODULE ----------------===================
-//CampaignMonitorSignupPage::set_remove_linebreaks_from_original_code(TRUE);
 //CampaignMonitorSignupPage_Controller::set_email_field_selector("#EmailFieldID");
 //CampaignMonitorWrapper::set_campaign_monitor_url("http://yourcompany.createsend.com/");
 //CampaignMonitorWrapper::set_api_key("xxxxxxxxxxxxxxxxxxxx");
 //CampaignMonitorWrapper::set_client_ID("xxxxxxxxxxxxxxxxxxxx");
+//Object::add_extension('Member', 'CampaignMonitorMemberDOD');
 //===================---------------- END campaignmonitor MODULE ----------------===================
