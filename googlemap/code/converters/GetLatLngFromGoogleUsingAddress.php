@@ -101,7 +101,7 @@ class GetLatLngFromGoogleUsingAddress extends Object {
 	public static function get_placemark($q, $tryAnyway = 0) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$q = trim($q);
-		$result = DataObject::get_one("GetLatLngFromGoogleUsingAddressSearchRecord", "'{$bt}SearchPhrase{$bt} = '".($q)."'");
+		$result = DataObject::get_one("GetLatLngFromGoogleUsingAddressSearchRecord", "{$bt}SearchPhrase{$bt} = '".($q)."'");
 		if($result) {
 			return unserialize($result->ResultArray);
 		}
