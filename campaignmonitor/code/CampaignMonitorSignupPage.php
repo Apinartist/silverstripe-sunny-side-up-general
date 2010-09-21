@@ -168,7 +168,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
 		}
 		else {
-			Director::redirect("Security/login/");
+			Security::permissionFailure($this)
 		}
 	}
 
