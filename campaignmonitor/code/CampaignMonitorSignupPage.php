@@ -161,5 +161,16 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		return array();
 	}
 
+	function test() {
+		//add user to CM and check results
+		//to run this test go to http://www.mysite.com/NameOfPage/test/
+		if(Permission::check("Admin")) {
+
+		}
+		else {
+			Director::redirect("Security/login/");
+		}
+	}
+
 }
 
