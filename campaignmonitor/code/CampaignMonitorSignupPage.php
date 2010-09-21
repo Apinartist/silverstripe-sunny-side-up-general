@@ -171,7 +171,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 			return array();
 		}
 		else {
-			Security::permissionFailure($this);
+			Security::permissionFailure($this, _t("CAMPAIGNMONITORSIGNUPPAGE.TESTFAILURE", "This function is only available for administrators"));
 		}
 
 	}

@@ -176,11 +176,11 @@ class CampaignMonitorWrapper extends Object {
 		user_error("this function has not been implemented yet - low priority", E_USER_ERROR);
 	}
 
-	public function clientGetSuppressionList{
+	public function clientGetSuppressionList(){
 		return self::$cm->clientGetSuppressionList( self::$client_ID );
 	}
 
-	public function clientGetTemplates{
+	public function clientGetTemplates(){
 		return self::$cm->clientGetTemplates( self::$client_ID );
 	}
 
@@ -298,7 +298,7 @@ class CampaignMonitorWrapper extends Object {
 		//turn params into arguments for function!
 		// TO DO ____________________ ! ____________________ ! ____________________ ! ____________________ ! ____________________ ! ____________________ ! ____________________ !
 
-		$result = $tempCM->subscriberAddWithCustomFields($subscriberEmail, $subscriberName, $params));
+		$result = $tempCM->subscriberAddWithCustomFields($subscriberEmail, $subscriberName, $params);
 		if($result['Code'] == 0) {
 			return 'Success';
 		}
