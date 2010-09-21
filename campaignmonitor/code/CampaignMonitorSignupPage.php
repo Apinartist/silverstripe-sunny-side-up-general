@@ -165,11 +165,15 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		//add user to CM and check results
 		//to run this test go to http://www.mysite.com/NameOfPage/test/
 		if(Permission::check("Admin")) {
+			//run tests here
 
+			//returning array will show page as normal...
+			return array();
 		}
 		else {
-			Security::permissionFailure($this)
+			Security::permissionFailure($this);
 		}
+
 	}
 
 }
