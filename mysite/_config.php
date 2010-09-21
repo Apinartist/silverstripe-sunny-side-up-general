@@ -58,7 +58,7 @@ BlogEntry::allow_wysiwyg_editing();
 
 //===================---------------- START googleAnalyticsbasics MODULE ----------------===================
 Object::add_extension('SiteTree', 'GoogleAnalytics');
-GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
+GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-0000"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
 
