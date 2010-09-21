@@ -9,7 +9,7 @@
 class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 
-	function extraDBFields() {
+	function extraStatics() {
 		return array(
 			'db' => array(
 				'CampaignMonitorSubscribe' => 'Boolean',
@@ -19,7 +19,6 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-		//synchronise....
 	}
 
 }
