@@ -83,6 +83,7 @@ class WishListPage_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
+		WishListDecorator_Controller::set_wish_list_to_member(WishListDecorator_Controller::get_wish_list_from_session_array());
 		WishListDecorator_Controller::set_inline_requirements();
 	}
 
@@ -107,7 +108,12 @@ class WishListPage_Controller extends Page_Controller {
 					return false;
 				}
 			}
-			return true;
+			$array = unserialize($savedOne);
+			if(is_array($array)) {
+				if(count($array)) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
