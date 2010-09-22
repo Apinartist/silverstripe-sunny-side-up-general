@@ -20,9 +20,9 @@ class RegisterAndEditDetailsPage extends Page {
 		"MenuTitleLoggedIn" => "Varchar(255)",
 		"MetaTitleLoggedIn" => "Varchar(255)",
 		"ContentLoggedIn" => "HTMLText",
-		"ErrorEmailAddressAlreadyExists" => "Varchar(50)",
-		"ErrorPasswordDoNotMatch" => "Varchar(50)",
-		"ErrorMustSupplyPassword" => "Varchar(50)"
+		"ErrorEmailAddressAlreadyExists" => "Varchar(255)",
+		"ErrorPasswordDoNotMatch" => "Varchar(255)",
+		"ErrorMustSupplyPassword" => "Varchar(255)"
 	);
 
 	static $register_group_title = "Registered users";
