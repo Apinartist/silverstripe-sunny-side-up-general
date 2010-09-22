@@ -9,13 +9,14 @@ class CampaignMonitorSignupPage extends Page {
 	static $icon = "campaignmonitor/images/treeicons/CampaignMonitorSignupPage";
 
 	static $db = array(
-		"ThankYouMessage" => "HTMLText",
-		"AlternativeTitle" => "Varchar(255)",
-		"AlternativeMenuTitle" => "Varchar(255)",
-		"AlternativeMetaTitle" => "Varchar(255)",
-		"SignUpHeader" => "Varchar(100)",
-		"SignUpIntro" => "HTMLText",
-		"SignUpButtonLabel" => "Varchar(20)",
+    'ListID' => 'Varchar(32)',
+		'ThankYouMessage' => 'HTMLText',
+		'AlternativeTitle' => 'Varchar(255)',
+		'AlternativeMenuTitle' => 'Varchar(255)',
+		'AlternativeMetaTitle' => 'Varchar(255)',
+		'SignUpHeader' => 'Varchar(100)',
+		'SignUpIntro' => 'HTMLText',
+		'SignUpButtonLabel' => 'Varchar(20)',
 	);
 
 	public function CanCreate() {
@@ -25,16 +26,17 @@ class CampaignMonitorSignupPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField("StartFormExplanation", "A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details."));
-		$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpHeader", "Sign up header (e.g. sign up now)"));
-		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField("SignUpIntro", "Sign up form intro (e.g. sign up for our monthly newsletter ..."));
-		$fields->addFieldToTab('Root.Content.StartForm', new TextField("SignUpButtonLabel", "Sign up button label for start form (e.g. register now)"));
+		$fields->addFieldToTab('Root.Content.Main', new TextField('ListID', 'CampaignMonitor\'s ListID'), 'MenuTitle');
+		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField('StartFormExplanation', 'A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details.'));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpHeader', 'Sign up header (e.g. sign up now)'));
+		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField('SignUpIntro', 'Sign up form intro (e.g. sign up for our monthly newsletter ...'));
+		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpButtonLabel', 'Sign up button label for start form (e.g. register now)'));
 
-		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField("ReturnURL", "Return URL after form is submitted - supply this to Campaign Monitor", Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
-		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeTitle", "AlternativeTitle"));
-		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeMenuTitle", "AlternativeMenuTitle"));
-		$fields->addFieldToTab('Root.Content.ThankYou', new TextField("AlternativeMetaTitle", "AlternativeMetaTitle"));
-		$fields->addFieldToTab('Root.Content.ThankYou', new HTMLEditorField("ThankYouMessage", "Thank You Message after Submitting Form"));
+		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField('ReturnURL', 'Return URL after form is submitted - supply this to Campaign Monitor', Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
+		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeTitle', 'AlternativeTitle'));
+		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeMenuTitle', 'AlternativeMenuTitle'));
+		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeMetaTitle', 'AlternativeMetaTitle'));
+		$fields->addFieldToTab('Root.Content.ThankYou', new HTMLEditorField('ThankYouMessage', 'Thank You Message after Submitting Form'));
 		return $fields;
 	}
 
@@ -165,7 +167,16 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		//add user to CM and check results
 		//to run this test go to http://www.mysite.com/NameOfPage/test/
 		if(Permission::check("Admin")) {
+
 			//run tests here
+      $wrapper = new CampaignMonitorWrapper();
+      $wrapper->setListID ($this->ListID);
+      if (!$wrapper->testConnection())
+        user_error('Cannot connect to CampaignMonitor: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+      if (!$wrapper->testListSetup())
+        user_error('List not setup: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+
+      // Test connection with CM
 
 			//returning array will show page as normal...
 			return array();
@@ -177,4 +188,3 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	}
 
 }
-

@@ -19,30 +19,29 @@ class CampaignMonitorWrapper extends Object {
 
 	//basic basics
 	protected static $cm = null;
-		public static function set_cm($v) {self::$cm = $v;}
-		public static function get_cm() {return self::$cm;}
+	public static function set_cm($v) {self::$cm = $v;}
+	public static function get_cm() {return self::$cm;}
 
 	protected static $campaign_monitor_url = "http://yourcompany.createsend.com/";
-		public static function set_campaign_monitor_url($v) {self::$campaign_monitor_url = $v;}
-		public static function get_campaign_monitor_url() {return self::$campaign_monitor_url;}
+	public static function set_campaign_monitor_url($v) {self::$campaign_monitor_url = $v;}
+	public static function get_campaign_monitor_url() {return self::$campaign_monitor_url;}
 
 	//basic configs
 	protected static $api_key = '';
-		public static function set_api_key($v) {self::$api_key = $v;}
-		public static function get_api_key() {return self::$api_key;}
+	public static function set_api_key($v) {self::$api_key = $v;}
+	public static function get_api_key() {return self::$api_key;}
 
 	protected static $client_ID = '';
-		public static function set_client_ID($v) {self::$client_ID = $v;}
-		public static function get_client_ID() {return self::$client_ID;}
+	public static function set_client_ID($v) {self::$client_ID = $v;}
+	public static function get_client_ID() {return self::$client_ID;}
 
 	protected $list_group_membership = array();
-		public static function add_list_group_membership($name, $code) {
-			self::$list_group_membership[] = array(
-				"Name" => $name,
-				"Code" => $code
-			);
-		}
-
+	public static function add_list_group_membership($name, $code) {
+	  self::$list_group_membership[] = array(
+			"Name" => $name,
+			"Code" => $code
+	  );
+	}
 
 	//__________client config... ONLY set by web developer
 	// $accessLevel = '63';
@@ -62,8 +61,8 @@ class CampaignMonitorWrapper extends Object {
 
 	//campaign
 	protected $campaignID = '';
-		public function setCampaignID($v) {$this->campaignID = $v;}
-		public function getCampaignID() {return $this->campaignID;}
+  public function setCampaignID($v) {$this->campaignID = $v;}
+  public function getCampaignID() {return $this->campaignID;}
 	// $campaignName = 'March newsletter';
 	// $subject = 'March newsletter';
 	// $fromName = 'John Smith';
@@ -78,8 +77,8 @@ class CampaignMonitorWrapper extends Object {
 
 	//template
 	protected $templateID = '';
-		public function setTemplateID($v) {$this->templateID = $v;}
-		public function getTemplateID() {return $this->templateID;}
+  public function setTemplateID($v) {$this->templateID = $v;}
+  public function getTemplateID() {return $this->templateID;}
 	// $templateName = 'Updated Template Name';
 	// $htmlURL = "http://notarealdomain.com/templates/test/index.html";
 	// $zipURL = "http://notarealdomain.com/templates/test/images.zip";
@@ -87,18 +86,18 @@ class CampaignMonitorWrapper extends Object {
 
 	//list
 	protected $listID = '';
-		public function setListID($v) {$this->listID = $v;}
-		public function getListID() {return $this->listID;}
+  public function setListID($v) {$this->listID = $v;}
+  public function getListID() {return $this->listID;}
 	// $listTitle = 'Updated API Created List';
 	// $unsubscribePage = '';
 	// $confirmOptIn = 'false';
 	// $confirmationSuccessPage = '';
 
 	function __construct() {
-		require_once("campaignmonitor/third_party/CMBase.php");
-		if(!self::$api_key) {user_error("You need to set an $api_key in your configs.", E_USER_WARNING);}
-		if(!self::$client_ID) {user_error("You need to set a $client_ID in your configs.", E_USER_WARNING);}
-		self::$cm = new CampaignMonitor( self::$api_key, self::$client_ID);
+		require_once(dirname(__FILE__) . '/CMBase.php');
+		if (!self::$api_key) {user_error('You need to set an $api_key in your config.', E_USER_WARNING);}
+		if (!self::$client_ID) {user_error('You need to set a $client_ID in your config.', E_USER_WARNING);}
+		self::$cm = new CampaignMonitor(self::$api_key, self::$client_ID);
 	}
 
 	// -------------------- CAMPAIGN SECTION --------------------
@@ -128,7 +127,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function campaignGetLists() {
-		user_error("this function has not been implemented yet!", E_USER_ERROR);
+    return self::$cm->campaignGetLists($this->campaignID);
 	}
 
 	public function campaignGetOpens() {
@@ -169,7 +168,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function clientGetLists() {
-		user_error("this function has not been implemented yet", E_USER_ERROR);
+    return self::$cm->clientGetLists( self::$client_ID );
 	}
 
 	public function clientGetSegments() {
@@ -248,7 +247,6 @@ class CampaignMonitorWrapper extends Object {
 		return self::$cm->listGetDetail( $this->listID );
 	}
 
-
 	public function listGetStats() {
 		//Gets statistics for a subscriber list
 		user_error("this function has not been implemented yet", E_USER_ERROR);
@@ -276,7 +274,6 @@ class CampaignMonitorWrapper extends Object {
 			return 'Error : ' . $result['Result']['Message'];
 		}
 	}
-
 
 	public function subscriberAddAndResubscribe() {
 		user_error("this function has not been implemented yet", E_USER_ERROR);
@@ -308,9 +305,6 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberUnsubscribe($subscriberEmail) {
-
-
-
 		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
 		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
@@ -322,7 +316,6 @@ class CampaignMonitorWrapper extends Object {
 			return 'Error : ' . $result['Result']['Message'];
 		}
 	}
-
 
 	public function subscriberGetActive() {
 		//Gets a list of all active subscribers for a list that have been added since the specified date
@@ -381,7 +374,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 
-		// -------------------- USER SECTION --------------------
+  // -------------------- USER SECTION --------------------
 	public function userGetApiKey() {
 		return self::$cm->userGetApiKey();
 	}
@@ -401,5 +394,36 @@ class CampaignMonitorWrapper extends Object {
 	public function userGettimeZones() {
 		return self::$cm->userGettimeZones();
 	}
+
+  // -------------------- TEST SECTION --------------------
+
+  /*
+   * True if connection is valid
+   */
+  public function testConnection() {
+    $this->lastErrorMessage = '';
+    $res = $this->clientGetLists();
+    if ($res) {
+      if (isset ($res['anyType']['Message'])) {
+        $this->lastErrorMessage = $res['anyType']['Message'];
+        return false;
+      }
+      else
+        return true;
+    }
+    else
+      return true;
+  }
+
+  public function testListSetup() {
+    $this->lastErrorMessage = '';
+    $res = $this->listGetDetail();
+    if (isset ($res['anyType']['Message'])) {
+      $this->lastErrorMessage = $res['anyType']['Message'];
+      return $res['anyType']['Code'] != 301;
+    }
+    else
+      return true;
+  }
 
 }
