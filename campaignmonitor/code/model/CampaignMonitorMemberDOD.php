@@ -6,7 +6,7 @@
  *
  **/
 
-class CampaignMonitorMemberDOD extends DataObjectDecorator {
+class CampaignMonitorMemberDOD extends DataobjectDecorator {
 
 
 	function extraStatics() {
