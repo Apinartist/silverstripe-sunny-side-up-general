@@ -48,7 +48,7 @@ class TemplateOverviewPageExtension extends Extension {
 				if($page->ClassName == $this->owner->ClassName) {
 					$doIt = true;
 				}
-				if($doIt) {
+				if($doIt && $previousPage) {
 					return $previousPage;
 				}
 				$previousPage = $page;
