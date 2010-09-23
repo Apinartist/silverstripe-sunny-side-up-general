@@ -17,10 +17,4 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		);
 	}
 
-	function onAfterWrite() {
-		parent::onAfterWrite();
-
-		//magic here....
-	}
-
 }
