@@ -261,18 +261,13 @@ class CampaignMonitorWrapper extends Object {
 	// -------------------- SUBSCRIBER SECTION --------------------
 
 	public function subscriberAdd($subscriberEmail, $subscriberName) {
-		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
-		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
+		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID);
 		//
 		//passing email address, name.
-		$result = $tempCM->subscriberAdd($subscriberEmail, $subscriberEmailName);
-		if($result['Result']['Code'] == 0) {
-			return 'Success';
-		}
-		else {
-			return 'Error : ' . $result['Result']['Message'];
-		}
+    $result = $tempCM->subscriberAdd($subscriberEmail, $subscriberName);
+    $this->lastErrorMessage = $result['Result']['Message'];
+		return $result['Result']['Code'] == 0;
 	}
 
 	public function subscriberAddAndResubscribe() {
@@ -305,16 +300,11 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberUnsubscribe($subscriberEmail) {
-		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
 		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
 		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
 		$result = $TEMPcm->subscriberUnsubscribe($subscriberEmail);
-		if($result['Result']['Code'] == 0) {
-			return 'Success';
-		}
-		else {
-			return 'Error : ' . $result['Result']['Message'];
-		}
+    $this->lastErrorMessage = $result['Result']['Message'];
+		return $result['Result']['Code'] == 0;
 	}
 
 	public function subscriberGetActive() {

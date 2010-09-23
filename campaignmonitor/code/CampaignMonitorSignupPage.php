@@ -103,22 +103,24 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		Requirements::themedCSS("CampaignMonitorSignupPage");
 	}
 
-	//you can extend this class and enter more details....
+	// Subscription form
 
 	function FormHTML() {
-		return new Form(
-			$this,
-			"FormHTML",
-			new FieldSet(
-				new TextField("Name", "Name"),
-				new EmailField("Email", "Email address")
-			),
-			new FieldSet(
-				new FormAction("thankyou", "Sign up")
-			),
-			new RequiredFields("Name", "Email")
-		);
+    // Create fields
+    $fields = new FieldSet(
+      new TextField('Name', 'Name'),
+      new EmailField('Email', 'Email')
+    );
 
+    // Create action
+    $actions = new FieldSet(
+      new FormAction('subscribe', 'Subscribe')
+    );
+
+    // Create Validators
+    $validator = new RequiredFields('Name', 'Email');
+
+    return new Form($this, 'FormHTML', $fields, $actions, $validator);
 	}
 
 	function subscribe($data, $form) {
@@ -128,18 +130,43 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		}
 
 		$form->saveInto($member);
+    // TODO: why do we do this? Wouldn't it be better to query CM with the email address of the member? And do you need to be a member before you can subscribe??
 		$member->CampaignMonitorSubscribe = 1;
 		// Write it to the database.  This needs to happen before we add it to a group
 		$member->write();
-		Director::redirect($this->Link().'thankyou/');
+    $wrapper = $this->newWrapper();
+    if (!$wrapper->subscriberAdd($data['Email'], $data['Name']))
+      user_error('Subscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+    else
+      Director::redirect($this->Link().'thankyou/');
 	}
 
+  function unsubscribe() {
+    // Create action
+    $actions = new FieldSet(
+      new FormAction('do_unsubscribe', 'Unsubscribe')
+    );
+    $form = new Form($this, 'unsubscribe', new FieldSet(), $actions);
+    $form->disableSecurityToken();
+    // TODO: this should simply show a form, but doesn't, it immediately calls do_unsubscribe
+    return $form;
+  }
+
+  function do_unsubscribe() {
+		$member = Member::currentMember();
+    $wrapper = $this->newWrapper();
+    var_dump ($member->Email);
+    if (!$wrapper->subscriberUnsubscribe($member->Email))
+      user_error('Unsubscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+    abc();
+  }
 
 	function thankyou() {
-		$this->ShowThankYouMessage = true;
+		$this->ShowThankYouMessage = true; // TODO: what does this var do???
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
 		if($this->AlternativeMenuTitle) {$this->MetaTitle = $this->AlternativeMenuTitle;}
 		if($this->AlternativeMetaTitle) {$this->MetaTitle = $this->AlternativeMetaTitle;}
+    // TODO: this does not return/set/show the thank you message. Nicolaas to complete.
 		return array();
 	}
 
@@ -163,14 +190,20 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		return array();
 	}
 
+  // Return a properly setup instance of the wrapper class
+  protected function newWrapper () {
+    $wrapper = new CampaignMonitorWrapper();
+    $wrapper->setListID ($this->ListID);
+    return $wrapper;
+  }
+
 	function test() {
 		//add user to CM and check results
 		//to run this test go to http://www.mysite.com/NameOfPage/test/
 		if(Permission::check("Admin")) {
 
 			//run tests here
-      $wrapper = new CampaignMonitorWrapper();
-      $wrapper->setListID ($this->ListID);
+      $wrapper = $this->newWrapper();
       if (!$wrapper->testConnection())
         user_error('Cannot connect to CampaignMonitor: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
       if (!$wrapper->testListSetup())
