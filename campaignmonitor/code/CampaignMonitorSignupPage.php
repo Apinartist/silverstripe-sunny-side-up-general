@@ -141,26 +141,6 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
       Director::redirect($this->Link().'thankyou/');
 	}
 
-  function unsubscribe() {
-    // Create action
-    $actions = new FieldSet(
-      new FormAction('do_unsubscribe', 'Unsubscribe')
-    );
-    $form = new Form($this, 'unsubscribe', new FieldSet(), $actions);
-    $form->disableSecurityToken();
-    // TODO: this should simply show a form, but doesn't, it immediately calls do_unsubscribe
-    return $form;
-  }
-
-  function do_unsubscribe() {
-		$member = Member::currentMember();
-    $wrapper = $this->newWrapper();
-    var_dump ($member->Email);
-    if (!$wrapper->subscriberUnsubscribe($member->Email))
-      user_error('Unsubscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
-    abc();
-  }
-
 	function thankyou() {
 		$this->ShowThankYouMessage = true; // TODO: what does this var do???
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
