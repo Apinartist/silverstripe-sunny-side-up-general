@@ -126,12 +126,13 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	function subscribe($data, $form) {
 		$member = Member::currentMember();
 		if(!$member) {
+      // TODO: this does not work, if this person is already registered, either name and/or email address must be unique I suppose.
 			$member = new Member();
 		}
 
 		$form->saveInto($member);
     // TODO: why do we do this? Wouldn't it be better to query CM with the email address of the member? And do you need to be a member before you can subscribe??
-		$member->CampaignMonitorSubscribe = 1;
+		$member->CampaignMonitorSubscription = $this->ListID;
 		// Write it to the database.  This needs to happen before we add it to a group
 		$member->write();
     $wrapper = $this->newWrapper();
@@ -145,9 +146,8 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
   function unsubscribe() {
 		$member = Member::currentMember();
     if ($member) {
-      $wrapper = $this->newWrapper();
-      if (!$wrapper->subscriberUnsubscribe($member->Email))
-        user_error('Unsubscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+      $member->CampaignMonitorSubscription = '';
+      $member->write();
     }
   }
 
