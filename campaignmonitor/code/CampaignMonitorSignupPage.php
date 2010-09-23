@@ -141,6 +141,16 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
       Director::redirect($this->Link().'thankyou/');
 	}
 
+  // Unsubscribe immediately...
+  function unsubscribe() {
+		$member = Member::currentMember();
+    if ($member) {
+      $wrapper = $this->newWrapper();
+      if (!$wrapper->subscriberUnsubscribe($member->Email))
+        user_error('Unsubscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+    }
+  }
+
 	function thankyou() {
 		$this->ShowThankYouMessage = true; // TODO: what does this var do???
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
