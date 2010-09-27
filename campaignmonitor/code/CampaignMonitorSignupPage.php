@@ -59,7 +59,28 @@ class CampaignMonitorSignupPage extends Page {
 		return $form;
 	}
 
+  // Return a properly setup instance of the wrapper class
+  public function newCMWrapper () {
+    $CMWrapper = new CampaignMonitorWrapper();
+		if(!$this->ListID) {
+			$lists = $CMWrapper->clientGetLists();
+			if(!$lists) {
+				user_error("you will need to specify a list on this page first...", E_USER_WARNING);
+			}
+			if(is_array($lists) && isset($lists["anyType"]["List"]["ListID"])) {
+				$this->ListID = $lists["anyType"]["List"]["ListID"];
+			}
+			if(is_int($lists)) {
+				$this->ListID = $lists;
+			}
+		}
+    $CMWrapper->setListID ($this->ListID);
+    return $CMWrapper;
+  }
+
+
 	function onBeforeWrite() {
+		$CMWrapper = new $this->newCMWrapper();
 		parent::onBeforeWrite();
 	}
 
@@ -69,6 +90,7 @@ class CampaignMonitorSignupPage extends Page {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
 
 		if($page) {
+			$CMWrapper = new $this->newCMWrapper();
 			if(!$page->SignUpHeader) {
 				$page->SignUpHeader = 'Sign Up Now';
 				$update[]= "created default entry for SignUpHeader";
@@ -111,33 +133,40 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
       new TextField('Name', 'Name'),
       new EmailField('Email', 'Email')
     );
-
     // Create action
     $actions = new FieldSet(
       new FormAction('subscribe', 'Subscribe')
     );
-
     // Create Validators
     $validator = new RequiredFields('Name', 'Email');
-
     return new Form($this, 'FormHTML', $fields, $actions, $validator);
 	}
 
 	function subscribe($data, $form) {
+		$CMWrapper = $this->newCMWrapper();
 		$member = Member::currentMember();
 		if(!$member) {
-      // TODO: this does not work, if this person is already registered, either name and/or email address must be unique I suppose.
+			if($existingMember = DataObject::get_one("Member", "Email = '".Convert::raw2sql($data["Email"])."'")) {
+				$form->addErrorMessage('Email', _t("CAMPAIGNMONITORSIGNUPPAGE_EMAIL_EXISTS", "This email is already in use. Please log in for this email or try another email address"), 'warning');
+				Director::redirectBack();
+				return;
+			}
 			$member = new Member();
 		}
-
+		if($CMWrapper->subscriberIsUnsubscribed($data["Email"])) {
+			$form->addErrorMessage('Email', _t("CAMPAIGNMONITORSIGNUPPAGE_EMAIL_PREVIOUSLY_UNSUBSCRIBED", "This email is already unsubscribed and can not be added again. Please contact the website owners for more information."), 'warning');
+			Director::redirectBack();
+			return;
+		}
 		$form->saveInto($member);
     // TODO: why do we do this? Wouldn't it be better to query CM with the email address of the member? And do you need to be a member before you can subscribe??
 		$member->CampaignMonitorSubscription = $this->ListID;
 		// Write it to the database.  This needs to happen before we add it to a group
+		$member->SetPassword = true;
+		$member->Password = Member::create_new_password();
 		$member->write();
-    $wrapper = $this->newWrapper();
-    if (!$wrapper->subscriberAdd($data['Email'], $data['Name']))
-      user_error('Subscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+    if (!$CMWrapper->subscriberAdd($data['Email'], $data['Name']))
+      user_error('Subscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
     else
       Director::redirect($this->Link().'thankyou/');
 	}
@@ -180,24 +209,17 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		return array();
 	}
 
-  // Return a properly setup instance of the wrapper class
-  protected function newWrapper () {
-    $wrapper = new CampaignMonitorWrapper();
-    $wrapper->setListID ($this->ListID);
-    return $wrapper;
-  }
-
 	function test() {
 		//add user to CM and check results
 		//to run this test go to http://www.mysite.com/NameOfPage/test/
 		if(Permission::check("Admin")) {
 
 			//run tests here
-      $wrapper = $this->newWrapper();
-      if (!$wrapper->testConnection())
-        user_error('Cannot connect to CampaignMonitor: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
-      if (!$wrapper->testListSetup())
-        user_error('List not setup: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+      $CMWrapper = $this->newCMWrapper();
+      if (!$CMWrapper->testConnection())
+        user_error('Cannot connect to CampaignMonitor: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+      if (!$CMWrapper->testListSetup())
+        user_error('List not setup: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
 
       // Test connection with CM
 

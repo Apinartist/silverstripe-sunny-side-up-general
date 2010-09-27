@@ -257,7 +257,11 @@ class CampaignMonitorWrapper extends Object {
 		return self::$cm->listUpdate( $this->listID, $listTitle, $unsubscribePage, $confirmOptIn, $confirmationSuccessPage );
 	}
 
-
+	public function subscribersGetUnsubscribed() {
+		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
+		return $tempCM->subscribersGetUnsubscribed(1, $this->listID);
+	}
 	// -------------------- SUBSCRIBER SECTION --------------------
 
 	public function subscriberAdd($subscriberEmail, $subscriberName) {
@@ -317,19 +321,46 @@ class CampaignMonitorWrapper extends Object {
 		user_error("this function has not been implemented yet", E_USER_ERROR);
 	}
 
-	public function subscriberGetIsSubscribed() {
-		//Returns True or False as to the existence of the given email address in the list supplied.
-		user_error("this function has not been implemented yet", E_USER_ERROR);
+	public function subscriberIsSubscribed($subscriberEmail) {
+		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
+		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
+			if($array["anyType"]["EmailAddress"] == $subscriberEmail) {
+				if($array["anyType"]["State"] == "Active") {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_WARNING);
 	}
 
-	public function subscriberGetSingleSubscriber() {
+	public function subscriberIsUnsubscribed($subscriberEmail) {
+		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
+		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
+			if($array["anyType"]["EmailAddress"] == $subscriberEmail) {
+				if($array["anyType"]["State"] == "Unsubscribed") {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		user_error("could not establish subscriber if '$subscriberEmail' is unsubscribed.", E_USER_WARNING);
+	}
+
+	public function subscriberGetSingleSubscriber($subscriberEmail) {
 		//This method returns the details of a particular subscriber, including email address, name, active/inactive status and all custom field data. If a subscriber with that email address does not exist in that list, an empty record is returned.
-		user_error("this function has not been implemented yet", E_USER_ERROR);
+		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, null, $this->listID );
+		return $TEMPcm->subscriberGetSingleSubscriber($this->listID, $subscriberEmail);
 	}
 
-	public function subscriberGetUnsubscribed() {
+	public function subscriberGetUnsubscribed($subscriberEmail) {
 		//Gets a list of all subscribers for a list that have unsubscribed since the specified date.
-		user_error("this function has not been implemented yet", E_USER_ERROR);
+		return $this->subscribersGetUnsubscribed();
 	}
 
 	// -------------------- TEMPLATE SECTION --------------------

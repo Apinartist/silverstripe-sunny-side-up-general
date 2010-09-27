@@ -19,20 +19,19 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-
-    $wrapper = new CampaignMonitorWrapper();
+    $CMWrapper = new CampaignMonitorWrapper();
     if ($this->owner->CampaignMonitorSubscription) {
-      $wrapper->setListID ($this->owner->CampaignMonitorSubscription);
-      if (!$wrapper->subscriberAdd($this->owner->Email, $this->owner->getName()))
-        user_error('Subscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+      $CMWrapper->setListID ($this->owner->CampaignMonitorSubscription);
+      if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName()))
+        user_error('Subscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
     }
     else {
       $fields = $this->owner->getChangedFields();
       if (isset ($fields['CampaignMonitorSubscription']['before'])) {
         $list_id = $fields['CampaignMonitorSubscription']['before'];
-        $wrapper->setListID ($list_id);
-        if (!$wrapper->subscriberUnsubscribe($this->owner->Email))
-          user_error('Unsubscribe attempt failed: ' . $wrapper->lastErrorMessage, E_USER_WARNING);
+        $CMWrapper->setListID ($list_id);
+        if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email))
+          user_error('Unsubscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
       }
     }
 	}
