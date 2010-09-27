@@ -323,6 +323,11 @@ class CampaignMonitorWrapper extends Object {
 
 	public function subscriberIsSubscribed($subscriberEmail) {
 		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
+		if(isset($array) && $array["anyType"]) {
+			if($array["anyType"]["Code"] == 203) {
+				return false;
+			}
+		}
 		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
 			if($array["anyType"]["EmailAddress"] == $subscriberEmail) {
 				if($array["anyType"]["State"] == "Active") {
@@ -338,6 +343,11 @@ class CampaignMonitorWrapper extends Object {
 
 	public function subscriberIsUnsubscribed($subscriberEmail) {
 		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
+		if(isset($array) && $array["anyType"]) {
+			if($array["anyType"]["Code"] == 203) {
+				return false;
+			}
+		}
 		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
 			if($array["anyType"]["EmailAddress"] == $subscriberEmail) {
 				if($array["anyType"]["State"] == "Unsubscribed") {
