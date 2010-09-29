@@ -80,7 +80,7 @@ class CampaignMonitorSignupPage extends Page {
 
 
 	function onBeforeWrite() {
-		$CMWrapper = new $this->newCMWrapper();
+		$CMWrapper = $this->newCMWrapper();
 		parent::onBeforeWrite();
 	}
 
