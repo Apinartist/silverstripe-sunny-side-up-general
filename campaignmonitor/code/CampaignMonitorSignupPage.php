@@ -90,7 +90,7 @@ class CampaignMonitorSignupPage extends Page {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
 
 		if($page) {
-			$CMWrapper = new $this->newCMWrapper();
+			$CMWrapper = $this->newCMWrapper();
 			if(!$page->SignUpHeader) {
 				$page->SignUpHeader = 'Sign Up Now';
 				$update[]= "created default entry for SignUpHeader";
