@@ -196,6 +196,7 @@ class BonusProductModifier extends OrderModifier {
 			}
 			$keys = array_keys($newBonusProductArray);
 			if(is_array($newBonusProductArray) && count($newBonusProductArray)) {
+				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 				Requirements::javascript(THIRDPARTY_DIR."/jquery-livequery/jquery.livequery.js");
 				Requirements::javascript("ecommercextras/javascript/BonusProductModifier.js");
 				Requirements::customScript('BonusProductModifier.set_list(new Array(0, '.implode(",", $keys).'));', "BonusProductModifier_set_list");

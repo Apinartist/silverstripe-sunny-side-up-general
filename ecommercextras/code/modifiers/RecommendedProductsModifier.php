@@ -116,6 +116,7 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(count($recommendedProductsIDArray)) {
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript("ecommercextras/javascript/RecommendedProductsModifier.js");
 			Requirements::themedCSS("RecommendedProductsModifier");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);

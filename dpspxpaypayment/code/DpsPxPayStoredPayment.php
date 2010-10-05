@@ -54,6 +54,7 @@ class DpsPxPayStoredPayment extends DpsPxPayPayment {
 		}
 		$fields->push(new LiteralField('DPSInfo', $privacyLink));
 		$fields->push(new LiteralField('DPSPaymentsList', $paymentsList));
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("dpspxpaypayment/javascript/DpxPxPayStoredPayment.js");
 		return $fields;
 	}

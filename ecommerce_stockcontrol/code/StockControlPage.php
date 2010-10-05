@@ -60,6 +60,7 @@ class StockControlPage_Controller extends Page_Controller {
 		}
 		parent::init();
 		Requirements::themedCSS("StockControlPage");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("ecommerce_stockcontrol/javascript/StockControlPage.js");
 		$url = Director::absoluteURL($this->Link()."update/");
 		Requirements::customScript("StockControlPageURL = '".$url."'");

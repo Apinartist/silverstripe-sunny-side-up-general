@@ -105,6 +105,7 @@ class WishListDecorator_Controller extends Extension {
 		if(!Director::is_ajax() && !self::$requirements_added) {
 			self::$requirements_added = true;
 			$wishListPage = DataObject::get_one("WishListPage");
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript("wishlist/javascript/WishList.js");
 			Requirements::themedCSS("WishList");
 			if($wishListPage) {

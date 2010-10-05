@@ -332,6 +332,7 @@ class StandingOrdersPage_Controller extends AccountPage_Controller {
 		$params = array(
 			"AllStandingOrders" => DataObject::get("StandingOrder", "{$bt}Status{$bt} = 'Active'")
 		);
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("ecommerce_standingorders/javascript/StandingOrdersPage_admin.js");
 		Requirements::themedCSS("StandingOrdersPage_admin");
 		return $this->renderWith(array('StandingOrdersPage_admin', 'Page'), $params);

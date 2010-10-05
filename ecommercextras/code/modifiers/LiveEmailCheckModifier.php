@@ -21,6 +21,7 @@ class LiveEmailCheckModifier extends OrderModifier {
 
 
 	static function show_form() {
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("ecommercextras/javascript/LiveEmailCheckModifier.js");
 		Requirements::customScript("jQuery(document).ready(function() { LiveEmailCheckModifier.init(); });", "LiveEmailCheckModifier_init");
 		false;

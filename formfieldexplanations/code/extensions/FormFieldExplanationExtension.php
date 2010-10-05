@@ -47,6 +47,7 @@ class FormFieldExplanationExtension extends Extension{
 			}
 		}
 		// block prototype validation
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::block("sapphire/javascript/Validator.js");
 		Requirements::javascript("formfieldexplanations/javascript/Silvertripe-2.3-Validator.js");
 		Requirements::javascript("formfieldexplanations/javascript/formfieldexplanations.js");

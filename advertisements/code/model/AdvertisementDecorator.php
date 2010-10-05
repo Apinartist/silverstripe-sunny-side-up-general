@@ -15,6 +15,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$doSet = new DataObjectSet();
 			$browseSet = $this->AdvertisementsToShow();
 			if($browseSet) {
+				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 				Requirements::javascript("advertisements/javascript/Advertisement.js");
 				foreach($browseSet as $Advertisement) {
 					$imageID = intval($Advertisement->AdvertisementImageID+ 0);

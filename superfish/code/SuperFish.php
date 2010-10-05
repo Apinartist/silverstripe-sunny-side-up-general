@@ -18,6 +18,7 @@ class SuperFish extends Object {
 			self::block();
 		}
 		else {
+			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript('superfish/javascript/hoverIntent.js');
 			Requirements::javascript('superfish/javascript/superfish.js');
 			Requirements::ThemedCSS('superfish');

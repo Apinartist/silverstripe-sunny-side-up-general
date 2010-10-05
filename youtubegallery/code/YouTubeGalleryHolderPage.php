@@ -23,6 +23,7 @@ class YouTubeGalleryHolderPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
 		Requirements::themedCSS("YouTubeGalleryHolderPage");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("youtubegallery/javascript/YouTubeGalleryHolderPage.js");
 	}
 
