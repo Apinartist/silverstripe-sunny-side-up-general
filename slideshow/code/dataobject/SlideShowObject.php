@@ -10,7 +10,8 @@ class SlideShowObject extends DataObject {
 
 	public static $db = array(
 		"Link" => "Varchar(125)",
-		"Title" => "Varchar(125)"
+		"Title" => "Varchar(125)",
+		"Description" => "Text"
 	);
 
 	public static $has_one = array(
