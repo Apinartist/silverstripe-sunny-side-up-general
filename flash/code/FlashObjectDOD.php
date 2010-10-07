@@ -17,15 +17,6 @@ class FlashObjectDOD extends SiteTreeDecorator {
 		);
 	}
 
-	/**
-	* At the moment augmentSQL does nothing.
-	*/
-	function augmentSQL(SQLQuery &$query) {	}
-
-	/**
-	* At the moment augmentDatabase does nothing.
-	*/
-	function augmentDatabase() {}
 
 	function updateCMSFields(FieldSet &$fields) {
 		if( ! FlashObject::has_external_flash_file()) {

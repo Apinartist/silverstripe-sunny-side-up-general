@@ -104,6 +104,21 @@ class FlashObject extends ViewableData  {
 		return $doSet;
   }
 
+
+	public function CreateYouTubeVideo($title, $code) {
+		return $this->CreateFlashObject(
+			$Title = $title,
+			$FlashFileDivID = 'YouTubber',
+			$FlashFilename = 'http://www.youtube.com/v/'.$code.'?fs=1&amp;hl=en_US',
+			$AlternativeContent = '',
+			$Width = 640,
+			$Height = 385,
+			$FlashVersion = '',
+			$ParamArray = array(),
+			$YouTubeStyle = true
+		)
+	}
+
 	static function has_external_flash_file() {self::$external_flash_file ? true : false;}
 	static function set_use_dynamic_insert($value) {self::$use_dynamic_insert = $value;}
 	static function set_filename($value) {self::$filename = $value;}
