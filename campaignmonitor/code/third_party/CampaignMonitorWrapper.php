@@ -323,9 +323,11 @@ class CampaignMonitorWrapper extends Object {
 
 	public function subscriberIsSubscribed($subscriberEmail) {
 		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
-		if(isset($array) && $array["anyType"]) {
-			if($array["anyType"]["Code"] == 203) {
-				return false;
+		if(isset($array["anyType"]) && $array["anyType"]) {
+			if(isset($array["anyType"]["Code"])) {
+				if($array["anyType"]["Code"] == 203) {
+					return false;
+				}
 			}
 		}
 		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
@@ -341,11 +343,35 @@ class CampaignMonitorWrapper extends Object {
 		user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_WARNING);
 	}
 
+	public function subscriberIsUnconfirmed($subscriberEmail) {
+		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
+		if(isset($array["anyType"]) && $array["anyType"]) {
+			if(isset($array["anyType"]["Code"])) {
+				if($array["anyType"]["Code"] == 203) {
+					return false;
+				}
+			}
+		}
+		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {
+			if($array["anyType"]["EmailAddress"] == $subscriberEmail) {
+				if($array["anyType"]["State"] == "Unconfirmed") {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_WARNING);
+	}
+
 	public function subscriberIsUnsubscribed($subscriberEmail) {
 		$array = $this->subscriberGetSingleSubscriber($subscriberEmail);
-		if(isset($array) && $array["anyType"]) {
-			if($array["anyType"]["Code"] == 203) {
-				return false;
+		if(isset($array["anyType"]) && $array["anyType"]) {
+			if(isset($array["anyType"]["Code"])) {
+				if($array["anyType"]["Code"] == 203) {
+					return false;
+				}
 			}
 		}
 		if(is_array($array) && isset($array["anyType"]["EmailAddress"])) {

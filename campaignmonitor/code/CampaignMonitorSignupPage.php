@@ -47,6 +47,10 @@ class CampaignMonitorSignupPage extends Page {
 
 	static function CampaignMonitorStarterForm($controller) {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
+		if(!$page) {
+			user_error("You first need to setup a Campaign Monitor Page for this function to work.", E_USER_NOTICE);
+			return false;
+		}
 		$fields = new FieldSet(new TextField("Email", ""));
 		$actions = new FieldSet(new FormAction("CampaignMonitorStarterFormStartAction", $page->SignUpButtonLabel));
 		$form = new Form(
@@ -114,11 +118,9 @@ class CampaignMonitorSignupPage extends Page {
 
 class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
-	protected static $get_email_field_selector = "#Email";
-		static function set_email_field_selector($v){self::$get_email_field_selector = $v;}
-		static function get_email_field_selector(){return self::$get_email_field_selector;}
-
 	var $ShowThankYouMessage = false;
+
+	protected $email = '';
 
 	function init() {
 		parent::init();
@@ -131,7 +133,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
     // Create fields
     $fields = new FieldSet(
       new TextField('Name', 'Name'),
-      new EmailField('Email', 'Email')
+      new EmailField('Email', 'Email', $this->email)
     );
     // Create action
     $actions = new FieldSet(
@@ -165,10 +167,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		$member->SetPassword = true;
 		$member->Password = Member::create_new_password();
 		$member->write();
-    if (!$CMWrapper->subscriberAdd($data['Email'], $data['Name']))
-      user_error('Subscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
-    else
-      Director::redirect($this->Link().'thankyou/');
+     Director::redirect($this->Link().'thankyou/');
 	}
 
   // Unsubscribe immediately...
@@ -192,18 +191,11 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	//we use this if you reach the form with an email already...
 
 	function CampaignMonitorStarterFormStartAction(SS_HTTPRequest $request){
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		$data = $request->requestVars();
 		if(isset($data["Email"])) {
 			$email = $data["Email"];
 			if($email) {
-				Requirements::customScript('
-					jQuery(document).ready(
-						function() {
-							jQuery("'.self::get_email_field_selector().'").val("'.Convert::raw2js($email).'");
-						}
-					);
-				');
+				$this->email = $email;
 			}
 		}
 		return array();
