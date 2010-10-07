@@ -205,7 +205,8 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	function OldCampaigns() {
 		$CMWrapper = $this->newCMWrapper();
 		$campaigns = $CMWrapper->clientGetCampaigns();
-		die($campaigns);
+		print_r($campaigns);
+		die();
 	}
 
 
