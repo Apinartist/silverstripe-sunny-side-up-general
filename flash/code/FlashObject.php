@@ -109,14 +109,14 @@ class FlashObject extends ViewableData  {
 		return $this->CreateFlashObject(
 			$Title = $title,
 			$FlashFileDivID = 'YouTubber',
-			$FlashFilename = 'http://www.youtube.com/v/'.$code.'?fs=1&amp;hl=en_US',
+			$FlashFilename = 'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
 			$AlternativeContent = '',
 			$Width = 640,
 			$Height = 385,
 			$FlashVersion = '',
 			$ParamArray = array(),
 			$YouTubeStyle = true
-		)
+		);
 	}
 
 	static function has_external_flash_file() {self::$external_flash_file ? true : false;}
