@@ -10,7 +10,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START campaignmonitor MODULE ----------------===================
-//CampaignMonitorSignupPage_Controller::set_email_field_selector("#EmailFieldID");
+// -- MUST HAVE --
 //CampaignMonitorWrapper::set_campaign_monitor_url("http://yourcompany.createsend.com/");
 //CampaignMonitorWrapper::set_api_key("xxxxxxxxxxxxxxxxxxxx");
 //CampaignMonitorWrapper::set_client_ID("xxxxxxxxxxxxxxxxxxxx");
