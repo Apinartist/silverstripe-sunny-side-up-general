@@ -168,7 +168,8 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		$member->SetPassword = true;
 		$member->Password = Member::create_new_password();
 		$member->write();
-     Director::redirect($this->Link().'thankyou/');
+    Director::redirect($this->Link().'thankyou/');
+		}
 	}
 
   // Unsubscribe immediately...
@@ -190,6 +191,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	}
 
 	//we use this if you reach the form with an email already...
+
 
 	function campaignmonitorstarterformstartaction(SS_HTTPRequest $request){
 		$data = $request->requestVars();
