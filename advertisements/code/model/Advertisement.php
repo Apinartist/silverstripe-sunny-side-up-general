@@ -1,5 +1,10 @@
 <?php
 
+/* *
+ *@author nicolaas[at] sunnysideup.co.nz
+ *
+ **/
+
 class Advertisement extends DataObject {
 
 	protected static $width = 100;
@@ -50,10 +55,10 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Main", "LinkedPageID");
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
 		$fields->removeFieldFromTab("Root.Main", "ParentID");
-		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = "advertisement image - width: ".Advertisement::get_width()."px - height: ".Advertisement::get_height()."px "));
-		$fields->addFieldToTab("Root.from", new TreeDropdownField($name = "ParentID", $title = "only show on ... (leave blank to show on all advertisement pages)", $sourceObject = "SiteTree"));
-		$fields->addFieldToTab("Root.to", new TextField($name = "ExternalLink", $title = "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link"));
-		$fields->addFieldToTab("Root.to", new TreeDropdownField($name = "LinkedPageID", $title = "link to a page on this website", $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = _t("Advertisement.GETCMSFIELDSSIZEINFOWIDTH", "advertisement image - width: ").Advertisement::get_width()._t("Advertisement.GETCMSFIELDSSIZEINFOHEIGHT", "px - height: ").Advertisement::get_height()._t("Advertisement.GETCMSFIELDSSIZEINFOPX", "px ")));
+		$fields->addFieldToTab("Root.from", new TreeDropdownField($name = "ParentID", $title = _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all advertisement pages)"), $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.to", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
+		$fields->addFieldToTab("Root.to", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
 	 	return $fields;
 	}
 
@@ -66,7 +71,9 @@ class Advertisement extends DataObject {
 	);
 
 	public static $searchable_fields = array("Title" => "PartialMatchFilter");
+
 	public static $singular_name = "Advertisement";
+
 	public static $plural_name = "Advertisements";
 
 	public function requireDefaultRecords() {
