@@ -47,12 +47,13 @@ class CampaignMonitorSignupPage extends Page {
 
 	static function CampaignMonitorStarterForm($controller) {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
+
 		if(!$page) {
 			user_error("You first need to setup a Campaign Monitor Page for this function to work.", E_USER_NOTICE);
 			return false;
 		}
 		$fields = new FieldSet(new TextField("Email", ""));
-		$actions = new FieldSet(new FormAction("CampaignMonitorStarterFormStartAction", $page->SignUpButtonLabel));
+		$actions = new FieldSet(new FormAction("campaignmonitorstarterformstartaction", $page->SignUpButtonLabel));
 		$form = new Form(
 			$controller,
 			"CampaignMonitorStarterForm",
@@ -190,7 +191,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
 	//we use this if you reach the form with an email already...
 
-	function CampaignMonitorStarterFormStartAction(SS_HTTPRequest $request){
+	function campaignmonitorstarterformstartaction(SS_HTTPRequest $request){
 		$data = $request->requestVars();
 		if(isset($data["Email"])) {
 			$email = $data["Email"];
@@ -200,6 +201,13 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		}
 		return array();
 	}
+
+	function OldCampaigns() {
+		$CMWrapper = $this->newCMWrapper();
+		$campaigns = $CMWrapper->clientGetCampaigns();
+		die($campaigns);
+	}
+
 
 	function test() {
 		//add user to CM and check results
