@@ -169,7 +169,6 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		$member->Password = Member::create_new_password();
 		$member->write();
     Director::redirect($this->Link().'thankyou/');
-		}
 	}
 
   // Unsubscribe immediately...
