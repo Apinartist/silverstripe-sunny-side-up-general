@@ -76,7 +76,7 @@ class BusinessPage extends Page {
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 
-		if(!$businessGroup = DataObject::get_one("Group", 'Code = "'.self::$member_group.'"')) {
+		if(!$businessGroup = DataObject::get_one("Group", 'Code = '".self::$member_group."'")) {
 			$group = new Group();
 			$group->Code = self::$member_group;
 			$group->Title = self::$member_title;
