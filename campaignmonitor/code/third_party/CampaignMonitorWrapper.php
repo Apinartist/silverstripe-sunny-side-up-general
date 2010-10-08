@@ -160,7 +160,16 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function clientGetCampaigns() {
-		return self::$cm->clientGetCampaigns( self::$client_ID );
+		$campaigns = self::$cm->clientGetCampaigns( self::$client_ID );
+		if(is_array($campaigns) && isset($campaigns["anyType"]["Campaign"])) {
+			if(!isset($campaigns["anyType"]["Campaign"][0])) {
+				return Array(0 => $campaigns["anyType"]["Campaign"]);
+			}
+			return $campaigns["anyType"]["Campaign"];
+		}
+		elseif(is_string($campaigns)) {
+			return $campaigns;
+		}
 	}
 
 	public function clientGetDetail() {
@@ -168,7 +177,17 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function clientGetLists() {
-    return self::$cm->clientGetLists( self::$client_ID );
+		$lists = self::$cm->clientGetLists( self::$client_ID );
+		if(is_array($lists) && isset($lists["anyType"]["List"])) {
+			if(!isset($lists["anyType"]["List"][0])) {
+				return Array(0 => $lists["anyType"]["List"]);
+			}
+			return $lists["anyType"]["List"];
+		}
+		elseif(is_string($lists)) {
+			return $lists;
+		}
+		return "no list";
 	}
 
 	public function clientGetSegments() {

@@ -16,7 +16,15 @@ class CampaignMonitorSignupPage extends Page {
 		'AlternativeMetaTitle' => 'Varchar(255)',
 		'SignUpHeader' => 'Varchar(100)',
 		'SignUpIntro' => 'HTMLText',
-		'SignUpButtonLabel' => 'Varchar(20)',
+		'SignUpButtonLabel' => 'Varchar(20)'
+	);
+
+	public static $belongs_many_many = array(
+		"Members" => "Member"
+	);
+
+	static $has_many = array(
+		"CampaignMonitorCampaigns" => "CampaignMonitorCampaign"
 	);
 
 	public function CanCreate() {
@@ -25,20 +33,30 @@ class CampaignMonitorSignupPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-
-		$fields->addFieldToTab('Root.Content.Main', new TextField('ListID', 'CampaignMonitor\'s ListID'), 'MenuTitle');
+		$fields->addFieldToTab('Root.Content.RelatedList', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
 		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField('StartFormExplanation', 'A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details.'));
 		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpHeader', 'Sign up header (e.g. sign up now)'));
 		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField('SignUpIntro', 'Sign up form intro (e.g. sign up for our monthly newsletter ...'));
 		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpButtonLabel', 'Sign up button label for start form (e.g. register now)'));
-
-		$fields->addFieldToTab('Root.Content.ThankYou', new ReadonlyField('ReturnURL', 'Return URL after form is submitted - supply this to Campaign Monitor', Director::absoluteBaseURL().$this->URLSegment.'/thankyou/#CampaignMonitorSignupPageThankYou'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeTitle', 'AlternativeTitle'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeMenuTitle', 'AlternativeMenuTitle'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new TextField('AlternativeMetaTitle', 'AlternativeMetaTitle'));
 		$fields->addFieldToTab('Root.Content.ThankYou', new HTMLEditorField('ThankYouMessage', 'Thank You Message after Submitting Form'));
 		return $fields;
 	}
+
+	protected function makeDropdownListFromLists() {
+		$array = array();
+		$CMWrapper = new CampaignMonitorWrapper();
+		$lists = $CMWrapper->clientGetLists();
+		if(is_array($lists) && count($lists)) {
+			foreach($lists as $list) {
+				$array[$list["ListID"]] = $list["Name"];
+			}
+		}
+		return $array;
+	}
+
 
 	/**
 	* you can add this function to other pages to have a form that starts the basic after which the client needs to complete the rest.
@@ -70,12 +88,16 @@ class CampaignMonitorSignupPage extends Page {
 		if(!$this->ListID) {
 			$lists = $CMWrapper->clientGetLists();
 			if(!$lists) {
-				user_error("you will need to specify a list on this page first...", E_USER_WARNING);
+				$CMWrapper->listCreate($listTitle = 'List for '.$this->Title,$unsubscribePage = '',$confirmOptIn = 'false',$confirmationSuccessPage = '');
+				$lists = $CMWrapper->clientGetLists();
 			}
-			if(is_array($lists) && isset($lists["anyType"]["List"]["ListID"])) {
-				$this->ListID = $lists["anyType"]["List"]["ListID"];
+			if(is_array($lists) && isset($lists["ListID"])) {
+				$this->ListID = $lists["ListID"];
 			}
-			if(is_int($lists)) {
+			elseif(is_array($lists) && isset($lists[0]["ListID"])) {
+				$this->ListID = $lists[0]["ListID"];
+			}
+			elseif(is_int($lists)) {
 				$this->ListID = $lists;
 			}
 		}
@@ -85,8 +107,31 @@ class CampaignMonitorSignupPage extends Page {
 
 
 	function onBeforeWrite() {
-		$CMWrapper = $this->newCMWrapper();
 		parent::onBeforeWrite();
+		//make sure it is connected to a list.
+		$CMWrapper = $this->newCMWrapper();
+	}
+
+	function onAfterWrite() {
+		parent::onAfterWrite();
+
+		$CMWrapper = $this->newCMWrapper();
+		$campaigns = $CMWrapper->clientGetCampaigns();
+		if(is_array($campaigns)) {
+			foreach($campaigns as $campaign) {
+				if(!DataObject::get("CampaignMonitorCampaign", "CampaignID = '".$campaign["CampaignID"]."' AND ParentID = ".$this->ID)) {
+					$CampaignMonitorCampaign = new CampaignMonitorCampaign();
+					$CampaignMonitorCampaign->CampaignID = $campaign["CampaignID"];
+					$CampaignMonitorCampaign->Subject = $campaign["Subject"];
+					$CampaignMonitorCampaign->Name = $campaign["Name"];
+					$CampaignMonitorCampaign->SentDate = $campaign["SentDate"];
+					$CampaignMonitorCampaign->TotalRecipients = $campaign["TotalRecipients"];
+					$CampaignMonitorCampaign->ParentID = $this->ID;
+					$CampaignMonitorCampaign->write();
+				}
+			}
+		}
+
 	}
 
 	function requireDefaultRecords() {
@@ -201,13 +246,6 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 			}
 		}
 		return array();
-	}
-
-	function OldCampaigns() {
-		$CMWrapper = $this->newCMWrapper();
-		$campaigns = $CMWrapper->clientGetCampaigns();
-		print_r($campaigns);
-		die();
 	}
 
 
