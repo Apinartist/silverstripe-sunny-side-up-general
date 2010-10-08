@@ -4,7 +4,7 @@ class FriendEmail extends DataObject {
 
 	static $db = array(
 		'To' => 'Varchar(200)',
-		'Message' => 'Varchar(200)',
+		'Message' => 'Text',
 		'From' => 'Varchar(200)',
 		'IPAddress' => 'Varchar(50)'
 	);
