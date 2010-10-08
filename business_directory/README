@@ -1,0 +1,7 @@
+/*
+ * setup:
+ * Business
+ * | many-many- Certifications
+ * | many-many- Products
+ *
+ */
