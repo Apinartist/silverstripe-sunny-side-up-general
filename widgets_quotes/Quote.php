@@ -68,5 +68,9 @@ class Quote extends Widget {
 		return $this->Title;
 	}
 
+	function MyPhoto() {
+		return $this->Photo();
+	}
+
 }
 
