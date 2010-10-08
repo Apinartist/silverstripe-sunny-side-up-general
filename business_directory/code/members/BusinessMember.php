@@ -38,8 +38,8 @@ class BusinessMember_SignupEmail extends Email {
 	function __construct() {
 		$this->subject = _t('Member.EMAILSIGNUPSUBJECT', "Your business has been created at ".Director::baseURL());
 		$this->body = '
-			<h2>' . _t('Member.GREETING','Welcome to FairtradeNAP') . ', $FirstName.</h2>
-			<p>' . _t('Member.EMAILSIGNUPINTRO1','Your business has been created at Fairtradenap.net. Your login details are listed below for future reference.') . '</p>
+			<h2>' . _t('Member.GREETING','Welcome to '.Director::baseURL()) . ', $FirstName.</h2>
+			<p>' . _t('Member.EMAILSIGNUPINTRO1','Your business has been created at '.Director::baseURL().'. Your login details are listed below for future reference.') . '</p>
 
 			<p>' . _t('Member.EMAILSIGNUPINTRO2','You can login to the website using the credentials listed below')  . ':
 				<ul>

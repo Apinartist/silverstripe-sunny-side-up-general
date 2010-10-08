@@ -167,7 +167,7 @@ class BusinessPage extends Page {
 							$e->$key = $value;
 					} */
 					$e->populateTemplate($emaildata);
-					$e->from = "do-not-reply@localorganics.net";
+					$e->from = Email::getAdminEmail();
 					//Debug::show($e->debug());
 					$e->send();
 					$member->write();
@@ -176,14 +176,14 @@ class BusinessPage extends Page {
 					// If some fields have changed then send an update
 			    $from = Email::getAdminEmail();
 			    $to = $this->Email . "," . $this->ListingEmail;
-			    $subject = "Your businesses details were updated on localorganics.net";
+			    $subject = "Your businesses details were updated on ".Director::baseURL();
 					if(!$this->URLSegment) {
 						$this->URLSegment = $this->generateURLSegment($this->Title);
 					}
 			    $url = Director::absoluteBaseURL().$this->URLSegment;
 					$body = '
 					<h1>Hello, $member.FirstName.</h1>
-					<p>The details of your business '.$this->Title.' were updated on localorganics.net</p>
+					<p>The details of your business '.$this->Title.' were updated on '.Director::baseURL().'</p>
 
 					<h3>View your details at
 						<a href="'.$url.'">'.$url.'</a>
