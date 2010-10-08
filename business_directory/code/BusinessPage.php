@@ -82,7 +82,7 @@ class BusinessPage extends Page {
 			$group->Title = self::$member_title;
 			$group->write();
       Permission::grant( $group->ID, self::$access_code);
-      Database::alteration_message(self::$member_group.' group created','created');
+      DB::alteration_message(self::$member_group.' group created','created');
     }
     elseif(DB::query("SELECT COUNT(*) FROM Permission WHERE GroupID = ".$businessGroup->ID." AND Code LIKE '".self::$access_code."'")->value() == 0 ) {
       Permission::grant($businessGroup->ID, self::$access_code);
