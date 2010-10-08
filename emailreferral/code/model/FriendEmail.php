@@ -3,10 +3,10 @@
 class FriendEmail extends DataObject {
 
 	static $db = array(
-		'To' => 'Text',
-		'Message' => 'Text',
-		'From' => 'Text',
-		'IPAddress' => 'Text'
+		'To' => 'Varchar(200)',
+		'Message' => 'Varchar(200)',
+		'From' => 'Varchar(200)',
+		'IPAddress' => 'Varchar(50)'
 	);
 
 	static $has_one = array(

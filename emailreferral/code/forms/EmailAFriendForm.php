@@ -18,9 +18,6 @@ class EmailAFriendForm extends Form {
 		static function set_send_label($v) {self::$send_label = $v;}
 		static function get_send_label() {return self::$send_label;}
 
-
-
-
 	function __construct($controller, $name, $id) {
 		Requirements::themedCSS("EmailReferral");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
