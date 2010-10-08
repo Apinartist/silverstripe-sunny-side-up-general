@@ -102,6 +102,7 @@ class TemplateOverviewDescription extends DataObject {
 					$new = new TemplateOverviewDescription();
 					$new->ClassNameLink = $className;
 					$new->write();
+					DB::alteration_message("adding template description for $className");
 				}
 			}
 		}
