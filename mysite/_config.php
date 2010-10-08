@@ -5,7 +5,7 @@
 global $project; $project = 'mysite';
 
 //NOTE THIS SHOULD ACTUALLY NOT CONTAIN THE STAGING_ PART - THIS NEEDS UPDATING! *********
-global $database; $database = "staging_silverstripe_webdevelopment_com";
+global $database; $database = "silverstripe_webdevelopment_com";
 require_once("conf/ConfigureFromEnv.php");
 
 
