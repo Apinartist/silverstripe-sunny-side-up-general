@@ -24,7 +24,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
       $CMWrapper->setListID ($this->owner->CampaignMonitorSubscription);
 			if(!$CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
 				if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
-					user_error('Subscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+					user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
 				}
 			}
     }
@@ -34,7 +34,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
         $list_id = $fields['CampaignMonitorSubscription']['before'];
         $CMWrapper->setListID ($list_id);
         if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
-          user_error('Unsubscribe attempt failed: ' . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+          user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGEUNSUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
 				}
       }
     }
