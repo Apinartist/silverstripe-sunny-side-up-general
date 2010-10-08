@@ -20,7 +20,7 @@ class SearchPlusPage extends Page {
 	);
 
 	public function canCreate() {
-		return !DataObject::get_one("SiteTree", 'ClassName = "SearchPlusPage"');
+		return !DataObject::get_one("SiteTree", "ClassName = 'SearchPlusPage'");
 	}
 
 	public function canDelete() {
