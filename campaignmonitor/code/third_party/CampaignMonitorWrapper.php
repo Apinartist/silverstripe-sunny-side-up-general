@@ -95,8 +95,8 @@ class CampaignMonitorWrapper extends Object {
 
 	function __construct() {
 		require_once(dirname(__FILE__) . '/CMBase.php');
-		if (!self::$api_key) {user_error('You need to set an $api_key in your config.', E_USER_WARNING);}
-		if (!self::$client_ID) {user_error('You need to set a $client_ID in your config.', E_USER_WARNING);}
+		if (!self::$api_key) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOAPIKEYINCONFIG', "You need to set an $api_key in your config."), E_USER_WARNING);}
+		if (!self::$client_ID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCLIENTIDINCONFIG', "You need to set an $client_ID in your config."), E_USER_WARNING);}
 		self::$cm = new CampaignMonitor(self::$api_key, self::$client_ID);
 	}
 
@@ -118,12 +118,12 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function campaignDelete() {
-		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
+		if(!$this->campaignID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCAMPAIGNID', 'You need to set a campaignID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->campaignDelete($this->campaignID);
 	}
 
 	public function campaignGetBounces() {
-		user_error("this function has not been implemented yet!", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGEFUNCTIONNOTIMPLEMENTED', 'this function has not been implemented yet!'), E_USER_ERROR);
 	}
 
 	public function campaignGetLists() {
@@ -131,24 +131,24 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function campaignGetOpens() {
-		user_error("this function has not been implemented yet - low priority - shows users who opened campaign!", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITYOPENEDCAMP', 'this function has not been implemented yet - low priority - shows users who opened campaign!'), E_USER_ERROR);
 	}
 
 	public function campaignGetSubscriberClicks() {
-		user_error("this function has not been implemented yet - low priority!", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
 	public function campaignGetSummary() {
-		user_error("this function has not been implemented yet - low priority", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
 	public function campaignGetUnsubscribes() {
-		user_error("this function has not been implemented yet - low priority", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
 
 	public function campaignSend($confirmationEmail = 'joe@domain.com',$sendDate = '2029-02-15 09:00:00') {
-		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
+		if(!$this->campaignID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCAMPAIGNID', 'You need to set a campaignID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->campaignSend( $this->campaignID, $confirmationEmail, $sendDate );
 	}
 
@@ -191,7 +191,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function clientGetSegments() {
-		user_error("this function has not been implemented yet - low priority", E_USER_ERROR);
+		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
 	public function clientGetSuppressionList(){
@@ -227,7 +227,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function listDelete() {
-		if(!$this->listID) {user_error("You need to set a listID for listDelete to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTIDFORDEL', 'You need to set a listID for listDelete to work.'), E_USER_WARNING);}
 		return self::$cm->listDelete( $this->listID );
 	}
 
@@ -247,22 +247,22 @@ class CampaignMonitorWrapper extends Object {
 		$dataType = 'MultiSelectMany';
 		$options = 'Surfing||Reading||Snowboarding';
 		*/
-		if(!$this->listID) {user_error("You need to set a listID for listCreateCustomField to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTIDCREATECUSTFIELD', 'You need to set a listID for listCreateCustomField to work.'), E_USER_WARNING);}
 		return self::$cm->listCreateCustomField( $this->listID, $fieldName, $dataType, $options );
 	}
 
 	public function listDeleteCustomField($key = '[CustomFieldKey]') {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->listDeleteCustomField( $this->listID, $key );
 	}
 
 	public function listGetCustomFields() {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->listGetCustomFields( $this->listID );
 	}
 
 	public function listGetDetail() {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->listGetDetail( $this->listID );
 	}
 
@@ -272,19 +272,19 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function listUpdate($listTitle = 'Updated API Created List',$unsubscribePage = '',$confirmOptIn = 'false',$confirmationSuccessPage = '') {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		return self::$cm->listUpdate( $this->listID, $listTitle, $unsubscribePage, $confirmOptIn, $confirmationSuccessPage );
 	}
 
 	public function subscribersGetUnsubscribed() {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
 		return $tempCM->subscribersGetUnsubscribed(1, $this->listID);
 	}
 	// -------------------- SUBSCRIBER SECTION --------------------
 
 	public function subscriberAdd($subscriberEmail, $subscriberName) {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID);
 		//
 		//passing email address, name.
@@ -302,8 +302,8 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberAddWithCustomFields($subscriberEmail, $subscriberName, $params) {
-		if(!$this->campaignID) {user_error("You need to set a campaignID for this function to work.", E_USER_WARNING);}
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->campaignID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCAMPAIGNID', 'You need to set a campaignID for this function to work.'), E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		$tempCM = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
 		//
 		//passing email address, name and custom fields. Custom fields should be added as an array as shown here with the Interests and Dog fields.
@@ -323,7 +323,7 @@ class CampaignMonitorWrapper extends Object {
 	}
 
 	public function subscriberUnsubscribe($subscriberEmail) {
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, $this->campaignID, $this->listID );
 		$result = $TEMPcm->subscriberUnsubscribe($subscriberEmail);
     $this->lastErrorMessage = $result['Result']['Message'];
@@ -408,7 +408,7 @@ class CampaignMonitorWrapper extends Object {
 
 	public function subscriberGetSingleSubscriber($subscriberEmail) {
 		//This method returns the details of a particular subscriber, including email address, name, active/inactive status and all custom field data. If a subscriber with that email address does not exist in that list, an empty record is returned.
-		if(!$this->listID) {user_error("You need to set a listID for this function to work.", E_USER_WARNING);}
+		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
 		$TEMPcm = new CampaignMonitor(self::$api_key, self::$client_ID, null, $this->listID );
 		return $TEMPcm->subscriberGetSingleSubscriber($this->listID, $subscriberEmail);
 	}
