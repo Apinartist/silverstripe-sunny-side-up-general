@@ -101,14 +101,31 @@ MetaTagAutomation_controller::set_combine_js_files_into_one(0);
 //===================---------------- END metatags MODULE ----------------===================
 
 //===================---------------- START sharethis MODULE ----------------===================
-Object::add_extension('SiteTree', 'ShareThis');
-ShareThis::$EnabledIcons = Array("email", "print", "google", "facebook", "favourites");
-ShareThis::$ShowTitle = false;
-ShareThis::$IconTransparent = true;
-ShareThis::set_include_by_default(true);
 ShareThis::set_always_include (true);
 ShareThis::set_share_this_all_in_one(false); // all-in-one button - see http://sharethis.com/developers/api_examples/
-//===================---------------- END sharethis MODULE ----------------===================
+DataObject::add_extension('SiteTree', 'ShareThis');
+ShareThis::set_always_include (true);
+ShareThis::set_include_by_default(true);
+
+//ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
+//ShareThis::set_show_title_with_icon(false);
+//ShareThis::set_alternate_icons(array("live" => "mysite/images/madgif.gif"));
+//ShareThis::set_use_bw_effect(true);
+
+//hide / add completely
+//ShareThis::set_icons_to_include(array("facebook", "google", "linkedin"));   //OR
+//ShareThis::set_icons_to_exclude(array("myspace"));
+
+//DataObject::add_extension('SiteTree', 'SocialNetworkingLinks');
+//SocialNetworkingLinks::set_always_include (false);
+//SocialNetworkingLinks::set_include_by_default(true);
+//SocialNetworkingLinks::set_show_title_with_icon(false);
+
+//optional//requires: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+Object::add_extension('ShareThisDataObject', 'DataObjectSorterDOD');
+DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
+//
+
 
 
 //===================---------------- START simplestspam MODULE ----------------===================
