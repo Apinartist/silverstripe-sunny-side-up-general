@@ -29,7 +29,7 @@ class Affiliation extends DataObject {
 
 	function getCode() {
 		if(!$this->getField("Code")) {
-			return "Affiliation".$this->ID;
+			return _t('Affiliation.GETCMSAFFLIATIONIDPREFIX', 'Affiliation').$this->ID;
 		}
 		return $this->getField("Code");
 	}
