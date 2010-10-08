@@ -28,7 +28,7 @@ Debug::send_errors_to('errors@sunnysideup.co.nz', true);
 FulltextSearchable::enable();
 if(Director::isDev()) {
 	SSViewer::set_source_file_comments(true);
-
+}
 if(Director::isLive()) {
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
