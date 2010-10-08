@@ -58,7 +58,7 @@ class SalesAdmin extends ReportAdmin {
 
 
 	/**
-	 * Return a DataObjectSet of SSReport subclasses
+	 * Return a DataObjectSet of SS_Report subclasses
 	 * that are available for use.
 	 *
 	 * @return DataObjectSet
