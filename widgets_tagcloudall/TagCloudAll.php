@@ -1,6 +1,6 @@
 <?php
 
-class TagCloudWidget extends Widget {
+class TagCloudAll extends Widget {
 	static $db = array(
 		"Title" => "Varchar",
 		"Limit" => "Int",
