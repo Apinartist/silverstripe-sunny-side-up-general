@@ -231,7 +231,7 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 	function showmore() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$id = Director::URLParam("ID");
-		$obj = DataObject::get_by_id("SiteTree", $id);
+		$obj = DataObject::get_by_id("SiteTree", intval($id));
 		if($obj) {
 			$data = DataObject::get($obj->ClassName, $where = "{$bt}ClassName{$bt} = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
 		}
@@ -258,6 +258,15 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 				}
 				fclose($fh);
 				return $string;
+			}
+		}
+	}
+
+	function clearalltemplatedescriptions() {
+		if($m =$this->CurrentMember()) {
+			if($m->IsAdmin()) {
+				DB::query("DELETE FROM TemplateOverviewDescription");
+				die("all descriptions have been deleted");
 			}
 		}
 
