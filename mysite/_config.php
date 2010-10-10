@@ -24,7 +24,6 @@ Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 Requirements::set_combined_files_folder("_cache");
 //Director::forceWWW();
-Debug::send_errors_to('errors@sunnysideup.co.nz', true);
 FulltextSearchable::enable();
 if(Director::isDev()) {
 	SSViewer::set_source_file_comments(true);
