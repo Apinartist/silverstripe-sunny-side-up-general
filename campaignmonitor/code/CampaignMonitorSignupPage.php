@@ -2,7 +2,7 @@
 
 /**
  * Main Holder page for Recipes
- *
+ *@author nicolaas [at] sunnysideup.co.nz
  */
 class CampaignMonitorSignupPage extends Page {
 
