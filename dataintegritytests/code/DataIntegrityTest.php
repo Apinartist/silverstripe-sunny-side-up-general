@@ -69,7 +69,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 								$link = " !!!!!!!!!!! DELETED !!!!!!!!!";
 							}
 							else {
-								$link = "<a href=\"deleteonefield/".$dataClass."/".$actualField."/\" onclick=\"return confirm('".self::$warning."');\">delete field</a><br /><br />";
+								$link = "<a href=\"".Director::absoluteBaseURL()."/deleteonefield/".$dataClass."/".$actualField."/\" onclick=\"return confirm('".self::$warning."');\">delete field</a><br /><br />";
 							}
 							if(!in_array($actualField, array("ID", "Version"))) {
 								if(!in_array($actualField, $requiredFields)) {
