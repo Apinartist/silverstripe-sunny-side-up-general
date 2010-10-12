@@ -26,14 +26,15 @@ class DataIntegrityTest extends DevelopmentAdmin {
 		static function set_fields_to_delete($array) {self::$fields_to_delete = $array;}
 
 	function init() {
+		//this checks security
 		parent::init();
 	}
 
 	function index() {
 		echo "<h2>Database Administration Helpers</h2>";
-		echo "<p><a href=\"".Director::absoluteBaseURL()."dbintegritycheck/obsoletefields\">Prepare a list of obsolete fields.</a></p>";
-		echo "<p><a href=\"".Director::absoluteBaseURL()."dbintegritycheck/deletemarkedfields\" onclick=\"return confirm('".self::$warning."');\">Delete fields listed in _config.</a></p>";
-		echo "<p><a href=\"".Director::absoluteBaseURL()."dbintegritycheck/obsoletefields/immediately/destroyed\" onclick=\"return confirm('".self::$warning."');\">Delete obsolete fields now!</a></p>";
+		echo "<p><a href=\"".Director::absoluteBaseURL("dbintegritycheck/obsoletefields/")."\">Prepare a list of obsolete fields.</a></p>";
+		echo "<p><a href=\"".Director::absoluteBaseURL("dbintegritycheck/deletemarkedfields/")."\" onclick=\"return confirm('".self::$warning."');\">Delete fields listed in _config.</a></p>";
+		echo "<p><a href=\"".Director::absoluteBaseURL("dbintegritycheck/obsoletefields/immediately/destroyed/")."\" onclick=\"return confirm('".self::$warning."');\">Delete obsolete fields now!</a></p>";
 	}
 
 	public function obsoletefields(SS_HTTPRequest $request) {
@@ -48,10 +49,8 @@ class DataIntegrityTest extends DevelopmentAdmin {
 		$notCheckedArray = array();
 		//remove dataobject
 		array_shift($dataClasses);
-		DB::alteration_message ("
-			<h1>Report of fields that may not be required.</h1>
-			<p>  NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only</p>"
-		, "created");
+		echo "<h1>Report of fields that may not be required.</h1>";
+		echo "<p>NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only.</p>";
 		foreach($dataClasses as $dataClass) {
 			// Check if class exists before trying to instantiate - this sidesteps any manifest weirdness
 			if(class_exists($dataClass)) {
@@ -81,7 +80,17 @@ class DataIntegrityTest extends DevelopmentAdmin {
 								}
 							}
 							if($actualField == "Version") {
-								if(!$dataObject->stat('versioning')) {
+								$versioningPresent = false;
+								$array = $dataObject->stat('extensions');
+								if(is_array($array) && count($array)) {
+									if(in_array("Versioned('Stage', 'Live')", $array)) {
+										$versioningPresent = true;
+									}
+								}
+								if($dataObject->stat('versioning')) {
+									$versioningPresent = true;
+								}
+								if(!$versioningPresent) {
 									DB::alteration_message ("$dataClass.$actualField $link", "deleted");
 									if($deleteNow) {
 										$this->deleteField($dataClass, $actualField);
@@ -102,11 +111,15 @@ class DataIntegrityTest extends DevelopmentAdmin {
 			}
 		}
 		if(count($notCheckedArray)) {
+			echo "<h3>Did not check the following classes as no fields appear to be required and hence there is no database table.</h3>";
 			foreach($notCheckedArray as $table) {
-				DB::alteration_message ("did not check $table - it appears no fields are required", "created");
+				if(mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$table."'"))) {
+					DB::alteration_message ($table ." - NOTE: a table exists for this Class, this is an unexpected result", "deleted");
+				}
+				DB::alteration_message ($table, "created");
 			}
 		}
-		DB::alteration_message( "<p><a href=\"".Director::absoluteURL("/dbintegritycheck")."\">back to main menu.</a></p>");
+		echo "<a href=\"".Director::absoluteURL("/dbintegritycheck")."\">back to main menu.</a>";
 	}
 
 	public function deletemarkedfields() {
