@@ -14,6 +14,7 @@ Object::add_extension("SiteConfig", "SiteConfigExtras");
 //===================---------------- END mysite MODULE ----------------===================
 
 //===================---------------- START sapphire MODULE ----------------===================
+i18n::set_locale('en_NZ');
 SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
@@ -34,6 +35,7 @@ if(Director::isLive()) {
 else {
 	BasicAuth::protect_entire_site();
 }
+SiteTree::enable_nested_urls();
 //===================---------------- END sapphire MODULE ----------------===================
 
 
