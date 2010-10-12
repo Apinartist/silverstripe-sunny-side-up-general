@@ -67,7 +67,7 @@ class CampaignMonitorSignupPage extends Page {
 		$page = DataObject::get_one("CampaignMonitorSignupPage");
 
 		if(!$page) {
-			user_error("You first need to setup a Campaign Monitor Page for this function to work.", E_USER_NOTICE);
+			//user_error("You first need to setup a Campaign Monitor Page for this function to work.", E_USER_NOTICE);
 			return false;
 		}
 		$fields = new FieldSet(new TextField("Email", ""));
