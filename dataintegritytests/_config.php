@@ -12,7 +12,7 @@
 //===================---------------- START dataintegritytests MODULE ----------------===================
 /*
 Director::addRules(7, array(
-	'dbintegritycheck//$Action' => 'DataIntegrityTest'
+	'dbintegritycheck//$Action/$ID/$OtherID' => 'DataIntegrityTest'
 ));
 DataIntegrityTest::set_fields_to_delete(
 	array(
