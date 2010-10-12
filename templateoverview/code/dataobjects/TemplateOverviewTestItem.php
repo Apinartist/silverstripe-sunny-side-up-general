@@ -13,7 +13,15 @@ class TemplateOverviewTestItem extends DataObject {
 	static $db = array(
 		"Title" => "Varchar(255)",
 		"HowToTestThis" => "Text",
+		"HowToCheckIfItWorked" => "Text",
 		"Sort" => "Int"
+	);
+
+
+	static $has_one = array(
+		"Screenshot1" => "Image",
+		"Screenshot2" => "Image",
+		"Screenshot3" => "Image"
 	);
 
 	static $has_many = array(
@@ -29,13 +37,15 @@ class TemplateOverviewTestItem extends DataObject {
 
 	public static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
-		"HowToTestThis" => "PartialMatchFilter"
+		"HowToTestThis" => "PartialMatchFilter",
+		"HowToCheckIfItWorked" => "PartialMatchFilter"
 	);
 
 	public static $field_labels = array(
 		"Title" => "Name",
 		"HowToTestThis" => "How to test this?",
-		"Sort" => "Sorting index number",
+		"HowToCheckIfItWorked" => "How to check if it worked?",
+		"Sort" => "Sorting index number"
 	);
 	public static $summary_fields = array(
 		"Title" => "Name"
