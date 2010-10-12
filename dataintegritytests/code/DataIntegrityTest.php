@@ -142,6 +142,12 @@ class DataIntegrityTest extends DevelopmentAdmin {
 	public function deleteonefield(SS_HTTPRequest $request) {
 		$table = $request->param("ID");
 		$field = $request->param("OtherID");
+		if(!$table) {
+			user_error("no table has been specified", E_USER_WARNING);
+		}
+		if(!$field) {
+			user_error("no field has been specified", E_USER_WARNING);
+		}
 		if($this->deleteField($table, $field)) {
 			DB::alteration_message("successfully deleted $field from $table now", "deleted");
 		}
