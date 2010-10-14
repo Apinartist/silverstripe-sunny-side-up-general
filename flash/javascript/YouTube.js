@@ -28,7 +28,9 @@ var YouTube = {
 	},
 
 	resize: function(width, height) {
-		YouTube.player.setSize(width: parseInt(width), height: parseInt(height))
+		width = parseInt(width);
+		height: parseInt(height);
+		YouTube.player.setSize(width: width, height: height);
 	},
 
 
