@@ -11,19 +11,19 @@ var YouTube = {
 		setElementID: function(v){YouTube.elementID = v;},
 
 	player: null,
-		setPlayer: function(player) {YouTube.player = player;},
+		setPlayer: function(player) {YouTube.player = player; alert(YouTube.player)},
 		getPlayer: function() {
-			if(YouTube.player} {
+			if(YouTube.player) {
 				return YouTube.player;
 			}
 			else {
 				return document.getElementById(YouTube.elementID);
 			}
-		}
+		},
 
 	loadVideo: function(videoID, width, height) {
 		var params = { allowScriptAccess: "always" };
-		var atts = { id: videoID};
+		var atts = { id: YouTube.elementID};
 		swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?enablejsapi=1&playerapiid="+YouTube.elementID+ "",YouTube.elementID, width, height, "8", null, null, params, atts);
 	},
 
@@ -32,7 +32,8 @@ var YouTube = {
 	},
 
 	loadNew: function(videoID) {
-		YouTube.getPlayer().cueVideoById(videoID);
+		var player = YouTube.getPlayer();
+		player.cueVideoById(videoID);
 		return false;
 	},
 
@@ -69,15 +70,23 @@ var YouTube = {
 
 	onPlayerError: function(errorCode) {
 		 alert("An error occured of type:" + errorCode);
+	},
+
+	onYouTubePlayerReady: function(x) {
+		alert("y");
 	}
 
 }
 
+
 // This function is automatically called by the player once it loads
 function onYouTubePlayerReady(playerId) {
+	alert("go");
 	var ytplayer = document.getElementById(playerId);
-	YouTube.setPlayer(ytplayer);
+	//YouTube.setPlayer(ytplayer);
 	ytplayer.addEventListener("onError", YouTube.onPlayerError);
+	ytplayer.loadVideoById('Q9VZEhyaz');
+	alert("done");
 }
 
 

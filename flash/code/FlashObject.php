@@ -116,8 +116,8 @@ class FlashObject extends ViewableData  {
 		Requirements::customScript($js);
 		return $this->CreateFlashObject(
 			$title,
-			self::$flash_file_div_id, '
-			http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
+			self::$flash_file_div_id,
+			'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
 			'',
 			$width,
 			$height
