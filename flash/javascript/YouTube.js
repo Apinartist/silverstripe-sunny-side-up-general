@@ -30,7 +30,7 @@ var YouTube = {
 	resize: function(width, height) {
 		width = parseInt(width);
 		height: parseInt(height);
-		YouTube.player.setSize(width: width, height: height);
+		YouTube.player.setSize(width, height);
 	},
 
 
