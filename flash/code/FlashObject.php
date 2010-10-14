@@ -26,31 +26,16 @@ class FlashObject extends ViewableData  {
 
 	protected static $external_flash_file = '';
 
-	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray = array(), $YouTubeStyle = false) {
-		if(!$Title ) {$Title  = self::$title ;}
-		$Title = Convert::raw2js($Title);
-
-		if(!$FlashFileDivID ) {$FlashFileDivID  = self::$flash_file_div_id ;}
-		$FlashFileID = Convert::raw2js($FlashFileDivID);
-
+	public function CreateFlashObject($Title = '', $FlashFileDivID = '', $FlashFilename = '', $AlternativeContent = '', $Width = 0, $Height = 0, $FlashVersion = '', $ParamArray = array(), $javascriptAlreadyAdded) {
+		if(!$Title ) {$Title  = self::$title ;} $Title = Convert::raw2js($Title);
+		if(!$FlashFileDivID ) {$FlashFileDivID  = self::$flash_file_div_id ;}$FlashFileID = Convert::raw2js($FlashFileDivID);
 		if(!$AlternativeContent) {$AlternativeContent = self::$alternative_content;}
-
-		if(!$Width) {$Width = self::$width;}
-		$Width = intval($Width);
-
-		if(!$Height) {$Height = self::$height;}
-		$Height = intval($Height);
-
+		if(!$Width) {$Width = self::$width;} $Width = intval($Width);
+		if(!$Height) {$Height = self::$height;} $Height = intval($Height);
 		if(!$FlashVersion) {$FlashVersion = self::$flash_version;}
-
 		if(!$ParamArray) {$ParamArray = self::$param_array;}
-
+		if(!$FlashFilename) {$FlashFilename = self::$filename;} $FlashFilename = Convert::raw2js($FlashFilename);
 		$doSet = new DataObjectSet();
-
-
-		if(!$FlashFilename) {$FlashFilename = self::$filename;}
-		$FlashFilename = Convert::raw2js($FlashFilename);
-
 		if($FlashFilename) {
 			$params = '';
 			$paramsJS = '';
@@ -68,34 +53,33 @@ class FlashObject extends ViewableData  {
 				'FlashVersion' => $FlashVersion,
 				'AlternativeContent' => $AlternativeContent,
 				'Parameters' => $params,
-				'UseDynamicInsert' => self::$use_dynamic_insert,
-				'YouTubeStyle' => $YouTubeStyle
+				'UseDynamicInsert' => self::$use_dynamic_insert
 			);
 			$doSet->push(new ArrayData($record));
-			if(self::$use_dynamic_insert) {
-				$js = '
-					jQuery(document).ready(
-						function () {
-							jQuery(".FlashAlternativeContent").hide();
-							var flashvars = {};
-							var params = {};
-							'.$paramsJS.'
-							var attributes = {};
-							attributes.id = "'.$FlashFileDivID.'";
-							swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileDivID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
-							jQuery(".FlashAlternativeContent").fadeIn(3000);
-						}
-					);';
-			}
-			else {
-				$js = '
-					jQuery(document).ready(
-						function () {
-							swfobject.registerObject("'.$FlashFileDivID.'", "'.$FlashVersion.'", "flash/swfobject/expressInstall.swf");
-						}
-					);';
-			}
-			if(!$YouTubeStyle) {
+			if(!$javascriptAlreadyAdded) {
+				if(self::$use_dynamic_insert) {
+					$js = '
+						jQuery(document).ready(
+							function () {
+								jQuery(".FlashAlternativeContent").hide();
+								var flashvars = {};
+								var params = {};
+								'.$paramsJS.'
+								var attributes = {};
+								attributes.id = "'.$FlashFileDivID.'";
+								swfobject.embedSWF("'.$FlashFilename.'", "'.$FlashFileDivID.'", "'.$Width.'", "'.$Height.'", "'.$FlashVersion.'","flash/swfobject/expressInstall.swf", flashvars, params, attributes);
+								jQuery(".FlashAlternativeContent").fadeIn(3000);
+							}
+						);';
+				}
+				else {
+					$js = '
+						jQuery(document).ready(
+							function () {
+								swfobject.registerObject("'.$FlashFileDivID.'", "'.$FlashVersion.'", "flash/swfobject/expressInstall.swf");
+							}
+						);';
+				}
 				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 				Requirements::javascript("flash/javascript/swfobject.js");
 				Requirements::customScript($js);
@@ -105,18 +89,32 @@ class FlashObject extends ViewableData  {
   }
 
 
-	public function CreateYouTubeVideo($title, $code) {
-		return $this->CreateFlashObject(
-			$Title = $title,
-			$FlashFileDivID = 'YouTubber',
-			$FlashFilename = 'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
-			$AlternativeContent = '',
-			$Width = 640,
-			$Height = 385,
-			$FlashVersion = '',
-			$ParamArray = array(),
-			$YouTubeStyle = true
-		);
+	public function CreateYouTubeVideo($title, $code, $width = 640, $height = 385, $fullScreen = false) {
+		//important!
+		self::$use_dynamic_insert = true;
+		$code = trim($code);
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("flash/javascript/swfobject.js");
+		Requirements::javascript("flash/javascript/YouTube.js");
+		if($fullScreen) {
+			self::$width = 0;
+			self::$height = 0;
+			$call = 'YouTube.loadFullScreenVideo(\''.$code.'\');';
+		}
+		else {
+			$call = 'YouTube.loadVideo(\''.$code.'\', '.$width.', '.$height.');';
+		}
+		$js = '
+;(function($) {
+	$(document).ready(
+		function() {
+			YouTube.setElementID(\''.self::$flash_file_div_id.'\');
+			'.$call.'
+		}
+	);
+})(jQuery);';
+		Requirements::customScript($js);
+		return $this->CreateFlashObject($Title = $title, self::$flash_file_div_id, 'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US');
 	}
 
 	static function has_external_flash_file() {self::$external_flash_file ? true : false;}

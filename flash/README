@@ -71,6 +71,10 @@ function FlashObjectData() {
 DONE
 NB: there is no need to add the FlashObjectDecorator in your config file.
 
+** ALSO SEE:
+http://code.google.com/apis/youtube/player_parameters.html
+http://code.google.com/apis/youtube/js_api_reference.html
+
 
 Installation Instructions
 -----------------------------------------------
