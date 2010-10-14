@@ -61,7 +61,7 @@ Quick implementation of a youtube video
 1. add the following to your controller class:
 
 function FlashObjectData() {
-  return FlashObject::CreateYouTubeVideo("title here", "code here");
+  return FlashObject::CreateYouTubeVideo("title here", "v_A2flQJa20");
 }
 
 2. in your template, add
