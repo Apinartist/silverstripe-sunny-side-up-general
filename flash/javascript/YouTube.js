@@ -13,13 +13,13 @@ var YouTube = {
 	player: null,
 		setPlayer: function(player) {YouTube.player = player;},
 		getPlayer: function() {
-			if(YouTube.player) {
+			if(YouTube.player} {
 				return YouTube.player;
 			}
-			else{
+			else {
 				return document.getElementById(YouTube.elementID);
 			}
-		},
+		}
 
 	loadVideo: function(videoID, width, height) {
 		var params = { allowScriptAccess: "always" };
@@ -68,7 +68,7 @@ var YouTube = {
 	},
 
 	onPlayerError: function(errorCode) {
-		alert("An error occured of type:" + errorCode);
+		 alert("An error occured of type:" + errorCode);
 	}
 
 }
