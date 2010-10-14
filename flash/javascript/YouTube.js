@@ -24,7 +24,7 @@ var YouTube = {
 	loadVideo: function(videoID, width, height) {
 		var params = { allowScriptAccess: "always" };
 		var atts = { id: YouTube.elementID};
-		swfobject.embedSWF("http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid="+YouTube.elementID+ "",YouTube.elementID, width, height, "8", null, null, params, atts);
+		swfobject.embedSWF("http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid="+YouTube.elementID,YouTube.elementID, width, height, "8", null, null, params, atts);
 	},
 
 	play: function() {
