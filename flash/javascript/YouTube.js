@@ -12,6 +12,14 @@ var YouTube = {
 
 	player: null,
 		setPlayer: function(player) {YouTube.player = player;},
+		getPlayer: function() {
+			if(YouTube.player) {
+				return YouTube.player;
+			}
+			else{
+				return document.getElementById(YouTube.elementID);
+			}
+		},
 
 	loadVideo: function(videoID, width, height) {
 		var params = { allowScriptAccess: "always" };
@@ -20,18 +28,18 @@ var YouTube = {
 	},
 
 	play: function() {
-		YouTube.player.playVideo();
+		YouTube.getPlayer().playVideo();
 	},
 
 	loadNew: function(videoID) {
-		YouTube.player.cueVideoById(videoID);
+		YouTube.getPlayer().cueVideoById(videoID);
 		return false;
 	},
 
 	resize: function(width, height) {
 		width = parseInt(width);
 		height: parseInt(height);
-		YouTube.player.setSize(width, height);
+		YouTube.getPlayer().setSize(width, height);
 	},
 
 
@@ -60,7 +68,7 @@ var YouTube = {
 	},
 
 	onPlayerError: function(errorCode) {
-		 alert("An error occured of type:" + errorCode);
+		alert("An error occured of type:" + errorCode);
 	}
 
 }
