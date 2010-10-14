@@ -120,7 +120,10 @@ class FlashObject extends ViewableData  {
 			'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
 			'',
 			$width,
-			$height
+			$height,
+			0,
+			array(),
+			true //important!
 		);
 	}
 
