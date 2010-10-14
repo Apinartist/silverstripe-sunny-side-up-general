@@ -25,6 +25,7 @@ var YouTube = {
 
 	loadNew: function(videoID) {
 		YouTube.player.cueVideoById(videoID);
+		return false;
 	},
 
 	resize: function(width, height) {
