@@ -5,7 +5,7 @@ http://code.google.com/apis/youtube/player_parameters.html
 http://code.google.com/apis/youtube/js_api_reference.html
 */
 
-var YouTube {
+var YouTube = {
 
 	elementID: "YouTubber",
 		setElementID: function(v){YouTube.elementID = v;},
