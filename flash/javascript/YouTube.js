@@ -71,7 +71,7 @@ var YouTube = {
 
 	onPlayerError: function(errorCode) {
 		alert("An error occured of type:" + errorCode);
-	},
+	}
 
 
 }
@@ -99,10 +99,11 @@ function onYouTubePlayerReady(playerId) {
  */
 
 (function($) {
-  $.fn.ytchromeless = function(options){
+  $.fn.ytplayerlink = function(ytVideoId, options){
 
     //Initial configuration
     var config = {
+      ytVideoId  : ytVideoId,
       videoWidth  : '640',
       videoHeight : '360',
       videoIdBase : 'ytplayer',
@@ -120,15 +121,13 @@ function onYouTubePlayerReady(playerId) {
         var options    = $.extend(config, options),
 
             // set jQuery objects
-            $link      = $(this),
+            $itemToReplace      = $(this),
 
             // set variables
-            url        = $link.attr('href'),
-            videoId    = $link.attr('id') || options.videoIdBase + i,
-            ytVideoId  = url.substr(31),
+            videoId    = $itemToReplace.attr('id') || options.videoIdBase + i,
 
             // new DOM elements
-            $video     = $link.wrap( '<div class="video-player"></div>' ).parent(),
+            $video     = $itemToReplace.wrap( '<div class="video-player"></div>' ).parent(),
             $controls  = $('<div class="video-controls"></div>' ).appendTo( $video ),
             $toReplace = $('<div class="video"></div>').prependTo( $video ).attr('id', videoId),
             $bar,
@@ -309,12 +308,6 @@ function onYouTubePlayerReady(playerId) {
             		    }
             		  }).appendTo( $controls );
 
-          //View on YouTube
-    		  $link
-    		    .addClass('view-youtube')
-    		    .attr('title', 'View on YouTube')
-    		    .html('Play/View on YouTube')
-    		    .appendTo( $controls );
 
   		    //Play and pause button
           $seek = $('<div/>', {
@@ -331,6 +324,48 @@ function onYouTubePlayerReady(playerId) {
           $indicator = $('<span class="indicator"></span>').appendTo($bar);
 
         };
+
+
+        $video.loadNew: function(ytVideoId) {
+          player.cueVideoById(ytVideoId);
+          player.playVideo();
+          return false;
+        },
+
+        $video.resize: function(width, height) {
+          width = parseInt(width);
+          height: parseInt(height);
+          player.setSize(width, height);
+        },
+
+        $video.loadFullScreenVideo: function(ytVideoId) {
+          var x = 0;
+          if (self.innerHeight) {
+            x = self.innerWidth;
+          }
+          else if (document.documentElement && document.documentElement.clientHeight){
+            x = document.documentElement.clientWidth;
+          }
+          else if (document.body) {
+            x = document.body.clientWidth;
+          }
+          var y = 0;
+          if (self.innerHeight){
+            y = self.innerHeight;
+          }
+          else if (document.documentElement && document.documentElement.clientHeight){
+            y = document.documentElement.clientHeight;
+          }
+          else if (document.body){
+            y = document.body.clientHeight;
+          }
+          $video.resize(x,y)
+          return $video.loadNew(ytVideoId);
+        },
+
+        onPlayerError: function(errorCode) {
+          alert("An error occured of type:" + errorCode);
+        }
 
         $video.init();
 
