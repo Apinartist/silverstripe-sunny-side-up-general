@@ -363,7 +363,7 @@ function onYouTubePlayerReady(playerId) {
           return $video.loadNew(ytVideoId);
         },
 
-        onPlayerError: function(errorCode) {
+        onPlayerError = function(errorCode) {
           alert("An error occured of type:" + errorCode);
         }
 
