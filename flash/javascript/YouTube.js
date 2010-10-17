@@ -326,19 +326,19 @@ function onYouTubePlayerReady(playerId) {
         };
 
 
-        $video.loadNew: function(ytVideoId) {
+        $video.loadNew = function(ytVideoId) {
           player.cueVideoById(ytVideoId);
           player.playVideo();
           return false;
         },
 
-        $video.resize: function(width, height) {
+        $video.resize = function(width, height) {
           width = parseInt(width);
           height: parseInt(height);
           player.setSize(width, height);
         },
 
-        $video.loadFullScreenVideo: function(ytVideoId) {
+        $video.loadFullScreenVideo = function(ytVideoId) {
           var x = 0;
           if (self.innerHeight) {
             x = self.innerWidth;
