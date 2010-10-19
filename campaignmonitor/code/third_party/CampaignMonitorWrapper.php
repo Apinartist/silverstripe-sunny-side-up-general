@@ -95,8 +95,8 @@ class CampaignMonitorWrapper extends Object {
 
 	function __construct() {
 		require_once(dirname(__FILE__) . '/CMBase.php');
-		if (!self::$api_key) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOAPIKEYINCONFIG', "You need to set an $api_key in your config."), E_USER_WARNING);}
-		if (!self::$client_ID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCLIENTIDINCONFIG', "You need to set an $client_ID in your config."), E_USER_WARNING);}
+		//if (!self::$api_key) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOAPIKEYINCONFIG', "You need to set an $api_key in your config."), E_USER_WARNING);}
+		//if (!self::$client_ID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSAGENOCLIENTIDINCONFIG', "You need to set an $client_ID in your config."), E_USER_WARNING);}
 		self::$cm = new CampaignMonitor(self::$api_key, self::$client_ID);
 	}
 
