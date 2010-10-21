@@ -9,8 +9,8 @@
 class SlideShowObject extends DataObject {
 
 	public static $db = array(
-		"Link" => "Varchar(125)",
 		"Title" => "Varchar(125)",
+		"Link" => "Varchar(125)",
 		"Description" => "Text"
 	);
 
@@ -21,19 +21,19 @@ class SlideShowObject extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-	 	$fields->removeFieldFromTab("Root.Main", "Parent");
 	 	$fields->removeFieldFromTab("Root.Main", "ParentID");
-	 	$fields->removeFieldFromTab("Root.Main", "Image");
+		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
 		return $fields;
 	}
 
-	public function summaryFields() {
+	function fieldLabels() {
 		return array(
-			'Title' => 'image title',
-			'Link' => 'Hyperlink (if any) - e.g. http://www.myproduct.com/ or /contact-us',
-			'ParentID' => 'Shown on page...',
-			'Parent' => 'Shown on page:'
+			'Title' => 'Title',
+			'Link' => 'Hyperlink (if any) - e.g. http://www.myproduct.com/ or /contact-us'
 		);
+	}
+	public function summaryFields() {
+		return $this->fieldLabels();
 	}
 
 
