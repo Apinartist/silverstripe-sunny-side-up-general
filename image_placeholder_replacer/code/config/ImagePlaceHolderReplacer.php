@@ -48,7 +48,7 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 				$fields->addFieldToTab('Root.Main', new LiteralField('folderError'.self::get_folder_name(), '<p>Can not create folder for place holder images(/assets/'.self::get_folder_name().'), please contact your administrator.</p>'));
 			}
 			foreach($fullArray as $key => $array) {
-				$fields->addFieldToTab('Root.Main', new ImageField($key, "Place holder for $key ... ".$array["Notes"], $value = null, $form = null, $rightTitle = null, $folder->Name));
+				$fields->addFieldToTab('Root.Main', new ImageField($key."ID", "Place holder for $key ... ".$array["Notes"], $value = null, $form = null, $rightTitle = null, $folder->Name));
 			}
 		}
 		return $fields;
