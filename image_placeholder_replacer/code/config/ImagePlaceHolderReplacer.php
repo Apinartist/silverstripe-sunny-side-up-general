@@ -10,20 +10,20 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 
 	//Notes e.g. "this image is shown on the homepage under products" - optional
 	//CopyFromPath  -e .g. themes/mytheme/images/myImage.gif - optional
-	proctected static $images_to_replace = array();
+	protected static $images_to_replace = array();
 		public static function get_images_to_replace() {return self::$images_to_replace;}
 		public static function remove_image_to_replace($className, $fieldName) {unset(self::$images_to_replace[$className.'_'.$fieldName]);}
-		public static function add_image_to_replace($className, $fieldName, $notes, $copyFrom) {
+		public static function add_image_to_replace($className, $fieldName, $notes, $copyFromPath) {
 			$key = $className.'_'.$fieldName;
-			self::$image_to_replace[$key] = array(
+			self::$images_to_replace[$key] = array(
 				"ClassName" => $className,
 				"FieldName" => $fieldName,
 				"Notes" => $notes,
-				"CopyFromPath" => $notes,
+				"CopyFromPath" => $copyFromPath,
 				"DBFieldName" => $key
 			);
 		}
-	proctected static $folder_name = "ImagePlaceHolderSampleImages";
+	protected static $folder_name = "SampleImages";
 		public static function get_folder_name() {return self::$folder_name;}
 		public static function set_folder_name($v) {self::$folder_name = $v;}
 
@@ -32,7 +32,7 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 		$hasOneArray = array();
 		$fullArray = self::get_images_to_replace();
 		if($fullArray) {
-			foreach( as $key => $array) {
+			foreach($fullArray as $key => $array) {
 				$hasOneArray[$key] = "Image";
 			}
 			return array('has_one' => $hasOneArray);
@@ -55,128 +55,93 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 	}
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		$bt = defined('DB::USE_ANSI_SQL') ? "'" : '`';
+		$bt = defined('DB::USE_ANSI_SQL') ? '"' : '`';
 
 		$update = array();
 		$siteConfig = DataObject::get_one('SiteConfig');
 		$folder = Folder::findOrMake(self::get_folder_name());
-		if($siteConfig) {
+		if($siteConfig && $folder) {
 			$fullArray = self::get_images_to_replace();
 			//copying ....
 			if($fullArray) {
 				foreach($fullArray as $key => $array) {
-					$dbFieldName = $array["DBFieldName"];
-					$fileName = basename($array["CopyFromPath"]);
-					$fromLocation = Director::baseFolder().'/'.$array["CopyFromPath"];
-					$toLocationShort = "assets/".self::get_folder_name()."/{$fileName}";
-					$toLocationLong = Director::baseFolder().'/'.$toLocationShort;
-					$image = DataObject::get_one('Image', "Filename={$bt}$toLocation{$bt}");
-					if(!$image){
-						copy($fromLocation, $toLocationLong);
-						$image = new Image();
-						$image->setName($fileName);
-						$image->write();
-					}
-					if(!$siteConfig->$dbFieldName) {
-						$siteConfig->$dbFieldName = $image->ID;
-						$update[]= "created placeholder image for $key";
-					}
-					if($image && $image->ID) {
-						DB::query("
-							UPDATE {$bt}".$array["ClassName"]."{$bt}
-							SET {$bt}".$array["FieldName"]."{$bt} = ".$image->ID."
-							WHERE {$bt}".$array["FieldName"]."{$bt} IS NULL
-							OR {$bt}".$array["FieldName"]."{$bt} = 0
-						");
-						if($versioned) {
-							DB::query("
-								UPDATE {$bt}".$array["ClassName"]."_Live{$bt}
-								SET {$bt}".$array["FieldName"]."{$bt} = ".$image->ID."
-								WHERE {$bt}".$array["FieldName"]."{$bt} IS NULL
-								OR {$bt}".$array["FieldName"]."{$bt} = 0
-							");
-						}
-					}
-
-
-					if(!$siteConfig->Title) {
-						$siteConfig->Title = 'Voiceplus';
-						$update[]= "created default entry for Title";
-					}
-					if(!$siteConfig->CallUs) {
-						$siteConfig->CallUs = 'Call us on 1300 887 767';
-						$update[]= "created default entry for CallUs";
-					}
-					if(!$siteConfig->CustomerLoginURL) {
-						$siteConfig->CustomerLoginURL = $this->CustomerLoginURLDefault();
-						$update[]= "created default entry for CustomerLoginURL";
-					}
-					if(!$siteConfig->SiteLogoID) {
-						$logo = 'Logo.png';
-						$image = DataObject::get_one('Image', "Filename={$bt}assets/{$logo}{$bt}");
-						if($image){
-							$siteConfig->SiteLogoID = $image->ID;
-						}
-						else{
-							copy(Director::baseFolder().'/themes/main/images/'.$logo, Director::baseFolder().'/assets/'.$logo);
+					$className = $array["ClassName"];
+					$fieldName = $array["FieldName"]."ID";
+					if(class_exists($className)) {
+						$dataObject = singleton($className);
+						$dbFieldName = $array["DBFieldName"];
+						$fileName = basename($array["CopyFromPath"]);
+						$fromLocationLong = Director::baseFolder().'/'.$array["CopyFromPath"];
+						$toLocationShort = "assets/".self::get_folder_name()."/{$fileName}";
+						$toLocationLong = Director::baseFolder().'/'.$toLocationShort;
+						$image = DataObject::get_one('Image', "Filename='$toLocationShort' AND ParentID = ".$folder->ID);
+						if(!$image){
+							if(!file_exists($toLocationLong)) {
+								copy($fromLocationLong, $toLocationLong);
+							}
 							$image = new Image();
-							$image->setName($logo);
+							$image->ParentID = $folder->ID;
+							$image->FileName = $toLocationShort;
+							$image->setName($fileName);
 							$image->write();
-							$siteConfig->SiteLogoID = $image->ID;
 						}
-						$update[]= "created default entry for SiteLogo ".$image->ID;
+						elseif(!$image && file_exists($toLocationLong)) {
+							debug::show("need to update files");
+						}
+						if($image && $image->ID) {
+							if(!$siteConfig->$dbFieldName) {
+								$siteConfig->$dbFieldName = $image->ID;
+								$update[]= "created placeholder image for $key";
+							}
+							$updateSQL = " UPDATE {$bt}".$className."{$bt}";
+							if(isset($_GET["removeplaceholderimages"])) {
+								$setSQL = " SET {$bt}".$fieldName."{$bt} = 0";
+								$whereSQL = " WHERE {$bt}".$fieldName."{$bt}  = ".$image->ID;
+								DB::alteration_message("removing ".$className.".".$fieldName." placeholder images", 'deleted');
+							}
+							else{
+								DB::alteration_message("adding ".$className.".".$fieldName." placeholder images", 'created');
+								$setSQL = " SET {$bt}".$fieldName."{$bt} = ".$image->ID;
+								if(!isset($_GET["forceplaceholder"])) {
+									$whereSQL = " WHERE {$bt}".$fieldName."{$bt} IS NULL OR {$bt}".$fieldName."{$bt} = 0";
+								}
+								else {
+									$whereSQL = '';
+								}
+							}
+							$sql = $updateSQL.$setSQL.$whereSQL;
+							DB::query($sql);
+							$versioningPresent = false;
+							$array = $dataObject->stat('extensions');
+							if(is_array($array) && count($array)) {
+								if(in_array("Versioned('Stage', 'Live')", $array)) {
+									$versioningPresent = true;
+								}
+							}
+							if($dataObject->stat('versioning')) {
+								$versioningPresent = true;
+							}
+							if($versioningPresent) {
+								$sql = str_replace("{$bt}$className{$bt}", "{$bt}{$className}_Live{$bt}", $sql);
+								DB::query($sql);
+							}
+						}
+						else {
+							debug::show("could not create image!".print_r($array));
+						}
 					}
-					if(!$siteConfig->FooterMenuLabel1) {
-						$siteConfig->FooterMenuLabel1 = 'Learn About Us';
-						$update[]= 'created default entry for FooterMenuLabel1';
+					else {
+						debug::show("bad classname reference ".$className);
 					}
-					if(!$siteConfig->FooterMenuLabel2) {
-						$siteConfig->FooterMenuLabel2 = 'Get Help';
-						$update[]= 'created default entry for FooterMenuLabel2';
-					}
-					if(!$siteConfig->FooterMenuLabel3) {
-						$siteConfig->FooterMenuLabel3 = 'Do More';
-						$update[]= 'created default entry for FooterMenuLabel3';
-					}
-					if(!$siteConfig->FooterMenuLabel4) {
-						$siteConfig->FooterMenuLabel4 = 'Handsets';
-						$update[]= 'created default entry for FooterMenuLabel4';
-					}
-					if(!$siteConfig->FooterMenuLabel5) {
-						$siteConfig->FooterMenuLabel5 = 'Routers & Modems';
-						$update[]= 'created default entry for FooterMenuLabel5';
-					}
-					if(!$siteConfig->FooterSocialLinksLabel) {
-						$siteConfig->FooterSocialLinksLabel = 'Socialise';
-						$update[]= 'created default entry for FooterSocialLinksLabel';
-					}
-					if(!$siteConfig->FooterRequestQuoteLabel) {
-						$siteConfig->FooterRequestQuoteLabel = 'Need help? Request a free quote.';
-						$update[]= 'created default entry for FooterRequestQuoteLabel';
-					}
-					if(!$siteConfig->FooterContactUsLabel) {
-						$siteConfig->FooterContactUsLabel = 'Contact Us<br />1300 877 767';
-						$update[]= 'created default entry for FooterContactUsLabel';
-					}
-					if(!$siteConfig->FooterNewslettersLabel) {
-						$siteConfig->FooterNewslettersLabel = 'Receive newsletters.';
-						$update[]= 'created default entry for FooterNewslettersLabel';
-					}
-					if(!$siteConfig->owner->Tagline && isset($siteConfig->SiteLogoText)) {
-						$siteConfig->owner->Tagline = $siteConfig->SiteLogoText;
-						$update[]= 'created default entry for Tagline';
-					}
-					if(!$siteConfig->owner->Tagline) {
-						$siteConfig->owner->Tagline = 'VoicePlus ensures you receive the best possible telecom service for your business. ';
-						$update[]= "created default entry for Tagline";
-					}
-
-				}
-				if(count($update)) {
-					$siteConfig->write();
-					DB::alteration_message($siteConfig->ClassName." created/updated: ".implode(" --- ",$update), 'created');
 				}
 			}
+			if(count($update)) {
+				$siteConfig->write();
+				DB::alteration_message($siteConfig->ClassName." created/updated: ".implode(" --- ",$update), 'created');
+			}
+		}
+		elseif(!$folder) {
+			debug::show("COULD NOT CREATE FOLDER: ".self::get_folder_name());
 		}
 	}
 }
