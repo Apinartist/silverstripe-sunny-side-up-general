@@ -70,7 +70,7 @@ class CampaignMonitorSignupPage extends Page {
 			//user_error("You first need to setup a Campaign Monitor Page for this function to work.", E_USER_NOTICE);
 			return false;
 		}
-		$fields = new FieldSet(new TextField("Email", ""));
+		$fields = new FieldSet(new TextField("Email", "Email"));
 		$actions = new FieldSet(new FormAction("campaignmonitorstarterformstartaction", $page->SignUpButtonLabel));
 		$form = new Form(
 			$controller,
