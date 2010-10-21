@@ -28,19 +28,27 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 		public static function set_folder_name($v) {self::$folder_name = $v;}
 
 
-	function extraStatics(){
+	public function extraStatics(){
+		/*
+		DOES NOT WORK BECAUSE extraStatics runs before the settings are set...
 		$hasOneArray = array();
 		$fullArray = self::get_images_to_replace();
 		if($fullArray) {
 			foreach($fullArray as $key => $array) {
 				$hasOneArray[$key] = "Image";
 			}
-			return array('has_one' => $hasOneArray);
+
+			return array(
+				'has_one' => $hasOneArray,
+				"db" => array("TESTME")
+			);
 		}
 		return array();
+		*/
 	}
 
 	function updateCMSFields(FieldSet &$fields) {
+		/*
 		$fullArray = self::get_images_to_replace();
 		if($fullArray) {
 			$folder = Folder::findOrMake(self::get_folder_name());
@@ -51,6 +59,7 @@ class ImagePlaceHolderReplacer extends DataObjectDecorator {
 				$fields->addFieldToTab('Root.Main', new ImageField($key."ID", "Place holder for $key ... ".$array["Notes"], $value = null, $form = null, $rightTitle = null, $folder->Name));
 			}
 		}
+		*/
 		return $fields;
 	}
 	function requireDefaultRecords() {
