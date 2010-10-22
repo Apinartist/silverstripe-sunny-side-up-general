@@ -235,6 +235,9 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		if($obj) {
 			$data = DataObject::get($obj->ClassName, $where = "{$bt}ClassName{$bt} = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
 		}
+		else {
+			$data = null;
+		}
 		$array = array(
 			"Results" => $data,
 			"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
