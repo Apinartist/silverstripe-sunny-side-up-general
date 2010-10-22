@@ -232,16 +232,15 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$id = Director::URLParam("ID");
 		$obj = DataObject::get_by_id("SiteTree", intval($id));
+		die($id);
 		if($obj) {
 			$data = DataObject::get($obj->ClassName, $where = "{$bt}ClassName{$bt} = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
 		}
-		else {
-			$data = null;
+			$array = array(
+				"Results" => $data,
+				"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
+			);
 		}
-		$array = array(
-			"Results" => $data,
-			"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
-		);
 		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
 	}
 
