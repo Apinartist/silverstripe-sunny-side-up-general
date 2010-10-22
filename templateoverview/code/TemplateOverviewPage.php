@@ -228,18 +228,19 @@ class TemplateOverviewPage_Controller extends Page_Controller {
 		}
 	}
 
-	function showmore() {
+	function showmore($request) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$id = Director::URLParam("ID");
+		$id = $request->param("ID");
 		$obj = DataObject::get_by_id("SiteTree", intval($id));
-		die($id);
 		if($obj) {
 			$data = DataObject::get($obj->ClassName, $where = "{$bt}ClassName{$bt} = '".$obj->ClassName."'", $orderBy = "", $join = "", $limit = 500);
-		}
 			$array = array(
 				"Results" => $data,
 				"MoreDetail" => DataObject::get("TemplateOverviewDescription", "ClassNameLink = '".$obj->ClassName."'")
 			);
+		}
+		else {
+			$array = array();
 		}
 		return $this->customise($array)->renderWith("TemplateOverviewPageShowMoreList");
 	}
