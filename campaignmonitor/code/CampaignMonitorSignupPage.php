@@ -27,10 +27,6 @@ class CampaignMonitorSignupPage extends Page {
 		"CampaignMonitorCampaigns" => "CampaignMonitorCampaign"
 	);
 
-	public function CanCreate() {
-		return !DataObject::get_one("CampaignMonitorSignupPage");
-	}
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.RelatedList', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
