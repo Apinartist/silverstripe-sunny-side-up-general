@@ -27,7 +27,7 @@ class FeaturedvideoWidget extends Widget {
 	function GetFeaturedVideo() {
 	 try {
 
-		Requirements::javascript("widgets_featuredvideo/js/swfobject.js");
+		Requirements::javascript("widgets_newfeaturedvideo/js/swfobject.js");
 		Requirements::themedCSS("featuredvideo.css");
 
 		$parsedUrl = parse_url($this->Url);
