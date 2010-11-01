@@ -28,7 +28,7 @@ class SlideShowObject extends DataObject {
 	 	$fields->removeFieldFromTab("Root.Main", "ParentID");
 	 	$fields->removeFieldFromTab("Root.Main", "LinkID");
 		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
-		$fields->addFieldToTab("Root.Main",new TreeDropdownField("LinkID", "Link - if any", "SiteTree"));
+		$fields->addFieldToTab("Root.Main",new TreeDropdownField("LinkID", "Link - if any - if you would like to create an external link then you can link to a redirect page and make that page redirect to an external link.", "SiteTree"));
 		return $fields;
 	}
 
