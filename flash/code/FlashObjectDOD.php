@@ -17,11 +17,31 @@ class FlashObjectDOD extends SiteTreeDecorator {
 		);
 	}
 
+	protected static $classes_with_flash = array();
+		static function set_classes_with_flash($v) {self::$classes_with_flash = $v;}
+		static function get_classes_with_flash() {return self::$classes_with_flash;}
+
+	protected static $classes_without_flash = array();
+		static function set_classes_without_flash($v) {self::$classes_without_flash = $v;}
+		static function get_classes_without_flash() {return self::$classes_without_flash;}
 
 	function updateCMSFields(FieldSet &$fields) {
 		if( ! FlashObject::has_external_flash_file()) {
-			$fields->addFieldToTab("Root.Content.FlashObject", new FileIFrameField('FlashFile', 'File'));
-			$fields->addFieldToTab("Root.Content.FlashObject", new TextField('Title', 'Title'));
+			$show = true;
+			if(is_array(self::get_classes_with_flash()) && count(self::get_classes_with_flash())) {
+				if(!in_array($this->owner->ClassName, self::get_classes_with_flash())) {
+					$show = false;
+				}
+			}
+			if(is_array(self::get_classes_without_flash()) && count(self::get_classes_without_flash())) {
+				if(in_array($this->owner->ClassName, self::get_classes_without_flash())) {
+					$show = false;
+				}
+			}
+			if($show) {
+				$fields->addFieldToTab("Root.Content.FlashObject", new FileIFrameField('FlashFile', 'File'));
+				$fields->addFieldToTab("Root.Content.FlashObject", new TextField('Title', 'Title'));
+			}
 		}
 		return $fields;
  }

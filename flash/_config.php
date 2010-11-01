@@ -15,6 +15,7 @@
 
 //may set - allows you to add one flash file to each page with title and alternative content
 //Object::add_extension('SiteTree', 'FlashObjectDOD');
+//FlashObjectDOD::set_classes_with_flash(array("HomePage")); OR //FlashObjectDOD::set_classes_without_flash(array("ProductPage"));
 
 //basics
 //FlashObject::set_default_external_flash_file("");
