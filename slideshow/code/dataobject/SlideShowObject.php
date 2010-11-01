@@ -10,9 +10,13 @@ class SlideShowObject extends DataObject {
 
 	public static $db = array(
 		"Title" => "Varchar(125)",
-		"Link" => "Varchar(125)",
 		"Description" => "Text"
 	);
+
+	public static $has_one = array(
+		"Link" => "Page"
+	);
+
 
 	public static $has_one = array(
 		"Parent" => "SiteTree",
@@ -22,18 +26,24 @@ class SlideShowObject extends DataObject {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 	 	$fields->removeFieldFromTab("Root.Main", "ParentID");
+	 	$fields->removeFieldFromTab("Root.Main", "LinkID");
 		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
+		$fields->addFieldToTab("Root.Main",new TreeDropdownField("LinkID", "Link - if any", "SiteTree"));
 		return $fields;
 	}
 
 	function fieldLabels() {
 		return array(
 			'Title' => 'Title',
-			'Link' => 'Hyperlink (if any) - e.g. http://www.myproduct.com/ or /contact-us'
+			'LinkID' => 'Link to page within website'
 		);
 	}
 	public function summaryFields() {
 		return $this->fieldLabels();
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
 	}
 
 
