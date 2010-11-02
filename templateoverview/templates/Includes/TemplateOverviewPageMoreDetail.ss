@@ -2,7 +2,7 @@
 	<% control MoreDetail %>
 <li class="description moreDetailLI">
 	<p class="templateOverviewDescription">
-		$Description ... <a href="admin/templates/$ClassName/$ID/edit">edit this description and upload images</a>
+		$Description ... <a href="$ModelAdminLink">edit this description and upload images</a>
 		<% if ToDoListHyperLink %> | <a href="$ToDoListHyperLink.URL" class="updateToDoListLink">update to do list</a><% end_if %>
 	</p>
 	<div id="TemplateOverviewImages">

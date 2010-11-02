@@ -9,7 +9,6 @@ class TemplateOverviewDescriptionModelAdmin extends ModelAdmin {
 
 
   public $showImportForm = false;
-	public $showImportForm = false;
 
 	public static $managed_models = array("TemplateOverviewDescription", "TemplateOverviewTestItem", "TemplateOverviewTestItemEntry");
 
