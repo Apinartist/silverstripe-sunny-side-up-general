@@ -12,8 +12,9 @@
 //MUST HAVE
 //Object::add_extension('SiteConfig', 'ImagePlaceHolderReplacer');
 //CAN HAVE
-//ImagePlaceHolderReplacer::add_image_to_replace($className = "Page", $fieldName = "SummaryImage", $notes = "260px wide, 150px high", "$copyFrom = themes/mytheme/images/sampleimages/mySampleSummaryImage.png");
 //ImagePlaceHolderReplacer::set_folder_name("SampleImages");
+//ImagePlaceHolderReplacer::add_image_to_replace($className = "Page", $fieldName = "SummaryImage", $notes = "260px wide, 150px high", "$copyFrom = themes/mytheme/images/sampleimages/mySampleSummaryImage.png");
+
 //===================---------------- END image_placeholder_replacer MODULE ----------------===================
 
 
