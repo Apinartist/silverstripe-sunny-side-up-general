@@ -21,7 +21,7 @@ class SitemapPageDecorator extends SiteTreeDecorator {
 		elseif(is_array($inc) && count($inc)) {
 			$where = "{$bt}ClassName{$bt} NOT IN ('".implode("','", $inc)."')";
 		}
-		return DataObject::get("SiteTree", '{$bt}ShowInMenus{$bt} = 1 AND {$bt}ShowInSearch{$bt} = 1 AND {$bt}ParentID{$bt} = '.$this->owner->ID.' AND {$bt}ClassName{$bt} <> "SiteMapPage" AND '.$where);
+		return DataObject::get("SiteTree", "{$bt}ShowInMenus{$bt} = 1 AND {$bt}ShowInSearch{$bt} = 1 AND {$bt}ParentID{$bt} = ".$this->owner->ID." AND {$bt}ClassName{$bt} <> 'SiteMapPage' AND ".$where);
 	}
 
 }
