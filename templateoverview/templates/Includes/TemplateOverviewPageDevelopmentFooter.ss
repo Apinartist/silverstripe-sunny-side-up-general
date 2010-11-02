@@ -2,7 +2,7 @@
 <div id="TemplateOverviewPageDevelopmentFooter">
 	<p>
 		This ages uses <a href="{$TemplateOverviewPage.Link}showmore/$ID" class="IncludeTemplateOverviewDevelopmentFooterClickHere">$ClassName</a> template.
-		(<a href="{$TemplateOverviewPage.Link}#sectionFor-$ClassName">see complete list</a>).
+		See <a href="{$TemplateOverviewPage.Link}#sectionFor-$ClassName">complete list</a>.
 			<!-- <a href="#" onclick="templateoverviewoverlay.addExtension('{$ClassName}'); " id="overlayFor{$ClassName}" class="overlayLink">add a design overlay.</a> -->
 	</p>
 	<ul id="TemplateOverviewPageDevelopmentFooterLoadHere"><li class="hiddenListItem">&nbsp;</li></ul>
