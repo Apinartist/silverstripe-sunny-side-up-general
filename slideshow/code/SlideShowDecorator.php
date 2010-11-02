@@ -34,7 +34,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 			'has_one' => array(
 				"SlideShowFolder" => "Folder"
 			),
-			'has_many' => array(
+			'many_many' => array(
 				"SlideShowObject" => "SlideShowObject"
 			)
 		);
@@ -43,16 +43,19 @@ class SlideShowDecorator extends SiteTreeDecorator {
 	public function updateCMSFields(FieldSet &$fields) {
 		if($this->classHasSlideShow($this->owner->ClassName)) {
 			$folder = new TreeDropdownField( 'SlideShowFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
-			$folder->setFilterFunction( create_function( '$obj', 'return $obj->class == "Folder";' ) );
 			$fields->addFieldToTab('Root.Content.SlideShow', $folder);
-			$folders = DataObject::get("Folder");
 			if($this->owner->ParentID) {
 				$fields->addFieldToTab('Root.Content.SlideShow', new CheckboxField("UseParentSlides", "Use parent slides when this page has no slides itself"));
 			}
 			elseif($this->owner->URLSegment != "home") {
 				$fields->addFieldToTab('Root.Content.SlideShow', new CheckboxField("UseParentSlides", "Use homepage slides IF this page has no slides and the homepage does"));
 			}
-			$fields->addFieldToTab('Root.Content.SlideShow', $this->SlideShowTableField());
+			$tableField = $this->SlideShowTableField();
+			$slides = DataObject::get("SlideShowObject");
+			if($slides) {
+				$fields->addFieldToTab("Root.Content.SlideShow", new CheckboxSetField("SlideShowObject", 'Slides to show', $slides));
+			}
+			$fields->addFieldToTab("Root.Content.SlideShow", new LiteralField("ManageSlideItems", '<p>Please manage <a href="/admin/slideshow/">slide show items</a> here.'));
 		}
 		return $fields;
 	}
@@ -63,11 +66,7 @@ class SlideShowDecorator extends SiteTreeDecorator {
 			$controller = $this->owner,
 			$name = 'SlideShowObject',
 			$sourceClass = 'SlideShowObject',
-			$fieldList =  array("Link" => "Link", "Title" => "Title"),
-			$detailFormFields = 'getCMSFields_forPopup',
-			$sourceFilter = "{$bt}ParentID{$bt} = ".$this->owner->ID
-			//$sourceSort = "{$bt}Show{$bt}, {$bt}Code{$bt} ASC"
-			//$sourceJoin = null
+			$fieldList =  array("Link" => "Link", "Title" => "Title")
 		);
 		$tablefield->setAddTitle("select images for slideshow");
 		$tablefield->setPageSize(100);
@@ -119,10 +118,10 @@ class SlideShowDecorator extends SiteTreeDecorator {
 
 	public function onBeforeWrite() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		if($parentID = $this->owner->ID) {
+		if($this->classHasSlideShow($this->owner->ClassName)) {
 			$objects = array(0 => 0);
 			$images = array(0 => 0);
-			$dos1 = DataObject::get("SlideShowObject", "{$bt}SlideShowObject{$bt}.{$bt}ParentID{$bt} = ".$parentID, "RAND()");
+			$dos1 = $this->owner->SlideShowObject();
 			if($dos1) {
 				foreach($dos1 as $obj) {
 					$images[$obj->ID] = $obj->ImageID;

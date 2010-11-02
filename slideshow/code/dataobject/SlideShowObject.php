@@ -13,9 +13,12 @@ class SlideShowObject extends DataObject {
 		"Description" => "Text"
 	);
 
+	public static $belongs_many_many = array(
+		"Parent" => "SiteTree",
+	);
+
 	public static $has_one = array(
 		"Link" => "Page",
-		"Parent" => "SiteTree",
 		"Image" => "Image"
 	);
 
@@ -23,8 +26,15 @@ class SlideShowObject extends DataObject {
 		$fields = parent::getCMSFields();
 	 	$fields->removeFieldFromTab("Root.Main", "ParentID");
 	 	$fields->removeFieldFromTab("Root.Main", "LinkID");
+	 	$fields->removeFieldFromTab("Root", "Parent");
 		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
-		$fields->addFieldToTab("Root.Main",new TreeDropdownField("LinkID", "Link - if any", "SiteTree"));
+		$treeField = new TreeMultiselectField("Parent", "Shown on the following pages", "SiteTree");
+		$callback = $this->callbackFilterFunctionForMultiSelect();
+		if($callback) {
+			$treeField->setFilterFunction ($callback);
+		}
+
+		$fields->addFieldToTab("Root.Main",$treeField);
 		return $fields;
 	}
 
@@ -42,5 +52,32 @@ class SlideShowObject extends DataObject {
 		parent::onBeforeWrite();
 	}
 
+
+	protected function callbackFilterFunctionForMultiSelect() {
+		$inc = SlideShowDecorator::get_page_classes_with_slideshow();
+		$exc = SlideShowDecorator::get_page_classes_without_slideshow();
+		if(is_array($inc) && count($inc)) {
+			$string = 'return in_array($obj->class, array(\''.implode("','", $inc).'\'));';
+		}
+		elseif(is_array($exc) && count($exc)) {
+			$string = 'return !in_array($obj->class, array(\''.implode("','", $exc).'\'));';
+		}
+		if($string) {
+			return create_function('$obj', $string);
+		}
+		else {
+			return false;
+		}
+	}
+}
+
+
+class SlideShowObject_Admin extends ModelAdmin {
+  public $showImportForm = false;
+  public static $managed_models = array(
+      'SlideShowObject'
+   );
+  static $url_segment = 'slideshow';
+  static $menu_title = 'Slides';
 
 }
