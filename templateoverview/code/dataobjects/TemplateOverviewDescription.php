@@ -39,7 +39,7 @@ class TemplateOverviewDescription extends DataObject {
 
 	public static $field_labels = array(
 		"ClassNameLink" => "Page Type Name",
-		"ToDoListHyperLink" => "Link to ToDo List",
+		"ToDoListHyperLink" => "Link to To Do List (e.g. http://www.my-project-management-tool.com/mypage/)",
 	);
 
 	static $singular_name = 'Template Description';
