@@ -8,11 +8,9 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START templateoverview MODULE ----------------===================
+//MUST SET
+//if(Director::isDev()) {Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');}
+//MAY SET
 //TemplateOverviewPage::set_auto_include(true);
-/*
-if(Director::isDev()) {
-	Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
-}
-*/
 //===================---------------- END templateoverview MODULE ----------------===================
 
