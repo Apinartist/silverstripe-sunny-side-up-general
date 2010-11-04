@@ -15,18 +15,18 @@
 //VimeoDataObject::add_video(2805235, "Test Video");
 // -- OPTIONAL-
 //VimeoDataObject::set_vimeo_base_url("http://player.vimeo.com/");
-//VimeoDataObject::function set_width($v);
-//VimeoDataObject::function set_maxwidth($v);
-//VimeoDataObject::function set_height($v);
-//VimeoDataObject::function set_maxheight($v);
-//VimeoDataObject::function set_byline($v);
-//VimeoDataObject::function set_title($v);
-//VimeoDataObject::function set_portrait($v);
-//VimeoDataObject::function set_color($v);
-//VimeoDataObject::function set_callback($v);
-//VimeoDataObject::function set_autoplay($v);
-//VimeoDataObject::function set_xhtml($v);
-//VimeoDataObject::function set_api($v);
-//VimeoDataObject::function set_wmode($v);
-//VimeoDataObject::function set_iframe($v);
+//VimeoDataObject::set_width($v);
+//VimeoDataObject::set_maxwidth($v);
+//VimeoDataObject::set_height($v);
+//VimeoDataObject::set_maxheight($v);
+//VimeoDataObject::set_byline($v);
+//VimeoDataObject::set_title($v);
+//VimeoDataObject::set_portrait($v);
+//VimeoDataObject::set_color($v);
+//VimeoDataObject::set_callback($v);
+//VimeoDataObject::set_autoplay($v);
+//VimeoDataObject::set_xhtml($v);
+//VimeoDataObject::set_api($v);
+//VimeoDataObject::set_wmode($v);
+//VimeoDataObject::set_iframe($v);
 //===================---------------- END vimeoembed MODULE ----------------===================
