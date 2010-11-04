@@ -162,8 +162,10 @@ class VimeoDataObject extends DataObject {
 			if($iframe = self::get_iframe()) {$get[] = array("iframe"=>$iframe);}
 			$url = '';
 			$url .= self::get_vimeo_base_url().$this->VimeoCode;
-			foreach($get as $key => $value) {
-				$get[$key] = $key."=".urlencode($value);
+			if(is_array($get) && count($get)) {
+				foreach($get as $key => $value) {
+					$get[$key] = $key."=".urlencode($value);
+				}
 			}
 			$url .= "?".implode("&", $get);
 			$ch = curl_init();
