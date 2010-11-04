@@ -10,10 +10,11 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START dataintegritytests MODULE ----------------===================
-/*
+
 Director::addRules(7, array(
 	'dbintegritycheck//$Action/$ID/$OtherID' => 'DataIntegrityTest'
 ));
+/*
 DataIntegrityTest::set_fields_to_delete(
 	array(
 		"Member.UselessField1",
