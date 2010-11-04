@@ -1,5 +1,5 @@
-<% if VimeoObject %>
+<% if VimeoDataObject %>
 <div class="vimeoObject">
-	$VimeoObject.HTML
+	$VimeoDataObject.HTML
 </div>
 <% end_if %>

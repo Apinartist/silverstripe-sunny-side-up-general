@@ -18,9 +18,9 @@ class VimeoDOD extends DataObjectDecorator {
 
 	public function updateCMSFields(&$fields) {
 		if($this->hasVimeo()) {
-			$tab = _t("VimeoDOD.TAB", "Root.Content.Vimeo");
 			$listObject = DataObject::get("VimeoDataObject");
 			if($listObject) {
+				$tab = _t("VimeoDOD.TAB", "Root.Content.Vimeo");
 				$list = $listObject->toDropDownMap($index = 'ID', $titleField = 'Title', $emptyString = _t("VimeoDOD.EMPTYSTRING", "--- select vimeo video ---"), $sort = false);
 				$fields->addFieldToTab($tab, new DropdownField("VimeoDataObjectID", _t("VimeoDOD.URLFIELD", "Video"), $list));
 				$linkToModelAdmin = _t("VimeoDOD.LINKTOMODELADMIN", "To edit your videos, please go to <a href=\"/admin/vimeos\">Vimeo Editing Page</a>.");
@@ -43,14 +43,4 @@ class VimeoDOD extends DataObjectDecorator {
 
 }
 
-
-class VimeoDOD_Controller extends Extension{
-
-	function VimeoObject() {
-		if($this->owner->VimeoDataObjectID) {
-			return $this->owner->VimeoDataObject();
-		}
-		return false;
-	}
-}
 
