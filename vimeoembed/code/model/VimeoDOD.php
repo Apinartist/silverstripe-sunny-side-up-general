@@ -17,14 +17,7 @@ class VimeoDOD extends DataObjectDecorator {
 		static function get_include_vimeo_in_page_classes(){return self::$include_vimeo_in_page_classes;}
 
 	public function updateCMSFields(&$fields) {
-		$addField = false;
-		if(in_array($this->owner->ClassName, self::get_include_vimeo_in_page_classes()) || !count(self::get_include_vimeo_in_page_classes())) {
-			$addField = true;
-		}
-		if(in_array($this->owner->ClassName, self::get_exclude_vimeo_from_page_classes())) {
-			$addField = false;
-		}
-		if($addField) {
+		if($this->hasVimeo()) {
 			$tab = _t("VimeoDOD.TAB", "Root.Content.Vimeo");
 			$listObject = DataObject::get("VimeoDataObject");
 			if($listObject) {
@@ -36,7 +29,20 @@ class VimeoDOD extends DataObjectDecorator {
 		}
 		return $fields;
 	}
+
+	function HasVimeo() {
+		$hasVimeo = false;
+		if(in_array($this->owner->ClassName, self::get_include_vimeo_in_page_classes()) || !count(self::get_include_vimeo_in_page_classes())) {
+			$hasVimeo = true;
+		}
+		if(in_array($this->owner->ClassName, self::get_exclude_vimeo_from_page_classes())) {
+			$hasVimeo = false;
+		}
+		return $hasVimeo;
+	}
+
 }
+
 
 class VimeoDOD_Controller extends Extension{
 
