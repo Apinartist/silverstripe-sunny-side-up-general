@@ -146,28 +146,28 @@ class VimeoDataObject extends DataObject {
 	protected function updateData() {
 		if($this->VimeoCode && !$this->doNotRetrieveData) {
 			$get = array();
-			if($width = self::get_width()) {$get[] = array("width" => $width);}
-			if($max_width = self::get_maxwidth()) {$get[] = array("max_width"=>$max_width);}
-			if($height = self::get_height()) {$get[] = array("height",$height);}
-			if($maxheight = self::get_maxheight()) {$get[] = array("maxheight"=>$maxheight);}
-			if($byline = self::get_byline()) {$get[] = array("byline"=>$byline);}
-			if($title = self::get_title()) {$get[] = array("title"=>$title);}
-			if($portrait = self::get_portrait()) {$get[] = array("portrait"=>$portrait);}
-			if($color = self::get_color()) {$get[] = array("color"=>$color);}
-			if($callback = self::get_callback()) {$get[] = array("callback"=>$callback);}
-			if($autoplay = self::get_autoplay ()) {$get[] = array("autoplay"=>$autoplay);}
-			if($xhtml = self::get_xhtml()) {$get[] = array("xhtml"=>$xhtml);}
-			if($api = self::get_api()) {$get[] = array("api"=>$api);}
-			if($wmode = self::get_wmode()) {$get[] = array("wmode"=>$wmode);}
-			if($iframe = self::get_iframe()) {$get[] = array("iframe"=>$iframe);}
+			if($width = self::get_width()) {$get["width"] = $width;}
+			if($max_width = self::get_maxwidth()) {$get["max_width"] = $max_width;}
+			if($height = self::get_height()) {$get["height"] = $height;}
+			if($maxheight = self::get_maxheight()) {$get["maxheight"] = $maxheight;}
+			if($byline = self::get_byline()) {$get["byline"] = $byline;}
+			if($title = self::get_title()) {$get["title"] = $title;}
+			if($portrait = self::get_portrait()) {$get["portrait"] = $portrait;}
+			if($color = self::get_color()) {$get["color"] = $color;}
+			if($callback = self::get_callback()) {$get["callback"] = $callback;}
+			if($autoplay = self::get_autoplay ()) {$get["autoplay"] = $autoplay;}
+			if($xhtml = self::get_xhtml()) {$get["xhtml"] = $xhtml;}
+			if($api = self::get_api()) {$get["api"] = $api;}
+			if($wmode = self::get_wmode()) {$get["wmode"] = $wmode;}
+			if($iframe = self::get_iframe()) {$get["iframe"] = $iframe;}
 			$url = '';
 			$url .= self::get_vimeo_base_url().$this->VimeoCode;
 			if(is_array($get) && count($get)) {
 				foreach($get as $key => $value) {
 					$get[$key] = $key."=".urlencode($value);
 				}
+				$url .= "?".implode("&", $get);
 			}
-			$url .= "?".implode("&", $get);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
