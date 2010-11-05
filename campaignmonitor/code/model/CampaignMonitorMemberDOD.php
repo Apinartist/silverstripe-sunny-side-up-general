@@ -11,8 +11,8 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 	function extraStatics() {
 		return array(
-			'db' => array(
-				'CampaignMonitorSubscription' => 'Varchar(32)',
+			'many_many' => array(
+				'CampaignMonitorSubscriptions' => 'CampaignMonitorSignupPage',
 			)
 		);
 	}
@@ -22,11 +22,6 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
     $CMWrapper = new CampaignMonitorWrapper();
     if ($this->owner->CampaignMonitorSubscription) {
       $CMWrapper->setListID ($this->owner->CampaignMonitorSubscription);
-			if(!$CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
-				if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
-					user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
-				}
-			}
     }
     else {
       $fields = $this->owner->getChangedFields();
@@ -39,5 +34,42 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
       }
     }
 	}
+
+  public function addCampaignMonitorList($page) {
+    //internal database
+		$existingLists = $this->owner->CampaignMonitorSubscriptions();
+		if(!$existingLists) {
+			user_error("can find relationship", E_USER_NOTICE);
+		}
+		else {
+	    $existingLists->add($page->ID);
+		}
+		//external database
+		$CMWrapper = new CampaignMonitorWrapper();
+		$CMWrapper->setListID ($page->ListID);
+		if(!$CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
+			if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
+				user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+			}
+		}
+  }
+
+  public function removeCampaignMonitorList($page) {
+    //internal database
+		$existingLists = $this->owner->CampaignMonitorSubscriptions();
+		if(!$existingLists) {
+			//nothing to do...
+		}
+		else {
+	    $existingLists->remove($page->ID);
+		}
+		//external database
+		$CMWrapper = new CampaignMonitorWrapper();
+		$CMWrapper->setListID ($page->ListID);
+		if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
+			user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGEUNSUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+		}
+
+  }
 
 }

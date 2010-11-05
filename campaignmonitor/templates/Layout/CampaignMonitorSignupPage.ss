@@ -1,10 +1,17 @@
 <% if ShowThankYouMessage %>
 <div id="CampaignMonitorSignupPageThankYou" class="CampaignMonitorSignupPageDiv">
-$ThankYouMessage
+	$ThankYouMessage
 </div>
-<% else %>
+<% end_if %>
+
+<% if ShowSadToSeeYouGoMessage %>
+<div id="CampaignMonitorSignupPageSadToSeeYouGo" class="CampaignMonitorSignupPageDiv">
+	$SadToSeeYouGoMessage
+</div>
+<% end_if %>
+
 <div id="CampaignMonitorSignupPageFormHMTL" class="CampaignMonitorSignupPageDiv">
-$FormHTML
+	$FormHTML
 </div>
 <% end_if %>
 <% if CampaignMonitorCampaigns %>
