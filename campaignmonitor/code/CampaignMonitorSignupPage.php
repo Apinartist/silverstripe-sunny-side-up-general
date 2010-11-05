@@ -333,7 +333,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		return array();
 	}
 
-	function campaignmonitorstarterformstartaction(SS_HTTPRequest $request){
+	function preloademail(SS_HTTPRequest $request){
 		$data = $request->requestVars();
 		if(isset($data["Email"])) {
 			$email = $data["Email"];
