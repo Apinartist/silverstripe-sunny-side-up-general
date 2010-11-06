@@ -92,6 +92,7 @@ class PicasaRandomImage::set_google_username extends DataObject {
 								$obj->ThumbnailHeight = $group_thumbnail->attributes()->{'height'};
 								$obj->Album = $album->title[0];
 								$obj->write();
+								DataObject::alteration_message("adding picasa random image: ".$this->FullURL, "created");
 							};
 							$i++;
 						}
