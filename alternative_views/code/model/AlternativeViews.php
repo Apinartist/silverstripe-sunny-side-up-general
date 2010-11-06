@@ -6,7 +6,7 @@
  *
  **/
 
-class AdvertisementDecorator extends DataObjectDecorator {
+class AlternativeViews extends DataObjectDecorator {
 
 
 
