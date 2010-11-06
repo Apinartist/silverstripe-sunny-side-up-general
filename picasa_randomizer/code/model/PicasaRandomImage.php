@@ -2,11 +2,13 @@
 
 /**
  *@author nicolaas[at]sunnysideup.co.nz
- *
+ *@PicasaRandomImage::set_google_username("tester")
+ *@PicasaRandomImage::set_number_of_folders(3)
+ *@PicasaRandomImage::set_number_of_images_per_folder(2)
  *
  **/
 
-class PicasaRandomImage extends DataObject {
+class PicasaRandomImage::set_google_username extends DataObject {
 
 	static $db = array(
 		"URL" => "Varchar(255)",
