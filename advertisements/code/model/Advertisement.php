@@ -96,8 +96,8 @@ class Advertisement extends DataObject {
 
 
 	protected function callbackFilterFunctionForMultiSelect() {
-		$inc = SlideShowDecorator::get_page_classes_with_advertisements();
-		$exc = SlideShowDecorator::get_page_classes_without_advertisements();
+		$inc = AdvertisementDecorator::get_page_classes_with_advertisements();
+		$exc = AdvertisementDecorator::get_page_classes_without_advertisements();
 		if(is_array($inc) && count($inc)) {
 			$string = 'return in_array($obj->class, array(\''.implode("','", $inc).'\'));';
 		}

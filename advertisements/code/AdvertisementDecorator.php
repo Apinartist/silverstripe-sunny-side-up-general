@@ -108,10 +108,10 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$folder = new TreeDropdownField( 'AdvertisementsFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
 			$fields->addFieldToTab('Root.Content.Advertisements', $folder);
 			if($this->owner->ParentID) {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentSlides", "Use parent slides when this page has no slides itself"));
+				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use parent advertisements when this page has no advertisements itself"));
 			}
 			elseif($this->owner->URLSegment != "home") {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentSlides", "Use homepage slides IF this page has no slides and the homepage does"));
+				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use homepage advertisements IF this page has no advertisements and the homepage does"));
 			}
 			$tableField = $this->advertisementsTableField();
 			$slides = DataObject::get("Advertisement");
