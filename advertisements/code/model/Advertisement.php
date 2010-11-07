@@ -18,18 +18,34 @@ class Advertisement extends DataObject {
 	static $db = array(
 		"Show" => "Boolean",
 		"Title" => "Varchar(255)",
-		"ExternalLink" => "Varchar(150)"
+		"ExternalLink" => "Varchar(150)",
+		"Description" => "Text"
 	);
 
 	static $has_one = array(
 		"AdvertisementImage" => "Image",
-		"Parent" => "HomePage",
 		"LinkedPage" => "SiteTree"
-
 	);
+
+
+	public static $belongs_many_many = array(
+		"Parent" => "SiteTree",
+	);
+
 	static $casting = array(
 		"Link" => "Varchar"
 	);
+
+	static $field_labels = array(
+		'Show' => 'Show: 1 = show, 0 = hide'
+	);
+
+	public static $searchable_fields = array("Title" => "PartialMatchFilter");
+
+	public static $singular_name = "Advertisement";
+
+	public static $plural_name = "Advertisements";
+
 
 	function getLink() {
 		if($this->ExternalLink) {
@@ -56,7 +72,13 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
 		$fields->removeFieldFromTab("Root.Main", "ParentID");
 		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = _t("Advertisement.GETCMSFIELDSSIZEINFOWIDTH", "advertisement image - width: ").Advertisement::get_width()._t("Advertisement.GETCMSFIELDSSIZEINFOHEIGHT", "px - height: ").Advertisement::get_height()._t("Advertisement.GETCMSFIELDSSIZEINFOPX", "px ")));
-		$fields->addFieldToTab("Root.from", new TreeDropdownField($name = "ParentID", $title = _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all advertisement pages)"), $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
+		$treeField = new TreeMultiselectField("Parent", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all advertisement pages)"), "SiteTree");
+		$callback = $this->callbackFilterFunctionForMultiSelect();
+		if($callback) {
+			$treeField->setFilterFunction ($callback);
+		}
+		$fields->addFieldToTab("Root.Main",$treeField);
 		$fields->addFieldToTab("Root.to", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
 		$fields->addFieldToTab("Root.to", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
 	 	return $fields;
@@ -66,20 +88,31 @@ class Advertisement extends DataObject {
 		parent::onBeforeWrite();
 	}
 
-	static $field_labels = array(
-		'Show' => 'Show: 1 = show, 0 = hide'
-	);
-
-	public static $searchable_fields = array("Title" => "PartialMatchFilter");
-
-	public static $singular_name = "Advertisement";
-
-	public static $plural_name = "Advertisements";
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		DB::query("UPDATE Advertisement SET Title = ID WHERE Title = '' OR Title IS NULL;");
 	}
+
+
+	protected function callbackFilterFunctionForMultiSelect() {
+		$inc = SlideShowDecorator::get_page_classes_with_slideshow();
+		$exc = SlideShowDecorator::get_page_classes_without_slideshow();
+		if(is_array($inc) && count($inc)) {
+			$string = 'return in_array($obj->class, array(\''.implode("','", $inc).'\'));';
+		}
+		elseif(is_array($exc) && count($exc)) {
+			$string = 'return !in_array($obj->class, array(\''.implode("','", $exc).'\'));';
+		}
+		if($string) {
+			return create_function('$obj', $string);
+		}
+		else {
+			return false;
+		}
+	}
+
+
 
 
 }
