@@ -13,6 +13,6 @@ class AdvertisementAdmin extends ModelAdmin {
 
 	public static $url_segment = 'ads';
 
-	public static $menu_title = 'Ads';
+	public static $menu_title = 'Ads / Slides';
 }
 
