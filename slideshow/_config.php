@@ -1,5 +1,7 @@
 <?php
 
+//DEPRECIATED - SEE: http://sunny.svnrepository.com/svn/sunny-side-up-general/advertisements
+
 /**
  *@author: nicolaas [at] sunnysideup.co.nz
  **/
