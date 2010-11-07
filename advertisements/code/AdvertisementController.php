@@ -3,12 +3,12 @@
 
 class AdvertisementController extends Controller {
 
-	static $allowed_actions = array("removeallslides");
+	static $allowed_actions = array("removealladvertisements");
 
-	function removeallslides($request) {
+	function removealladvertisements($request) {
 		$member = Member::currentMember();
 		if(!Permission::checkMember($member, "CMS_ACCESS_LeftAndMain")) {
-			return "you do not have permission to delete these slides.";
+			return "you do not have permission to delete these advertisements.";
 		}
 		$id = $request->param("ID");
 		$page = DataObject("SiteTree", intval($id));
@@ -18,6 +18,6 @@ class AdvertisementController extends Controller {
 		DB::query("DELETE FROM SiteTree_Advertisement WHERE SiteTreeID = ".$id);
 		DB::query("UPDATE SiteTree SET AdvertisementFolderID = 0 WHERE SiteTree.ID = ".$id);
 		DB::query("UPDATE SiteTree_Live SET AdvertisementFolderID = 0 WHERE SiteTree_Live.ID = ".$id);
-		return "deleted all slides for this page, reload page to see results ...";
+		return "deleted all advertisements for this page, reload page to see results ...";
 	}
 }

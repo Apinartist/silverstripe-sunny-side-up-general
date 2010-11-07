@@ -11,7 +11,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	function extraStatics() {
 		return array(
 			'db' => array(
-				"UseParentSlides" => "Boolean",
+				"UseParentAdvertisements" => "Boolean",
 				"AdvertisementsIDList" => "Text"
 			),
 			'has_one' => array(
@@ -101,25 +101,25 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 
 	public function updateCMSFields(FieldSet &$fields) {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
-			$fields->addFieldToTab('Root.Content.SlideShowImages', new HeaderField("ImageExplanation", "Image Selection Tools - the area for images is ".Advertisement::get_width()."px wide by ".Advertisement::get_height()."px high" , 3));
+			$fields->addFieldToTab('Root.Content.Advertisements', new HeaderField("ImageExplanation", "Image Selection Tools - the area for images is ".Advertisement::get_width()."px wide by ".Advertisement::get_height()."px high" , 3));
 			$folder = new TreeDropdownField( 'AdvertisementsFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
 			$fields->addFieldToTab('Root.Content.Advertisements', $folder);
 			if($this->owner->ParentID) {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentSlides", "Use parent slides when this page has no slides itself"));
+				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use parent advertisements when this page has no slides itself"));
 			}
 			elseif($this->owner->URLSegment != "home") {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentSlides", "Use homepage slides IF this page has no slides and the homepage does"));
+				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use homepage advertisements IF this page has no slides and the homepage does"));
 			}
 			$tableField = $this->advertisementsTableField();
-			$slides = DataObject::get("Advertisement");
-			if($slides) {
-				$fields->addFieldToTab("Root.Content.Advertisements", new CheckboxSetField("Advertisement", 'Slides to show', $slides));
+			$advertisements = DataObject::get("Advertisement");
+			if($advertisements) {
+				$fields->addFieldToTab("Root.Content.Advertisements", new CheckboxSetField("Advertisement", 'Advertisements to show', $advertisements));
 			}
-			$fields->addFieldToTab("Root.Content.Advertisements", new LiteralField("ManageSlideItems", '<p>Please manage <a href="/admin/Advertisements/">slide show items</a> here.'));
+			$fields->addFieldToTab("Root.Content.Advertisements", new LiteralField("ManageAdvertisements", '<p>Please manage <a href="/admin/advertisements/">advertisements here</a>.'));
 			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
 			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
-			$fields->addFieldToTab('Root.Content.SlideShowImages', new LiteralField("removeallslides",
-				'<p><a href="'.$removeallLink.'" onclick="jQuery(\'#removeallslides\').load(\''.$removeallLink.'\'); return false;"  id="removeallslides">remove all slides from this page</a></p>'
+			$fields->addFieldToTab('Root.Content.Advertisements', new LiteralField("removealladvertisements",
+				'<p><a href="'.$removeallLink.'" onclick="jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\'); return false;"  id="removealladvertisements">remove all advertisements from this page</a></p>'
 			));
 
 		}
@@ -181,7 +181,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				}
 				$dos1 = DataObject::get("Advertisement", "{$bt}Advertisement{$bt}.{$bt}ID{$bt} IN (".implode(",", $objects).")", "RAND()");
 			}
-			if(!$dos1 && $this->owner->UseParentSlides) {
+			if(!$dos1 && $this->owner->UseParentAdvertisements) {
 				$parent = DataObject::get_by_id("SiteTree", $parentID);
 				if($parent) {
 					$this->owner->AdvertisementsIDList = $parent->AdvertisementsIDList;
