@@ -8,11 +8,12 @@
  *
  **/
 
-//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
-//===================---------------- START advertisements MODULE ----------------===================
 Director::addRules(10, array(
 	'advertisements//$Action/$ID' => 'AdvertisementController',
 ));
+
+//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+//===================---------------- START advertisements MODULE ----------------===================
 //**** NB, dont forget to theme the templates (and also JS, as shown below!)
 //MUST SET
 //Object::add_extension('SiteTree', 'AdvertisementDecorator');
