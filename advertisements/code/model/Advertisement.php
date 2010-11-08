@@ -15,8 +15,24 @@ class Advertisement extends DataObject {
 		static function set_height($v) {self::$height = $v;}
 		static function get_height() {return self::$height;}
 
+	static function recommended_image_size_statement() {
+		$array = array();
+		if(self::get_width() ) {
+			$array[] = "width = ".self::get_width()."px";
+		}
+		if(self::get_height() ) {
+			$array[] = "height = ".self::get_height()."px";
+		}
+		$count = count($array);
+		if($count == 0) {
+			return "No recommeded image size has been set.";
+		}
+		else {
+			return "Recommended size: ".implode(" and ", $array).".";
+		}
+	}
+
 	static $db = array(
-		"Show" => "Boolean",
 		"Title" => "Varchar(255)",
 		"ExternalLink" => "Varchar(150)",
 		"Description" => "Text"
@@ -29,7 +45,7 @@ class Advertisement extends DataObject {
 
 
 	public static $belongs_many_many = array(
-		"Parent" => "SiteTree",
+		"Parents" => "SiteTree",
 	);
 
 	static $casting = array(
@@ -37,15 +53,15 @@ class Advertisement extends DataObject {
 	);
 
 	static $field_labels = array(
-		'Show' => 'Show: 1 = show, 0 = hide'
 	);
 
 	public static $searchable_fields = array("Title" => "PartialMatchFilter");
 
 	public static $singular_name = "Advertisement";
+		static function set_singular_name($v) {self::$singular_name = $v;}
 
 	public static $plural_name = "Advertisements";
-
+		static function set_plural_name($v) {self::$plural_name = $v;}
 
 	function getLink() {
 		if($this->ExternalLink) {
@@ -70,17 +86,17 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Main", "AdvertisementImageID");
 		$fields->removeFieldFromTab("Root.Main", "LinkedPageID");
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
-		$fields->removeFieldFromTab("Root.Main", "ParentID");
-		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = _t("Advertisement.GETCMSFIELDSSIZEINFOWIDTH", "advertisement image - width: ").Advertisement::get_width()._t("Advertisement.GETCMSFIELDSSIZEINFOHEIGHT", "px - height: ").Advertisement::get_height()._t("Advertisement.GETCMSFIELDSSIZEINFOPX", "px ")));
-		$fields->addFieldToTab("Root.Main",new HiddenField("ParentID"));
-		$treeField = new TreeMultiselectField("Parent", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all advertisement pages)"), "SiteTree");
+		$fields->removeFieldFromTab("Root.Parents", "Parents");
+		$fields->removeFieldFromTab("Root", "Parents");
+		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = self::$singular_name." image. ".self::recommended_image_size_statement()));
+		$treeField = new TreeMultiselectField("Parents", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all ".self::$singular_name." pages)"), "SiteTree");
 		$callback = $this->callbackFilterFunctionForMultiSelect();
 		if($callback) {
 			$treeField->setFilterFunction ($callback);
 		}
-		$fields->addFieldToTab("Root.Main",$treeField);
-		$fields->addFieldToTab("Root.to", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
-		$fields->addFieldToTab("Root.to", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.ShownOn",$treeField);
+		$fields->addFieldToTab("Root.OptionalLink", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
+		$fields->addFieldToTab("Root.OptionalLink", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
 	 	return $fields;
 	}
 
@@ -111,6 +127,8 @@ class Advertisement extends DataObject {
 			return false;
 		}
 	}
+
+
 
 
 

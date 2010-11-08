@@ -11,15 +11,14 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	function extraStatics() {
 		return array(
 			'db' => array(
-				"UseParentSlides" => "Boolean",
-				"AdvertisementsIDList" => "Text"
+				"UseParentAdvertisements" => "Boolean"
 			),
 			'has_one' => array(
-				"AdvertisementsFolder" => "Folder"
+				"AdvertisementsFolder" => "Folder",
 				"AdvertisementStyle" => "AdvertisementStyle"
 			),
 			'many_many' => array(
-				"Advertisement" => "Advertisement"
+				"Advertisements" => "Advertisement"
 			)
 		);
 	}
@@ -34,6 +33,10 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			self::$page_classes_without_advertisements = $array;
 		}
 
+	protected static $specific_name_for_advertisements = "Advertisements";
+		static function set_specific_name_for_advertisements($v){self::$specific_name_for_advertisements = $v;}
+		static function get_specific_name_for_advertisements(){return self::$specific_name_for_advertisements;}
+
 	protected static $page_classes_with_advertisements = array();
 		static function get_page_classes_with_advertisements(){return self::$page_classes_with_advertisements;}
 		static function set_page_classes_with_advertisements(array $array){
@@ -44,7 +47,58 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	protected static $advertisements_dos;
 
 
-	function Advertisements() {
+
+	public function updateCMSFields(FieldSet &$fields) {
+		if($this->classHasAdvertisements($this->owner->ClassName)) {
+			$tabName = "Root.Content.".AdvertisementAdmin::$menu_title;
+			//advertisements shown...
+			$advertisements = DataObject::get("Advertisement");
+			$fields->addFieldToTab($tabName, $this->MyHeaderField("Actual ".Advertisement::$plural_name." Shown"));
+			if($advertisements) {
+				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", Advertisement::$plural_name.' to show', $advertisements));
+			}
+			else {
+				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", '<p>Please <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">create '.Advertisement::$plural_name.'</a> on the <i>'.AdvertisementAdmin::$menu_title.'</i> tab first, or see below on how to create '.Advertisement::$plural_name.' from a folder.'));
+			}
+			if($parent = $this->advertisementParent()) {
+				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", "OR  ... use ".Advertisement::$plural_name." from <i>".$parent->Title."</i>"));
+			}
+
+			if($styles = DataObject::get("AdvertisementStyle")) {
+				$fields->addFieldToTab($tabName, $this->MyHeaderField("Style"));
+				$list = $styles->toDropdownMap("ID", "Title",$emptyString = "--select style--", $sortByTitle = true);
+				$fields->addFieldToTab($tabName, new DropdownField("AdvertisementStyleID", "Style as created by your developer", $list));
+			}
+
+
+			//use parents
+			$fields->addFieldToTab($tabName, $this->MyHeaderField("Create New ".Advertisement::$plural_name));
+			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', 'Create new '.Advertisement::$plural_name.' from all images in the folder selected below ... (NB '.Advertisement::recommended_image_size_statement().')', 'Folder' ));
+
+			$fields->addFieldToTab($tabName, $this->MyHeaderField("Edit ".Advertisement::$plural_name));
+			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>Please manage existing <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.Advertisement::$plural_name.'</a> on the <i>'.AdvertisementAdmin::$menu_title.'</i> tab.'));
+
+			$fields->addFieldToTab($tabName, $this->MyHeaderField("Delete ".Advertisement::$plural_name));
+			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
+			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
+			$fields->addFieldToTab($tabName, new LiteralField("removealladvertisements",
+				'<p><a href="'.$removeallLink.'" onclick="if(confirm(\'Are you sure you want to remove all '.Advertisement::$plural_name.' from this page?\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;"  id="removealladvertisements">remove all '.Advertisement::$plural_name.' from this page</a>.</p>'
+			));
+			$deleteallLink = '/advertisements/deletealladvertisements/'.$this->owner->ID.'/';
+			$fields->addFieldToTab($tabName, new LiteralField("deletealladvertisements",
+				'<p><a href="'.$deleteallLink.'" onclick="if(confirm(\'Are you sure you want to DELETE all '.Advertisement::$plural_name.' from this website?\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;"  id="deletealladvertisements">delete all '.Advertisement::$plural_name.' from this website</a>.</p>'
+			));
+
+		}
+		return $fields;
+	}
+
+	protected function MyHeaderField($name) {
+		$code = preg_replace("/[^a-zA-Z0-9\s]/", "", $name);
+		return new LiteralField($code, "<h4 style='margin-top: 20px'>$name</h4>");
+	}
+
+	function AdvertisementSet() {
 		if(!self::$advertisements_dos) {
 			$doSet = new DataObjectSet();
 			$browseSet = $this->advertisementsToShow();
@@ -52,15 +106,15 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 				Requirements::javascript("advertisements/javascript/Advertisement.js");
 				if(self::$use_custom_javascript) {
-					$folder = project()."/javascript/AdvertisementsExecutive.js";
+					$file = project()."/javascript/AdvertisementsExecutive.js";
 				}
 				elseif($style = $this->owner->AdvertisementStyle()) {
 					$file = $style->FileLocation;
 				}
 				else {
-					$file = "advertisements/javascript/AdvertisementsExecutive.js"
+					$file = "advertisements/javascript/AdvertisementsExecutive.js";
 				}
-				Requirements::javascript($folder);
+				Requirements::javascript($file);
 				Requirements::themedCSS("Advertisements");
 				foreach($browseSet as $Advertisement) {
 					$imageID = intval($Advertisement->AdvertisementImageID+ 0);
@@ -102,64 +156,36 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 
-	public function updateCMSFields(FieldSet &$fields) {
-		if($this->classHasAdvertisements($this->owner->ClassName)) {
-			$fields->addFieldToTab('Root.Content.SlideShowImages', new HeaderField("ImageExplanation", "Image Selection Tools - the area for images is ".Advertisement::get_width()."px wide by ".Advertisement::get_height()."px high" , 3));
-			$folder = new TreeDropdownField( 'AdvertisementsFolderID', 'Show ALL images From - you can leave this blank', 'Folder' );
-			$fields->addFieldToTab('Root.Content.Advertisements', $folder);
-			if($this->owner->ParentID) {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use parent advertisements when this page has no advertisements itself"));
-			}
-			elseif($this->owner->URLSegment != "home") {
-				$fields->addFieldToTab('Root.Content.Advertisements', new CheckboxField("UseParentAdvertisements", "Use homepage advertisements IF this page has no advertisements and the homepage does"));
-			}
-			$tableField = $this->advertisementsTableField();
-			$slides = DataObject::get("Advertisement");
-			if($slides) {
-				$fields->addFieldToTab("Root.Content.Advertisements", new CheckboxSetField("Advertisement", 'Slides to show', $slides));
-			}
-			$fields->addFieldToTab("Root.Content.Advertisements", new LiteralField("ManageSlideItems", '<p>Please manage <a href="/admin/Advertisements/">slide show items</a> here.'));
-			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
-			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
-			$fields->addFieldToTab('Root.Content.SlideShowImages', new LiteralField("removeallslides",
-				'<p><a href="'.$removeallLink.'" onclick="jQuery(\'#removeallslides\').load(\''.$removeallLink.'\'); return false;"  id="removeallslides">remove all slides from this page</a></p>'
-			));
-
+	protected function advertisementParent() {
+		$parent = null;
+		if($this->owner->ParentID) {
+			$parent = DataObject::get_by_id("SiteTree", $this->owner->ParentID);
 		}
-		return $fields;
+		elseif($this->owner->URLSegment != "home") {
+			$parent = DataObject::get("SiteTree", "URLSegment = 'home'");
+		}
+		if($parent) {
+			if($this->classHasAdvertisements($parent->owner->ClassName)) {
+				return $parent;
+			}
+		}
 	}
-
-
-
-	protected function advertisementsTableField() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$tablefield = new HasManyComplexTableField(
-			$controller = $this->owner,
-			$name = 'Advertisement',
-			$sourceClass = 'Advertisement',
-			$fieldList =  array("Link" => "Link", "Title" => "Title")
-		);
-		$tablefield->setAddTitle("select images for Advertisements");
-		$tablefield->setPageSize(100);
-		$tablefield->setPermissions(array("edit", "delete", "add"));
-		return $tablefield;
-	}
-
-
-
 
 	public function onBeforeWrite() {
+		parent::onBeforeWrite();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
 			$objects = array(0 => 0);
 			$images = array(0 => 0);
-			$dos1 = $this->owner->Advertisement();
+			$dos1 = $this->advertisementsToShow();
 			if($dos1) {
 				foreach($dos1 as $obj) {
-					$images[$obj->ID] = $obj->ImageID;
+					$images[$obj->ID] = $obj->AdvertisementImageID;
 					$objects[$obj->ID] = $obj->ID;
 				}
 			}
+			//check for non-existing images and delete advertisements associated with it
+			/*
 			foreach($images as $objectID => $imageID) {
 				if(!DataObject::get_by_id("Image", $imageID)) {
 					$obj = DataObject::get_by_id("Advertisement", $objectID);
@@ -169,47 +195,53 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 					}
 				}
 			}
+			*/
+			//check if a folder has been set and create objects
 			if($this->owner->AdvertisementsFolderID) {
 				$dos2 = DataObject::get("Image", "{$bt}ParentID{$bt} = ".$this->owner->AdvertisementsFolderID." AND {$bt}ID{$bt} NOT IN (".implode(",", $images).")");
 				if($dos2) {
-					foreach($dos2 as $obj) {
-						$item = new Advertisement();
-						$item->ImageID = $obj->ID;
-						$item->Title = $obj->Title;
-						$item->ParentID = $parentID;
-						$item->AutoAdded = true;
-						$item->write();
-						$objects[$item->ID] = $item->ID;
+					$advertisementsToAdd = array();
+					foreach($dos2 as $image) {
+						$newAdvertisement = new Advertisement();
+						$newAdvertisement->AdvertisementImageID = $image->ID;
+						$newAdvertisement->Title = $image->Title;
+						$newAdvertisement->AutoAdded = true;
+						$newAdvertisement->write();
+						$objects[$newAdvertisement->ID] = $newAdvertisement->ID;
 					}
+					$this->owner->Advertisements()->addMany($objects);
 					$this->owner->AdvertisementsFolderID = 0;
 				}
-				$dos1 = DataObject::get("Advertisement", "{$bt}Advertisement{$bt}.{$bt}ID{$bt} IN (".implode(",", $objects).")", "RAND()");
 			}
-			if(!$dos1 && $this->owner->UseParentSlides) {
-				$parent = DataObject::get_by_id("SiteTree", $parentID);
-				if($parent) {
-					$this->owner->AdvertisementsIDList = $parent->AdvertisementsIDList;
+			if($this->owner->AdvertisementStyleID) {
+				if(!DataObject::get_by_id("AdvertisementStyle",$this->owner->AdvertisementStyleID)) {
+					$this->owner->AdvertisementStyleID = 0;
 				}
-				elseif($this->URLSegment != "home") {
-					$home = DataObject::get_one("SiteTree", "{$bt}URLSegment{$bt} = 'home'");
-					if($home) {
-						$this->owner->AdvertisementsIDList = $home->AdvertisementsIDList;
+			}
+			//remove advdertisements if parent is being used...
+			if($this->owner->UseParentAdvertisements) {
+				if($this->advertisementParent()) {
+					$combos = $this->owner->Advertisements();
+					if($combos) {
+						$combos->removeAll();
 					}
 				}
-			}
-			elseif($dos1) {
-				$this->owner->AdvertisementsIDList = implode(",",$dos1->column("ID"));
+				else {
+					$this->owner->UseParentAdvertisements  = false;
+				}
 			}
 		}
-		parent::onBeforeWrite();
 	}
 
 
 	protected function advertisementsToShow() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		if($this->owner->AdvertisementsIDList) {
-			return DataObject::get("Advertisement", "{$bt}ID{$bt} IN (".$this->owner->AdvertisementsIDList.")");
+		if($this->owner->UseParentAdvertisements) {
+			$parent = $this->advertisementParent();
+			if($parent) {
+				return $parent->advertisementsToShow();
+			}
 		}
+		return $this->owner->Advertisements();
 	}
 
 	protected function classHasAdvertisements($className) {
@@ -218,13 +250,15 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		//2. if list of WITH is shown then it must be in that
 		//3. otherwise check if it is specifically excluded (WITHOUT)
 		$result = true;
-		if(is_array(self::get_page_classes_with_advertisements()) && count(self::get_page_classes_with_advertisements())) {
+		$inc =  self::get_page_classes_with_advertisements();
+		$exc =  self::get_page_classes_without_advertisements();
+		if(is_array($inc) && count($inc)) {
 			$result = false;
-			if(in_array($className,self::get_page_classes_with_advertisements())) {
+			if(in_array($className,$inc)) {
 				$result = true;
 			}
 		}
-		elseif(is_array(self::get_page_classes_without_advertisements()) && in_array($className,self::get_page_classes_without_advertisements()))  {
+		elseif(is_array($exc) && count($exc) && in_array($className,$exc))  {
 			$result = false;
 		}
 		return $result;
