@@ -17,15 +17,22 @@ Director::addRules(10, array(
 //**** NB, dont forget to theme the templates (and also JS, as shown below!)
 //MUST SET
 //Object::add_extension('SiteTree', 'AdvertisementDecorator');
-//MAY SET
+//RECOMMENDED
 //AdvertisementDecorator::set_use_custom_javascript(false); //if true, this will search for myproject/javascript/SlideShow.js myproject is usually called mysite.
 //AdvertisementDecorator::set_page_classes_without_advertisements(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //AdvertisementDecorator::set_page_classes_with_advertisements(array("HomePage")); //ONLY shown on specified classes
-//AdvertisementAdmin::set_menu_title("PortfolioImages"); // DO NOT USE SPACES!
+//AdvertisementAdmin::set_menu_title("Manage Slides");
 //Advertisement::set_plural_name("Slides");
 //Advertisement::set_singular_name("Slide");
 //Advertisement::set_width(100);
 //Advertisement::set_height(100);
+//ADVANCED
 //AdvertisementStyle::add_to_array_of_js_file_options("slideshow style 1", "mysite/javascript/slideshow1.js");
 //AdvertisementStyle::add_to_array_of_js_file_options("slideshow style 2", "mysite/javascript/slideshow1.js");
+
+//	WITH: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+//Object::add_extension('Advertisement', 'DataObjectSorterDOD');
+//DataObjectSorterDOD::set_also_update_sort_field(true);
+//DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
+
 //===================---------------- END advertisements MODULE ----------------===================

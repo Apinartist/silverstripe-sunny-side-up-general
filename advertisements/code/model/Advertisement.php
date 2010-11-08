@@ -35,7 +35,8 @@ class Advertisement extends DataObject {
 	static $db = array(
 		"Title" => "Varchar(255)",
 		"ExternalLink" => "Varchar(150)",
-		"Description" => "Text"
+		"Description" => "Text",
+		"Sort" => "Int"
 	);
 
 	static $has_one = array(
@@ -54,6 +55,13 @@ class Advertisement extends DataObject {
 
 	static $field_labels = array(
 	);
+
+	static $defaults = array(
+		"Sort" => 1000
+	);
+
+	public static $default_sort = "Sort ASC, Title ASC";
+
 
 	public static $searchable_fields = array("Title" => "PartialMatchFilter");
 
@@ -82,6 +90,7 @@ class Advertisement extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->removeFieldFromTab("Root.Main", "Sort");
 		$fields->removeFieldFromTab("Root.Main", "AdvertisementImage");
 		$fields->removeFieldFromTab("Root.Main", "AdvertisementImageID");
 		$fields->removeFieldFromTab("Root.Main", "LinkedPageID");
@@ -97,11 +106,20 @@ class Advertisement extends DataObject {
 		$fields->addFieldToTab("Root.ShownOn",$treeField);
 		$fields->addFieldToTab("Root.OptionalLink", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
 		$fields->addFieldToTab("Root.OptionalLink", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
-	 	return $fields;
+		if(class_exists("DataObjectSorterController")) {
+			$fields->addFieldToTab("Root.Position", new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement")));
+		}
+		else {
+			$fields->addFieldToTab("Root.Position", new NumericField($name = "Sort", "Sort undex number (the lower the number, the earlier it shows up"));
+		}
+		return $fields;
 	}
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
+		if(!$this->Sort) {
+			$this->Sort = self::$defaults["Sort"];
+		}
 	}
 
 

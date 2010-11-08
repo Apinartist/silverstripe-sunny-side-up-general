@@ -46,16 +46,17 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 
 	protected static $advertisements_dos;
 
-
-
 	public function updateCMSFields(FieldSet &$fields) {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
-			$tabName = "Root.Content.".AdvertisementAdmin::$menu_title;
+			$tabName = $this->MyTabName();
 			//advertisements shown...
 			$advertisements = DataObject::get("Advertisement");
 			$fields->addFieldToTab($tabName, $this->MyHeaderField("Actual ".Advertisement::$plural_name." Shown"));
 			if($advertisements) {
 				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", Advertisement::$plural_name.' to show', $advertisements));
+				if(class_exists("DataObjectSorterController")) {
+					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement")));
+				}
 			}
 			else {
 				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", '<p>Please <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">create '.Advertisement::$plural_name.'</a> on the <i>'.AdvertisementAdmin::$menu_title.'</i> tab first, or see below on how to create '.Advertisement::$plural_name.' from a folder.'));
@@ -93,8 +94,15 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		return $fields;
 	}
 
+	protected function MyTabName() {
+		$code = preg_replace("/[^a-zA-Z0-9\s]/", "AAAAAAAA", AdvertisementAdmin::$menu_title);
+		$code = str_replace(" ", "", $code);
+		return "Root.Content.".$code;
+	}
+
 	protected function MyHeaderField($name) {
 		$code = preg_replace("/[^a-zA-Z0-9\s]/", "", $name);
+		$code = str_replace(" ", "", $code);
 		return new LiteralField($code, "<h4 style='margin-top: 20px'>$name</h4>");
 	}
 
@@ -104,7 +112,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$browseSet = $this->advertisementsToShow();
 			if($browseSet) {
 				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-				Requirements::javascript("advertisements/javascript/Advertisement.js");
+				Requirements::javascript("advertisements/javascript/Advertisements.js");
 				if(self::$use_custom_javascript) {
 					$file = project()."/javascript/AdvertisementsExecutive.js";
 				}
@@ -123,7 +131,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 						if($imageObject) {
 							if($imageObject->ID) {
 								$fileName = Convert::raw2js($imageObject->Filename);
-								$title = Convert::raw2js($imageObject->Title);
+								$title = Convert::raw2att($imageObject->Title);
 								$resizedImage = $imageObject->SetWidth(Advertisement::get_width());
 								if($resizedImage) {
 									$record = array(
