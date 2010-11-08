@@ -130,9 +130,22 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 						$imageObject = DataObject::get_by_id("Image", $imageID);
 						if($imageObject) {
 							if($imageObject->ID) {
-								$fileName = Convert::raw2js($imageObject->Filename);
 								$title = Convert::raw2att($imageObject->Title);
-								$resizedImage = $imageObject->SetWidth(Advertisement::get_width());
+								$w = Advertisement::get_width();
+								$h = Advertisement::get_height();
+								if($h && $w) {
+									$resizedImage = $imageObject->SetSize($w, $h);
+								}
+								elseif($h) {
+									$resizedImage = $imageObject->SetHeight($h);
+								}
+								elseif($w) {
+									$resizedImage = $imageObject->SetWidth($w);
+								}
+								else{
+									$resizedImage = $imageObject;
+								}
+
 								if($resizedImage) {
 									$record = array(
 										'Image' => $resizedImage,
