@@ -165,7 +165,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$parent = DataObject::get("SiteTree", "URLSegment = 'home'");
 		}
 		if($parent) {
-			if($this->classHasAdvertisements($parent->owner->ClassName)) {
+			if($this->classHasAdvertisements($parent->ClassName)) {
 				return $parent;
 			}
 		}
