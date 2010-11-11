@@ -124,6 +124,10 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		static function set_required_fields($v) {self::$required_fields = $v;}
 		static function get_required_fields() {return self::$required_fields;}
 
+	protected static $minutes_before_member_is_not_new_anymore = 30;
+		static function set_minutes_before_member_is_not_new_anymore($v) {self::$minutes_before_member_is_not_new_anymore = $v;}
+		static function get_minutes_before_member_is_not_new_anymore() {return self::$minutes_before_member_is_not_new_anymore;}
+
 	function index() {
 		if($this->isAjax()) {
 			return $this->renderWith(array("RegisterAndEditDetailsPageAjax", "RegisterAndEditDetailsPage"));
@@ -194,10 +198,10 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 	function submit($data, $form) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$member = Member::currentUser();
-		$newPerson = false;
+		$newMember = false;
 		Session::set("FormInfo.Form_Form.data", $data);
 		if(!$member) {
-			$newPerson = true;
+			$newMember = true;
 			$member = Object::create('Member');
 			$form->sessionMessage($this->WelcomeTitle, 'good');
 			$id = 0;
@@ -208,7 +212,8 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 
 		//validation
-		if($existingMember = DataObject::get_one("Member", "{$bt}Email{$bt} = '". Convert::raw2sql($data['Email']) . "' AND {$bt}Member{$bt}.{$bt}ID{$bt} <> $id")) {
+		if($existingMember = DataObject::get_one("Member", "{$bt}Email{$bt} = '". Convert::raw2sql($data['Email']) . "' AND {$bt}Member{$bt}.{$bt}ID{$bt} <> '$id'")) {
+			$mems = DataObject::get("Member", "{$bt}Email{$bt} = '". Convert::raw2sql($data['Email']) . "'");
 			$form->addErrorMessage("Blurb",$this->ErrorEmailAddressAlreadyExists,"bad");
 			Director::redirectBack();
 			return;
@@ -230,7 +235,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		if($group) {
 			$member->Groups()->add($group);
 		}
-		if($newPerson) {
+		if($newMember) {
 			$member->logIn();
 			$link = ContentController::join_links($this->Link() , 'welcome');
 		}
@@ -251,11 +256,18 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 	}
 
 	function thanks() {
-		if(!Member::currentUser()) {
+		$member = Member::currentUser();
+		if(!$member) {
 			Director::redirect($this->Link());
 		}
-		$this->Title = $this->ThankYouTitle;
-		$this->Content = $this->ThankYouContent;
+		if($this->numberOfMinutesMemberIsListed($member) < self::get_minutes_before_member_is_not_new_anymore()) {
+			$this->Title = $this->WelcomeTitle;
+			$this->Content = $this->WelcomeContent;
+		}
+		else {
+			$this->Title = $this->ThankYouTitle;
+			$this->Content = $this->ThankYouContent;
+		}
 		return array();
 	}
 
@@ -266,6 +278,12 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$this->Title = $this->WelcomeTitle;
 		$this->Content = $this->WelcomeContent;
 		return array();
+	}
+
+	function numberOfMinutesMemberIsListed($member) {
+		$timestamp = strtotime(strval($member->Created));
+		$nowTimestamp = time();
+		return ($nowTimestamp - $timestamp) / 60;
 	}
 
 }

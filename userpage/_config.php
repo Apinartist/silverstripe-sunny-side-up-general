@@ -13,4 +13,5 @@
 //RegisterAndEditDetailsPage::$register_group_access_key = "REGISTRATIONS_ACCESS";
 //RegisterAndEditDetailsPage_Controller::fields_to_remove(array("Locale","DateFormat", "TimeFormat"));
 //RegisterAndEditDetailsPage_Controller::required_fields(array("FirstName", "Email"));
+//RegisterAndEditDetailsPage_Controller::set_minutes_before_member_is_not_new_anymore(20);
 //===================---------------- END userpage MODULE ----------------===================
