@@ -298,13 +298,14 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 			}
 			if($data["SubscribeChoice"] == "Subscribe") {
 				if($subscriptionChanged) {
-					$member->addCampaignMonitorList($this);
+					$member->addCampaignMonitorList($this, $alsoSynchroniseCMDatabase = true);
 				}
 				Director::redirect($this->Link().'thankyou/');
 			}
 			else {
 				if($subscriptionChanged) {
-					$member->removeCampaignMonitorList($this);
+					$member->removeCampaignMonitorList($this, $alsoSynchroniseCMDatabase = true);
+					$member->write();
 				}
 				Director::redirect($this->Link().'sadtoseeyougo/');
 			}
@@ -318,9 +319,13 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
   function unsubscribe() {
 		$member = Member::currentMember();
     if ($member) {
-      $member->CampaignMonitorSubscription = '';
-      $member->write();
+			$member->removeCampaignMonitorList($this);
+			$this->Content = $member->Email." has been removed from this list: ".$this->ListTitle;
     }
+		else {
+			Security::permissionFailure($this, _t("CAMPAIGNMONITORSIGNUPPAGE.LOGINFIRST", "Please login first."));
+		}
+		return array();
   }
 
 	function thankyou() {

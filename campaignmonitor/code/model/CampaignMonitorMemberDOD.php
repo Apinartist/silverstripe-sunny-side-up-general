@@ -19,23 +19,45 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-    $CMWrapper = new CampaignMonitorWrapper();
-    if ($this->owner->CampaignMonitorSubscription) {
-      $CMWrapper->setListID ($this->owner->CampaignMonitorSubscription);
-    }
-    else {
-      $fields = $this->owner->getChangedFields();
-      if (isset ($fields['CampaignMonitorSubscription']['before'])) {
-        $list_id = $fields['CampaignMonitorSubscription']['before'];
-        $CMWrapper->setListID ($list_id);
-        if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
-          user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGEUNSUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
-				}
-      }
-    }
+		$this->synchroniseCMDatabase();
 	}
 
-  public function addCampaignMonitorList($page) {
+
+
+	protected function synchroniseCMDatabase() {
+
+		$componentSet = $this->owner->CampaignMonitorSubscriptions();
+		$campaignMonitorSubscriptions = $componentSet->getIdList();
+		$lists = DataObject::get("CampaignMonitorSignupPage");
+		if($lists) {
+			foreach($lists as $list) {
+				//external database
+				$CMWrapper = new CampaignMonitorWrapper();
+				$CMWrapper->setListID ($list->ListID);
+				if($CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
+					// do nothing
+				}
+				else {
+					if(!isset($campaignMonitorSubscriptions[$list->ID])) {
+						if($CMWrapper->subscriberIsSubscribed($this->owner->Email)){
+							if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
+								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+							}
+						}
+					}
+					else {
+						if(!$CMWrapper->subscriberIsSubscribed($this->owner->Email) && !$CMWrapper->subscriberIsUnsubscribed($this->owner->Email)) {
+							if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
+								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+  public function addCampaignMonitorList($pagem, $alsoSynchroniseCMDatabase = false) {
     //internal database
 		$existingLists = $this->owner->CampaignMonitorSubscriptions();
 		if(!$existingLists) {
@@ -44,17 +66,13 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		else {
 	    $existingLists->add($page->ID);
 		}
-		//external database
-		$CMWrapper = new CampaignMonitorWrapper();
-		$CMWrapper->setListID ($page->ListID);
-		if(!$CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
-			if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
-				user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
-			}
+		if($alsoSynchroniseCMDatabase) {
+			$this->synchroniseCMDatabase();
 		}
+
   }
 
-  public function removeCampaignMonitorList($page) {
+  public function removeCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
     //internal database
 		$existingLists = $this->owner->CampaignMonitorSubscriptions();
 		if(!$existingLists) {
@@ -63,11 +81,8 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		else {
 	    $existingLists->remove($page->ID);
 		}
-		//external database
-		$CMWrapper = new CampaignMonitorWrapper();
-		$CMWrapper->setListID ($page->ListID);
-		if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
-			user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGEUNSUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') . $CMWrapper->lastErrorMessage, E_USER_WARNING);
+		if($alsoSynchroniseCMDatabase) {
+			$this->synchroniseCMDatabase();
 		}
 
   }
