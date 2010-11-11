@@ -221,7 +221,12 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 			// Create Validators
 			$validator = new RequiredFields('Name', 'Email', 'SubscribeChoice');
 			$f = new Form($this, 'FormHTML', $fields, $actions, $validator);
-			$f->loadDataFrom($m);
+			if($m->ID) {
+				$f->loadDataFrom($m);
+			}
+			else {
+				$f->Fields()->fieldByName("Email")->setValue($this->email);
+			}
 			return $f;
 		}
 	}
