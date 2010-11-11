@@ -49,7 +49,9 @@ class WishListDecorator_Controller extends Extension {
 			$string = self::get_wish_list_from_member_serialized();
 			if($string) {
 				$array = unserialize($string);
-				self::set_wish_list_to_session_and_member($array);
+				if(is_array($array) && count($array)) {
+					self::set_wish_list_to_session_and_member($array);
+				}
 			}
 		}
 		return $string;
