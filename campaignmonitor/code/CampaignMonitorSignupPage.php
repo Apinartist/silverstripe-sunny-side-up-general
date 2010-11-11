@@ -65,8 +65,8 @@ class CampaignMonitorSignupPage extends Page {
 		$subscribePages = DataObject::get("CampaignMonitorSignupPage");
 		foreach($subscribePages as $page) {
 			if($page->ID != $this->ID) {
-				if(isset($array[$list[$page->ListID]])) {
-					unset($array[$list[$page->ListID]]);
+				if(isset($array[$page->ListID])) {
+					unset($array[$page->ListID]);
 				}
 			}
 		}
