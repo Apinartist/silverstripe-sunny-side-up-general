@@ -62,6 +62,7 @@ class CampaignMonitorSignupPage extends Page {
 			}
 		}
 		//remove subscription list IDs from other pages
+		/*
 		$subscribePages = DataObject::get("CampaignMonitorSignupPage");
 		foreach($subscribePages as $page) {
 			if($page->ID != $this->ID) {
@@ -70,6 +71,7 @@ class CampaignMonitorSignupPage extends Page {
 				}
 			}
 		}
+		*/
 		return $array;
 	}
 
