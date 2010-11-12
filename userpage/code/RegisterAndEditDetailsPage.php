@@ -230,6 +230,10 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 		$form->saveInto($member);
 		$member->write();
+		if($newMember) {
+			$form->saveInto($member);
+			$member->write();
+		}
 		//adding to group
 		$group = DataObject::get_one("Group", "{$bt}Code{$bt} = '".RegisterAndEditDetailsPage::$register_group_code."'");
 		if($group) {
