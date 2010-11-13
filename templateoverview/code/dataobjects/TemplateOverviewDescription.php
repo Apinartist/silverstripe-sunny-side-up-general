@@ -21,7 +21,9 @@ class TemplateOverviewDescription extends DataObject {
 		"Image2" => "Image",
 		"Image3" => "Image",
 		"Image4" => "Image",
-		"Image5" => "Image"
+		"Image5" => "Image",
+		"Image6" => "Image",
+		"Image7" => "Image"
 	);
 
 	static $belongs_many_many = array(
@@ -88,9 +90,11 @@ class TemplateOverviewDescription extends DataObject {
 		$fields->removeByName("Image5");
 		$fields->addFieldToTab("Root.Design", new ImageField("Image1", "Design One", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
 		$fields->addFieldToTab("Root.Design", new ImageField("Image2", "Design Two", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
+		$fields->addFieldToTab("Root.Design", new ImageField("Image6", "Design Three", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
 		$fields->addFieldToTab("Root.Instructions", new ImageField("Image3", "Instructions One", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
 		$fields->addFieldToTab("Root.Instructions", new ImageField("Image4", "Instructions Two", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
 		$fields->addFieldToTab("Root.Instructions", new ImageField("Image5", "Instructions Three", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image7", "Instructions Four", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
 		$fields->addFieldToTab("Root.Main", new HeaderField("ClassNameLinkInfo", "Details for: ".$this->ClassNameLink), "Description");
 		$fields->addFieldToTab("Root.Main", new LiteralField("BackLink", '<p><a href="'.$page->Link().'#sectionFor-'.$this->ClassNameLink.'">go back to template overview page</a> - dont forget to SAVE FIRST.</p>'));
 		$fields->removeByName("ParentID");

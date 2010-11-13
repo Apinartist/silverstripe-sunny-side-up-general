@@ -11,6 +11,7 @@
 //MUST SET
 //if(Director::isDev()) {Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');}
 //MAY SET
+//if(Director::isDev()) {Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');}
 //TemplateOverviewPage::set_auto_include(true);
 //===================---------------- END templateoverview MODULE ----------------===================
 

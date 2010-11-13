@@ -11,6 +11,8 @@
 		<% if Image3ID %><span class="mediumThumb"><a href="$Image3.URL" rel="prettyPhoto[$ClassNameLink]">$Image3.SetWidth(525)</a></span><% end_if %>
 		<% if Image4ID %><span class="mediumThumb"><a href="$Image4.URL" rel="prettyPhoto[$ClassNameLink]">$Image4.SetWidth(525)</a></span><% end_if %>
 		<% if Image5ID %><span class="mediumThumb"><a href="$Image5.URL" rel="prettyPhoto[$ClassNameLink]">$Image5.SetWidth(525)</a></span><% end_if %>
+		<% if Image6ID %><span class="mediumThumb"><a href="$Image5.URL" rel="prettyPhoto[$ClassNameLink]">$Image6.SetWidth(525)</a></span><% end_if %>
+		<% if Image7ID %><span class="mediumThumb"><a href="$Image5.URL" rel="prettyPhoto[$ClassNameLink]">$Image7.SetWidth(525)</a></span><% end_if %>
 	</div>
 </li>
 	<% end_control %>
