@@ -12,7 +12,7 @@ class TemplateOverviewDescription extends DataObject {
 	static $db = array(
 		"Description" => "Text",
 		"ToDoListHyperLink" => "Varchar(255)",
-		"ClassNameLink" => "Varchar(255)"
+		"ClassNameLink" => "Varchar(60)"
 	);
 
 	static $has_one = array(
@@ -50,6 +50,15 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $default_sort = 'ClassNameLink ASC';
 
+	/* CURRENTLY CREATES AN ERROR
+	static $indexes = array(
+		"ClassNameLinkUnique" => "unique('ClassNameLink')",
+	);
+	*/
+	static $indexes = array(
+		"ClassNameLink" => true,
+	);
+
 	function canAdd() {
 		return false;
 	}
@@ -71,6 +80,11 @@ class TemplateOverviewDescription extends DataObject {
 		if(!$this->ParentID) {
 			if($page = DataObject::get_one("TemplateOverviewPage")) {
 				$this->ParentID = $page->ID;
+			}
+		}
+		if($this->ID) {
+			if(DataObject::get_one("TemplateOverviewDescription", "ClassName = '".$this->ClassName."' AND ID <> ".$this->ID)) {
+				user_error("you can not create two TemplateOverviewDescription records with the same class name: ".$this->ClassName, E_USER_WARNING);
 			}
 		}
 		parent::onBeforeWrite();

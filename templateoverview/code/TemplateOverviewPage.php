@@ -49,6 +49,8 @@ class TemplateOverviewPage extends Page {
 
 	protected $ShowAll = false;
 
+	protected static $list_of_all_classes = null;
+
 	public function getCMSFields() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fields = parent::getCMSFields();
@@ -97,57 +99,63 @@ class TemplateOverviewPage extends Page {
 
 	public function ListOfAllClasses() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$ArrayOfAllClasses =  Array();
-		$classes = ClassInfo::subclassesFor("SiteTree");
-		foreach($classes as $className) {
-			if(!in_array($className, self::$classes_to_exclude)) {
-				if($this->ShowAll) {
-					$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
-					$count = 0;
-					if(is_object($objects) && $objects->count()) {
-						foreach($objects as $obj) {
-							$object = $this->createPageObject($obj, $count++, $className);
-							$ArrayOfAllClasses[$object->indexNumber] = clone $object;
+			if(!self::$list_of_all_classes)  {
+			$ArrayOfAllClasses =  Array();
+			$classes = ClassInfo::subclassesFor("SiteTree");
+			foreach($classes as $className) {
+				if(!in_array($className, self::$classes_to_exclude)) {
+					if($this->ShowAll) {
+						$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
+						$count = 0;
+						if(is_object($objects) && $objects->count()) {
+							foreach($objects as $obj) {
+								$object = $this->createPageObject($obj, $count++, $className);
+								$ArrayOfAllClasses[$object->indexNumber] = clone $object;
+							}
 						}
 					}
+					else {
+						$obj = null;
+						$objects = DataObject::get($className, "ClassName = '".$className."'", 'RAND() ASC', '', 1);
+						if(is_object($objects) && $objects->count()) {
+							$obj = $objects->First();
+							$extension = '';
+							if(Versioned::current_stage() == "Live") {
+								$extension = "_Live";
+							}
+							$count = DB::query("Select COUNT(*) from {$bt}SiteTree{$extension}{$bt} where {$bt}ClassName{$bt} = '".$obj->ClassName."'")->value();
+						}
+						else {
+							$obj = singleton($className);
+							$count = 0;
+						}
+						$object = $this->createPageObject($obj, $count, $className);
+						$object->TemplateOverviewDescription = $this->TemplateDetails($className);
+						$ArrayOfAllClasses[$object->indexNumber] = clone $object;
+					}
 				}
-				else {
-					$obj = null;
-					$objects = DataObject::get($className, "ClassName = '".$className."'", 'RAND() ASC', '', 1);
-					if(is_object($objects) && $objects->count()) {
-						$obj = $objects->First();
-						$count = DB::query("Select COUNT(*) from {$bt}SiteTree_Live{$bt} where {$bt}ClassName{$bt} = '".$obj->ClassName."'")->value();
+			}
+			ksort($ArrayOfAllClasses);
+			self::$list_of_all_classes =  new DataObjectSet();
+			$currentClassname = '';
+			if($c = Controller::curr()) {
+				if($d = $c->dataRecord) {
+					$currentClassname = $d->ClassName;
+				}
+			}
+			if(count($ArrayOfAllClasses)) {
+				foreach($ArrayOfAllClasses as $item) {
+					if($item->ClassName == $currentClassname) {
+						$item->LinkingMode = "current";
 					}
 					else {
-						$obj = singleton($className);
-						$count = 0;
+						$item->LinkingMode = "link";
 					}
-					$object = $this->createPageObject($obj, $count, $className);
-					$object->TemplateOverviewDescription = $this->TemplateDetails($className);
-					$ArrayOfAllClasses[$object->indexNumber] = clone $object;
+					self::$list_of_all_classes->push($item);
 				}
 			}
 		}
-		ksort($ArrayOfAllClasses);
-		$doSet =  new DataObjectSet();
-		$currentClassname = '';
-		if($c = Controller::curr()) {
-			if($d = $c->dataRecord) {
-				$currentClassname = $d->ClassName;
-			}
-		}
-		if(count($ArrayOfAllClasses)) {
-			foreach($ArrayOfAllClasses as $item) {
-				if($item->ClassName == $currentClassname) {
-					$item->LinkingMode = "current";
-				}
-				else {
-					$item->LinkingMode = "link";
-				}
-				$doSet->push($item);
-			}
-		}
-		return $doSet;
+		return self::$list_of_all_classes;
 	}
 
 	function showall () {
