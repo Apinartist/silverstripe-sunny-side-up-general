@@ -47,7 +47,7 @@ class TemplateOverviewPage extends Page {
 
 	protected $counter = 0;
 
-	protected $ShowAll = false;
+	protected $showAll = false;
 
 	protected static $list_of_all_classes = null;
 
@@ -104,7 +104,7 @@ class TemplateOverviewPage extends Page {
 			$classes = ClassInfo::subclassesFor("SiteTree");
 			foreach($classes as $className) {
 				if(!in_array($className, self::$classes_to_exclude)) {
-					if($this->ShowAll) {
+					if($this->showAll) {
 						$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
 						$count = 0;
 						if(is_object($objects) && $objects->count()) {
@@ -158,8 +158,8 @@ class TemplateOverviewPage extends Page {
 		return self::$list_of_all_classes;
 	}
 
-	function showall () {
-		$this->ShowAll = true;
+	function ShowAll () {
+		$this->showAll = true;
 		return array();
 	}
 
