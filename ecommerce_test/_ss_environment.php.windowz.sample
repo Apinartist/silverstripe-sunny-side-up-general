@@ -13,4 +13,4 @@ define('SS_DATABASE_PASSWORD', 'root');
 define('SS_DEFAULT_ADMIN_USERNAME','admin');
 define('SS_DEFAULT_ADMIN_PASSWORD','test');
 /* The database class to use, MySQLDatabase, MSSQLDatabase, etc. defaults to MySQLDatabase */
-define('SS_DATABASE_CLASS','SQLiteDatabase');
+define('SS_DATABASE_CLASS','MySQLDatabase');
