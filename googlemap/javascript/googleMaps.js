@@ -194,6 +194,7 @@ GMC.prototype.addViewFinder = function (width, height) {
 	);
 }
 GMC.prototype.zoomTo = function (latitude, longitude, zoom) {
+	//console.debug(latitude+","+longitude+","+zoom);
 	latitude = this.checkLatitude(latitude);
 	longitude = this.checkLongitude(longitude);
 	zoom = this.checkZoom(zoom);
@@ -744,13 +745,13 @@ GMC.prototype.processXml = function(doc) {
 		if (pointCount > 1) {
 			//map.setZoom(map.getBoundsZoomLevel(that.bounds));
 			this.zoomTo(this.bounds.getCenter().lat(), this.bounds.getCenter().lng(), map.getBoundsZoomLevel(this.bounds));
-			//map.setCenter(this.bounds.getCenter());
+			map.setCenter(this.bounds.getCenter());
 		}
 		else {
 			map.panTo(point);
 		}
 		this.updateLists();
-		this.zoomTo(groupInfo.a, groupInfo.o, groupInfo.z);
+		//this.zoomTo(groupInfo.a, groupInfo.o, groupInfo.z);
 		if(!map.getInfoWindow().isHidden()) {
 			map.closeInfoWindow();
 		}

@@ -494,8 +494,8 @@ class GoogleMap extends ViewableData {
 				mapControlSizeOneToThree:'.self::$MapControlSizeOneToThree.',
 				mapScaleInfoSizeInPixels:'.intval(self::$MapScaleInfoSizeInPixels + 0).',
 		/* START POSITION*/
-				defaultLatitude:'.intval(self::$DefaultLatitude+0).',
-				defaultLongitude:'.intval(self::$DefaultLongitude+0).',
+				defaultLatitude:'.floatval(self::$DefaultLatitude+0).',
+				defaultLongitude:'.floatval(self::$DefaultLongitude+0).',
 				defaultZoom:'.intval(self::$DefaultZoom+0).',
 		/* SERVER INTERACTION */
 				updateServerUrlAddressSearchPoint: "'.$this->getUpdateServerUrlAddressSearchPoint().'",
