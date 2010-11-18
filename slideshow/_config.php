@@ -14,6 +14,7 @@
 //SlideShowDecorator::set_use_custom_javascript(false); //if true, this will search for myproject/javascript/SlideShow.js myproject is usually called mysite.
 //SlideShowDecorator::set_page_classes_without_slideshow(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //SlideShowDecorator::set_page_classes_with_slideshow(array("HomePage")); //ONLY shown on specified classes
+user_error("this module has been DEPRECIATED", E_USER_NOTICE);
 //===================---------------- END slideshow MODULE ----------------===================
 
 
