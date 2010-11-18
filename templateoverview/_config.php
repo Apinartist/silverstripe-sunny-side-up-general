@@ -13,5 +13,6 @@
 //MAY SET
 //if(Director::isDev()) {Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');}
 //TemplateOverviewPage::set_auto_include(true);
+//LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
 //===================---------------- END templateoverview MODULE ----------------===================
 

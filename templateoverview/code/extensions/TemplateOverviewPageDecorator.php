@@ -13,7 +13,6 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 		if(method_exists($this->owner,'getHowToMakeThisTemplateWorkArray')) {
 			$array = $this->owner->getHowToMakeThisTemplateWorkArray();
 			if(is_array($array) && count($array)) {
-				Requirements::customCSS("#HowToMakeThisPageWorkList {list-style: disc;}");
 				$fields->addFieldToTab("Root.Help", new LiteralField(
 					"HowToMakeThisPageWork",
 					'<h3 id="HowToMakeThisPageWorkHeader">'._t("TemplateOverviewPageDecorator.HOWTOMAKEITWORKHEADER", "How to make this page work").'</h3>'
