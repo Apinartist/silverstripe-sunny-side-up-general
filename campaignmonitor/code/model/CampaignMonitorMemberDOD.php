@@ -2,7 +2,7 @@
 
 /**
  *@author nicolaas [at] sunnysideup.co.nz
- *
+ *TO DO: only apply the on afterwrite to people in the subscriber group.
  *
  **/
 
@@ -34,19 +34,22 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 				//external database
 				$CMWrapper = new CampaignMonitorWrapper();
 				$CMWrapper->setListID ($list->ListID);
-				if($CMWrapper->subscriberIsUnconfirmed($this->owner->Email)) {
+				$userIsUnsubscribed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
+				if($userIsUnsubscribed || $userIsUnsubscribed == "unknown") {
 					// do nothing
 				}
 				else {
+					$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
 					if(!isset($campaignMonitorSubscriptions[$list->ID])) {
-						if($CMWrapper->subscriberIsSubscribed($this->owner->Email)){
+						if($userIsSubscribed || $userIsSubscribed != "unknown"){
 							if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
 								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 							}
 						}
 					}
 					else {
-						if(!$CMWrapper->subscriberIsSubscribed($this->owner->Email) && !$CMWrapper->subscriberIsUnsubscribed($this->owner->Email)) {
+						$userIsUnsubscribed = $CMWrapper->subscriberIsUnsubscribed($this->owner->Email);
+						if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "unknown" && $userIsSubscribed != "unkown") {
 							if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
 								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 							}
