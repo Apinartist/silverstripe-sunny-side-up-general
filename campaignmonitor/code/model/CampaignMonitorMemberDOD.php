@@ -35,13 +35,13 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 				$CMWrapper = new CampaignMonitorWrapper();
 				$CMWrapper->setListID ($list->ListID);
 				$userIsUnsubscribed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
-				if($userIsUnsubscribed || $userIsUnsubscribed == "unknown") {
+				if($userIsUnsubscribed || $userIsUnsubscribed == "?") {
 					// do nothing
 				}
 				else {
 					$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
 					if(!isset($campaignMonitorSubscriptions[$list->ID])) {
-						if($userIsSubscribed || $userIsSubscribed != "unknown"){
+						if($userIsSubscribed || $userIsSubscribed != "?"){
 							if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
 								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 							}
@@ -49,7 +49,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 					}
 					else {
 						$userIsUnsubscribed = $CMWrapper->subscriberIsUnsubscribed($this->owner->Email);
-						if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "unknown" && $userIsSubscribed != "unkown") {
+						if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "?" && $userIsSubscribed != "?") {
 							if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
 								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 							}

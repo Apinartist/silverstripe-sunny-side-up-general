@@ -359,8 +359,8 @@ class CampaignMonitorWrapper extends Object {
 				}
 			}
 		}
-		user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_NOTICE);
-		return "unknown";
+		//user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_NOTICE);
+		return "?";
 	}
 
 	public function subscriberIsUnconfirmed($subscriberEmail) {
@@ -382,8 +382,8 @@ class CampaignMonitorWrapper extends Object {
 				}
 			}
 		}
-		user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_NOTICE);
-		return "unknown";
+		//user_error("could not establish if '$subscriberEmail' is subscribed.", E_USER_NOTICE);
+		return "?";
 	}
 
 	public function subscriberIsUnsubscribed($subscriberEmail) {
@@ -405,7 +405,8 @@ class CampaignMonitorWrapper extends Object {
 				}
 			}
 		}
-		user_error("could not establish subscriber if '$subscriberEmail' is unsubscribed.", E_USER_WARNING);
+		//user_error("could not establish subscriber if '$subscriberEmail' is unsubscribed.", E_USER_NOTICE);
+		return "?";
 	}
 
 	public function subscriberGetSingleSubscriber($subscriberEmail) {
