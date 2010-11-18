@@ -17,7 +17,7 @@ Director::addRules(10, array(
 //**** NB, dont forget to theme the templates (and also JS, as shown below!)
 //MUST SET
 //Object::add_extension('SiteTree', 'AdvertisementDecorator');
-//RECOMMENDED
+//MAY SET
 //AdvertisementDecorator::set_use_custom_javascript(false); //if true, this will search for myproject/javascript/SlideShow.js myproject is usually called mysite.
 //AdvertisementDecorator::set_page_classes_without_advertisements(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //AdvertisementDecorator::set_page_classes_with_advertisements(array("HomePage")); //ONLY shown on specified classes
