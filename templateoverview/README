@@ -46,6 +46,18 @@ Installation Instructions
 into mysite/_config.php file and edit settings as required.
 NB. the idea is not to edit the module at all, but instead customise
 it from your mysite folder, so that you can upgrade the module without redoing the settings.
+3. to any page template, add the following function:
+
+
+	function getHowToMakeThisTemplateWorkArray() {
+		$a = array();
+		$a[] = "Select header and three items for section one";
+		$a[] = "Select header and three items for section two";
+		return $a;
+	}
+
+To provide help instructions.
+
 
 
 Adding Overlays

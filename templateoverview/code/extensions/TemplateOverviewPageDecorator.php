@@ -10,6 +10,17 @@
 class TemplateOverviewPageDecorator extends DataObjectDecorator {
 
 	function updateCMSFields(&$fields) {
+		if(method_exists($this->owner,'getHowToMakeThisTemplateWorkArray')) {
+			$array = $this->owner->getHowToMakeThisTemplateWorkArray();
+			if(is_array($array) && count($array)) {
+				Requirements::customCSS("#HowToMakeThisPageWorkList {list-style: disc;}");
+				$fields->addFieldToTab("Root.Help", new LiteralField(
+					"HowToMakeThisPageWork",
+					'<h3 id="HowToMakeThisPageWorkHeader">'._t("TemplateOverviewPageDecorator.HOWTOMAKEITWORKHEADER", "How to make this page work").'</h3>'
+						.'<ul id="HowToMakeThisPageWorkList"><li>'.implode("</li><li>",$array).'</li></ul>'
+				));
+			}
+		}
 		$obj = DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$this->owner->ClassName."'");
 		if($obj) {
 			if($obj->ToDoListHyperLink) {
