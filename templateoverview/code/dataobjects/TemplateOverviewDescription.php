@@ -64,7 +64,7 @@ class TemplateOverviewDescription extends DataObject {
 	}
 
 	function canDelete() {
-		return false;
+		return true;
 	}
 
 	function ClassNameLinkFancy() {
