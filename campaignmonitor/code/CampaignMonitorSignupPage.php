@@ -34,6 +34,7 @@ class CampaignMonitorSignupPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->addFieldToTab('Root.Content.CreateNewMailOut', new LiteralField('CreateNewCampaign', '<p>To create a new mail out go to <a href="'.CampaignMonitorWrapper::get_campaign_monitor_url().'">Campaign Monitor</a> site.</p>'));
 		$fields->addFieldToTab('Root.Content.RelatedList', new LiteralField('ListIDExplanation', '<p>The way this works is that each sign-up page needs to be associated with a campaign monitor subscription list.</p>'));
 		$fields->addFieldToTab('Root.Content.RelatedList', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
 		$fields->addFieldToTab('Root.Content.RelatedList', new TextField('ListTitle', 'List title to be shown...'));
