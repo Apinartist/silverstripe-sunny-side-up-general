@@ -83,7 +83,7 @@ class TemplateOverviewDescription extends DataObject {
 			}
 		}
 		if($this->ID) {
-			if(DataObject::get_one("TemplateOverviewDescription", "ClassName = '".$this->ClassName."' AND ID <> ".$this->ID)) {
+			if(DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$this->ClassNameLink."' AND ID <> ".$this->ID)) {
 				user_error("you can not create two TemplateOverviewDescription records with the same class name: ".$this->ClassName, E_USER_WARNING);
 			}
 		}
