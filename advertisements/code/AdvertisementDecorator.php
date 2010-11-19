@@ -107,79 +107,81 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 	function AdvertisementSet() {
-		if(!self::$advertisements_dos) {
-			$doSet = new DataObjectSet();
-			$browseSet = $this->advertisementsToShow();
-			if($browseSet) {
-				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-				Requirements::javascript("advertisements/javascript/Advertisements.js");
-				$style = null;
-				if($this->owner->AdvertisementStyleID) {
-					$style = $this->owner->AdvertisementStyle();
-				}
-				if(self::$use_custom_javascript) {
-					$file = project()."/javascript/AdvertisementsExecutive.js";
-				}
-				elseif($style) {
-					$file = $style->FileLocation;
-				}
-				else {
-					$file = "advertisements/javascript/AdvertisementsExecutive.js";
-				}
-				if($file) {
-					Requirements::javascript($file);
-				}
-				Requirements::themedCSS("Advertisements");
-				foreach($browseSet as $Advertisement) {
-					$imageID = intval($Advertisement->AdvertisementImageID+ 0);
-					if($imageID) {
-						$imageObject = DataObject::get_by_id("Image", $imageID);
-						if($imageObject) {
-							if($imageObject->ID) {
-								$title = Convert::raw2att($imageObject->Title);
-								$w = Advertisement::get_width();
-								$h = Advertisement::get_height();
-								if($h && $w) {
-									$resizedImage = $imageObject->SetSize($w, $h);
-								}
-								elseif($h) {
-									$resizedImage = $imageObject->SetHeight($h);
-								}
-								elseif($w) {
-									$resizedImage = $imageObject->SetWidth($w);
-								}
-								else{
-									$resizedImage = $imageObject;
-								}
+		if($this->classHasAdvertisements($this->owner->ClassName)) {
+			if(!self::$advertisements_dos) {
+				$doSet = new DataObjectSet();
+				$browseSet = $this->advertisementsToShow();
+				if($browseSet) {
+					Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+					Requirements::javascript("advertisements/javascript/Advertisements.js");
+					$style = null;
+					if($this->owner->AdvertisementStyleID) {
+						$style = $this->owner->AdvertisementStyle();
+					}
+					if(self::$use_custom_javascript) {
+						$file = project()."/javascript/AdvertisementsExecutive.js";
+					}
+					elseif($style) {
+						$file = $style->FileLocation;
+					}
+					else {
+						$file = "advertisements/javascript/AdvertisementsExecutive.js";
+					}
+					if($file) {
+						Requirements::javascript($file);
+					}
+					Requirements::themedCSS("Advertisements");
+					foreach($browseSet as $Advertisement) {
+						$imageID = intval($Advertisement->AdvertisementImageID+ 0);
+						if($imageID) {
+							$imageObject = DataObject::get_by_id("Image", $imageID);
+							if($imageObject) {
+								if($imageObject->ID) {
+									$title = Convert::raw2att($imageObject->Title);
+									$w = Advertisement::get_width();
+									$h = Advertisement::get_height();
+									if($h && $w) {
+										$resizedImage = $imageObject->SetSize($w, $h);
+									}
+									elseif($h) {
+										$resizedImage = $imageObject->SetHeight($h);
+									}
+									elseif($w) {
+										$resizedImage = $imageObject->SetWidth($w);
+									}
+									else{
+										$resizedImage = $imageObject;
+									}
 
-								if($resizedImage) {
-									$record = array(
-										'Image' => $resizedImage,
-										'Title' => $title,
-										'Link' => $Advertisement->Link()
-									);
-									$doSet->push(new ArrayData($record));
+									if($resizedImage) {
+										$record = array(
+											'Image' => $resizedImage,
+											'Title' => $title,
+											'Link' => $Advertisement->Link()
+										);
+										$doSet->push(new ArrayData($record));
+									}
+									else {
+										//debug::show("no resized image");
+									}
 								}
 								else {
-									//debug::show("no resized image");
+									//debug::show("no image");
 								}
 							}
 							else {
-								//debug::show("no image");
+								//debug::show("could not find image");
 							}
 						}
 						else {
-							//debug::show("could not find image");
+							//debug::show("no imageID ($imageID) ");
 						}
 					}
-					else {
-						//debug::show("no imageID ($imageID) ");
-					}
 				}
+				self::$advertisements_dos = $doSet;
 			}
-			self::$advertisements_dos = $doSet;
+			return self::$advertisements_dos;
 		}
-		return self::$advertisements_dos;
 	}
 
 
