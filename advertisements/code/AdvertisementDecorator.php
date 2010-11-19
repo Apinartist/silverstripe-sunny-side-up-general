@@ -113,16 +113,22 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			if($browseSet) {
 				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 				Requirements::javascript("advertisements/javascript/Advertisements.js");
+				$style = null;
+				if($this->owner->AdvertisementStyleID) {
+					$style = $this->owner->AdvertisementStyle();
+				}
 				if(self::$use_custom_javascript) {
 					$file = project()."/javascript/AdvertisementsExecutive.js";
 				}
-				elseif($style = $this->owner->AdvertisementStyle()) {
+				elseif($style) {
 					$file = $style->FileLocation;
 				}
 				else {
 					$file = "advertisements/javascript/AdvertisementsExecutive.js";
 				}
-				Requirements::javascript($file);
+				if($file) {
+					Requirements::javascript($file);
+				}
 				Requirements::themedCSS("Advertisements");
 				foreach($browseSet as $Advertisement) {
 					$imageID = intval($Advertisement->AdvertisementImageID+ 0);

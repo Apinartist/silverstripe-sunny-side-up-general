@@ -18,7 +18,7 @@ Director::addRules(10, array(
 //MUST SET
 //Object::add_extension('SiteTree', 'AdvertisementDecorator');
 //MAY SET
-//AdvertisementDecorator::set_use_custom_javascript(false); //if true, this will search for myproject/javascript/SlideShow.js myproject is usually called mysite.
+//AdvertisementDecorator::set_use_custom_javascript(false); //if true, this will search for myproject/javascript/AdvertisementsExecutive.js | myproject is usually called mysite.
 //AdvertisementDecorator::set_page_classes_without_advertisements(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //AdvertisementDecorator::set_page_classes_with_advertisements(array("HomePage")); //ONLY shown on specified classes
 //AdvertisementAdmin::set_menu_title("Manage Slides");

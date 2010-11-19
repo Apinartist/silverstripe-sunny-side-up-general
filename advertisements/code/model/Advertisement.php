@@ -7,11 +7,11 @@
 
 class Advertisement extends DataObject {
 
-	protected static $width = 100;
+	protected static $width = 0;
 		static function set_width($v) {self::$width = $v;}
 		static function get_width() {return self::$width;}
 
-	protected static $height = 100;
+	protected static $height = 0;
 		static function set_height($v) {self::$height = $v;}
 		static function get_height() {return self::$height;}
 
