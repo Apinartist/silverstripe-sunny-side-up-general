@@ -5,15 +5,11 @@ $project = 'mysite';
 
 global $database;
 $database = 'silverstripe';
-
 require_once('conf/ConfigureFromEnv.php');
-
 MySQLDatabase::set_connection_charset('utf8');
-
 // This line set's the current theme. More themes can be
 // downloaded from http://www.silverstripe.org/themes/
 SSViewer::set_theme('blackcandy');
-
 // enable nested URLs for this site (e.g. page/sub-page/)
 SiteTree::enable_nested_urls();
 
@@ -21,10 +17,14 @@ SiteTree::enable_nested_urls();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_email("sales@sunnysideup.co.nz");
-Order::set_email("thank you for your order at www.sunnysideup.co.nz");
+Order::set_email("your friendly website <sales@sunnysideup.co.nz>");
+Order::set_subject("thank you for your order at www.sunnysideup.co.nz");
 //Order::set_modifiers(array("MyModifierOne", "MyModifierTwo");
+
+// * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
 Payment::set_site_currency('NZD');
+Geoip::$default_country_code = "NZ";
+
 
 // * * * SHOPPING CART AND ORDER
 //ShoppingCart::set_fixed_country_code("NZ"); //always use the same country code
