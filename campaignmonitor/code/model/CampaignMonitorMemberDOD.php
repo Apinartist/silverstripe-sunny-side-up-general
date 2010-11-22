@@ -41,7 +41,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 				else {
 					$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
 					if(!isset($campaignMonitorSubscriptions[$list->ID])) {
-						if($userIsSubscribed || $userIsSubscribed != "?"){
+						if($userIsSubscribed && $userIsSubscribed != "?"){
 							if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
 								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 							}
