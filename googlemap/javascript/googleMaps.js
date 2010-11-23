@@ -356,18 +356,18 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 	var point = m.getPoint();
 	var options = this.opts.infoWindowOptions || {};
 	//add delete category
-	var extraLinks = '';
+	var infoTabExtraLinksArray = new Array();
 	var obscuringLinks = '';
 	var pointCount = this.layerInfo[m.layerId].pointCount;
 	if(pointCount > 1) {
-		//extraLinks += ', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'hideGroup\');">Hide Group ('+ pointCount +' points)</a>';
+		//infoTabExtraLinksArray.push(', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'hideGroup\');">Hide Group ('+ pointCount +' points)</a>');
 		GEvent.addListener(m, "hideGroup", function() {
 				GMO.changeLayerVisibility(m.layerId);
 				map.closeInfoWindow();
 		});
 	}
 	if(this.opts.addAntipodean) {
-		extraLinks += ', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickAntipodean\');">drill a hole</a>';
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickAntipodean\');">drill a hole</a>');
 		GEvent.addListener(m, "clickAntipodean", function() {
 			map.setZoom(6);
 			var point = GMO.antipodeanPointer(m.getPoint().lat(), m.getPoint().lng());
@@ -380,9 +380,8 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 			GMO.processXml(GMO.createPointXml(nameString, pointLngLat, description, latitude, longitude, zoom));
 		});
 	}
-	var moveNotice = '';
 	if(m.draggable) {
-		moveNotice = ' - <b>marker can be dragged to new location once this info window has been closed</b>';
+		infoTabExtraLinksArray.push('<b>marker can be dragged to new location once this info window has been closed</b>');
 	}
 	if(hiddenMarkerArray.length) {
 		obscuringLinks += ' <p><span class="partialObscuring">This marker (partially) obscures the following point(s): ';
@@ -399,24 +398,22 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 		obscuringLinks += "</span></p>";
 	}
 	//basic html
-	var html = '<div id="infoWindowTab1" class="infoWindowTab">' + obscuringLinks + '<h1>'+name+'</h1><div>'+desc+'</div>'
-		+ '<p class="infoTabExtraLinks">';
+	var html = '<div id="infoWindowTab1" class="infoWindowTab">' + obscuringLinks + '<h1>'+name+'</h1><div>'+desc+'</div>';
 	if(this.opts.addZoomInButton) {
-		html += '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickZoomIn\')">'+this.opts.addZoomInButton+'</a>, ';
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickZoomIn\')">'+this.opts.addZoomInButton+'</a>');
 	}
 	if(this.opts.addCloseUpButton) {
-		html += '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickCloseUp\')">'+this.opts.addCloseUpButton+'</a> ';
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickCloseUp\')">'+this.opts.addCloseUpButton+'</a>');
 	}
 	if(this.opts.addDeleteMarkerButton) {
-		html +=  '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">'+this.opts.addDeleteMarkerButton+'</a>, ';
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">'+this.opts.addDeleteMarkerButton+'</a>');
 	}
 	if(this.opts.addCloseUpButton) {
-		html +=  '<a href="javascript:void(0)" onclick="map.closeInfoWindow();">'+this.opts.addCloseWindowButton+'</a>';
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="map.closeInfoWindow();">'+this.opts.addCloseWindowButton+'</a>');
 	}
-	html += ''
-		+ extraLinks
-		+ moveNotice
-		+ '.</p>';
+	if(infoTabExtraLinksArray.length) {
+		html += '<p class="infoTabExtraLinks">'+infoTabExtraLinksArray.join(", ")+'.</p>';
+	}
 	GEvent.addListener(m, "clickZoomIn", function() {
 		GMO.zoomTo(m.getPoint().lat(), m.getPoint().lng(), map.getZoom() + 2);
 	});
@@ -516,10 +513,10 @@ GMC.prototype.openPolyInfoTabs = function( m, pbounds) {
 	var desc = m.markerDesc;
 	var options = this.opts.infoWindowOptions || {};
 	//add delete category
-	var extraLinks = '';
+	var hideGroupLink = '';
 	var pointCount = this.layerInfo[m.layerId].pointCount;
 	if(pointCount > 1) {
-		//extraLinks += ', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'hideGroup\');">Hide Group ('+ pointCount +' points)</a>';
+		//hideGroupLink += ', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'hideGroup\');">Hide Group ('+ pointCount +' points)</a>';
 		GEvent.addListener(m, "hideGroup", function() {
 				GMO.changeLayerVisibility(m.layerId);
 				map.closeInfoWindow();
@@ -530,7 +527,7 @@ GMC.prototype.openPolyInfoTabs = function( m, pbounds) {
 		+ '<p class="infoTabBasicLinks">'
 		+ '<a href="javascript:void(0)" onclick="map.closeInfoWindow();">Close Window</a>'
 		+ ', <a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">Remove Item</a>'
-		+ extraLinks
+		+ hideGroupLink
 		+ '.</p>'
 	GEvent.addListener(m, "clickHideMe", function() {
 		map.closeInfoWindow();
