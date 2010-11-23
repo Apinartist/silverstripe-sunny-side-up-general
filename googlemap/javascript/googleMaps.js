@@ -400,11 +400,20 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 	}
 	//basic html
 	var html = '<div id="infoWindowTab1" class="infoWindowTab">' + obscuringLinks + '<h1>'+name+'</h1><div>'+desc+'</div>'
-		+ '<p class="infoTabExtraLinks">'
-		+ '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickZoomIn\')">Zoom In</a>, '
-		+ '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickCloseUp\')">Close-Up</a> '
-		//+ '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">Delete Marker</a>, '
-		//+ '<a href="javascript:void(0)" onclick="map.closeInfoWindow();">Close Window</a>'
+		+ '<p class="infoTabExtraLinks">';
+	if(this.opts.addZoomInButton) {
+		html += '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickZoomIn\')">'+this.opts.addZoomInButton+'</a>, ';
+	}
+	if(this.opts.addCloseUpButton) {
+		html += '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickCloseUp\')">'+this.opts.addCloseUpButton+'</a> ';
+	}
+	if(this.opts.addDeleteMarkerButton) {
+		html +=  '<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">'+this.opts.addDeleteMarkerButton+'</a>, ';
+	}
+	if(this.opts.addCloseUpButton) {
+		html +=  '<a href="javascript:void(0)" onclick="map.closeInfoWindow();">'+this.opts.addCloseWindowButton+'</a>';
+	}
+	html += ''
 		+ extraLinks
 		+ moveNotice
 		+ '.</p>';

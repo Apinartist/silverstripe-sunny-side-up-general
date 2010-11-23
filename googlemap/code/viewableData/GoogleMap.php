@@ -51,6 +51,14 @@ class GoogleMap extends ViewableData {
 		static function setAddDirections($v) {self::$AddDirections = $v;}
 	protected static $AddCurrentAddressFinder = false;
 		static function setAddCurrentAddressFinder($v) {self::$AddCurrentAddressFinder = $v;}
+	protected static $AddZoomInButton = false;
+		static function setAddZoomInButton($v) {self::$AddZoomInButton = $v;}
+	protected static $AddCloseUpButton = false;
+		static function setAddCloseUpButton($v) {self::$AddCloseUpButton = $v;}
+	protected static $AddDeleteMarkerButton = false;
+		static function setAddDeleteMarkerButton($v) {self::$AddDeleteMarkerButton = $v;}
+	protected static $AddCloseWindowButton = false;
+		static function setAddCloseWindowButton($v) {self::$AddCloseWindowButton = $v;}
 
 
 	/* MARKERS */
@@ -470,6 +478,10 @@ class GoogleMap extends ViewableData {
 				addAntipodean:'.$this->showFalseOrTrue(self::$AddAntipodean).',
 				addDirections:'.$this->showFalseOrTrue(self::$AddDirections).',
 				addCurrentAddressFinder:'.$this->showFalseOrTrue(self::$AddCurrentAddressFinder).',
+				addZoomInButton:'.$this->showFalseOrTrue(self::$AddZoomInButton).',
+				addCloseUpButton:'.$this->showFalseOrTrue(self::$AddCloseUpButton).',
+				addDeleteMarkerButton:'.$this->showFalseOrTrue(self::$AddDeleteMarkerButton).',
+				addCloseWindowButton:'.$this->showFalseOrTrue(self::$AddCloseWindowButton).',
 		/* MARKER AND ICONS (include title to have a title)*/
 				addPointsToMap:'.$this->showFalseOrTrue(self::$AddPointsToMap).',
 				markerOptions: {bouncy:true,title: "click me", draggable: true},

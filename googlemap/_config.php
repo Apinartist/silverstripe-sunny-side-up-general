@@ -69,6 +69,10 @@ GoogleMap::setStatusDivId(""); //ID for DIV that shows status of map
 // INFOWINDOW
 GoogleMap::setInfoWindowOptions("{maxWidth:280, zoomLevel:17, mapType:G_HYBRID_MAP}"); //info window options (see http://code.google.com/apis/maps/documentation/reference.html for details)
 GoogleMap::setAddCurrentAddressFinder(false); //add a tab with the address finder
+GoogleMap::setAddZoomInButton(""); //add a "zoom in" link on info window, should be emptry string or text for button.
+GoogleMap::setAddCloseUpButton(""); //add a "close-up" link on info window, shouldbe emptry string or text for button.
+GoogleMap::setAddDeleteMarkerButton(""); //add a "delete marker" link on info window, shouldbe emptry string or text for button.
+GoogleMap::setAddCloseWindowButton(""); //add a "close window" link on info window, shouldbe emptry string or text for button.
 
 // MARKER AND ICONS (include title to have a title)
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
