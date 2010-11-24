@@ -131,54 +131,8 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 						Requirements::javascript($file);
 					}
 					Requirements::themedCSS("Advertisements");
-					foreach($browseSet as $Advertisement) {
-						$imageID = intval($Advertisement->AdvertisementImageID+ 0);
-						if($imageID) {
-							$imageObject = DataObject::get_by_id("Image", $imageID);
-							if($imageObject) {
-								if($imageObject->ID) {
-									$title = Convert::raw2att($imageObject->Title);
-									$w = Advertisement::get_width();
-									$h = Advertisement::get_height();
-									if($h && $w) {
-										$resizedImage = $imageObject->SetSize($w, $h);
-									}
-									elseif($h) {
-										$resizedImage = $imageObject->SetHeight($h);
-									}
-									elseif($w) {
-										$resizedImage = $imageObject->SetWidth($w);
-									}
-									else{
-										$resizedImage = $imageObject;
-									}
-
-									if($resizedImage) {
-										$record = array(
-											'Image' => $resizedImage,
-											'Title' => $title,
-											'Link' => $Advertisement->Link()
-										);
-										$doSet->push(new ArrayData($record));
-									}
-									else {
-										//debug::show("no resized image");
-									}
-								}
-								else {
-									//debug::show("no image");
-								}
-							}
-							else {
-								//debug::show("could not find image");
-							}
-						}
-						else {
-							//debug::show("no imageID ($imageID) ");
-						}
-					}
+					self::$advertisements_dos = $browseSet;
 				}
-				self::$advertisements_dos = $doSet;
 			}
 			return self::$advertisements_dos;
 		}

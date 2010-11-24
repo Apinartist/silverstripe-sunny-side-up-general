@@ -72,14 +72,15 @@ class Advertisement extends DataObject {
 		static function set_plural_name($v) {self::$plural_name = $v;}
 
 	function getLink() {
+		$link = '';
 		if($this->ExternalLink) {
 			$link = $this->ExternalLink;
+
 		}
-		elseif($this->LinkedPage()) {
-			$link = $this->LinkedPage()->Link();
-		}
-		else {
-			$link = '';
+		elseif($this->LinkedPageID) {
+			if($this->LinkedPage()) {
+				$link = $this->LinkedPage()->Link();
+			}
 		}
 		return $link;
 	}
@@ -112,6 +113,8 @@ class Advertisement extends DataObject {
 		else {
 			$fields->addFieldToTab("Root.Position", new NumericField($name = "Sort", "Sort undex number (the lower the number, the earlier it shows up"));
 		}
+		$fields->removeFieldFromTab("Root.Main", "AlternativeSortNumber");
+
 		return $fields;
 	}
 
@@ -146,7 +149,42 @@ class Advertisement extends DataObject {
 		}
 	}
 
-
+	function Image() {
+		$resizedImage = null;
+		$imageID = intval($this->AdvertisementImageID+ 0);
+		if($imageID) {
+			$imageObject = DataObject::get_by_id("Image", $imageID);
+			if($imageObject) {
+				if($imageObject->ID) {
+					$imageObject->Title = Convert::raw2att($this->Title);
+					$w = Advertisement::get_width();
+					$h = Advertisement::get_height();
+					if($h && $w) {
+						$resizedImage = $imageObject->SetSize($w, $h);
+					}
+					elseif($h) {
+						$resizedImage = $imageObject->SetHeight($h);
+					}
+					elseif($w) {
+						$resizedImage = $imageObject->SetWidth($w);
+					}
+					else{
+						$resizedImage = $imageObject;
+					}
+				}
+				else {
+					//debug::show("no image");
+				}
+			}
+			else {
+				//debug::show("could not find image");
+			}
+		}
+		else {
+			//debug::show("no imageID ($imageID) ");
+		}
+		return $resizedImage;
+	}
 
 
 
