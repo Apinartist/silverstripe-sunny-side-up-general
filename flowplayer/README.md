@@ -45,4 +45,12 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 		return $fields;
 	}
 
+// CONFIGURATIONS
+
 5. write your own FlowPlayerConfig variable (in javascript)
+
+6. refer to $f("MyPlayerID") to add more actions, etc...
+
+7. theme the FlowPlayer.ss  and FlowPlayer.css file
+
+

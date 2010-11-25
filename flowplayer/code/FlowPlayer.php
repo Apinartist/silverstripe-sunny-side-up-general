@@ -10,10 +10,10 @@ class FlowPlayer extends File {
 		static function set_flow_player_config_file($v) {self::$flow_player_config_file = $v;}
 		static function get_flow_player_config_file() {return self::$flow_player_config_file;}
 
-	function AbsoluteLink(){
+	function AbsoluteLink($IDString = "FlowPlayer"){
 		Requirements::javascript("flowplayer/thirdparty/flowplayer-3.2.4.min.js");
 		Requirements::javascript(self::get_flow_player_config_file());
-		Requirements::customScript('flowplayer("FlowPlayer", "flowplayer/thirdparty/flowplayer-3.2.5.swf", FlowPlayerConfig);', "FlowPlayerSWF");
+		Requirements::customScript('$f("'.$IDString.'", "flowplayer/thirdparty/flowplayer-3.2.5.swf", FlowPlayerConfig);', "FlowPlayerSWF");
 		Requirements::themedCSS("FlowPlayer");
 		return $this->getAbsoluteURL();
 	}
