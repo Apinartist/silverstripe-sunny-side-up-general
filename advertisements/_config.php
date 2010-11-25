@@ -22,8 +22,8 @@ Director::addRules(10, array(
 //AdvertisementDecorator::set_page_classes_without_advertisements(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //AdvertisementDecorator::set_page_classes_with_advertisements(array("HomePage")); //ONLY shown on specified classes
 //AdvertisementAdmin::set_menu_title("Manage Slides");
-//Advertisement::set_plural_name("Slides");
 //Advertisement::set_singular_name("Slide");
+//Advertisement::set_plural_name("Slides");
 //Advertisement::set_width(100);
 //Advertisement::set_height(100);
 //ADVANCED
@@ -34,5 +34,4 @@ Director::addRules(10, array(
 //Object::add_extension('Advertisement', 'DataObjectSorterDOD');
 //DataObjectSorterDOD::set_also_update_sort_field(true);
 //DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
-
 //===================---------------- END advertisements MODULE ----------------===================
