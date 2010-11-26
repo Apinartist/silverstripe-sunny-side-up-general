@@ -60,7 +60,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		}
 	}
 
-  public function addCampaignMonitorList($pagem, $alsoSynchroniseCMDatabase = false) {
+  public function addCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
     //internal database
 		$existingLists = $this->owner->CampaignMonitorSubscriptions();
 		if(!$existingLists) {
