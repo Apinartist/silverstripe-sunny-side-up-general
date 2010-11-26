@@ -13,7 +13,6 @@
 <div id="CampaignMonitorSignupPageFormHMTL" class="CampaignMonitorSignupPageDiv">
 	$FormHTML
 </div>
-<% end_if %>
 <% if CampaignMonitorCampaigns %>
 <h2>Previous Campaigns</h2>
 <ul>
