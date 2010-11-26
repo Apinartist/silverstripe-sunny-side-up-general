@@ -12,7 +12,7 @@
 //===================---------------- START campaignmonitor MODULE ----------------===================
 // -- MUST HAVE --
 //CampaignMonitorWrapper::set_campaign_monitor_url("http://yourcompany.createsend.com/");
-//CampaignMonitorWrapper::set_api_key("xxxxxxxxxxxxxxxxxxxx");
+//CampaignMonitorWrapper::set_api_key("xxxxxxxxxxxxxxxxxxxx"); (see http://yourcompany.createsend.com/admin/account/)
 //CampaignMonitorWrapper::set_client_ID("xxxxxxxxxxxxxxxxxxxx");
 //Object::add_extension('Member', 'CampaignMonitorMemberDOD');
 //===================---------------- END campaignmonitor MODULE ----------------===================
