@@ -51,6 +51,7 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 
 	function getHowToMakeThisTemplateWorkArray() {
 		$a = array();
+		//OR $a = parent::getHowToMakeThisTemplateWorkArray();
 		$a[] = "Select header and three items for section one";
 		$a[] = "Select header and three items for section two";
 		return $a;
