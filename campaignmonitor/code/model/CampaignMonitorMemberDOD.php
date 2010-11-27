@@ -18,33 +18,32 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 	}
 
 	protected function synchroniseCMDatabase() {
-
-		$componentSet = $this->owner->CampaignMonitorSubscriptions();
-		$campaignMonitorSubscriptions = $componentSet->getIdList();
 		$lists = DataObject::get("CampaignMonitorSignupPage");
 		if($lists) {
 			foreach($lists as $list) {
-				//external database
-				$CMWrapper = new CampaignMonitorWrapper();
-				$CMWrapper->setListID ($list->ListID);
-				$userIsUnconfirmed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
-				if($userIsUnconfirmed && $userIsUnconfirmed != "?") {
-					// do nothing
-				}
-				else {
-					$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
-					if(!isset($campaignMonitorSubscriptions[$list->ID])) {
-						if($userIsSubscribed && $userIsSubscribed != "?"){
-							if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
-								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
-							}
-						}
+				if($list->GroupID) {
+					//external database
+					$CMWrapper = new CampaignMonitorWrapper();
+					$CMWrapper->setListID ($list->ListID);
+					$userIsUnconfirmed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
+					if($userIsUnconfirmed && $userIsUnconfirmed != "?") {
+						// do nothing
 					}
 					else {
-						$userIsUnsubscribed = $CMWrapper->subscriberIsUnsubscribed($this->owner->Email);
-						if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "?" && $userIsSubscribed != "?") {
-							if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
-								user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+						$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
+						if($this->owner->inGroup($list->GroupID, $strict = TRUE)) {
+							if($userIsSubscribed && $userIsSubscribed != "?"){
+								if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
+									user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+								}
+							}
+						}
+						else {
+							$userIsUnsubscribed = $CMWrapper->subscriberIsUnsubscribed($this->owner->Email);
+							if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "?" && $userIsSubscribed != "?") {
+								if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
+									user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+								}
 							}
 						}
 					}
@@ -55,32 +54,32 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
   public function addCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
     //internal database
-		$existingLists = $this->owner->CampaignMonitorSubscriptions();
-		if(!$existingLists) {
-			user_error("can find relationship", E_USER_NOTICE);
+		if($page->GroupID) {
+			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
+				$groups = $this->Owner->Groups();
+				if($groups) {
+					$this->Owner->Groups()->add($gp);
+					if($alsoSynchroniseCMDatabase) {
+						$this->synchroniseCMDatabase();
+					}
+				}
+			}
 		}
-		else {
-	    $existingLists->add($page->ID);
-		}
-		if($alsoSynchroniseCMDatabase) {
-			$this->synchroniseCMDatabase();
-		}
-
   }
 
   public function removeCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
     //internal database
-		$existingLists = $this->owner->CampaignMonitorSubscriptions();
-		if(!$existingLists) {
-			//nothing to do...
+		if($page->GroupID) {
+			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
+				$groups = $this->Owner->Groups();
+				if($groups) {
+					$this->Owner->Groups()->remove($gp);
+					if($alsoSynchroniseCMDatabase) {
+						$this->synchroniseCMDatabase();
+					}
+				}
+			}
 		}
-		else {
-	    $existingLists->remove($page->ID);
-		}
-		if($alsoSynchroniseCMDatabase) {
-			$this->synchroniseCMDatabase();
-		}
-
   }
 
 }
