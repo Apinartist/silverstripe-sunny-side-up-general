@@ -195,7 +195,11 @@ class CampaignMonitorSignupPage extends Page {
 
 class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
-	var $ShowThankYouMessage = false;
+	protected $showThankYouMessage = false;
+
+	protected $showSadToSeeYouGoMessage = false;
+
+	protected $hasMessage = false;
 
 	protected $email = '';
 
@@ -334,14 +338,14 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
   }
 
 	function thankyou() {
-		$this->ShowThankYouMessage = true; // TODO: what does this var do???
+		$this->showThankYouMessage = true; // TODO: what does this var do???
 		if($this->AlternativeTitle) {$this->MetaTitle = $this->AlternativeTitle;}
 		if($this->AlternativeMenuTitle) {$this->MetaTitle = $this->AlternativeMenuTitle;}
 		if($this->AlternativeMetaTitle) {$this->MetaTitle = $this->AlternativeMetaTitle;}
 		return array();
 	}
 	function sadtoseeyougo() {
-		$this->ShowSadToSeeYouGoMessage = true;
+		$this->showSadToSeeYouGoMessage = true;
 		if($this->SadToSeeYouGoTitle) {$this->MetaTitle = $this->SadToSeeYouGoTitle;}
 		if($this->SadToSeeYouGoMenuTitle) {$this->MetaTitle = $this->SadToSeeYouGoMenuTitle;}
 		if($this->SadToSeeYouGoMetaTitle) {$this->MetaTitle = $this->SadToSeeYouGoMetaTitle;}
@@ -356,9 +360,28 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 				$this->email = $email;
 			}
 		}
+		else {
+			if($m = Member::currentMember()) {
+				$this->email = $m->Email;
+			}
+		}
 		return array();
 	}
 
+	function ShowThankYouMessage() {
+		return $this->showThankYouMessage;
+	}
+
+	function ShowSadToSeeYouGoMessage (){
+		return $this->showSadToSeeYouGoMessage;
+	}
+
+	function HasMessage() {
+		if($this->ShowThankYouMessage() || $this->ShowSadToSeeYouGoMessage()) {
+			return true;
+		}
+		return false;
+	}
 
 	function test() {
 		//add user to CM and check results
