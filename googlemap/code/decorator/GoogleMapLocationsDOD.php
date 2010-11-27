@@ -10,6 +10,21 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	static $ajax_info_window_text = "View Details";
 
+	protected static $page_classes_without_map = array();
+		static function get_page_classes_without_map(){return self::$page_classes_without_map;}
+		static function set_page_classes_without_map(array $array){
+			if(!is_array($array)) {debug::show("argument needs to be an array in GoogleMapLocationsDOD::set_page_classes_without_map()");}
+			self::$page_classes_without_map = $array;
+		}
+
+	protected static $page_classes_with_map = array();
+		static function get_page_classes_with_map(){return self::$page_classes_with_map;}
+		static function set_page_classes_with_map(array $array){
+			if(!is_array($array)) {debug::show("argument needs to be an array in GoogleMapLocationsDOD::set_page_classes_with_map()");}
+			self::$page_classes_with_map = $array;
+		}
+
+
 	function extraStatics(){
 		return array(
 			'db' => array(
@@ -35,26 +50,28 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	function augmentDatabase() {}
 
 	function updateCMSFields(FieldSet &$fields) {
-		$fields->addFieldToTab("Root", new Tab("Map"));
-		$fields->addFieldToTab("Root.Map", new CheckboxField("HasGeoInfo", "Has Address(es)? - save and reload this page to start data-entry"));
-		if($this->owner->HasGeoInfo) {
-			$dataObject = new GoogleMapLocationsObject();
-			$complexTableFields = $dataObject->complexTableFields();
-			$popUpFields = $dataObject->getCMSFields_forPopup($this->owner->ID);
-			$GeoPointsField = new ComplexTableField(
-				$this->owner,
-				'GeoPoints',
-				'GoogleMapLocationsObject', //Classname
-				$complexTableFields,
-				$popUpFields,
+		if($this->classHasMap()) {
+			$fields->addFieldToTab("Root", new Tab("Map"));
+			$fields->addFieldToTab("Root.Map", new CheckboxField("HasGeoInfo", "Has Address(es)? - save and reload this page to start data-entry"));
+			if($this->owner->HasGeoInfo) {
+				$dataObject = new GoogleMapLocationsObject();
+				$complexTableFields = $dataObject->complexTableFields();
+				$popUpFields = $dataObject->getCMSFields_forPopup($this->owner->ID);
+				$GeoPointsField = new ComplexTableField(
+					$this->owner,
+					'GeoPoints',
+					'GoogleMapLocationsObject', //Classname
+					$complexTableFields,
+					$popUpFields,
 
-				//'getCMSFields_forPopup',
-				"ParentID = ".$this->owner->ID
-			);
-			$GeoPointsField->setParentClass($this->owner->class);
-			//$GeoPointsField->setAddTitle( 'A Location' );
-			$GeoPointsField->relationAutoSetting = true;
-			$fields->addFieldToTab("Root.Map", $GeoPointsField);
+					//'getCMSFields_forPopup',
+					"ParentID = ".$this->owner->ID
+				);
+				$GeoPointsField->setParentClass($this->owner->class);
+				//$GeoPointsField->setAddTitle( 'A Location' );
+				$GeoPointsField->relationAutoSetting = true;
+				$fields->addFieldToTab("Root.Map", $GeoPointsField);
+			}
 		}
 		return $fields;
  }
@@ -72,7 +89,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function hasMap() {
-		if($this->map) {
+		if($this->map && $this->classHasMap()) {
 			return true;
 		}
 		else {
@@ -406,6 +423,28 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 		return ($childrenOfType) ? $childrenOfType : new DataObjectSet();
 	}
+
+
+	protected function classHasMap() {
+		//assumptions:
+		//1. in general YES
+		//2. if list of WITH is shown then it must be in that
+		//3. otherwise check if it is specifically excluded (WITHOUT)
+		$result = true;
+		$inc =  self::get_page_classes_with_map();
+		$exc =  self::get_page_classes_without_map();
+		if(is_array($inc) && count($inc)) {
+			$result = false;
+			if(in_array($this->owner->ClassName,$inc)) {
+				$result = true;
+			}
+		}
+		elseif(is_array($exc) && count($exc) && in_array($this->owner->ClassName,$exc))  {
+			$result = false;
+		}
+		return $result;
+	}
+
 }
 
 class GoogleMapLocationsDOD_Controller extends Extension {
