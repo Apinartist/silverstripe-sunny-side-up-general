@@ -253,8 +253,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 		$optionArray = array("Subscribe" => "Subscribe to ".$this->MakeListTitle());
 		if($member->ID) {
 			$optionArray["Unsubscribe"] = "Unsubscribe from ".$this->MakeListTitle();
-			$componentSet = $member->CampaignMonitorSubscriptions();
-			$campaignMonitorSubscriptions = $componentSet->getIdList();
+			$campaignMonitorSubscriptions = $member->CampaignMonitorSubscriptionsPageIdList();
 			if(is_array($campaignMonitorSubscriptions) && count($campaignMonitorSubscriptions)) {
 				if(isset($campaignMonitorSubscriptions[$this->ID])) {
 					$currentSelection = "Subscribe";

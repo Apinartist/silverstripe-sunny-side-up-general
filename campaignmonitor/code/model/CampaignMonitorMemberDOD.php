@@ -21,7 +21,9 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		$lists = DataObject::get("CampaignMonitorSignupPage");
 		if($lists) {
 			foreach($lists as $list) {
+
 				if($list->GroupID) {
+					debug::show($list->GroupID);
 					//external database
 					$CMWrapper = new CampaignMonitorWrapper();
 					$CMWrapper->setListID ($list->ListID);
@@ -31,7 +33,9 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 					}
 					else {
 						$userIsSubscribed = $CMWrapper->subscriberIsSubscribed($this->owner->Email);
-						if($this->owner->inGroup($list->GroupID, $strict = TRUE)) {
+
+						if(!$this->owner->inGroup($list->GroupID, $strict = TRUE)) {
+							//not in group, but is subscribed.... unsubscribe....
 							if($userIsSubscribed && $userIsSubscribed != "?"){
 								if (!$CMWrapper->subscriberUnsubscribe($this->owner->Email)) {
 									user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Unsubscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
@@ -39,8 +43,9 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 							}
 						}
 						else {
+							//
 							$userIsUnsubscribed = $CMWrapper->subscriberIsUnsubscribed($this->owner->Email);
-							if(!$userIsSubscribed && !$userIsUnsubscribed && $userIsUnsubscribed =! "?" && $userIsSubscribed != "?") {
+							if((!$userIsSubscribed && $userIsSubscribed != "?") && (!$userIsUnsubscribed || $userIsUnsubscribed =! "?" )) {
 								if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
 									user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 								}
@@ -56,9 +61,9 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
     //internal database
 		if($page->GroupID) {
 			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
-				$groups = $this->Owner->Groups();
+				$groups = $this->owner->Groups();
 				if($groups) {
-					$this->Owner->Groups()->add($gp);
+					$this->owner->Groups()->add($gp);
 					if($alsoSynchroniseCMDatabase) {
 						$this->synchroniseCMDatabase();
 					}
@@ -71,9 +76,9 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
     //internal database
 		if($page->GroupID) {
 			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
-				$groups = $this->Owner->Groups();
+				$groups = $this->owner->Groups();
 				if($groups) {
-					$this->Owner->Groups()->remove($gp);
+					$this->owner->Groups()->remove($gp);
 					if($alsoSynchroniseCMDatabase) {
 						$this->synchroniseCMDatabase();
 					}
@@ -81,5 +86,21 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 			}
 		}
   }
+
+	function CampaignMonitorSubscriptionsPageIdList() {
+		$array = Array();
+		if($set = $this->owner->Groups()) {
+			$idList = $set->getIdList();
+			if(is_array($idList) && count($idList)) {
+				$pages = DataObject::get("CampaignMonitorSignupPage", "GroupID IN(".implode(",", $idList).")");
+				if($pages) {
+					foreach($pages as $page) {
+						$array[$page->ID] = $page->ID;
+					}
+				}
+			}
+		}
+		return $array;
+	}
 
 }
