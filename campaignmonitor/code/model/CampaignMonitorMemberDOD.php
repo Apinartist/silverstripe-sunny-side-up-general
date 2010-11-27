@@ -23,7 +23,6 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 			foreach($lists as $list) {
 
 				if($list->GroupID) {
-					debug::show($list->GroupID);
 					//external database
 					$CMWrapper = new CampaignMonitorWrapper();
 					$CMWrapper->setListID ($list->ListID);
