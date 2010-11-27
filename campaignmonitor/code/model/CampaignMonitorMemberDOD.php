@@ -10,19 +10,12 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 
 	function extraStatics() {
-		return array(
-			'many_many' => array(
-				'CampaignMonitorSubscriptions' => 'CampaignMonitorSignupPage',
-			)
-		);
 	}
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
 		$this->synchroniseCMDatabase();
 	}
-
-
 
 	protected function synchroniseCMDatabase() {
 
@@ -34,8 +27,8 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 				//external database
 				$CMWrapper = new CampaignMonitorWrapper();
 				$CMWrapper->setListID ($list->ListID);
-				$userIsUnsubscribed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
-				if($userIsUnsubscribed || $userIsUnsubscribed == "?") {
+				$userIsUnconfirmed = $CMWrapper->subscriberIsUnconfirmed($this->owner->Email);
+				if($userIsUnconfirmed && $userIsUnconfirmed != "?") {
 					// do nothing
 				}
 				else {
