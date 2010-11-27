@@ -24,8 +24,8 @@ class CampaignMonitorSignupPage extends Page {
 		'SignUpButtonLabel' => 'Varchar(20)'
 	);
 
-	public static $belongs_many_many = array(
-		"Members" => "Member"
+	static $has_one = array(
+		"Group" => "Group"
 	);
 
 	static $has_many = array(
@@ -38,6 +38,8 @@ class CampaignMonitorSignupPage extends Page {
 		$fields->addFieldToTab('Root.Content.RelatedList', new LiteralField('ListIDExplanation', '<p>The way this works is that each sign-up page needs to be associated with a campaign monitor subscription list.</p>'));
 		$fields->addFieldToTab('Root.Content.RelatedList', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
 		$fields->addFieldToTab('Root.Content.RelatedList', new TextField('ListTitle', 'List title to be shown...'));
+		$fields->addFieldToTab('Root.Content.RelatedList', new TreeDropdownField('GroupID', 'Related member group'));
+
 		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField('StartFormExplanation', 'A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details.'));
 		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpHeader', 'Sign up header (e.g. sign up now)'));
 		$fields->addFieldToTab('Root.Content.StartForm', new HTMLEditorField('SignUpIntro', 'Sign up form intro (e.g. sign up for our monthly newsletter ...'));
@@ -138,6 +140,12 @@ class CampaignMonitorSignupPage extends Page {
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
+		if(!$this->GroupID && $this->ListTitle) {
+			$gp = new Group();
+			$gp->Title = "CAMPAIGN MONITOR: ".$this->ListTitle;
+			$gp->write();
+			$this->GroupID = $gp->ID;
+		}
 		//make sure it is connected to a list.
 		$CMWrapper = $this->newCMWrapper();
 	}
