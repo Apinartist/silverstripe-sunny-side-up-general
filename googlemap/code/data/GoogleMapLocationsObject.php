@@ -79,7 +79,7 @@ class GoogleMapLocationsObject extends DataObject {
 			}
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
-			new HiddenField('ParentID', 'ParentID', $parentPageID),
+			new HiddenField('ParentID', 'ParentID', $parentPageID)
 		);
 		if($addTitleAndContent) {
 			$fieldset->push(new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'));
