@@ -68,8 +68,6 @@ class GoogleMapLocationsObject extends DataObject {
 	}
 
 	function  getCMSFields_forPopup($parentPageID) {
-		$fieldset = new FieldSet(
-			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
 			$addTitleAndContent = true;
 			if($this->ParentID) {
 				$parent = DataObject::get_by_id("SiteTree", $this->ParentID);
@@ -79,14 +77,15 @@ class GoogleMapLocationsObject extends DataObject {
 					}
 				}
 			}
-			if($addTitleAndContent) {
-				new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
-				new TextField('CustomPopUpWindowInfo', 'Custom Description for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
-			}
-			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
+		$fieldset = new FieldSet(
+			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID),
-			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload to edit...)')
 		);
+		if($addTitleAndContent) {
+			$fieldset->push(new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'));
+			$fieldset->push(new TextField('CustomPopUpWindowInfo', 'Custom Description for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'));
+		}
+		$fieldset->push(new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload to edit...)'));
 		if($this->Manual) {
 			$fieldset->push(new HeaderField('Auto-completed (not required)', 2));
 			$fieldset->push(new TextField('Latitude', 'Latitude'));
