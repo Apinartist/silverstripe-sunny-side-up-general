@@ -354,6 +354,7 @@ class GoogleMap extends ViewableData {
 						if($dataPoint->URLSegment) {
 							$link = $dataPoint->AjaxInfoWindowLink;
 						}
+						$staticIcon = '';
 						if($dataPoint->staticIcon) {
 							$staticIcon = $dataPoint->staticIcon;
 						}
@@ -367,7 +368,7 @@ class GoogleMap extends ViewableData {
 						if(!$count) {
 							$defaultCenter = $center;
 						}
-						$this->dataPointsStaticMapHTML .= $center.",".$staticIcon;
+						$this->dataPointsStaticMapHTML .= $center;
 						if($staticIcon) {
 							$this->dataPointsStaticMapHTML .= ",".$staticIcon;
 						}
@@ -419,6 +420,9 @@ class GoogleMap extends ViewableData {
 		$staticMapURL = "size=".$staticMapWidth."x".$staticMapHeight;
 		if(count($ArrayOfLatitudeAndLongitude)) {
 			$staticMapURL .= '&amp;markers=';
+			if(self::$DefaultIconUrl) {
+				$staticMapURL .= "icon".urlencode(self::$DefaultIconUrl)."|";
+			}
 			foreach($ArrayOfLatitudeAndLongitude as $row) {
 				if($count) {
 				 $staticMapURL .= '|';
@@ -429,10 +433,10 @@ class GoogleMap extends ViewableData {
 				}
 				$staticMapURL .= $center.",";
 				if(isset($row["Marker"])) {
-					$staticMapURL .= $row["Marker"];
+					$staticMapURL .= ",".$row["Marker"];
 				}
-				else {
-					$staticMapURL .= self::$StaticIcon;
+				elseif(self::$StaticIcon) {
+					$staticMapURL .= ",".self::$StaticIcon;
 				}
 				$count++;
 			}
