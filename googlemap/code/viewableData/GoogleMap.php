@@ -332,6 +332,8 @@ class GoogleMap extends ViewableData {
 			$count = 0;
 			$pointsXml = '';
 			$this->dataPointsStaticMapHTML .= '&amp;markers=';
+			if(self::$DefaultIconUrl) {
+				$this->dataPointsStaticMapHTML .= 'icon:'.urlencode(self::$DefaultIconUrl).'|';
 			//the sort works, but Google Map does not seem to care...
 			//$this->GooglePointsDataObject = $this->orderItemsByLatitude($this->GooglePointsDataObject);
 			foreach($this->GooglePointsDataObject as $dataPoint) {
