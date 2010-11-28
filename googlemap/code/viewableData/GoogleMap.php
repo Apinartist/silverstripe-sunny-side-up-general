@@ -368,6 +368,9 @@ class GoogleMap extends ViewableData {
 							$defaultCenter = $center;
 						}
 						$this->dataPointsStaticMapHTML .= $center.",".$staticIcon;
+						if($staticIcon) {
+							$this->dataPointsStaticMapHTML .= ",".$staticIcon;
+						}
 						$pointsXml .=
 									'<Placemark>'.
 									'<id>'.$dataPoint->ID.'</id>'.
