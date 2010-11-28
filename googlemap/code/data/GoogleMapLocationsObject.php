@@ -69,8 +69,11 @@ class GoogleMapLocationsObject extends DataObject {
 
 	function  getCMSFields_forPopup($parentPageID) {
 			$addTitleAndContent = true;
-			if($this->ParentID) {
-				$parent = DataObject::get_by_id("SiteTree", $this->ParentID);
+			if(!$parentPageID) {
+				$parentPageID = $this->ParentID;
+			}
+			if($parentPageID) {
+				$parent = DataObject::get_by_id("SiteTree", $parentPageID);
 				if($parent) {
 					if($parent->hasMethod("CustomAjaxInfoWindow")) {
 						$addTitleAndContent = false;
