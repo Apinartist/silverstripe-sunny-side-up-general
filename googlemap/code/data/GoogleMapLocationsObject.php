@@ -70,8 +70,19 @@ class GoogleMapLocationsObject extends DataObject {
 	function  getCMSFields_forPopup($parentPageID) {
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
-			new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
-			new TextField('CustomPopUpWindowInfo', 'Custom Description for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
+			$addTitleAndContent = true;
+			if($this->ParentID) {
+				$parent = DataObject::get_by_id("SiteTree", $this->ParentID);
+				if($parent) {
+					if($parent->hasMethod("CustomAjaxInfoWindow")) {
+						$addTitleAndContent = false;
+					}
+				}
+			}
+			if($addTitleAndContent) {
+				new TextField('CustomPopUpWindowTitle', 'Custom Title for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
+				new TextField('CustomPopUpWindowInfo', 'Custom Description for Info Pop-Up Window, leave Blank to auto-complete the pop-up information on the map'),
+			}
 			//new CheckboxField('Manual', 'Edit Manually (save and reload to change)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID),
 			new CheckboxField('Manual', 'Edit address manually (e.g. enter Longitude and Latitude - check box, save and reload to edit...)')
@@ -119,7 +130,7 @@ class GoogleMapLocationsObject extends DataObject {
 		if(strlen($this->CustomPopUpWindowInfo) > 3) {
 			$this->AjaxInfoWindowLink = '<p>'.$this->CustomPopUpWindowInfo.'</p>';
 		}
-		if($this->CustomPopUpWindowTitle	) {
+		if($this->CustomPopUpWindowTitle) {
 			$this->Title = $this->CustomPopUpWindowTitle;
 			$this->Name = $this->CustomPopUpWindowTitle;
 		}

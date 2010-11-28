@@ -44,6 +44,8 @@ STEP-BY-STEP (by alex.guez [at] gmail dot com)
 
 10.	Find your template file and add the following: <% include GoogleMap %>
 
+11. to customise information in pop-ups, add the following function to your pages with map: CustomAjaxInfoWindow
+
 ___________________________________
 KNOWN BUGS AND ISSUES
 -----------------------------------

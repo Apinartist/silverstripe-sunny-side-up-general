@@ -98,6 +98,9 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function AjaxInfoWindowLink() {
+		if($this->owner->hasMethod("CustomAjaxInfoWindow")) {
+			return $this->owner->CustomAjaxInfoWindow();
+		}
 		return '<div class="viewMoreInformationHolder"><a href="'.$this->owner->URLSegment.'" onclick="return !loadAjaxInfoWindow(this,\''.$this->owner->URLSegment.'\');">'.self::$ajax_info_window_text.'</a><div class="loadAjaxInfoWindowSpan"></div></div>';
 	}
 
