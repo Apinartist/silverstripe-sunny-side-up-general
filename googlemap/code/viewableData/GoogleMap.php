@@ -443,7 +443,7 @@ class GoogleMap extends ViewableData {
 		if(self::$UsesSensor) {
 			$UsesSensor = "true";
 		}
-		$fullStaticMapURL = 'http://maps.google.com/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'&amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
+		$fullStaticMapURL = 'http://maps.google.com/maps/api/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'&amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
 		if(self::$save_static_map_locally) {
 			$fileName = str_replace(array('&', '|', ',', '=', ';'), array('', '', '', '', ''), $staticMapURL);
 			$length = strlen($fileName);
