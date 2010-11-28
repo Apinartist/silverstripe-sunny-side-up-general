@@ -127,7 +127,7 @@ class GoogleMap extends ViewableData {
 	/* STATIC MAP */
 	protected static $StaticMapSettings = "maptype=roadmap";
 		static function setStaticMapSettings($v) {self::$StaticMapSettings = $v;}
-	protected static $StaticIcon = "red1";
+	protected static $StaticIcon = "";
 		static function setStaticIcon($v) {self::$StaticIcon = $v;}
 	protected static $LatFormFieldId = "";
 		static function setLatFormFieldId($v) {self::$LatFormFieldId = $v;}
