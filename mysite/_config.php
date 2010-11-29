@@ -153,3 +153,13 @@ TypographyTestPage::set_auto_include(true);
 //===================---------------- START userdefinedforms MODULE ----------------===================
 UserDefinedForm::$required_identifier = "*";
 //===================---------------- END userdefinedforms MODULE ----------------===================
+
+
+//===================---------------- START picasarandomizer MODULE ----------------===================
+// MUST SET
+PicasaRandomImage::set_google_username("nfrancken");
+
+//OPTIONAL
+PicasaRandomImage::set_number_of_folders(3);
+PicasaRandomImage::set_number_of_images_per_folder(2);
+//===================---------------- END picasarandomizer MODULE ----------------===================
