@@ -6,13 +6,12 @@ function drawChart_$id() {
 	
 	var data = new google.visualization.DataTable();
 	
-	data.addColumn('string', 'Country');
-	data.addColumn('number', '$title');
-	
 	var records = [$records];
 	var totals = [$totals];
 	
 	data.addRows(records.length);
+	data.addColumn('string', 'Country');
+	data.addColumn('number', '$title');
 	
 	for(var i = 0; i < records.length; i++) {
 		data.setValue(i, 0, records[i]);
