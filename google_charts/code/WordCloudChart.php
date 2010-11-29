@@ -28,10 +28,9 @@ class WordCloudChart extends Chart {
 		$params['fontsizes'] = implode(', ', $this->words);
 		
 		$width = $this->width ? $this->width : Chart::$default_width;
-		$height = $this->height ? $this->height : Chart::$default_height;
 		
 		Requirements::javascriptTemplate('googlecharts/javascript/wordcloud.js', $params);
-		return "<div id=\"$id\" class=\"wordcloud\" style=\"width: {$width}px; height: {$height}px;\"></div>";
+		return "<div id=\"$id\" class=\"wordcloud\" style=\"width: {$width}px;\"></div>";
 	}
 }
 
