@@ -6,6 +6,10 @@
  *
  **/
 
+Director::addRules(7, array(
+	'report/error/' => 'ErrorNotifierController'
+));
+
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START templateoverview MODULE ----------------===================
 //MUST SET
