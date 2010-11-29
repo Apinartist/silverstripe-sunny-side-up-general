@@ -1,4 +1,1 @@
-<div id="SidebarSection">
-	<% include Breadcrumbs %>
-	$Sidebar
-</div>
+<div id="SidebarSection">$Sidebar</div>
