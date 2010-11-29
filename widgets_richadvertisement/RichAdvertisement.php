@@ -22,7 +22,7 @@ class RichAdvertisement extends Widget {
 				new DropdownField(
 					$name = "RichAdvertisementWidgetObjectID",
 					$title = "Select advertisement",
-					$source = $options,
+					$source = $options
 				)
 			);
 		}
