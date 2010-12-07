@@ -141,7 +141,7 @@ class Advertisement extends DataObject {
 		elseif(is_array($exc) && count($exc)) {
 			$string = 'return !in_array($obj->class, array(\''.implode("','", $exc).'\'));';
 		}
-		if($string) {
+		if(isset($string)) {
 			return create_function('$obj', $string);
 		}
 		else {
