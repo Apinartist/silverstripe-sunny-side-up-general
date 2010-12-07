@@ -99,12 +99,14 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Parents", "Parents");
 		$fields->removeFieldFromTab("Root", "Parents");
 		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = self::$singular_name." image. ".self::recommended_image_size_statement()));
-		$treeField = new TreeMultiselectField("Parents", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all ".self::$singular_name." pages)"), "SiteTree");
-		$callback = $this->callbackFilterFunctionForMultiSelect();
-		if($callback) {
-			$treeField->setFilterFunction ($callback);
+		if($this->ID) {
+			$treeField = new TreeMultiselectField("Parents", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all ".self::$singular_name." pages)"), "SiteTree");
+			/*$callback = $this->callbackFilterFunctionForMultiSelect();
+			if($callback) {
+				$treeField->setFilterFunction ($callback);
+			}*/
+			$fields->addFieldToTab("Root.ShownOn",$treeField);
 		}
-		$fields->addFieldToTab("Root.ShownOn",$treeField);
 		$fields->addFieldToTab("Root.OptionalLink", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
 		$fields->addFieldToTab("Root.OptionalLink", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
 		if(class_exists("DataObjectSorterController")) {
