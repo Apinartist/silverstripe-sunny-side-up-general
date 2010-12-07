@@ -27,7 +27,6 @@ class InvisibleSpamField extends SpamProtectorField {
 	<label>website URL link  </label>
 	<div class="middleColumn">
 		{$Field}
-		<label class="required">{$Explanation} {$messageBlock}</label>
 	</div>
 </div>
 HTML;
@@ -35,15 +34,20 @@ HTML;
 
 	public function validate($validator) {
 		// don't bother querying the SimplestSpam-service if fields were empty
-		if(!isset($_REQUEST['websiteurllink']) || empty($_REQUEST['websiteurllink']) !$_REQUEST['websiteurllink']) {
+		if(!isset($_REQUEST['linkurlwebsite']) || $_REQUEST['linkurlwebsite']) {
 			$validator->validationError(
 				$this->name,
-				_t("InvisibleSpamField.SPAMMESSAGE", "expected spam attempt",
+				_t("InvisibleSpamField.SPAMMESSAGE", "expected spam attempt"),
 				"validation",
 				false
 			);
 			return false;
 		}
+		return true;
+	}
+
+
+	protected function initialise() {
 		return true;
 	}
 
