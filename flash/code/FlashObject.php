@@ -111,7 +111,7 @@ class FlashObject extends ViewableData  {
 		function() {
 			YouTube.setElementID(\''.$id.'\');
 			'.$call.'
-			jQuery("#'.$id.'").click(
+			jQuery("#wrapperFor-'.$id.'").click(
 				function() {YouTube.loadNew("'.$code.'"); return false;}
 			)
 		}
