@@ -93,6 +93,7 @@ class FlashObject extends ViewableData  {
 		//important!
 		self::$use_dynamic_insert = true;
 		$code = trim($code);
+		$id = self::$flash_file_div_id.$code;
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("flash/javascript/swfobject.js");
 		Requirements::javascript("flash/javascript/YouTube.js");
@@ -102,21 +103,24 @@ class FlashObject extends ViewableData  {
 			$call = 'YouTube.loadFullScreenVideo(\''.$code.'\');';
 		}
 		else {
-			$call = 'YouTube.loadNew(\''.$code.'\', '.$width.', '.$height.');';
+			$call = 'YouTube.loadVideo(\''.$code.'\', '.$width.', '.$height.');';
 		}
 		$js = '
 ;(function($) {
 	$(document).ready(
 		function() {
-			YouTube.setElementID(\''.self::$flash_file_div_id.$code.'\');
+			YouTube.setElementID(\''.$id.'\');
 			'.$call.'
 		}
+		jQuery("#'.$id.'").click(
+			function() {YouTube.loadNew("'.$code.'"); return false;}
+		)
 	);
 })(jQuery);';
 		Requirements::customScript($js, "load".$code);
 		return $this->CreateFlashObject(
 			$title,
-			self::$flash_file_div_id.$code,
+			$id,
 			'http://www.youtube.com/v/'.$code.'?fs=1&amp;hl=en_US',
 			'',
 			$width,
