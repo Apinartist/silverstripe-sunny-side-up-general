@@ -108,7 +108,7 @@ class FlashObject extends ViewableData  {
 ;(function($) {
 	$(document).ready(
 		function() {
-			YouTube.setElementID(\''.self::$flash_file_div_id.$code.'\');
+			YouTube.setElementID(\''.self::$flash_file_div_id.'\');
 			'.$call.'
 		}
 	);
@@ -116,7 +116,7 @@ class FlashObject extends ViewableData  {
 		Requirements::customScript($js, "load".$code);
 		return $this->CreateFlashObject(
 			$title,
-			self::$flash_file_div_id.$code,
+			self::$flash_file_div_id,
 			'http://www.youtube.com/v/'.trim($code).'?fs=1&amp;hl=en_US',
 			'',
 			$width,
