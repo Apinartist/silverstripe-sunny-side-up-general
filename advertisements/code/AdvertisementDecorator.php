@@ -131,7 +131,8 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 						Requirements::javascript($file);
 					}
 					Requirements::themedCSS("Advertisements");
-					self::$advertisements_dos = $browseSet;
+					//self::$advertisements_dos = $browseSet;
+					return $browseSet;
 				}
 			}
 			return self::$advertisements_dos;
