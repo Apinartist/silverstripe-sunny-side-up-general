@@ -6,9 +6,13 @@
 
 class GoogleMapLocationsDOD extends DataObjectDecorator {
 
-	static $number_shown_in_around_me = 17;
+	protected static $number_shown_in_around_me = 7;
+		static function get_number_shown_in_around_me() {return self::$number_shown_in_around_me;}
+		static function set_number_shown_in_around_me($v) {self::$number_shown_in_around_me = $v;}
 
 	static $ajax_info_window_text = "View Details";
+		static function get_ajax_info_window_text() {return self::$ajax_info_window_text;}
+		static function set_ajax_info_window_text($v) {self::$ajax_info_window_text = $v;}
 
 	protected static $page_classes_without_map = array();
 		static function get_page_classes_without_map(){return self::$page_classes_without_map;}
@@ -42,6 +46,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	protected $isAjax = false;
 
 	static function setNumberShownAroundMe($val) {
+		user_error("setNumberShownAroundMe has been deprecated - use set_number_shown_in_around_me instead", E_USER_NOTICE);
 		self::$number_shown_in_around_me = $val - 0;
 	}
 
@@ -137,7 +142,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	function addMap($action = "") {
 		$this->initiateMap();
 		if($action) {
-			$URLForData = $this->owner->URLSegment."/".$action;
+			$URLForData = $this->owner->link().$action;
 		}
 		else {
 			$URLForData  = '';
@@ -172,13 +177,13 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	function addUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
 		$this->initiateMap();
-		$v = $this->owner->URLSegment."/".$UpdateServerUrlAddPoint;
+		$v = $this->owner->Link().$UpdateServerUrlAddPoint;
 		$this->map->setUpdateServerUrlAddressSearchPoint($v);
 	}
 
 	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "updateMeXML/?getXML=1") {
 		$this->initiateMap();
-		$v = $this->owner->URLSegment."/".$UpdateServerUrlDragend;
+		$v = $this->owner->link().$UpdateServerUrlDragend;
 		$this->map->setUpdateServerUrlDragend($v);
 	}
 
@@ -295,13 +300,13 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		if($lon && $lat) {
 			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
 			$where = "(".$orderByRadius.") > 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} <> 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} <> 0";
-			if($classNameForParent) {
+			if($classNameForParent && !is_object($classNameForParent)) {
 				$where .= " AND {$bt}SiteTree_Live{$bt}.{$bt}ClassName{$bt} = '".$classNameForParent."'";
 			}
 			if(count($excludeIDList)) {
 				$where .= " AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} NOT IN (".implode(",",$excludeIDList).") ";
 			}
-			$join = "LEFT JOIN {$bt}SiteTree_Live ON{$bt} {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} = {$bt}GoogleMapLocationsObject{$bt}.{$bt}ParentID{$bt}";
+			$join = "LEFT JOIN {$bt}SiteTree_Live{$bt} ON {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} = {$bt}GoogleMapLocationsObject{$bt}.{$bt}ParentID{$bt}";
 			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, $join, self::$number_shown_in_around_me );
 			if(is_object($objects)) {
 				return $this->makeXMLData(null, $objects, $title, self::$number_shown_in_around_me . " closest points");
@@ -459,7 +464,36 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		'showChildPointsMapXML',
 		'showEmptyMap',
 		'showCustomMapXML',
-		'updateMeXML'
+		'updateMeXML',
+		'showAroundMeXML',
+		'SearchByAddressForm'
 	);
+
+	var $address = false;
+
+	function SearchByAddressForm() {
+		return new Form(
+			$this->owner,
+			"SearchByAddressForm",
+			new FieldSet(new TextField("Address", _t("GoogleMapLocationsDOD.ENTERADDRESS", "Enter your address"),$this->address)),
+			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
+			new RequiredFields("Address")
+		);
+	}
+
+	function findnearaddress($data, $form) {
+		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($data["Address"]);
+		$this->address = $pointArray["address"];
+		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
+			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
+			Director::redirectBack();
+			return;
+		}
+		$lng = $pointArray[0];
+		$lat = $pointArray[1];
+		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
+		$this->owner->addMap("showAroundMeXML/?x=".$lng."&y=".$lat.'&title='.urlencode($pointArray["address"]));
+		return array();
+	}
 
 }

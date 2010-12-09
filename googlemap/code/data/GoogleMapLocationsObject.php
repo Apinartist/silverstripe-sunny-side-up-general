@@ -55,12 +55,12 @@ class GoogleMapLocationsObject extends DataObject {
 
 	static function radiusDefinition($lon, $lat) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		return "(6378.137 * ACOS( ( SIN( PI( ) * '.$lat.' /180 ) * SIN( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) ) + ( COS( PI( ) * '.$lat.' /180 ) * cos( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) * COS( (PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} /180 ) - ( PI( )  $lon / 180 ) ) ) ) ) ";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) * COS( (PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} /180 ) - ( PI( ) * $lon / 180 ) ) ) ) )";
 	}
 
 	static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} /180 ) - ( PI( ) * $lon / 180 ) ) ) ) ) ";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} / 180 ) - ( PI( ) * $lon / 180 ) ) ) ) ) ";
 	}
 
 	static function pointExists($addressArray) {
