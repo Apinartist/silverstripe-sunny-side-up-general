@@ -108,34 +108,29 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 
 	function AdvertisementSet() {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
-			if(!self::$advertisements_dos) {
-				$doSet = new DataObjectSet();
-				$browseSet = $this->advertisementsToShow();
-				if($browseSet) {
-					Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-					Requirements::javascript("advertisements/javascript/Advertisements.js");
-					$style = null;
-					if($this->owner->AdvertisementStyleID) {
-						$style = $this->owner->AdvertisementStyle();
-					}
-					if(self::$use_custom_javascript) {
-						$file = project()."/javascript/AdvertisementsExecutive.js";
-					}
-					elseif($style) {
-						$file = $style->FileLocation;
-					}
-					else {
-						$file = "advertisements/javascript/AdvertisementsExecutive.js";
-					}
-					if($file) {
-						Requirements::javascript($file);
-					}
-					Requirements::themedCSS("Advertisements");
-					//self::$advertisements_dos = $browseSet;
-					return $browseSet;
+			$browseSet = $this->advertisementsToShow();
+			if($browseSet) {
+				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+				Requirements::javascript("advertisements/javascript/Advertisements.js");
+				$style = null;
+				if($this->owner->AdvertisementStyleID) {
+					$style = $this->owner->AdvertisementStyle();
 				}
+				if(self::$use_custom_javascript) {
+					$file = project()."/javascript/AdvertisementsExecutive.js";
+				}
+				elseif($style) {
+					$file = $style->FileLocation;
+				}
+				else {
+					$file = "advertisements/javascript/AdvertisementsExecutive.js";
+				}
+				if($file) {
+					Requirements::javascript($file);
+				}
+				Requirements::themedCSS("Advertisements");
+				return $browseSet;
 			}
-			return self::$advertisements_dos;
 		}
 	}
 
