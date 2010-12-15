@@ -17,7 +17,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	);
 
 	public static $has_one = array(
-		'Icon' => 'Image'
+		'Icon' => 'Image',
+		'InternalLink' => 'SiteTree'
 	);
 
 	public static $has_many = array();
@@ -33,14 +34,14 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $searchable_fields = array();
 
 	public static $field_labels = array(
-		"URL" => "location (e.g. http://twitter.com/myname/)",
+		"URL" => "Link (e.g. http://twitter.com/myname/)- will override internal link",
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
-		"Icon" => "Icon"
+		"Icon" => "Icon",
+		"InternalLink" => "Internal Link"
 	);
 
 	public static $summary_fields = array(
-		"URL" => "URL",
 		"Title" => "Title"
 	);
 
@@ -49,6 +50,18 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $singular_name = "Social networking link";
 
 	public static $plural_name = "Social networking links";
+
+	function Link() {
+		if($this->URL) {
+			return $this->URL;
+		}
+		elseif($this->InternalLinkID) {
+			$page = DataObject::get_by_id("SiteTree", $this->InternalLinkID);
+			if($page) {
+				return $page->Link();
+			}
+		}
+	}
 
 
 }
