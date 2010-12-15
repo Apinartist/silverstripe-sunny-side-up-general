@@ -152,6 +152,14 @@ class Advertisement extends DataObject {
 	}
 
 	function Image() {
+		//will be depreciated in the future.
+		return $this->ResizedAdvertisementImage();
+	}
+
+
+	//back-up function...
+	function ResizedAdvertisementImage() {
+
 		$resizedImage = null;
 		$imageID = intval($this->AdvertisementImageID+ 0);
 		if($imageID) {
@@ -187,8 +195,6 @@ class Advertisement extends DataObject {
 		}
 		return $resizedImage;
 	}
-
-
 
 
 }
