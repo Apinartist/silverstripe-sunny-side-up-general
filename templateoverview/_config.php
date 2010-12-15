@@ -15,7 +15,7 @@
 if(Director::isDev()) {
   Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
 //MAY SET
-  Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');}
+  Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');
   Director::addRules(7, array('error/report' => 'ErrorNotifierController'));
  }
 TemplateOverviewPage::set_auto_include(true);
