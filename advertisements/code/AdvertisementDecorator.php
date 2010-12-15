@@ -95,7 +95,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 	protected function MyTabName() {
-		$code = preg_replace("/[^a-zA-Z0-9\s]/", "AAAAAAAA", AdvertisementAdmin::$menu_title);
+		$code = preg_replace("/[^a-zA-Z0-9\s]/", " ", AdvertisementAdmin::$menu_title);
 		$code = str_replace(" ", "", $code);
 		return "Root.Content.".$code;
 	}
