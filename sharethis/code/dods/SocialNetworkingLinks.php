@@ -103,6 +103,12 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 	public function SocialNetworkingLinksDataObjects(){
 		if($this->ThisPageHasSocialNetworkingLinks()) {
 			if($objects = DataObject::get("SocialNetworkingLinksDataObject")) {
+				foreach($Objects as $obj) {
+					$obj->ShowTitle = false;
+					if(self::$show_title_with_icon) {
+						$obj->ShowTitle = true;
+					}
+				}
 				Requirements::themedCSS("SocialNetworking");
 				return $objects;
 			}
