@@ -77,7 +77,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', 'Create new '.Advertisement::$plural_name.' from all images in the folder selected below ... (NB '.Advertisement::recommended_image_size_statement().')', 'Folder' ));
 
 			$fields->addFieldToTab($tabName, $this->MyHeaderField("Edit ".Advertisement::$plural_name));
-			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>Please manage existing <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.Advertisement::$plural_name.'</a> on the <i>'.AdvertisementAdmin::$menu_title.'</i> tab.'));
+			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>Please manage existing '.Advertisement::$plural_name.' on the <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.AdvertisementAdmin::$menu_title.' tab</a>.'));
 
 			$fields->addFieldToTab($tabName, $this->MyHeaderField("Delete ".Advertisement::$plural_name));
 			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
