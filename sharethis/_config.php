@@ -10,6 +10,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sharethis MODULE ----------------===================
+// SHARE THIS LINK -> links to your visitors page on facebook, linkedin, etc... so that they can share your website
 //DataObject::add_extension('SiteTree', 'ShareThis');
 //ShareThis::set_always_include (false);
 //ShareThis::set_include_by_default(true);
@@ -17,11 +18,11 @@
 //ShareThis::set_show_title_with_icon(false);
 //ShareThis::set_alternate_icons(array("live" => "mysite/images/madgif.gif"));
 //ShareThis::set_use_bw_effect(true);
-
 //hide / add completely
 //ShareThis::set_icons_to_include(array("facebook", "google", "linkedin"));   //OR
 //ShareThis::set_icons_to_exclude(array("myspace"));
 
+// SOCIAL NETWORKING LINK -> links to your page on facebook, linkedin, etc...
 //DataObject::add_extension('SiteTree', 'SocialNetworkingLinks');
 //SocialNetworkingLinks::set_always_include (false);
 //SocialNetworkingLinks::set_include_by_default(true);
