@@ -36,7 +36,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"URL" => "location (e.g. http://twitter.com/myname/)",
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
-		"Icon" => "Icon (preferably something like 32pixels by 32pixels)"
+		"Icon" => "Icon"
 	);
 
 	public static $summary_fields = array(
@@ -46,10 +46,9 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $default_sort = "Sort ASC, Title ASC";
 
-	public static $singular_name = "Social networking page";
+	public static $singular_name = "Social networking link";
 
-	public static $plural_name = "Social networking pages";
-
+	public static $plural_name = "Social networking links";
 
 
 }
