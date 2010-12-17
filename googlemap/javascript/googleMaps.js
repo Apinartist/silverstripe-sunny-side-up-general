@@ -852,10 +852,10 @@ GMC.prototype.createSideBar = function(sideBarArray) {
 			var sideBarElements = sideBarArray[j].split("$$$", 2);
 			i = sideBarElements[1];
 			if(!strpos(this.gmarkers[i].serverId, "manuallyAdded", 0)) {
-				html += '<li><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + ');">' + this.gmarkers[i].markerName + '</a> <span class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</span></li>';
+				html += '<li><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
 			}
 			else {
-				html += '<li>You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + ');">' + this.gmarkers[i].markerName + '</a></li>';
+				html += '<li>You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
 			}
 		}
 		html += '</ul>';

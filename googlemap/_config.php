@@ -7,16 +7,20 @@
 **/
 
 
+Director::addRules(40, array(
+	'googlemap/$Action/$OwnerID/$Title/$Longitude/$Latitude/$Filter' => 'GoogleMapDataResponse'
+));
+
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START googlemap MODULE ----------------===================
 /*
 define("GoogleMapAPIKey", "abc");
 
-//add maps to all pages...
+//add maps to sitetree
 //Object::add_extension('SiteTree', 'GoogleMapLocationsDOD');
 //Object::add_extension('ContentController', 'GoogleMapLocationsDOD_Controller');
 //GoogleMapLocationsDOD::set_page_classes_with_map(array("HomePage"));
-//GoogleMapLocationsDOD::set_page_classes_without_map(array("HomePage"));
+//GoogleMapLocationsDOD::set_page_classes_without_map(array("UserDefinedForms"));
 
 //SENSOR - SOME CRAZY STUFF
 GoogleMap::setUsesSensor(true); // should be set to false!
@@ -33,6 +37,7 @@ GoogleMap::setMapAddTypeControl(true);//Allow the visitor to change the map type
 GoogleMap::setMapControlSizeOneToThree(3);//map controller size (allows user to zoom and pan)", array("1" => "small", "2" => "medium", "3" => "large"), $value = "3"));
 GoogleMap::setMapScaleInfoSizeInPixels(150); //size of the map scale in pixels (default is 100)
 GoogleMap::setShowStaticMapFirst(0); //if set to 1, the map will load as a picture rather than an interactive map, with the opportunity to start an interactive map - you need to set this to 1 (true)
+GoogleMap::set_number_shown_in_around_me(7); //if set to 1, the map will load as a picture rather than an interactive map, with the opportunity to start an interactive map - you need to set this to 1 (true)
 
 /* STATIC MAP SETTINGS
 //center=-41.2943,173.2210&amp;zoom=5&amp;size=512x512&amp;maptype=roadmap - ONLY MAPTYPE IS REQUIRED
@@ -75,6 +80,7 @@ GoogleMap::setAddZoomInButton(""); //add a "zoom in" link on info window, should
 GoogleMap::setAddCloseUpButton(""); //add a "close-up" link on info window, shouldbe emptry string or text for button.
 GoogleMap::setAddDeleteMarkerButton(""); //add a "delete marker" link on info window, shouldbe emptry string or text for button.
 GoogleMap::setAddCloseWindowButton(""); //add a "close window" link on info window, shouldbe emptry string or text for button.
+GoogleMap::set_ajax_info_window_text("view details");
 
 // MARKER AND ICONS (include title to have a title)
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
@@ -94,6 +100,6 @@ GoogleMap::setLngFormFieldId(""); //longitude form field to be updated on new ma
 GoogleMap::setDefaultCountryCode(""); //default country code for address searches (to narrow searches to one country) - examples include US or NZ
 GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an address (e.g. New Zealand or United Kingdom)
 GoogleMap::setStyleSheetUrl("googlemap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googlemap/css/mapDirections.css)
-GoogleMap::setLocaleForResults("en_AU"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
+GoogleMap::setLocaleForResults("en_NZ"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 */
 //===================---------------- END googlemap MODULE ----------------===================

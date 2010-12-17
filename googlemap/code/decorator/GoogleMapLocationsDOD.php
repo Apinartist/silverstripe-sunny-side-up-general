@@ -6,14 +6,6 @@
 
 class GoogleMapLocationsDOD extends DataObjectDecorator {
 
-	protected static $number_shown_in_around_me = 7;
-		static function get_number_shown_in_around_me() {return self::$number_shown_in_around_me;}
-		static function set_number_shown_in_around_me($v) {self::$number_shown_in_around_me = $v;}
-
-	static $ajax_info_window_text = "View Details";
-		static function get_ajax_info_window_text() {return self::$ajax_info_window_text;}
-		static function set_ajax_info_window_text($v) {self::$ajax_info_window_text = $v;}
-
 	protected static $page_classes_without_map = array();
 		static function get_page_classes_without_map(){return self::$page_classes_without_map;}
 		static function set_page_classes_without_map(array $array){
@@ -46,7 +38,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	protected $isAjax = false;
 
 	static function setNumberShownAroundMe($val) {
-		user_error("setNumberShownAroundMe has been deprecated - use set_number_shown_in_around_me instead", E_USER_NOTICE);
+		user_error("setNumberShownAroundMe has been deprecated - use GoogleMap::set_number_shown_in_around_me instead", E_USER_NOTICE);
 		self::$number_shown_in_around_me = $val - 0;
 	}
 
@@ -86,11 +78,8 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
  *  ******************************
  */
 	function GoogleMapController() {
+		$this->map->loadGoogleMap();
 		return $this->map;
-	}
-
-	public function addExtraLayersAsLinks($Title, $URLSegment) {
-		$this->map->addExtraLayersAsLinks($Title, $URLSegment);
 	}
 
 	public function hasMap() {
@@ -106,20 +95,18 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		if($this->owner->hasMethod("CustomAjaxInfoWindow")) {
 			return $this->owner->CustomAjaxInfoWindow();
 		}
-		return '<div class="viewMoreInformationHolder"><a href="'.$this->owner->URLSegment.'" onclick="return !loadAjaxInfoWindow(this,\''.$this->owner->URLSegment.'\');">'.self::$ajax_info_window_text.'</a><div class="loadAjaxInfoWindowSpan"></div></div>';
-	}
-
-	public function turnOffStaticMaps() {
-		$_SESSION["staticMapsOff"] =  1;
+		if($this->owner->hasMethod("ajaxinfowindowreturn")) {
+			return '<div class="viewMoreInformationHolder"><a href="'.$this->owner->Link().'" onclick="return !loadAjaxInfoWindow(this,\''.$this->owner->Link().'ajaxinfowindowreturn/\');">'.GoogleMap::get_ajax_info_window_text().'</a><div class="loadAjaxInfoWindowSpan"></div></div>';
+		}
 	}
 
 	protected function hasStaticMaps() {
-  	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"]) && $this->map->getShowStaticMapFirst()) ? true : false;
+  	return (!Session::get("StaticMapsOff") && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
 
 
 	static function hasStaticMapsStaticFunction() {
-  	return ((!isset($_SESSION["staticMapsOff"]) || !$_SESSION["staticMapsOff"])  && $this->map->getShowStaticMapFirst()) ? true : false;
+  	return (!Session::get("StaticMapsOff") && $this->map->getShowStaticMapFirst()) ? true : false;
 	}
 
 	private function initiateMap() {
@@ -128,39 +115,44 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 	}
 
-
-
-/* ******************************
- * CREATING MAPS ON PAGES - SEVERAL OPTIONS
- *  - addEmptyMap,  $UpdateServerUrlAddPoint = ""
- *  - addAddressMap
- *  - PagePointsMap (current page points):  use addMap with "showPagePointsMapXML"
- *  - ChildPointsMap (current children points): use addMap with "showChildPointsMapXML"
- *  ******************************
- */
-
-	function addMap($action = "") {
+	function addMap($action = "", $title = "", $lng = 0, $lat = 0, $filter = "") {
 		$this->initiateMap();
-		if($action) {
-			$URLForData = $this->owner->link().$action;
+		if(!$title) {
+			$title = $this->owner->Title;
 		}
-		else {
-			$URLForData  = '';
+		$linkForData = "googlemap/".$action."/".$this->owner->ID."/".urlencode($title)."/".$lng."/".$lat."/";
+		if($filter) {
+			$linkForData .= "/".urlencode($filter)."/";
 		}
-		if(!strpos($URLForData,'?')!== false) {
-			$URLForData .= '?';
-		}
-		$URLForData .= '&getXML=1';
-		$this->map->loadGoogleMap($URLForData);
+		$this->map->addLayer($linkForData);
 		if(!Director::is_ajax()) {
 			if($this->hasStaticMaps()) {
-				if(method_exists($this, $action)) {
-					$this->$action();
+				$controller = new GoogleMapDataResponse();
+				if(method_exists($controller, $action)) {
+					$controller->setOwner($this->owner);
+					$controller->setTitle($title);
+					$controller->setLng($lng);
+					$controller->setLat($lat);
+					$controller->setFilter($filter);
+					return $controller->$action();
 				}
 			}
 		}
 		return Array();
 	}
+
+	public function addExtraLayersAsAction($action = "", $title = "", $lng = 0, $lat = 0, $filter = "") {
+		$linkForData = "googlemap/".$action."/".$this->owner->ID."/".urlencode($title)."/".$lng."/".$lat."/";
+		if($filter) {
+			$linkForData .= "/".urlencode($filter)."/";
+		}
+		$this->addExtraLayersAsLinks($title, $linkForData);
+	}
+
+	public function addExtraLayersAsLinks($title, $link) {
+		$this->map->addExtraLayersAsLinks($title, $link);
+	}
+
 
 	function addAddress($address = '') {
 		$this->initiateMap();
@@ -175,16 +167,14 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 	}
 
-	function addUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint = "showAroundMeXML/?getXML=1") {
+	function addUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint = "/googlemap/showaroundmexml/") {
 		$this->initiateMap();
-		$v = $this->owner->Link().$UpdateServerUrlAddPoint;
-		$this->map->setUpdateServerUrlAddressSearchPoint($v);
+		$this->map->setUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint);
 	}
 
-	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "updateMeXML/?getXML=1") {
+	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "/googlemap/updatemexml/") {
 		$this->initiateMap();
-		$v = $this->owner->link().$UpdateServerUrlDragend;
-		$this->map->setUpdateServerUrlDragend($v);
+		$this->map->setUpdateServerUrlDragend($UpdateServerUrlDragend);
 	}
 
 	function addAllowAddingAndDeletingPoints() {
@@ -207,206 +197,8 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 			}
 		}
 		Session::save();
-		$this->addMap("showCustomMapXML", null);
+		$this->addMap("showcustommapxml");
 		return Array();
-	}
-
-/* ******************************
- * RETURNING DATA FOR MAPS USING AJAX
- * ******************************
- */
-
-	public function turnOnStaticMaps() {
-		$_SESSION["staticMapsOff"] =  null;
-		unset($_SESSION["staticMapsOff"]);
-		return "static maps will be loaded first";
-	}
-
-	public function showPagePointsMapXML() {
-		$data = DataObject::get("GoogleMapLocationsObject", "ParentID = ".$this->owner->ID);
-		if($data) {
-			if($data->count() > 1) {
-				$s = "s";
-			}
-			else {
-			 $s = "";
-			}
-			//$title = "Location$s for ... ".$this->owner->Title;
-			$title = $this->owner->Title;
-			return $this->makeXMLData(null, $data, $title, $title);
-		}
-	}
-
-	public function showChildPointsMapXML() {
-		if($children = $this->getChildrenOfType($this->owner, null)) {
-			return $this->makeXMLData($children, null, "Points related to ".$this->owner->Title, "Points related to ".$this->owner->Title);
-		}
-	}
-
-	public function showEmptyMap() {
-		return $this->makeXMLData(null, null, "Points related to ".$this->owner->Title, "Points related to ".$this->owner->Title);
-	}
-
-	public function showCustomMapXML() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$array = Array();
-		if(isset($_SESSION["addCustomGoogleMap"])) {
-			$array = $_SESSION["addCustomGoogleMap"];
-		}
-		//print_r($array);
-		$where = " {$bt}SiteTree{$bt}.{$bt}ID{$bt} IN (-1 ";
-		if(is_array($array)) {
-			foreach($array as $id) {
-				if($id > 0) {
-					$where .= ", ".$id;
-				}
-			}
-		}
-		$where .= ")";
-		$pages = DataObject::get("SiteTree",$where);
-		return $this->makeXMLData($pages, null, "Search results", "Search results");
-	}
-
-	public function showAroundMeXML($classNameForParent = "") {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$lon = 0;
-		$lat = 0;
-		$excludeIDList = array();
-		if(isset($_REQUEST["x"]) && isset($_REQUEST["y"])) {
-			$lon = floatval($_REQUEST["x"]);
-			$lat = floatval($_REQUEST["y"]);
-		}
-		elseif($id = intval(Director::URLParam("ID"))) {
-			$objects = DataObject::get("GoogleMapLocationsObject", "ParentID = $id");
-			if($count = $objects->count()) {
-				foreach($objects as $point) {
-					$lon += $point->Longitude;
-					$lat += $point->Latitude;
-					$excludeIDList[] = $point->ID;
-				}
-				$lon = $lon / $count;
-				$lat = $lat / $count;
-			}
-		}
-		if($otherClass = Director::URLParam("OtherID")) {
-			$classNameForParent = $otherClass;
-		}
-		if(isset($_REQUEST["title"])) {
-			$title = $_REQUEST["title"];
-		}
-		else {
-			$title = "Closest to me";
-		}
-		if($lon && $lat) {
-			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lon, $lat);
-			$where = "(".$orderByRadius.") > 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} <> 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} <> 0";
-			if($classNameForParent && !is_object($classNameForParent)) {
-				$where .= " AND {$bt}SiteTree_Live{$bt}.{$bt}ClassName{$bt} = '".$classNameForParent."'";
-			}
-			if(count($excludeIDList)) {
-				$where .= " AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} NOT IN (".implode(",",$excludeIDList).") ";
-			}
-			$join = "LEFT JOIN {$bt}SiteTree_Live{$bt} ON {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} = {$bt}GoogleMapLocationsObject{$bt}.{$bt}ParentID{$bt}";
-			$objects = DataObject::get("GoogleMapLocationsObject", $where, $orderByRadius, $join, self::$number_shown_in_around_me );
-			if(is_object($objects)) {
-				return $this->makeXMLData(null, $objects, $title, self::$number_shown_in_around_me . " closest points");
-			}
-			else {
-				//return false;
-			}
-		}
-	}
-
-
-	public function updateMeXML() {
-		if($this->owner->canEdit()) {
-			if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) && isset($_REQUEST["i"]) ) {
-				$lon = floatval($_REQUEST["x"]);
-				$lat = floatval($_REQUEST["y"]);
-				$id = intval($_REQUEST["i"]);
-				if($lon && $lat) {
-					if( 0 == $id ) {
-						$point = new GoogleMapLocationsObject;
-						$point->ParentID = $this->owner->ID;
-						$point->Latitude = $lat;
-						$point->Longitude = $lon;
-						$point->write();
-						return $point->ID;
-					}
-					elseif($id > 0) {
-						$point = DataObject::get_by_id("GoogleMapLocationsObject", $id);
-						if($point) {
-							if($point->ParentID == $this->owner->ID) {
-								$point->Latitude = $lat;
-								$point->Longitude = $lon;
-								$point->Address = "";
-								$point->FullAddress = "";
-								$point->write();
-								return  "location updated";
-							}
-							else {
-								return "you dont have permission to update that location";
-							}
-						}
-						else {
-							return "could not find location";
-						}
-					}
-					elseif($id < 1) {
-
-						$point = DataObject::get_by_id("GoogleMapLocationsObject", (-1 * $id));
-						if($point) {
-							if($point->ParentID == $this->owner->ID) {
-								$point->delete();
-								$point = null;
-								return "location deleted";
-							}
-							else {
-								return "you dont have permission to delete that location";
-							}
-						}
-						else {
-							return "could not find location";
-						}
-					}
-				}
-			}
-		}
-		return  "point could NOT be updated.";
-	}
-
-
-/* ******************************
- * PRIVATE PARTY BELOW
- * ******************************
- */
-
-
-	private function makeXMLData($PageDataObjectSet = null, $GooglePointsDataObject = null, $dataObjectTitle = '', $whereStatementDescription = '') {
-		if(!$this->hasMap()) {
-			$this->map = new GoogleMap();
-		}
-		$this->map->setDataObjectTitle($dataObjectTitle);
-		$this->map->setWhereStatementDescription($whereStatementDescription);
-		if($GooglePointsDataObject) {
-			$this->map->setGooglePointsDataObject($GooglePointsDataObject);
-		}
-		elseif($PageDataObjectSet) {
-			$this->map->setPageDataObjectSet($PageDataObjectSet);
-		}
-		else {
-			$this->staticMapHTML = "<p>No points found</p>";
-		}
-		$data = $this->map->createDataPoints();
-		if(Director::is_ajax() || (isset($_GET["getXML"]) && $_GET["getXML"])) {
-			//$this->dataPointsXML = $data[1];
-			$this->turnOffStaticMaps();
-			return $this->owner->renderWith("GoogleMapXml");
-		}
-		else {
-			//$this->dataMapObjectSet = $data[0];
-			//$this->staticMapHTML = $data[2];
-		}
 	}
 
 	/**
@@ -457,17 +249,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 class GoogleMapLocationsDOD_Controller extends Extension {
 
-	static $allowed_actions = array(
-		'showPagePointsMapXML',
-		'turnOnStaticMaps',
-		'showPagePointsMapXML',
-		'showChildPointsMapXML',
-		'showEmptyMap',
-		'showCustomMapXML',
-		'updateMeXML',
-		'showAroundMeXML',
-		'SearchByAddressForm'
-	);
+	static $allowed_actions = array("SearchByAddressForm");
 
 	var $address = false;
 
@@ -492,8 +274,12 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$lng = $pointArray[0];
 		$lat = $pointArray[1];
 		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
-		$this->owner->addMap("showAroundMeXML/?x=".$lng."&y=".$lat.'&title='.urlencode($pointArray["address"]));
+		$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
+		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat);
 		return array();
 	}
 
 }
+
+
+

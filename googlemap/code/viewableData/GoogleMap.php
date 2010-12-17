@@ -59,6 +59,9 @@ class GoogleMap extends ViewableData {
 		static function setAddDeleteMarkerButton($v) {self::$AddDeleteMarkerButton = $v;}
 	protected static $AddCloseWindowButton = false;
 		static function setAddCloseWindowButton($v) {self::$AddCloseWindowButton = $v;}
+	static $ajax_info_window_text = "View Details";
+		static function get_ajax_info_window_text() {return self::$ajax_info_window_text;}
+		static function set_ajax_info_window_text($v) {self::$ajax_info_window_text = $v;}
 
 
 	/* MARKERS */
@@ -122,7 +125,10 @@ class GoogleMap extends ViewableData {
 		static function setDefaultZoom($v) {self::$DefaultZoom = $v;}
 	protected static $ShowStaticMapFirst = 0;
 		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v;}
-		public function getShowStaticMapFirst() {if(!self::$ShowStaticMapFirst || (isset($_SESSION["staticMapsOff"]) && $_SESSION["staticMapsOff"]) ) {return false;} return true;}
+		public function getShowStaticMapFirst() {(!self::$ShowStaticMapFirst || Session::get("StaticMapsOff"))? false : true;}
+	protected static $number_shown_in_around_me = 7;
+		static function get_number_shown_in_around_me() {return self::$number_shown_in_around_me;}
+		static function set_number_shown_in_around_me($v) {self::$number_shown_in_around_me = $v;}
 
 	/* STATIC MAP */
 	protected static $StaticMapSettings = "maptype=roadmap";
@@ -172,7 +178,7 @@ class GoogleMap extends ViewableData {
 	protected $UpdateServerUrlAddressSearchPoint = "";
 	protected $UpdateServerUrlDragend = "";
 	protected $ExtraLayersAsLinks = null;
-	protected $URLForData = Array();
+	protected $linksForData = Array();
 
 	/* Option 1 / 3 Set Address and update functions for Map */
 	public function setAddress($v) {$this->Address = Convert::raw2js($v);}
@@ -182,15 +188,11 @@ class GoogleMap extends ViewableData {
 	public function getUpdateServerUrlDragend() {return $this->UpdateServerUrlDragend;}
 	public function allowAddPointsToMap() {self::$AddPointsToMap = true;}
 
-	public function addExtraLayersAsLinks($Title, $URLSegment) {
+	public function addExtraLayersAsLinks($Title, $Link) {
 		if(!$this->ExtraLayersAsLinks) {
 			$this->ExtraLayersAsLinks = new DataObjectSet();
 		}
-		if(!strpos($URLSegment, "?")) {
-			$URLSegment .= "?";
-		}
-		$URLSegment .='&amp;title='.urlencode($Title);
-		$this->ExtraLayersAsLinks->push(new ArrayData(array("Title" => $Title, "URLSegment" => $URLSegment)));
+		$this->ExtraLayersAsLinks->push(new ArrayData(array("Title" => $Title, "Link" => $Link)));
 	}
 
 	public function AllExtraLayersAsLinks() {
@@ -253,12 +255,15 @@ class GoogleMap extends ViewableData {
 	public function setFilteredClassNameArray($array) {
 		$this->filteredClassNameArray= $array;
 	}
+
+	function addLayer($linkForData) {
+		$this->linksForData[] = $linkForData;
+	}
+
 	/* Load Google Map into page  */
-	public function loadGoogleMap($URLForData = "") {
+	public function loadGoogleMap() {
 		$js = '';
 		$this->loadDefaults();
-		$this->URLForData[] = $URLForData;
-		ContentNegotiator::disable();
 		if(!self::$includesDone) {
 			Requirements::themedCSS("googleMap");
 			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
@@ -300,10 +305,10 @@ class GoogleMap extends ViewableData {
 		if($this->getDataPointCount() > 1) {return true;} else {return false;}
 	}
 
-	public function URLSegment() {
+	public function Link() {
 		$page = Director::currentPage();
 		if($page) {
-			return $page->URLSegment;
+			return $page->Link();
 		}
 	}
 
@@ -351,7 +356,7 @@ class GoogleMap extends ViewableData {
 							$dataLine = '<Point><coordinates>'.$dataPoint->Longitude.','.$dataPoint->Latitude.'</coordinates></Point>';
 						}
 						$link = '';
-						if($dataPoint->URLSegment) {
+						if($dataPoint->Link) {
 							$link = $dataPoint->AjaxInfoWindowLink;
 						}
 						$staticIcon = '';
@@ -494,7 +499,7 @@ class GoogleMap extends ViewableData {
 				addCloseWindowButton:"'.self::$AddCloseWindowButton.'",
 		/* MARKER AND ICONS (include title to have a title)*/
 				addPointsToMap:'.$this->showFalseOrTrue(self::$AddPointsToMap).',
-				markerOptions: {bouncy:true,title: "click me", draggable: true},
+				markerOptions: '.self::$MarkerOptions.',
 				preloadImages:'.$this->showFalseOrTrue(self::$PreloadImages).',
 				defaultIconUrl: "'.self::$DefaultIconUrl.'",
 				iconFolder: "'.self::$IconFolder.'",
@@ -541,8 +546,8 @@ class GoogleMap extends ViewableData {
 			}
 			else {
 				loadSunnySideUpMap();';
-		if(count($this->URLForData)) {
-			foreach($this->URLForData as $link) {
+		if($this->linksForData && count($this->linksForData)) {
+			foreach($this->linksForData as $link) {
 				$js .= '
 				addLayer("'.Director::absoluteBaseURL().$link.'");';
 			}

@@ -35,14 +35,14 @@
 		<a href="#map" onclick="return !savePosition();">save map position</a> |
 		<a href="#map" onclick="return !goToSavedPosition();">back to saved map position</a> |
 		<a href="#map" onclick="initiateGoogleMap(); return false;">reset map</a> |
-		<a href="#map" onclick="return !turnOnStaticMaps(this, '{$URLSegment}')" title="without loading dynamic maps (stop maps) - pages load faster">stop maps</a>
+		<a href="#map" onclick="return !turnOnStaticMaps(this, '{$Link}')" title="without loading dynamic maps (stop maps) - pages load faster">stop maps</a>
 	</div>
  <% if AllExtraLayersAsLinks %>
 	<div id="GoogleMapExtraLayersAsList" class="MapExtraInformation">
 		<h2>Add to the map</h2>
 		<ul>
 	<% control AllExtraLayersAsLinks %>
-			<li><a href="#map" onclick="return !addLayer('{$URLSegment}');">$Title</a></li>
+			<li><a href="#map" onclick="return !addLayer('{$Link}');">$Title</a></li>
 	<% end_control %>
 		</ul>
 	</div>

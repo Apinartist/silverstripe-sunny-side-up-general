@@ -32,7 +32,9 @@ class GoogleMapLocationsObject extends DataObject {
 	);
 
 	static $has_one = array (
-		'Parent' => 'SiteTree'
+		'Parent' => 'SiteTree',
+		'Member' => 'Member'
+
 	);
 
 	static $has_many = array (
@@ -51,7 +53,12 @@ class GoogleMapLocationsObject extends DataObject {
 		// '' => ''
 	);
 
-	var $ParentData = null;
+	static $casting = array(
+		"ParentData" => "SiteTree",
+		"AjaxInfoWindowLink" => "HTMLText",
+		"ParentClassName" => "Varchar",
+		"Link" => "Varchar"
+	);
 
 	static function radiusDefinition($lon, $lat) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
@@ -109,28 +116,45 @@ class GoogleMapLocationsObject extends DataObject {
 		return $fieldset;
 	}
 
+	function getParentData() {
+		return $this->Parent();
+	}
+
+	function getAjaxInfoWindowLink() {
+		if(strlen($this->CustomPopUpWindowInfo) > 3) {
+			return '<p>'.$this->CustomPopUpWindowInfo.'</p>';
+		}
+		elseif($parent = $this->getParentData()) {
+			return $parent->AjaxInfoWindowLink();
+		}
+	}
+
+	function getParentClassName() {
+		if($parent = $this->getParentData()) {
+			return $parent->ClassName;
+		}
+	}
+	function getLink() {
+		if($parent = $this->getParentData()) {
+			return $parent->Link();
+		}
+	}
+
 	function addParentData() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$parent = $this->Parent();
-		$this->AjaxInfoWindowLink = $parent->AjaxInfoWindowLink();
-		$this->URLSegment = $parent->URLSegment;
-		$this->ParentClassName = $parent->ClassName;
-		$this->ParentData = $parent;
-		if(!isset(self::$parent_point_counts[$this->ParentID + 0])) {
-			$result = DB::query("Select Count(*) from {$bt}GoogleMapLocationsObject{$bt} where ParentID = ".$parent->ID);
+		$parentData = $this->getParentData();
+		if(!isset(self::$parent_point_counts[$this->ParentID + 0]) && $this->getParentData()) {
+			$result = DB::query("Select Count(*) from {$bt}GoogleMapLocationsObject{$bt} where ParentID = ".$this->ParentID);
 			$count = $result->value();
 			self::$parent_point_counts[$this->ParentID] = $count;
 		}
-		if(isset(self::$parent_point_counts[$this->ParentID + 0]) && self::$parent_point_counts[$this->ParentID + 0] == 1) {
-			$this->Title = $parent->Title;
-			$this->Name = $parent->Title;
+		if(isset(self::$parent_point_counts[$this->ParentID + 0]) && self::$parent_point_counts[$this->ParentID + 0] == 1 && $this->getParentData()) {
+			$this->Title = $this->getParentData()->Title;
+			$this->Name = $this->getParentData()->Title;
 		}
 		else {
 			$this->Title = $this->Address;
 			$this->Name = $this->Address;
-		}
-		if(strlen($this->CustomPopUpWindowInfo) > 3) {
-			$this->AjaxInfoWindowLink = '<p>'.$this->CustomPopUpWindowInfo.'</p>';
 		}
 		if($this->CustomPopUpWindowTitle) {
 			$this->Title = $this->CustomPopUpWindowTitle;
@@ -153,7 +177,11 @@ class GoogleMapLocationsObject extends DataObject {
 		$this->GeoPointField->setX($this->Longitude);
 		parent::onBeforeWrite();
 		*/
-		$this->findGooglePoints(true);
+		$m = Member::currentMember();
+		if($m) {
+			$this->MemberID = $m->ID;
+		}
+		$this->findGooglePoints($doNotWrite = true);
 	}
 
 	function completePoints() {
@@ -188,7 +216,7 @@ class GoogleMapLocationsObject extends DataObject {
 		$this->findGooglePoints(true);
 		if($this->FullAddress && $this->Longitude && $this->Latitude) {
 			$this->write();
-			return true;
+			return $this;
 		}
 		return false;
 	}

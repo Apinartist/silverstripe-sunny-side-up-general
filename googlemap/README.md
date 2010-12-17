@@ -40,11 +40,20 @@ STEP-BY-STEP (by alex.guez [at] gmail dot com)
 8.	Go tho the menu “Map”, add a full address, save&publish
 
 9.	Add in mysite/code/Page.php in the init function the code (for SS 2.3.1, as prototype is loaded by default, we need to load jquery):
-		Requirements::javascript('jsparty/jquery/jquery.js'); - NOT SURE IF THIS IS NEEDED
 
 10.	Find your template file and add the following: <% include GoogleMap %>
 
 11. to customise information in pop-ups, add the following function to your pages with map: CustomAjaxInfoWindow
+
+
+___________________________________
+CUSTOMISING POP-UP INFORMATION
+-----------------------------------
+1. enter CustomPopUpWindowTitle and CustomPopUpWindowInfo in CMS (overrules everything)
+
+2. add the method: CustomAjaxInfoWindow to the PARENT of the point.
+
+
 
 ___________________________________
 KNOWN BUGS AND ISSUES
