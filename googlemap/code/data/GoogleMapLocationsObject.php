@@ -32,8 +32,7 @@ class GoogleMapLocationsObject extends DataObject {
 	);
 
 	static $has_one = array (
-		'Parent' => 'SiteTree',
-		'Member' => 'Member'
+		'Parent' => 'SiteTree'
 
 	);
 
@@ -177,10 +176,6 @@ class GoogleMapLocationsObject extends DataObject {
 		$this->GeoPointField->setX($this->Longitude);
 		parent::onBeforeWrite();
 		*/
-		$m = Member::currentMember();
-		if($m) {
-			$this->MemberID = $m->ID;
-		}
 		$this->findGooglePoints($doNotWrite = true);
 	}
 

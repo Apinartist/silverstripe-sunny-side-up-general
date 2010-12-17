@@ -264,7 +264,9 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 	}
 
 	function findnearaddress($data, $form) {
-		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($data["Address"]);
+		$address = Convert::raw2sql($data["Address"]);
+		GoogleMapSearchRecord::create_new(Convert::raw2sql($address));
+		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($address);
 		$this->address = $pointArray["address"];
 		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
 			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
