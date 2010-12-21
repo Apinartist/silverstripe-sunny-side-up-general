@@ -208,7 +208,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	 * @param $classType String The text string to match `ClassName` field
 	 * @return DataObjectSet of Class $classType
 	 */
-	private function getChildrenOfType($CurrentPage,$classType=null) {
+	function getChildrenOfType($CurrentPage,$classType=null) {
 		$children = $CurrentPage->AllChildren();
 		if (!isset($childrenOfType)) $childrenOfType=new DataObjectSet();
 		if ($children) {
@@ -257,7 +257,7 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		return new Form(
 			$this->owner,
 			"SearchByAddressForm",
-			new FieldSet(new TextField("Address", _t("GoogleMapLocationsDOD.ENTERADDRESS", "Enter your address"),$this->address)),
+			new FieldSet(new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address)),
 			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
 			new RequiredFields("Address")
 		);
@@ -276,7 +276,7 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$lng = $pointArray[0];
 		$lat = $pointArray[1];
 		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
-		$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
+		//$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
 		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat);
 		return array();
 	}
