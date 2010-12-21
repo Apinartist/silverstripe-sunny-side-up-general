@@ -182,22 +182,32 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		$this->map->allowAddPointsToMap();
 	}
 
-	function addCustomMap($pages, $retainOldSessionData = false) {
-		if($pages) {
+	function addCustomMap($pagesOrGoogleMapLocationsObjects, $retainOldSessionData = false) {
+		$isGoogleMapLocationsObject = true;
+		if($pagesOrGoogleMapLocationsObjects) {
 			//Session::clear("addCustomGoogleMap");
 			if(!$retainOldSessionData) {
 				$_SESSION["addCustomGoogleMap"] =  null;
 				$_SESSION["addCustomGoogleMap"] =  array();
 			}
-			foreach($pages as $page) {
-				if(!$page->ID) {
+			foreach($pagesOrGoogleMapLocationsObjects as $obj) {
+				if($obj instanceOf SiteTree) {
+					$isGoogleMapLocationsObject = false;
+				}
+				if(!$obj->ID) {
 					user_error("Page provided to addCustomMap that does not have an ID", E_USER_ERROR);
 				}
-				$_SESSION["addCustomGoogleMap"][] = $page->ID;
+				$_SESSION["addCustomGoogleMap"][] = $obj->ID;
 			}
 		}
 		Session::save();
-		$this->addMap("showcustommapxml");
+		if($isGoogleMapLocationsObject) {
+			$fn = "showcustomdosmapxml";
+		}
+		else {
+			$fn = "showcustompagesmapxml";
+		}
+		$this->addMap($fn);
 		return Array();
 	}
 
@@ -265,13 +275,16 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 
 	function findnearaddress($data, $form) {
 		$address = Convert::raw2sql($data["Address"]);
-		GoogleMapSearchRecord::create_new(Convert::raw2sql($address));
 		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($address);
 		$this->address = $pointArray["address"];
 		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
+			GoogleMapSearchRecord::create_new(Convert::raw2sql($address), $this->owner->ID, false);
 			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
 			Director::redirectBack();
 			return;
+		}
+		else {
+			GoogleMapSearchRecord::create_new(Convert::raw2sql($address), $this->owner->ID, true);
 		}
 		$lng = $pointArray[0];
 		$lat = $pointArray[1];

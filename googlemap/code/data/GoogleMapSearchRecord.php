@@ -9,12 +9,29 @@ class GoogleMapSearchRecord extends DataObject {
 	);
 
 	static $has_one = array(
-		"Member" => "Member"
+		"Member" => "Member",
+		"Parent" => "SiteTee",
+		"GoogleMapLocationsObject" => "GoogleMapLocationsObject"
 	);
 
-	static function create_new($SearchedFor){
+	static function create_new($searchedFor, $parentID = 0, $addGoogleMapLocationsObjectOrItsID = false){
 		$obj = new GoogleMapSearchRecord();
-		$obj->SearchedFor = $SearchedFor;
+		$obj->SearchedFor = $searchedFor;
+		$obj->ParentID = $parentID;
+		if(!$addGoogleMapLocationsObjectOrItsID ) {
+			//do nothing
+		}
+		elseif($addGoogleMapLocationsObjectOrItsID === true || $addGoogleMapLocationsObjectOrItsID = 1) {
+			//create object
+			$location = new GoogleMapLocationsObject();
+			$location->Address = $searchedFor;
+			$location->Manual = false;
+			$location->write();
+			$obj->GoogleMapLocationsObjectID = $location->ID;
+		}
+		else {
+			$obj->GoogleMapLocationsObjectID = $addGoogleMapLocationsObjectOrItsID;
+		}
 		$obj->write();
 		return $obj;
 	}

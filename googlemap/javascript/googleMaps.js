@@ -64,12 +64,13 @@ function GMC(mapDivName, url, opts) {
 	var el = null;
 	//clear html areas
 	if(this.opts.changePageTitle) {document.title = this.opts.defaultTitle;}
-	if(el = document.getElementById(this.opts.titleId)) {el.innerHTML = this.opts.defaultTitle;}
-	if(el = document.getElementById(this.opts.layerListId)) {el.innerHTML = "";} else {this.opts.layerListId = "";}
-	if(el = document.getElementById(this.opts.sideBarId)) {el.innerHTML = "";} else {this.opts.sideBarId = "";}
-	if(el = document.getElementById(this.opts.dropBoxId)) {el.innerHTML = "";} else {this.opts.dropBoxId = "";}
-	if(el = document.getElementById(this.opts.statusDivId)) {el.innerHTML = "loading map . . .";} else {this.opts.statusDivId = "statusDivOnMap";}
-	if(el = document.getElementById(this.opts.directionsDivId)) {el.innerHTML = "";} else {this.opts.directionsDivId = "";}
+	if(this.opts.titleId) { if(el = document.getElementById(this.opts.titleId)) {el.innerHTML = this.opts.defaultTitle;}}
+	if(this.opts.layerListId) { if(el = document.getElementById(this.opts.layerListId)) {el.innerHTML = "";} else {this.opts.layerListId = "";}}
+	if(this.opts.sideBarId) { if(el = document.getElementById(this.opts.sideBarId)) {el.innerHTML = "";} else {this.opts.sideBarId = "";}}
+	if(this.opts.dropBoxId) { if(el = document.getElementById(this.opts.dropBoxId)) {el.innerHTML = "";} else {this.opts.dropBoxId = "";}}
+	if(this.opts.statusDivId) { if( el = document.getElementById(this.opts.statusDivId)) {el.innerHTML = "loading map . . .";} else {this.opts.statusDivId = "statusDivOnMap";}} else {this.opts.statusDivId = "statusDivOnMap";}
+	if(this.opts.directionsDivId) { if(el = document.getElementById(this.opts.directionsDivId)) {el.innerHTML = "";} else {this.opts.directionsDivId = "";}}
+
 	this.clearRouteVariables();
 	this.mapAddress = "";
 	this.currentlySetToString = "<br />Currently set to: ";
@@ -777,8 +778,10 @@ GMC.prototype.processXml = function(doc) {
 	}
 	else {
 		var title =  GXml.value(xmlDoc.getElementsByTagName("title")[0]);
-		if(el = document.getElementById(this.opts.titleId)) {
-			el.innerHTML = title;
+		if(this.opts.titleId) {
+			if(el = document.getElementById(this.opts.titleId)) {
+				el.innerHTML = title;
+			}
 		}
 		if(this.opts.changePageTitle && document.title) {
 			document.title = title;
@@ -845,78 +848,93 @@ GMC.prototype.updateLists = function() {
 	this.updateStatus("Map Ready");
 }
 GMC.prototype.createSideBar = function(sideBarArray) {
-	var el;
-	if(el = document.getElementById(this.opts.sideBarId)) {
-		var html = '<ul id="' + this.opts.sideBarId + 'list">';
-		for (var j = 0; j < sideBarArray.length; j++) {
-			var sideBarElements = sideBarArray[j].split("$$$", 2);
-			i = sideBarElements[1];
-			if(!strpos(this.gmarkers[i].serverId, "manuallyAdded", 0)) {
-				html += '<li><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
+	if(this.opts.sideBarId) {
+		var el;
+		if(el = document.getElementById(this.opts.sideBarId)) {
+			var html = '<ul id="' + this.opts.sideBarId + 'list">';
+			for (var j = 0; j < sideBarArray.length; j++) {
+				var sideBarElements = sideBarArray[j].split("$$$", 2);
+				i = sideBarElements[1];
+				if(!strpos(this.gmarkers[i].serverId, "manuallyAdded", 0)) {
+					html += '<li><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
+				}
+				else {
+					html += '<li>You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
+				}
 			}
-			else {
-				html += '<li>You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
-			}
+			html += '</ul>';
+			el.innerHTML = html;
 		}
-		html += '</ul>';
-		el.innerHTML = html;
+		else {
+			console.debug("you defined the dropbox like this "+this.opts.sideBarId+", but it does not exist");
+		}
 	}
 }
 GMC.prototype.createDropDown = function(sideBarArray) {
-	var el;
-	if(el = document.getElementById(this.opts.dropBoxId)) {
-		var html = '<select onchange="GMO.showMarkerFromList(this.value);"><option selected="selected"> - Select a location - </option>';
-		for (var j = 0; j < sideBarArray.length; j++) {
-			var sideBarElements = sideBarArray[j].split("$$$", 2);
-			i = sideBarElements[1];
-			html += '<option value="' + i + '">' + this.gmarkers[i].markerName +'</option>';
+	if(this.opts.dropBoxId) {
+		var el;
+		if(el = document.getElementById(this.opts.dropBoxId)) {
+			var html = '<select onchange="GMO.showMarkerFromList(this.value);"><option selected="selected"> - Select a location - </option>';
+			for (var j = 0; j < sideBarArray.length; j++) {
+				var sideBarElements = sideBarArray[j].split("$$$", 2);
+				i = sideBarElements[1];
+				html += '<option value="' + i + '">' + this.gmarkers[i].markerName +'</option>';
+			}
+			html + "</select>";
+			el.innerHTML = html;
 		}
-		html + "</select>";
-		el.innerHTML = html;
+		else {
+			console.debug("you defined the dropbox like this "+this.opts.dropBoxId+", but it does not exist");
+		}
 	}
 }
 GMC.prototype.updateLayerList = function() {
-	var el = null;
-	if(el = document.getElementById(this.opts.layerListId)) {
-		var html = '<ul>';
-		var className = '';
-		var style = '';
-		var linkText = '';
-		for (var i = 0; i < this.layerInfo.length; i++) {
-			if (this.layerInfo[i].show == 1) {
-				linkText = "hide";
-				className = "layerListShown";
-				style = '';
-			}
-			else {
-				linkText = "show";
-				className = "layerListHidden";
-				if(this.opts.hiddenLayersRemovedFromList) {
-					style = ' style="display: none;"';
+	if(this.opts.layerListId) {
+		var el = null;
+		if(el = document.getElementById(this.opts.layerListId)) {
+			var html = '<ul>';
+			var className = '';
+			var style = '';
+			var linkText = '';
+			for (var i = 0; i < this.layerInfo.length; i++) {
+				if (this.layerInfo[i].show == 1) {
+					linkText = "hide";
+					className = "layerListShown";
+					style = '';
 				}
 				else {
-					style = ' style="opacity:.30; filter: alpha(opacity=30); -moz-opacity: 0.30;"';
+					linkText = "show";
+					className = "layerListHidden";
+					if(this.opts.hiddenLayersRemovedFromList) {
+						style = ' style="display: none;"';
+					}
+					else {
+						style = ' style="opacity:.30; filter: alpha(opacity=30); -moz-opacity: 0.30;"';
+					}
+				}
+				html += ''
+					+ '<li class="'+className+'"'+style+'>';
+				for(var j=0; j < this.layerInfo[i].iconUrl.length; j++) {
+					html += ''
+						+ '<img src="'+ this.layerInfo[i].iconUrl[j] + '" alt="icon ' + j + ' for '+ this.layerInfo[i].title + '" class="iconBulletPoint" width="' + this.opts.iconWidth + '" height="' + this.opts.iconHeight + '" /> ';
+				}
+				html += ''
+					+ this.layerInfo[i].title
+					+ ' - <a href="javascript:void(0)" onclick="GMO.changeLayerVisibility('+i+')">' + linkText + '</a>';
+					if(!this.opts.hiddenLayersRemovedFromList) {
+						+ ' - <a href="javascript:void(0)" onclick="GMO.deleteLayer('+i+')">delete</a>';
+					}
+				if(this.opts.addKmlLink && this.layerInfo[i].url) {
+					html += ''
+						+ ' (<a href="' + this.layerInfo[i].url + '&kml=1">kml</a>)</li>';
 				}
 			}
-			html += ''
-				+ '<li class="'+className+'"'+style+'>';
-			for(var j=0; j < this.layerInfo[i].iconUrl.length; j++) {
-				html += ''
-					+ '<img src="'+ this.layerInfo[i].iconUrl[j] + '" alt="icon ' + j + ' for '+ this.layerInfo[i].title + '" class="iconBulletPoint" width="' + this.opts.iconWidth + '" height="' + this.opts.iconHeight + '" /> ';
-			}
-			html += ''
-				+ this.layerInfo[i].title
-				+ ' - <a href="javascript:void(0)" onclick="GMO.changeLayerVisibility('+i+')">' + linkText + '</a>';
-				if(!this.opts.hiddenLayersRemovedFromList) {
-					+ ' - <a href="javascript:void(0)" onclick="GMO.deleteLayer('+i+')">delete</a>';
-				}
-			if(this.opts.addKmlLink && this.layerInfo[i].url) {
-				html += ''
-					+ ' (<a href="' + this.layerInfo[i].url + '&kml=1">kml</a>)</li>';
-			}
+			html += "<ul>";
+			el.innerHTML = html;
 		}
-		html += "<ul>";
-		el.innerHTML = html;
+		else {
+			console.debug("you defined the layerlist like this "+this.opts.layerListId+", but it does not exist");
+		}
 	}
 }
 GMC.prototype.updateTitles = function() {
@@ -927,9 +945,11 @@ GMC.prototype.updateTitles = function() {
 			i = -99;
 		}
 	}
-	var el = null
-	if(el = document.getElementById(this.opts.titleId)) {
-		el.innerHTML = title;
+	var el = null;
+	if(this.opts.titleId) {
+		if(el = document.getElementById(this.opts.titleId)) {
+			el.innerHTML = title;
+		}
 	}
 	if(this.opts.changePageTitle && document.title) {
 		document.title = title;
@@ -977,18 +997,22 @@ GMC.prototype.updateStatus = function(html, add) {
 		+ ' <a href="javascript:void(0)" onclick="GMO.enlargeMap();" id="mapZoomLinkLabel">' + zoomLinkLabel + '</a> '
 		+ hideAction
 		+ '</p>'+ html;
-	if(el = document.getElementById(this.opts.statusDivId)) {
-		el.innerHTML = fullHtml;
-		el.style.display = "block";
+	if(this.opts.statusDivId) {
+		if(el = document.getElementById(this.opts.statusDivId)) {
+			el.innerHTML = fullHtml;
+			el.style.display = "block";
+		}
 	}
 }
 GMC.prototype.hideStatus = function() {
-	if(el = document.getElementById(this.opts.statusDivId)  && !this.mapIsZoomed) {
-		el = document.getElementById(this.opts.statusDivId);
-		el.style.display = "none";
-	}
-	else if(this.mapIsZoomed) {
-		alert("Can not hide this bar in full screen mode");
+	if(this.opts.statusDivId) {
+		if(el = document.getElementById(this.opts.statusDivId)  && !this.mapIsZoomed) {
+			el = document.getElementById(this.opts.statusDivId);
+			el.style.display = "none";
+		}
+		else if(this.mapIsZoomed) {
+			alert("Can not hide this bar in full screen mode");
+		}
 	}
 }
 
@@ -1029,11 +1053,15 @@ GMC.prototype.addAddressToMap = function (response) {
 	}
 }
 GMC.prototype.updateAddressFormFields = function(latitude, longitude) {
-	if(el = document.getElementById(GMO.opts.latFormFieldId)) {
-		document.getElementById(GMO.opts.latFormFieldId).value = latitude;
+	if(GMO.opts.latFormFieldId) {
+		if(el = document.getElementById(GMO.opts.latFormFieldId)) {
+			document.getElementById(GMO.opts.latFormFieldId).value = latitude;
+		}
 	}
-	if(document.getElementById(GMO.opts.lngFormFieldId)) {
-		document.getElementById(GMO.opts.lngFormFieldId).value = longitude;
+	if(GMO.opts.lngFormFieldId) {
+		if(document.getElementById(GMO.opts.lngFormFieldId)) {
+			document.getElementById(GMO.opts.lngFormFieldId).value = longitude;
+		}
 	}
 }
 /* special searches: find route */

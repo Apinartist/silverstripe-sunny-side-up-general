@@ -7,7 +7,9 @@ class GoogleMapDataResponse extends Controller {
 		'showpagepointsmapxml',
 		'showchildpointsmapxml',
 		'showemptymap',
-		'showcustommapxml',
+		'showcustompagesmapxml',
+		'showcustomdosmapxml',
+		'showdataobjects',
 		'updatemexml',
 		'showaroundmexml',
 		'showsearchpoint',
@@ -107,24 +109,37 @@ class GoogleMapDataResponse extends Controller {
 
 	}
 
-	public function showcustommapxml() {
+	public function showcustompagesmapxml() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$array = Array();
+		$array = Array(-1);
 		if(isset($_SESSION["addCustomGoogleMap"])) {
 			$array = $_SESSION["addCustomGoogleMap"];
 		}
 		//print_r($array);
-		$where = " {$bt}SiteTree{$bt}.{$bt}ID{$bt} IN (-1 ";
-		if(is_array($array)) {
-			foreach($array as $id) {
-				if($id > 0) {
-					$where .= ", ".$id;
-				}
-			}
+		if(is_array($array) && count($array)) {
+			$where = " {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} IN (".implode(",",$array).")";
 		}
-		$where .= ")";
-		$pages = DataObject::get("SiteTree",$where);
+		else {
+			$where = " {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} < 0";
+		}
+		$pages = Versioned::get_by_stage("SiteTree", "Live", $where);
 		return $this->makeXMLData($pages, null, "Search results", "Search results");
+	}
+	public function showcustomdosmapxml() {
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		$array = Array(-1);
+		if(isset($_SESSION["addCustomGoogleMap"])) {
+			$array = $_SESSION["addCustomGoogleMap"];
+		}
+		//print_r($array);
+		if(is_array($array) && count($array)) {
+			$where = " {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} IN (".implode(",",$array).")";
+		}
+		else {
+			$where = " {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} < 0";
+		}
+		$googleMapLocationsObjects = DataObject::get("GoogleMapLocationsObject",$where);
+		return $this->makeXMLData(null, $googleMapLocationsObjects, "Search results", "Search results");
 	}
 
 	public function showaroundmexml() {
@@ -159,7 +174,6 @@ class GoogleMapDataResponse extends Controller {
 			$title = "Closest to me";
 		}
 		if($lng && $lat) {
-
 			$orderByRadius = GoogleMapLocationsObject::radiusDefinition($lng, $lat);
 			$where = "(".$orderByRadius.") > 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} <> 0 AND {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} <> 0";
 			if($classNameForParent && !is_object($classNameForParent)) {

@@ -33,7 +33,11 @@ class GoogleMapLocationsObject extends DataObject {
 
 	static $has_one = array (
 		'Parent' => 'SiteTree'
+	);
 
+	static $indexes = array(
+		"Latitude" => true,
+		"Longitude" => true
 	);
 
 	static $has_many = array (
