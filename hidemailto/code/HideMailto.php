@@ -35,7 +35,7 @@ class HideMailto extends SiteTreeDecorator {
 			$obj->Original .= "?subject=".Convert::raw2mailto($subject);
 		}
 		$obj->Subject = $subject;
-		$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1]."', '".Convert::raw2mailto($subject)."'); return true;";
+		$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1]."', '".Convert::raw2mailto($subject)."')); return true;";
 		//TO DO: add a JS function that puts the
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("hidemailto/javascript/HideMailto2Email.js");
