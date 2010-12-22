@@ -140,7 +140,7 @@ class HideMailto_Controller extends ContentController {
 		if((is_string(self::$allowed_domains) && self::$allowed_domains == '*') || in_array($domain, self::$allowed_domains)) {
 			// Create the redirect
 			echo $this->renderWith("HideMailto");
-			$emailString = $this->makeMailtoString($user, $domain, $subject)
+			$emailString = $this->makeMailtoString($user, $domain, $subject);
 			header("Location: " . $emailString);
 			//header("Refresh: 0; url=". $emailString);
 		}
