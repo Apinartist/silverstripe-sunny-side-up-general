@@ -121,19 +121,20 @@ class HideMailto_Controller extends ContentController {
 		$domain = '';
 		$subject = '';
 		// We have two situations to deal with, where urlParams['Action'] is an int (assume Member ID), or a string (assume username)
-		if(is_numeric(Director::urlParam('Action'))) {
+		if(is_numeric(Director::urlParam('Name'))) {
 			// Action is numeric, assume it's a member ID and optional ID is the email subject
-			$member = DataObject::get_by_id('Member', (int)Director::urlParam('Action'));
-			if(!$member) user_error("No member found with ID #" . Director::urlParam('Action'), E_USER_ERROR); // No member found with this ID, perhaps we could redirect a user back instead of giving them a 500 error?
-
+			$member = DataObject::get_by_id('Member', (int)Director::urlParam('Name'));
+			if(!$member) {
+				user_error("No member found with ID #" . Director::urlParam('Name'), E_USER_ERROR); // No member found with this ID, perhaps we could redirect a user back instead of giving them a 500 error?
+			}
 			list($user, $domain) = explode('@', $member->Email);
 			$subject = Director::urlParam('ID');
 		}
 		else {
 			// Action is not numeric, assume that Action is the username, ID is the domain and optional OtherID is the email subject
-			$user = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('Action')));
-			$domain = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('ID')));
-			$subject = Director::urlParam('OtherID');
+			$user = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('Name')));
+			$domain = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('URL')));
+			$subject = Director::urlParam('Subject');
 		}
 
 		// Make sure the domain is in the allowed domains
@@ -142,7 +143,7 @@ class HideMailto_Controller extends ContentController {
 			echo $this->renderWith("HideMailto");
 			$emailString = $this->makeMailtoString($user, $domain, $subject);
 			header("Location: " . $emailString);
-			//header("Refresh: 0; url=". $emailString);
+			header("Refresh: 0; url=". $emailString);
 		}
 		else {
 			user_error("We're not allowed to redirect to the domain '$domain', because it's not listed in the _config.php file", E_USER_ERROR);

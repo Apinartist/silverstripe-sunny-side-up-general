@@ -11,6 +11,6 @@
 
 
 Director::addRules(50, array(
-	'mailto/$Action/$ID/$OtherID' => 'HideMailto_Controller'
+	'mailto/$Name/$URL/$Subject' => 'HideMailto_Controller'
 ));
 
