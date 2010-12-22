@@ -15,18 +15,20 @@ class HideMailto extends SiteTreeDecorator {
 		static function get_dot_replacer() {return self::$dot_replacer;}
 
 	static function convert_email($email, $subject = '') {
-		$url = array(); $array = array();
+		$obj = new Object();
+		$url = array();
+		$array = array();
 		if(!$subject) {
 			$subject = self::$default_subject;
 		}
 		//mailto part
 		$array = explode("@",$email);
-		$obj->mailto =
+		$url = explode(".", $array[1]);
+		$obj->MailTo =
 			"mailto/".
 			urlencode(str_replace(".", self::get_dot_replacer(), $array[0]))."/".
 			urlencode(str_replace(".", self::get_dot_replacer(), $array[1])).'/'.
 			Convert::raw2mailto($subject)."/";
-		$url = explode(".", $array[1]);
 		$obj->Text = "".$array[0]." [at] ".implode(" . ",$url);
 		$obj->Original = $email;
 		if($subject) {
@@ -35,22 +37,15 @@ class HideMailto extends SiteTreeDecorator {
 		$obj->Subject = $subject;
 		$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1].", '".Convert::raw2mailto($subject)."')); return true;";
 		//TO DO: add a JS function that puts the
-		Requirements::javascript("hidemailto/javascript/HideMailto2Email.js")
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("hidemailto/javascript/HideMailto2Email.js");
 		return $obj;
 	}
 
-
-	function HideMailtoMailto (){
+	function HideMailToObject() {
 		if($email = $this->getHiddenEmailData()) {
 			$obj = self::convert_email($email);
-			return $obj->mailto;
-		}
-	}
-
-	function HideMailtoText (){
-		if($email = $this->getHiddenEmailData()) {
-			$obj = self::convert_email($email);
-			return $obj->text;
+			return $obj;
 		}
 	}
 
