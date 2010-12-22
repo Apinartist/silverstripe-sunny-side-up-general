@@ -15,7 +15,7 @@ class HideMailto extends SiteTreeDecorator {
 		static function get_dot_replacer() {return self::$dot_replacer;}
 
 	static function convert_email($email, $subject = '') {
-		$obj = new Object();
+		$obj = new DataObject();
 		$url = array();
 		$array = array();
 		if(!$subject) {
