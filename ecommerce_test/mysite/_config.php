@@ -9,7 +9,7 @@ require_once('conf/ConfigureFromEnv.php');
 MySQLDatabase::set_connection_charset('utf8');
 // This line set's the current theme. More themes can be
 // downloaded from http://www.silverstripe.org/themes/
-SSViewer::set_theme('blackcandy');
+SSViewer::set_theme('main');
 // enable nested URLs for this site (e.g. page/sub-page/)
 SiteTree::enable_nested_urls();
 
@@ -17,13 +17,15 @@ SiteTree::enable_nested_urls();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_email("your friendly website <sales@sunnysideup.co.nz>");
-Order::set_subject("thank you for your order at www.sunnysideup.co.nz");
+Order::set_receipt_email("your friendly website <sales@sunnysideup.co.nz>");
+Order::set_receipt_subject("thank you for your order at www.sunnysideup.co.nz");
 //Order::set_modifiers(array("MyModifierOne", "MyModifierTwo");
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
 Payment::set_site_currency('NZD');
 Geoip::$default_country_code = "NZ";
+Object::add_extension("Product", "EcommerceItemDecorator");
+Object::add_extension("ProductVariation", "EcommerceItemDecorator");
 
 
 // * * * SHOPPING CART AND ORDER
@@ -51,10 +53,10 @@ Geoip::$default_country_code = "NZ";
 
 // * * * CHECKOUT
 //ExpiryDateField::set_short_months(true); //uses short months (e.g. Jan instead of january) for credit card expiry date.
-//OrderFormWithoutShippingAddress::set_fixed_country_code("NZ"); //country is fixed
-OrderFormWithoutShippingAddress::set_postal_code_url("http://tools.nzpost.co.nz/tools/address-postcode-finder/"); //link that can be used to check postal code
-OrderFormWithoutShippingAddress::set_postal_code_label("check NZ postal code"); //label for link that can be used to check postal code
-//OrderFormWithoutShippingAddress::set_login_invite_alternative_text('<a href="http://www.mysite.com/Security/login/?BackURL=">If you are a member then please log in.</a>); //label for link that can be used to check postal code
+//EcommerceRole::set_fixed_country_code("NZ"); //country is fixed
+EcommerceRole::set_postal_code_url("http://tools.nzpost.co.nz/tools/address-postcode-finder/"); //link that can be used to check postal code
+EcommerceRole::set_postal_code_label("check NZ postal code"); //label for link that can be used to check postal code
+//EcommerceRole::set_login_invite_alternative_text('<a href="http://www.mysite.com/Security/login/?BackURL=">If you are a member then please log in.</a>); //label for link that can be used to check postal code
 
 // * * * MEMBER
 EcommerceRole::set_group_name("SunnySideUp Customers");
@@ -68,3 +70,45 @@ EcommerceRole::set_group_name("SunnySideUp Customers");
 // * * * HELP
 //Product::set_global_allow_purcahse(false); //stops the sale of all products
 // ------------------------------------------------------END ECOMMERCE MODULE CONFIG ------------------------------------------------------
+
+
+
+
+//===================---------------- START metatags MODULE ----------------===================
+Object::add_extension('SiteTree', 'MetaTagAutomation');
+Object::add_extension('ContentController', 'MetaTagAutomation_controller');
+/* pop-ups and form interaction */
+//MetaTagAutomation::set_disable_update_popup(0);
+/* default value for auto-update pages' metatags */
+//MetaTagAutomation::set_default_state_auto_update_checkbox(0);
+/* meta-title */
+//MetaTagAutomation::set_update_meta_title(0);
+//MetaTagAutomation::set_prepend_to_meta_title("");
+//MetaTagAutomation::set_append_to_meta_title("");
+/* meta descriptions */
+//MetaTagAutomation::set_update_meta_desc(0);
+//MetaTagAutomation::set_meta_desc_length(12);
+/* meta keywords */
+//MetaTagAutomation::set_update_meta_keys(0);
+//MetaTagAutomation::set_number_of_keywords(12);
+//MetaTagAutomation::set_min_word_char(3);
+//MetaTagAutomation::set_exclude_words("the,and,from");
+/* additional metatag information */
+//MetaTagAutomation_controller::set_country("New Zealand");
+//MetaTagAutomation_controller::set_copyright("owner");
+//MetaTagAutomation_controller::set_design("owner");
+//MetaTagAutomation_controller::set_coding("owner");
+/* combined files */
+//MetaTagAutomation_controller::set_folder_for_combined_files("cache");
+//MetaTagAutomation_controller::set_combine_css_files_into_one(0);
+//MetaTagAutomation_controller::set_combine_js_files_into_one(0);
+//===================---------------- END metatags MODULE ----------------===================
+
+
+//===================---------------- START payment MODULE ----------------===================
+Payment::set_site_currency("NZD");
+Payment::set_supported_methods(array(
+	'DirectCreditPayment' => 'Direct Credit (payment into bank account)',
+	'InStorePayment' => 'Pay in Store on Pick-Up'
+));
+//===================---------------- END payment MODULE ----------------===================
