@@ -21,6 +21,7 @@ class RegisterAndEditDetailsPage extends Page {
 		"MetaTitleLoggedIn" => "Varchar(255)",
 		"ContentLoggedIn" => "HTMLText",
 		"ErrorEmailAddressAlreadyExists" => "Varchar(255)",
+		"ErrorBadEmail" => "Varchar(255)",
 		"ErrorPasswordDoNotMatch" => "Varchar(255)",
 		"ErrorMustSupplyPassword" => "Varchar(255)"
 	);
@@ -59,6 +60,7 @@ class RegisterAndEditDetailsPage extends Page {
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorEmailAddressAlreadyExists', 'Error shown when email address is already registered'));
+		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorBadEmail', 'Bad email'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorPasswordDoNotMatch', 'Error shown when passwords do not match'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorMustSupplyPassword', 'Error shown when new user does not supply password'));
 		return $fields;
@@ -103,6 +105,7 @@ class RegisterAndEditDetailsPage extends Page {
 			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update[] =  "updated MetaTitleLoggedIn";}
 			if(strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ....</p>"; $update[] =  "updated ContentLoggedIn";}
 			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update[] =  "updated ErrorEmailAddressAlreadyExists";}
+			if(!$page->ErrorBadEmail){$page->ErrorBadEmail = "Sorry, that does not appear a valid email address."; $update[] =  "updated ErrorBadEmail";}
 			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update[] =  "updated ErrorPasswordDoNotMatch";}
 			if(!$page->ErrorMustSupplyPassword){$page->ErrorMustSupplyPassword = "Your must supply a password."; $update[] =  "updated ErrorMustSupplyPassword";}
 			if(count($update)) {
@@ -200,6 +203,16 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$member = Member::currentUser();
 		$newMember = false;
 		Session::set("FormInfo.Form_Form.data", $data);
+		$emailField = new EmailField("Email");
+		$emailField->setValue($data["Email"]);
+		if($emailField)  {
+			if(!$emailField->validate($form->validator)) {
+				$form->addErrorMessage("Blurb",$this->ErrorBadEmail,"bad");
+				Director::redirectBack();
+				return;
+			}
+		}
+		die("END");
 		if(!$member) {
 			$newMember = true;
 			$member = Object::create('Member');
@@ -228,6 +241,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			$form->addErrorMessage("Password", $this->ErrorMustSupplyPassword,"bad");
 			return Director::redirectBack();
 		}
+
 		$form->saveInto($member);
 		$member->write();
 		if($newMember) {
