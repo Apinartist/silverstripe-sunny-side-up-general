@@ -74,7 +74,7 @@ class GoogleMapLocationsObject extends DataObject {
 	}
 
 	static function pointExists($addressArray) {
-		return DataObject::get_one("GoogleMapLocationsObject", 'Longitude = "'.$addressArray[0].'" AND Latitude = "'.$addressArray[1].'"');
+		return DataObject::get_one("GoogleMapLocationsObject", "Longitude = '".$addressArray[0]."' AND Latitude = '".$addressArray[1]."'");
 	}
 
 	function  getCMSFields_forPopup($parentPageID) {
