@@ -212,7 +212,6 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 				return;
 			}
 		}
-		die("END");
 		if(!$member) {
 			$newMember = true;
 			$member = Object::create('Member');
