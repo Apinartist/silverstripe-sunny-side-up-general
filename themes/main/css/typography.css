@@ -69,7 +69,7 @@
 	.typography a:focus {outline: none;}
 	.typography a:hover{border-bottom: 1px dotted #FFCC33; color: #317010}
 	.typography a:active{color: red;}
-	.typography a[href^="http://"]{ background:transparent url(../images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
+	.typography a.externalLink{ background:transparent url(../images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
 
 /* images */
 .typography img{float: right; margin-left: 10px; margin-bottom: 10px; display: block;}
