@@ -24,8 +24,7 @@ Order::set_receipt_subject("thank you for your order at www.sunnysideup.co.nz");
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
 Payment::set_site_currency('NZD');
 Geoip::$default_country_code = "NZ";
-Object::add_extension("Product", "EcommerceItemDecorator");
-Object::add_extension("ProductVariation", "EcommerceItemDecorator");
+Object::add_extension("Product", "Buyable");
 
 
 // * * * SHOPPING CART AND ORDER
