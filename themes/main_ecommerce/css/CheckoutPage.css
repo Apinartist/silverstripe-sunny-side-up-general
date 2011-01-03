@@ -1,1 +1,5 @@
+body.loading table#InformationTable {
+	background: url("/ecommerce/images/loading.gif") no-repeat bottom left transparent;
+	padding-bottom: 30px;
+}
 

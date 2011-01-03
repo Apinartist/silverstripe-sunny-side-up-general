@@ -9,10 +9,10 @@
 			.typography .dropdown label.left{padding-bottom: 3px;}
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 
-	.typography .field{width: 100%; padding-bottom: 0.8em; overflow: auto;padding-top: 0.8em;}
+	.typography .field{width: 100%; padding-bottom: 0.8em;padding-top: 0.8em;}
 		.typography .middleColumn, .typography .Actions, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 270px;}
-			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #B5AB8B; width: 220px; padding: 3px;}
-			.typography .middleColumn textarea{font-size: 1.2em; font-family: Arial, Verdana, sans-serif;}
+			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #B5AB8B; width: 220px; padding: 3px; font-family: Arial, Verdana, sans-serif;}
+			.typography .middleColumn textarea{}
 			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important;}
 			.typography .middleColumn li{list-style: none!important;}
 				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #317010;}
@@ -26,7 +26,8 @@
 			.typography .Actions input {background-color: #808383; color: #fff; padding: 0.3em; font-weight: bold;}
 				.typography .Actions input:hover {background-color: #82274B; color: #FFCC33; border: 3px solid #317010; }
 
-		.typography .message{font-size: 1.2em; font-weight: bold; color: #82274B; background-color: #FFCC33; display: block; margin-left: 120px; width: 228px; padding: 0.7em 0; text-align: center;}
+		.typography .message{font-weight: bold; color: #82274B; background-color: #FFCC33; display: block;padding: 5px; text-align: center;}
+		.typography .middleColumn .message{width: 218px; }
 
 	.typography .radio, .typography .checkbox{width: auto!important;}
 
@@ -35,3 +36,5 @@
 	.typography .confirmedpassword .middleColumn .middleColumn {margin-left: 120px;}
 
 	.typography label.required {display: block; color: #82274B; font-size: 0.8em;}
+
+.typography .fieldgroup .middleColumn {margin-left: 0px;}
