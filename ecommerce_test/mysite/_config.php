@@ -17,8 +17,6 @@ SiteTree::enable_nested_urls();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_receipt_email("your friendly website <sales@sunnysideup.co.nz>");
-Order::set_receipt_subject("thank you for your order at www.sunnysideup.co.nz");
 //Order::set_modifiers(array("MyModifierOne", "MyModifierTwo");
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
@@ -28,6 +26,7 @@ Object::add_extension("Product", "Buyable");
 
 
 // * * * SHOPPING CART AND ORDER
+CheckoutPage::set_add_shipping_fields(true);
 //ShoppingCart::set_fixed_country_code("NZ"); //always use the same country code
 //Order::set_table_overview_fields(array('Total' => 'Total','Status' => 'Status'));//
 //Order::set_maximum_ignorable_sales_payments_difference(0.001);//sometimes there are small discrepancies in total (for various reasons)- here you can set the max allowed differences
@@ -53,8 +52,6 @@ Object::add_extension("Product", "Buyable");
 // * * * CHECKOUT
 //ExpiryDateField::set_short_months(true); //uses short months (e.g. Jan instead of january) for credit card expiry date.
 //EcommerceRole::set_fixed_country_code("NZ"); //country is fixed
-EcommerceRole::set_postal_code_url("http://tools.nzpost.co.nz/tools/address-postcode-finder/"); //link that can be used to check postal code
-EcommerceRole::set_postal_code_label("check NZ postal code"); //label for link that can be used to check postal code
 //EcommerceRole::set_login_invite_alternative_text('<a href="http://www.mysite.com/Security/login/?BackURL=">If you are a member then please log in.</a>); //label for link that can be used to check postal code
 
 // * * * MEMBER
