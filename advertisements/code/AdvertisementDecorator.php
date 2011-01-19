@@ -124,7 +124,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		return new LiteralField($code, "<h4 style='margin-top: 20px'>$name</h4>");
 	}
 
-	function AdvertisementSet() {
+	function AdvertisementSet($style = null) {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
 			$browseSet = $this->advertisementsToShow();
 			if($browseSet) {
