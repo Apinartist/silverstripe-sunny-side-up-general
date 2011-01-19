@@ -8,6 +8,24 @@
 
 class AdvertisementDecorator extends SiteTreeDecorator {
 
+
+	public static function add_requirements($alternativeFileLocation = null) {
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("advertisements/javascript/Advertisements.js");
+		$file = "";
+		if(self::$use_custom_javascript) {
+			$file = project()."/javascript/AdvertisementsExecutive.js";
+		}
+		elseif($alternativeFileLocation) {
+			$file = $alternativeFileLocation;
+		}
+		if(!$file)  {
+			$file = "advertisements/javascript/AdvertisementsExecutive.js";
+		}
+		Requirements::javascript($file);
+		Requirements::themedCSS("Advertisements");
+	}
+
 	function extraStatics() {
 		return array(
 			'db' => array(
@@ -110,25 +128,14 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
 			$browseSet = $this->advertisementsToShow();
 			if($browseSet) {
-				Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-				Requirements::javascript("advertisements/javascript/Advertisements.js");
-				$style = null;
+				$file = null;
 				if($this->owner->AdvertisementStyleID) {
 					$style = $this->owner->AdvertisementStyle();
-				}
-				if(self::$use_custom_javascript) {
-					$file = project()."/javascript/AdvertisementsExecutive.js";
 				}
 				elseif($style) {
 					$file = $style->FileLocation;
 				}
-				else {
-					$file = "advertisements/javascript/AdvertisementsExecutive.js";
-				}
-				if($file) {
-					Requirements::javascript($file);
-				}
-				Requirements::themedCSS("Advertisements");
+				self::add_requirements($file);
 				return $browseSet;
 			}
 		}
@@ -242,6 +249,8 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		}
 		return $result;
 	}
+
+
 
 }
 

@@ -4,14 +4,14 @@ see
 - http://jquery.malsup.com/cycle/browser.html
 */
 
-$(document).ready(function() {
-    $('#AdvertisementsHolder').cycle({
+jQuery(document).ready(function() {
+    jQuery('#AdvertisementsHolder').cycle({
 			fx: 'fade' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
 	});
 });
 
 /*
-$('#AdvertisementsHolder').bind("contextmenu",function(e){
+jQuery('#AdvertisementsHolder').bind("contextmenu",function(e){
     jQuery('#AdvertisementsHolder').cycle('prev');
     return false; //disable the context menu
 });
