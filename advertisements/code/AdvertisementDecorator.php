@@ -132,7 +132,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				if($this->owner->AdvertisementStyleID) {
 					$style = $this->owner->AdvertisementStyle();
 				}
-				elseif($style) {
+				if($style) {
 					$file = $style->FileLocation;
 				}
 				self::add_requirements($file);
