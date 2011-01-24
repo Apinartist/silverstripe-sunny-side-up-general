@@ -124,7 +124,7 @@ class GoogleMap extends ViewableData {
 	protected static $DefaultZoom = 0;
 		static function setDefaultZoom($v) {self::$DefaultZoom = $v;}
 	protected static $ShowStaticMapFirst = 0;
-		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v;}
+		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v; }
 		public function getShowStaticMapFirst() {(!self::$ShowStaticMapFirst || Session::get("StaticMapsOff"))? false : true;}
 	protected static $number_shown_in_around_me = 7;
 		static function get_number_shown_in_around_me() {return self::$number_shown_in_around_me;}

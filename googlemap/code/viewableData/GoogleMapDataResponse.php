@@ -4,6 +4,7 @@ class GoogleMapDataResponse extends Controller {
 
 	static $allowed_actions = array(
 		'turnonstaticmaps',
+		'turnoffstaticmaps',
 		'showpagepointsmapxml',
 		'showchildpointsmapxml',
 		'showemptymap',
@@ -14,6 +15,12 @@ class GoogleMapDataResponse extends Controller {
 		'showaroundmexml',
 		'showsearchpoint',
 		'showpointbyid'
+	);
+
+	protected static $actions_without_owner = array(
+		'turnonstaticmaps',
+		'turnoffstaticmaps',
+		'showemptymap'
 	);
 
 	protected $owner = null;
@@ -31,14 +38,14 @@ class GoogleMapDataResponse extends Controller {
 	function init() {
 		parent::init();
 		$this->owner = DataObject::get_by_id("SiteTree", intval($this->request->param("OwnerID")));
-		if(!$this->owner) {
+		if(!$this->owner  & !in_array($this->request->param("Action"), self::$actions_without_owner)) {
 			user_error("no owner has been identified for GoogleMapDataResponse", E_USER_WARNING);
 		}
 		$this->title = urldecode($this->request->param("Title"));
 		$this->lng = floatval($this->request->param("Longitude"));
 		$this->lat = floatval($this->request->param("Latitude"));
 		$this->filter = urldecode($this->request->param("Filter"));
-		if(!$this->title) {
+		if(!$this->title && $this->owner) {
 			$this->title = $this->owner->Title;
 		}
 	}
