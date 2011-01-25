@@ -90,10 +90,16 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$array[] = "blue";
 		$array[] = "pink";
 		$array[] = "orange";
-		$errorField1 = new TextField($name = "ErrorField1", $title = "Text Field Example 1");
-		$errorField1->setError("there is an error", "required");
-		$errorField2 = new TextField($name = "ErrorField2", $title = "Text Field Example 2");
-		$errorField2->setCustomValidationMessage("try again...");
+		$errorField0 = new TextField($name = "ErrorField0", $title = "Text Field Example 1");
+		$errorField0->setError("message shown when something is good", "good");
+		$errorField1 = new TextField($name = "ErrorField1", $title = "Text Field Example 2");
+		$errorField1->setError("message shown when something is bad", "bad");
+		$errorField2 = new TextField($name = "ErrorField2", $title = "Text Field Example 3");
+		$errorField2->setCustomValidationMessage("message shown when something is bad", "bad");
+		$errorField3 = new TextField($name = "ErrorField3", $title = "Text Field Example 4");
+		$errorField3->setError("there is an error", "required");
+		$errorField4 = new TextField($name = "ErrorField4", $title = "Text Field Example 5");
+		$errorField4->setCustomValidationMessage("custom validation error");
 		$rightTitle = new TextField($name = "RightTitleField", $title = "Left Title is Default");
 		$rightTitle->setRightTitle("right title here");
 		$form = new Form(
@@ -106,9 +112,13 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new TextField($name = "TextField1", $title = "Text Field Example 1"),
 				new TextField($name = "TextField2", $title = "Text Field Example 2"),
 				new TextField($name = "TextField3", $title = "Text Field Example 3"),
-				new HeaderField($name = "HeaderField2a", $title = "Error Messages Should Display Below", 2),
+				new HeaderField($name = "HeaderField2a", $title = "Error Messages", 2),
+				new LiteralField($name = "ErrorExplanations", '<p>Below are some error messages, some of them only show up after you have placed your cursor on the field and not completed it (i.e. a reminder to complete the field)</p>'),
+				$errorField0,
 				$errorField1,
 				$errorField2,
+				$errorField3,
+				$errorField4,
 				new HeaderField($name = "HeaderField2b", $title = "Field with right title", 2),
 				$rightTitle,
 				new TextareaField($name = "TextareaField", $title = "Textarea Field", 5, 5),
@@ -132,8 +142,6 @@ class TypographyTestPage_Controller extends Page_Controller {
 				"TextField1","TextField2", "TextField3","ErrorField1","ErrorField2", "EmailField", "TextField3", "RightTitleField", "CheckboxField", "CheckboxSetField"
 			)
 		);
-		$form->setMessage("good message", "good");
-		$form->setMessage("bad message", "bad");
 		$form->setMessage("warning message", "warning");
 		return $form;
 	}
