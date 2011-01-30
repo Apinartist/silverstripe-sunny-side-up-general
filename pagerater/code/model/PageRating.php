@@ -65,10 +65,7 @@ class PageRating extends DataObject {
 		else {
 			$where = "{$bt}PageRating{$bt}.{$bt}ParentID{$bt} > 0";
 		}
-		DB::query("DROP TABLE IF EXISTS PageRating_TEMP;");
-		DB::query("CREATE TABLE PageRating_TEMP (ParentID INTEGER(11), Rating INTEGER);");
-		DB::query("ALTER TABLE {$bt}PageRating_TEMP{$bt} ADD INDEX ( {$bt}ParentID{$bt} ) ");
-		DB::query("ALTER TABLE {$bt}PageRating_TEMP{$bt} ADD INDEX ( {$bt}Rating{$bt} ) ");
+		DB::query("DELETE FROM PageRating_TEMP;");
 		DB::query("
 			INSERT INTO {$bt}PageRating_TEMP{$bt}
 			SELECT {$bt}ParentID{$bt}, (ROUND(AVG({$bt}PageRating{$bt}.{$bt}Rating{$bt}) * 100))
@@ -92,6 +89,16 @@ class PageRating extends DataObject {
 		if($this->ParentID) {
 			self::update_ratings($this->ParentID);
 		}
+	}
+
+	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+		DB::query("DROP TABLE IF EXISTS PageRating_TEMP;");
+		DB::query("CREATE TABLE PageRating_TEMP (ParentID INTEGER(11), Rating INTEGER);");
+		DB::query("ALTER TABLE {$bt}PageRating_TEMP{$bt} ADD INDEX ( {$bt}ParentID{$bt} ) ");
+		DB::query("ALTER TABLE {$bt}PageRating_TEMP{$bt} ADD INDEX ( {$bt}Rating{$bt} ) ");
+		DB::alteration_message("create PageRating_TEMP", "created");
 	}
 
 }
