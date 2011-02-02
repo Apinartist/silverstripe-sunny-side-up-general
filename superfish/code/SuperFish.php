@@ -36,8 +36,8 @@ class SuperFish extends Object {
 	protected static function default_config() {
 		return <<<JS
 SuperFish::set_config("
-	$(document).ready(function() {
-			$('ul#Nav').superfish({
+	jquery(document).ready(function() {
+			jquery('ul#Nav').superfish({
 					delay:       1000,                            // one second delay on mouseout
 					animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation
 					speed:       'fast',                          // faster animation speed
