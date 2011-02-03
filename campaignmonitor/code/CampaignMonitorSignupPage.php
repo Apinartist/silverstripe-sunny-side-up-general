@@ -53,7 +53,7 @@ class CampaignMonitorSignupPage extends Page {
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new TextField('SadToSeeYouGoMenuTitle', 'Menu Title'));
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new TextField('SadToSeeYouGoMetaTitle', 'Meta Title'));
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new HTMLEditorField('SadToSeeYouGoMessage', 'Sad to see you  go message after submitting form'));
-		$fields->addFieldToTab('Root.Content.OldNewsletters', new HTMLEditorField('ShowOldNewsletters', 'Show old newsletters?'));
+		$fields->addFieldToTab('Root.Content.OldNewsletters', new CheckboxField('ShowOldNewsletters', 'Show old newsletters?'));
 		return $fields;
 	}
 
