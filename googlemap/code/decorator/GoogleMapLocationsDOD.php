@@ -78,6 +78,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
  *  ******************************
  */
 	function GoogleMapController() {
+		$this->initiateMap();
 		$this->map->loadGoogleMap();
 		return $this->map;
 	}
@@ -115,6 +116,24 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 	}
 
+
+	function returnMapDataFromAjaxCall($PageDataObjectSet = null, $GooglePointsDataObject = null, $dataObjectTitle = '', $whereStatementDescription = '') {
+		$this->map = new GoogleMap();
+		$this->map->setDataObjectTitle($dataObjectTitle);
+		$this->map->setWhereStatementDescription($whereStatementDescription);
+		if($GooglePointsDataObject) {
+			$this->map->setGooglePointsDataObject($GooglePointsDataObject);
+		}
+		elseif($PageDataObjectSet) {
+			$this->map->setPageDataObjectSet($PageDataObjectSet);
+		}
+		else {
+			$this->map->staticMapHTML = "<p>No points found</p>";
+		}
+		$data = $this->map->createDataPoints();
+		return $this->owner->renderWith("GoogleMapXml");
+	}
+
 	function addMap($action = "", $title = "", $lng = 0, $lat = 0, $filter = "") {
 		$this->initiateMap();
 		if(!$title) {
@@ -150,6 +169,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 	public function addExtraLayersAsLinks($title, $link) {
+		$this->initiateMap();
 		$this->map->addExtraLayersAsLinks($title, $link);
 	}
 
@@ -293,6 +313,7 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat);
 		return array();
 	}
+
 
 }
 
