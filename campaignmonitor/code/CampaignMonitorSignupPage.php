@@ -413,4 +413,13 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 
 	}
 
+	function resetoldcampaigns() {
+		if(!Permission::check("CMS_ACCESS_CMSMain")) {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need CMS rights to access it. Enter your credentials below and we will send you right along.'));
+			return array();
+		}
+		DB::query("DELETE FROM \"CampaignMonitorCampaign\";");
+		Director::redirect($this->Link());
+	}
+
 }
