@@ -5,9 +5,9 @@
 </div>
 	<% else %>
 		<% if ShowSadToSeeYouGoMessage %>
-	<div id="CampaignMonitorSignupPageSadToSeeYouGo" class="CampaignMonitorSignupPageDiv">
-		$SadToSeeYouGoMessage
-	</div>
+<div id="CampaignMonitorSignupPageSadToSeeYouGo" class="CampaignMonitorSignupPageDiv">
+	$SadToSeeYouGoMessage
+</div>
 		<% else %>
 	<p>An error occured</p>
 		<% end_if %>
