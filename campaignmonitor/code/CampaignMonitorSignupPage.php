@@ -21,7 +21,8 @@ class CampaignMonitorSignupPage extends Page {
 		'SadToSeeYouGoMetaTitle' => 'Varchar(255)',
 		'SignUpHeader' => 'Varchar(100)',
 		'SignUpIntro' => 'HTMLText',
-		'SignUpButtonLabel' => 'Varchar(20)'
+		'SignUpButtonLabel' => 'Varchar(20)',
+		'ShowOldNewsletters' => 'Boolean'
 	);
 
 	static $has_one = array(
@@ -52,6 +53,7 @@ class CampaignMonitorSignupPage extends Page {
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new TextField('SadToSeeYouGoMenuTitle', 'Menu Title'));
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new TextField('SadToSeeYouGoMetaTitle', 'Meta Title'));
 		$fields->addFieldToTab('Root.Content.SadToSeeYouGo', new HTMLEditorField('SadToSeeYouGoMessage', 'Sad to see you  go message after submitting form'));
+		$fields->addFieldToTab('Root.Content.OldNewsletters', new HTMLEditorField('ShowOldNewsletters', 'Show old newsletters?'));
 		return $fields;
 	}
 
@@ -153,24 +155,27 @@ class CampaignMonitorSignupPage extends Page {
 
 	function onAfterWrite() {
 		parent::onAfterWrite();
-
-		$CMWrapper = $this->newCMWrapper();
-		$campaigns = $CMWrapper->clientGetCampaigns();
-		if(is_array($campaigns)) {
-			foreach($campaigns as $campaign) {
-				if(!DataObject::get("CampaignMonitorCampaign", "CampaignID = '".$campaign["CampaignID"]."' AND ParentID = ".$this->ID)) {
-					$CampaignMonitorCampaign = new CampaignMonitorCampaign();
-					$CampaignMonitorCampaign->CampaignID = $campaign["CampaignID"];
-					$CampaignMonitorCampaign->Subject = $campaign["Subject"];
-					$CampaignMonitorCampaign->Name = $campaign["Name"];
-					$CampaignMonitorCampaign->SentDate = $campaign["SentDate"];
-					$CampaignMonitorCampaign->TotalRecipients = $campaign["TotalRecipients"];
-					$CampaignMonitorCampaign->ParentID = $this->ID;
-					$CampaignMonitorCampaign->write();
+		if($this->ShowOldNewsletters) {
+			$CMWrapper = $this->newCMWrapper();
+			$campaigns = $CMWrapper->clientGetCampaigns();
+			if(is_array($campaigns)) {
+				foreach($campaigns as $campaign) {
+					if(!DataObject::get("CampaignMonitorCampaign", "CampaignID = '".$campaign["CampaignID"]."' AND ParentID = ".$this->ID)) {
+						$CampaignMonitorCampaign = new CampaignMonitorCampaign();
+						$CampaignMonitorCampaign->CampaignID = $campaign["CampaignID"];
+						$CampaignMonitorCampaign->Subject = $campaign["Subject"];
+						$CampaignMonitorCampaign->Name = $campaign["Name"];
+						$CampaignMonitorCampaign->SentDate = $campaign["SentDate"];
+						$CampaignMonitorCampaign->TotalRecipients = $campaign["TotalRecipients"];
+						$CampaignMonitorCampaign->ParentID = $this->ID;
+						$CampaignMonitorCampaign->write();
+					}
 				}
 			}
 		}
-
+		else {
+			DB::query("DELETE FROM \"CampaignMonitorCampaign\" WHERE \"ParentID\" = '".$this->ID."';");
+		}
 	}
 
 	function requireDefaultRecords() {
