@@ -419,7 +419,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 			return array();
 		}
 		DB::query("DELETE FROM \"CampaignMonitorCampaign\";");
-		Director::redirect($this->Link());
+		die("old campaigns have been deleted");
 	}
 
 }
