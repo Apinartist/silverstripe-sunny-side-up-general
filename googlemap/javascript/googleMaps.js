@@ -920,7 +920,7 @@ GMC.prototype.updateLayerList = function() {
 				}
 				html += ''
 					+ this.layerInfo[i].title
-					+ ' - <a href="javascript:void(0)" onclick="GMO.changeLayerVisibility('+i+')">' + linkText + '</a>';
+					+ ' <a href="javascript:void(0)" onclick="GMO.changeLayerVisibility('+i+')">' + linkText + '</a>';
 					if(!this.opts.hiddenLayersRemovedFromList) {
 						+ ' - <a href="javascript:void(0)" onclick="GMO.deleteLayer('+i+')">delete</a>';
 					}
