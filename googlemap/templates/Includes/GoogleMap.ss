@@ -59,7 +59,7 @@
 		<% end_if %>
 	</div>
 	<% end_if %>
-	<% if getDropDownDivId %><div id="$getDropDownDivId" class="MapExtraInformation <% if EnoughPointsForAList %><% else %>hideMe<% end_if %>"  ></div><% end_if %>
+	<% if getDropDownDivId %><div id="$getDropDownDivId" class="MapExtraInformation <% if EnoughPointsForAList %><% else %>hideMe<% end_if %>"></div><% end_if %>
 	<% if getDirectionsDivId %><div id="$getDirectionsDivId" class="MapExtraInformation"></div><% end_if %>
 	<% if getStatusDivId %><div id="$getStatusDivId" class="MapExtraInformation"></div><% end_if %>
 </div>
