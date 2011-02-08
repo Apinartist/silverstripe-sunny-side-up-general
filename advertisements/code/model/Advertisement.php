@@ -15,6 +15,10 @@ class Advertisement extends DataObject {
 		static function set_height($v) {self::$height = $v;}
 		static function get_height() {return self::$height;}
 
+	protected static $resize_images = false;
+		static function set_resize_images($v) {self::$resize_images = $v;}
+		static function get_resize_images() {return self::$resize_images;}
+
 	static function recommended_image_size_statement() {
 		$array = array();
 		if(self::get_width() ) {
@@ -159,35 +163,37 @@ class Advertisement extends DataObject {
 
 	//back-up function...
 	function ResizedAdvertisementImage() {
-
 		$resizedImage = null;
 		$imageID = intval($this->AdvertisementImageID+ 0);
 		if($imageID) {
 			$imageObject = DataObject::get_by_id("Image", $imageID);
-			if($imageObject) {
-				if($imageObject->ID) {
-					$imageObject->Title = Convert::raw2att($this->Title);
-					$w = Advertisement::get_width();
-					$h = Advertisement::get_height();
-					if($h && $w) {
-						$resizedImage = $imageObject->SetSize($w, $h);
+			$resizedImage = $imageObject;
+			if(self::$resize_images) {
+				if($imageObject) {
+					if($imageObject->ID) {
+						$imageObject->Title = Convert::raw2att($this->Title);
+						$w = Advertisement::get_width();
+						$h = Advertisement::get_height();
+						if($h && $w) {
+							$resizedImage = $imageObject->SetSize($w, $h);
+						}
+						elseif($h) {
+							$resizedImage = $imageObject->SetHeight($h);
+						}
+						elseif($w) {
+							$resizedImage = $imageObject->SetWidth($w);
+						}
+						else{
+							$resizedImage = $imageObject;
+						}
 					}
-					elseif($h) {
-						$resizedImage = $imageObject->SetHeight($h);
-					}
-					elseif($w) {
-						$resizedImage = $imageObject->SetWidth($w);
-					}
-					else{
-						$resizedImage = $imageObject;
+					else {
+						//debug::show("no image");
 					}
 				}
 				else {
-					//debug::show("no image");
+					//debug::show("could not find image");
 				}
-			}
-			else {
-				//debug::show("could not find image");
 			}
 		}
 		else {
