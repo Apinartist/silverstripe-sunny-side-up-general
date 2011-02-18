@@ -229,6 +229,7 @@ class ShareThis extends DataObjectDecorator {
 					$itemArray["Key"] = $key;
 					if(isset($bookmark["icon"]) ) {
 						$itemArray["ImageSource"] = $bookmark["icon"];
+						$itemArray["ImageSourceOver"] = str_replace(array(".png", ".gif", ".jpg"), array("_over.png", "_over.gif", "_over.jpg"), $bookmark["icon"]);
 						$itemArray["UseStandardImage"] = 0;
 					}
 					else {
