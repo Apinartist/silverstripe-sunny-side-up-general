@@ -220,7 +220,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 
-	protected function advertisementsToShow() {
+	public function advertisementsToShow() {
 		if($this->owner->UseParentAdvertisements) {
 			$parent = $this->advertisementParent();
 			if($parent) {
