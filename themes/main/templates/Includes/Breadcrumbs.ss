@@ -1,1 +1,1 @@
-<div id="Breadcrumbs"><a href="/">home</a>  &raquo; $Breadcrumbs</div>
+<div id="Breadcrumbs"><a href="/">Home</a>  &raquo; $Breadcrumbs</div>
