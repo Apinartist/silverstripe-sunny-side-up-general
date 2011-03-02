@@ -39,6 +39,15 @@ class StaffProfilesPage extends Page {
 		return $fields;
 	}
 
+	function StaffProfilesAll() {
+		if(StaffProfilesPage::get_use_child_pages_rather_than_dataobject()) {
+			return DataObject::get("StaffProfilesOnePerson", "ParentID = ".$this->ID);
+		}
+		else {
+			return $this->StaffProfiles();
+		}
+	}
+
 
 
 }
@@ -48,15 +57,6 @@ class StaffProfilesPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
 		Requirements::themedCSS("StaffProfilesPage");
-	}
-
-	function StaffProfilesAll() {
-		if(StaffProfilesPage::get_use_child_pages_rather_than_dataobject()) {
-			return DataObject::get("StaffProfilesOnePerson", "ParentID = ".$this->ID);
-		}
-		else {
-			return $this->StaffProfiles();
-		}
 	}
 
 
