@@ -42,7 +42,7 @@ Geoip::$default_country_code = 'NZ';
 
 // * * * SHOPPING CART AND ORDER
 //EcomQuantityField::set_hide_plus_and_minus(true);
-//Order::set_add_shipping_fields(true);
+Order::set_add_shipping_fields(true);
 //Order::set_table_overview_fields(array('Total' => 'Total','Status.Name'));//
 //Order::set_maximum_ignorable_sales_payments_difference(0.001);//sometimes there are small discrepancies in total (for various reasons)- here you can set the max allowed differences
 //Order::set_order_id_start_number(1234567);//sets a start number for order ID, so that they do not start at one.
@@ -83,6 +83,7 @@ Geoip::$default_country_code = 'NZ';
 //ProductGroup::set_only_show_products_that_can_purchase(true);
 
 // * * * EMAILS
+Email::setAdminEmail("cool@bool.com");
 //Order_Email::set_send_all_emails_plain(true);
 //Order_Email::set_copy_to_admin_for_all_emails(false);
 
@@ -165,3 +166,15 @@ ProductAttributeDecoratorColour_Value::set_default_colour("000000");
 //ProductWithVariationDecorator_Controller::set_use_js_validation(false);
 //ProductWithVariationDecorator_Controller::set_alternative_validator_class_name("MyValidatorClass");
 // __________________________________ END ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
+
+
+//===================---------------- START ecommerce_Repeatorders MODULE ----------------===================
+Object::add_extension('Order', 'AutomaticallyCreatedOrderDecorator');
+RepeatOrder::set_delivery_days(array('Tuesday','Wednesday','Thursday','Friday'));
+RepeatOrder::set_payment_methods(array(
+	'DirectCreditPayment'  => 'Direct Credit (payment into bank account)',
+	'DpsPxPayStoredPayment'  => 'Saved Credit Card using DPS'
+));
+RepeatOrder::set_minimum_days_in_the_future(3);
+//===================---------------- END ecommerce_Repeatorders MODULE ----------------===================
+
