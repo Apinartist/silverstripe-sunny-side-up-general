@@ -580,6 +580,9 @@ GMC.prototype.createStandardIcon = function(iconUrl) {
 	icon.dragCrossSize = new GSize(this.opts.iconWidth,this.opts.iconWidth);
 	icon.iconAnchor = new GPoint(Math.round(this.opts.iconWidth/2),this.opts.iconHeight);
 	icon.infoWindowAnchor = new GPoint(Math.round(this.opts.iconWidth/2),Math.round(this.opts.iconHeight/2));
+	if(this.opts.iconImageMap) {
+		icon.imageMap = this.opts.iconImageMap;
+	}
 	return icon;
 }
 /* process XML sheets */

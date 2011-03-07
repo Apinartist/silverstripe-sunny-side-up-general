@@ -81,6 +81,8 @@ class GoogleMap extends ViewableData {
 		static function setIconWidth($v) {self::$IconWidth = $v;}
 	protected static $IconHeight = 34;
 		static function setIconHeight($v) {self::$IconHeight = $v;}
+	protected static $IconImageMap = "";
+		static function setIconImageMap($v) {self::$IconImageMap = $v;}
 	protected static $IconExtension = "png";
 		static function setIconExtension($v) {self::$IconExtension = $v;}
 	protected static $IconMaxCount = 12;
@@ -505,6 +507,7 @@ class GoogleMap extends ViewableData {
 				iconFolder: "'.self::$IconFolder.'",
 				iconWidth:'.self::$IconWidth.',
 				iconHeight:'.self::$IconHeight.',
+				IconImageMap:"'.self::$IconImageMap.'",
 				iconExtension:"'.self::$IconExtension.'",
 				iconMaxCount:'.self::$IconMaxCount.',
 		/* POLYS */
