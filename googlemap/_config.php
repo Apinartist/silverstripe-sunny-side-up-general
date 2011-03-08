@@ -89,7 +89,7 @@ GoogleMap::setDefaultIconUrl(""); //default Icon Url
 GoogleMap::setIconFolder("googlemap/images/icons/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
 GoogleMap::setIconWidth(20); //default icon width in pixels (e.g. 20)
 GoogleMap::setIconHeight(34); //default icon height in pixels (e.g. 34)
-GoogleMap::setIconImageMap("[0,0 , 3,2 , 7,7]"); //default icon height in pixels (e.g. 34)
+GoogleMap::setIconImageMap("[0,0 , 3,2 , 7,7]"); // can also leave blank
 GoogleMap::setIconExtension("png"); //default icon extension (e.g. png, gif or jpg)
 GoogleMap::setIconMaxCount(12); //maximum number of layers, before reverting back to icon number one (e.g. 12)
 
