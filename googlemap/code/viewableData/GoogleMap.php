@@ -507,7 +507,7 @@ class GoogleMap extends ViewableData {
 				iconFolder: "'.self::$IconFolder.'",
 				iconWidth:'.self::$IconWidth.',
 				iconHeight:'.self::$IconHeight.',
-				IconImageMap:'.self::$IconImageMap.',
+				iconImageMap:'.self::$IconImageMap.',
 				iconExtension:"'.self::$IconExtension.'",
 				iconMaxCount:'.self::$IconMaxCount.',
 		/* POLYS */
