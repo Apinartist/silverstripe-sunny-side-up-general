@@ -1,16 +1,16 @@
 google.load('visualization', '1', {packages: ['corechart']});
 
-google.setOnLoadCallback(drawChart_$id);
-
-function drawChart_$id() {
+function drawPieChart_Interactive(params) {
+	
+	var id = params['id'];
+	var titles = params['titles'];
+	var values = params['values'];
+	var options = params['options'];
 	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Task');
 	data.addColumn('number', 'Number');
-	
-	var titles = [$titles];
-	var values = [$values];
 	
 	data.addRows(titles.length);
 	
@@ -19,6 +19,6 @@ function drawChart_$id() {
 		data.setCell(i, 1, values[i]);
 	}
 	
-	var chart = new google.visualization.PieChart(document.getElementById('$id'));
-	chart.draw(data, {$options});
+	var chart = new google.visualization.PieChart(document.getElementById(id));
+	chart.draw(data, options);
 }

@@ -80,50 +80,67 @@ class PieChart_Interactive extends PieChart {
 	protected $legendFontSize, $legendColor;
 	protected $reverseCategories;
 	protected $tooltipFontSize;
-
+	
+	static function addRequirements() {
+		Requirements::javascript('http://www.google.com/jsapi');
+		Requirements::javascript('googlecharts/javascript/pie.js');
+	}
+	
 	function __construct() {
 		parent::__construct();
-		Requirements::javascript('http://www.google.com/jsapi');
+		self::addRequirements();
 	}
-
+	
 	function forTemplate() {
-		$id = "PI_$this->id";
-		$params['id'] = $id;
+		$params = $this->getJavascriptParams();
+		
+		$script = $this->getJavascript();
+		Requirements::customScript("google.setOnLoadCallback(function() {{$script}});");
+		return "<div id=\"{$params['id']}\" class=\"pie\"></div>";
+	}
+	
+	function getJavascriptParams() {
+		$params['id'] = "PI_$this->id";
 
 		foreach($this->portions as $portion) {
 			$titles[] = $portion['legend'];
-			$values[] = $portion['value'];
+			$values[] = intval($portion['value']);
 			if(isset($portion['color'])) $colors[] = $portion['color'];
 		}
 
-		$params['titles'] = "'" . implode("', '", $titles) . "'";
-		$params['values'] = implode(', ', $values);
+		$params['titles'] = $titles;
+		$params['values'] = $values;
 
-		$options[] = 'width: ' . ($this->width ? $this->width : Chart::$default_width);
-		$options[] = 'height: ' . ($this->height ? $this->height : Chart::$default_height);
+		$options['width'] = $this->width ? $this->width : Chart::$default_width;
+		$options['height'] = $this->height ? $this->height : Chart::$default_height;
 
-		if(isset($colors)) $options[] = "colors: ['" . implode("', '", $colors) . "']";
+		if(isset($colors)) $options['colors'] = $colors;
 
-		if($this->title) $options[] = "title: '$this->title'";
-		if($this->titleColor) $options[] = "titleTextColor: '$this->titleColor'";
-		if($this->titleSize) $options[] = "titleFontSize: '$this->titleSize'";
+		if($this->title) $options['title'] = $this->title;
+		if($this->titleColor) $options['titleTextColor'] = $this->titleColor;
+		if($this->titleSize) $options['titleFontSize'] = $this->titleSize;
 
-		if($this->backgroundColor) $options[] = "backgroundColor: '$this->backgroundColor'";
-		if($this->fontSize) $options[] = "fontSize: '$this->fontSize'";
+		if($this->backgroundColor) $options['backgroundColor'] = $this->backgroundColor;
+		if($this->fontSize) $options['fontSize'] = $this->fontSize;
 
-		if($this->legendPosition) $options[] = "legend: '$this->legendPosition'";
-		if($this->legendFontSize) $options[] = "legendFontSize: '$this->legendFontSize'";
-		if($this->legendColor) $options[] = "legendTextColor: '$this->legendColor'";
+		if($this->legendPosition) $options['legend'] = $this->legendPosition;
+		if($this->legendFontSize) $options['legendFontSize'] = $this->legendFontSize;
+		if($this->legendColor) $options['legendTextColor'] = $this->legendColor;
 
-		if($this->reverseCategories) $options[] = "reverseCategories: true";
+		if($this->reverseCategories) $options['reverseCategories'] = 'true';
 
-		if($this->tooltipFontSize) $options[] = "tooltipFontSize: $this->tooltipFontSize";
+		if($this->tooltipFontSize) $options['tooltipFontSize'] = $this->tooltipFontSize;
 
-		$params['options'] = implode(', ', $options);
-		Requirements::javascriptTemplate('googlecharts/javascript/pie.js', $params);
-		return "<div id=\"$id\" class=\"pie\"></div>";
+		$params['options'] = $options;
+		return $params;
 	}
-
+	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "draw{$this->class}($params);";
+	}
+	
 	function setBackgroundColor($color) {$this->backgroundColor = $color;}
 	function setFontSize($size) {$this->fontSize = $size;}
 

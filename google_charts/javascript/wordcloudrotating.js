@@ -1,17 +1,17 @@
 google.load('visualization', '1');
 
-google.setOnLoadCallback(drawChart_$id);
-
-function drawChart_$id() {
+function drawWordCloudChart_Rotating(params) {
+	
+	var id = params['id'];
+	var words = params['words'];
+	var fontsizes = params['fontsizes'];
+	var options = params['options'];
 	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Tag');
 	data.addColumn('string', 'URL');
 	data.addColumn('number', 'Font size');
-	
-	var words = [$words];
-	var fontsizes = [$fontsizes];
 	
 	data.addRows(words.length);
 	
@@ -21,6 +21,6 @@ function drawChart_$id() {
 		data.setCell(i, 2, fontsizes[i]);
 	}
 	
-	var chart = new gviz_word_cumulus.WordCumulus(document.getElementById('$id'));
-	chart.draw(data, {$options});
+	var chart = new gviz_word_cumulus.WordCumulus(document.getElementById(id));
+	chart.draw(data, options);
 }

@@ -1,17 +1,16 @@
 google.load('visualization', '1', {packages: ['table']});
 
-google.setOnLoadCallback(drawChart_$id);
-
-function drawChart_$id() {
+function drawWordCloudChart(params) {
+	
+	var id = params['id'];
+	var words = params['words'];
+	var fontsizes = params['fontsizes'];
 	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Label');
 	data.addColumn('number', 'Value');
 	data.addColumn('string', 'Link');
-	
-	var words = [$words];
-	var fontsizes = [$fontsizes];
 	
 	data.addRows(words.length);
 	
@@ -21,6 +20,6 @@ function drawChart_$id() {
 		data.setCell(i, 2, '');
 	}
 	
-	var chart = new TermCloud(document.getElementById('$id'));
+	var chart = new TermCloud(document.getElementById(id));
 	chart.draw(data, null);
 }

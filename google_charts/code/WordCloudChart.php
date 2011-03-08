@@ -12,25 +12,40 @@ class WordCloudChart extends Chart {
 	
 	protected $words;
 	
-	function __construct(array $words) {
-		parent::__construct();
-		$this->words = $words;
+	static function addRequirements() {
 		Requirements::css('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.css');
 		Requirements::javascript('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.js');
 		Requirements::javascript('http://www.google.com/jsapi');
+		Requirements::javascript('googlecharts/javascript/wordcloud.js');
+	}
+	
+	function __construct(array $words) {
+		parent::__construct();
+		$this->words = $words;
+		self::addRequirements();
 	}
 	
 	function forTemplate() {
-		$id = "WC_$this->id";
-		$params['id'] = $id;
-		
-		$params['words'] = "'" . implode("', '", array_keys($this->words)) . "'";
-		$params['fontsizes'] = implode(', ', $this->words);
-		
+		$params = $this->getJavascriptParams();
 		$width = $this->width ? $this->width : Chart::$default_width;
 		
-		Requirements::javascriptTemplate('googlecharts/javascript/wordcloud.js', $params);
-		return "<div id=\"$id\" class=\"wordcloud\" style=\"width: {$width}px;\"></div>";
+		$script = $this->getJavascript();
+		Requirements::customScript("google.setOnLoadCallback(function() {{$script}});");
+		return "<div id=\"{$params['id']}\" class=\"wordcloud\" style=\"width: {$width}px;\"></div>";
+	}
+	
+	function getJavascriptParams() {
+		return array(
+			'id' => "WC_$this->id",
+			'words' => array_keys($this->words),
+			'fontsizes' => array_values($this->words)
+		);
+	}
+	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "draw{$this->class}($params);";
 	}
 }
 
@@ -50,6 +65,13 @@ class WordCloudChart_Rotating extends Chart {
 	static $font_max = 30;
 	static $font_min = 7;
 	
+	static function addRequirements() {
+		Requirements::javascript('http://www.google.com/jsapi');
+		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js');
+		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js');
+		Requirements::javascript('googlecharts/javascript/wordcloudrotating.js');
+	}
+	
 	function __construct(array $words) {
 		parent::__construct();
 		$max = max($words);
@@ -58,28 +80,39 @@ class WordCloudChart_Rotating extends Chart {
 		$bFactor = self::$font_max - $max * $aFactor;
 		foreach($words as $word => $total) $words[$word] = round($total * $aFactor + $bFactor, 1);
 		$this->words = $words;
-		Requirements::javascript('http://www.google.com/jsapi');
-		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js');
-		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js');
+		self::addRequirements();
 	}
 	
 	function forTemplate() {
-		$id = "WCR_$this->id";
-		$params['id'] = $id;
+		$params = $this->getJavascriptParams();
 		
-		$params['words'] = "'" . implode("', '", array_keys($this->words)) . "'";
-		$params['fontsizes'] = implode(', ', $this->words);
+		$script = $this->getJavascript();
+		Requirements::customScript("google.setOnLoadCallback(function() {{$script}});");
+		return "<div id=\"{$params['id']}\" class=\"wordcloudrotating\"></div>";
+	}
+	
+	function getJavascriptParams() {
+		$params = array(
+			'id' => "WCR_$this->id",
+			'words' => array_keys($this->words),
+			'fontsizes' => array_values($this->words)
+		);
 		
-		$options[] = 'width: ' . ($this->width ? $this->width : Chart::$default_width);
-		$options[] = 'height: ' . ($this->height ? $this->height : Chart::$default_height);
+		$options['width'] = $this->width ? $this->width : Chart::$default_width;
+		$options['height'] = $this->height ? $this->height : Chart::$default_height;
 		
-		if($this->speed) $options[] = "speed: $this->speed";
-		if($this->color) $options[] = "text_color: $this->color";
-		if($this->hoverColor) $options[] = "hover_text_color: $this->hoverColor";
+		if($this->speed) $options['speed'] = $this->speed;
+		if($this->color) $options['text_color'] = $this->color;
+		if($this->hoverColor) $options['hover_text_color'] = $this->hoverColor;
 		
-		$params['options'] = implode(', ', $options);
-		Requirements::javascriptTemplate('googlecharts/javascript/wordcloudrotating.js', $params);
-		return "<div id=\"$id\" class=\"wordcloudrotating\"></div>";
+		$params['options'] = $options;
+		return $params;
+	}
+	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "draw{$this->class}($params);";
 	}
 	
 	function setSpeed($speed) {$this->speed = $speed;}

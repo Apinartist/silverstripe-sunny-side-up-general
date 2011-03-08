@@ -14,10 +14,14 @@ class GaugeChart extends Chart {
 	
 	static $range_colors = array('red', 'green', 'yellow');
 	
+	static function addRequirements() {
+		Requirements::javascript('http://www.google.com/jsapi');
+	}
+	
 	function __construct($value) {
 		parent::__construct();
 		$this->value = $value;
-		Requirements::javascript('http://www.google.com/jsapi');
+		self::addRequirements();
 	}
 	
 	function forTemplate() {
