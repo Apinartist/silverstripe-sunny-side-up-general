@@ -103,4 +103,8 @@ GoogleMap::setDefaultAddressText(""); //extra phrase added to the end of an addr
 GoogleMap::setStyleSheetUrl("googlemap/css/googleMapDirections.css"); //style sheet to be used for formatting directions (e.g. googlemap/css/mapDirections.css)
 GoogleMap::setLocaleForResults("en_NZ"); //language to be used for directions (e.g. en_US, fr, fr_CA, en_NZ, etc...
 */
+
+
+//SEARCH
+//GoogleMapLocationsDOD_Controller::set_class_name_only("MyPage");
 //===================---------------- END googlemap MODULE ----------------===================

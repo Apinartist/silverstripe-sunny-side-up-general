@@ -283,13 +283,16 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 
 	var $address = false;
 
+	protected static $class_name_only = '';
+		static function set_class_name_only($v) {self::$class_name_only = $v;}
+
 	function SearchByAddressForm($className = '') {
 		return new Form(
 			$this->owner,
 			"SearchByAddressForm",
 			new FieldSet(
 				new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address),
-				new HiddenField("ClassName", $className)
+				new HiddenField("ClassName", self::$class_name_only)
 			),
 			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
 			new RequiredFields("Address")
