@@ -283,11 +283,14 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 
 	var $address = false;
 
-	function SearchByAddressForm() {
+	function SearchByAddressForm($className = '') {
 		return new Form(
 			$this->owner,
 			"SearchByAddressForm",
-			new FieldSet(new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address)),
+			new FieldSet(
+				new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address),
+				new HiddenField("ClassName", $className)
+			),
 			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
 			new RequiredFields("Address")
 		);
@@ -295,10 +298,11 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 
 	function findnearaddress($data, $form) {
 		$address = Convert::raw2sql($data["Address"]);
+		$className = Convert::raw2sql($data["ClassName"]);
 		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($address);
 		$this->address = $pointArray["address"];
 		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
-			GoogleMapSearchRecord::create_new(Convert::raw2sql($address), $this->owner->ID, false);
+			GoogleMapSearchRecord::create_new($address, $this->owner->ID, false);
 			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
 			Director::redirectBack();
 			return;
@@ -310,7 +314,7 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$lat = $pointArray[1];
 		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
 		//$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
-		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat);
+		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat, $className);
 		return array();
 	}
 
