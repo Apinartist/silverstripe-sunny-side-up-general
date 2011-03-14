@@ -416,7 +416,12 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 		html += '<p class="infoTabExtraLinks">'+infoTabExtraLinksArray.join(", ")+'.</p>';
 	}
 	GEvent.addListener(m, "clickZoomIn", function() {
-		GMO.zoomTo(m.getPoint().lat(), m.getPoint().lng(), map.getZoom() + 2);
+		alert(m.maxZoom);
+		var newZoom = map.getZoom();
+		if(newZoom < 14) {
+			newZoom = newZoom + 2;
+		}
+		GMO.zoomTo(m.getPoint().lat(), m.getPoint().lng(), newZoom);
 	});
 	GEvent.addListener(m, "clickCloseUp", function() {
 		m.showMapBlowup();//zoom into marker
