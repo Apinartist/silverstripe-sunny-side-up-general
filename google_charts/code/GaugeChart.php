@@ -16,6 +16,7 @@ class GaugeChart extends Chart {
 	
 	static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
+		Requirements::javascript('googlecharts/javascript/gauge.js');
 	}
 	
 	function __construct($value) {
@@ -25,28 +26,42 @@ class GaugeChart extends Chart {
 	}
 	
 	function forTemplate() {
-		$id = "GC_$this->id";
-		$params['id'] = $id;
-		$params['title'] = $this->title ? $this->title : '';
-		$params['value'] = $this->value;
+		$params = $this->getJavascriptParams();
 		
-		$options[] = 'width: ' . ($this->width ? $this->width : Chart::$default_width);
-		$options[] = 'height: ' . ($this->height ? $this->height : Chart::$default_height);
+		$script = $this->getJavascript();
+		Requirements::customScript("google.setOnLoadCallback(function() {{$script}});");
+		return "<div id=\"{$params['id']}\" class=\"gauge\"></div>";
+	}
+	
+	function getJavascriptParams() {
+		$params = array(
+			'id' => "GC_$this->id",
+			'title' => $this->title ? $this->title : '',
+			'value' => $this->value
+		);
 		
-		if($this->min) $options[] = "min: $this->min";
-		if($this->max) $options[] = "max: $this->max";
+		$options['width'] = $this->width ? $this->width : Chart::$default_width;
+		$options['height'] = $this->height ? $this->height : Chart::$default_height;
+		
+		if($this->min) $options['min'] = $this->min;
+		if($this->max) $options['max'] = $this->max;
 		if($this->ranges) {
 			foreach($this->ranges as $color => $range) {
-				$options[] = "{$color}From: {$range[0]}";
-				$options[] = "{$color}To: {$range[1]}";
+				$options["{$color}From"] = $range[0];
+				$options["{$color}To"] = $range[1];
 			}
 		}
-		if($this->minorTicks) $options[] = "minorTicks: $this->minorTicks";
-		if($this->majorTicks) $options[] = "majorTicks: ['" . implode("', '", $this->majorTicks) . "']";
+		if($this->minorTicks) $options['minorTicks'] = $this->minorTicks;
+		if($this->majorTicks) $options['majorTicks'] = $this->majorTicks;
 		
-		$params['options'] = implode(', ', $options);
-		Requirements::javascriptTemplate('googlecharts/javascript/gauge.js', $params);
-		return "<div id=\"$id\" class=\"gauge\"></div>";
+		$params['options'] = $options;
+		return $params;
+	}
+	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "draw{$this->class}($params);";
 	}
 	
 	function setMin($min) {$this->min = $min;}
