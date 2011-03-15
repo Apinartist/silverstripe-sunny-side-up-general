@@ -1,16 +1,17 @@
 google.load('visualization', '1', {packages: ['geomap']});
 
-google.setOnLoadCallback(drawChart_$id);
-
-function drawChart_$id() {
+function drawMapChart_Geo(params) {
+	
+	var id = params['id'];
+	var title = params['title'];
+	var records = params['records'];
+	var totals = params['totals'];
+	var options = params['options'];
 	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Country');
-	data.addColumn('number', '$title');
-	
-	var records = [$records];
-	var totals = [$totals];
+	data.addColumn('number', title);
 	
 	data.addRows(records.length);
 	
@@ -19,6 +20,6 @@ function drawChart_$id() {
 		data.setValue(i, 1, totals[i]);
 	}
 	
-	var chart = new google.visualization.GeoMap(document.getElementById('$id'));
-    chart.draw(data, {$options});
+	var chart = new google.visualization.GeoMap(document.getElementById(id));
+    chart.draw(data, options);
 };
