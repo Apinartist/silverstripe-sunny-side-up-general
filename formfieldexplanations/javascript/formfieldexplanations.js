@@ -1,7 +1,6 @@
 
 /*
  *@author: nicolaas[at] sunnysideup.co.nz
- *@description: interaction on Snapper Shop Page
  **/
 
 ;(function($) {
