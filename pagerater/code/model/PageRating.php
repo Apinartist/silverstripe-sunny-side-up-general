@@ -60,28 +60,28 @@ class PageRating extends DataObject {
 	public static function update_ratings($SiteTreeID = 0) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($SiteTreeID) {
-			$where = "{$bt}PageRating{$bt}.{$bt}ParentID{$bt} = ".$SiteTreeID;
+			$where = "PageRating.ParentID = ".$SiteTreeID;
 		}
 		else {
-			$where = "{$bt}PageRating{$bt}.{$bt}ParentID{$bt} > 0";
+			$where = "PageRating.ParentID > 0";
 		}
 		DB::query("DELETE FROM PageRating_TEMP;");
 		DB::query("
-			INSERT INTO {$bt}PageRating_TEMP{$bt}
-			SELECT {$bt}ParentID{$bt}, (ROUND(AVG({$bt}PageRating{$bt}.{$bt}Rating{$bt}) * 100))
-			FROM {$bt}PageRating{$bt}
+			INSERT INTO PageRating_TEMP
+			SELECT ParentID, (ROUND(AVG(PageRating.Rating) * 100))
+			FROM PageRating
 			WHERE $where
-			GROUP BY {$bt}PageRating{$bt}.{$bt}ParentID{$bt};
+			GROUP BY PageRating.ParentID;
 			"
 		);
 		DB::query("
-			UPDATE {$bt}SiteTree{$bt}
-				INNER JOIN {$bt}PageRating_TEMP{$bt} ON {$bt}SiteTree{$bt}.{$bt}ID{$bt} = {$bt}PageRating_TEMP{$bt}.{$bt}ParentID{$bt}
-			SET {$bt}SiteTree{$bt}.{$bt}PageRating{$bt} = ({$bt}PageRating_TEMP{$bt}.{$bt}Rating{$bt} / 100);");
+			UPDATE SiteTree
+				INNER JOIN PageRating_TEMP ON SiteTree.ID = PageRating_TEMP.ParentID
+			SET SiteTree.PageRating = (PageRating_TEMP.Rating / 100);");
 		DB::query("
-			UPDATE {$bt}SiteTree_Live{$bt}
-				INNER JOIN {$bt}PageRating_TEMP{$bt} ON {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} = {$bt}PageRating_TEMP{$bt}.{$bt}ParentID{$bt}
-			SET {$bt}SiteTree_Live{$bt}.{$bt}PageRating{$bt} = ({$bt}PageRating_TEMP{$bt}.{$bt}Rating{$bt} / 100);");
+			UPDATE SiteTree_Live
+				INNER JOIN PageRating_TEMP ON SiteTree_Live.ID = PageRating_TEMP.ParentID
+			SET SiteTree_Live.PageRating = (PageRating_TEMP.Rating / 100);");
 	}
 
 	function onBeforeWrite() {
