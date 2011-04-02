@@ -7,13 +7,8 @@
  */
 class InvisibleSpamField extends SpamProtectorField {
 
-	public function Field() {
-		$this->initialise();
-		$html = '<input type="text" name="linkurlwebsite" class="text" />';
-		return $html;
-	}
-
 	function FieldHolder() {
+		Requirements::customScript('jQuery(".mustenterbecausitisrequired").css("position", "absolute");', "mustenterbecausitisrequired");
 		$Title = $this->XML_val('Title');
 		$Message = $this->XML_val('Message');
 		$MessageType = $this->XML_val('MessageType');
@@ -23,7 +18,7 @@ class InvisibleSpamField extends SpamProtectorField {
 		$Field = $this->XML_val('Field');
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		return <<<HTML
-<div id="$Name" style="display: inline; text-indent: -2000px; position: absolute; top: -100px; left: -100px;">
+<div id="$Name" style="display: inline; text-indent: -2000px; " class="mustenterbecausitisrequired">
 	<label>website URL link  </label>
 	<div class="middleColumn">
 		{$Field}
@@ -37,7 +32,7 @@ HTML;
 		if(!isset($_REQUEST['linkurlwebsite']) || $_REQUEST['linkurlwebsite']) {
 			$validator->validationError(
 				$this->name,
-				_t("InvisibleSpamField.SPAMMESSAGE", "expected spam attempt"),
+				_t("InvisibleSpamField.SPAMMESSAGE", "there was an error"),
 				"validation",
 				false
 			);
@@ -52,3 +47,62 @@ HTML;
 	}
 
 }
+class InvisibleSpamField_URL extends InvisibleSpamField {
+
+	public function Field() {
+		$this->initialise();
+		$html = '<input type="text" name="linkurlwebsite" class="text" />';
+		return $html;
+	}
+
+	public function validate($validator) {
+		// don't bother querying the SimplestSpam-service if fields were empty
+		if(!isset($_REQUEST['linkurlwebsite']) || $_REQUEST['linkurlwebsite']) {
+			$validator->validationError(
+				$this->name,
+				_t("InvisibleSpamField.SPAMMESSAGE", "there was an error"),
+				"validation",
+				false
+			);
+			return false;
+		}
+		return true;
+	}
+
+
+	protected function initialise() {
+		return true;
+	}
+
+}
+
+
+class InvisibleSpamField_Email extends InvisibleSpamField {
+
+	public function Field() {
+		$this->initialise();
+		$html = '<input type="text" name="youremailaddress" class="text" />';
+		return $html;
+	}
+
+	public function validate($validator) {
+		// don't bother querying the SimplestSpam-service if fields were empty
+		if(!isset($_REQUEST['youremailaddress']) || $_REQUEST['youremailaddress']) {
+			$validator->validationError(
+				$this->name,
+				_t("InvisibleSpamField.SPAMMESSAGE", "there was an error"),
+				"validation",
+				false
+			);
+			return false;
+		}
+		return true;
+	}
+
+
+	protected function initialise() {
+		return true;
+	}
+
+}
+
