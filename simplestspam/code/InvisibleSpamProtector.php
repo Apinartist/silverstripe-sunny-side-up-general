@@ -33,7 +33,7 @@ class InvisibleSpamProtector implements SpamProtector {
 
 
 	public function getFormField($name = null, $title = null, $value = null, $form = null, $rightTitle = null) {
- 		return new InvisibleSpamField_Email($name, $title, $value, $form, $rightTitle);
+ 		return new InvisibleSpamField($name, $title, $value, $form, $rightTitle);
 	}
 
 	public function sendFeedback($object = null, $feedback = "") {
