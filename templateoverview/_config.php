@@ -12,6 +12,7 @@
 //===================---------------- START templateoverview MODULE ----------------===================
 /*
 //MUST SET
+TemplateOverviewBug::set_error_email("a@b.com");
 if(Director::isDev()) {
   Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
 //MAY SET

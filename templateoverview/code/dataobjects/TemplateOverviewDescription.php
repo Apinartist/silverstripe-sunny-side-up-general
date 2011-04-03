@@ -72,6 +72,10 @@ class TemplateOverviewDescription extends DataObject {
 		return preg_replace("/(?<=[^A-Z])([A-Z])/", "$1", $this->ClassNameLink);
 	}
 
+	function Title() {
+		return $this->ClassNameLinkFancy();
+	}
+
 	function ModelAdminLink() {
 		return "admin/templates/".$this->ClassName."/".$this->ID."/edit/";
 	}

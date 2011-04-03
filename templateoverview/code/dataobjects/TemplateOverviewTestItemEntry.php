@@ -34,7 +34,7 @@ class TemplateOverviewTestItemEntry extends DataObject {
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
-		$this->MemberID = Member::currentMemberID();
+		$this->MemberID = Member::currentUserID();
 	}
 
 }
