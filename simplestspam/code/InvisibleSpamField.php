@@ -26,12 +26,37 @@ class InvisibleSpamField extends SpamProtectorField {
 		static function set_used_field($k) {self::$used_field = $k;}
 		static function get_used_field() {return self::$used_field;}
 
+	/**
+	 * minimum number of seconds for a user to complete a form
+	 * set to zero to ignore
+	 *@param $i Integer
+	 **/
+
+	protected static $min_seconds_completing_form = 10;
+		static function set_min_seconds_completing_form($i) {self::$min_seconds_completing_form = $i;}
+		static function get_min_seconds_completing_form() {return self::$min_seconds_completing_form;}
+
+	/**
+	 * maximum number of seconds for a user to complete a form
+	 * set to zero to ignore
+	 *@param $i Integer
+	 **/
+	protected static $max_seconds_completing_form = 600;
+		static function set_max_seconds_completing_form($i) {self::$max_seconds_completing_form = $i;}
+		static function get_max_seconds_completing_form() {return self::$max_seconds_completing_form;}
+
+	/**
+	 * also consider: height: 0px; overflow: hidden; etc...
+	 **/
+
 	protected static $css_rules = array(
 		"position" => "absolute",
 		"text-indent" => "-2000px"
 	);
 		static function set_css_rules($a) {self::$css_rules = $a;}
 		static function get_css_rules() {return self::$css_rules;}
+		static function add_css_rule($key, $value) {self::$css_rules[$key] = $value;}
+		static function remove_css_rule($key) {unset(self::$css_rules[$key]);}
 
 	protected function labelUsed() {
 		return self::$definitions[self::$used_field]["Label"];
@@ -62,6 +87,7 @@ class InvisibleSpamField extends SpamProtectorField {
 		$Field = $this->XML_val('Field');
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		$name = $this->labelUsed();
+		$time = time();
 		return <<<HTML
 <div id="$Name" class="mustenterbecausitisrequired">
 	<label>$Title</label>
@@ -69,6 +95,7 @@ class InvisibleSpamField extends SpamProtectorField {
 		{$Field}
 	</div>
 </div>
+<input type="hidden" value="$time" name="remembermeasstarttime" />
 HTML;
 	}
 
@@ -89,6 +116,38 @@ HTML;
 				false
 			);
 			return false;
+		}
+		if(!isset($_REQUEST["remembermeasstarttime"]) || !intval($_REQUEST["remembermeasstarttime"])) {
+			$validator->validationError(
+				$this->name,
+				_t("InvisibleSpamField.NOTIME", "Could not process submission. It seemed to be a spam attack, if you are not a spammer then please reload form and try again."),
+				"validation",
+				false
+			);
+		}
+		else {
+			$time = time();
+			$oldTime = $_REQUEST["remembermeasstarttime"];
+			$difference = $time - $oldTime;
+			$min = self::get_min_seconds_completing_form();
+			$max = self::get_max_seconds_completing_form();
+			if($min && $min > $difference) {
+				$validator->validationError(
+					$this->name,
+					_t("InvisibleSpamField.TOOFAST", "Could not process submission. It seems that your submission took shorter than expected, which indicates a possible spam attack. Please reload the page and try again."),
+					"validation",
+					false
+				);
+
+			}
+			if($max && $max < $difference) {
+				$validator->validationError(
+					$this->name,
+					_t("InvisibleSpamField.TOOSLOW", "Could not process submission. It seems that your submission took longer than expected, which indicates a possible spam attack. Please reload the page and try again."),
+					"validation",
+					false
+				);
+			}
 		}
 		return true;
 	}

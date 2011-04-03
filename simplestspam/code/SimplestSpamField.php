@@ -9,46 +9,25 @@ class SimplestSpamField extends SpamProtectorField {
 
 	protected static $questions_and_answers = array();
 
-	protected static $default_questions_and_answers = array(
-		array("The English name for the capital of Italy is ... ", "Rome"),
-		array("The English name for the highest mountain the the world is Mount ... ", "Everest"),
-		array("The Maori name for New Zealand is ... (try Aotearoa)", "Aotearoa")
-	);
-
-	protected static $explanation_message = "this question is here to prevent spam";
-
-	protected static $wrong_answer_message = "please check anti-spam field to proceed";
-
-	protected static $form_wrong_answer_message = "Submission was NOT successful. Please check anti-spam field.";
-
 	protected static $has_been_initialised = false;
 
-	static function set_question_and_answer($question, $answer) {
-		self::$questions_and_answers[] = array($question, $answer);
-	}
-
-	static function set_explanation_message($v) {
-		self::$explanation_message = $v;
-	}
-
-	static function set_wrong_answer_message($v) {
-		self::$form_wrong_answer_message = $v;
-	}
-
-	static function set_form_wrong_answer_message($v) {
-		self::$wrong_answer_message = $v;
-	}
-
+	protected $error = '';
 
 	protected function initialise() {
-		if(!count(self::$questions_and_answers)) {
-			self::$questions_and_answers = self::$default_questions_and_answers;
+		if(!self::$has_been_initialised) {
+			if(!count(self::$questions_and_answers)) {
+				self::$questions_and_answers = DataObject::get("SimplestSpamFieldQuestion");
+			}
+			$questionCount = 0;
+			if(self::$questions_and_answers) {
+				$questionCount = self::$questions_and_answers->count();
+			}
+			if(!isset($_REQUEST['SimplestSpam_challenge_field']) && $questionCount) {
+				$randomNumber = rand(0, $questionCount - 1);
+				Session::set("SimplestSpamQuestion", $randomNumber + 1); // adding one to make it easier to work out if anything has been entered, i.e. 0 could be nothing or first question
+			}
 		}
-		if(!self::$has_been_initialised && !isset($_REQUEST['SimplestSpam_challenge_field']) && count(self::$questions_and_answers)) {
-			$randomNumber = rand(0, count(self::$questions_and_answers)-1);
-			Session::set("SimplestSpamQuestion", $randomNumber + 1); // adding one to make it easier to work out if anything has been entered, i.e. 0 could be nothing or first question
-			self::$has_been_initialised = true;
-		}
+		self::$has_been_initialised = true;
 	}
 
 	public function Field() {
@@ -59,11 +38,15 @@ class SimplestSpamField extends SpamProtectorField {
 
 	function FieldHolder() {
 		$this->initialise();
-		$expected_question_answer_array = $this->getQuestionAnswerArray();
-		$Question = $expected_question_answer_array[0];
-		$Explanation = self::$explanation_message;
-		if($Explanation) {
-			$Explanation = "(".$Explanation.")";
+		$obj = $this->getQuestionAnswerObject();
+		if(!$obj) {
+			return "";
+		}
+		$question = $obj->Question;
+		$siteConfig = DataObject::get_one("SiteConfig");
+		$explanation = $siteConfig->SimplestSpamExplanation;
+		if($explanation) {
+			$explanation = $explanation;
 		}
 		$Title = $this->XML_val('Title');
 		$Message = $this->XML_val('Message');
@@ -75,16 +58,17 @@ class SimplestSpamField extends SpamProtectorField {
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		return <<<HTML
 <div id="$Name" class="field $Type $extraClass">
-	<label class="left spamquestion">{$Question} </label>
+	<label class="left spamquestion">{$question} </label>
 	<div class="middleColumn">
 		{$Field}
-		<label class="required">{$Explanation} {$messageBlock}</label>
+		<label class="required">{$explanation} {$messageBlock}</label>
 	</div>
 </div>
 HTML;
 	}
 
 	public function validate($validator) {
+		$siteConfig = DataObject::get_one("SiteConfig");
 		// don't bother querying the SimplestSpam-service if fields were empty
 		if(
 			!isset($_REQUEST['SimplestSpam_challenge_field'])
@@ -92,35 +76,32 @@ HTML;
 		) {
 			$validator->validationError(
 				$this->name,
-				self::$wrong_answer_message,
+				$siteConfig->SimplestSpamWrongAnswerFieldMessage,
 				"validation",
 				false
 			);
+			Session::set("FormField.{$this->form->FormName()}.{$this->Name()}", $siteConfig->SimplestSpamWrongAnswerFieldMessage);
+			$this->form->sessionMessage($siteConfig->SimplestSpamWrongAnswerFormMessage, "bad");
 			return false;
 		}
-
 		$response = $_REQUEST['SimplestSpam_challenge_field'];
-		$expected_question_answer_array = $this->getQuestionAnswerArray();
-		if(!isset($expected_question_answer_array[1])) {
+		$obj = $this->getQuestionAnswerObject();
+		if(!$obj || !isset($obj->Answer)) {
 			user_error("SimplestSpamField::validate(): could not find answer - sorry, please try again'", E_USER_ERROR);
 			return false;
 		}
-		if($this->cleanupAnswer($expected_question_answer_array[1]) != $this->cleanupAnswer($response)) {
-			// Internal error-string returned by SimplestSpam, e.g. "incorrect-captcha-sol".
-			// Used to generate the new iframe-url/js-url after form-refresh.
-			$error = "answer incorect";
-			Session::set("FormField.{$this->form->FormName()}.{$this->Name()}", trim($error));
+		$answer = $obj->Answer;
+		if($this->cleanupAnswer($answer) != $this->cleanupAnswer($response)) {
 			$validator->validationError(
 				$this->name,
-				self::$wrong_answer_message,
+				$siteConfig->SimplestSpamWrongAnswerFormMessage,
 				"validation",
 				false
 			);
-			$this->form->sessionMessage(self::$form_wrong_answer_message, "bad");
+			Session::set("FormField.{$this->form->FormName()}.{$this->Name()}", $siteConfig->SimplestSpamWrongAnswerFieldMessage);
+			$this->form->sessionMessage($siteConfig->SimplestSpamWrongAnswerFormMessage, "bad");
 			return false;
 		}
-
-		//passed all tests
 		return true;
 	}
 
@@ -128,23 +109,22 @@ HTML;
 		return trim(strtolower($v));
 	}
 
-	protected function getQuestionAnswerArray() {
+	protected function getQuestionAnswerObject() {
 		$this->initialise();
 		$number = Session::get("SimplestSpamQuestion");
 		if($number > 0) {
 			$number = $number - 1;
-			if(isset(self::$questions_and_answers[$number])) {
-				$expected_question_answer_array = self::$questions_and_answers[$number];
-				return $expected_question_answer_array;
+			if($dos = DataObject::get("SimplestSpamFieldQuestion", $where = null, $sort = null, $join = null, $limit = "$number, 1")) {
+				return $dos->first();
 			}
 			else {
-				$error = "selected question not found: ".$number;
+				$this->error = _t("SimplestSpamField.QUESTIONNOTFOUND", "Selected question not found.");
 			}
 		}
 		else {
-			$error = "no question selection made";
+			$this->error = _t("SimplestSpamField.QUESTIONSELECTIONNOTAVAILABLE", "No question selection made.");
 		}
-		return array("Is this a spam entry - please answer no to submit", "no");
+		return false;
 	}
 
 
