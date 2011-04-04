@@ -22,7 +22,8 @@ class CampaignMonitorSignupPage extends Page {
 		'SignUpHeader' => 'Varchar(100)',
 		'SignUpIntro' => 'HTMLText',
 		'SignUpButtonLabel' => 'Varchar(20)',
-		'ShowOldNewsletters' => 'Boolean'
+		'ShowOldNewsletters' => 'Boolean',
+		'ReadyToReceiveSubscribtions' => 'Boolean'
 	);
 
 	static $has_one = array(
@@ -32,14 +33,19 @@ class CampaignMonitorSignupPage extends Page {
 	static $has_many = array(
 		"CampaignMonitorCampaigns" => "CampaignMonitorCampaign"
 	);
+	static $casting = array(
+		"" => "Boolean"
+	);
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.CreateNewMailOut', new LiteralField('CreateNewCampaign', '<p>To create a new mail out go to <a href="'.CampaignMonitorWrapper::get_campaign_monitor_url().'">Campaign Monitor</a> site.</p>'));
-		$fields->addFieldToTab('Root.Content.RelatedList', new LiteralField('ListIDExplanation', '<p>The way this works is that each sign-up page needs to be associated with a campaign monitor subscription list.</p>'));
-		$fields->addFieldToTab('Root.Content.RelatedList', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
-		$fields->addFieldToTab('Root.Content.RelatedList', new TextField('ListTitle', 'List title to be shown...'));
-		$fields->addFieldToTab('Root.Content.RelatedList', new TreeDropdownField('GroupID', 'Related member group'));
+		$fields->addFieldToTab('Root.Content', new Tab("MustComplete"), "Main");
+		$fields->addFieldToTab('Root.Content.MustComplete', new LiteralField('ListIDExplanation', '<p>The way this works is that each sign-up page needs to be associated with a campaign monitor subscription list.</p>'));
+		$fields->addFieldToTab('Root.Content.MustComplete', new DropdownField('ListID', 'Related List from Campaign Monitor - this must be selected', $this->makeDropdownListFromLists()));
+		$fields->addFieldToTab('Root.Content.MustComplete', new TextField('ListTitle', 'List title to be shown...'));
+		$fields->addFieldToTab('Root.Content.MustComplete', new TreeDropdownField('GroupID', 'Related member group'));
+		$fields->addFieldToTab('Root.Content.MustComplete', new CheckboxField('ReadyToReceiveSubscribtions', 'Newsletter is ready to receive subscriptions (all above fields MUST be completed)'));
 
 		$fields->addFieldToTab('Root.Content.StartForm', new LiteralField('StartFormExplanation', 'A start form is a form where people are just required to enter their email address and nothing else.  After completion they go through to another page (the actual CampaignMonitorSignUpPage) to complete all the details.'));
 		$fields->addFieldToTab('Root.Content.StartForm', new TextField('SignUpHeader', 'Sign up header (e.g. sign up now)'));
@@ -68,7 +74,7 @@ class CampaignMonitorSignupPage extends Page {
 		}
 		//remove subscription list IDs from other pages
 		/*
-		$subscribePages = DataObject::get("CampaignMonitorSignupPage");
+		$subscribePages = DataObject::get("CampaignMonitorSignupPage". "ReadyToReceiveSubscribtions = 1");
 		foreach($subscribePages as $page) {
 			if($page->ID != $this->ID) {
 				if(isset($array[$page->ListID])) {
@@ -142,6 +148,9 @@ class CampaignMonitorSignupPage extends Page {
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
+		if(!$this->ListID || !$this->GroupID || !$this->ListTitle) {
+			$this->ReadyToReceiveSubscribtions = 0;
+		}
 		if(!$this->GroupID && $this->ListTitle) {
 			$gp = new Group();
 			$gp->Title = "CAMPAIGN MONITOR: ".$this->ListTitle;
@@ -224,7 +233,7 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 	// Subscription form
 
 	function FormHTML() {
-		if($this->ListID) {
+		if($this->ReadyToReceiveSubscribtions) {
 			// Create fields
 			$m = Member::currentMember();
 			if(!$m) {
@@ -250,6 +259,9 @@ class CampaignMonitorSignupPage_Controller extends Page_Controller {
 				$f->Fields()->fieldByName("Email")->setValue($this->email);
 			}
 			return $f;
+		}
+		else {
+			return _t("CampaignMonitorSignupPage.NOTREADY", "You can not suscribe to this newsletter at present.");
 		}
 	}
 

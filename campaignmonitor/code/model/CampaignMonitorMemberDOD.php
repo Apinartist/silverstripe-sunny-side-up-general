@@ -9,7 +9,40 @@
 class CampaignMonitorMemberDOD extends DataObjectDecorator {
 
 
+	protected static $campaign_monitor_signup_fieldname = "CampaignMonitorSubscriptions";
+		function set_campaign_monitor_signup_fieldname($s) {self::$campaign_monitor_signup_fieldname = $s;}
+		function get_campaign_monitor_signup_fieldname() {return self::$campaign_monitor_signup_fieldname;}
+
+	static function get_signup_field() {
+		$lists = DataObject::get("CampaignMonitorSignupPage", $where = "ReadyToReceiveSubscribtions = 1");
+		if($lists) {
+			$field = new CheckboxSetField(self::get_campaign_monitor_signup_fieldname(), _t("CampaignMonitorMemberDOD.NEWSLETTERSIGNUP", "Newsletter sign-up"), $lists->toDropDownMap("ID", "ListTitle"));
+			if($m = Member::currentUser()) {
+				$field->setDefaultItems($m->CampaignMonitorSubscriptionsPageIdList());
+			}
+			return $field;
+		}
+		return null;
+	}
+
 	function extraStatics() {
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		if(isset($_REQUEST[self::get_campaign_monitor_signup_fieldname()]) && count($_REQUEST[self::get_campaign_monitor_signup_fieldname()])) {
+			$listsToSignupFor = $_REQUEST[self::get_campaign_monitor_signup_fieldname()];
+			$lists = DataObject::get("CampaignMonitorSignupPage", $where = "ReadyToReceiveSubscribtions = 1");
+			foreach($lists as $page) {
+				if(isset($_REQUEST[self::get_campaign_monitor_signup_fieldname()][$page->ID])) {
+					$this->addCampaignMonitorList($page);
+				}
+				else {
+					$this->removeCampaignMonitorList($page);
+				}
+			}
+		}
+		$this->synchroniseCMDatabase();
 	}
 
 	function onAfterWrite() {
@@ -18,7 +51,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 	}
 
 	protected function synchroniseCMDatabase() {
-		$lists = DataObject::get("CampaignMonitorSignupPage");
+		$lists = DataObject::get("CampaignMonitorSignupPage", "ReadyToReceiveSubscribtions = 1");
 		if($lists) {
 			foreach($lists as $list) {
 
@@ -92,7 +125,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		if($set = $this->owner->Groups()) {
 			$idList = $set->getIdList();
 			if(is_array($idList) && count($idList)) {
-				$pages = DataObject::get("CampaignMonitorSignupPage", "GroupID IN(".implode(",", $idList).")");
+				$pages = DataObject::get("CampaignMonitorSignupPage", "GroupID IN(".implode(",", $idList).") AND ReadyToReceiveSubscribtions = 1");
 				if($pages) {
 					foreach($pages as $page) {
 						$array[$page->ID] = $page->ID;
