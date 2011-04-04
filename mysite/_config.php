@@ -131,9 +131,6 @@ DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
 
 //===================---------------- START simplestspam MODULE ----------------===================
 SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
-SimplestSpamField::set_question_and_answer("Sunny Side Up is based in what country ...", "New Zealand");
-SimplestSpamField::set_explanation_message("this question is here to prevent spam");
-SimplestSpamField::set_wrong_answer_message("please check anti-spam field to proceed");
 //===================---------------- END simplestspam MODULE ----------------===================
 
 
