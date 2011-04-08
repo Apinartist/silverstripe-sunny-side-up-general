@@ -16,7 +16,7 @@ http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
 Documentation
 -----------------------------------------------
 see:
-- http://silverstripe-webdevelopment.com/advertisements
+- http://silverstripe-webdevelopment.com/modules/advertisements
 - http://jquery.malsup.com/cycle/options.html
 - http://jquery.malsup.com/cycle/browser.html
 
