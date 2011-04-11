@@ -24,7 +24,7 @@ class AdvertisementStyle extends DataObject {
 		static function get_array_of_js_file_options() {return self::$array_of_js_file_options;}
 		static function add_to_array_of_js_file_options($title, $file_location) {
 			if(!file_exists(Director::baseFolder()."/".$file_location)) {
-				user_error(self::$file_location . " does not exist, please check!", E_USER_NOTICE);
+				user_error($file_location . " does not exist, please check!", E_USER_NOTICE);
 			}
 			return self::$array_of_js_file_options[$title] = $file_location;
 		}
