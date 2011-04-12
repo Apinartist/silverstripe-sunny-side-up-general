@@ -69,45 +69,47 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$tabName = $this->MyTabName();
 			//advertisements shown...
 			$advertisements = DataObject::get("Advertisement");
-			$fields->addFieldToTab($tabName, $this->MyHeaderField("Actual ".Advertisement::$plural_name." Shown"));
+			$fields->addFieldToTab($tabName, $this->MyHeaderField(_t("AdvertisementDecorator.ACTUAL", "Actual ").Advertisement::$plural_name._t("AdvertisementDecorator.SHOWN", " Shown")));
 			if($advertisements) {
-				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", Advertisement::$plural_name.' to show', $advertisements));
+				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", _t("AdvertisementDecorator.SELECT", "Select slides to show ..."), $advertisements));
 				if(class_exists("DataObjectSorterController")) {
 					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement")));
 				}
 			}
 			else {
-				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", '<p>Please <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">create '.Advertisement::$plural_name.'</a> on the <i>'.AdvertisementAdmin::$menu_title.'</i> tab first, or see below on how to create '.Advertisement::$plural_name.' from a folder.'));
+				$txt =
+					'<p>'._t("AdvertisementDecorator.PLEASE", "Please").
+					' <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.
+					_t("AdvertisementDecorator.CREATE", "create").
+					' '.Advertisement::$plural_name.'</a> '.
+					_t("AdvertisementDecorator.ONTHE", "on the").
+					' <i>'.AdvertisementAdmin::$menu_title.'</i>'.
+					_t("AdvertisementDecorator.TABFIRST", " tab first, ")._t("AdvertisementDecorator.ORSEEHOWTOCREATEZ", " or see below on how to create").' '.Advertisement::$plural_name.' '._t("AdvertisementDecorator.FROMAFOLDER", " from a folder.");
+				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", $txt));
 			}
 			if($parent = $this->advertisementParent()) {
-				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", "OR  ... use ".Advertisement::$plural_name." from <i>".$parent->Title."</i>"));
+				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", _t("AdvertisementDecorator.ORUSE", "OR  ... use ").Advertisement::$plural_name." "._t("AdvertisementDecorator.FROM", "from")." <i>".$parent->Title."</i>."));
 			}
-
 			if($styles = DataObject::get("AdvertisementStyle")) {
 				$fields->addFieldToTab($tabName, $this->MyHeaderField("Style"));
-				$list = $styles->toDropdownMap("ID", "Title",$emptyString = "--select style--", $sortByTitle = true);
-				$fields->addFieldToTab($tabName, new DropdownField("AdvertisementStyleID", "Style as created by your developer", $list));
+				$list = $styles->toDropdownMap("ID", "Title",$emptyString = _t("AdvertisementDecorator.SELECTSTYLE", "--select style--"), $sortByTitle = true);
+				$fields->addFieldToTab($tabName, new DropdownField("AdvertisementStyleID", _t("AdvertisementDecorator.STYLECREATED", "Select style (styles are created by your developer)"), $list));
 			}
-
-
 			//use parents
-			$fields->addFieldToTab($tabName, $this->MyHeaderField("Create New ".Advertisement::$plural_name));
-			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', 'Create new '.Advertisement::$plural_name.' from all images in the folder selected below ... (NB '.Advertisement::recommended_image_size_statement().')', 'Folder' ));
-
+			$fields->addFieldToTab($tabName, $this->MyHeaderField(_t("AdvertisementDecorator.CREATENEW", "Create New")." ".Advertisement::$plural_name));
+			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', _t("AdvertisementDecorator.CREATENEW", "Create New")." ".Advertisement::$plural_name." "._t("AdvertisementDecorator.USINGFOLDER", "from images in the folder selected below:")." (".Advertisement::recommended_image_size_statement().')', 'Folder' ));
 			$fields->addFieldToTab($tabName, $this->MyHeaderField("Edit ".Advertisement::$plural_name));
-			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>Please manage existing '.Advertisement::$plural_name.' on the <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.AdvertisementAdmin::$menu_title.' tab</a>.'));
-
+			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>'._t("AdvertisementDecorator.PLEASEMANAGEEXISTING", "Please manage existing")." ".Advertisement::$plural_name.' '._t("AdvertisementDecorator.ONTHE") "on the").' <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.AdvertisementAdmin::$menu_title.' '._t("AdvertisementDecorator.TAB", "tab").'</a>.'));
 			$fields->addFieldToTab($tabName, $this->MyHeaderField("Delete ".Advertisement::$plural_name));
 			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
 			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
 			$fields->addFieldToTab($tabName, new LiteralField("removealladvertisements",
-				'<p><a href="'.$removeallLink.'" onclick="if(confirm(\'Are you sure you want to remove all '.Advertisement::$plural_name.' from this page?\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;"  id="removealladvertisements">remove all '.Advertisement::$plural_name.' from this page</a>.</p>'
+				'<p><a href="'.$removeallLink.'" onclick="if(confirm(\'Are you sure you want to remove all '.Advertisement::$plural_name.' from this page?\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;"  id="removealladvertisements">remove all '.Advertisement::$plural_name.' from this page (they will not be deleted)</a>.</p>'
 			));
 			$deleteallLink = '/advertisements/deletealladvertisements/'.$this->owner->ID.'/';
 			$fields->addFieldToTab($tabName, new LiteralField("deletealladvertisements",
-				'<p><a href="'.$deleteallLink.'" onclick="if(confirm(\'Are you sure you want to DELETE all '.Advertisement::$plural_name.' from this website?\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;"  id="deletealladvertisements">delete all '.Advertisement::$plural_name.' from this website</a>.</p>'
+				'<p><a href="'.$deleteallLink.'" onclick="if(confirm(\'Are you sure you want to DELETE all '.Advertisement::$plural_name.' from this website?\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;"  id="deletealladvertisements">delete all '.Advertisement::$plural_name.' from this website (not the images associated with them)</a>.</p>'
 			));
-
 		}
 		return $fields;
 	}
