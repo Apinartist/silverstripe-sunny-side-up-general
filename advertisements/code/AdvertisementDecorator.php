@@ -69,26 +69,27 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$tabName = $this->MyTabName();
 			//advertisements shown...
 			$advertisements = DataObject::get("Advertisement");
-			$fields->addFieldToTab($tabName, $this->MyHeaderField(_t("AdvertisementDecorator.ACTUAL", "Actual ").Advertisement::$plural_name._t("AdvertisementDecorator.SHOWN", " Shown")));
+			$txt = sprintf(_t("AdvertisementDecorator.ACTUAL", 'Current %1$s Shown'), Advertisement::$plural_name);
+			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			if($advertisements) {
-				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", _t("AdvertisementDecorator.SELECT", "Select slides to show ..."), $advertisements));
+				$txt = sprintf(_t("AdvertisementDecorator.SELECT", 'Select %1$s to show ... (list below shows all slides available, but on the ticked ones are shown.)'), Advertisement::$plural_name);
+				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", $txt, $advertisements));
 				if(class_exists("DataObjectSorterController")) {
 					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement")));
 				}
 			}
 			else {
-				$txt =
-					'<p>'._t("AdvertisementDecorator.PLEASE", "Please").
-					' <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.
-					_t("AdvertisementDecorator.CREATE", "create").
-					' '.Advertisement::$plural_name.'</a> '.
-					_t("AdvertisementDecorator.ONTHE", "on the").
-					' <i>'.AdvertisementAdmin::$menu_title.'</i>'.
-					_t("AdvertisementDecorator.TABFIRST", " tab first, ")._t("AdvertisementDecorator.ORSEEHOWTOCREATEZ", " or see below on how to create").' '.Advertisement::$plural_name.' '._t("AdvertisementDecorator.FROMAFOLDER", " from a folder.");
+				$txt = sprintf(
+					_t("AdvertisementDecorator.CREATE",'<p>Please <a href="/admin/%1$s/">create %2$s</a> on the <a href="/admin/%1$s/">%3$s tab</a> first, or see below on how to create %2$s from a folder.</p>'),
+					AdvertisementAdmin::$url_segment,
+					Advertisement::$plural_name,
+					AdvertisementAdmin::$menu_title
+				);
 				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", $txt));
 			}
 			if($parent = $this->advertisementParent()) {
-				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", _t("AdvertisementDecorator.ORUSE", "OR  ... use ").Advertisement::$plural_name." "._t("AdvertisementDecorator.FROM", "from")." <i>".$parent->Title."</i>."));
+				$txt = sprintf(_t("AdvertisementDecorator.ORUSE", 'OR  ... use %1$s from  <i>%2$s</i>.', Advertisement::$plural_name, $parent->Title));
+				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", $txt));
 			}
 			if($styles = DataObject::get("AdvertisementStyle")) {
 				$fields->addFieldToTab($tabName, $this->MyHeaderField("Style"));
@@ -96,20 +97,43 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				$fields->addFieldToTab($tabName, new DropdownField("AdvertisementStyleID", _t("AdvertisementDecorator.STYLECREATED", "Select style (styles are created by your developer)"), $list));
 			}
 			//use parents
-			$fields->addFieldToTab($tabName, $this->MyHeaderField(_t("AdvertisementDecorator.CREATENEW", "Create New")." ".Advertisement::$plural_name));
-			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', _t("AdvertisementDecorator.CREATENEW", "Create New")." ".Advertisement::$plural_name." "._t("AdvertisementDecorator.USINGFOLDER", "from images in the folder selected below:")." (".Advertisement::recommended_image_size_statement().')', 'Folder' ));
-			$fields->addFieldToTab($tabName, $this->MyHeaderField("Edit ".Advertisement::$plural_name));
-			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", '<p>'._t("AdvertisementDecorator.PLEASEMANAGEEXISTING", "Please manage existing")." ".Advertisement::$plural_name.' '._t("AdvertisementDecorator.ONTHE") "on the").' <a href="/admin/'.AdvertisementAdmin::$url_segment.'/">'.AdvertisementAdmin::$menu_title.' '._t("AdvertisementDecorator.TAB", "tab").'</a>.'));
-			$fields->addFieldToTab($tabName, $this->MyHeaderField("Delete ".Advertisement::$plural_name));
+			$txt = sprintf(_t("AdvertisementDecorator.CREATE", 'Create new %1$s'), Advertisement::$plural_name);
+			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
+			$txt = sprintf(
+				_t(
+					"AdvertisementDecorator.CREATENEWFROMFOLDER",
+					'Create New %1$s from images in the folder selected below - each image in the folder will be used to create a %3$s. %2$s'
+				),
+				Advertisement::$plural_name,
+				Advertisement::recommended_image_size_statement(),
+				Advertisement::$singular_name
+			);
+			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', $txt, 'Folder'));
+			$txt = sprintf(_t("AdvertisementDecorator.EDIT", 'Edit %1$s'), Advertisement::$plural_name);
+			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
+			$txt = sprintf(
+				_t("AdvertisementDecorator.PLEASEMANAGEEXISTING",'<p>Please manage existing %1$s on the <a href="/admin/%2$s/">%3$s tab</a>.</p>.'),
+				Advertisement::$plural_name,
+				AdvertisementAdmin::$url_segment,
+				AdvertisementAdmin::$menu_title
+			);
+			$fields->addFieldToTab($tabName, new LiteralField("ManageAdvertisements", $txt));
+			$txt = sprintf(_t("AdvertisementDecorator.DELETE", 'Delete %1$s'), Advertisement::$plural_name);
+			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			$page = DataObject::get_by_id("SiteTree", $this->owner->ID);
+
+			$txtRemove = sprintf(_t("AdvertisementDecorator.REMOVE", 'Remove all %1$s from this page (%1$s will not be deleted)'), Advertisement::$plural_name);
+			$txtConfirmRemove = sprintf(_t("AdvertisementDecorator.CONFIRMREMOVE", 'Are you sure you want to remove all %1$s from this page?'), Advertisement::$plural_name);
 			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
-			$fields->addFieldToTab($tabName, new LiteralField("removealladvertisements",
-				'<p><a href="'.$removeallLink.'" onclick="if(confirm(\'Are you sure you want to remove all '.Advertisement::$plural_name.' from this page?\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;"  id="removealladvertisements">remove all '.Advertisement::$plural_name.' from this page (they will not be deleted)</a>.</p>'
-			));
+			$jquery = 'if(confirm(\''.$txtConfirmRemove.'\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;';
+			$fields->addFieldToTab($tabName, new LiteralField("removealladvertisements", '<p><a href="'.$removeallLink.'" onclick="'.$jquery.'"  id="removealladvertisements">'.$txtRemove.'</a></p>'));
+
+			$txtDelete = sprintf(_t("AdvertisementDecorator.DELETE", 'Delete all %1$s from from this website (but not the images associated with them)'), Advertisement::$plural_name);
+			$txtConfirmDelete = sprintf(_t("AdvertisementDecorator.CONFIRMDELETE", 'Are you sure you want to delete all %1$s - there is no UNDO?'), Advertisement::$plural_name);
 			$deleteallLink = '/advertisements/deletealladvertisements/'.$this->owner->ID.'/';
-			$fields->addFieldToTab($tabName, new LiteralField("deletealladvertisements",
-				'<p><a href="'.$deleteallLink.'" onclick="if(confirm(\'Are you sure you want to DELETE all '.Advertisement::$plural_name.' from this website?\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;"  id="deletealladvertisements">delete all '.Advertisement::$plural_name.' from this website (not the images associated with them)</a>.</p>'
-			));
+			$jquery = 'if(confirm(\''.$txtConfirmDelete.'\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;';
+			$fields->addFieldToTab($tabName, new LiteralField("deletealladvertisements", '<p><a href="'.$deleteallLink.'" onclick="'.$jquery.'"  id="deletealladvertisements">'.$txtDelete.'</a></p>'));
+
 		}
 		return $fields;
 	}
@@ -120,10 +144,10 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		return "Root.Content.".$code;
 	}
 
-	protected function MyHeaderField($name) {
-		$code = preg_replace("/[^a-zA-Z0-9\s]/", "", $name);
+	protected function MyHeaderField($title) {
+		$code = preg_replace("/[^a-zA-Z0-9\s]/", "", $title);
 		$code = str_replace(" ", "", $code);
-		return new LiteralField($code, "<h4 style='margin-top: 20px'>$name</h4>");
+		return new LiteralField($code, "<h4 style='margin-top: 20px'>$title</h4>");
 	}
 
 	function AdvertisementSet($style = null) {
