@@ -42,7 +42,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 	protected static $use_custom_javascript = false;
-		static function set_use_custom_javascript($v){self::$use_custom_javascript = $v;}
+		static function set_use_custom_javascript($b){self::$use_custom_javascript = $b;}
 
 	protected static $page_classes_without_advertisements = array();
 		static function get_page_classes_without_advertisements(){return self::$page_classes_without_advertisements;}
