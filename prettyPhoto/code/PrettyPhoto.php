@@ -20,6 +20,9 @@ class PrettyPhoto extends Object {
 		else {
 			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript('prettyphoto/javascript/jquery.prettyPhoto.js');
+			// START DIRTY HACK!
+			Requirements::javascript('prettyPhoto/javascript/jquery.prettyPhoto.js');
+			// END DIRTY HACK
 			Requirements::css('prettyphoto/css/prettyPhoto.css');
 			$config = '';
 			if(self::$theme) {
