@@ -29,7 +29,7 @@ class GoogleMap extends ViewableData {
 		static function setSideBarDivId($v){self::$SideBarDivId = $v; }
 		public function getSideBarDivId() {return self::$SideBarDivId;}
 	protected static $DropDownDivId	="";
-		static function setDropDownDivId	($v) {self::$DropDownDivId = $v; }
+		static function setDropDownDivId($v) {self::$DropDownDivId = $v; }
 		public function getDropDownDivId() {return self::$DropDownDivId;}
 	protected static $LayerListDivId = "";
 		static function setLayerListDivId($v) {self::$LayerListDivId = $v; }
