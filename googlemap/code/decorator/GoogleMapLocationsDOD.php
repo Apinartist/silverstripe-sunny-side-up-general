@@ -59,7 +59,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 					'GeoPoints',
 					'GoogleMapLocationsObject', //Classname
 					$complexTableFields,
-					$popUpFields,
+					"getCMSFields_forPopup",
 
 					//'getCMSFields_forPopup',
 					"ParentID = ".$this->owner->ID

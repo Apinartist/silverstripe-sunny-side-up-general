@@ -77,19 +77,17 @@ class GoogleMapLocationsObject extends DataObject {
 		return DataObject::get_one("GoogleMapLocationsObject", "Longitude = '".$addressArray[0]."' AND Latitude = '".$addressArray[1]."'");
 	}
 
-	function  getCMSFields_forPopup($parentPageID) {
-			$addTitleAndContent = true;
-			if(!$parentPageID) {
-				$parentPageID = $this->ParentID;
-			}
-			if($parentPageID) {
-				$parent = DataObject::get_by_id("SiteTree", $parentPageID);
-				if($parent) {
-					if($parent->hasMethod("CustomAjaxInfoWindow")) {
-						$addTitleAndContent = false;
-					}
+	function  getCMSFields_forPopup() {
+		$addTitleAndContent = true;
+		$parentPageID = $this->ParentID;
+		if($parentPageID) {
+			$parent = DataObject::get_by_id("SiteTree", $parentPageID);
+			if($parent) {
+				if($parent->hasMethod("CustomAjaxInfoWindow")) {
+					$addTitleAndContent = false;
 				}
 			}
+		}
 		$fieldset = new FieldSet(
 			new TextField('Address', 'Enter Full Address (e.g. 123 Main Street, Newtown, Wellington, New Zealand ) - all other fields will be auto-completed (looked up at Google Maps)'),
 			new HiddenField('ParentID', 'ParentID', $parentPageID)
