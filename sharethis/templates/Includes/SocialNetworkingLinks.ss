@@ -2,7 +2,7 @@
 <div id="SocialNetworkingLinksHolder" class="socialNetworkingHolder">
 	<div id="SocialNetworkingLinksHeader" class="socialNetworkingHeader typography"><h5>follow</h5></div>
 	<ul id="SocialNetworkingLinksUL" class="socialNetworkingList">
-		<% control SocialNetworkingLinksDataObjects %><li><a href="$Link">$Icon.SetHeight(32)<% if ShowTitle %> $Title<% end_if %></a></li><% end_control %>
+		<% control SocialNetworkingLinksDataObjects %><li class="$FirstLast $Code"><a href="$Link">$Icon.SetHeight(32)<% if ShowTitle %> $Title<% end_if %></a></li><% end_control %>
 	</ul>
 </div>
 <% end_if %><% end_if %>

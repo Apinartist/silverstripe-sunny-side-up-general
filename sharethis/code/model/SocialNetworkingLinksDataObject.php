@@ -16,6 +16,12 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"Sort" => "Int"
 	);
 
+
+	public static $casting = array(
+		'Code' => 'Varchar(255)'
+	);
+
+
 	public static $has_one = array(
 		'Icon' => 'Image',
 		'InternalLink' => 'SiteTree'
@@ -50,6 +56,10 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $singular_name = "Social networking link";
 
 	public static $plural_name = "Social networking links";
+
+	function Code() {
+		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $this->Title));
+	}
 
 	function Link() {
 		if($this->URL) {
