@@ -35,7 +35,6 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $defaults = array();
 
-	public static $casting = array();
 
 	public static $searchable_fields = array();
 
