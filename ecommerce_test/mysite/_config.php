@@ -1,17 +1,47 @@
 <?php
 
-global $project;
-$project = 'mysite';
-
-global $database;
-$database = 'ecommerce';
+global $project; $project = 'mysite';
+global $database; $database = 'ecommerce';
 require_once('conf/ConfigureFromEnv.php');
+
+//===================---------------- START sapphire MODULE ----------------===================
 MySQLDatabase::set_connection_charset('utf8');
-// This line set's the current theme. More themes can be
-// downloaded from http://www.silverstripe.org/themes/
 SSViewer::set_theme('main');
-// enable nested URLs for this site (e.g. page/sub-page/)
+Geoip::$default_country_code = "NZ";
+GD::set_default_quality(85);
+Email::setAdminEmail('swd@sunnysideup.co.nz');
+Member::set_password_validator( new NZGovtPasswordValidator());
+SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
+Session::set_timeout(1209600);//60 * 60 * 24 * 14
+Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
+Requirements::set_combined_files_folder("_cache");
+//Director::forceWWW();
+FulltextSearchable::enable();
+if(Director::isDev()) {
+	SSViewer::set_source_file_comments(true);
+}
+if(Director::isLive()) {
+	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
+}
+else {
+	BasicAuth::protect_entire_site();
+}
 SiteTree::enable_nested_urls();
+i18n::set_locale('en_NZ');
+//===================---------------- END sapphire MODULE ----------------===================
+
+
+//===================---------------- START cms MODULE ----------------===================
+LeftAndMain::setApplicationName("Sunny Side Up Test Website");
+LeftAndMain::set_loading_image("themes/main/images/logo.gif");
+ModelAdmin::set_page_length(100);
+CMSMenu::remove_menu_item("CommentAdmin");
+CMSMenu::remove_menu_item("ReportAdmin");
+CMSMenu::remove_menu_item("HelpAdmin");
+LeftAndMain::setLogo($location = "", $style = "");
+PageComment::enableModeration();
+//===================---------------- ENBD cms MODULE  ----------------===================
+
 
 
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
@@ -21,7 +51,7 @@ SiteTree::enable_nested_urls();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-//Order::set_modifiers(array("MyModifierOne", "MyModifierTwo");
+Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample"));
 
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
@@ -41,9 +71,8 @@ Geoip::$default_country_code = 'NZ';
 //Currency::setCurrencySymbol("€");
 
 // * * * SHOPPING CART AND ORDER
-//EcomQuantityField::set_hide_plus_and_minus(true);
-Order::set_add_shipping_fields(true);
-//Order::set_table_overview_fields(array('Total' => 'Total','Status.Name'));//
+EcomQuantityField::set_hide_plus_and_minus(false);
+OrderAddress::set_use_separate_shipping_address(true);
 //Order::set_maximum_ignorable_sales_payments_difference(0.001);//sometimes there are small discrepancies in total (for various reasons)- here you can set the max allowed differences
 //Order::set_order_id_start_number(1234567);//sets a start number for order ID, so that they do not start at one.
 
@@ -178,3 +207,10 @@ RepeatOrder::set_payment_methods(array(
 RepeatOrder::set_minimum_days_in_the_future(3);
 //===================---------------- END ecommerce_Repeatorders MODULE ----------------===================
 
+
+//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+//===================---------------- START ecommerce_delivery MODULE ----------------===================
+//NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
+PickUpOrDeliveryModifier::set_form_header("Delivery Option (REQUIRED)");
+StoreAdmin::add_managed_model("PickUpOrDeliveryModifierOptions");
+//===================---------------- END ecommerce_delivery  MODULE ----------------===================
