@@ -38,6 +38,9 @@ class GoogleMapDataResponse extends Controller {
 	function init() {
 		parent::init();
 		$this->owner = DataObject::get_by_id("SiteTree", intval($this->request->param("OwnerID")));
+		if(!$this->owner) {
+			$this->owner = DataObject::get_one("SiteTree", "\"Title\" = '".Convert::raw2sql($this->request->param("Title"))."'");
+		}
 		if(!$this->owner  & !in_array($this->request->param("Action"), self::$actions_without_owner)) {
 			user_error("no owner has been identified for GoogleMapDataResponse", E_USER_WARNING);
 		}
