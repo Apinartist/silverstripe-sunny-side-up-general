@@ -44,7 +44,7 @@ class GoogleMapDataResponse extends Controller {
 		}
 		//END HACK
 		if(!$this->owner  & !in_array($this->request->param("Action"), self::$actions_without_owner)) {
-			user_error("no owner has been identified for GoogleMapDataResponse", E_USER_NOTICE);
+			//user_error("no owner has been identified for GoogleMapDataResponse", E_USER_NOTICE);
 			return;
 		}
 		$this->title = urldecode($this->request->param("Title"));
