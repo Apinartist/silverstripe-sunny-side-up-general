@@ -192,7 +192,7 @@ class ShareThis extends DataObjectDecorator {
 	}
 
 	public function ShareAllExpandedList() {
-		Requirements::javascript("sharethis/javascript/ShareAllExpandedList.js");
+		Requirements::javascript(SHARETHIS_DIR."/javascript/ShareAllExpandedList.js");
 		$bookmarks = $this->makeBookmarks($field = "IncludeThisIconInExtendedList", $useAlternativeIcons = false);
 		return $this->makeShareIcons($bookmarks);
 	}
@@ -215,7 +215,7 @@ class ShareThis extends DataObjectDecorator {
 		$doSet = new DataObjectSet();
 		if($this->ThisPageHasShareThis() && $bookmarks){
 			Requirements::themedCSS("SocialNetworking");
-			Requirements::javascript("sharethis/javascript/shareThis.js");
+			Requirements::javascript(SHARETHIS_DIR."/javascript/shareThis.js");
 			if(self::$use_bw_effect) {
 				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
 			}
