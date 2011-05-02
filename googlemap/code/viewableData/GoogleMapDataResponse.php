@@ -42,11 +42,11 @@ class GoogleMapDataResponse extends Controller {
 		if(!$this->owner) {
 			$this->owner = DataObject::get_one("SiteTree", "\"Title\" = '".Convert::raw2sql($this->request->param("Title"))."'");
 		}
-		//END HACK
 		if(!$this->owner  & !in_array($this->request->param("Action"), self::$actions_without_owner)) {
 			//user_error("no owner has been identified for GoogleMapDataResponse", E_USER_NOTICE);
-			return;
+			$this->owner = DataObject::get_one("SiteTree");
 		}
+		//END HACK
 		$this->title = urldecode($this->request->param("Title"));
 		$this->lng = floatval($this->request->param("Longitude"));
 		$this->lat = floatval($this->request->param("Latitude"));
