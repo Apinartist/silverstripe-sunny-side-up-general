@@ -8,8 +8,7 @@
 
 abstract class SocialMediaConnections extends DataObject {
 
-	public static $db = array(
-		"Session" = "Text"
+	static $db = array(
+		'Session' => 'Text'
 	);
-
 }
