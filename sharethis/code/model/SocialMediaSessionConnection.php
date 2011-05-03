@@ -6,7 +6,7 @@
  *
  **/
 
-abstract class SocialMediaConnections extends DataObject {
+class SocialMediaConnections extends DataObject {
 
 	static $db = array(
 		'Session' => 'Text'
