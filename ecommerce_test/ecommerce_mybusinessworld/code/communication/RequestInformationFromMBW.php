@@ -70,9 +70,6 @@ class RequestInformationFromMBW extends Object {
 		$success = false;
 		$resultObject = null;
 		$client = null;
-		if(isset($_GET["debug"])) {
-			$this->debug = true;
-		}
 		try {
 			$client = new SoapClient(self::$url, self::$connection_credentials);
 		}
@@ -98,7 +95,9 @@ class RequestInformationFromMBW extends Object {
 			if($this->debug) {
 				echo '<hr /><hr /><hr /><p style="color: green">Request : </p><xmp>'. $this->replacer($client->__getLastRequest()).'</xmp>';
 				echo '<h3>Results</h3>';
+				echo "<xmp>";
 				print_r($resultObject);
+				echo "</xmp>";
 			}
 			if($success) {
 				if($returnRaw) {
@@ -136,6 +135,7 @@ class RequestInformationFromMBW extends Object {
 		$s = str_replace("&lt;", "<", $s);
 		$s = str_replace("&gt;", ">", $s);
 		$s = str_replace("&#13;", "", $s);
+		$s = str_replace("<", "\r\n<", $s);
 		return $s;
 	}
 
