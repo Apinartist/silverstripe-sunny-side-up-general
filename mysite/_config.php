@@ -3,8 +3,6 @@
 
 /* startup */
 global $project; $project = 'mysite';
-
-//NOTE THIS SHOULD ACTUALLY NOT CONTAIN THE STAGING_ PART - THIS NEEDS UPDATING! *********
 global $database; $database = "silverstripe_webdevelopment_com";
 require_once("conf/ConfigureFromEnv.php");
 
@@ -14,7 +12,7 @@ Object::add_extension("SiteConfig", "SiteConfigExtras");
 //===================---------------- END mysite MODULE ----------------===================
 
 //===================---------------- START sapphire MODULE ----------------===================
-i18n::set_locale('en_NZ');
+MySQLDatabase::set_connection_charset('utf8');
 SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
@@ -36,6 +34,8 @@ else {
 	BasicAuth::protect_entire_site();
 }
 SiteTree::enable_nested_urls();
+i18n::set_locale('en_NZ');
+i18n::set_date_format("dd-MM-YYYY");
 //===================---------------- END sapphire MODULE ----------------===================
 
 
