@@ -3,7 +3,7 @@
 .clear {clear: both;}
 
 body {
-	font-family: Trebuchet MS,Tahoma,Arial,Verdana,helvetica,Sans-Serif;
+	font-family: 'Quattrocento Sans', sans-serif;
 	height: 100%;
 	background-image: url(../images/logo.gif);  background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 }
@@ -16,5 +16,4 @@ body {
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
 
-#Sidebar h3 {text-align: left;}
 

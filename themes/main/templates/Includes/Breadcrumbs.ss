@@ -1,1 +1,1 @@
-<div id="Breadcrumbs"><a href="/">Home</a>  &raquo; $Breadcrumbs</div>
+<div id="Breadcrumbs"><% if IsNotHome %><a href="/">Home</a> &raquo; <% end_if %> $Breadcrumbs</div>

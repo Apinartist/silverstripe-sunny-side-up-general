@@ -1,4 +1,4 @@
 <div id="MainContentSection">
-	<h1 id="mainPageTitle">$Title</h1>
+	<h1 id="PageTitle">$Title</h1>
 	$Content
 </div>
