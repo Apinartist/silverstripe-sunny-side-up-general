@@ -112,6 +112,7 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new TextField($name = "TextField1", $title = "Text Field Example 1"),
 				new TextField($name = "TextField2", $title = "Text Field Example 2"),
 				new TextField($name = "TextField3", $title = "Text Field Example 3"),
+				new TextField($name = "TextField4", $title = ""),
 				new HeaderField($name = "HeaderField2a", $title = "Error Messages", 2),
 				new LiteralField($name = "ErrorExplanations", '<p>Below are some error messages, some of them only show up after you have placed your cursor on the field and not completed it (i.e. a reminder to complete the field)</p>'),
 				$errorField0,
