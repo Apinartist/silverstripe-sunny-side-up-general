@@ -32,4 +32,9 @@ class Page_Controller extends ContentController {
 		parent::init();
 		$this->addBasicMetatagRequirements();
 	}
+
+	function IsNotHome() {
+		return $this->URLSegment != "home";
+	}
+
 }
