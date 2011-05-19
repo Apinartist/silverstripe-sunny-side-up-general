@@ -84,7 +84,7 @@ class TemplateOverviewBug extends DataObject {
 		}
 		else {
 			if($page = $this->Page()) {
-				$fields->addFieldToTab("Root.RelatesTo", new LiteralField("Link", "<p><a href=\"".$page->Link()."\">Go to ".$page->Title."</p>"));
+				$fields->addFieldToTab("Root.RelatesTo", new LiteralField("Link", "<p>Go to <a href=\"".$page->Link()."\">".$page->Title."</a>  page.</p>"));
 			}
 		}
 		$fields->addFieldToTab("Root.RelatesTo", new TreeDropdownField("PageID", "Relevant page (if any)", "SiteTree"));
