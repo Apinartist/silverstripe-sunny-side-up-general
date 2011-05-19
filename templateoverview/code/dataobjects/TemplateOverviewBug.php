@@ -75,6 +75,8 @@ class TemplateOverviewBug extends DataObject {
 		$fields->removeByName("Fixed");
 		$fields->removeByName("FixedBy");
 		$fields->removeByName("OutcomeNote");
+		$fields->removeByName("NeedsMoreInformation");
+		$fields->removeByName("QuestionsFromDeveloper");
 		$fields->addFieldToTab("Root.RelatesTo", new TreeDropdownField("PageID", "Relevant page (if any)", "SiteTree"));
 		$templates = DataObject::get("TemplateOverviewDescription");
 		if($templates) {
@@ -89,9 +91,13 @@ class TemplateOverviewBug extends DataObject {
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot5", "Fifth screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot6", "Sixth screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot7", "Seventh screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
-		$fields->addFieldToTab("Root.Outcome", new CheckboxField("Fixed", "Fixed"));
-		$fields->addFieldToTab("Root.Outcome", new TextField("FixedBy", "Fixed by ..."));
-		$fields->addFieldToTab("Root.Outcome", new TextareaField("OutcomeNote", "Notes about fix..."));
+		$fields->addFieldToTab("Root.Outcome", new CheckboxField("NeedsMoreInformation", "Needs more information"));
+		$fields->addFieldToTab("Root.Outcome", new TextareaField("QuestionsFromDeveloper", "Questions from developer"));
+		if(!$this->NeedsMoreInformation) {
+			$fields->addFieldToTab("Root.Outcome", new CheckboxField("Fixed", "Fixed"));
+			$fields->addFieldToTab("Root.Outcome", new TextField("FixedBy", "(To be) Fixed by ..."));
+			$fields->addFieldToTab("Root.Outcome", new TextareaField("OutcomeNote", "Notes about fix..."));
+		}
 		return $fields;
 	}
 
