@@ -10,17 +10,17 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START templateoverview MODULE ----------------===================
-/*
 //MUST SET
-TemplateOverviewBug::set_error_email("a@b.com");
-if(Director::isDev()) {
-  Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
+//TemplateOverviewBug::set_error_email("a@b.com");
+//if(Director::isDev()) {
+  //Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
+//}
 //MAY SET
-  Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');
-  Director::addRules(7, array('error/report' => 'ErrorNotifierController'));
- }
-TemplateOverviewPage::set_auto_include(true);
-LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
-*/
+//if(Director::isDev()) {
+  //Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');
+  //Director::addRules(7, array('error/report' => 'ErrorNotifierController'));
+//}
+//TemplateOverviewPage::set_auto_include(true);
+//LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
 //===================---------------- END templateoverview MODULE ----------------===================
 
