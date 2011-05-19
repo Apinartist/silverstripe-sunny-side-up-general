@@ -79,7 +79,14 @@ class TemplateOverviewBug extends DataObject {
 		$fields->removeByName("NeedsMoreInformation");
 		$fields->removeByName("QuestionsFromDeveloper");
 		$fields->removeByName("URL");
-		$fields->addFieldToTab("Root.RelatesTo", new TextField("URL", "URL - e.g. http://www.mysite.com/mypage/with/abug/"));
+		if(!$this->PageID) {
+			$fields->addFieldToTab("Root.RelatesTo", new TextField("URL", "URL - e.g. http://www.mysite.com/mypage/with/abug/"));
+		}
+		else {
+			if($page = $this->Page()) {
+				$fields->addFieldToTab("Root.RelatesTo", new LiteralField("Link", "<p><a href=\"".$page->Link()."\">Go to ".$page->Title."</p>"));
+			}
+		}
 		$fields->addFieldToTab("Root.RelatesTo", new TreeDropdownField("PageID", "Relevant page (if any)", "SiteTree"));
 		$templates = DataObject::get("TemplateOverviewDescription");
 		if($templates) {
