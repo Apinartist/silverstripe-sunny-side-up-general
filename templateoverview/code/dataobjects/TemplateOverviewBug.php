@@ -12,6 +12,7 @@ class TemplateOverviewBug extends DataObject {
 		"WhatActuallyHappened" => "Text",
 		"OtherInformation" => "Text",
 		"QuestionsFromDeveloper" => "Text",
+		"URL" => "Varchar(255)",
 		"OutcomeNote" => "Text",
 		"FixedBy" => "Varchar",
 		"Fixed" => "Boolean",
@@ -77,6 +78,8 @@ class TemplateOverviewBug extends DataObject {
 		$fields->removeByName("OutcomeNote");
 		$fields->removeByName("NeedsMoreInformation");
 		$fields->removeByName("QuestionsFromDeveloper");
+		$fields->removeByName("URL");
+		$fields->addFieldToTab("Root.RelatesTo", new TextField("URL", "URL - e.g. http://www.mysite.com/mypage/with/abug/"));
 		$fields->addFieldToTab("Root.RelatesTo", new TreeDropdownField("PageID", "Relevant page (if any)", "SiteTree"));
 		$templates = DataObject::get("TemplateOverviewDescription");
 		if($templates) {
