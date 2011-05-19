@@ -36,6 +36,7 @@ class TemplateOverviewBug extends DataObject {
 		"Title" => "PartialMatchFilter",
 		"NeedsMoreInformation",
 		"Fixed"
+		"Template"
 	);
 	public static $field_labels = array(
 		"Title" => "Short Description (e.g. newsletter page does not open)",
