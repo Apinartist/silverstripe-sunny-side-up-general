@@ -35,7 +35,7 @@ class TemplateOverviewBug extends DataObject {
 	public static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
 		"NeedsMoreInformation",
-		"Fixed"
+		"Fixed",
 		"Template"
 	);
 	public static $field_labels = array(
