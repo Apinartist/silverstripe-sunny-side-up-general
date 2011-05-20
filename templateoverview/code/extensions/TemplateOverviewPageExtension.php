@@ -15,7 +15,7 @@ class TemplateOverviewPageExtension extends Extension {
 		return DataObject::get_one("TemplateOverviewPage");
 	}
 	public function BugManagementLink() {
-		return return TemplateOverviewDescriptionModelAdmin::get_full_url_segment();
+		return TemplateOverviewDescriptionModelAdmin::get_full_url_segment();
 	}
 
 	public function IncludeTemplateOverviewDevelopmentFooter() {
