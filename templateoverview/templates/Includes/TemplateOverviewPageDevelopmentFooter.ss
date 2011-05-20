@@ -16,3 +16,11 @@
 
 <% end_if %><% end_if %>
 
+<% if TemplateOverviewBugs %>
+<h3><a href="$BugManagementLink">Bugs</a></h3>
+<ul>
+<% control TemplateOverviewBugs %>
+	<li>$Title</li>
+<% end_control %>
+</ul>
+<% end_if %>

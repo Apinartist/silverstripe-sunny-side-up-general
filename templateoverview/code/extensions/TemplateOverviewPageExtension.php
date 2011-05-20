@@ -14,6 +14,9 @@ class TemplateOverviewPageExtension extends Extension {
 	public function TemplateOverviewPage() {
 		return DataObject::get_one("TemplateOverviewPage");
 	}
+	public function BugManagementLink() {
+		return DataObject::get_one("/admin/templates");
+	}
 
 	public function IncludeTemplateOverviewDevelopmentFooter() {
 		if(Director::isDev()) {
@@ -66,5 +69,15 @@ class TemplateOverviewPageExtension extends Extension {
 		return $this->templateList;
 	}
 
+	function TemplateOverviewBugs() {
+		$templateID = 0;
+		if($templateOverviewDescription = DataObject::get_one("TemplateOverviewDescription", "\"ClassNameLink\" = '".$this->ClassName."'")) {
+			$templateID = $templateOverviewDescription->ID;
+		}
+		return DataObject::get(
+			"TemplateOverviewBug",
+			"\"Fixed\" <> 1 AND (((\"TemplateID\" = 0 AND \"PageID\" = 0 ) OR \"TemplateID\" = ".$templateID.") OR ((\"PageID\" = 0 AND \"TemplateID\")  OR \"PageID\" = ".$this->owner->ID.")  )"
+		);
+	}
 
 }
