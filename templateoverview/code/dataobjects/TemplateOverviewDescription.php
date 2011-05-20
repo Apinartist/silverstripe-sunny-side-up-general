@@ -3,7 +3,7 @@
 /**
  *@author nicolaas[at]sunnysideup.co.nz
  *@description: more details per template. Records are auto-added
- *@link: http://localhost/kitesurf.co.nz/trunk/admin/templates/TemplateOverviewDescription/13/edit
+ *@link: http://localhost/www.mysite.co.nz/trunk/admin/templates/TemplateOverviewDescription/13/edit
  **/
 
 
