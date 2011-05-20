@@ -1,5 +1,6 @@
 <% if IncludeTemplateOverviewDevelopmentFooter %><% if ID %>
 <div id="TemplateOverviewPageDevelopmentFooter">
+	<h3>Templates</h3>
 	<p>
 		This page uses the <a href="{$TemplateOverviewPage.Link}showmore/$ID" class="IncludeTemplateOverviewDevelopmentFooterClickHere">$ClassName</a> template.
 		See <a href="{$TemplateOverviewPage.Link}#sectionFor-$ClassName">complete list</a>.
