@@ -126,5 +126,8 @@ class TemplateOverviewBug extends DataObject {
 		return $fields;
 	}
 
+	function Link() {
+		return TemplateOverviewDescriptionModelAdmin::get_full_url_segment()."TemplateOverviewBug/".$this->ID."/edit/";
+	}
 
 }
