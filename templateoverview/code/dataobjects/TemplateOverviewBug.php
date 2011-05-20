@@ -59,10 +59,10 @@ class TemplateOverviewBug extends DataObject {
 	function onAfterWrite() {
 		if(!$this->Fixed) {
 			if($this->NeedsMoreInformation) {
-				$email = new Email(self::get_error_email(), Email::$admin_email_address, $subject = "bug needs more information on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL()."/admin/templates/");
+				$email = new Email(self::get_error_email(), Email::$admin_email_address, $subject = "bug needs more information on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
 			}
 			else {
-				$email = new Email(Email::$admin_email_address, self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL()."/admin/templates/");
+				$email = new Email(Email::$admin_email_address, self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
 			}
 			$email->send();
 		}

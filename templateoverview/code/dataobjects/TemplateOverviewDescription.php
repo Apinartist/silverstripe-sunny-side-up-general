@@ -77,7 +77,7 @@ class TemplateOverviewDescription extends DataObject {
 	}
 
 	function ModelAdminLink() {
-		return "admin/templates/".$this->ClassName."/".$this->ID."/edit/";
+		return TemplateOverviewDescriptionModelAdmin::get_full_url_segment().$this->ClassName."/".$this->ID."/edit/";
 	}
 
 	function onBeforeWrite() {
