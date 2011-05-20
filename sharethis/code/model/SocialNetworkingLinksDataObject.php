@@ -21,7 +21,6 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		'Code' => 'Varchar(255)'
 	);
 
-
 	public static $has_one = array(
 		'Icon' => 'Image',
 		'InternalLink' => 'SiteTree'
@@ -42,7 +41,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"URL" => "Link (e.g. http://twitter.com/myname/)- will override internal link",
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
-		"Icon" => "Icon",
+		"IconID" => "Icon (preferably something like 32pixels by 32pixels)"
 		"InternalLink" => "Internal Link"
 	);
 
