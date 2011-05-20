@@ -71,7 +71,7 @@ class TemplateOverviewPageExtension extends Extension {
 
 	function TemplateOverviewBugs() {
 		$templateID = 0;
-		if($templateOverviewDescription = DataObject::get_one("TemplateOverviewDescription", "\"ClassNameLink\" = '".$this->ClassName."'")) {
+		if($templateOverviewDescription = DataObject::get_one("TemplateOverviewDescription", "\"ClassNameLink\" = '".$this->owner->ClassName."'")) {
 			$templateID = $templateOverviewDescription->ID;
 		}
 		return DataObject::get(
