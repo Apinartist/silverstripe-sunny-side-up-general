@@ -7,7 +7,7 @@
 	</p>
 	<ul id="TemplateOverviewPageDevelopmentFooterLoadHere"><li class="hiddenListItem">&nbsp;</li></ul>
 	<ul id="TemplateOverviewPrevNextList">
-		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" <% if LinkingMode = current %>style="font-size: 1.5em;"<% end_if %>>$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
+		<li>Choose template: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" class="$LinkingMode">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
 	</ul>
 	<% if TemplateOverviewBugs %>
 	<h3>Known Bugs</h3>
