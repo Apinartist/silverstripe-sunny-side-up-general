@@ -35,7 +35,7 @@ class TemplateOverviewBug extends DataObject {
 	public static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
 		"NeedsMoreInformation",
-		"Fixed",
+		"Fixed"
 		"TemplateID"
 	);
 	public static $field_labels = array(
@@ -57,10 +57,23 @@ class TemplateOverviewBug extends DataObject {
 	}
 
 	function onAfterWrite() {
-		$email = new Email($from = Email::$admin_email_address, $to = self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "new bug on ".Director::absoluteBaseURL());
+		if(!$this->Fixed) {
+			if($this->NeedsMoreInformation) {
+				$email = new Email($to = self::get_error_email(), $from = Email::$admin_email_address, $subject = "bug needs more information on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL()."/admin/templates/");
+			}
+			else {
+				$email = new Email($from = Email::$admin_email_address, $to = self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL()."/admin/templates/"));
+			}
+		}
 		$email->send();
 	}
 
+	function validate() {
+		if(!$this->Title) {
+			return new ValidationResult(false, _t("TemplateOverviewBug.NEEDSTITLE", "Bug report needs a title."));
+		}
+		return new ValidationResult();
+	}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -102,7 +115,7 @@ class TemplateOverviewBug extends DataObject {
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot5", "Fifth screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot6", "Sixth screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
 		$fields->addFieldToTab("Root.ScreenShots", new ImageField("Screenshot7", "Seventh screenshot (optional)", $value = null, $form = null, $rightTitle = null, $folderName = "Bugs"));
-		$fields->addFieldToTab("Root.Outcome", new CheckboxField("NeedsMoreInformation", "Needs more information"));
+		$fields->addFieldToTab("Root.Outcome", new CheckboxField("NeedsMoreInformation", "Developer needs more information from website owner"));
 		$fields->addFieldToTab("Root.Outcome", new TextareaField("QuestionsFromDeveloper", "Questions from developer"));
 		if(!$this->NeedsMoreInformation) {
 			$fields->addFieldToTab("Root.Outcome", new CheckboxField("Fixed", "Fixed"));
