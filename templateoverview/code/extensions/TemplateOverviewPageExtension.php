@@ -76,7 +76,8 @@ class TemplateOverviewPageExtension extends Extension {
 		}
 		return DataObject::get(
 			"TemplateOverviewBug",
-			"\"Fixed\" <> 1 AND (((\"TemplateID\" = 0 AND \"PageID\" = 0 ) OR \"TemplateID\" = ".$templateID.") OR ((\"PageID\" = 0 AND \"TemplateID\")  OR \"PageID\" = ".$this->owner->ID.")  )"
+			"\"Fixed\" <> 1 AND (((\"TemplateID\" = 0 AND \"PageID\" = 0 ) OR \"TemplateID\" = ".$templateID.") OR ((\"PageID\" = 0 AND \"TemplateID\")  OR \"PageID\" = ".$this->owner->ID.")  )",
+			"PageID DESC, TemplateID DESC"
 		);
 	}
 

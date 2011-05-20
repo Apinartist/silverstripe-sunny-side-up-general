@@ -10,10 +10,10 @@
 		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" <% if LinkingMode = current %>style="font-size: 1.5em;"<% end_if %>>$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
 	</ul>
 	<% if TemplateOverviewBugs %>
-	<h3><a href="$BugManagementLink">Known Bugs</a></h3>
-	<ul>
+	<h3>Known Bugs</h3>
+	<ul id="TemplateOverviewBugs">
 	<% control TemplateOverviewBugs %>
-		<li>$Title</li>
+		<li><a href="$Link">$Title</a></li>
 	<% end_control %>
 	</ul>
 	<% end_if %>
