@@ -9,11 +9,7 @@
 	<ul id="TemplateOverviewPrevNextList">
 		<li>CHOOSE TEMPLATE: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" <% if LinkingMode = current %>style="font-size: 1.5em;"<% end_if %>>$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
 	</ul>
-	<p><a href="/admin/templates/">Record a bug</a></p>
 </div>
-
-
-
 <% end_if %><% end_if %>
 
 <% if TemplateOverviewBugs %>
@@ -24,3 +20,4 @@
 <% end_control %>
 </ul>
 <% end_if %>
+<p><a href="$BugManagementLink">Record a bug</a></p>
