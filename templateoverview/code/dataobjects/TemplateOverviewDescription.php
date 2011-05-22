@@ -80,20 +80,6 @@ class TemplateOverviewDescription extends DataObject {
 		return TemplateOverviewDescriptionModelAdmin::get_full_url_segment().$this->ClassName."/".$this->ID."/edit/";
 	}
 
-	function onBeforeWrite() {
-		if(!$this->ParentID) {
-			if($page = DataObject::get_one("TemplateOverviewPage")) {
-				$this->ParentID = $page->ID;
-			}
-		}
-		if($this->ID) {
-			if(DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$this->ClassNameLink."' AND ID <> ".$this->ID)) {
-				user_error("you can not create two TemplateOverviewDescription records with the same class name: ".$this->ClassName, E_USER_WARNING);
-			}
-		}
-		parent::onBeforeWrite();
-	}
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$page = DataObject::get_one("TemplateOverviewPage");
@@ -133,5 +119,24 @@ class TemplateOverviewDescription extends DataObject {
 			}
 		}
 	}
+
+	protected function validate() {
+		if($this->ID) {
+			if(DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$this->ClassNameLink."' AND ID <> ".$this->ID)) {
+				return new ValidationResult(false, _t("TemplateOverviewDescription.ALREADYEXISTS", "This template already exists"));
+			}
+		}
+		return new ValidationResult();
+	}
+
+	function onBeforeWrite() {
+		if(!$this->ParentID) {
+			if($page = DataObject::get_one("TemplateOverviewPage")) {
+				$this->ParentID = $page->ID;
+			}
+		}
+		parent::onBeforeWrite();
+	}
+
 
 }
