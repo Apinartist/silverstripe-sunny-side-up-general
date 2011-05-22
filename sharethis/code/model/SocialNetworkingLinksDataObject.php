@@ -16,14 +16,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"Sort" => "Int"
 	);
 
-
-	public static $casting = array(
-		'Code' => 'Varchar(255)'
-	);
-
 	public static $has_one = array(
-		'Icon' => 'Image',
-		'InternalLink' => 'SiteTree'
+		'Icon' => 'Image'
 	);
 
 	public static $has_many = array();
@@ -34,42 +28,28 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $defaults = array();
 
+	public static $casting = array();
 
 	public static $searchable_fields = array();
 
 	public static $field_labels = array(
-		"URL" => "Link (e.g. http://twitter.com/myname/)- will override internal link",
+		"URL" => "location (e.g. http://twitter.com/myname/)",
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
 		"IconID" => "Icon (preferably something like 32pixels by 32pixels)",
-		"InternalLink" => "Internal Link"
 	);
 
 	public static $summary_fields = array(
+		"URL" => "URL",
 		"Title" => "Title"
 	);
 
-	public static $default_sort = "Sort ASC, Title ASC";
+	public static $default_sort = "\"Sort\" ASC, \"Title\" ASC";
 
-	public static $singular_name = "Social networking link";
+	public static $singular_name = "Social networking page";
 
-	public static $plural_name = "Social networking links";
+	public static $plural_name = "Social networking pages";
 
-	function Code() {
-		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $this->Title));
-	}
-
-	function Link() {
-		if($this->URL) {
-			return $this->URL;
-		}
-		elseif($this->InternalLinkID) {
-			$page = DataObject::get_by_id("SiteTree", $this->InternalLinkID);
-			if($page) {
-				return $page->Link();
-			}
-		}
-	}
 
 
 }
