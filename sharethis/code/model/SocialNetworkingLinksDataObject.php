@@ -41,7 +41,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		"URL" => "Link (e.g. http://twitter.com/myname/)- will override internal link",
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
-		"IconID" => "Icon (preferably something like 32pixels by 32pixels)"
+		"IconID" => "Icon (preferably something like 32pixels by 32pixels)",
 		"InternalLink" => "Internal Link"
 	);
 
