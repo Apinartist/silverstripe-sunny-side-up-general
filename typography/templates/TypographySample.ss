@@ -144,11 +144,12 @@
 	Proin ultrices nulla id enim.
 	Nullam mi.
 </p>
-<p>
-	<span style="width: 370px; display: block;" class="captionImage left">
+<div>
+	<div style="width: 370px; display: block;" class="captionImage left">
 		<img  title="title" alt="alt" src="typography/images/kapiti.jpg" class="left" />
 		<p class="caption">caption has been added here...</p>
-	</span>
+	</div>
+	<p>
 	Mauris elementum mi vitae lorem aliquam in tempus justo sollicitudin. Quisque non lectus nunc, non congue arcu. Donec ac lectus eu urna elementum dapibus. Sed eu mauris ac enim ornare vulputate condimentum ut metus. Nam pellentesque dictum sem, ac consectetur dolor consequat sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum consequat, risus sit amet faucibus vestibulum, tortor ligula volutpat metus, a tincidunt massa metus et dolor. Donec non odio risus. Curabitur fermentum leo eget nisi suscipit accumsan. Integer feugiat laoreet enim in dapibus. Nullam tempus imperdiet sem a congue. Etiam eu libero eros, eu mattis nisi. Integer eu placerat arcu. Phasellus faucibus, enim a dictum iaculis, dui justo vestibulum mauris, ac vehicula dolor orci sed neque. Nulla tristique lacus eget diam condimentum scelerisque. Duis vel libero sagittis purus pharetra feugiat quis at ligula. Morbi ultrices dolor vitae tortor fermentum sit amet vestibulum tellus porta. Fusce aliquam lacus vitae purus rutrum convallis.
 	In in purus eget mauris fringilla placerat.
 	Proin pellentesque fermentum dui.
@@ -172,7 +173,8 @@
 	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
 	Proin ultrices nulla id enim.
 	Nullam mi.
-</p>
+	</p>
+</div>
 <p>
 	<img src="typography/images/kapiti.jpg" alt="loading image"  class="left" />
 	In sapien lectus, scelerisque eu ultrices venenatis, lacinia nec mauris. Praesent eget felis scelerisque mi feugiat suscipit et eu eros. Vestibulum ac risus sapien, quis faucibus mi. Praesent ac odio dui, nec congue ligula. Mauris vel magna leo. Nullam vitae libero at tellus feugiat tristique. Maecenas convallis rutrum justo, quis pellentesque est condimentum in. Fusce id purus lectus, at condimentum arcu. Aliquam pharetra luctus porttitor. Nunc ipsum magna, sagittis ut porta sit amet, interdum ut nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut volutpat iaculis nulla. Nulla neque neque, accumsan quis pretium eget, vehicula in nisi. Etiam laoreet tristique felis in tristique. Phasellus commodo, lacus ac auctor ultrices, est massa imperdiet massa, a tincidunt odio risus id lectus. Vivamus adipiscing tristique accumsan.
