@@ -146,7 +146,7 @@
 </p>
 <p>
 	<div style="width: 370px;" class="captionImage left">
-		<img  title="title" alt="alt" src="typography/images/kapiti.jpg" class="left">
+		<img  title="title" alt="alt" src="typography/images/kapiti.jpg" class="left" />
 		<p class="caption">caption has been added here...</p>
 	</div>
 	Mauris elementum mi vitae lorem aliquam in tempus justo sollicitudin. Quisque non lectus nunc, non congue arcu. Donec ac lectus eu urna elementum dapibus. Sed eu mauris ac enim ornare vulputate condimentum ut metus. Nam pellentesque dictum sem, ac consectetur dolor consequat sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum consequat, risus sit amet faucibus vestibulum, tortor ligula volutpat metus, a tincidunt massa metus et dolor. Donec non odio risus. Curabitur fermentum leo eget nisi suscipit accumsan. Integer feugiat laoreet enim in dapibus. Nullam tempus imperdiet sem a congue. Etiam eu libero eros, eu mattis nisi. Integer eu placerat arcu. Phasellus faucibus, enim a dictum iaculis, dui justo vestibulum mauris, ac vehicula dolor orci sed neque. Nulla tristique lacus eget diam condimentum scelerisque. Duis vel libero sagittis purus pharetra feugiat quis at ligula. Morbi ultrices dolor vitae tortor fermentum sit amet vestibulum tellus porta. Fusce aliquam lacus vitae purus rutrum convallis.
