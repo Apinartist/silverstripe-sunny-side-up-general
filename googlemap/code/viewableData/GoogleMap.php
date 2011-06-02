@@ -21,6 +21,7 @@ class GoogleMap extends ViewableData {
 		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
 	protected static $number_of_items_before_showing_list = 1;
 		static function set_number_of_items_before_showing_list($v){self::$number_of_items_before_showing_list = $v;}
+		static function get_number_of_items_before_showing_list($v){return self::$number_of_items_before_showing_list;}
 
 	/* DIVS */
 	protected static $TitleDivId = "";
@@ -305,7 +306,8 @@ class GoogleMap extends ViewableData {
 	}
 
 	public function EnoughPointsForAList() {
-		if($this->getDataPointCount() >= self::$number_of_items_before_showing_list) {return true;} else {return false;}
+		debug::show($this->getDataPointCount());
+		return $this->getDataPointCount() >= self::$number_of_items_before_showing_list ? true : false;
 	}
 
 	public function Link() {
