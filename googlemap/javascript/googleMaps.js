@@ -825,7 +825,7 @@ GMC.prototype.updateLists = function() {
 		}
 		sideBarArray.sort();
 	}
-	if(this.gmarkers.length > 3) {
+	if(this.gmarkers.length > 1) {
 		var displayItemList="block";
 	}
 	else {
