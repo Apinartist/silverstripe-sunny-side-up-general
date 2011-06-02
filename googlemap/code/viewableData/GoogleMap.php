@@ -306,8 +306,6 @@ class GoogleMap extends ViewableData {
 	}
 
 	public function EnoughPointsForAList() {
-		debug::show($this->getDataPointCount());
-		die("error");
 		return $this->getDataPointCount() >= self::$number_of_items_before_showing_list ? true : false;
 	}
 
