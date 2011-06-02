@@ -24,14 +24,14 @@ Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 Requirements::set_combined_files_folder("_cache");
 //Director::forceWWW();
 FulltextSearchable::enable();
-if(Director::isDev()) {
-	SSViewer::set_source_file_comments(true);
-}
 if(Director::isLive()) {
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
 else {
 	BasicAuth::protect_entire_site();
+	if(Director::isDev()) {
+		SSViewer::set_source_file_comments(true);
+	}
 }
 SiteTree::enable_nested_urls();
 i18n::set_locale('en_NZ');
