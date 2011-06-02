@@ -19,8 +19,6 @@ class GoogleMap extends ViewableData {
 		static function setHiddenLayersRemovedFromList($v){self::$HiddenLayersRemovedFromList = $v;}
 	protected static $ChangePageTitle = false;
 		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
-	protected static $ChangePageTitle = false;
-		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
 	protected static $number_of_items_before_showing_list = 1;
 		static function set_number_of_items_before_showing_list($v){self::$number_of_items_before_showing_list = $v;}
 
