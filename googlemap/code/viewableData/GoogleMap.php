@@ -294,22 +294,19 @@ class GoogleMap extends ViewableData {
 
 	public function getDataPointCount() {
 		if($this->dataPointsObjectSet) {
-			debug::show("A");
 			return $this->dataPointsObjectSet->count();
 		}
 		elseif($this->GooglePointsDataObject){
-			debug::show("B");
 			return $this->GooglePointsDataObject->count();
 		}
 		elseif(isset($_SESSION["addCustomGoogleMap"])) {
-			debug::show("C");
 			return count($_SESSION["addCustomGoogleMap"]);
 		}
-		debug::show("D");
 		return 0;
 	}
 
 	public function EnoughPointsForAList() {
+		//we were using the line below, but that did not seem to work
 		return $this->getDataPointCount() >= self::$number_of_items_before_showing_list ? true : false;
 	}
 
