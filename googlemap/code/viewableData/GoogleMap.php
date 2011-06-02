@@ -5,13 +5,12 @@
 class GoogleMap extends ViewableData {
 
 	static $includesDone = false;// this is a hack to avoid having multiple includes
-	/* INFORMATION AROUND THE MAP */
+	/* SUNDRY */
 	protected static $UsesSensor = true;
 		static function setUsesSensor($v) {self::$UsesSensor = $v;}
-
+	/* INFORMATION AROUND THE MAP */
 	protected static $DefaultTitle = "";
 		static function setDefaultTitle($v){self::$DefaultTitle = $v;}
-
 	protected static $NoStatusAtAll = false;
 		static function setNoStatusAtAll($v) {self::$NoStatusAtAll = $v;}
 	protected static $AddKmlLink = false;
@@ -20,6 +19,10 @@ class GoogleMap extends ViewableData {
 		static function setHiddenLayersRemovedFromList($v){self::$HiddenLayersRemovedFromList = $v;}
 	protected static $ChangePageTitle = false;
 		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
+	protected static $ChangePageTitle = false;
+		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
+	protected static $number_of_items_before_showing_list = 1;
+		static function set_number_of_items_before_showing_list($v){self::$number_of_items_before_showing_list = $v;}
 
 	/* DIVS */
 	protected static $TitleDivId = "";
@@ -304,7 +307,7 @@ class GoogleMap extends ViewableData {
 	}
 
 	public function EnoughPointsForAList() {
-		if($this->getDataPointCount() > 1) {return true;} else {return false;}
+		if($this->getDataPointCount() >= self::$number_of_items_before_showing_list) {return true;} else {return false;}
 	}
 
 	public function Link() {
