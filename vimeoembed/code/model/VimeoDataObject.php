@@ -147,7 +147,7 @@ class VimeoDataObject extends DataObject {
 		if($this->VimeoCode && !$this->doNotRetrieveData) {
 			$get = array();
 			if($width = self::get_width()) {$get["width"] = $width;}
-			if($max_width = self::get_maxwidth()) {$get["max_width"] = $max_width;}
+			if($max_width = self::get_maxwidth()) {$get["maxwidth"] = $max_width;}
 			if($height = self::get_height()) {$get["height"] = $height;}
 			if($maxheight = self::get_maxheight()) {$get["maxheight"] = $maxheight;}
 			if($byline = self::get_byline()) {$get["byline"] = $byline;}
