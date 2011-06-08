@@ -4,7 +4,7 @@ class DesignersPage extends Page {
 
 	public static $icon = "designers/images/treeicons/DesignersPage";
 
-	public static $has_many = array(
+	public static $many_many = array(
 		"Designers" => "Designer"
 	);
 
@@ -12,7 +12,7 @@ class DesignersPage extends Page {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab(
 			"Root.Content.Designers",
-			new HasManyComplexTableField(
+			new ManyManyComplexTableField(
 				$controller = $this,
 				$name = "Designers",
 				$sourceClass = "Designer",
