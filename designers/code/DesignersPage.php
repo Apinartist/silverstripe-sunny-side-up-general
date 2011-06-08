@@ -11,7 +11,7 @@ class DesignersPage extends Page {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab(
-			"Root.Content.Designers"
+			"Root.Content.Designers",
 			new HasManyComplexTableField(
 				$controller = $this,
 				$name = "Designers",
