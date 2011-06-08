@@ -1,3 +1,5 @@
 #Designers li {list-style: none; background-image: none;}
-	#Designers img {display: block; width: 175px; float: left; margin: 10px; border: 1px solid grey}
+	#Designers img {display: block; width: 255px; float: left; margin: 10px; border: 1px solid grey}
+	#Designers img.first {margin-left: 0px;}
+	#Designers img.last {margin-right: 0px}
 	#Designers hr {border: 1px solid grey; clear: left;}
