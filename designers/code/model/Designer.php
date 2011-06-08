@@ -30,8 +30,6 @@ class Designer_Admin extends ModelAdmin {
 
 	public static $menu_title = 'Designers';
 
-	public static $record_controller_class = 'MyModelAdmin_RecordController';
-
 	public $showImportForm = false;
 
 }
