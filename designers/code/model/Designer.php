@@ -15,10 +15,23 @@ class Designer extends DataObject {
 	);
 
 	public static $belongs_many_many = array(
-		"DesignersPage" => "DesignersPage"
+		"DesignersPages" => "DesignersPage"
 	);
 
 	static $default_order = "\"Rate\" ASC, \"Name\" ASC";
 
 }
 
+class Designer_Admin extends ModelAdmin {
+
+	public static $managed_models = array("Designer");
+
+	public static $url_segment = 'designer';
+
+	public static $menu_title = 'Designers';
+
+	public static $record_controller_class = 'MyModelAdmin_RecordController';
+
+	public $showImportForm = false;
+
+}
