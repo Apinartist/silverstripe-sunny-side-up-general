@@ -220,7 +220,7 @@ SHARETHIS.addEntry(
 
 	private static function set_variables($title, $link, $description) {
 		self::$icon = urlencode(Director::absoluteBaseURL().'favicon.ico');
-		self::$non_encoded_page_url = Director::absoluteBaseURL().$link;
+		self::$non_encoded_page_url = Director::absoluteBaseURL($link);
 		self::$encoded_page_url = urlencode(self::$non_encoded_page_url);
 		self::$encoded_page_title = urlencode($title);
 		self::$encoded_page_title_space_encoded = str_replace("+", "%20",urlencode($title));
