@@ -11,7 +11,7 @@ class Designer extends DataObject {
 	public static $has_one = array(
 		"Sample1" => "Image",
 		"Sample2" => "Image",
-		"Sample3" => "Image",
+		"Sample3" => "Image"
 	);
 
 	public static $belongs_many_many = array(
