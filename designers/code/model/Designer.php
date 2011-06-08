@@ -14,6 +14,10 @@ class Designer extends DataObject {
 		"Sample3" => "Image"
 	);
 
+	public static $has_one = array(
+		"DesignersPage" => "DesignersPage"
+	);
+
 	static $default_order = "\"Rate\" ASC, \"Name\" ASC";
 
 }
