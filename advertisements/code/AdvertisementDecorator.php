@@ -246,7 +246,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 
-	public function advertisementsToShow() {
+	protected function advertisementsToShow() {
 		if($this->owner->UseParentAdvertisements) {
 			$parent = $this->advertisementParent();
 			if($parent) {
@@ -254,6 +254,10 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			}
 		}
 		return $this->owner->Advertisements();
+	}
+
+	protected function getResizedAdvertisements(){
+
 	}
 
 	protected function classHasAdvertisements($className) {

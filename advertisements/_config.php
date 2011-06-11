@@ -26,6 +26,7 @@ Director::addRules(10, array(
 //Advertisement::set_plural_name("Slides");
 //Advertisement::set_width(100);
 //Advertisement::set_height(100);
+//Advertisement::set_resize_images(true);
 //ADVANCED
 //AdvertisementStyle::add_to_array_of_js_file_options("slideshow style 1", "mysite/javascript/slideshow1.js");
 //AdvertisementStyle::add_to_array_of_js_file_options("slideshow style 2", "mysite/javascript/slideshow1.js");
