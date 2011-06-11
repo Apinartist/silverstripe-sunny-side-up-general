@@ -112,7 +112,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$txt = sprintf(_t("AdvertisementDecorator.EDIT", 'Edit %1$s'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			$txt = sprintf(
-				_t("AdvertisementDecorator.PLEASEMANAGEEXISTING",'<p>Please manage existing %1$s on the <a href="/admin/%2$s/">%3$s tab</a>.</p>.'),
+				_t("AdvertisementDecorator.PLEASEMANAGEEXISTING",'<p>Please manage existing %1$s on the <a href="/admin/%2$s/">%3$s tab</a>.</p>'),
 				Advertisement::$plural_name,
 				AdvertisementAdmin::$url_segment,
 				AdvertisementAdmin::$menu_title
