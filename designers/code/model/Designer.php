@@ -5,6 +5,7 @@ class Designer extends DataObject {
 	public static $db = array(
 		"Name" => "Varchar",
 		"Location" => "Varchar",
+		"Notes" => "Varchar(255)",
 		"Rate" => "Enum('$,$$,$$$,$$$$,$$$$$', '$$$')"
 	);
 
