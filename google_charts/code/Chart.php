@@ -15,6 +15,8 @@ class Chart extends ViewableData {
 	static $default_width = 250;
 	static $default_height = 100;
 	
+	static $pixels_max = 300000;
+	
 	static $types = array();
 	static $type_param = 'cht';
 	static $data_param = 'chd';
@@ -149,6 +151,14 @@ class Chart extends ViewableData {
 	function setSize($width, $height = null) {
 		$this->width = $width;
 		$this->height = $height ? $height : $width;
+	}
+	
+	function getFinalWidth() {
+		return $this->width ? $this->width : self::$default_width;
+	}
+	
+	function getFinalHeight() {
+		return $this->height ? $this->height : self::$default_height;
 	}
 	
 	function generateColor($value) {
