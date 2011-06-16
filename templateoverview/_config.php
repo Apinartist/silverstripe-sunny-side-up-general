@@ -22,5 +22,6 @@
 //}
 //TemplateOverviewPage::set_auto_include(true);
 //LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
+//TemplateOverviewPageDecorator::set_help_file_directory_name("_help");
 //===================---------------- END templateoverview MODULE ----------------===================
 
