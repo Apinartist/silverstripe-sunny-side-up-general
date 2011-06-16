@@ -35,15 +35,17 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 
 	function requireDefaultRecords() {
 		$directory = Director::baseFolder()."/".self::get_help_file_directory_name()."/";
-		//get all image files with a .jpg extension.
-		$images = $this->getDirectoryList($directory , array("png", "jpg"));
-		//print each file name
-		$newDirectory = Director::baseFolder()."/assets/help".self::get_help_file_directory_name()."/";
-		Filesystem::makeFolder($newDirectory);
-		if($images) {
-			foreach($images as $image){
-				if(!file_exists($newDirectory.$image) && file_exists($directory.$image)) {
-					copy($directory.$image, $newDirectory.$image);
+		if(is_dir($directory)) {
+			//get all image files with a .jpg extension.
+			$images = $this->getDirectoryList($directory , array("png", "jpg"));
+			//print each file name
+			if($images && count($images)) {
+				$newDirectory = Director::baseFolder()."/assets/help".self::get_help_file_directory_name()."/";
+				Filesystem::makeFolder($newDirectory);
+				foreach($images as $image){
+					if(file_exists($directory.$image) && !file_exists($newDirectory.$image)) {
+						copy($directory.$image, $newDirectory.$image);
+					}
 				}
 			}
 		}
