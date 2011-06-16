@@ -110,7 +110,7 @@ class LineChart_Interactive extends LineChart {
 		
 		foreach($this->lines as $line) {
 			$yTitles[] = $line['legend'];
-			$values[] = array_map('intval', $line['y']);
+			$values[] = array_map('floatval', $line['y']);
 			if(isset($line['color'])) $colors[] = $line['color'];
 		}
 		
