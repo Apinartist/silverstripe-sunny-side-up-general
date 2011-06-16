@@ -40,13 +40,16 @@ class LineChart extends Chart {
 					$coordinates[] = implode(',', $y);
 				}
 				else $coordinates[] = implode(',', $line['y']);
-				if(isset($line['color'])) $colors[] = $line['color'];
+				if(isset($line['color'])) $colors[] = is_array($line['color']) ? implode('|', $line['color']) : $line['color'];
 				else if($this->generateColor) $colors[] = Chart::get_hexa_color();
-				if(isset($line['legend'])) $legend[] = str_replace(' ', '+', $line['legend']);
+				if(isset($line['legend'])) {
+					if(! is_array($line['legend'])) $line['legend'] = array($line['legend']);
+					foreach($line['legend'] as $legend) $legends[] = str_replace(' ', '+', $legend);
+				}
 			}
 			$params[Chart::$data_param] = 't:' . implode('|', $coordinates);
 			if(isset($colors)) $params[Chart::$color_param] = implode(',', $colors);
-			if(isset($legend)) $params[Chart::$legend_labels_param] = implode('|', $legend);
+			if(isset($legends)) $params[Chart::$legend_labels_param] = implode('|', $legends);
 		}
 		return parent::Link($params);
 	}
@@ -64,22 +67,18 @@ class LineChart extends Chart {
  * @see LineChart
  * @package googlecharts
  * @author Romain Louis <romain@sunnysideup.co.nz>
- * @todo Finish to add the hAxis and vAxis functions
  */
 class LineChart_Interactive extends LineChart {
 	
-	static $axis_titles_positions = array('in', 'out', 'none');
 	static $curve_types = array('function', 'none');
 	static $legend_positions = array('left', 'right', 'top', 'bottom', 'none');
 	
-	protected $axisTitlesPosition;
 	protected $curveType;
-	protected $gridlineColor;
 	protected $interpolateNulls;
 	protected $lineWidth;
 	protected $pointSize;
 	
-	static $extensions = array('InteractiveChart');
+	static $extensions = array('InteractiveChart', 'InteractiveChart_Axis');
 	
 	static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
@@ -100,6 +99,12 @@ class LineChart_Interactive extends LineChart {
 		return "<div id=\"{$params['id']}\" class=\"line\"></div>";
 	}
 	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "drawLineChart_Interactive($params);";
+	}
+	
 	function getJavascriptParams() {
 		$params['id'] = "LI_$this->id";
 		
@@ -113,41 +118,25 @@ class LineChart_Interactive extends LineChart {
 		$params['yTitles'] = $yTitles;
 		$params['values'] = $values;
 		
-		if($this->axisTitlesPosition) $options['axisTitlesPosition'] = $this->axisTitlesPosition;
-		
 		if(isset($colors)) $options['colors'] = $colors;
 		
 		if($this->curveType) $options['curveType'] = $this->curveType;
-		
-		if($this->gridlineColor) $options['gridlineColor'] = $this->gridlineColor;
 		
 		if($this->interpolateNulls) $options['interpolateNulls'] = 'true';
 		
 		if(isset($this->lineWidth)) $options['lineWidth'] = $this->lineWidth;
 		
 		if(isset($this->pointSize)) $options['pointSize'] = $this->pointSize;
-		$options['pointSize'] = 4;
+		
 		$this->extend('updateJavascriptParams', $options);
 		
 		$params['options'] = $options;
 		return $params;
 	}
 	
-	function getJavascript() {
-		$params = $this->getJavascriptParams();
-		$params = Convert::array2json($params);
-		return "drawLineChart_Interactive($params);";
-	}
-	
-	function setAxisTitlesPosition($position) {
-		if(in_array($position, self::$axis_titles_positions)) $this->axisTitlesPosition = $position;
-	}
-	
 	function setCurveType($type) {
 		if(in_array($type, self::$curve_types)) $this->curveType = $type;
 	}
-	
-	function setGridlineColor($color) {$this->gridlineColor = $color;}
 	
 	function interpolateNulls() {$this->interpolateNulls = true;}
 	

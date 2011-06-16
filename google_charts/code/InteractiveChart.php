@@ -133,4 +133,43 @@ class InteractiveChart extends Extension {
 	}
 }
 
+/**
+ * This class is used to add the interactive charts axis functions and options for line, bar and column charts
+ *
+ * @link http://code.google.com/apis/chart/interactive/docs/gallery.html
+ * @package googlecharts
+ * @author Romain Louis <romain@sunnysideup.co.nz>
+ * @todo Finish to add the hAxis and vAxis functions
+ */
+class InteractiveChart_Axis extends Extension {
+	
+	static $axis_titles_positions = array('in', 'out', 'none');
+	
+	protected $axisTitlesPosition;
+	protected $gridlineColor;
+	
+	function updateJavascriptParams(array &$options) {
+		
+		// Titles Position
+		
+		if($this->axisTitlesPosition) $options['axisTitlesPosition'] = $this->axisTitlesPosition;
+		
+		// Gridline Color
+		
+		if($this->gridlineColor) $options['gridlineColor'] = $this->gridlineColor;
+		
+	}
+	
+	// Titles Position
+	
+	function setAxisTitlesPosition($position) {
+		if(in_array($position, self::$axis_titles_positions)) $this->axisTitlesPosition = $position;
+	}
+	
+	// Gridline Color
+	
+	function setGridlineColor($color) {$this->gridlineColor = $color;}
+	
+}
+
 ?>

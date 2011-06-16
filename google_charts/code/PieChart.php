@@ -102,6 +102,12 @@ class PieChart_Interactive extends PieChart {
 		return "<div id=\"{$params['id']}\" class=\"pie\"></div>";
 	}
 	
+	function getJavascript() {
+		$params = $this->getJavascriptParams();
+		$params = Convert::array2json($params);
+		return "drawPieChart_Interactive($params);";
+	}
+	
 	function getJavascriptParams() {
 		$params['id'] = "PI_$this->id";
 		
@@ -134,12 +140,6 @@ class PieChart_Interactive extends PieChart {
 		
 		$params['options'] = $options;
 		return $params;
-	}
-	
-	function getJavascript() {
-		$params = $this->getJavascriptParams();
-		$params = Convert::array2json($params);
-		return "drawPieChart_Interactive($params);";
 	}
 	
 	function enable3D() {$this->is3D = true;}
