@@ -114,7 +114,7 @@ class LineChart_Interactive extends LineChart {
 			if(isset($line['color'])) $colors[] = $line['color'];
 		}
 		
-		$params['xTitles'] = $this->axisLabels[0];
+		$params['xTitles'] = array_map('strval', $this->axisLabels[0]);
 		$params['yTitles'] = $yTitles;
 		$params['values'] = $values;
 		
