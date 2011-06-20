@@ -44,7 +44,14 @@ class MapChart extends Chart {
 			foreach($records as $i => $fields) {
 				$values[] = $fields[0];
 				if(isset($fields[1]) && $this->markerType) {
-					$markers[] = "$this->markerType$fields[1],$this->markerColor,0,$i,$this->markerSize";
+					$marker = $text = $fields[1];
+					$offset = '';
+					if(is_array($marker)) {
+						list($text, $offsets) = $marker;
+						$offset = ',,:' . implode(':', $offsets);
+					}
+					$text = urlencode($text);
+					$markers[] = "$this->markerType$text,$this->markerColor,0,$i,$this->markerSize$offset";
 				}
 			}
 			$params[Chart::$data_param] = 't:' . implode(',', $values);
