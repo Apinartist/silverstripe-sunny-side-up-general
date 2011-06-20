@@ -33,10 +33,12 @@ class Chart extends ViewableData {
 	static $axis_range_param = 'chxr';
 	static $axis_labels_param = 'chxl';
 	static $background_fill_param = 'chf';
+	static $marker_param = 'chm';
 	
 	static $legend_positions = array('b', 'bv', 't', 'tv', 'r', 'l');
 	static $legend_orders = array('l', 'r', 'a');
 	static $visible_axes = array('x', 't', 'y', 'r');
+	static $marker_types = array('f', 't', 'A', 'N');
 	
 	protected $type;
 	protected $width, $height;
@@ -46,6 +48,7 @@ class Chart extends ViewableData {
 	protected $marginLeft, $marginRight, $marginTop, $marginBottom, $legendWidth, $legendHeight;
 	protected $visibleAxes, $axisRange, $axisLabels;
 	protected $backgroundColor, $chartColor, $transparency;
+	protected $markerType, $markerColor, $markerSize;
 	
 	static $cpt = 0;
 	protected $id;
@@ -62,8 +65,8 @@ class Chart extends ViewableData {
 	
 	function Link(array $params = null) {
 		if(! $params) $params = array();
-		$params[self::$type_param] = $this->type;
-		$params[self::$size_param] = ($this->width ? $this->width : self::$default_width) . 'x' . ($this->height ? $this->height : self::$default_height);
+		$params[self::$type_param] = $this->getTypeForLink();
+		$params[self::$size_param] = "{$this->getFinalWidth()}x{$this->getFinalHeight()}";
 		
 		// Chart Title : http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_chart_title
 		
@@ -141,6 +144,10 @@ class Chart extends ViewableData {
 		
 		foreach($params as $name => $value) $paramValues[] = "$name=$value";
 		return self::$base_url . implode('&', $paramValues);
+	}
+	
+	function getTypeForLink() {
+		return $this->type;
 	}
 	
 	function setType($type) {
@@ -248,6 +255,14 @@ class Chart extends ViewableData {
 	
 	function setTransparency($transparency) {
 		$this->transparency = dechex(min(max(0, $transparency), 255));
+	}
+	
+	function setMarker($type, $color, $size) {
+		if(in_array($type[0], self::$marker_types)) {
+			$this->markerType = $type;
+			$this->markerColor = $color;
+			$this->markerSize = $size;
+		}
 	}
 }
 

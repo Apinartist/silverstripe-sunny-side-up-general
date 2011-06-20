@@ -14,14 +14,10 @@ class BarChart extends LineChart {
 	
 	static $types = array('bhs', 'bvs', 'bvo', 'bhg', 'bvg');
 	static $bar_width_spacing_param = 'chbh';
-	static $marker_types = array('f', 't', 'A', 'N');
-	static $marker_param = 'chm';
 	
 	protected $barWidthScale;
 	protected $barSpace;
 	protected $barGroupSpace;
-	
-	protected $markerType, $markerColor, $markerSize;
 	
 	function addLine() {
 		user_error('You can not use the \'addLine\' function on a bar/column chart. Use the \'addSerie\' function instead.');
@@ -58,14 +54,6 @@ class BarChart extends LineChart {
 			$this->barWidthScale = $widthScale;
 			if($barSpace != null) $this->barSpace = $barSpace;
 			if($barGroupSpace != null) $this->barGroupSpace = $barGroupSpace;
-		}
-	}
-	
-	function setMarker($type, $color, $size) {
-		if(in_array($type[0], self::$marker_types)) {
-			$this->markerType = $type;
-			$this->markerColor = $color;
-			$this->markerSize = $size;
 		}
 	}
 }
