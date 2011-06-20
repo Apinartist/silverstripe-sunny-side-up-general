@@ -79,7 +79,7 @@ Object::add_extension('ContentController', 'MetaTagAutomation_controller');
 /* pop-ups and form interaction */
 MetaTagAutomation::set_disable_update_popup(false);
 /* meta descriptions */
-MetaTagAutomation::set_meta_desc_length(24);
+MetaTagAutomation::set_meta_desc_length(27);
 /* meta keywords */
 MetaTagAutomation::set_hide_keywords_altogether(true);
 //FONTS - see google fonts for options, include within CSS file as: body {font-family: Inconsolata;}
