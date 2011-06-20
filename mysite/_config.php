@@ -72,34 +72,26 @@ GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-0000"; //e.g. UA-xxxx-y
 
 
 //===================---------------- START metatags MODULE ----------------===================
+//dont forget to add $this->addBasicMetatagRequirements() to Page_Controller->init(); and add this to your theme: $ExtendedMetatags
+Object::add_extension('SiteConfig', 'MetaTagSiteConfigExtension');
 Object::add_extension('SiteTree', 'MetaTagAutomation');
 Object::add_extension('ContentController', 'MetaTagAutomation_controller');
 /* pop-ups and form interaction */
-MetaTagAutomation::set_disable_update_popup(0);
-/* default value for auto-update pages' metatags */
-MetaTagAutomation::set_default_state_auto_update_checkbox(0);
-/* meta-title */
-MetaTagAutomation::set_update_meta_title(0);
-MetaTagAutomation::set_prepend_to_meta_title("");
-MetaTagAutomation::set_append_to_meta_title("");
+MetaTagAutomation::set_disable_update_popup(false);
 /* meta descriptions */
-MetaTagAutomation::set_update_meta_desc(0);
-MetaTagAutomation::set_meta_desc_length(12);
+MetaTagAutomation::set_meta_desc_length(24);
 /* meta keywords */
-MetaTagAutomation::set_update_meta_keys(0);
-MetaTagAutomation::set_number_of_keywords(12);
-MetaTagAutomation::set_min_word_char(3);
-MetaTagAutomation::set_exclude_words("the,and,from");
-/* additional metatag information */
-MetaTagAutomation_controller::set_country("New Zealand");
-MetaTagAutomation_controller::set_copyright("www.sunnysideup.co.nz");
-MetaTagAutomation_controller::set_design("www.sunnysideup.co.nz");
-MetaTagAutomation_controller::set_coding("www.sunnysideup.co.nz");
+MetaTagAutomation::set_hide_keywords_altogether(true);
+//FONTS - see google fonts for options, include within CSS file as: body {font-family: Inconsolata;}
+//MetaTagAutomation::add_google_font("Inconsolata");
 /* combined files */
-MetaTagAutomation_controller::set_folder_for_combined_files("cache");
-MetaTagAutomation_controller::set_combine_css_files_into_one(0);
-MetaTagAutomation_controller::set_combine_js_files_into_one(0);
+//MetaTagAutomation_controller::set_folder_for_combined_files("cache");
+//MetaTagAutomation_controller::set_combine_css_files_into_one(false);
+//MetaTagAutomation_controller::set_combine_js_files_into_one(false);
+/* favicons */
+//MetaTagAutomation::set_use_themed_favicon(true);
 //===================---------------- END metatags MODULE ----------------===================
+
 
 //===================---------------- START sharethis MODULE ----------------===================
 ShareThis::set_always_include (true);
