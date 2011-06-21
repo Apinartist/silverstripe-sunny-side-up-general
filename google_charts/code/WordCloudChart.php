@@ -45,7 +45,7 @@ class WordCloudChart extends Chart {
 	function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
-		return "draw{$this->class}($params);";
+		return "drawWordCloudChart($params);";
 	}
 }
 
@@ -112,7 +112,7 @@ class WordCloudChart_Rotating extends Chart {
 	function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
-		return "draw{$this->class}($params);";
+		return "drawWordCloudChart_Rotating($params);";
 	}
 	
 	function setSpeed($speed) {$this->speed = $speed;}
