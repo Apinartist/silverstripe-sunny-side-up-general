@@ -61,7 +61,7 @@ class GaugeChart extends Chart {
 	function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
-		return "draw{$this->class}($params);";
+		return "drawGaugeChart($params);";
 	}
 	
 	function setMin($min) {$this->min = $min;}
