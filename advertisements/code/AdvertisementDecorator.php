@@ -68,7 +68,28 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 		if($this->classHasAdvertisements($this->owner->ClassName)) {
 			$tabName = $this->MyTabName();
 			//advertisements shown...
-			$advertisements = DataObject::get("Advertisement");
+			$where = '';
+			if($this->owner->AdvertisementsFolderID) {
+				$images = DataObject::get("Image", "ParentID = ".$this->owner->AdvertisementsFolderID);
+				$where = "\"AdvertisementImageID\" IN (".implode(",", $images->map("ID", "ID")).")";
+			}
+			if($where) {
+				$whereDB = "WHERE ".$where;
+			}
+			$txt = sprintf(_t("AdvertisementDecorator.CREATE", 'Create new %1$s'), Advertisement::$plural_name);
+			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
+			$txt = sprintf(
+				_t(
+					"AdvertisementDecorator.CREATENEWFROMFOLDER",
+					'Create New %1$s from images in the folder selected below - each image in the folder will be used to create a %3$s. %2$s'
+				),
+				Advertisement::$plural_name,
+				Advertisement::recommended_image_size_statement(),
+				Advertisement::$singular_name
+			);
+			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', $txt, 'Folder'));			
+			//$advertisementsCount = DB::query("SELECT COUNT(ID) FROM \"Advertisement\" $whereDB ;")->value();
+			$advertisements = DataObject::get("Advertisement", $where);
 			$txt = sprintf(_t("AdvertisementDecorator.ACTUAL", 'Current %1$s Shown'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			if($advertisements) {
@@ -96,19 +117,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				$list = $styles->toDropdownMap("ID", "Title",$emptyString = _t("AdvertisementDecorator.SELECTSTYLE", "--select style--"), $sortByTitle = true);
 				$fields->addFieldToTab($tabName, new DropdownField("AdvertisementStyleID", _t("AdvertisementDecorator.STYLECREATED", "Select style (styles are created by your developer)"), $list));
 			}
-			//use parents
-			$txt = sprintf(_t("AdvertisementDecorator.CREATE", 'Create new %1$s'), Advertisement::$plural_name);
-			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
-			$txt = sprintf(
-				_t(
-					"AdvertisementDecorator.CREATENEWFROMFOLDER",
-					'Create New %1$s from images in the folder selected below - each image in the folder will be used to create a %3$s. %2$s'
-				),
-				Advertisement::$plural_name,
-				Advertisement::recommended_image_size_statement(),
-				Advertisement::$singular_name
-			);
-			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', $txt, 'Folder'));
+
 			$txt = sprintf(_t("AdvertisementDecorator.EDIT", 'Edit %1$s'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			$txt = sprintf(
@@ -197,20 +206,25 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				}
 			}
 			//check for non-existing images and delete advertisements associated with it
-			/*
+
 			foreach($images as $objectID => $imageID) {
 				if(!DataObject::get_by_id("Image", $imageID)) {
 					$obj = DataObject::get_by_id("Advertisement", $objectID);
 					if($obj) {
 						$obj->delete();
+						$obj->destroy();
 						unset($objects[$objectID]);
 					}
 				}
 			}
-			*/
 			//check if a folder has been set and create objects
 			if($this->owner->AdvertisementsFolderID) {
-				$dos2 = DataObject::get("Image", "{$bt}ParentID{$bt} = ".$this->owner->AdvertisementsFolderID." AND {$bt}ID{$bt} NOT IN (".implode(",", $images).")");
+				$dos2 = DataObject::get(
+					"Image",
+					"\"File\".\"ParentID\" = ".$this->owner->AdvertisementsFolderID." AND \"Advertisement\".\"AdvertisementImageID\" IS NULL ",
+					"",
+					"LEFT JOIN \"Advertisement\" ON \"Advertisement\".\"AdvertisementImageID\" = \"File\".\"ID\" "
+				);
 				if($dos2) {
 					$advertisementsToAdd = array();
 					foreach($dos2 as $image) {
@@ -222,7 +236,6 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 						$objects[$newAdvertisement->ID] = $newAdvertisement->ID;
 					}
 					$this->owner->Advertisements()->addMany($objects);
-					$this->owner->AdvertisementsFolderID = 0;
 				}
 			}
 			if($this->owner->AdvertisementStyleID) {

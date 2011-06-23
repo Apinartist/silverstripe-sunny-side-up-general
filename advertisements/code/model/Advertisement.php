@@ -54,7 +54,8 @@ class Advertisement extends DataObject {
 	);
 
 	static $casting = array(
-		"Link" => "Varchar"
+		"Link" => "Varchar",
+		"GroupID" => "Int"
 	);
 
 	static $field_labels = array(
@@ -91,6 +92,19 @@ class Advertisement extends DataObject {
 
 	function Link() {
 		return $this->getLink();
+	}
+
+	function getGroupID() {
+		if($this->AdvertisementImageID) {
+			$image = DataObject::get_by_id("Image", $this->AdvertisementImageID);
+			if($image) {
+				return $image->ParentID;
+			}
+		}
+	}
+
+	function GroupID() {
+		return $this->getGroupID();
 	}
 
 	public function getCMSFields() {
