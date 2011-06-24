@@ -59,7 +59,7 @@ class WordCloudChart extends Chart {
  */
 class WordCloudChart_Rotating extends Chart {
 	
-	protected $words;
+	protected $words, $urls;
 	protected $speed, $color, $hoverColor;
 	
 	static $font_max = 30;
@@ -83,6 +83,10 @@ class WordCloudChart_Rotating extends Chart {
 		self::addRequirements();
 	}
 	
+	function setURLS($urls) {
+		$this->urls = $urls;
+	}
+	
 	function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
@@ -97,6 +101,17 @@ class WordCloudChart_Rotating extends Chart {
 			'words' => array_keys($this->words),
 			'fontsizes' => array_values($this->words)
 		);
+		
+		$urls = array_fill(0, count($this->words), '');
+		if($this->urls) {
+			foreach($this->urls as $word => $url) {
+				$index = array_search($word, $params['words']);
+				if($index !== false) {
+					$urls[$index] = $url;
+				}
+			}
+		}
+		$params['urls'] = $urls;
 		
 		$options['width'] = $this->width ? $this->width : Chart::$default_width;
 		$options['height'] = $this->height ? $this->height : Chart::$default_height;

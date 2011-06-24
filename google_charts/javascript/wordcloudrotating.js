@@ -5,6 +5,7 @@ function drawWordCloudChart_Rotating(params) {
 	var id = params['id'];
 	var words = params['words'];
 	var fontsizes = params['fontsizes'];
+	var urls = params['urls'];
 	var options = params['options'];
 	
 	var data = new google.visualization.DataTable();
@@ -17,7 +18,7 @@ function drawWordCloudChart_Rotating(params) {
 	
 	for(var i = 0; i < words.length; i++) {
 		data.setCell(i, 0, words[i]);
-		data.setCell(i, 1, '');
+		data.setCell(i, 1, urls[i]);
 		data.setCell(i, 2, fontsizes[i]);
 	}
 	
