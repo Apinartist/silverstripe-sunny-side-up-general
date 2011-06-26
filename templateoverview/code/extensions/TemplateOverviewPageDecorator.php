@@ -31,25 +31,38 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 			}
 			$fields->addFieldToTab("Root.Help", new LiteralField("MoreHelp", $obj->renderWith("TemplateOverviewPageCMSDetail")));
 		}
+		$fileArray = $this->getListOfHelpFiles();
+		if($fileArray && count($fileArray)) {
+			$linkArray = array();
+			foreach($fileArray as $file) {
+				$linkArray[] = '<li><a href="'.$file.'">'.$file.'</a></li>';
+			}
+			$fields->addFieldToTab("Root.Help", new LiteralField(
+				"HelpImages",
+				"<h3>How to ...</h3><ul>".implode("",$linkArray)."</ul>"
+			));
+		}
 	}
 
-	function requireDefaultRecords() {
-		parent::requireDefaultRecords();
-		$directory = Director::baseFolder()."/".self::get_help_file_directory_name()."/";
-		if(is_dir($directory)) {
+	private function getListOfHelpFiles() {
+		$fileArray = array();
+		$directory = "/".self::get_help_file_directory_name()."/";
+		$baseDirectory = Director::baseFolder()."/".$directory;
+		if(is_dir(Director::baseFolder()."/".$baseDirectory)) {
 			//get all image files with a .jpg extension.
-			$images = $this->getDirectoryList($directory , array("png", "jpg"));
+			$images = $this->getDirectoryList($baseDirectory , array("png", "jpg"));
 			//print each file name
 			if($images && count($images)) {
-				$newDirectory = Director::baseFolder()."/assets/help".self::get_help_file_directory_name()."/";
-				Filesystem::makeFolder($newDirectory);
 				foreach($images as $image){
-					if(file_exists($directory.$image) && !file_exists($newDirectory.$image)) {
-						copy($directory.$image, $newDirectory.$image);
+					if($image) {
+						if(file_exists($directory.$image)) {
+							$fileArray[] = $directory.$image;
+						}
 					}
 				}
 			}
 		}
+		return $fileArray;
 	}
 
 	private function getDirectoryList ($directory, $extensionArray) {
@@ -60,7 +73,7 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 		// open directory and walk through the filenames
 		while ($file = readdir($handler)) {
 			// if file isn't this directory or its parent, add it to the results
-			if ($file != "." && $file != "..") {
+			if ($file != "." && $file != ".." && !is_dir($file)) {
 				$extension = substr(strrchr($file, '.'), 1);
 				if(in_array($extension, $extensionArray)) {
 					$results[] = $file;
@@ -72,6 +85,5 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 		// done!
 		return $results;
 	}
-
 
 }
