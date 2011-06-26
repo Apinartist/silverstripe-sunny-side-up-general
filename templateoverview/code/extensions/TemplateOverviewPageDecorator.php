@@ -34,6 +34,7 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 	}
 
 	function requireDefaultRecords() {
+		parent::requireDefaultRecords();
 		$directory = Director::baseFolder()."/".self::get_help_file_directory_name()."/";
 		if(is_dir($directory)) {
 			//get all image files with a .jpg extension.
