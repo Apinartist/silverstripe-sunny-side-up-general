@@ -12,11 +12,13 @@ class SocialNetworkingLinksDataObject extends DataObject {
 	public static $db = array(
 		'URL' => 'Varchar(255)',
 		'Title' => 'Varchar(255)',
-		"Sort" => "Int"
+		'Sort' => 'Int'
 	);
 
 	public static $casting = array(
-		'Code' => 'Varchar(255)'
+		'Code' => 'Varchar(255)',
+		'Link' => 'Varchar(255)',
+		'IconHTML' => 'HTMLText'
 	);
 
 	public static $has_one = array(
@@ -32,14 +34,15 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $field_labels = array(
 		"URL" => "Link (e.g. http://twitter.com/myname/)- will override internal link",
+		"InternalLink" => "Internal Link",		
 		"Title" => "Title",
 		"Sort" => "Sort Index (lower numbers shown first)",
 		"IconID" => "Icon (preferably something like 32pixels by 32pixels)",
-		"InternalLink" => "Internal Link"
 	);
 
 	public static $summary_fields = array(
-		"Title" => "Title"
+		"Title" => "Title",
+		"HTMLIcon" => "Icon"
 	);
 
 	public static $default_sort = "\"Sort\" ASC, \"Title\" ASC";
@@ -56,6 +59,14 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $this->Title));
 	}
 
+
+	public function IconHTML() {
+		if($this->Icon() && $this->Icon()->Exists()) {
+			return $this->Icon()->SetHeight(32);
+		}
+		return '<img src="'.SHARETHIS_DIR."/images/icons/".$this->Code.".png".'" alt="'.$this->Code.'" />';
+	}	
+
 	function Link() {
 		if($this->URL) {
 			return $this->URL;
@@ -68,5 +79,14 @@ class SocialNetworkingLinksDataObject extends DataObject {
 		}
 	}
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		if($this->ID) {
+			$fields->addFieldToTab("Root.Main", new LiteralField("Code", "<p>Code: ".$this->Code()."</p>"));
+			$fields->addFieldToTab("Root.Main", new LiteralField("Link", '<p>Link: <a href="'.$this->Link().'">'.$this->Link().'</a></p>'));
+			$fields->addFieldToTab("Root.Main", new LiteralField("Link", '<p>'.$this->IconHTML().'</p>'));
+		}
+		return $fields;
+	}
 
 }

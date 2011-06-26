@@ -22,7 +22,8 @@ class ShareThisOptions extends Object {
 	protected static $encoded_description;
 	protected static $icon;
 
-	static function get_all_options($title, $link, $description) {
+	public static function get_all_options($title, $link, $description) {
+		self::set_variables($title, $link, $description);		
 		self::$page_specific_data = array(
 
 "email" => array(
@@ -136,7 +137,6 @@ class ShareThisOptions extends Object {
 	}
 
 	static function get_page_specific_data($title, $link, $description = "") {
-		self::set_variables($title, $link, $description);
 		if(!self::$page_specific_data) {
 			$originalArray = self::get_all_options($title, $link, $description);
 		}
@@ -144,8 +144,8 @@ class ShareThisOptions extends Object {
 			$originalArray = self::$page_specific_data;
 		}
 		$finalArray = array();
-		$inc = ShareThis::get_icons_to_include();
-		$exc = ShareThis::get_icons_to_exclude();
+		$inc = ShareThis::get_share_this_icons_to_include();
+		$exc = ShareThis::get_share_this_icons_to_exclude();
 		if(count($inc)) {
 			$new_array_of_icons_to_include = array();
 			foreach($inc as $key => $value) {

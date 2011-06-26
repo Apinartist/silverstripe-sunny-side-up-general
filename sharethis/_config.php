@@ -11,6 +11,7 @@ define('SHARETHIS_DIR', 'sharethis');
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sharethis MODULE ----------------===================
+DataObject::add_extension('SiteConfig', 'SocialNetworkingConfig');
 // SHARE THIS LINK -> links to your visitors page on facebook, linkedin, etc... so that they can share your website
 //DataObject::add_extension('SiteTree', 'ShareThis');
 //ShareThis::set_always_include (false);

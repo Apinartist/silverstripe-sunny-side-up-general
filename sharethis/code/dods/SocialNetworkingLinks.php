@@ -7,90 +7,42 @@
  **/
 
 
-class SocialNetworkingLinks extends DataObjectDecorator {
+class SocialNetworkingLinks extends SiteTreeDecorator {
 
-	/**
-	* Include on all pages no matter what
-	* @var boolean
-	*/
-
-	protected static $always_include = 0;
-		static function set_always_include($value) {self::$always_include = $value;}
-
-	/**
-	* Include on all pages by default
-	* @var boolean
-	*/
-
-	protected static $include_by_default = 0;
-		static function set_include_by_default($value) {self::$include_by_default = $value;}
 
 	/**
 	* show bookmark title next to icon
 	* @var boolean
 	*/
 
-	protected static $show_title_with_icon = 0;
-		static function set_show_title_with_icon($value) {self::$show_title_with_icon = $value;}
+	protected static $show_social_networking_links_title_with_icon = 0;
+		static function set_show_social_networking_links_title_with_icon($value) {self::$show_social_networking_links_title_with_icon = $value;}
 
-	/**
-	* specify alternative icons in the form of array($key => $filename, $key => $filename)
-	* @var array
-	*/
-
-	protected static function clean_boolean_value($value) {
-		if($value == false) {
-			$value = 0;
-		}
-		if($value == true) {
-		 $value = 1;
-		}
-		if($value == 1 || $value == 0) {
-			return $value;
-		}
-		Debug::show("$value should be a 0 or 1");
-	}
 
 	function extraStatics(){
-		if(self::$always_include) {
+		if($this->SiteConfig()->AlwaysInclude) {
 			return array();
 		}
 		else {
 			return array(
 				'db' => array('HasSocialNetworkingLinks' => 'Boolean' ),
-				'defaults' => array('HasSocialNetworkingLinks' => self::$include_by_default),
+				'defaults' => array('HasSocialNetworkingLinks' => $this->SiteConfig()->IncludeByDefault),
 			);
 		}
 	}
 
 
 	function updateCMSFields(FieldSet &$fields) {
-		if(!self::$always_include) {
+		if(!$this->SiteConfig()->AlwaysIncludeSocialNetworkingLinks) {
 			$fields->addFieldToTab("Root.Behaviour", new CheckboxField("HasSocialNetworkingLinks","Show Social Networking Links on this Page (e.g. follow us on Twitter) - make sure to specify social networking links!"));
-			$fields->addFieldToTab("Root.Behaviour", new LiteralField("HasSocialNetworkingLinksExplanation","<p>Social Networking links (e.g. a link to your facebook page) need to be <a href=\"/admin/social/\">added first</a>.</p>"));
-
-
 		}
+		$fields->addFieldToTab("Root.Behaviour", new LiteralField('LinkToSiteConfigSocialMedia', '<p>There  are more social media settings in the <a href="/admin/show/root/">Site Config</a></p>'));
 		return $fields;
-	}
-
-	/**
-	* At the moment this method does nothing.
-	*/
-
-	function augmentSQL(SQLQuery &$query) {
-	}
-
-
-	/**
-	* At the moment this method does nothing.
-	*/
-	function augmentDatabase() {
 	}
 
 	public function ThisPageHasSocialNetworkingLinks() {
 		if($this->owner) {
-			if(self::$always_include) {
+			if($this->SiteConfig()->AlwaysInclude) {
 				return true;
 			}
 			elseif(isset($this->owner->HasSocialNetworkingLinks)) {
@@ -105,7 +57,7 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 			if($objects = DataObject::get("SocialNetworkingLinksDataObject")) {
 				foreach($objects as $obj) {
 					$obj->ShowTitle = false;
-					if(self::$show_title_with_icon) {
+					if(self::$show_social_networking_links_title_with_icon) {
 						$obj->ShowTitle = true;
 					}
 				}
@@ -114,5 +66,10 @@ class SocialNetworkingLinks extends DataObjectDecorator {
 			}
 		}
 	}
+
+	protected function SiteConfig(){
+		return SiteConfig::current_site_config();
+	}
+
 
 }
