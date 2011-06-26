@@ -74,8 +74,10 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				$where = "\"AdvertisementImageID\" IN (".implode(",", $images->map("ID", "ID")).")";
 			}
 			if($where) {
-				$whereDB = "WHERE ".$where;
+				$whereDB = "WHERE 1 = 2".$where;
 			}
+
+			//create new advertisements
 			$txt = sprintf(_t("AdvertisementDecorator.CREATE", 'Create new %1$s'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			$txt = sprintf(
