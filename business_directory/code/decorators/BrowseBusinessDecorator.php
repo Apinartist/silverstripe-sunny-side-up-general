@@ -1,16 +1,8 @@
 <?php
 
-class BrowseBusinessDecorator extends DataObjectDecorator {
+class BrowseBusinessDecorator extends SiteTreeDecorator {
 
 	static $max_radius = 100;
-
-	function __construct () {
-		parent::__construct();
-	}
-
-	function setSidebarImage() {
-		return false;
-	}
 
 	function getParentIDs() {
 		$array = array();
@@ -34,12 +26,8 @@ class BrowseBusinessDecorator extends DataObjectDecorator {
 
 class BrowseBusinessDecorator_Controller extends Extension {
 
-	static $allowed_actions = array(
-		"createnewbusinesslistingfrompoint" => true
-	);
-
 	function index() {
-		$this->owner->addCustomMap($this->owner->Children()); //DataObject::get("BusinessPage")
+		//$this->owner->addCustomMap($this->owner->Children()); //DataObject::get("BusinessPage")
 		return Array();
 	}
 
