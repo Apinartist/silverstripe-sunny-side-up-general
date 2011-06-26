@@ -86,7 +86,7 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 				$this->CreateChildren = $parent->CreateAllChildren;
 				$this->CreateAllChildren = $parent->CreateAllChildren;
 
-				$this->URLSegment = $parent->URLSegment."+".$this->generateURLSegment($this->Title);
+				$this->URLSegment = $this->generateURLSegment($this->Title);
 
 				$this->writeToStage('Stage');
 				$this->publish('Stage', 'Live');
