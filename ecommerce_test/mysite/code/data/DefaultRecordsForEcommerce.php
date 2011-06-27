@@ -56,6 +56,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$order->delete();
 			}
 		}
+		$this->AddVariations();
 		$obj = new CartCleanupTask();
 		$obj->cleanupUnlinkedOrderObjects();
 	}
@@ -100,6 +101,101 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
 			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
 		);
+	}
+
+	private function AddVariations() {
+		$colourObject = DataObject::get_one("ProductAttributeType", "\"Name\" = 'Colour'");
+		if(!$colourObject) {
+			$colourObject = new ProductAttributeType();
+			$colourObject->Name = "Colour";
+			$colourObject->Label = "Colour";
+			$colourObject->IsColour = true;
+			$colourObject->Sort = 100;
+			$colourObject->write();
+		}
+		if($colourObject) {
+			$redObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'red'");
+			if(!$redObject) {		
+				$redObject = new ProductAttributeValue();
+				$redObject->Value = "red";
+				$redObject->TypeID = $colourObject->ID;
+				$redObject->Sort = 100;
+				$redObject->write();
+			}			
+			$blueObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'blue'");
+			if(!$blueObject) {		
+				$blueObject = new ProductAttributeValue();
+				$blueObject->Value = "blue";
+				$blueObject->TypeID = $colourObject->ID;
+				$blueObject->Sort = 110;
+				$blueObject->write();
+			}			
+		}
+		else {
+			die("COULD NOT CREATE COLOUR OBJECT");
+		}
+		$sizeObject = DataObject::get_one("ProductAttributeType", "\"Name\" = 'Size'");
+		if(!$sizeObject) {		
+			$sizeObject = new ProductAttributeType();
+			$sizeObject->Name = "Size";
+			$sizeObject->Label = "Size";
+			$sizeObject->Sort = 110;
+			$sizeObject->write();
+		}
+		if($sizeObject) {
+			$smallObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'S'");
+			if(!$smallObject) {		
+				$smallObject = new ProductAttributeValue();
+				$smallObject->Value = "S";
+				$smallObject->TypeID = $sizeObject->ID;
+				$smallObject->Sort = 100;
+				$smallObject->write();
+			}			
+			$xtraLargeObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'XL'");
+			if(!$xtraLargeObject) {		
+				$xtraLargeObject = new ProductAttributeValue();
+				$xtraLargeObject->Value = "XL";
+				$xtraLargeObject->TypeID = $sizeObject->ID;
+				$xtraLargeObject->Sort = 110;
+				$xtraLargeObject->write();
+			}			
+		}
+		else {
+			die("COULD NOT CREATE SIZE OBJECT");
+		}
+		
+		$products = DataObject::get("Product", "", "", "", "0, 5");
+		if($products && $colourObject && $sizeObject) {
+			$variationCombos = array(
+				array("Size" => $xtraLargeObject, "Colour" => $redObject),
+				array("Size" => $xtraLargeObject, "Colour" => $blueObject),
+				array("Size" => $smallObject, "Colour" => $redObject),
+				array("Size" => $smallObject, "Colour" => $blueObject)
+			);			
+			foreach($products as $product) {
+				$existingAttributeTypes = $product->VariationAttributes();
+				$existingAttributeTypes->add($sizeObject);
+				$existingAttributeTypes->add($colourObject);
+				$existingAttributeTypes->write();
+				$product->writeToStage('Stage');
+				$product->Publish('Stage', 'Live');
+				$product->Status = "Published";
+				$product->flushCache();
+				if(!DataObject::get("ProductVariation", "ProductID  = ".$product->ID)) {
+					foreach($variationCombos as $variationCombo) {
+						$productVariation = new ProductVariation();
+						$productVariation->ProductID = $product->ID;
+						$productVariation->Price = $product->Price * 2;
+						$productVariation->write();
+						$existingAttributeValues = $productVariation->AttributeValues();
+						$existingAttributeValues->add($variationCombo["Size"]);
+						$existingAttributeValues->add($variationCombo["Colour"]);
+						$existingAttributeValues->write();
+						DB::alteration_message(" Creating variation for ".$product->Title . " // COLOUR ".$variationCombo["Colour"]->Value. " SIZE ".$variationCombo["Size"]->Value, "created");					
+					}
+				}
+			}
+		}
 	}
 
 	/**
