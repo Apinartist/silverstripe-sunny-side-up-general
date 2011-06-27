@@ -19,40 +19,28 @@ class ShareThis extends SiteTreeDecorator {
 	protected static $share_this_all_in_one = 0;
 		static function set_share_this_all_in_one($value) {$value = self::clean_boolean_value($value); self::$share_this_all_in_one = $value;}
 
+
 	/**
-	* show bookmark title next to icon
+	* use BW icons
 	* @var boolean
 	*/
 
-	protected static $show_share_this_title_with_icon = 0;
-		static function set_show_share_this_title_with_icon($value) {$value = self::clean_boolean_value($value); self::$show_share_this_title_with_icon = $value;}
-
-	/**
-	* specify alternative icons in the form of array($key => $filename, $key => $filename)
-	* @var array
-	*/
-
-	protected static $alternate_share_this_icons = array();
-		static function set_alternate_share_this_icons($array) {self::check_array($array); self::$alternate_share_this_icons = $array;}
-
-	/**
-	* use Black and White Mouse-Over effect
-	* @var boolean
-	*/
-
-	protected static $use_bw_share_this_effect = array();
-		static function set_use_bw_share_this_effect($value) {$value = self::clean_boolean_value($value); self::$use_bw_share_this_effect = $value;}
+	protected static $use_bw_share_this_effect = "";
+		static function set_use_bw_share_this_effect($s) {self::$use_bw_share_this_effect = $s;}
 
 	/**
 	* specify icons to be included, if left empty, this variable will be ignored
+	* We have this variable so that you can setup a bunch of default icons
 	* @var array
 	*/
 
 	protected static $share_this_icons_to_include = array();
 		static function set_share_this_icons_to_include($array) {self::check_array($array);  self::$share_this_icons_to_include = $array;}
 		static function get_share_this_icons_to_include() {return self::$share_this_icons_to_include;}
+
 	/**
 	* specify icons to be excluded, if left empty, this variable will be ignored
+	* We have this variable so that you can setup a bunch of default icons
 	* @var array
 	*/
 
@@ -146,18 +134,18 @@ class ShareThis extends SiteTreeDecorator {
 					$itemArray = array();
 					$itemArray["OnClick"] = isset($bookmark['click']) ? $bookmark['click'] : "";
 					$itemArray["Title"] = $bookmark['title'];
-					$itemArray["ShowTitle"] = self::$show_share_this_title_with_icon;
 					$itemArray["URL"] = $bookmark["url"];
+					$itemArray["Key"] = $key;
 					$itemArray["Key"] = $key;
 					if(isset($bookmark["icon"]) ) {
 						$itemArray["ImageSource"] = $bookmark["icon"];
-						$itemArray["ImageSourceOver"] = str_replace(array(".png", ".gif", ".jpg"), array("_over.png", "_over.gif", "_over.jpg"), $bookmark["icon"]);
 						$itemArray["UseStandardImage"] = 0;
 					}
 					else {
 						$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
 						$itemArray["UseStandardImage"] = 1;
 					}
+					$itemArray["ImageSourceOver"] = str_replace(array(".png", ".gif", ".jpg"), array("_over.png", "_over.gif", "_over.jpg"), $bookmark["icon"]);
 					$doSet->push(new ArrayData($itemArray));
 				}
 				else {
@@ -168,7 +156,7 @@ class ShareThis extends SiteTreeDecorator {
 		return $doSet;
 	}
 
-	protected function makeBookmarks($field = "IncludeThisIcon", $useAlternativeIcons = true) {
+	protected function makeBookmarks($field = "IncludeThisIcon") {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$finalBookmarks = array();
 		if($this->ThisPageHasShareThis()) {
@@ -176,13 +164,14 @@ class ShareThis extends SiteTreeDecorator {
 			$link = $this->owner->Link();
 			$description = $this->owner->MetaDescription;
 			$bookmarks = ShareThisOptions::get_page_specific_data($title, $link, $description);
-			if(1 == 1) {
-				$objects = DataObject::get("ShareThisDataObject", "{$bt}{$field}{$bt} = 1", "{$bt}Sort{$bt} ASC, {$bt}Title{$bt} ASC");
-				if($objects) {
-					if($objects->count()) {
-						foreach($objects as $obj) {
-							if(isset($bookmarks[$obj->Title])) {
-								$finalBookmarks[$obj->Title] = $bookmarks[$obj->Title];
+			$objects = DataObject::get("ShareThisDataObject", "{$bt}{$field}{$bt} = 1", "{$bt}Sort{$bt} ASC, {$bt}Title{$bt} ASC");
+			if($objects) {
+				if($objects->count()) {
+					foreach($objects as $obj) {
+						if(isset($bookmarks[$obj->Title])) {
+							$finalBookmarks[$obj->Title] = $bookmarks[$obj->Title];
+							if($obj->AlternativeIconID && $obj->AlternativeIcon()->exists()) {
+								$finalBookmarks[$obj->Title]["icon"] = $obj->AlternativeIcon()->Link();
 							}
 						}
 					}
@@ -191,26 +180,15 @@ class ShareThis extends SiteTreeDecorator {
 			else {
 				$finalBookmarks = $bookmarks;
 			}
-			//find images
-			if(count(self::$alternate_share_this_icons) && $useAlternativeIcons) {
-				foreach(self::$alternate_share_this_icons as $key => $file) {
-					if(!Director::fileExists($file)) {
-						debug::show("Error in ShareIcons::set_alternate_share_this_icons, $file ($key) does not exist - should be a file name (e.g. images/icons/myicon.gif)");
-					}
-					elseif(isset($finalBookmarks[$key]) && isset($finalBookmarks[$key])) {
-						$finalBookmarks[$key]["icon"] = $file;
-					}
-				}
-			}
-		}
-		if(!count($finalBookmarks)) {
-			$finalBookmarks = array();
 		}
 		return $finalBookmarks;
 	}
 
 	protected function SiteConfig(){
 		return SiteConfig::current_site_config();
+	}
+	function populateDefaults() {
+		$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultShareThisLinks;
 	}
 
 }

@@ -10,25 +10,10 @@
 class SocialNetworkingLinks extends SiteTreeDecorator {
 
 
-	/**
-	* show bookmark title next to icon
-	* @var boolean
-	*/
-
-	protected static $show_social_networking_links_title_with_icon = 0;
-		static function set_show_social_networking_links_title_with_icon($value) {self::$show_social_networking_links_title_with_icon = $value;}
-
-
 	function extraStatics(){
-		if($this->SiteConfig()->AlwaysInclude) {
-			return array();
-		}
-		else {
-			return array(
-				'db' => array('HasSocialNetworkingLinks' => 'Boolean' ),
-				'defaults' => array('HasSocialNetworkingLinks' => $this->SiteConfig()->IncludeByDefault),
-			);
-		}
+		return array(
+			'db' => array('HasSocialNetworkingLinks' => 'Boolean' )
+		);
 	}
 
 
@@ -42,7 +27,7 @@ class SocialNetworkingLinks extends SiteTreeDecorator {
 
 	public function ThisPageHasSocialNetworkingLinks() {
 		if($this->owner) {
-			if($this->SiteConfig()->AlwaysInclude) {
+			if($this->SiteConfig()->AlwaysIncludeSocialNetworkingLinks) {
 				return true;
 			}
 			elseif(isset($this->owner->HasSocialNetworkingLinks)) {
@@ -55,12 +40,6 @@ class SocialNetworkingLinks extends SiteTreeDecorator {
 	public function SocialNetworkingLinksDataObjects(){
 		if($this->ThisPageHasSocialNetworkingLinks()) {
 			if($objects = DataObject::get("SocialNetworkingLinksDataObject")) {
-				foreach($objects as $obj) {
-					$obj->ShowTitle = false;
-					if(self::$show_social_networking_links_title_with_icon) {
-						$obj->ShowTitle = true;
-					}
-				}
 				Requirements::themedCSS("SocialNetworking");
 				return $objects;
 			}
@@ -71,5 +50,8 @@ class SocialNetworkingLinks extends SiteTreeDecorator {
 		return SiteConfig::current_site_config();
 	}
 
+	function populateDefaults() {
+		$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultSocialNetworkingLinks;
+	}
 
 }
