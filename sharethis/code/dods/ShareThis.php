@@ -71,7 +71,7 @@ class ShareThis extends SiteTreeDecorator {
 		$fields->addFieldToTab("Root.SocialMedia", new LiteralField('LinkToSiteConfigSocialMedia', '<p>Note: make sure to review the social media settings in the <a href="/admin/show/root/">Site Config</a>.</p>'));
 		$list = ShareThisOptions::get_all_options($title = $this->owner->Title, $link = $this->owner->Link(), $description = $this->owner->MetaDescription);
 		$fields->addFieldToTab("Root.SocialMedia", new HeaderField("ShareThisNow", "Share this page on your favourite social media sites ..."));			
-		$html = "<div><p>Click on any of the icons below to share the '".$this->Title."'.</p>";
+		$html = "<div><p>Click on any of the icons below to share the '".$this->owner->Title."'.</p>";
 		foreach($list as $key => $innerArray) {
 			if(!isset($innerArray["click"])) {
 				$html .= '<span><a href="'.$innerArray["url"].'" target="_blank" style="whitespace: nowrap; display: inline-block;"><img src="/'.SHARETHIS_DIR.'/images/icons/'.$key.'.png" alt="'.$key.'" /> '.$innerArray["title"].'</a></span> &nbsp; &nbsp; ';
