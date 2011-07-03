@@ -23,7 +23,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $has_one = array(
 		'Icon' => 'Image',
-		'InternalLink' => 'SiteTree'
+		'InternalLink' => 'Page'
 	);
 
 	public static $defaults = array();
@@ -42,7 +42,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 
 	public static $summary_fields = array(
 		"Title" => "Title",
-		"HTMLIcon" => "Icon"
+		"IconHTML" => "Icon"
 	);
 
 	public static $default_sort = "\"Sort\" ASC, \"Title\" ASC";
@@ -86,6 +86,8 @@ class SocialNetworkingLinksDataObject extends DataObject {
 			$fields->addFieldToTab("Root.Main", new LiteralField("Link", '<p>Link: <a href="'.$this->Link().'">'.$this->Link().'</a></p>'));
 			$fields->addFieldToTab("Root.Main", new LiteralField("Link", '<p>'.$this->IconHTML().'</p>'));
 		}
+		$fields->removeFieldFromTab("Root.Main", "InternalLinkID");		
+		$fields->addFieldToTab("Root.Main", new TreeDropdownField("InternalLinkID", "Internal Link"), "URL");		
 		return $fields;
 	}
 

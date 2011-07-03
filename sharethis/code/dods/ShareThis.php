@@ -83,7 +83,7 @@ class ShareThis extends SiteTreeDecorator {
 	}
 
 	public function ThisPageHasShareThis() {
-		if($this->SiteConfig()->AlwaysInclude) {
+		if($this->SiteConfig()->AlwaysIncludeShareThisLinks) {
 			return true;
 		}
 		if(!$this->owner) {
@@ -145,7 +145,7 @@ class ShareThis extends SiteTreeDecorator {
 						$itemArray["ImageSource"] = "sharethis/images/icons/".$key.".png";
 						$itemArray["UseStandardImage"] = 1;
 					}
-					$itemArray["ImageSourceOver"] = str_replace(array(".png", ".gif", ".jpg"), array("_over.png", "_over.gif", "_over.jpg"), $bookmark["icon"]);
+					$itemArray["ImageSourceOver"] = str_replace(array(".png", ".gif", ".jpg"), array("_over.png", "_over.gif", "_over.jpg"), $itemArray["ImageSource"]);
 					$doSet->push(new ArrayData($itemArray));
 				}
 				else {

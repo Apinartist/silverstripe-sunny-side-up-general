@@ -232,4 +232,9 @@ SHARETHIS.addEntry(
 		}
 	}
 
+	private function facebookLike() {
+		//see http://developers.facebook.com/docs/reference/plugins/like/
+		return '<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=231498950207168&amp;xfbml=1"></script><fb:like href="www.test.com" send="false" width="450" show_faces="true" font="lucida grande"></fb:like>';
+	}
+
 }

@@ -7,7 +7,7 @@
 
 class MyTwitter extends RestfulService {
 
-	static function last_statuses($username, $count = null) {
+	static function last_statuses($username, $count = 0) {
 		$url = "http://twitter.com/statuses/user_timeline/$username.xml";
 		if($count) {
 			$url = HTTP::setGetVar('count', $count, $url);
