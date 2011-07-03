@@ -90,7 +90,12 @@ class MenuCache extends DataObjectDecorator {
 
 class MenuCache_Controller extends Extension {
 
-	static $allowed_actions = array("showcachedfield","clearfieldcache","showuncachedfield", "clearallfieldcaches");
+	static $allowed_actions = array(
+		"showcachedfield" => "ADMIN",
+		"clearfieldcache" => "ADMIN",
+		"showuncachedfield" => "ADMIN",
+		"clearallfieldcaches" => "ADMIN"
+	);
 
 	protected function getHtml($fieldNumber) {
 		if(MenuCache::get_layout_field() == $fieldNumber) {
