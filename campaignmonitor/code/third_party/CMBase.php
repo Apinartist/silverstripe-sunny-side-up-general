@@ -10,14 +10,14 @@
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
-*     * Redistributions of source code must retain the above copyright
-*       notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * Neither the name of Kaiser Shahid or Campaign Monitor nor the
-*       names of its contributors may be used to endorse or promote products
-*       derived from this software without specific prior written permission.
+*		 * Redistributions of source code must retain the above copyright
+*			 notice, this list of conditions and the following disclaimer.
+*		 * Redistributions in binary form must reproduce the above copyright
+*			 notice, this list of conditions and the following disclaimer in the
+*			 documentation and/or other materials provided with the distribution.
+*		 * Neither the name of Kaiser Shahid or Campaign Monitor nor the
+*			 names of its contributors may be used to endorse or promote products
+*			 derived from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY Kaiser Shahid "AS IS" AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -44,10 +44,10 @@
 * CHANGES: 2008-04-28
 * -------------------
 * - Now compatible with PHP4. Biggest changes include removing reliance on
-*   enhanced OOP syntax, and using XML Parser functions instead of SimpleXML.
+*	 enhanced OOP syntax, and using XML Parser functions instead of SimpleXML.
 * - Base class (CMBase) branches into CampaignMonitor and MailBuild
 * - CMBase contains all the shared API calls (and extended functionality 
-*   related to those) between both classes.
+*	 related to those) between both classes.
 *
 * @package CampaignMonitorLib
 * @subpackage CMBase
@@ -348,19 +348,19 @@ class CMBase
 		if(!$contents)
 			return array();
 	
-	    if(!function_exists('xml_parser_create'))
-	        return array();
+			if(!function_exists('xml_parser_create'))
+					return array();
 	
-	    // Get the PHP XML parser
-	    $parser = xml_parser_create($charset);
+			// Get the PHP XML parser
+			$parser = xml_parser_create($charset);
 	
-	    // Attempt to find the last tag in the $root path and use this as the 
-	    // start/end tag for the process of extracting the xml
+			// Attempt to find the last tag in the $root path and use this as the 
+			// start/end tag for the process of extracting the xml
 		// Example input: '/soap:Envelope/soap:Body'
 	
-	    // Toggles whether the extraction of xml into the array actually occurs
-	    $extract_on = TRUE;
-	    $start_and_end_element_name = '';
+			// Toggles whether the extraction of xml into the array actually occurs
+			$extract_on = TRUE;
+			$start_and_end_element_name = '';
 		$root_elements = explode('/', $root);
 		if ($root_elements != FALSE && 
 			!empty($root_elements)) {
@@ -369,125 +369,125 @@ class CMBase
 				$extract_on = FALSE;
 		}
 	
-	    xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, "UTF-8"); # http://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
-	    xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-	    xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
-	    xml_parse_into_struct($parser, trim($contents), $xml_values);
-	    xml_parser_free($parser);
+			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, "UTF-8"); # http://minutillo.com/steve/weblog/2004/6/17/php-xml-and-character-encodings-a-tale-of-sadness-rage-and-data-loss
+			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+			xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
+			xml_parse_into_struct($parser, trim($contents), $xml_values);
+			xml_parser_free($parser);
 	
-	    if(!$xml_values) 
-	    	return;
+			if(!$xml_values) 
+				return;
 	
-	    $xml_array = array();
-	    $parents = array();
-	    $opened_tags = array();
-	    $arr = array();
+			$xml_array = array();
+			$parents = array();
+			$opened_tags = array();
+			$arr = array();
 	
-	    $current = &$xml_array; // Reference
+			$current = &$xml_array; // Reference
 	
-	    // Go through the tags.
-	    $repeated_tag_index = array(); // Multiple tags with same name will be turned into an array
-	    foreach($xml_values as $data) {
-	        unset($attributes,$value); // Remove existing values, or there will be trouble
+			// Go through the tags.
+			$repeated_tag_index = array(); // Multiple tags with same name will be turned into an array
+			foreach($xml_values as $data) {
+					unset($attributes,$value); // Remove existing values, or there will be trouble
 	
-	        // This command will extract these variables into the foreach scope
-	        // tag(string), type(string), level(int), attributes(array).
-	        extract($data);
+					// This command will extract these variables into the foreach scope
+					// tag(string), type(string), level(int), attributes(array).
+					extract($data);
 	
-	        if (!empty($start_and_end_element_name) && 
-	        	$tag == $start_and_end_element_name) {
-	        	// Start at the next element (if looking at the opening tag), 
-	        	// or don't process any more elements (if looking at the closing tag)...
-	        	$extract_on = !$extract_on;
-	        	continue;
-	        }
+					if (!empty($start_and_end_element_name) && 
+						$tag == $start_and_end_element_name) {
+						// Start at the next element (if looking at the opening tag), 
+						// or don't process any more elements (if looking at the closing tag)...
+						$extract_on = !$extract_on;
+						continue;
+					}
 	
-	        if (!$extract_on)
-	        	continue;
-	        
-	        $result = array();
-	        $attributes_data = array();
-	        
-	        if(isset($value)) {
-	            if($priority == 'tag') $result = $value;
-	            else $result['value'] = $value; //Put the value in a assoc array if we are in the 'Attribute' mode
-	        }
+					if (!$extract_on)
+						continue;
+					
+					$result = array();
+					$attributes_data = array();
+					
+					if(isset($value)) {
+							if($priority == 'tag') $result = $value;
+							else $result['value'] = $value; //Put the value in a assoc array if we are in the 'Attribute' mode
+					}
 	
-	        // Set the attributes too.
-	        if(isset($attributes) and $get_attributes) {
-	            foreach($attributes as $attr => $val) {
-	                if($priority == 'tag') $attributes_data[$attr] = $val;
-	                else $result['attr'][$attr] = $val; // Set all the attributes in a array called 'attr'
-	            }
-	        }
+					// Set the attributes too.
+					if(isset($attributes) and $get_attributes) {
+							foreach($attributes as $attr => $val) {
+									if($priority == 'tag') $attributes_data[$attr] = $val;
+									else $result['attr'][$attr] = $val; // Set all the attributes in a array called 'attr'
+							}
+					}
 	
-	        // See tag status and do the needed.
-	        if($type == "open") {// The starting of the tag '<tag>'
-	            $parent[$level-1] = &$current;
-	            if(!is_array($current) or (!in_array($tag, array_keys($current)))) { //Insert New tag
-	                $current[$tag] = $result;
-	                if($attributes_data) $current[$tag. '_attr'] = $attributes_data;
-	                $repeated_tag_index[$tag.'_'.$level] = 1;
-	                $current = &$current[$tag];
-	            } else { // There was another element with the same tag name
-	                if(isset($current[$tag][0])) { // If there is a 0th element it is already an array
-	                    $current[$tag][$repeated_tag_index[$tag.'_'.$level]] = $result;
-	                    $repeated_tag_index[$tag.'_'.$level]++;
-	                } else { // This section will make the value an array if multiple tags with the same name appear together
-	                    $current[$tag] = array($current[$tag],$result); // This will combine the existing item and the new item together to make an array
-	                    $repeated_tag_index[$tag.'_'.$level] = 2;
-	                    
-	                    if(isset($current[$tag.'_attr'])) { // The attribute of the last(0th) tag must be moved as well
-	                        $current[$tag]['0_attr'] = $current[$tag.'_attr'];
-	                        unset($current[$tag.'_attr']);
-	                    }
-	                }
-	                $last_item_index = $repeated_tag_index[$tag.'_'.$level]-1;
-	                $current = &$current[$tag][$last_item_index];
-	            }
-	        } elseif($type == "complete") { // Tags that ends in 1 line '<tag />'
-	            // See if the key is already taken.
-	            if(!isset($current[$tag])) { //New Key
-	            	// Don't insert an empty array - we don't want it!
-	                if (!(is_array($result) && empty($result)))
-	                	$current[$tag] = $result;
-	                $repeated_tag_index[$tag.'_'.$level] = 1;
-	                if($priority == 'tag' and $attributes_data) $current[$tag. '_attr'] = $attributes_data;
+					// See tag status and do the needed.
+					if($type == "open") {// The starting of the tag '<tag>'
+							$parent[$level-1] = &$current;
+							if(!is_array($current) or (!in_array($tag, array_keys($current)))) { //Insert New tag
+									$current[$tag] = $result;
+									if($attributes_data) $current[$tag. '_attr'] = $attributes_data;
+									$repeated_tag_index[$tag.'_'.$level] = 1;
+									$current = &$current[$tag];
+							} else { // There was another element with the same tag name
+									if(isset($current[$tag][0])) { // If there is a 0th element it is already an array
+											$current[$tag][$repeated_tag_index[$tag.'_'.$level]] = $result;
+											$repeated_tag_index[$tag.'_'.$level]++;
+									} else { // This section will make the value an array if multiple tags with the same name appear together
+											$current[$tag] = array($current[$tag],$result); // This will combine the existing item and the new item together to make an array
+											$repeated_tag_index[$tag.'_'.$level] = 2;
+											
+											if(isset($current[$tag.'_attr'])) { // The attribute of the last(0th) tag must be moved as well
+													$current[$tag]['0_attr'] = $current[$tag.'_attr'];
+													unset($current[$tag.'_attr']);
+											}
+									}
+									$last_item_index = $repeated_tag_index[$tag.'_'.$level]-1;
+									$current = &$current[$tag][$last_item_index];
+							}
+					} elseif($type == "complete") { // Tags that ends in 1 line '<tag />'
+							// See if the key is already taken.
+							if(!isset($current[$tag])) { //New Key
+								// Don't insert an empty array - we don't want it!
+									if (!(is_array($result) && empty($result)))
+										$current[$tag] = $result;
+									$repeated_tag_index[$tag.'_'.$level] = 1;
+									if($priority == 'tag' and $attributes_data) $current[$tag. '_attr'] = $attributes_data;
 	
-	            } else { // If taken, put all things inside a list(array)
-	                if(isset($current[$tag][0]) and is_array($current[$tag])) { // If it is already an array...
+							} else { // If taken, put all things inside a list(array)
+									if(isset($current[$tag][0]) and is_array($current[$tag])) { // If it is already an array...
 	
-	                    // ...push the new element into that array.
-	                    $current[$tag][$repeated_tag_index[$tag.'_'.$level]] = $result;
-	                    
-	                    if($priority == 'tag' and $get_attributes and $attributes_data) {
-	                        $current[$tag][$repeated_tag_index[$tag.'_'.$level] . '_attr'] = $attributes_data;
-	                    }
-	                    $repeated_tag_index[$tag.'_'.$level]++;
+											// ...push the new element into that array.
+											$current[$tag][$repeated_tag_index[$tag.'_'.$level]] = $result;
+											
+											if($priority == 'tag' and $get_attributes and $attributes_data) {
+													$current[$tag][$repeated_tag_index[$tag.'_'.$level] . '_attr'] = $attributes_data;
+											}
+											$repeated_tag_index[$tag.'_'.$level]++;
 	
-	                } else { // If it is not an array...
-	                    $current[$tag] = array($current[$tag],$result); // ...Make it an array using using the existing value and the new value
-	                    $repeated_tag_index[$tag.'_'.$level] = 1;
-	                    if($priority == 'tag' and $get_attributes) {
-	                        if(isset($current[$tag.'_attr'])) { // The attribute of the last(0th) tag must be moved as well
-	                            
-	                            $current[$tag]['0_attr'] = $current[$tag.'_attr'];
-	                            unset($current[$tag.'_attr']);
-	                        }
-	                        
-	                        if($attributes_data) {
-	                            $current[$tag][$repeated_tag_index[$tag.'_'.$level] . '_attr'] = $attributes_data;
-	                        }
-	                    }
-	                    $repeated_tag_index[$tag.'_'.$level]++; // 0 and 1 index is already taken
-	                }
-	            }
-	        } elseif($type == 'close') { // End of tag '</tag>'
-	            $current = &$parent[$level-1];
-	        }
-	    }
-	    return($xml_array);
-	}  
+									} else { // If it is not an array...
+											$current[$tag] = array($current[$tag],$result); // ...Make it an array using using the existing value and the new value
+											$repeated_tag_index[$tag.'_'.$level] = 1;
+											if($priority == 'tag' and $get_attributes) {
+													if(isset($current[$tag.'_attr'])) { // The attribute of the last(0th) tag must be moved as well
+															
+															$current[$tag]['0_attr'] = $current[$tag.'_attr'];
+															unset($current[$tag.'_attr']);
+													}
+													
+													if($attributes_data) {
+															$current[$tag][$repeated_tag_index[$tag.'_'.$level] . '_attr'] = $attributes_data;
+													}
+											}
+											$repeated_tag_index[$tag.'_'.$level]++; // 0 and 1 index is already taken
+									}
+							}
+					} elseif($type == 'close') { // End of tag '</tag>'
+							$current = &$parent[$level-1];
+					}
+			}
+			return($xml_array);
+	}	
 
 	/**
 	* Converts an array to XML. This is the inverse to xml2array(). Values
@@ -578,7 +578,7 @@ class CampaignMonitor extends CMBase
 	* @return mixed A parsed response from the server, or null if something failed.
 	* @see http://www.campaignmonitor.com/api/Subscribers.GetActive.aspx
 	*/
-	function subscribersGetActive( $date  = 0, $list_id = null, $action = 'Subscribers.GetActive' )
+	function subscribersGetActive( $date	= 0, $list_id = null, $action = 'Subscribers.GetActive' )
 	{
 		if ( !$list_id )
 			$list_id = $this->list_id;
@@ -605,7 +605,7 @@ class CampaignMonitor extends CMBase
 	* @param int $list_id (Optional) A valid List ID to check against. If not given, the default class property is used.
 	* @see http://www.campaignmonitor.com/api/Subscribers.GetUnsubscribed.aspx
 	*/
-	function subscribersGetUnsubscribed( $date  = 0, $list_id = null )
+	function subscribersGetUnsubscribed( $date	= 0, $list_id = null )
 	{
 		return $this->subscribersGetActive( $date, $list_id, 'Subscribers.GetUnsubscribed' );
 	}
@@ -615,7 +615,7 @@ class CampaignMonitor extends CMBase
 	* @param int $list_id (Optional) A valid List ID to check against. If not given, the default class property is used.
 	* @see http://www.campaignmonitor.com/api/Subscribers.GetBounced.aspx
 	*/
-	function subscribersGetBounced( $date  = 0, $list_id = null )
+	function subscribersGetBounced( $date	= 0, $list_id = null )
 	{
 		return $this->subscribersGetActive( $date, $list_id, 'Subscribers.GetBounced' );
 	}
@@ -655,12 +655,12 @@ class CampaignMonitor extends CMBase
 	*/
 	function subscriberAddRedundant( $email, $name, $list_id = null )
 	{
-		$added = $this->subscriberAdd( $email, $name, $list_id );        
-	        
+		$added = $this->subscriberAdd( $email, $name, $list_id );				
+					
 		if ( $added && $added['Result']['Code'] == '204' )
 		{
-			$subscribed = $this->subscribersGetIsSubscribed( $email, $list_id );    
-	    
+			$subscribed = $this->subscribersGetIsSubscribed( $email, $list_id );		
+			
 			// Must have unsubscribed, so resubscribe
 			if ( $subscribed['anyType'] == 'False' )
 			{
@@ -678,7 +678,7 @@ class CampaignMonitor extends CMBase
 	* @param string $email Email address.
 	* @param string $name User's name.
 	* @param mixed $fields Should be a $key => $value mapping. If there are more than one items for $key, let
-	*        $value be a list of scalar values. Example: array( 'Interests' => array( 'xbox', 'wii' ) )
+	*				$value be a list of scalar values. Example: array( 'Interests' => array( 'xbox', 'wii' ) )
 	* @param int $list_id (Optional) A valid List ID to check against. If not given, the default class property is used.
 	* @param boolean $resubscribe If true, does an equivalent 'AndResubscribe' API method.
 	* @return mixed A parsed response from the server, or null if something failed.
@@ -782,7 +782,7 @@ class CampaignMonitor extends CMBase
 	* @param string $email User's email
 	* @param mixed $lists An associative array of lists to check against. Each key should be a List ID
 	* @param boolean $no_assoc If true, only returns an array where each value indicates that the user is subscribed
-	*        to that particular list. Otherwise, returns a fully associative array of $list_id => true | false.
+	*				to that particular list. Otherwise, returns a fully associative array of $list_id => true | false.
 	* @return mixed An array corresponding to $lists where true means the user is subscribed to that particular list.
 	*/
 	function checkSubscriptions( $email, $lists, $no_assoc = true )
@@ -834,22 +834,22 @@ class CampaignMonitor extends CMBase
 	 * @see http://www.campaignmonitor.com/api/method/subscribers-get-single-subscriber/
 	 */
 	function subscriberGetSingleSubscriber($list_id = null, $email)
-    {
-        if (!$list_id != null)
-            $list_id = $this->list_id;
+		{
+				if (!$list_id != null)
+						$list_id = $this->list_id;
 
-        return $this->makeCall( 
-        	'Subscribers.GetSingleSubscriber',
-            array(
-                'params' => array(
-                    'ListID' => $list_id,
-                    'EmailAddress' => $email
-                )
-            )
-        );
-    }	
+				return $this->makeCall( 
+					'Subscribers.GetSingleSubscriber',
+						array(
+								'params' => array(
+										'ListID' => $list_id,
+										'EmailAddress' => $email
+								)
+						)
+				);
+		}	
 
-    /*
+		/*
 	* A generic wrapper to feed Client.* calls.
 	*
 	* @param string $method The API method to call.
@@ -1242,7 +1242,7 @@ class CampaignMonitor extends CMBase
 	* @param string $textUrl (TextUrl) Location of plaintext body of email
 	* @param array $subscriberListIds (SubscriberListIDs) An array of ListIDs. This will automatically be converted to the right format
 	* @param array $listSegments (ListSegments) An array of segment names and their corresponding ListIDs. Each element needs to
-	*        be an associative array with keys ListID and Name.
+	*				be an associative array with keys ListID and Name.
 	* @return mixed A parsed response from the server, or null if something failed.
 	* @see http://www.campaignmonitor.com/api/Campaign.Create.aspx
 	*/
@@ -1296,7 +1296,7 @@ class CampaignMonitor extends CMBase
 	* @param int $client_id The CampaignID you wish to use; set it to null to use the default class property
 	* @param string $confirmEmail (ConfirmationEmail) Email address to send confirmation of campaign send to
 	* @param string $sendDate (SendDate) The timestamp to send the campaign. It must be formatted as YYY-MM-DD HH:MM:SS 
-	*               and should correspond to user's timezone.
+	*							 and should correspond to user's timezone.
 	*/
 	
 	function campaignSend( $campaign_id, $confirmEmail, $sendDate )

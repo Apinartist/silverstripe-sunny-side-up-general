@@ -90,7 +90,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		}
 	}
 
-  public function addCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
+  public function addCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false, $params = array()) {
     //internal database
 		if($page->GroupID) {
 			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
@@ -105,7 +105,7 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 		}
   }
 
-  public function removeCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false) {
+  public function removeCampaignMonitorList($page, $alsoSynchroniseCMDatabase = false, $params = array()) {
     //internal database
 		if($page->GroupID) {
 			if($gp = DataObject::get_by_id("Group", $page->GroupID)) {
