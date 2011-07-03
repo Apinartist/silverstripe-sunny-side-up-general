@@ -298,9 +298,12 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 	}
 
 	function numberOfMinutesMemberIsListed($member) {
-		$timestamp = strtotime(strval($member->Created));
-		$nowTimestamp = time();
-		return ($nowTimestamp - $timestamp) / 60;
+		if($member) {
+			$timestamp = strtotime(strval($member->Created));
+			$nowTimestamp = time();
+			return ($nowTimestamp - $timestamp) / 60;
+		}
+		return 0;
 	}
 
 }
