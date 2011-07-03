@@ -68,8 +68,6 @@ class TypographyTestPage extends Page {
 
 class TypographyTestPage_Controller extends Page_Controller {
 
-	static $allowed_actions = array("typographyhtml", "test");
-
 
 	function init() {
 		parent::init();
