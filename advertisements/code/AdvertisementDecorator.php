@@ -71,10 +71,12 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$where = '';
 			if($this->owner->AdvertisementsFolderID) {
 				$images = DataObject::get("Image", "ParentID = ".$this->owner->AdvertisementsFolderID);
-				$where = "\"AdvertisementImageID\" IN (".implode(",", $images->map("ID", "ID")).")";
-			}
-			if($where) {
-				$whereDB = "WHERE 1 = 2".$where;
+				if($images) {
+					$where = "\"AdvertisementImageID\" IN (".implode(",", $images->map("ID", "ID")).")";
+				}
+				else {
+					$where = " 1 = 2";
+				}
 			}
 
 			//create new advertisements
@@ -111,7 +113,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsHowToCreate", $txt));
 			}
 			if($parent = $this->advertisementParent()) {
-				$txt = sprintf(_t("AdvertisementDecorator.ORUSE", 'OR  ... use %1$s from  <i>%2$s</i>.', Advertisement::$plural_name, $parent->Title));
+				$txt = sprintf(_t("AdvertisementDecorator.ORUSE", 'OR  ... use %1$s from  <i>%2$s</i>.'), Advertisement::$plural_name, $parent->Title);
 				$fields->addFieldToTab($tabName, new CheckboxField("UseParentAdvertisements", $txt));
 			}
 			if($styles = DataObject::get("AdvertisementStyle")) {
