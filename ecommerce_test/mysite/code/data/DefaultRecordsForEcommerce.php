@@ -4,21 +4,36 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		$array = $this->UpdateSQLArray();
-		foreach($array as $innerArray) {
-			if(isset($innerArray["W"]) && $innerArray["W"]) {
-				$innerArray["W"] = " WHERE ".$innerArray["W"];
+
+		$orders = DataObject::get("Order");
+		if($orders) {
+			foreach($orders as $order) {
+				$order->delete();
 			}
-			else {
-				$innerArray["W"] = '';
-			}
-			$T = $innerArray["T"];
-			$F = $innerArray["F"];
-			$V = $innerArray["V"];
-			$W = $innerArray["W"];
-			DB::query("UPDATE \"$T\" SET \"$F\" = '$V' $W");
-			DB::alteration_message(" SETTING $F TO $V IN $T $W ", "created");
 		}
+		
+		$obj = new CartCleanupTask();
+		$obj->cleanupUnlinkedOrderObjects();
+
+		$this->hacks();
+		
+		$this->CreatePages();
+		
+		$this->AddVariations();
+		
+		$this->AddMyModifiers();
+		
+		$this->UpdateMyRecords();
+	}
+
+	private function hacks() {
+		DB::query("DELETE FROM OrderAddress");
+		DB::query("DELETE FROM BillingAddress");
+		DB::query("DELETE FROM ShippingAddress");
+	}
+
+	private function CreatePages()  {
+
 		DB::query("DELETE FROM SiteTree");
 		DB::query("DELETE FROM SiteTree_Live");
 		DB::query("DELETE FROM SiteTree_versions");
@@ -28,6 +43,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 		//DB::query("DELETE FROM AccountPage");
 		//DB::query("DELETE FROM AccountPage_Live");
 		//DB::query("DELETE FROM AccountPage_versions");
+		DB::query("DELETE FROM CartPage");
+		DB::query("DELETE FROM CartPage_Live");
+		DB::query("DELETE FROM CartPage_versions");
 		DB::query("DELETE FROM CheckoutPage");
 		DB::query("DELETE FROM CheckoutPage_Live");
 		DB::query("DELETE FROM CheckoutPage_versions");
@@ -50,15 +68,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 		foreach($pages as $fields) {
 			$this->MakePage($fields);
 		}
-		$orders = DataObject::get("Order");
-		if($orders) {
-			foreach($orders as $order) {
-				$order->delete();
-			}
-		}
-		$this->AddVariations();
-		$obj = new CartCleanupTask();
-		$obj->cleanupUnlinkedOrderObjects();
 	}
 
 	private function MakePage($fields, $parentPage = null) {
@@ -92,15 +101,34 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 	}
 
-	private function UpdateSQLArray() {
-		return array(
+	private function UpdateMyRecords() {
+		$array = array(
 			array("T" => "SiteConfig", "F" => "Title", "V" => "Silverstripe Ecommerce Demo", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Tagline", "V" => "Built by Sunny Side Up", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Theme", "V" => "main", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
 			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
+			array("T" => "CartPage", "F" => "CheckoutPageID", "V" => DataObject::get_one("CheckoutPage", "ClassName = 'CheckoutPage'")->ID, "W" => ""),
+			array("T" => "CartPage", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
+			array("T" => "CartPage_Live", "F" => "CheckoutPageID", "V" => DataObject::get_one("CheckoutPage", "ClassName = 'CheckoutPage'")->ID, "W" => ""),
+			array("T" => "CartPage_Live", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 		);
+		foreach($array as $innerArray) {
+			if(isset($innerArray["W"]) && $innerArray["W"]) {
+				$innerArray["W"] = " WHERE ".$innerArray["W"];
+			}
+			else {
+				$innerArray["W"] = '';
+			}
+			$T = $innerArray["T"];
+			$F = $innerArray["F"];
+			$V = $innerArray["V"];
+			$W = $innerArray["W"];
+			DB::query("UPDATE \"$T\" SET \"$F\" = '$V' $W");
+			DB::alteration_message(" SETTING $F TO $V IN $T $W ", "created");
+		}
 	}
 
 	private function AddVariations() {
@@ -232,8 +260,44 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "checkout",
 				"Title" => "Checkout",
 				"MenuTitle" => "Checkout",
-				"Content" => "<p>Enter your details below to complete your order.</p>",
-			)
+				"Content" => "<p>For further information on our terms of trade, please visit .....</p>",
+				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
+				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
+				"FinalizedOrderLinkLabel" => "View completed order",
+				"CurrentOrderLinkLabel" => "View current order",
+				"StartNewOrderLinkLabel" => "Start new order",
+				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
+				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
+				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
+				"LoginToOrderLinkLabel" => "Log in now to checkout order"				
+			),
+			array(
+				"ClassName" => "OrderConfirmationPage",
+				"URLSegment" => "confirmorder",
+				"Title" => "Order Confirmation",
+				"MenuTitle" => "Order Confirmation",
+				"ShowInMenus" => 0,
+				"ShowInSearch" => 0,
+				"Content" => "<p>Please review your order below.</p>"
+			),
+			array(
+				"ClassName" => "CartPage",
+				"URLSegment" => "cart",
+				"Title" => "Cart",
+				"MenuTitle" => "Cart",
+				"ShowInMenus" => 0,
+				"ShowInSearch" => 0,
+				"Content" => "<p>Please review your order below.</p>"		
+			),
+			array(
+				"ClassName" => "AccountPage",
+				"URLSegment" => "account page",
+				"Title" => "Account Page",
+				"MenuTitle" => "Account Page",
+				"ShowInMenus" => 0,
+				"ShowInSearch" => 0,
+				"Content" => "<p>Update your details below.</p>"		
+			)			
 		);
 	}
 
@@ -252,6 +316,40 @@ class DefaultRecordsForEcommerce extends DataObject {
 			);
 		}
 		return $array;
+	}
+
+
+	private function AddMyModifiers() {
+		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'pickup'")) {
+			$obj = new PickUpOrDeliveryModifierOptions();
+			$obj->IsDefault = 1;
+			$obj->Code = "pickup";
+			$obj->Name = "pickup from Store";
+			$obj->MinimumDeliveryCharge = 0;
+			$obj->MaximumDeliveryCharge = 0;
+			$obj->MinimumOrderAmountForZeroRate= 0;
+			$obj->WeightMultiplier= 0;
+			$obj->WeightUnit= 0;
+			$obj->Percentage= 0;
+			$obj->FixedCost= 3;
+			$obj->Sort= 0;
+			$obj->write();
+		}
+		$obj = null;
+		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'delivery'")) {
+			$obj->IsDefault = 0;
+			$obj->Code = "delivery";
+			$obj->Name = "delivery via Courier Bob";
+			$obj->MinimumDeliveryCharge = 0;
+			$obj->MaximumDeliveryCharge = 0;
+			$obj->MinimumOrderAmountForZeroRate= 0;
+			$obj->WeightMultiplier= 0;
+			$obj->WeightUnit= 0;
+			$obj->Percentage= 0;
+			$obj->FixedCost= 13;
+			$obj->Sort= 100;
+			$obj->write();
+		}
 	}
 
 }

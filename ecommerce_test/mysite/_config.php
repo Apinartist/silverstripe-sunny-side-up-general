@@ -10,7 +10,7 @@ SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
-Member::set_password_validator( new NZGovtPasswordValidator());
+//Member::set_password_validator( new NZGovtPasswordValidator());
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
@@ -51,7 +51,7 @@ PageComment::enableModeration();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample"));
+Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample", "GSTTaxModifier"));
 
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
@@ -169,6 +169,10 @@ MetaTagAutomation::add_google_font("Quattrocento+Sans");
 //===================---------------- END metatags MODULE ----------------===================
 
 
+
+
+
+
 //===================---------------- START payment MODULE ----------------===================
 Payment::set_site_currency("NZD");
 Payment::set_supported_methods(array(
@@ -178,7 +182,11 @@ Payment::set_supported_methods(array(
 //===================---------------- END payment MODULE ----------------===================
 
 
-//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+
+
+
+
+
 // __________________________________ START ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
 //MAY SET
 ProductsAndGroupsModelAdmin::add_managed_model("ProductAttributeValue");
@@ -192,6 +200,13 @@ ProductAttributeDecoratorColour_Value::set_default_colour("000000");
 // __________________________________ END ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
 
 
+
+
+
+
+
+
+
 //===================---------------- START ecommerce_Repeatorders MODULE ----------------===================
 Object::add_extension('Order', 'AutomaticallyCreatedOrderDecorator');
 RepeatOrder::set_delivery_days(array('Tuesday','Wednesday','Thursday','Friday'));
@@ -203,9 +218,26 @@ RepeatOrder::set_minimum_days_in_the_future(3);
 //===================---------------- END ecommerce_Repeatorders MODULE ----------------===================
 
 
-//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
+
+
+
 //===================---------------- START ecommerce_delivery MODULE ----------------===================
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
 PickUpOrDeliveryModifier::set_form_header("Delivery Option (REQUIRED)");
 StoreAdmin::add_managed_model("PickUpOrDeliveryModifierOptions");
 //===================---------------- END ecommerce_delivery  MODULE ----------------===================
+
+
+
+//===================---------------- START ecommerce_tax MODULE ----------------===================
+// *** GST TAX MODIFIER
+GSTTaxModifier::set_default_country_code("NL");
+//GSTTaxModifier::set_fixed_country_code("NZ");
+//GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
+//GSTTaxModifier::set_inclusive_explanation(" (included in prices above)");
+//GSTTaxModifier::set_based_on_country_note(" - based on a sale to: ");
+//GSTTaxModifier::set_no_tax_description("tax-exempt");
+//GSTTaxModifier::set_refund_title("Tax Exemption");
+//GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
+StoreAdmin::add_managed_model("GSTTaxModifierOptions");
+//===================---------------- END ecommerce_tax MODULE ----------------===================
