@@ -26,8 +26,9 @@ class GoogleMapDataResponse extends Controller {
 	protected $owner = null;
 	protected $lng = 0;
 	protected $lat = 0;
-	protected $title = 0;
-	protected $filter = 0;
+	protected $title = "";
+	protected $sessionTitle = "";
+	protected $filter = "";
 	protected $map = null;
 
 /* ******************************
@@ -48,6 +49,7 @@ class GoogleMapDataResponse extends Controller {
 		}
 		//END HACK
 		$this->title = urldecode($this->request->param("Title"));
+		$this->sessionTitle = $sessionTitle = preg_replace('/[^a-zA-Z0-9]/', '', $this->title);
 		$this->lng = floatval($this->request->param("Longitude"));
 		$this->lat = floatval($this->request->param("Latitude"));
 		$this->filter = urldecode($this->request->param("Filter"));
@@ -125,8 +127,8 @@ class GoogleMapDataResponse extends Controller {
 	public function showcustompagesmapxml() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$array = Array(-1);
-		if(isset($_SESSION["addCustomGoogleMap"])) {
-			$array = $_SESSION["addCustomGoogleMap"];
+		if(isset($_SESSION["addCustomGoogleMap"][$this->title])) {
+			$array = $_SESSION["addCustomGoogleMap"][$this->title];
 		}
 		//print_r($array);
 		if(is_array($array) && count($array)) {
@@ -136,13 +138,14 @@ class GoogleMapDataResponse extends Controller {
 			$where = " {$bt}SiteTree_Live{$bt}.{$bt}ID{$bt} < 0";
 		}
 		$pages = Versioned::get_by_stage("SiteTree", "Live", $where);
-		return $this->makeXMLData($pages, null, "Search results", "Search results");
+		return $this->makeXMLData($pages, null, $this->title, $this->title);
 	}
+	
 	public function showcustomdosmapxml() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$array = Array(-1);
-		if(isset($_SESSION["addCustomGoogleMap"])) {
-			$array = $_SESSION["addCustomGoogleMap"];
+		if(isset($_SESSION["addCustomGoogleMap"][$this->title])) {
+			$array = $_SESSION["addCustomGoogleMap"][$this->title];
 		}
 		//print_r($array);
 		if(is_array($array) && count($array)) {
@@ -152,7 +155,7 @@ class GoogleMapDataResponse extends Controller {
 			$where = " {$bt}GoogleMapLocationsObject{$bt}.{$bt}ID{$bt} < 0";
 		}
 		$googleMapLocationsObjects = DataObject::get("GoogleMapLocationsObject",$where);
-		return $this->makeXMLData(null, $googleMapLocationsObjects, "Search results", "Search results");
+		return $this->makeXMLData(null, $googleMapLocationsObjects, $this->title, $this->title);
 	}
 
 	public function showaroundmexml() {

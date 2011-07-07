@@ -202,13 +202,23 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		$this->map->allowAddPointsToMap();
 	}
 
-	function addCustomMap($pagesOrGoogleMapLocationsObjects, $retainOldSessionData = false) {
+	function clearCustomMaps() {
+		$_SESSION["addCustomGoogleMap"] =  null;
+		$_SESSION["addCustomGoogleMap"] =  array();
+	}
+
+	function addCustomMap($pagesOrGoogleMapLocationsObjects, $retainOldSessionData = false, $title = '') {
+		$sessionTitle = preg_replace('/[^a-zA-Z0-9]/', '', $title);
 		$isGoogleMapLocationsObject = true;
 		if($pagesOrGoogleMapLocationsObjects) {
 			//Session::clear("addCustomGoogleMap");
 			if(!$retainOldSessionData) {
-				$_SESSION["addCustomGoogleMap"] =  null;
-				$_SESSION["addCustomGoogleMap"] =  array();
+				$this->clearCustomMaps();
+			}
+			else {
+				if(is_array($_SESSION["addCustomGoogleMap"])) {	
+					$customMapCount = count($_SESSION["addCustomGoogleMap"]);
+				}
 			}
 			foreach($pagesOrGoogleMapLocationsObjects as $obj) {
 				if($obj instanceOf SiteTree) {
@@ -217,7 +227,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 				if(!$obj->ID) {
 					user_error("Page provided to addCustomMap that does not have an ID", E_USER_ERROR);
 				}
-				$_SESSION["addCustomGoogleMap"][] = $obj->ID;
+				$_SESSION["addCustomGoogleMap"][$title][] = $obj->ID;
 			}
 		}
 		Session::save();
@@ -227,7 +237,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		else {
 			$fn = "showcustompagesmapxml";
 		}
-		$this->addMap($fn);
+		$this->addMap($fn, $title);
 		return Array();
 	}
 
@@ -236,11 +246,13 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	 *
 	 * @param $obj DataObject The Object of which you want to find the children
 	 * @param $classType String The text string to match `ClassName` field
-	 * @return DataObjectSet of Class $classType
+	 * @return DataObjectSet of items if Class $classType
 	 */
-	function getChildrenOfType($CurrentPage,$classType=null) {
+	function getChildrenOfType($CurrentPage, $classType=null) {
 		$children = $CurrentPage->AllChildren();
-		if (!isset($childrenOfType)) $childrenOfType=new DataObjectSet();
+		if (!isset($childrenOfType)) {
+			$childrenOfType=new DataObjectSet();
+		}
 		if ($children) {
 			foreach($children as $item ) {
 				$childrenOfType->merge($this->getChildrenOfType($item,$classType));

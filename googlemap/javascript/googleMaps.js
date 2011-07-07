@@ -857,16 +857,19 @@ GMC.prototype.updateLists = function() {
 GMC.prototype.createSideBar = function(sideBarArray) {
 	if(this.opts.sideBarId) {
 		var el;
+		var layerName = '';
+		var sideBarElements = '';
 		if(el = document.getElementById(this.opts.sideBarId)) {
 			var html = '<ul id="' + this.opts.sideBarId + 'list">';
 			for (var j = 0; j < sideBarArray.length; j++) {
-				var sideBarElements = sideBarArray[j].split("$$$", 2);
+				sideBarElements = sideBarArray[j].split("$$$", 2);
 				i = sideBarElements[1];
+				layerName = this.gmarkers[i].layerId;				
 				if(!strpos(this.gmarkers[i].serverId, "manuallyAdded", 0)) {
-					html += '<li><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
+					html += '<li class="forLayer'+layerName+'"><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
 				}
 				else {
-					html += '<li>You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
+					html += '<li class="forLayer'+layerName+'">You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
 				}
 			}
 			html += '</ul>';
