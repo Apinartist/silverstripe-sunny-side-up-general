@@ -74,7 +74,7 @@ class ShareThis extends SiteTreeDecorator {
 		$html = "<div><p>Click on any of the icons below to share the <i>'".$this->owner->Title."'</i> page. Any click will open a new tab/window where you will need to enter your login details.</p>";
 		foreach($list as $key => $innerArray) {
 			if(!isset($innerArray["click"])) {
-				$html .= '<span><a href="'.$innerArray["url"].'" target="_blank" style="whitespace: nowrap; display: inline-block;"><img src="/'.SHARETHIS_DIR.'/images/icons/'.$key.'.png" alt="'.$key.'" /> '.$innerArray["title"].'</a></span> &nbsp; &nbsp; ';
+				$html .= '<span><a href="'.$innerArray["url"].'" target="_blank" style="whitespace: nowrap; display: inline-block;"><img src="/'.SS_SHARETHIS_DIR.'/images/icons/'.$key.'.png" alt="'.$key.'" /> '.$innerArray["title"].'</a></span> &nbsp; &nbsp; ';
 			}
 		}
 		$html .= '</div>';
@@ -102,7 +102,7 @@ class ShareThis extends SiteTreeDecorator {
 	}
 
 	public function ShareAllExpandedList() {
-		Requirements::javascript(SHARETHIS_DIR."/javascript/ShareAllExpandedList.js");
+		Requirements::javascript(SS_SHARETHIS_DIR."/javascript/ShareAllExpandedList.js");
 		$bookmarks = $this->makeBookmarks($field = "IncludeThisIconInExtendedList", $useAlternativeIcons = false);
 		return $this->makeShareIcons($bookmarks);
 	}
@@ -125,7 +125,7 @@ class ShareThis extends SiteTreeDecorator {
 		$doSet = new DataObjectSet();
 		if($this->ThisPageHasShareThis() && $bookmarks){
 			Requirements::themedCSS("SocialNetworking");
-			Requirements::javascript(SHARETHIS_DIR."/javascript/shareThis.js");
+			Requirements::javascript(SS_SHARETHIS_DIR."/javascript/shareThis.js");
 			if(self::$use_bw_share_this_effect) {
 				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
 			}

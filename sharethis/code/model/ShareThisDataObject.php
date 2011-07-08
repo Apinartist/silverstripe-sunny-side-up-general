@@ -72,7 +72,7 @@ class ShareThisDataObject extends DataObject {
 		if($this->AlternativeIcon() && $this->AlternativeIcon()->Exists())  {
 			return $this->AlternativeIcon()->SetHeight(16);
 		}
-		return '<img src="'.SHARETHIS_DIR."/images/icons/".strtolower($this->Title).".png".'" alt="'.$this->Title.'" />';
+		return '<img src="/'.SS_SHARETHIS_DIR."/images/icons/".strtolower($this->Title).".png".'" alt="'.$this->Title.'" />';
 	}
 
 	function getCMSFields() {

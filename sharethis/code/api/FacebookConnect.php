@@ -39,7 +39,7 @@ class FacebookConnect extends Object {
 	protected $facebook_connect_singleton = null;
 
 	public static function get_my_facebook_api () {
-		include(SHARETHIS_DIR."/third_party/facebook.php");
+		include(SS_SHARETHIS_DIR."/third_party/facebook.php");
 		if(!self::$my_facebook_api) {
 			self::$facebook_connect_singleton = new FacebookConnect();
 			$facebook = self::$facebook_connect_singleton->connectToFacebook(self::get_application_id(), self::get_application_secret());
