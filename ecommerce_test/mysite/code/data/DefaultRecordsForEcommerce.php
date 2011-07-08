@@ -337,6 +337,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 		$obj = null;
 		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'delivery'")) {
+			$obj = new PickUpOrDeliveryModifierOptions();
 			$obj->IsDefault = 0;
 			$obj->Code = "delivery";
 			$obj->Name = "delivery via Courier Bob";
