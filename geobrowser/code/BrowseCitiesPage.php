@@ -2,12 +2,24 @@
 
 class BrowseCitiesPage extends BrowseAbstractPage {
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $icon = "geobrowser/images/treeicons/BrowseCitiesPage";
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $default_parent = "BrowseRegionsPage";
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $can_be_root = false;
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $db = array(
 		"Latitude" => "Double",
 		"Longitude" => "Double",
@@ -16,23 +28,31 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 		"Code" => "Varchar(4)",
 	);
 
-	public function canCreate() {
-		return parent::canCreate();
-	}
-
-	public static $breadcrumbs_delimiter = " &raquo; ";
-
-	static function get_clostest_city_page($addressArray, $maxradius = 5000) {
+	/**
+	 * Standard SS Static
+	 **/ 
+	static $defaults = array(
+		"ShowInMenus" => false
+	);
+	
+	/**
+	 * @param Array - $googleMapAddressArray: an array of geographic data provided by google maps
+	 * @param Int - $maxRadius: maximum number of kilometers (as the bird flies) between search point defined in $googleMapAddressArray and city found.
+	 * @return Object | false : returns a BrowseCitiesPage or false if nothing was found
+	 **/ 
+	public static function get_clostest_city_page($googleMapAddressArray, $maxRadius = 500) {
+		$cityPage = null;
+		$suburbPage	= null;
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$existingDistance = $maxradius+1;
-		$newDistance = $maxradius+1;
+		$existingDistance = $maxRadius+1;
+		$newDistance = $maxRadius+1;
 		$existingPage = null;
 		$newPage = null;
-		$radiusSelectionSQL = self::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "BrowseCitiesPage", "Latitude", "Longitude");
+		$radiusSelectionSQL = self::radiusDefinitionOtherTable($googleMapAddressArray[0], $googleMapAddressArray[1], "BrowseCitiesPage", "Latitude", "Longitude");
 		$sqlQuery = new SQLQuery();
 		$sqlQuery->select = array("{$bt}BrowseCitiesPage{$bt}.{$bt}ID{$bt}, ". $radiusSelectionSQL." as distance");
 		$sqlQuery->from[] = "{$bt}BrowseCitiesPage{$bt}";
-		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxradius;
+		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxRadius;
 		$sqlQuery->orderby = " distance ";
 		$sqlQuery->limit = "1";
 		$result = $sqlQuery->execute();
@@ -41,11 +61,11 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 			$existingDistance = $row["distance"];
 			$existingPage = DataObject::get_by_id("BrowseCitiesPage", $row["ID"]);
 		}
-		$radiusSelectionSQL = self::radiusDefinitionOtherTable($addressArray[0], $addressArray[1], "cities", "Latitude", "Longitude");
+		$radiusSelectionSQL = self::radiusDefinitionOtherTable($googleMapAddressArray[0], $googleMapAddressArray[1], "cities", "Latitude", "Longitude");
 		$sqlQuery = new SQLQuery();
 		$sqlQuery->select = array("cities.CityID", $radiusSelectionSQL." as distance");
 		$sqlQuery->from[] = "{$bt}cities{$bt}";
-		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxradius;
+		$sqlQuery->where[] = $radiusSelectionSQL . " < ".$maxRadius;
 		$sqlQuery->orderby = " distance ";
 		$sqlQuery->limit = "1";
 		$result = $sqlQuery->execute();
@@ -61,41 +81,51 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 				$newDistance = $row["distance"];
 			}
 		}
-		if( ( $newPage) && ($newDistance < $existingDistance) &&  ($newDistance < $maxradius) ) {
-			return $newPage;
+		if( ( $newPage) && ($newDistance < $existingDistance) &&  ($newDistance < $maxRadius) ) {
+			$cityPage = $newPage;
 		}
-		elseif($existingPage && $existingDistance < $maxradius) {
-			return $existingPage;
+		elseif($existingPage && $existingDistance < $maxRadius) {
+			$cityPage = $existingPage;
 		}
-		else {
-			return false;
+		if($cityPage) {
+			if($cityPage->allowBrowseChildren() ) {
+				$suburbPage = BrowseSuburbPage::create_suburb( $googleMapAddressArray, $cityPage);
+			}
 		}
+		if($suburbPage) {
+			return $suburbPage;
+		}
+		return $cityPage;
 	}
 
-	static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
+	/**
+	 * formulae for working out distance
+	 **/
+	protected static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} /180 ) - ( PI( ) *".$lon." /180 ) ) ) ) ) ";
 	}
 
-	public function allowBrowseChildren() {
-		return false;
-	}
-
-
+	/**
+	 * name for page level.
+	 **/
 	public function GeoLevelName() {
 		return "Cities";
 	}
-
+	
+	/**
+	 * number for page level.
+	 **/
 	public function GeoLevelNumber() {
 		return 3;
 	}
-
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		return $fields;
-	}
-
-	static function create_city_and_parents($CityID) {
+	
+	/**
+	 * This static method creates a city page and all the required parent pages...
+	 *@param Int - $CityID: the ID for the city to create
+	 **/
+	public static function create_city_and_parents($CityID) {
+		$cityPage = null;
 		//check if the city exists at all
 		$sql = '
 			SELECT cities.RegionID, regions.CountryID, countries.ContinentID From cities, regions, countries, continents
@@ -106,9 +136,8 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 				cities.CityID = '.$CityID.'
 			LIMIT 1;';
 		$result = DB::query($sql);
-		foreach($result as $row) {
-			print_r($row);
-		}
+
+		foreach($result as $row) {break;}
 		$abstractHelpPage = new BrowseAbstractPage();
 		if($row) {
 			//1 check if world exists
@@ -120,9 +149,10 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 				$name = "Find";
 				$worldPage->Title = $name;
 				$worldPage->MetaTitle = $name;
-				$worldPage->PageTitle = $name;
+				$worldPage->MenuTitle = $name;
 				$worldPage->writeToStage('Stage');
 				$worldPage->publish('Stage', 'Live');
+				$worldPage->flushCache();
 			}
 
 			//2 check if continent exists
@@ -175,13 +205,16 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 				foreach($cities as $city) {
 					$cityPage = new BrowseCitiesPage();
 					$cityPage->CreateCity($city, $regionPage);
-					return $cityPage;
 				}
 			}
 		}
-		return false;
+		return $cityPage;
 	}
 
+	/**
+	 * fix URLS
+	 * NOTE: you must set get variables: urls, from and to....
+	 **/ 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		if(isset($_GET["urls"]) && isset($_GET["from"]) && isset($_GET["to"]) ) {
@@ -192,12 +225,18 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 					$page->URLSegment = $this->generateURLSegment($page->Title);
 					$page->writeToStage('Stage');
 					$page->publish('Stage', 'Live');
+					$page->flushCache();
 					$page->detroy();
 				}
 			}
 		}
 	}
 
+	/**
+	 * Create a page
+	 * @param Array - $city: the data for the city
+	 * @param Object $parent: BrowseRegionsPage 
+	 **/ 
 	public function CreateCity(array $city, BrowseRegionsPage $parent) {
 		if($parent && isset($city["City"])) {
 			$name = htmlentities($city["City"]);
@@ -206,7 +245,7 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 				$this->ParentID = $parent->ID;
 				$this->Title = $name;
 				$this->MetaTitle = $name;
-				$this->PageTitle = $name;
+				$this->MenuTitle = $name;
 				$this->HiddenDataID = $city["CityID"];
 
 				$this->Code = $city["Code"];
@@ -223,6 +262,7 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 
 				$this->writeToStage('Stage');
 				$this->publish('Stage', 'Live');
+				$this->flushCache();
 			}
 			else {
 				if(isset($_GET["geobuild"])) {debug::show("No name can be found");}
@@ -238,10 +278,6 @@ class BrowseCitiesPage extends BrowseAbstractPage {
 }
 
 class BrowseCitiesPage_Controller extends BrowseAbstractPage_Controller {
-	function init() {
-		parent::init();
-	}
-
 
 }
 

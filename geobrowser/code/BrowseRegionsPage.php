@@ -2,51 +2,72 @@
 
 class BrowseRegionsPage extends BrowseAbstractPage {
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $icon = "geobrowser/images/treeicons/BrowseRegionsPage";
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $allowed_children = array("BrowseCitiesPage");
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $default_child = "BrowseCitiesPage";
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $default_parent = "BrowseCountriesPage";
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $can_be_root = false;
 
+		/**
+	 * Standard SS Static
+	 **/ 	
 	static $db = array(
 		"Code" => "Varchar(8)",
 	);
 
-	public static $breadcrumbs_delimiter = " &raquo; ";
-
-	public function canCreate() {
-		return parent::canCreate();
-	}
-
-	public function GeoLevelName() {
-		return "Regions";
-	}
-
-	public function GeoLevelNumber() {
-		return 2;
-	}
-
-	public function allowBrowseChildren() {
-		if(DataObject::get_one("BrowseWorldPage")->LevelOfDetail > $this->GeoLevelNumber()) {
-			return true;
-		}
-		elseif("BrowseWorldPage" == $this->ClassName) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
+	/**
+	 * Standard SS Static
+	 **/ 
+	static $defaults = array(
+		"ShowInMenus" => false
+	);
+	
+	/**
+	 * Standard SS Static
+	 **/ 	
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		return $fields;
 	}
 
+
+	/**
+	 * Name of the level
+	 **/ 	
+	public function GeoLevelName() {
+		return "Regions";
+	}
+
+	/**
+	 * Number of the level
+	 **/ 	
+	public function GeoLevelNumber() {
+		return 2;
+	}
+
+
+	/**
+	 * Setup pages...
+	 **/ 	
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
@@ -70,6 +91,13 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 		}
 	}
 
+	/**
+	 * Creates a region... called from BrowseCountriesPage
+	 * 
+	 *@param Array $region - array of region details
+	 *@param Object $parent - a BrowseCountriesPage object 
+	 *
+	 **/ 
 	public function CreateRegion(array $region, BrowseCountriesPage $parent) {
 		if($parent && isset($region["Region"])) {
 			$name = htmlentities($region["Region"]);
@@ -78,7 +106,7 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 				$this->ParentID = $parent->ID;
 				$this->Title = $name;
 				$this->MetaTitle = $name;
-				$this->PageTitle = $name;
+				$this->MenuTitle = $name;
 				$this->HiddenDataID = $region["RegionID"];
 
 				$this->Code = $region["Code"];
@@ -90,9 +118,10 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 
 				$this->writeToStage('Stage');
 				$this->publish('Stage', 'Live');
+				$this->flushCache();
 			}
 			else {
-				if(isset($_GET["geobuild"])) {debug::show("name does not exist");}
+				if(isset($_GET["geobuild"])) {debug::show("region does not exist");}
 			}
 		}
 		else {
@@ -103,9 +132,6 @@ class BrowseRegionsPage extends BrowseAbstractPage {
 }
 
 class BrowseRegionsPage_Controller extends BrowseAbstractPage_Controller {
-	function init() {
-		parent::init();
-	}
 
 
 }

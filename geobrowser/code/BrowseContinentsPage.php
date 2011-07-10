@@ -2,48 +2,57 @@
 
 class BrowseContinentsPage extends BrowseAbstractPage {
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $icon = "geobrowser/images/treeicons/BrowseContinentsPage";
 
+
+	/**
+	 * Standard SS static
+	 **/ 
 	static $allowed_children = array("BrowseCountriesPage");
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $default_child = "BrowseCountriesPage";
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $default_parent = "BrowseWorldPage";
 
-	static $db = array(
-		"ExtraNote" => "Varchar(255)"
+		/**
+	 * Standard SS Static
+	 **/ 	
+	static $can_be_root = false;
+	
+	/**
+	 * Standard SS Static
+	 **/ 
+	static $defaults = array(
+		"ShowInMenus" => true
 	);
-
-	public static $breadcrumbs_delimiter = " &raquo; ";
-
-	public function canCreate() {
-		return parent::canCreate();
-	}
-
+	
+	/**
+	 * name of the level
+	 **/ 
 	public function GeoLevelName() {
 		return "Continents";
 	}
 
+	/**
+	 * number of the level
+	 **/ 
 	public function GeoLevelNumber() {
 		return 0;
 	}
 
-
-
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		return $fields;
-	}
-
-	public function allowBrowseChildren() {
-		if ( DataObject::get_one("BrowseWorldPage")->LevelOfDetail > $this->GeoLevelNumber() ) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
+	/**
+	 * Standard SS Method
+	 * setup records
+	 **/ 
 	public function requireDefaultRecords() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
@@ -65,6 +74,12 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 			}
 		}
 	}
+	
+	/**
+	 * create a continent
+	 * @param array - $contentint, continent data
+	 * @param Object - $parent, a BrowseWorldPage object that will be the parent page of the Continent.
+	 **/ 
 	public function CreateContinent(array $continent, BrowseWorldPage $parent) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if($parent && isset($continent["Continent"])) {
@@ -74,12 +89,13 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 				$this->ParentID = $parent->ID;
 				$this->Title = $name;
 				$this->MetaTitle = $name;
-				$this->PageTitle = $name;
+				$this->MenuTitle = $name;
 				$this->HiddenDataID = $continent["ContinentID"];
 				$this->CreateChildren = $parent->CreateAllChildren;
 				$this->CreateAllChildren = $parent->CreateAllChildren;
 				$this->writeToStage('Stage');
 				$this->publish('Stage', 'Live');
+				$this->flushCache();
 			}
 			else {
 				if(isset($_GET["geobuild"])) {debug::show("name does not exist");}
@@ -92,10 +108,6 @@ class BrowseContinentsPage extends BrowseAbstractPage {
 }
 
 class BrowseContinentsPage_Controller extends BrowseAbstractPage_Controller {
-	function init() {
-		parent::init();
-	}
-
 
 }
 

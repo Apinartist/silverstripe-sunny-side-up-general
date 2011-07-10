@@ -2,15 +2,34 @@
 
 class BrowseCountriesPage extends BrowseAbstractPage {
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $icon = "geobrowser/images/treeicons/BrowseCountriesPage";
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $allowed_children = array("BrowseRegionsPage");
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $default_child = "BrowseRegionsPage";
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $default_parent = "BrowseContinentsPage";
+	
+	/**
+	 * Standard SS static
+	 **/ 
 	static $can_be_root = false;
 
+	/**
+	 * Standard SS static
+	 **/ 
 	static $db = array(
 		"Country" => "Varchar(50)" ,
 		"ISO2" => "Varchar(2)" ,
@@ -24,10 +43,20 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 		"AdditionalTitle" => "Varchar(50)"
 	);
 
-	public static $breadcrumbs_delimiter = " &raquo; ";
 
-	public function canCreate() {
-		return parent::canCreate();
+	/**
+	 * Standard SS Static
+	 **/ 
+	static $defaults = array(
+		"ShowInMenus" => false
+	);
+	
+	/**
+	 * Standard SS Method
+	 **/ 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+		return $fields;
 	}
 
 	public function GeoLevelName() {
@@ -38,20 +67,11 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 		return 1;
 	}
 
-	public function allowBrowseChildren() {
-		if( DataObject::get_one("BrowseWorldPage")->LevelOfDetail > $this->GeoLevelNumber() ) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		return $fields;
-	}
-
+	/**
+	 * Standard SS Method
+	 * Setup records
+	 * 
+	 **/ 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
@@ -77,6 +97,9 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 		}
 	}
 
+	/**
+	 * Create a country based on an array and a Continent Parent
+	 **/ 
 	public function CreateCountry(array $country, BrowseContinentsPage $parent) {
 		if($parent && isset($country["Country"])) {
 			$name = htmlentities($country["Country"]);
@@ -85,7 +108,7 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 				$this->ParentID = $parent->ID;
 				$this->Title = $name;
 				$this->MetaTitle = $name;
-				$this->PageTitle = $name;
+				$this->MenuTitle = $name;
 				$this->HiddenDataID = $country["CountryID"];
 				$this->ISO2 = $country["ISO2"];
 				$this->Internet = $country["Internet"];
@@ -102,6 +125,7 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 
 				$this->writeToStage('Stage');
 				$this->publish('Stage', 'Live');
+				$this->flushCache();
 			}
 			else {
 				if(isset($_GET["geobuild"])) {debug::show("name does not exist");}
@@ -114,10 +138,6 @@ class BrowseCountriesPage extends BrowseAbstractPage {
 }
 
 class BrowseCountriesPage_Controller extends BrowseAbstractPage_Controller {
-	function init() {
-		parent::init();
-	}
-
 
 }
 
