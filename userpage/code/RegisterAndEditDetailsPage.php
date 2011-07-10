@@ -50,6 +50,17 @@ class RegisterAndEditDetailsPage extends Page {
 		}
 	}
 
+	/**
+	 * Returns a link to this page that will, on completion,
+	 * redirect back to the another page
+	 *@param String - $link
+	 *@return String - $link
+	 **/ 
+
+	public function link_for_going_to_page_via_making_user($link) {
+		return Director::link()."/?BackURL=".urlencode($link);
+	}
+
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('TitleLoggedIn', 'Title when user is Logged In'));
