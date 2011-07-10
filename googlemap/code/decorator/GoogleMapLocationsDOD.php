@@ -33,19 +33,6 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		);
 	}
 
-	protected $map = null;
-
-	protected $isAjax = false;
-
-	static function setNumberShownAroundMe($val) {
-		user_error("setNumberShownAroundMe has been deprecated - use GoogleMap::set_number_shown_in_around_me instead", E_USER_NOTICE);
-		self::$number_shown_in_around_me = $val - 0;
-	}
-
-	function augmentSQL(SQLQuery &$query) {	}
-
-	function augmentDatabase() {}
-
 	function updateCMSFields(FieldSet &$fields) {
 		if($this->classHasMap()) {
 			$fields->addFieldToTab("Root", new Tab("Map"));
@@ -73,25 +60,6 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		return $fields;
  }
 
-/* ******************************
- *  GENERAL FUNCTIONS
- *  ******************************
- */
-	function GoogleMapController() {
-		$this->initiateMap();
-		$this->map->loadGoogleMap();
-		return $this->map;
-	}
-
-	public function hasMap() {
-		if($this->map && $this->classHasMap()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	public function AjaxInfoWindowLink() {
 		if($this->owner->hasMethod("CustomAjaxInfoWindow")) {
 			return $this->owner->CustomAjaxInfoWindow();
@@ -101,38 +69,78 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		}
 	}
 
-	protected function hasStaticMaps() {
-  	return (!Session::get("StaticMapsOff") && $this->map->getShowStaticMapFirst()) ? true : false;
-	}
 
-
-	static function hasStaticMapsStaticFunction() {
-  	return (!Session::get("StaticMapsOff") && $this->map->getShowStaticMapFirst()) ? true : false;
-	}
-
-	private function initiateMap() {
-		if(!$this->map) {
-			$this->map = new GoogleMap();
+	public function classHasMap() {
+		//assumptions:
+		//1. in general YES
+		//2. if list of WITH is shown then it must be in that
+		//3. otherwise check if it is specifically excluded (WITHOUT)
+		$result = true;
+		$inc =  self::get_page_classes_with_map();
+		$exc =  self::get_page_classes_without_map();
+		if(is_array($inc) && count($inc)) {
+			$result = false;
+			if(in_array($this->owner->ClassName,$inc)) {
+				$result = true;
+			}
 		}
+		elseif(is_array($exc) && count($exc) && in_array($this->owner->ClassName,$exc))  {
+			$result = false;
+		}
+		return $result;
 	}
 
+}
 
-	function returnMapDataFromAjaxCall($PageDataObjectSet = null, $GooglePointsDataObject = null, $dataObjectTitle = '', $whereStatementDescription = '') {
-		$this->map = new GoogleMap();
-		$this->map->setDataObjectTitle($dataObjectTitle);
-		$this->map->setWhereStatementDescription($whereStatementDescription);
-		if($GooglePointsDataObject) {
-			$this->map->setGooglePointsDataObject($GooglePointsDataObject);
-		}
-		elseif($PageDataObjectSet) {
-			$this->map->setPageDataObjectSet($PageDataObjectSet);
+class GoogleMapLocationsDOD_Controller extends Extension {
+
+	static $allowed_actions = array("SearchByAddressForm");
+
+	protected $address = false;
+
+	protected $googleMap = null;
+
+	protected $isAjax = false;
+
+
+	protected static $class_name_only = '';
+		static function set_class_name_only($v) {self::$class_name_only = $v;}
+
+	function SearchByAddressForm($className = '') {
+		return new Form(
+			$this->owner,
+			"SearchByAddressForm",
+			new FieldSet(
+				new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address),
+				new HiddenField("ClassName", "ClassName", self::$class_name_only)
+			),
+			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
+			new RequiredFields("Address")
+		);
+	}
+
+	function findnearaddress($data, $form) {
+		$address = Convert::raw2sql($data["Address"]);
+		$className = Convert::raw2sql($data["ClassName"]);
+		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($address);
+		$this->address = $pointArray["address"];
+		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
+			GoogleMapSearchRecord::create_new($address, $this->owner->ID, false);
+			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
+			Director::redirectBack();
+			return;
 		}
 		else {
-			$this->map->staticMapHTML = "<p>No points found</p>";
+			GoogleMapSearchRecord::create_new(Convert::raw2sql($address), $this->owner->ID, true);
 		}
-		$data = $this->map->createDataPoints();
-		return $this->owner->renderWith("GoogleMapXml");
+		$lng = $pointArray[0];
+		$lat = $pointArray[1];
+		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
+		//$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
+		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat, $className);
+		return array();
 	}
+
 
 	function addMap($action = "", $title = "", $lng = 0, $lat = 0, $filter = "") {
 		$this->initiateMap();
@@ -143,7 +151,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		if($filter) {
 			$linkForData .= "/".urlencode($filter)."/";
 		}
-		$this->map->addLayer($linkForData);
+		$this->googleMap->addLayer($linkForData);
 		if(!Director::is_ajax()) {
 			if($this->hasStaticMaps()) {
 				$controller = new GoogleMapDataResponse();
@@ -170,7 +178,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	public function addExtraLayersAsLinks($title, $link) {
 		$this->initiateMap();
-		$this->map->addExtraLayersAsLinks($title, $link);
+		$this->googleMap->addExtraLayersAsLinks($title, $link);
 	}
 
 
@@ -180,7 +188,7 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 			$address = urlencode($_REQUEST["address"]);
 		}
 		if($address) {
-			$this->map->setAddress($address);
+			$this->googleMap->setAddress($address);
 		}
 		else {
 			user_error("No address could be added.", E_USER_ERROR);
@@ -189,17 +197,17 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 
 	function addUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint = "/googlemap/showaroundmexml/") {
 		$this->initiateMap();
-		$this->map->setUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint);
+		$this->googleMap->setUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint);
 	}
 
 	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "/googlemap/updatemexml/") {
 		$this->initiateMap();
-		$this->map->setUpdateServerUrlDragend($UpdateServerUrlDragend);
+		$this->googleMap->setUpdateServerUrlDragend($UpdateServerUrlDragend);
 	}
 
 	function addAllowAddingAndDeletingPoints() {
 		$this->initiateMap();
-		$this->map->allowAddPointsToMap();
+		$this->googleMap->allowAddPointsToMap();
 	}
 
 	function clearCustomMaps() {
@@ -267,70 +275,58 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 	}
 
 
-	protected function classHasMap() {
-		//assumptions:
-		//1. in general YES
-		//2. if list of WITH is shown then it must be in that
-		//3. otherwise check if it is specifically excluded (WITHOUT)
-		$result = true;
-		$inc =  self::get_page_classes_with_map();
-		$exc =  self::get_page_classes_without_map();
-		if(is_array($inc) && count($inc)) {
-			$result = false;
-			if(in_array($this->owner->ClassName,$inc)) {
-				$result = true;
-			}
-		}
-		elseif(is_array($exc) && count($exc) && in_array($this->owner->ClassName,$exc))  {
-			$result = false;
-		}
-		return $result;
+
+	protected function hasStaticMaps() {
+  	return (!Session::get("StaticMapsOff") && $this->googleMap->getShowStaticMapFirst()) ? true : false;
 	}
 
-}
 
-class GoogleMapLocationsDOD_Controller extends Extension {
-
-	static $allowed_actions = array("SearchByAddressForm");
-
-	var $address = false;
-
-	protected static $class_name_only = '';
-		static function set_class_name_only($v) {self::$class_name_only = $v;}
-
-	function SearchByAddressForm($className = '') {
-		return new Form(
-			$this->owner,
-			"SearchByAddressForm",
-			new FieldSet(
-				new TextField("Address", _t("GoogleMapLocationsDOD.ENTERLOCATION", "Enter your location"),$this->address),
-				new HiddenField("ClassName", "ClassName", self::$class_name_only)
-			),
-			new FieldSet(new FormAction("findnearaddress", _t("GoogleMapLocationsDOD.SEARCH", "Search"))),
-			new RequiredFields("Address")
-		);
+	static function hasStaticMapsStaticFunction() {
+  	return (!Session::get("StaticMapsOff") && $this->googleMap->getShowStaticMapFirst()) ? true : false;
 	}
 
-	function findnearaddress($data, $form) {
-		$address = Convert::raw2sql($data["Address"]);
-		$className = Convert::raw2sql($data["ClassName"]);
-		$pointArray = GetLatLngFromGoogleUsingAddress::get_placemark_as_array($address);
-		$this->address = $pointArray["address"];
-		if(!isset($pointArray[0]) || !isset($pointArray[0])) {
-			GoogleMapSearchRecord::create_new($address, $this->owner->ID, false);
-			$form->addErrorMessage('Address', _t("GoogleMapLocationsDOD.ADDRESSNOTFOUND", "Sorry, address could not be found..."), 'warning');
-			Director::redirectBack();
-			return;
+	private function initiateMap() {
+		if(!$this->googleMap) {
+			$this->googleMap = new GoogleMap();
+		}
+	}
+
+
+/* ******************************
+ *  GENERAL FUNCTIONS
+ *  ******************************
+ */
+	function GoogleMapController() {
+		$this->initiateMap();
+		$this->googleMap->loadGoogleMap();
+		return $this->googleMap;
+	}
+
+	public function hasMap() {
+		if($this->googleMap && $this->owner->classHasMap()) {
+			return true;
 		}
 		else {
-			GoogleMapSearchRecord::create_new(Convert::raw2sql($address), $this->owner->ID, true);
+			return false;
 		}
-		$lng = $pointArray[0];
-		$lat = $pointArray[1];
-		//$form->Fields()->fieldByName("Address")->setValue($pointArray["address"]); //does not work ....
-		//$this->owner->addMap($action = "showsearchpoint", "Your search",$lng, $lat);
-		$this->owner->addMap($action = "showaroundmexml","Closests to your search", $lng, $lat, $className);
-		return array();
+	}
+
+
+	function returnMapDataFromAjaxCall($PageDataObjectSet = null, $GooglePointsDataObject = null, $dataObjectTitle = '', $whereStatementDescription = '') {
+		$this->googleMap = new GoogleMap();
+		$this->googleMap->setDataObjectTitle($dataObjectTitle);
+		$this->googleMap->setWhereStatementDescription($whereStatementDescription);
+		if($GooglePointsDataObject) {
+			$this->googleMap->setGooglePointsDataObject($GooglePointsDataObject);
+		}
+		elseif($PageDataObjectSet) {
+			$this->googleMap->setPageDataObjectSet($PageDataObjectSet);
+		}
+		else {
+			$this->googleMap->staticMapHTML = "<p>No points found</p>";
+		}
+		$data = $this->googleMap->createDataPoints();
+		return $this->owner->renderWith("GoogleMapXml");
 	}
 
 
