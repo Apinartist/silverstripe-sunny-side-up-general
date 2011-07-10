@@ -6,77 +6,39 @@
  */
 
 class ProductCategoryPage extends Page {
+
+	/**
+	 *Standard SS Static
+	 **/ 	
 	static $icon = "business_directory/images/treeicons/ProductCategoryPage";
 
-	static $allowed_children = "none";
+	/**
+	 *Standard SS Static
+	 **/ 	
+	static $has_one = array(
+		"Image" => "Image"
+	);
 
-	static $default_child = "";
-	static $default_parent = "";
+	/**
+	 *Standard SS Static
+	 **/ 	
 	static $can_be_root = false;
-	//static $need_permission = null;
-	//static $hide_ancestor = null;
 
-	static $db = array();
-	static $has_one = array();
-	//static $has_many = array(	);
-	//static $many_many = array();
+	/**
+	 *Standard SS Static
+	 **/ 	
 	static $belongs_many_many = array(
 		'Businesses' => 'BusinessPage'
-	);
-	//static $many_many_extraFields = array();
-	//static $casting = array();
-
-	//static $indexes = array();
-	//static $defaults = array();
-
-	//static $versioning = array();
-	//static $default_sort = "Sort";
-	//static $add_action = null;
-	//static $can_create = true;
-	//static $extensions = array();
-	//public static $breadcrumbs_delimiter = " &raquo; ";
-
-	public function canCreate() {
-		return true;
-	}
-
-	public function canDelete() {
-		false;
-	}
-
-	static $defaults = array (
-		"HasGeoInfo" => 0
 	);
 
 	function getCMSFields( $cms ) {
 		$fields = parent::getCMSFields( $cms );
-		$fields->removeFieldFromTab("Root.Content", "Map" );
+		$fields->addFieldToTab("Root.Content.Logo", new ImageField("Image", "Image", $value = null, $form = null, $rightTitle = null, $folderName = "/assets/ProductCategoryImages/") );
 		return $fields;
 	}
 
-	public function requireDefaultRecords() {
-		parent::requireDefaultRecords();
-	}
-	function setSidebarImage() {
-		return false;
-	}
 }
 
 class ProductCategoryPage_Controller extends Page_Controller {
-	function init() {
-		parent::init();
-	}
-
-	/*
-		This function should be overriden in page-types where not random image is required
-	*/
-
-	function SidebarImage() {
-		return false;
-	}
-
-
-	function RelatedProducts() {
-	}
 
 }

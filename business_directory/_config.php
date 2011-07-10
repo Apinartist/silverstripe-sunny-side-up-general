@@ -1,12 +1,11 @@
 <?php
 
-Member::add_extension('Member', 'BusinessMember');
 
-//BrowseBusinessDecorator_Controller::setDefaultFilterArray(array(1));
+Member::add_extension('Member', 'BusinessMember');
 
 DataObject::add_extension('SiteTree', 'BrowseBusinessDecorator');
 Object::add_extension('ContentController', 'BrowseBusinessDecorator_Controller');
 
-Director::addRules(100, array('admin/business/$Action/$ID/$OtherID' => 'BusinessAdmin',));
-
-BrowseBusinessDecorator::$max_radius = 250;
+//=============================== START business_directory =====================================
+//BrowseBusinessDecorator::get_classes_that_can_have_businesses_as_children(array("BusinessListingPage"));
+//=============================== END business_directory =====================================

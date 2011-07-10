@@ -7,50 +7,57 @@
 
 class CertificationPage extends Page {
 
+	/**
+	 *Standard SS Static
+	 **/ 
 	static $icon = "business_directory/images/treeicons/CertificationPage";
 
-	static $allowed_children = "none";
-
-	static $has_one = array(
-		"Logo" => "Image"
+	/**
+	 *Standard SS Static
+	 **/ 
+	static $db = array(
+		"Website" => "Varchar(255)",
 	);
+
+	/**
+	 *Standard SS Static
+	 **/ 
+	static $has_one = array(
+		"Logo" => "Image",
+	);
+
+	/**
+	 *Standard SS Static
+	 **/ 	
 	static $belongs_many_many = array(
 		'Businesses' => 'BusinessPage'
 	);
 
-	public function canCreate() {
-		return true;
-	}
+	/**
+	 *Standard SS Static
+	 **/ 	
+	static $can_be_root = false;
 
-	static $defaults = array (
-		"HasGeoInfo" => 0
-	);
-
+	/**
+	 *Standard SS Method
+	 **/ 	
 	function getCMSFields( $cms ) {
 		$fields = parent::getCMSFields( $cms );
-		$fields->removeFieldFromTab("Root.Content", "Map" );
+		$fields->addFieldToTab("Root.Content.MoreInfo", new TextField("Website") );
+		$fields->addFieldToTab("Root.Content.Logo", new ImageField("Logo", "Logo", $value = null, $form = null, $rightTitle = null, $folderName = "/assets/CertificationLogos/") );
 		return $fields;
 	}
 
-	public function requireDefaultRecords() {
-		parent::requireDefaultRecords();
+	/**
+	 * returns the number of businesses that carry this certification.
+	 *@return Integer
+	 **/ 	
+	function NumberOfBusinesses(){
+		return $this->Businesses()->count();
 	}
 
-	function setSidebarImage() {
-		return false;
-	}
 }
 
 class CertificationPage_Controller extends Page_Controller {
-	function init() {
-		parent::init();
-	}
-	/*
-		This function should be overriden in page-types where not random image is required
-	*/
-
-	function SidebarImage() {
-		return false;
-	}
 
 }
