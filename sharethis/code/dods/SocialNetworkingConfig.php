@@ -90,15 +90,16 @@ class SocialNetworkingConfig extends DataObjectDecorator {
 	private $AlwaysIncludeShareThisLinksBefore, $AlwaysIncludeSocialNetworkingLinksBefore;
 
 	function onBeforeWrite() {
-		$this->AlwaysIncludeShareThisLinksBefore  = DataObject::get_by_id("SiteConfig", $this->owner->ID)->AlwaysIncludeShareThisLinks;
-		$this->AlwaysIncludeSocialNetworkingLinksBefore = $this->owner->AlwaysIncludeSocialNetworkingLinks;
+		$siteConfig = DataObject::get_by_id("SiteConfig", $this->owner->ID);
+		if($siteConfig) {
+			$this->AlwaysIncludeShareThisLinksBefore  = $siteConfig->AlwaysIncludeShareThisLinks;
+			$this->AlwaysIncludeSocialNetworkingLinksBefore = $this->owner->AlwaysIncludeSocialNetworkingLinks;
+		}
 	}
 
 	//to do, check if / why this is (not) working.
 	function onAfterWrite() {
-		if(
-			$this->owner->isChanged("AlwaysIncludeShareThisLinks") || $this->owner->isChanged("AlwaysIncludeSocialNetworkingLinks")
-		) {
+		if($this->owner->isChanged("AlwaysIncludeShareThisLinks") || $this->owner->isChanged("AlwaysIncludeSocialNetworkingLinks")) {
 			LeftAndMain::forceReload();
 		}
 			
