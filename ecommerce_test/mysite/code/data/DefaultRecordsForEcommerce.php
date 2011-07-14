@@ -24,12 +24,19 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->AddMyModifiers();
 		
 		$this->UpdateMyRecords();
+
+		$this->createTags();
+		
+		$this->createRecommendedProducts();
 	}
 
 	private function hacks() {
 		DB::query("DELETE FROM OrderAddress");
 		DB::query("DELETE FROM BillingAddress");
 		DB::query("DELETE FROM ShippingAddress");
+		DB::query("DELETE FROM EcommerceProductTag");
+		DB::query("DELETE FROM EcommerceProductTag_Products");
+		DB::query("DELETE FROM Product_EcommerceRecommendedProducts");
 	}
 
 	private function CreatePages()  {
@@ -237,7 +244,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "home",
 				"Title" => "Sunny Side Up Silverstripe Demo",
 				"MenuTitle" => "Home",
-				"Content" => "<p>This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.  You can checkout the e-commerce module here: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.</p>"
+				"Content" => "<p>This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.  You can checkout the e-commerce module here: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.</p>",
+				"Children" => array(
+					array(
+						"URLSegment" => "tag-explanation",
+						"Title" => "Tag Explanations",
+						"MenuTitle" => "Tags",
+						"Content" => "<p>This page can explain the tags shown for various products. </p>",
+					)
+				)
 			),
 			array(
 				"ClassName" => "TypographyTestPage",
@@ -350,6 +365,47 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->FixedCost= 13;
 			$obj->Sort= 100;
 			$obj->write();
+		}
+	}
+
+	function createTags(){
+		$products = DataObject::get("Product", "", "RAND()", "", "0, 5");
+		foreach($products as $product){
+			$idArray[] = $product->ID;
+			$titleArray[] = $product->MenuTitle;
+		}
+		$page = DataObject::get_one("Page", "\"URLSegment\" = 'tag-explanation'");
+		$t1 = new EcommerceProductTag();
+		$t1->Title = "TAG 1";
+		$t1->ExplanationPageID = $page->ID;
+		$t1->Explanation = "explains Tag 1";
+		$t1->write();
+		$existingProducts = $t1->Products();
+		$existingProducts->addMany($idArray);
+		DB::alteration_message("Creating tag: ".$t1->Title." for ".implode(",", $titleArray), "created");
+		$t2 = new EcommerceProductTag();
+		$t2->Title = "TAG 2";
+		$t2->ExplanationPageID = $page->ID;
+		$t2->Explanation = "explains Tag 2";
+		$t2->write();
+		$existingProducts = $t2->Products();
+		$existingProducts->addMany($idArray);
+		DB::alteration_message("Creating tag: ".$t2->Title." for ".implode(",", $titleArray), "created");
+	}
+
+	function createRecommendedProducts(){
+		$products = DataObject::get("Product", "", "RAND()", "", "0, 5");
+		foreach($products as $product){
+			$idArrayProducts[] = $product->ID;
+		}
+		$recommendedProducts = DataObject::get("Product", " SiteTree.ID NOT IN (".implode(",",$idArrayProducts).")", "RAND()", "", "0, 5");
+		foreach($recommendedProducts as $product){
+			$idArrayRecommendedProducts[] = $product->ID;
+		}
+		foreach($products as $product) {
+			$existingRecommendations = $product->EcommerceRecommendedProducts();
+			$existingRecommendations->addMany($idArrayRecommendedProducts);
+			DB::alteration_message("adding recommendations for: ".$product->Title." (".implode(",",$idArrayRecommendedProducts).")", "created");
 		}
 	}
 

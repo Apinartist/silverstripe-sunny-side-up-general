@@ -253,3 +253,7 @@ ProductsAndGroupsModelAdmin::add_managed_model("EcommerceProductTag");
 //===================---------------- START ecommerce_alsorecommended MODULE ----------------===================
 Object::add_extension('Product', 'EcommerceAlsoRecommendedDOD');
 //===================---------------- END ecommerce_alsorecommended MODULE ----------------===================
+
+//===================---------------- START ecommerce_dimensions MODULE ----------------===================
+Object::add_extension("Product","EcommerceDimensionsDecorator");
+//===================---------------- END ecommerce_dimensions MODULE ----------------===================
