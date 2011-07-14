@@ -1,0 +1,2 @@
+<% include EcommerceRecommendedProducts %>
+<% include EcommerceProductTags %>
