@@ -241,3 +241,15 @@ GSTTaxModifier::set_default_country_code("NL");
 //GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
 StoreAdmin::add_managed_model("GSTTaxModifierOptions");
 //===================---------------- END ecommerce_tax MODULE ----------------===================
+
+
+
+//===================---------------- START ecommerce_product_tag MODULE ----------------===================
+Object::add_extension("Product","EcommerceProductTagProductDecorator");
+ProductsAndGroupsModelAdmin::add_managed_model("EcommerceProductTag");
+//===================---------------- END ecommerce_product_tag MODULE ----------------===================
+
+
+//===================---------------- START ecommerce_alsorecommended MODULE ----------------===================
+Object::add_extension('Product', 'EcommerceAlsoRecommendedDOD');
+//===================---------------- END ecommerce_alsorecommended MODULE ----------------===================
