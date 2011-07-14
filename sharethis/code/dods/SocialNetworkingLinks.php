@@ -40,7 +40,7 @@ class SocialNetworkingLinks extends SiteTreeDecorator {
 	public function SocialNetworkingLinksDataObjects(){
 		if($this->ThisPageHasSocialNetworkingLinks()) {
 			if($objects = DataObject::get("SocialNetworkingLinksDataObject")) {
-				//Requirements::themedCSS("SocialNetworking"); // added in template
+				Requirements::themedCSS("SocialNetworking"); // added in template
 				return $objects;
 			}
 		}

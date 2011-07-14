@@ -124,7 +124,7 @@ class ShareThis extends SiteTreeDecorator {
 	protected function makeShareIcons($bookmarks){
 		$doSet = new DataObjectSet();
 		if($this->ThisPageHasShareThis() && $bookmarks){
-			//Requirements::themedCSS("SocialNetworking"); - added in template
+			Requirements::themedCSS("SocialNetworking"); - added in template
 			Requirements::javascript(SS_SHARETHIS_DIR."/javascript/shareThis.js");
 			if(self::$use_bw_share_this_effect) {
 				Requirements::customScript("sharethis.set_use_BW(true);", "ShareThisBWEffect");
