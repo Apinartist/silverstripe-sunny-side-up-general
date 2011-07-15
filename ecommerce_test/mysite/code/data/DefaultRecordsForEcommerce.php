@@ -244,7 +244,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "home",
 				"Title" => "Sunny Side Up Silverstripe Demo",
 				"MenuTitle" => "Home",
-				"Content" => "<p>This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.  You can checkout the e-commerce module here: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.</p>",
+				"Content" => "<p>This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.  You can install an identical copy of this site (including data) on your own development server by checking out this SVN repository: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.  </p>",
 				"Children" => array(
 					array(
 						"URLSegment" => "tag-explanation",
