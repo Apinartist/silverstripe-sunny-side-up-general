@@ -250,6 +250,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"URLSegment" => "tag-explanation",
 						"Title" => "Tag Explanations",
 						"MenuTitle" => "Tags",
+						"ShowInMenus" => false,
+						"ShowInSearch" => false,
 						"Content" => "<p>This page can explain the tags shown for various products. </p>",
 					)
 				)
