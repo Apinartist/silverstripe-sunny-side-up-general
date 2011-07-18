@@ -1,9 +1,9 @@
 		$Content
 		$Form
 		<h2>Previous Editions</h2>
-<% if SmartChimpSignupPage %>
+<% if SmartChimpNewsletters %>
 		<ul id="SmartChimpNewsletters">
-	<% control SmartChimpSignupPage %>
+	<% control SmartChimpNewsletters %>
 			<li>
 				<h5><a href="$PermaLink" class="popup">$Title</a></h5>
 				<p class="smartChimpNewslettersDate">Sent on: $Date.Long</p>
