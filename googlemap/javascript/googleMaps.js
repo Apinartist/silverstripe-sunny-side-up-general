@@ -866,7 +866,7 @@ GMC.prototype.createSideBar = function(sideBarArray) {
 				i = sideBarElements[1];
 				layerName = this.gmarkers[i].layerId;				
 				if(!strpos(this.gmarkers[i].serverId, "manuallyAdded", 0)) {
-					html += '<li class="forLayer'+layerName+'"><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
+					html += '<li class="forLayer'+layerName+' icon'+i+'"><a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a> <div class="infowindowDetails">'  + this.gmarkers[i].markerDesc + '</div></li>';
 				}
 				else {
 					html += '<li class="forLayer'+layerName+'">You added: <a href="'+ this.currentPageURL + '#map" onclick="GMO.showMarkerFromList(' + i + '); return false;">' + this.gmarkers[i].markerName + '</a></li>';
