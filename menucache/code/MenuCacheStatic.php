@@ -66,7 +66,9 @@ class MenuCacheStatic extends DataObjectDecorator {
 
 	function pagesAffectedByChanges() {
 		$urls = $this->subPagesToCache();
-		if($p = $this->owner->Parent()) $urls = array_merge((array)$urls, (array)$p->subPagesToCache());
+		if($parent = DataObject::get_by_id("SiteTree", $this->owner->ParentID)) {
+			$urls = array_merge((array)$urls, (array)$parent->subPagesToCache());
+		}
 		return $urls;
 	}
 
