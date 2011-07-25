@@ -58,7 +58,7 @@ class MenuCacheStatic extends DataObjectDecorator {
 
 		// cache the RSS feed if comments are enabled
 		if ($this->owner->ProvideComments) {
-			$urls[] = Director::absoluteBaseURL() . "pagecomment/rss/" . $this->ID;
+			$urls[] = Director::absoluteBaseURL() . "pagecomment/rss/" . $this->owner->ID;
 		}
 
 		return $urls;
