@@ -32,7 +32,7 @@ class SocialNetworkingConfig extends DataObjectDecorator {
 			}
 		}		
 		$shareThisTableField = new ComplexTableField($this->owner, $name = "ShareThisDataObject", $sourceClass = "ShareThisDataObject");
-		$shareThisTableField->setPermissions(array("edit"));
+		$shareThisTableField->setPermissions(array("edit", "add"));
 		$socialNetworkExtra = '<h3 style="margin-top: 50px">Add / Edit / Delete Your Social Networking Home Pages (e.g. www.facebook.com/our-company-page)</h3>';
 		$socialNetworkTableField = new ComplexTableField($this->owner, $name = "SocialNetworkingLinksDataObject", $sourceClass = "SocialNetworkingLinksDataObject");
 		$socialNetworkTableField->setPermissions(array("edit", "add", "delete", "view"));
