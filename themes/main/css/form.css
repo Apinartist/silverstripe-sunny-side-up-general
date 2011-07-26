@@ -41,7 +41,7 @@
 
 .typography .field span.message {margin-left: 270px; width: 370px; font-size: 0.8em}
 .typography .field .middleColumn .message {margin-left: 0px; width: 370px; }
-.typography span.bad, .typography span.required {color: red;}
+.typography span.bad, .typography span.required {color: #82274B;}
 
 .typography label.right {display: block; margin-left: 270px; width: 370px; font-size: 0.8em}
 
@@ -49,26 +49,15 @@
 .typography .Actions input {
 	display: -moz-inline-stack;
 	display: inline-block;
-	width: 177px;
-	height: 39px;
-	background: url("http://dabuttonfactory.com/b?t=AAABBBB&f=sans-serif-Bold&ts=24&tc=ffffff00&tshs=1&tshc=22222200&it=png&c=round&bgt=gradient&bgc=82274b&ebgc=bfc1c1&hp=27&vp=11") no-repeat;
-	line-height: 39px;
+	width: auto;
+	height: 36px;
+	background-color: #82274B;
+	line-height: 33px;
 	vertical-align: text-middle;
 	text-align: center;
 	color: #ffffff;
-	font-family: sans-serif;
-	font-size: 24px;
 	font-weight: bold;
 	font-style: normal;
-	/*text-shadow: #222222 1px 1px 0; */
-	border: none!important;
+	border-radius: 7px;
 }
-.typography .Actions input:hover{
-	background: url("http://dabuttonfactory.com/b?t=AAABBBB&f=sans-serif-Bold&ts=24&tc=ffffff00&tshs=1&tshc=22222200&it=png&c=round&bgt=gradient&bgc=bfc1c1&ebgc=82274b&hp=27&vp=11") no-repeat;
-}
-
-.typography .Actions input > span {
-	display: -moz-inline-block;
-	background: url("http://dabuttonfactory.com/b?t=AAABBBB&f=sans-serif-Bold&ts=24&tc=ffffff00&tshs=1&tshc=22222200&it=png&c=round&bgt=gradient&bgc=bfc1c1&ebgc=82274b&hp=27&vp=11") no-repeat;
-}
-
+.typography .Actions input:hover {background-color: #317010;}
