@@ -188,7 +188,9 @@ class ShareThis extends SiteTreeDecorator {
 		return SiteConfig::current_site_config();
 	}
 	function populateDefaults() {
-		$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultShareThisLinks;
+		if(DB::isActive()) {
+			$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultShareThisLinks;
+		}
 	}
 
 }

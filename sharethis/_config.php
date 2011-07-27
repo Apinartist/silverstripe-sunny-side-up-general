@@ -11,7 +11,6 @@ define('SS_SHARETHIS_DIR', 'sharethis');
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START sharethis MODULE ----------------===================
-
 // --- CONFIG -> REQUIRED - configure your social media from the site config panel
 //DataObject::add_extension('SiteConfig', 'SocialNetworkingConfig');
 

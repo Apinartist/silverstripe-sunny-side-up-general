@@ -51,7 +51,9 @@ class SocialNetworkingLinks extends SiteTreeDecorator {
 	}
 
 	function populateDefaults() {
-		$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultSocialNetworkingLinks;
+		if(DB::isActive()) {
+			$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultSocialNetworkingLinks;
+		}
 	}
 
 }
