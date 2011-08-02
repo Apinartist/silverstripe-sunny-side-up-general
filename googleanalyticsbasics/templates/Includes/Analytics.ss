@@ -3,11 +3,7 @@
 
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', '{$googleAnalyticsCode}']);
-	<% if GoogleAnalyticsCodeTwo %>
-	_gaq.push(['_setAccount', '{$GoogleAnalyticsCodeTwo}']);
-	<% end_if %>
 	_gaq.push(['_trackPageview']);
-
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -19,7 +15,7 @@
 Please note: this site is currently undergoing maintenance.
 <% if CurrentMember %>Welcome Back, $CurrentMember.FirstName.
 	<% if CurrentMember.IsAdmin %>
-	Please <a href="/admin/show/$ID" style="color: red;">edit this page in CMS.</a>
+	Please <a href="/admin/show/$ID/" style="color: red;">edit this page in CMS.</a>
 	<% end_if  %>
 <% else  %>
 	You are not logged in.
