@@ -9,25 +9,16 @@
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class BarChart extends LineChart {
-	
-	protected $type = 'bvs';
-	
-	static $types = array('bhs', 'bvs', 'bvo', 'bhg', 'bvg');
-	static $bar_width_spacing_param = 'chbh';
+	public static $types = array('bhs', 'bvs', 'bvo', 'bhg', 'bvg');
+	public static $bar_width_spacing_param = 'chbh';
 	
 	protected $barWidthScale;
 	protected $barSpace;
 	protected $barGroupSpace;
+	protected $type = 'bvs';
 	
-	function addLine() {
-		user_error('You can not use the \'addLine\' function on a bar/column chart. Use the \'addSerie\' function instead.');
-	}
 	
-	function addSerie(array $y, $color = null, $legend = null) {
-		parent::addLine($y, null, $color, $legend);
-	}
-	
-	function Link(array $params = null) {
+	public function Link(array $params = null) {
 		if(count($this->lines) > 0) {
 			if($this->barWidthScale) {
 				$scale = $this->barWidthScale;
@@ -49,7 +40,18 @@ class BarChart extends LineChart {
 		return parent::Link($params);
 	}
 	
-	function setBarWidthAndSpacing($widthScale, $barSpace = null, $barGroupSpace = null) {
+	
+	public function addLine() {
+		user_error('You can not use the \'addLine\' function on a bar/column chart. Use the \'addSerie\' function instead.');
+	}
+	
+	public function addSerie(array $y, $color = null, $legend = null) {
+		parent::addLine($y, null, $color, $legend);
+	}
+	
+
+	
+	public function setBarWidthAndSpacing($widthScale, $barSpace = null, $barGroupSpace = null) {
 		if($widthScale == 'a' || $widthScale == 'r' || is_numeric($widthScale)) {
 			$this->barWidthScale = $widthScale;
 			if($barSpace != null) $this->barSpace = $barSpace;
@@ -69,22 +71,22 @@ class BarChart extends LineChart {
  */
 class BarChart_Interactive extends BarChart {
 	
-	static $legend_positions = array('left', 'right', 'top', 'bottom', 'none');
+	public static $legend_positions = array('left', 'right', 'top', 'bottom', 'none');
 	
-	static $extensions = array('InteractiveChart', 'InteractiveChart_Axis');
+	public static $extensions = array('InteractiveChart', 'InteractiveChart_Axis');
 	
-	static function addRequirements() {
+	public static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
 		Requirements::javascript('googlecharts/javascript/bar.js');
 		Requirements::javascript('googlecharts/javascript/tooltipfix.js');
 	}
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		self::addRequirements();
 	}
 	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
 		$script = $this->getJavascript();
@@ -92,13 +94,13 @@ class BarChart_Interactive extends BarChart {
 		return "<div id=\"{$params['id']}\" class=\"bar\"></div>";
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawBarChart_Interactive($params);";
 	}
 	
-	function getJavascriptParams() {
+	public function getJavascriptParams() {
 		$params['id'] = "BA_$this->id";
 		
 		foreach($this->lines as $serie) {
@@ -122,13 +124,12 @@ class BarChart_Interactive extends BarChart {
 		return $params;
 	}
 	
-	function getInteractiveType() {
+	public function getInteractiveType() {
 		return $this->type[1] == 'h' ? 'Bar' : 'Column';
 	}
 	
-	function isStacked() {
+	public function isStacked() {
 		return $this->type[2] != 'g';
 	}
 }
 
-?>

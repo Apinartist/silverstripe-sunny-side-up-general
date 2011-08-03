@@ -9,23 +9,23 @@
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class GaugeChart extends Chart {
-	
+	public static $range_colors = array('red', 'green', 'yellow');
+
 	protected $value, $min, $max, $ranges, $minorTicks, $majorTicks;
 	
-	static $range_colors = array('red', 'green', 'yellow');
 	
-	static function addRequirements() {
+	public static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
 		Requirements::javascript('googlecharts/javascript/gauge.js');
 	}
 	
-	function __construct($value) {
+	public function __construct($value) {
 		parent::__construct();
 		$this->value = $value;
 		self::addRequirements();
 	}
 	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
 		$script = $this->getJavascript();
@@ -33,7 +33,7 @@ class GaugeChart extends Chart {
 		return "<div id=\"{$params['id']}\" class=\"gauge\"></div>";
 	}
 	
-	function getJavascriptParams() {
+	public function getJavascriptParams() {
 		$params = array(
 			'id' => "GC_$this->id",
 			'title' => $this->title ? $this->title : '',
@@ -58,21 +58,30 @@ class GaugeChart extends Chart {
 		return $params;
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawGaugeChart($params);";
 	}
 	
-	function setMin($min) {$this->min = $min;}
-	function setMax($max) {$this->max = $max;}
-	
-	function setColorRange($color, $from, $to) {
-		if(in_array($color, self::$range_colors)) $this->ranges[$color] = array($from, $to);
+	public function setMin($min) {
+		$this->min = $min;
+	}
+	public function setMax($max) {
+		$this->max = $max;
 	}
 	
-	function setMinorTicks($number) {$this->minorTicks = $number;}
-	function setMajorTicks(array $ticks) {$this->majorTicks = $ticks;}
+	public function setColorRange($color, $from, $to) {
+		if(in_array($color, self::$range_colors)) {
+			$this->ranges[$color] = array($from, $to);
+		}
+	}
+	
+	public function setMinorTicks($number) {
+		$this->minorTicks = $number;
+	}
+	
+	public function setMajorTicks(array $ticks) {
+		$this->majorTicks = $ticks;
+	}
 }
-
-?>

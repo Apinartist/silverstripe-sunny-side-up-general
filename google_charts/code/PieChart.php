@@ -10,28 +10,20 @@
  */
 class PieChart extends Chart {
 
-	protected $type = 'p';
 
-	static $types = array('p', 'p3', 'pc');
+	public static $types = array('p', 'p3', 'pc');
+	public static $labels_param = 'chl';
+	public static $rotation_param = 'chp';
 
 	protected $portions = array();
 
-	static $labels_param = 'chl';
-	static $rotation_param = 'chp';
+	protected $type = 'p';
 
 	protected $colors = array();
 	protected $rotation;
 	protected $showLabels = true;
 
-	function addPortion($portion, $color = null, $legend = null, $label = null) {
-		$portion = array('value' => $portion);
-		if($color) $portion['color'] = $color;
-		if($legend) $portion['legend'] = $legend;
-		if($label) $portion['label'] = $label;
-		$this->portions[] = $portion;
-	}
-
-	function Link(array $params = null) {
+	public function Link(array $params = null) {
 		if(count($this->portions) > 0) {
 			foreach($this->portions as $portion) {
 				$portions[] = $portion['value'];
@@ -54,15 +46,28 @@ class PieChart extends Chart {
 		}
 		return parent::Link($params);
 	}
+	
 
-	function setColor($color1, $color2 = null) {
+	public function addPortion($portion, $color = null, $legend = null, $label = null) {
+		$portion = array('value' => $portion);
+		if($color) $portion['color'] = $color;
+		if($legend) $portion['legend'] = $legend;
+		if($label) $portion['label'] = $label;
+		$this->portions[] = $portion;
+	}
+
+	public function setColor($color1, $color2 = null) {
 		$this->colors[0] = $color1;
 		if($color2) $this->colors[1] = $color2;
 	}
 
-	function setRotation($rotation) {$this->rotation = $rotation;}
+	public function setRotation($rotation) {
+		$this->rotation = $rotation;
+	}
 	
-	function setShowLabels($show) {$this->showLabels = $show;}
+	public function setShowLabels($show) {
+		$this->showLabels = $show;
+	}
 }
 
 /**
@@ -75,26 +80,27 @@ class PieChart extends Chart {
  */
 class PieChart_Interactive extends PieChart {
 	
-	static $legend_positions = array('left', 'right', 'top', 'bottom', 'none');
-	static $pie_slice_text_formats = array('percentage', 'value', 'label', 'none');
+	public static $legend_positions = array('left', 'right', 'top', 'bottom', 'none');
+	public static $pie_slice_text_formats = array('percentage', 'value', 'label', 'none');
+	public static $extensions = array('InteractiveChart');
 	
 	protected $is3D;
 	protected $pieSliceText, $pieSliceColor, $pieSliceFontSize, $pieSliceFontName;
 	protected $sliceVisibilityThreshold, $pieResidueSliceColor, $pieResidueSliceLabel;
 	
-	static $extensions = array('InteractiveChart');
 	
-	static function addRequirements() {
+	
+	public static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
 		Requirements::javascript('googlecharts/javascript/pie.js');
 	}
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		self::addRequirements();
 	}
 	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
 		$script = $this->getJavascript();
@@ -102,13 +108,13 @@ class PieChart_Interactive extends PieChart {
 		return "<div id=\"{$params['id']}\" class=\"pie\"></div>";
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawPieChart_Interactive($params);";
 	}
 	
-	function getJavascriptParams() {
+	public function getJavascriptParams() {
 		$params['id'] = "PI_$this->id";
 		
 		foreach($this->portions as $portion) {
@@ -142,23 +148,33 @@ class PieChart_Interactive extends PieChart {
 		return $params;
 	}
 	
-	function enable3D() {$this->is3D = true;}
+	public function enable3D() {
+		$this->is3D = true;
+	}
 	
-	function setPieSliceText($format) {
+	public function setPieSliceText($format) {
 		if(in_array($format, self::$pie_slice_text_formats)) {
 			$this->pieSliceText = $format;
 		}
 	}
 	
-	function setPieSliceTextStyle($color, $fontName, $fontSize) {
+	public function setPieSliceTextStyle($color, $fontName, $fontSize) {
 		$this->pieSliceColor = $color;
 		$this->pieSliceFontName = $fontName;
 		$this->pieSliceFontSize = $fontSize;
 	}
 	
-	function setSliceVisibilityThreshold($threshold) {$this->sliceVisibilityThreshold = $threshold;}
-	function setPieResidueSliceColor($color) {$this->pieResidueSliceColor = $color;}
-	function setPieResidueSliceLabel($label) {$this->pieResidueSliceLabel = $label;}
+	public function setSliceVisibilityThreshold($threshold) {
+		$this->sliceVisibilityThreshold = $threshold;
+	}
+	
+	public function setPieResidueSliceColor($color) {
+		$this->pieResidueSliceColor = $color;
+	}
+	
+	public function setPieResidueSliceLabel($label) {
+		$this->pieResidueSliceLabel = $label;
+	}
 }
 
-?>
+

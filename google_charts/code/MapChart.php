@@ -11,32 +11,29 @@
  */
 class MapChart extends Chart {
 	
-	static $max_dimensions = array(
+	public static $max_dimensions = array(
 		't' => array(400, 220),
 		'map' => array(600, 500)
 	);
 	
+	public static $types = array('t', 'map');	
+	
+	public static $area_param = 'chtm';
+	public static $country_param = 'chld';
+	
+	public static $areas = array('africa', 'asia', 'europe', 'middle_east', 'south_america', 'usa', 'world');
+	
+	
 	protected $type = 't';
 	protected $area = 'world';
-	
-	static $types = array('t', 'map');
 	
 	protected $records = array();
 	protected $colors = array();
 	
 	protected $positionLeft, $positionRight, $positionTop, $positionBottom; 
 	
-	static $area_param = 'chtm';
-	static $country_param = 'chld';
 	
-	static $areas = array('africa', 'asia', 'europe', 'middle_east', 'south_america', 'usa', 'world');
-	
-	function addRecord($title, $value, $marker = null) {
-		$this->records[$title] = array(floatval($value));
-		if($marker) $this->records[$title][] = $marker;
-	}
-	
-	function Link(array $params = null) {
+	public function Link(array $params = null) {
 		$params[self::$area_param] = $this->area;
 		if(count($this->records) > 0) {
 			$params[self::$country_param] = implode($this->type == 't' ? '' : '|', array_keys($this->records));
@@ -63,7 +60,14 @@ class MapChart extends Chart {
 		return parent::Link($params);
 	}
 	
-	function getTypeForLink() {
+	public function addRecord($title, $value, $marker = null) {
+		$this->records[$title] = array(floatval($value));
+		if($marker) $this->records[$title][] = $marker;
+	}
+	
+
+	
+	public function getTypeForLink() {
 		$type = parent::getTypeForLink();
 		if($type == 'map' && isset($this->positionTop)) {
 			$type .= ":auto=$this->positionLeft,$this->positionRight,$this->positionTop,$this->positionBottom";
@@ -71,21 +75,21 @@ class MapChart extends Chart {
 		return $type;
 	}
 	
-	function getFinalWidth() {
+	public function getFinalWidth() {
 		$width = parent::getFinalWidth();
 		return isset(self::$max_dimensions[$this->type]) ? min($width, self::$max_dimensions[$this->type][0]) : $width;
 	}
 	
-	function getFinalHeight() {
+	public function getFinalHeight() {
 		$height = parent::getFinalHeight();
 		return isset(self::$max_dimensions[$this->type]) ? min($height, self::$max_dimensions[$this->type][1]) : $height;
 	}
 	
-	function setColors(array $colors) {
+	public function setColors(array $colors) {
 		$this->colors = $colors;
 	}
 	
-	function setPosition($left, $right, $top, $bottom) {
+	public function setPosition($left, $right, $top, $bottom) {
 		$this->positionLeft = $left;
 		$this->positionRight = $right;
 		$this->positionTop = $top;
@@ -102,13 +106,9 @@ class MapChart extends Chart {
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class MapChart_Geo extends MapChart {
+	public static $types = array('regions', 'markers');
 	
-	protected $type = 'regions';
-	protected $region = 'world';
-	
-	static $types = array('regions', 'markers');
-	
-	static $regions = array('world', 'us_metro',
+	public static $regions = array('world', 'us_metro',
 		'005', // South America
 		'013', // Central America
 		'021', // North America
@@ -127,21 +127,22 @@ class MapChart_Geo extends MapChart {
 		'039'  // South Europe
 	);
 	
-	static function addRequirements() {
+	protected $type = 'regions';
+	protected $region = 'world';
+	
+	
+	public static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
 		Requirements::javascript('googlecharts/javascript/geomap.js');
 	}
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		self::addRequirements();
 	}
+
 	
-	function setRegion($region) {
-		if(in_array($region, self::$regions) || in_array($region, array_keys(Geoip::getCountryDropDown()))) $this->region = $region;
-	}
-	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
 		$script = $this->getJavascript();
@@ -149,7 +150,14 @@ class MapChart_Geo extends MapChart {
 		return "<div id=\"{$params['id']}\" class=\"geomap\"></div>";
 	}
 	
-	function getJavascriptParams() {
+	public function setRegion($region) {
+		if(in_array($region, self::$regions) || in_array($region, array_keys(Geoip::getCountryDropDown()))) {
+			$this->region = $region;
+		}
+	}	
+	
+	
+	public function getJavascriptParams() {
 		$params = array(
 			'id' => "GM_$this->id",
 			'records' => array_keys($this->records)
@@ -178,11 +186,9 @@ class MapChart_Geo extends MapChart {
 		return $params;
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawMapChart_Geo($params);";
 	}
 }
-
-?>

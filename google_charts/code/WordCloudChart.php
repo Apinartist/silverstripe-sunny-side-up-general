@@ -19,13 +19,13 @@ class WordCloudChart extends Chart {
 		Requirements::javascript('googlecharts/javascript/wordcloud.js');
 	}
 	
-	function __construct(array $words) {
+	public function __construct(array $words) {
 		parent::__construct();
 		$this->words = $words;
 		self::addRequirements();
 	}
 	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		$width = $this->width ? $this->width : Chart::$default_width;
 		
@@ -34,7 +34,7 @@ class WordCloudChart extends Chart {
 		return "<div id=\"{$params['id']}\" class=\"wordcloud\" style=\"width: {$width}px;\"></div>";
 	}
 	
-	function getJavascriptParams() {
+	public function getJavascriptParams() {
 		return array(
 			'id' => "WC_$this->id",
 			'words' => array_keys($this->words),
@@ -42,7 +42,7 @@ class WordCloudChart extends Chart {
 		);
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawWordCloudChart($params);";
@@ -59,11 +59,12 @@ class WordCloudChart extends Chart {
  */
 class WordCloudChart_Rotating extends Chart {
 	
+	public static $font_max = 30;
+	public static $font_min = 7;	
+	
 	protected $words, $urls;
 	protected $speed, $color, $hoverColor;
 	
-	static $font_max = 30;
-	static $font_min = 7;
 	
 	static function addRequirements() {
 		Requirements::javascript('http://www.google.com/jsapi');
@@ -72,7 +73,7 @@ class WordCloudChart_Rotating extends Chart {
 		Requirements::javascript('googlecharts/javascript/wordcloudrotating.js');
 	}
 	
-	function __construct(array $words) {
+	public function __construct(array $words) {
 		parent::__construct();
 		$max = max($words);
 		$min = min($words);
@@ -83,11 +84,11 @@ class WordCloudChart_Rotating extends Chart {
 		self::addRequirements();
 	}
 	
-	function setURLS($urls) {
+	public function setURLS($urls) {
 		$this->urls = $urls;
 	}
 	
-	function forTemplate() {
+	public function forTemplate() {
 		$params = $this->getJavascriptParams();
 		
 		$script = $this->getJavascript();
@@ -95,7 +96,7 @@ class WordCloudChart_Rotating extends Chart {
 		return "<div id=\"{$params['id']}\" class=\"wordcloudrotating\"></div>";
 	}
 	
-	function getJavascriptParams() {
+	public function getJavascriptParams() {
 		$params = array(
 			'id' => "WCR_$this->id",
 			'words' => array_keys($this->words),
@@ -124,15 +125,22 @@ class WordCloudChart_Rotating extends Chart {
 		return $params;
 	}
 	
-	function getJavascript() {
+	public function getJavascript() {
 		$params = $this->getJavascriptParams();
 		$params = Convert::array2json($params);
 		return "drawWordCloudChart_Rotating($params);";
 	}
 	
-	function setSpeed($speed) {$this->speed = $speed;}
-	function setColor($color) {$this->color = $color;}
-	function setHoverColor($hoverColor) {$this->hoverColor = $hoverColor;}
+	public function setSpeed($speed) {
+		$this->speed = $speed;
+	}
+	
+	public function setColor($color) {
+		$this->color = $color;
+	}
+	
+	public function setHoverColor($hoverColor) {
+		$this->hoverColor = $hoverColor;
+	}
+	
 }
-
-?>

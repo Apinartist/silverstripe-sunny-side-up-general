@@ -9,7 +9,7 @@
  */
 class InteractiveChart extends Extension {
 	
-	static $title_positions = array('in', 'out', 'none');
+	public static $title_positions = array('in', 'out', 'none');
 	
 	protected $chartBorderColor, $chartBorderWidth;
 	protected $chartWidth, $chartHeight;
@@ -19,7 +19,7 @@ class InteractiveChart extends Extension {
 	protected $titleFontName, $titlePosition; // Position not usable for pie charts
 	protected $tooltipColor, $tooltipFontSize, $tooltipFontName;
 	
-	function updateJavascriptParams(array &$options) {
+	public function updateJavascriptParams(array &$options) {
 		
 		// Dimensions
 		
@@ -87,12 +87,17 @@ class InteractiveChart extends Extension {
 	
 	// Background
 	
-	function setChartBorderColor($color) {$this->chartBorderColor = $color;}
-	function setChartBorderWidth($width) {$this->chartBorderWidth = $width;}
+	public function setChartBorderColor($color) {
+		$this->chartBorderColor = $color;
+	}
+	
+	public function setChartBorderWidth($width) {
+		$this->chartBorderWidth = $width;
+	}
 	
 	// Chart Area
 	
-	function setChartArea($left, $top, $width, $height) {
+	public function setChartArea($left, $top, $width, $height) {
 		$this->owner->marginLeft = $left;
 		$this->owner->marginTop = $top;
 		$this->chartWidth = $width;
@@ -101,24 +106,30 @@ class InteractiveChart extends Extension {
 	
 	// Font
 	
-	function setFont($size, $name) {
+	public function setFont($size, $name) {
 		$this->fontSize = $size;
 		$this->fontName = $name;
 	}
 	
 	// Legend
 	
-	function setLegendFontName($name) {$this->legendFontName = $name;}
+	public function setLegendFontName($name) {
+		$this->legendFontName = $name;
+	}
 	
 	// Reverse Categories
 	
-	function reverseCategories() {$this->reverseCategories = true;}
+	public function reverseCategories() {
+		$this->reverseCategories = true;
+	}
 	
 	// Title
 	
-	function setTitleFontName($name) {$this->titleFontName = $name;}
+	public function setTitleFontName($name) {
+		$this->titleFontName = $name;
+	}
 	
-	function setTitlePosition($position) {
+	public function setTitlePosition($position) {
 		if(in_array($position, self::$title_positions)) {
 			$this->titlePosition = $position;
 		}
@@ -126,7 +137,7 @@ class InteractiveChart extends Extension {
 	
 	// Tooltip
 	
-	function setTooltipTextStyle($color, $fontName, $fontSize) {
+	public function setTooltipTextStyle($color, $fontName, $fontSize) {
 		$this->tooltipColor = $color;
 		$this->tooltipFontName = $fontName;
 		$this->tooltipFontSize = $fontSize;
@@ -143,33 +154,39 @@ class InteractiveChart extends Extension {
  */
 class InteractiveChart_Axis extends Extension {
 	
-	static $axis_titles_positions = array('in', 'out', 'none');
+	public static $axis_titles_positions = array('in', 'out', 'none');
 	
 	protected $axisTitlesPosition;
 	protected $gridlineColor;
 	
-	function updateJavascriptParams(array &$options) {
+	public function updateJavascriptParams(array &$options) {
 		
 		// Titles Position
 		
-		if($this->axisTitlesPosition) $options['axisTitlesPosition'] = $this->axisTitlesPosition;
+		if($this->axisTitlesPosition) {
+			$options['axisTitlesPosition'] = $this->axisTitlesPosition;
+		}
 		
 		// Gridline Color
 		
-		if($this->gridlineColor) $options['gridlineColor'] = $this->gridlineColor;
+		if($this->gridlineColor) {
+			$options['gridlineColor'] = $this->gridlineColor;
+		}
 		
 	}
 	
 	// Titles Position
 	
-	function setAxisTitlesPosition($position) {
-		if(in_array($position, self::$axis_titles_positions)) $this->axisTitlesPosition = $position;
+	public function setAxisTitlesPosition($position) {
+		if(in_array($position, self::$axis_titles_positions)) {
+			$this->axisTitlesPosition = $position;
+		}
 	}
 	
 	// Gridline Color
 	
-	function setGridlineColor($color) {$this->gridlineColor = $color;}
+	function setGridlineColor($color) {
+		$this->gridlineColor = $color;
+	}
 	
 }
-
-?>
