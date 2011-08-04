@@ -11,7 +11,7 @@
 class WordCloudChart extends Chart {
 	
 	protected $words;
-	
+
 	static function addRequirements() {
 		Requirements::css('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.css');
 		Requirements::javascript('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.js');
