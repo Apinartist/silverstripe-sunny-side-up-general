@@ -16,7 +16,8 @@ class DataIntegrityTest extends DevelopmentAdmin {
 
 	protected static $global_exceptions = array(
 		"EditableFormField" => "Version",
-		"EditableOption" => "Version"
+		"EditableOption" => "Version",
+		"OrderItem" => "Version"
 	);
 
 	/**
@@ -79,7 +80,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 									}
 								}
 							}
-							if($actualField == "Version") {
+							if($actualField == "Version" && !in_array($actualField, $requiredFields)) {
 								$versioningPresent = false;
 								$array = $dataObject->stat('extensions');
 								if(is_array($array) && count($array)) {
