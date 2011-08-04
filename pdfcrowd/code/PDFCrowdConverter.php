@@ -8,28 +8,57 @@ class PDFCrowdConverter extends Object {
 
 	protected static $username = "";
 		public static set_username($s) {self::$username = $s;}
+		public static get_username() {return self::$username;}
 
 	protected static $api_key = "";
 		public static set_api_key($s) {self::$api_key = $s;}
+		public static get_api_key() {return self::$api_key;}
 
-	public static function convert($url, $filename) {
+	protected static $singleton = null;
+
+	public $pdf = null
+
+	/**
+	 * Allows access to the cart from anywhere in code.
+	 *@return ShoppingCart Object
+	 */
+	public static function singleton(){
+		if(!self::$singleton){
+			self::$singleton = new PDFCrowdConverter();
+		}
+		return self::$singleton;
+	}
+
+	function __construct() {
 		require_once(Director::baseFolder() . '/' .self::$third_party_file)
+		$this->pdf = new Pdfcrowd(self::$username, self::$api_key);
+		parent::__construct();
+	}
+
+	public function ConvertURL($url, $filename) {
 		try {   
-			// create an API client instance
-			$client = new Pdfcrowd(self::$username, self::$api_key);
-			// convert a web page and store the generated PDF into a $pdf variable
-			$pdf = $client->convertURI($url);
-			// set HTTP response headers
-			header("Content-Type: application/pdf");
-			header("Cache-Control: no-cache");
-			header("Accept-Ranges: none");
-			header("Content-Disposition: attachment; filename=\"$filename\"");
-			// send the generated PDF 
-			echo $pdf;
+			$pdf = $this->pdf->convertURI($url);
+			return $this->outputPDF($pdf, $filename);
 		}
 		catch(PdfcrowdException $e) {
-			echo "Pdfcrowd Error: " . $e->getMessage();
+			return "Pdfcrowd Error: " . $e->getMessage();
 		}
 	}
 
+	public function ConvertPage($page) {
+		return $this->convert(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf")
+	}
+
+	public static function outputPDF($pdfAsString, $filename) {
+		// set HTTP response headers
+		header("Content-Type: application/pdf");
+		header("Cache-Control: no-cache");
+		header("Accept-Ranges: none");
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+		// send the generated PDF 
+		echo $pdfAsString;
+	}
+
 }
+
+
