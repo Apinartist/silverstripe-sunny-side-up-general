@@ -4,19 +4,19 @@
 class PDFCrowdConverter extends Object {
 
 	protected static $third_party_file = "pdfcrowd/thirdparty/github/pdfcrowd.php";
-		public static set_third_party_file($s) {self::$third_party_file = $s;}
+		public static function set_third_party_file($s) {self::$third_party_file = $s;}
 
 	protected static $username = "";
-		public static set_username($s) {self::$username = $s;}
-		public static get_username() {return self::$username;}
+		public static function set_username($s) {self::$username = $s;}
+		public static function get_username() {return self::$username;}
 
 	protected static $api_key = "";
-		public static set_api_key($s) {self::$api_key = $s;}
-		public static get_api_key() {return self::$api_key;}
+		public static function set_api_key($s) {self::$api_key = $s;}
+		public static function get_api_key() {return self::$api_key;}
 
 	protected static $singleton = null;
 
-	public $pdf = null
+	public $pdf = null;
 
 	/**
 	 * Allows access to the cart from anywhere in code.
@@ -30,7 +30,7 @@ class PDFCrowdConverter extends Object {
 	}
 
 	function __construct() {
-		require_once(Director::baseFolder() . '/' .self::$third_party_file)
+		require_once(Director::baseFolder() . '/' .self::$third_party_file);
 		$this->pdf = new Pdfcrowd(self::$username, self::$api_key);
 		parent::__construct();
 	}
@@ -46,7 +46,7 @@ class PDFCrowdConverter extends Object {
 	}
 
 	public function ConvertPage($page) {
-		return $this->convert(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf")
+		return $this->convert(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf");
 	}
 
 	public static function outputPDF($pdfAsString, $filename) {
