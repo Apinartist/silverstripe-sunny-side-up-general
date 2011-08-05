@@ -8,16 +8,29 @@
  * @todo Inherit the legend_positions array values by putting it in this file
  */
 class InteractiveChart extends Extension {
-	
+	/**
+	 * Valid values for the chart's title position
+	 *
+	 * @var array
+	 */
 	public static $title_positions = array('in', 'out', 'none');
 	
-	protected $chartBorderColor, $chartBorderWidth;
+	/**
+	 * 
+	 *
+	 * @var 
+	 */
+	protected $chartBorderColor;
+	
+	protected $chartBorderWidth;
 	protected $chartWidth, $chartHeight;
 	protected $fontSize, $fontName;
 	protected $legendFontName;
 	protected $reverseCategories;
 	protected $titleFontName, $titlePosition; // Position not usable for pie charts
 	protected $tooltipColor, $tooltipFontSize, $tooltipFontName;
+	
+	
 	
 	public function updateJavascriptParams(array &$options) {
 		

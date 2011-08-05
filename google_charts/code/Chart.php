@@ -103,6 +103,7 @@ class Chart extends ViewableData {
 	/**
 	 * The name/key of the chart data scaling parameter to pass to Google Charts
 	 *
+	 * @todo doesn't seem to be used anywhere
 	 * @var string
 	 */
 	public static $data_scaling_param = 'chds';
@@ -211,13 +212,14 @@ class Chart extends ViewableData {
 	/**
 	 * An array of allowed text and data marker values
 	 *
+	 * @link http://code.google.com/apis/chart/image/docs/chart_params.html#gcharts_data_point_labels
 	 * @var array
 	 */
 	public static $marker_types = array(
-		'f', 
-		't', 
-		'A', 
-		'N'
+		'f', 				//	a flag marker containing text (eg "fMonth Total")
+		't', 				//	just plain text (eg "tMonth Total")
+		'A', 				//	
+		'N' 				//	the value of the point formatted like this: <preceding_text>*<number_type><decimal_places>zs<x or y>*<following_text>
 	);
 	
 	/**
@@ -249,16 +251,193 @@ class Chart extends ViewableData {
 	 */
 	protected $generateColor = false;
 	
+	/**
+	 * The title of the current chart
+	 *
+	 * @var string
+	 */
+	protected $title;
 	
-	protected $title, $titleColor, $titleSize, $showTitle = true;
-	protected $legendPosition, $legendOrder, $legendColor, $legendFontSize, $showLegend = true;
-	protected $marginLeft, $marginRight, $marginTop, $marginBottom, $legendWidth, $legendHeight;
-	protected $visibleAxes, $axisRange, $axisLabels;
-	protected $backgroundColor, $chartColor, $transparency;
-	protected $markerType, $markerColor, $markerSize;
+	/**
+	 * The colour of the title text in RRGGBB format
+	 *
+	 * @var string
+	 */
+	protected $titleColor;
 	
+	/**
+	 * The title's font size in points
+	 *
+	 * @var int
+	 */
+	protected $titleSize;
+	
+	/**
+	 * Whether to show a title on the chart or not
+	 *
+	 * @var bool
+	 */
+	protected $showTitle = true;
+	
+	/**
+	 * The position of the legend
+	 *
+	 * @var string
+	 */
+	protected $legendPosition;
+	
+	/**
+	 * The order of the legend items
+	 *
+	 * @var string
+	 */
+	protected $legendOrder;
+	
+	/**
+	 * The colour of the legend text in RRGGBB format
+	 *
+	 * @var string
+	 */
+	protected $legendColor;
+	
+	/**
+	 * The legend text size in points
+	 *
+	 * @var int
+	 */
+	protected $legendFontSize;
+	
+	/**
+	 * Whether to show the legend or not
+	 *
+	 * @var bool
+	 */
+	protected $showLegend = true;
+	
+	
+	/**
+	 * The chart's left margin in px
+	 *
+	 * @var int
+	 */
+	protected $marginLeft;
+	
+	/**
+	 * The chart's right margin in px
+	 *
+	 * @var int
+	 */
+	protected $marginRight;
+	
+	/**
+	 * The chart's top margin in px
+	 *
+	 * @var int
+	 */
+	protected $marginTop;
+	
+	/**
+	 * The chart's bottom margin in px
+	 *
+	 * @var int
+	 */
+	protected $marginBottom;
+	
+	/**
+	 * The legend's width in px
+	 *
+	 * @var int
+	 */
+	protected $legendWidth;
+	
+	/**
+	 * The legend's height in px
+	 *
+	 * @var int
+	 */
+	protected $legendHeight;
+	
+	/**
+	 * The list of visible axes
+	 *
+	 * @var array
+	 */
+	protected $visibleAxes;
+	
+	/**
+	 * The range of values for each axis
+	 *
+	 * @var array
+	 */
+	protected $axisRange;
+	
+	/**
+	 * The labels for each axis
+	 *
+	 * @var array
+	 */
+	protected $axisLabels;
+	
+	/**
+	 * The chart's background colour in RRGGBB format
+	 *
+	 * @var string
+	 */
+	protected $backgroundColor;
+	
+	/**
+	 * The chart's background colour in RRGGBB format
+	 *
+	 * @var string
+	 */
+	protected $chartColor;
+	
+	
+	/**
+	 * The chart's transparency as a number between 0 and 255
+	 *
+	 * @var int
+	 */
+	protected $transparency;
+	
+	
+	/**
+	 * The type of marker to use
+	 *
+	 * @var string
+	 */
+	protected $markerType;
+	
+	/**
+	 * The colour of the marker in RRGGBB format
+	 *
+	 * @var string
+	 */
+	protected $markerColor;
+	
+	/**
+	 * The size of the marker in pixels
+	 *
+	 * @var int
+	 */
+	protected $markerSize;
+	
+	
+	/**
+	 * The chart's unique ID
+	 *
+	 * @var int
+	 */
 	protected $id;
 	
+	
+	
+	/**
+	 * A nested array or formatting rules, which will be passed to Google Charts
+	 *
+	 * @var array
+	 */
+	public $formatting = array();
 	
 	
 	/**
@@ -286,13 +465,16 @@ class Chart extends ViewableData {
 	/**
 	 * Returns a URL to this chart image on Google Charts
 	 * 
-	 * @param array $params An optional set of default chart parameters (will be overwritten by properties set on this chart)
+	 * @param array $params An optional set of default chart parameters (eg for setting params in subclasses).  Will be overwritten by properties set on this chart)
 	 * @return string
 	 */
 	public function Link(array $params = null) {
 		if(!$params) {
 			$params = array();
 		}
+		
+		
+		
 		$params[self::$type_param] = $this->getTypeForLink();
 		$params[self::$size_param] = "{$this->getFinalWidth()}x{$this->getFinalHeight()}";
 		
@@ -335,11 +517,15 @@ class Chart extends ViewableData {
 			}
 		}
 		
+		
+		
 		// Axis Styles & Labels : http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_axis_styles_labels
 		
 		if($this->visibleAxes) {
+		
 			$params[self::$visible_axes_param] = implode(',', $this->visibleAxes);
 			if($this->axisRange) {
+				
 				foreach($this->axisRange as $index => $range) {
 					if($range) {
 						$ranges[] = "$index," . implode(',', $range);
@@ -352,7 +538,7 @@ class Chart extends ViewableData {
 			if($this->axisLabels) {
 				foreach($this->axisLabels as $index => $labels) {
 					if($labels) {
-						$axesLabels[] = "$index:|" . implode('|', $labels);
+						$axesLabels[] = "$index:|" . implode('|', $labels) . '|';
 					}
 				}
 				if(isset($axesLabels)) {
@@ -369,12 +555,14 @@ class Chart extends ViewableData {
 		if($this->chartColor) {
 			$backgroundFills[] = "c,s,$this->chartColor";
 		}
-		if($this->transparency) {
+		if(!is_null($this->transparency)) {
 			$backgroundFills[] = "a,s,000000$this->transparency";
 		}
 		if(isset($backgroundFills)) {
 			$params[self::$background_fill_param] = implode('|', $backgroundFills);
 		}
+		
+	//	$params['chds'] = 'a';
 		
 		foreach($params as $name => $value) {
 			$paramValues[] = "$name=$value";
@@ -623,25 +811,54 @@ class Chart extends ViewableData {
 	public function setAxesLabels($axeslabels) {
 		if(is_array($axeslabels)) {
 			foreach($axeslabels as $index => $labels) {
-				if($labels && is_array($labels)) $this->axisLabels[$index] = $labels;
+				if($labels && is_array($labels)) {
+					$this->axisLabels[$index] = $labels;
+				}
 			}
 		}
 	}
 	
-	// Solid Fills : http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_solid_fills
-	
+	/**
+	 * Set the background colour for the entire chart including axes, margins and legend
+	 * 
+	 * @link http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_solid_fills
+	 * @param string $backgroundColour The background colour in RRGGBB format
+	 */
 	public function setBackgroundColor($backgroundColor) {
 		$this->backgroundColor = $backgroundColor;
 	}
 	
+	/**
+	 * Set the background colour for the chart itself (ie just the area inside the axes)
+	 * 
+	 * @link http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_solid_fills
+	 * @param string $chartColor The background colour in RRGGBB format
+	 */
 	public function setChartColor($chartColor) {
 		$this->chartColor = $chartColor;
 	}
 	
+	/**
+	 * Make the whole chart transparent.  Input ranges from 1 (basically transparent) to 255 (solid).  
+	 * Note that 0 will make the chart's background disappear but not fade the chart itself
+	 * 
+	 * @link http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_solid_fills
+	 * @param int $transparency A number between 0 and 255
+	 */
 	public function setTransparency($transparency) {
 		$this->transparency = dechex(min(max(0, $transparency), 255));
 	}
 	
+	
+	/**
+	 * Define markers that are applied to chart lines, bars etc.
+	 * This only works for static charts and only certain chart types.  See the link below for more info
+	 * 
+	 * @link http://code.google.com/apis/chart/image/docs/chart_params.html#gcharts_data_point_labels
+	 * @param string $type This is a specifically formatted string starting with one of the keys defined in {@see $marker_types}
+	 * @param string $colour The colour of the marker text, in RRGGBB format
+	 * @param int $size The size of the marker in pixels
+	 */
 	public function setMarker($type, $color, $size) {
 		if(in_array($type[0], self::$marker_types)) {
 			$this->markerType = $type;
@@ -649,5 +866,34 @@ class Chart extends ViewableData {
 			$this->markerSize = $size;
 		}
 	}
+	
+	/**
+	 * Set rules for using Google Charts formatters.  
+	 * $formats is a nested array.  To format numbers in column 1 as percentages, for example, do something like this:
+	 *		array(
+	 *			"number" => array(
+	 *				1 => array(
+	 *					"suffix" => '%',
+	 *					'fractionDigits' => 0
+	 *				)
+	 *			)
+	 *		);
+	 * 
+	 * @link http://code.google.com/apis/chart/interactive/docs/reference.html#formatters
+	 * @todo This is currently only implemented for maps.  Needs to be extended to the JS files and methods of all chart types
+	 * @todo This currently only supports number formatting.  Other formats need to be
+	 * @param array $formats The array of arrays.  Will overwrite all existing formatting
+	 */
+	public function setFormatting(array $formats) {
+		$this->formatting = $formats;
+	}
+	
+	public function addFormatting(string $type, int $column, array $formatData) {
+		if (!isset($this->formatting[$type])) {
+			$this->formatting[$type] = array();
+		}
+		$this->formatting[$type][$column] = $formatData;
+	}
+	
 }
 

@@ -8,6 +8,7 @@ function drawMapChart_Geo(params) {
 	var totals = params['totals'];
 	var options = params['options'];
 	
+	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Country');
@@ -20,6 +21,27 @@ function drawMapChart_Geo(params) {
 		data.setValue(i, 1, totals[i]);
 	}
 	
+	
+	if (params['formatting']) {
+		var formatting = params['formatting'];
+		for (var type in formatting) {
+			var columns = formatting[type];
+			for (var index in columns) {
+				var formatRules = columns[index];
+				var formatter;
+				
+				if (type == 'number') {
+					formatter = new google.visualization.NumberFormat(formatRules);
+				}
+				
+				formatter.format(data, index*1); 
+			}
+		}
+	}
+	
+
+	
+  
 	var chart = new google.visualization.GeoMap(document.getElementById(id));
     chart.draw(data, options);
 };

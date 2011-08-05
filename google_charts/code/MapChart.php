@@ -171,7 +171,7 @@ class MapChart_Geo extends MapChart {
 		if($this->showTitle && $this->title) {
 			$params['title'] = $this->title;
 		}
-		
+
 		$options = array(
 			'width' => $this->getFinalWidth(),
 			'height' => $this->getFinalHeight(),
@@ -179,15 +179,23 @@ class MapChart_Geo extends MapChart {
 			'region' => $this->region
 		);
 		
+		
+		if (count($this->formatting) > 0) {
+			$params['formatting'] = $this->formatting;
+		}
+		
+		
 		if(count($this->colors) > 0) $options['colors'] = $this->colors;
 		if(isset($this->showLegend)) $options['showLegend'] = $this->showLegend;
 		
 		$params['options'] = $options;
+		
 		return $params;
 	}
 	
 	public function getJavascript() {
 		$params = $this->getJavascriptParams();
+		
 		$params = Convert::array2json($params);
 		return "drawMapChart_Geo($params);";
 	}
