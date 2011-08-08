@@ -90,6 +90,34 @@ class GoogleMapLocationsDOD extends DataObjectDecorator {
 		return $result;
 	}
 
+
+
+	/**
+	 * Recursively search children of current page to find a particular classtype
+	 *
+	 * @param $parentPage DataObject The Object of which you want to find the children
+	 * @param $classType String The text string to match `ClassName` field
+	 * @return DataObjectSet of items if Class $classType
+	 */
+	function getChildrenOfType($parentPage, $classType = null) {
+		$children = $parentPage->AllChildren();
+		if (!isset($childrenOfType)) {
+			$childrenOfType = new DataObjectSet();
+		}
+		if ($children) {
+			foreach($children as $item ) {
+				$childrenOfType->merge($this->getChildrenOfType($item, $classType));
+			}
+		}
+		if((isset($classType) && $CurrentPage->ClassName == $classType) || (!isset($classType))) {
+			if($parentPage->HasGeoInfo) {
+				$childrenOfType->push($parentPage);
+			}
+		}
+		return ($childrenOfType) ? $childrenOfType : new DataObjectSet();
+	}
+	
+
 }
 
 class GoogleMapLocationsDOD_Controller extends Extension {
@@ -248,32 +276,6 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$this->addMap($fn, $title);
 		return Array();
 	}
-
-	/**
-	 * Recursively search children of current page to find a particular classtype
-	 *
-	 * @param $obj DataObject The Object of which you want to find the children
-	 * @param $classType String The text string to match `ClassName` field
-	 * @return DataObjectSet of items if Class $classType
-	 */
-	function getChildrenOfType($CurrentPage, $classType=null) {
-		$children = $CurrentPage->AllChildren();
-		if (!isset($childrenOfType)) {
-			$childrenOfType=new DataObjectSet();
-		}
-		if ($children) {
-			foreach($children as $item ) {
-				$childrenOfType->merge($this->getChildrenOfType($item,$classType));
-			}
-		}
-		if((isset($classType) && $CurrentPage->ClassName == $classType) || (!isset($classType))) {
-			if($CurrentPage->HasGeoInfo) {
-				$childrenOfType->push($CurrentPage);
-			}
-		}
-		return ($childrenOfType) ? $childrenOfType : new DataObjectSet();
-	}
-
 
 
 	protected function hasStaticMaps() {
