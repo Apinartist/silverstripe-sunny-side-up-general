@@ -819,10 +819,11 @@ class Chart extends ViewableData {
 	}
 	
 	/**
-	 * Set the background colour for the entire chart including axes, margins and legend
+	 * In static/image charts, sets the background colour for the entire chart including axes, margins and legend.
+	 * Can be used in interactive charts to set an array of properties (stroke, strokeWidth and fill) but recommend using setChartBorderWidth(), setChartBorderColor(), setChartColor() to set properties instead
 	 * 
 	 * @link http://code.google.com/apis/chart/image/docs/gallery/pie_charts.html#gcharts_solid_fills
-	 * @param string $backgroundColour The background colour in RRGGBB format
+	 * @param string|array $backgroundColour The background colour in RRGGBB format or any array of background properties
 	 */
 	public function setBackgroundColor($backgroundColor) {
 		$this->backgroundColor = $backgroundColor;
