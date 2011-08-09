@@ -555,7 +555,7 @@ class Chart extends ViewableData {
 		if($this->chartColor) {
 			$backgroundFills[] = "c,s,$this->chartColor";
 		}
-		if(!is_null($this->transparency)) {
+		if(! is_null($this->transparency)) {
 			$backgroundFills[] = "a,s,000000$this->transparency";
 		}
 		if(isset($backgroundFills)) {
