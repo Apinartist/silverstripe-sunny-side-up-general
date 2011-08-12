@@ -15,7 +15,7 @@ class ModuleProductGroup extends ProductGroup {
 }
 
 
-class ModuleProduct_Controller extends Product_Controller {
+class ModuleProductGroup_Controller extends ProductGroup_Controller {
 
 
 }
