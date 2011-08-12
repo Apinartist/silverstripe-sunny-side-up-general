@@ -22,8 +22,9 @@ function drawMapChart_Geo(params) {
 	}
 	
 	
-	if (params['formatting']) {
-		var formatting = params['formatting'];
+	if (params['options']['formatting']) {
+		var formatting = params['options']['formatting'];
+		params['options']['formatting'] = null;
 		for (var type in formatting) {
 			var columns = formatting[type];
 			for (var index in columns) {
