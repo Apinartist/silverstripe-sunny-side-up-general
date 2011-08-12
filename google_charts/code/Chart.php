@@ -431,15 +431,6 @@ class Chart extends ViewableData {
 	protected $id;
 	
 	
-	
-	/**
-	 * A nested array or formatting rules, which will be passed to Google Charts
-	 *
-	 * @var array
-	 */
-	public $formatting = array();
-	
-	
 	/**
 	 * Generates and returns a random colour in RRGGBB format
 	 *
@@ -868,33 +859,7 @@ class Chart extends ViewableData {
 		}
 	}
 	
-	/**
-	 * Set rules for using Google Charts formatters.  
-	 * $formats is a nested array.  To format numbers in column 1 as percentages, for example, do something like this:
-	 *		array(
-	 *			"number" => array(
-	 *				1 => array(
-	 *					"suffix" => '%',
-	 *					'fractionDigits' => 0
-	 *				)
-	 *			)
-	 *		);
-	 * 
-	 * @link http://code.google.com/apis/chart/interactive/docs/reference.html#formatters
-	 * @todo This is currently only implemented for maps.  Needs to be extended to the JS files and methods of all chart types
-	 * @todo This currently only supports number formatting.  Other formats need to be
-	 * @param array $formats The array of arrays.  Will overwrite all existing formatting
-	 */
-	public function setFormatting(array $formats) {
-		$this->formatting = $formats;
-	}
-	
-	public function addFormatting(string $type, int $column, array $formatData) {
-		if (!isset($this->formatting[$type])) {
-			$this->formatting[$type] = array();
-		}
-		$this->formatting[$type][$column] = $formatData;
-	}
+
 	
 }
 
