@@ -108,6 +108,12 @@ class InteractiveChart extends Extension {
 	 */
 	protected $tooltipFontName;
 	
+	/**
+	 * A nested array or formatting rules, which will be passed to Google Charts
+	 *
+	 * @var array
+	 */
+	public $formatting = array();
 	
 	/**
 	 * Updates array of parameters that will be passed to the JS chart.draw() function with InteractiveChart-specific settings
@@ -225,6 +231,17 @@ class InteractiveChart extends Extension {
 			$options['tooltipTextStyle'] = $tooltipTextStyleOptions;
 		}
 		
+		
+		
+		$formatting = $this->getFormatting();
+		
+		// label formatting
+		if (count($formatting) > 0) {
+			$options['formatting'] = $formatting;
+		}
+		
+		
+
 	}
 	
 	
@@ -324,6 +341,55 @@ class InteractiveChart extends Extension {
 		$this->tooltipFontName = $fontName;
 		$this->tooltipFontSize = $fontSize;
 	}
+	
+	/**
+	 * Set rules for using Google Charts formatters.  
+	 * $formats is a nested array.  To format numbers in column 1 as percentages, for example, do something like this:
+	 *		array(
+	 *			"number" => array(
+	 *				1 => array(
+	 *					"suffix" => '%',
+	 *					'fractionDigits' => 0
+	 *				)
+	 *			)
+	 *		);
+	 * 
+	 * @link http://code.google.com/apis/chart/interactive/docs/reference.html#formatters
+	 * @todo This is currently only implemented for maps.  Needs to be extended to the JS files and methods of all chart types
+	 * @todo This currently only supports number formatting.  Other formats need to be added
+	 * @param array $formats The array of arrays.  Will overwrite all existing formatting
+	 */
+	public function setFormatting(array $formats) {
+		$this->formatting = $formats;
+	}
+	
+	/**
+	 * Get rules for using Google Charts formatters.  
+	 * 
+	 * @return array
+	 */
+	public function getFormatting() {
+		return $this->formatting;
+	}
+	
+	
+	/**
+	 * Set rules for using Google Charts formatters.  
+	 * This is like setFormatting() but only adds a single formatter to a single column, rather than setting/replacing all formatters.
+	 * 
+	 * @link http://code.google.com/apis/chart/interactive/docs/reference.html#formatters
+	 * @param string $type The formatter type (eg "number")
+	 * @param int $column The column to apply the formatting to
+	 * @param array $formatData An array of properties to be passed to the formatter. See the link above for valid options
+	 */
+	public function addFormatting(string $type, int $column, array $formatData) {
+		if (!isset($this->formatting[$type])) {
+			$this->formatting[$type] = array();
+		}
+		
+		$this->formatting[$type][$column] = $formatData;
+	}
+	
 }
 
 /**
