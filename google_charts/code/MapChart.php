@@ -10,6 +10,8 @@
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class MapChart extends Chart {
+
+	
 	
 	public static $max_dimensions = array(
 		't' => array(400, 220),
@@ -106,6 +108,16 @@ class MapChart extends Chart {
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class MapChart_Geo extends MapChart {
+
+	/**
+	 * Extensions used by this class
+	 *
+	 * @var array
+	 */
+	public static $extensions = array('InteractiveChart');
+
+
+
 	public static $types = array('regions', 'markers');
 	
 	public static $regions = array('world', 'us_metro',
@@ -180,13 +192,11 @@ class MapChart_Geo extends MapChart {
 		);
 		
 		
-		if (count($this->formatting) > 0) {
-			$params['formatting'] = $this->formatting;
-		}
-		
-		
 		if(count($this->colors) > 0) $options['colors'] = $this->colors;
 		if(isset($this->showLegend)) $options['showLegend'] = $this->showLegend;
+		
+		
+		$this->extend('updateJavascriptParams', $options);
 		
 		$params['options'] = $options;
 		
