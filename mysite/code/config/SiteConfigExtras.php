@@ -12,14 +12,17 @@ class SiteConfigExtras extends DataObjectDecorator {
 		return array(
 			'db' => array(
 				"CopyrightNotice" => "HTMLText",
+			),
+			'has_one' => array(
+				"BackgroundImage" => "Image"
 			)
 		);
 	}
 
 
 	function updateCMSFields(FieldSet &$fields) {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$fields->addFieldToTab("Root.Copyright", new HTMLEditorField($name = "CopyrightNotice", $title = "Copyright notice.", 2));
+		$fields->addFieldToTab("Root.PageElements", new HTMLEditorField($name = "CopyrightNotice", $title = "Copyright notice.", 2));
+		$fields->addFieldToTab("Root.PageElements", new ImageField($name = "BackgroundImage", $title = "Background Image", null, null, null, "backgroundimage"));
 		return $fields;
 	}
 
@@ -34,7 +37,7 @@ class SiteConfigExtras extends DataObjectDecorator {
 
 		if($siteConfig) {
 			if(strlen($siteConfig->CopyrightNotice) < 17) {
-				$siteConfig->CopyrightNotice = '<p>&copy; 2010 website owner</p>';
+				$siteConfig->CopyrightNotice = '<p>&copy; '.date("Y").' website owner</p>';
 				$update[]= "created default entry for CopyrightNotice";
 			}
 			if(count($update)) {
