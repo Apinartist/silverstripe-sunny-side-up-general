@@ -21,7 +21,7 @@ class Page extends SiteTree {
 			}
 		}
 		if($siteConfig = SiteConfig::current_site_config()) {
-			return $siteConfig->MyBackgroundImage();
+			return $siteConfig->BackgroundImage();
 		}
 	}	
 
@@ -49,6 +49,9 @@ class Page_Controller extends ContentController {
 	public function init() {
 		parent::init();
 		$this->addBasicMetatagRequirements();
+		if($bgImage = $this->MyBackgroundImage()) {
+			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}")
+		};		
 	}
 
 	function IsNotHome() {
