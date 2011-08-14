@@ -6,7 +6,6 @@
 	*/
 class RegisterAndEditDetailsPage extends Page {
 
-
 	static $icon = "userpage/images/treeicons/RegisterAndEditDetailsPage";
 
 	static $can_be_root = false;
@@ -32,22 +31,14 @@ class RegisterAndEditDetailsPage extends Page {
 
 	static $register_group_access_key = "REGISTRATIONS";
 
-	public function getTitle() {if($this->showLoggedInFields()) {$field = "TitleLoggedIn";}else {$field = "Title";} return $this->getField($field);}
-	public function getMenuTitle() {if($this->isCMS()) {return "Register"; } elseif($this->showLoggedInFields()) {$field = "MenuTitleLoggedIn";}else {$field = "MenuTitle";} return $this->getField($field);}
-	public function getMetaTitle() {if($this->isCMS()) {return "Register"; } elseif($this->showLoggedInFields()) {$field = "MetaTitleLoggedIn";}else {$field = "MetaTitle";} return $this->getField($field);}
-	public function getContent() {if($this->showLoggedInFields()) {$field = "ContentLoggedIn";}else {$field = "Content";}return $this->getField($field);}
-
-	private function showLoggedInFields() {
-		if(!$this->isCMS() && Member::currentUser()  ) {
+	protected function showLoggedInFields() {
+		if(!$this->isCMSRead() && Member::currentUser()  ) {
 			return true;
 		}
 	}
 
-	private function isCMS () {
-		$actions = Director::urlParams();
-		if(Director::is_ajax() || "CMSMain" == $actions["Controller"]) {
-			return true;
-		}
+	protected function isCMSRead () {
+		return $this->isCMS || Director::urlParam("URLSegment") == "admin";
 	}
 
 	/**
@@ -63,13 +54,14 @@ class RegisterAndEditDetailsPage extends Page {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$this->isCMS = true;
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('TitleLoggedIn', 'Title when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.LoggedIn', new TextField('MenuTitleLoggedIn', 'Navigation Label when user is Logged In'));
-		$fields->addFieldToTab('Root.Content.LoggedIn', new HTMLEditorField('ContentLoggedIn', 'Content when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.Welcome', new TextField('WelcomeTitle', 'Welcome Title (afer user creates an account)'));
 		$fields->addFieldToTab('Root.Content.Welcome', new HTMLEditorField('WelcomeContent', 'Welcome message (afer user creates an account)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new TextField('ThankYouTitle', 'Thank you Title (afer user updates their details)'));
 		$fields->addFieldToTab('Root.Content.UpdatingDetails', new HTMLEditorField('ThankYouContent', 'Thank you message (afer user updates their details)'));
+		$fields->addFieldToTab('Root.Content.LoggedIn', new HTMLEditorField('ContentLoggedIn', 'Content when user is Logged In'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorEmailAddressAlreadyExists', 'Error shown when email address is already registered'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorBadEmail', 'Bad email'));
 		$fields->addFieldToTab('Root.Content.ErrorMessages', new TextField('ErrorPasswordDoNotMatch', 'Error shown when passwords do not match'));
@@ -107,14 +99,25 @@ class RegisterAndEditDetailsPage extends Page {
 			$update[] = "created RegisterAndEditDetailsPage";
 		}
 		if($page) {
-			if(!$page->ThankYouTitle){$page->ThankYouTitle = "Thank you for updating your details"; $update[] =  "updated ThankYouTitle";}
-			if(strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update[] =  "updated ThankYouContent";}
+
+			//REGISTER
+			if(strlen($page->Content) < 17){$page->Content = "<p>Please log in or register here.</p>"; $update[] =  "updated Content";}
+
+			//WELCOME !
 			if(!$page->WelcomeTitle){$page->WelcomeTitle = "Thank you for registering"; $update[] =  "updated WelcomeTitle";}
 			if(strlen($page->WelcomeContent) < 17){$page->WelcomeContent = "<p>Thank you for registration. Please make sure to remember your username and password.</p>"; $update[] =  "updated WelcomeContent";}
+
+			// WELCOME BACK
 			if(!$page->TitleLoggedIn){$page->TitleLoggedIn = "Welcome back"; $update[] =  "updated TitleLoggedIn";}
 			if(!$page->MenuTitleLoggedIn){$page->MenuTitleLoggedIn = "Welcome back"; $update[] =  "updated MenuTitleLoggedIn";}
 			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update[] =  "updated MetaTitleLoggedIn";}
 			if(strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ....</p>"; $update[] =  "updated ContentLoggedIn";}
+
+			//THANK YOU FOR UPDATING 
+			if(!$page->ThankYouTitle){$page->ThankYouTitle = "Thank you for updating your details"; $update[] =  "updated ThankYouTitle";}
+			if(strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update[] =  "updated ThankYouContent";}
+
+			//ERRORS! 
 			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update[] =  "updated ErrorEmailAddressAlreadyExists";}
 			if(!$page->ErrorBadEmail){$page->ErrorBadEmail = "Sorry, that does not appear a valid email address."; $update[] =  "updated ErrorBadEmail";}
 			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update[] =  "updated ErrorPasswordDoNotMatch";}
@@ -141,6 +144,14 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 	protected static $minutes_before_member_is_not_new_anymore = 30;
 		static function set_minutes_before_member_is_not_new_anymore($v) {self::$minutes_before_member_is_not_new_anymore = $v;}
 		static function get_minutes_before_member_is_not_new_anymore() {return self::$minutes_before_member_is_not_new_anymore;}
+
+	function init() {
+		parent::init();
+		if($this->showLoggedInFields()) {$field = "TitleLoggedIn";}else {$field = "Title";} $this->Title = $this->getField($field);
+		if($this->showLoggedInFields()) {$field = "MenuTitleLoggedIn";}else {$field = "MenuTitle";} $this->MenuTitle =  $this->getField($field);
+		if($this->showLoggedInFields()) {$field = "MetaTitleLoggedIn";}else {$field = "MetaTitle";} $this->MetaTitle =  $this->getField($field);
+		if($this->showLoggedInFields()) {$field = "ContentLoggedIn";}else {$field = "Content";}$this->Content =  $this->getField($field);
+	}
 
 	function index() {
 		if($this->isAjax()) {
@@ -316,5 +327,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		}
 		return 0;
 	}
+
+
 
 }
