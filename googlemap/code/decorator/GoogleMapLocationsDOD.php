@@ -228,8 +228,9 @@ class GoogleMapLocationsDOD_Controller extends Extension {
 		$this->googleMap->setUpdateServerUrlAddressSearchPoint($UpdateServerUrlAddPoint);
 	}
 
-	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "/googlemap/updatemexml/") {
+	function addUpdateServerUrlDragend($UpdateServerUrlDragend = "googlemap/updatemexml/") {
 		$this->initiateMap();
+		$UpdateServerUrlDragend .= $this->owner->ID.'/';
 		$this->googleMap->setUpdateServerUrlDragend($UpdateServerUrlDragend);
 	}
 

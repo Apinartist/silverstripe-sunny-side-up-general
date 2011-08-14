@@ -6,6 +6,9 @@
  * author: Nicolaas - modules [at] sunnysideup.co.nz
 **/
 
+//TO DO MIGRATION TO V3: http://markus.tao.at/geo/google-maps-api-v3-is-in-town/
+
+
 
 Director::addRules(40, array(
 	'googlemap/$Action/$OwnerID/$Title/$Longitude/$Latitude/$Filter' => 'GoogleMapDataResponse'
@@ -55,7 +58,6 @@ GoogleMap::setAddAntipodean(false); //add antipodean option (allowing visitors t
 GoogleMap::setChangePageTitle(false); //adjust the page title when you change the map
 GoogleMap::setAddDirections(false); //add directions finder to map pop-up windows
 GoogleMap::setAddAddressFinder(false); //provide an address finder helping visitors to enter an address and search for it on the map
-GoogleMap::setAddPointsToMap(false); //allow user to add their own points to the map using right-mouse-clicks
 
 // POLYS
 GoogleMap::setLineColour("#dcb916"); //colour for additional lines (e.g. routes) on map (use web colour codes)
@@ -78,12 +80,18 @@ GoogleMap::setInfoWindowOptions("{maxWidth:280, zoomLevel:17, mapType:G_HYBRID_M
 GoogleMap::setAddCurrentAddressFinder(false); //add a tab with the address finder
 GoogleMap::setAddZoomInButton(""); //add a "zoom in" link on info window, should be emptry string or text for button.
 GoogleMap::setAddCloseUpButton(""); //add a "close-up" link on info window, shouldbe emptry string or text for button.
-GoogleMap::setAddDeleteMarkerButton(""); //add a "delete marker" link on info window, shouldbe emptry string or text for button.
 GoogleMap::setAddCloseWindowButton(""); //add a "close window" link on info window, shouldbe emptry string or text for button.
 GoogleMap::set_ajax_info_window_text("view details");
 
-// MARKER AND ICONS (include title to have a title)
+// MARKER 
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
+GoogleMap::$AddPointsToMap(true);
+GoogleMap::$AddDeleteMarkerButton("remove this location");
+GoogleMap::$AllowMarkerDragAndDrop(true);,
+GoogleMap::$MarkerOptions(true);
+GoogleMap::$PreloadImages(true);
+
+//ICONS 
 GoogleMap::setPreloadImages(true); //pre-load marker images
 GoogleMap::setDefaultIconUrl(""); //default Icon Url
 GoogleMap::setIconFolder("googlemap/images/icons/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...

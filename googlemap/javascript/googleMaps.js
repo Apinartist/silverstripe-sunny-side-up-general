@@ -145,12 +145,12 @@ GMC.prototype.setupMap = function (mapDivName) {
 					//delete marker from database....
 					var lng = marker.getPoint().lng();
 					var lat = marker.getPoint().lat();
-					var id = marker.serverId * -1;
+					var id = marker.serverId;
 					jQuery.get(
 						GMO.opts.updateServerUrlDragend,
-						{ x: lng, y: lat, i: id },
-						function(data){
-							GMO.updateStatus('<p>' + data + '</p>');
+						{ x: lng, y: lat, i: id, a: "remove" },
+						function(response){
+							GMO.updateStatus('<p>' + response + '</p>');
 						}
 					);
 				}
@@ -279,15 +279,16 @@ GMC.prototype.createMarker = function(point,name,desc, serverId, iconUrl) {// Cr
 	m.serverId = serverId;
 	if(this.opts.updateServerUrlDragend) {
 		markerOpts.draggable = true;
+		m.draggable = true;
 		GEvent.addListener(m, "dragend", function() {
 			GMO.updateStatus('<p>updating database</p>');
 			var lng = m.getPoint().lng();
 			var lat = m.getPoint().lat();
 			jQuery.get(
 				GMO.opts.updateServerUrlDragend,
-				{ x: lng, y: lat, i: m.serverId },
-				function(data){
-					GMO.updateStatus('<p>' + data + '</p>');
+				{ x: lng, y: lat, i: m.serverId, a: "move" },
+				function(response){
+					GMO.updateStatus('<p>' + response + '</p>');
 				}
 			);
 		});
@@ -616,7 +617,7 @@ GMC.prototype.createPointXml = function (name, pointLngLat, description, latitud
 		var lat = parseFloat(pointLngLatArray[1]);
 		jQuery.get(
 			GMO.opts.updateServerUrlDragend,
-			{ x: lng, y: lat, i: 0 },
+			{ x: lng, y: lat, i: 0, a: "add" },
 			function(data){
 				if(parseInt(data) > 0) {
 					GMO.updateStatus('<p>added point to database</p>');

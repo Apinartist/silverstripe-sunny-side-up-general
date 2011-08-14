@@ -4,22 +4,24 @@
 **/
 class GoogleMap extends ViewableData {
 
-	static $includesDone = false;// this is a hack to avoid having multiple includes
+	private static $includes_are_done = false;// this is a hack to avoid having multiple includes
+
 	/* SUNDRY */
-	protected static $UsesSensor = true;
-		static function setUsesSensor($v) {self::$UsesSensor = $v;}
+	protected static $uses_sensor = true;
+		static function set_uses_sensor($v) {self::$uses_sensor = $v;}
+
 	/* INFORMATION AROUND THE MAP */
-	protected static $DefaultTitle = "";
+	protected static $DefaultTitle = ""; //MOVE TO SITECONFIG
 		static function setDefaultTitle($v){self::$DefaultTitle = $v;}
-	protected static $NoStatusAtAll = false;
+	protected static $NoStatusAtAll = false; //MOVE TO SITECONFIG
 		static function setNoStatusAtAll($v) {self::$NoStatusAtAll = $v;}
-	protected static $AddKmlLink = false;
+	protected static $AddKmlLink = false; //MOVE TO SITECONFIG
 		static function setAddKmlLink($v){self::$AddKmlLink = $v;}
 	protected static $HiddenLayersRemovedFromList = false;
 		static function setHiddenLayersRemovedFromList($v){self::$HiddenLayersRemovedFromList = $v;}
-	protected static $ChangePageTitle = false;
+	protected static $ChangePageTitle = false; //MOVE TO SITECONFIG
 		static function setChangePageTitle($v){self::$ChangePageTitle = $v;}
-	protected static $number_of_items_before_showing_list = 1;
+	protected static $number_of_items_before_showing_list = 1; //MOVE TO SITECONFIG
 		static function set_number_of_items_before_showing_list($v){self::$number_of_items_before_showing_list = $v;}
 		static function get_number_of_items_before_showing_list($v){return self::$number_of_items_before_showing_list;}
 
@@ -47,21 +49,19 @@ class GoogleMap extends ViewableData {
 	/* INFOWINDOW*/
 	protected static $InfoWindowOptions = "{maxWidth:280, zoomLevel:17, mapType:G_HYBRID_MAP}";
 		static function setInfoWindowOptions($v) {self::$InfoWindowOptions = $v;}
-	protected static $AddAntipodean = false;
+	protected static $AddAntipodean = false; //MOVE TO SITECONFIG
 		static function setAddAntipodean($v) {self::$AddAntipodean = $v;}
-	protected static $AddDirections = false;
+	protected static $AddDirections = false; //MOVE TO SITECONFIG
 		static function setAddDirections($v) {self::$AddDirections = $v;}
-	protected static $AddCurrentAddressFinder = false;
+	protected static $AddCurrentAddressFinder = false; //MOVE TO SITECONFIG
 		static function setAddCurrentAddressFinder($v) {self::$AddCurrentAddressFinder = $v;}
-	protected static $AddZoomInButton = false;
+	protected static $AddZoomInButton = false; //MOVE TO SITECONFIG
 		static function setAddZoomInButton($v) {self::$AddZoomInButton = $v;}
-	protected static $AddCloseUpButton = false;
+	protected static $AddCloseUpButton = false; //MOVE TO SITECONFIG
 		static function setAddCloseUpButton($v) {self::$AddCloseUpButton = $v;}
-	protected static $AddDeleteMarkerButton = false;
-		static function setAddDeleteMarkerButton($v) {self::$AddDeleteMarkerButton = $v;}
-	protected static $AddCloseWindowButton = false;
+	protected static $AddCloseWindowButton = false; //MOVE TO SITECONFIG
 		static function setAddCloseWindowButton($v) {self::$AddCloseWindowButton = $v;}
-	static $ajax_info_window_text = "View Details";
+	static $ajax_info_window_text = "View Details"; //MOVE TO SITECONFIG
 		static function get_ajax_info_window_text() {return self::$ajax_info_window_text;}
 		static function set_ajax_info_window_text($v) {self::$ajax_info_window_text = $v;}
 
@@ -69,11 +69,15 @@ class GoogleMap extends ViewableData {
 	/* MARKERS */
 	protected static $AddPointsToMap = false;
 		static function setAddPointsToMap($v) {self::$AddPointsToMap = $v;}
+	protected static $AddDeleteMarkerButton = false;
+		static function setAddDeleteMarkerButton($v) {self::$AddDeleteMarkerButton = $v;}
+	protected static $AllowMarkerDragAndDrop = false;
+		static function setAllowMarkerDragAndDrop($v) {self::$AllowMarkerDragAndDrop = $v;}
 	protected static $MarkerOptions = "{bouncy:true,title: \"click me\"}";
 		static function setMarkerOptions($v) {self::$MarkerOptions = $v;}
 	protected static $PreloadImages = false;
 		static function setPreloadImages($v) {self::$PreloadImages = $v;}
-
+		
 	/* ICONS */
 	protected static $DefaultIconUrl = "";
 		static function setDefaultIconUrl($v) {self::$DefaultIconUrl = $v;}
@@ -111,26 +115,26 @@ class GoogleMap extends ViewableData {
 	protected static $GoogleMapHeight = 500;
 		static function setGoogleMapHeight($v) {self::$GoogleMapHeight = $v; }
 		public function getGoogleMapHeight() {return self::$GoogleMapHeight;}
-	protected static $MapTypeDefaultZeroToTwo = 0;
+	protected static $MapTypeDefaultZeroToTwo = 0; //MOVE TO SITECONFIG
 		static function setMapTypeDefaultZeroToTwo($v) {self::$MapTypeDefaultZeroToTwo = $v;}
-	protected static $ViewFinderSize = 100;
+	protected static $ViewFinderSize = 100; //MOVE TO SITECONFIG
 		static function setviewFinderSize($v) {self::$ViewFinderSize = $v;}
-	protected static $MapAddTypeControl = false;
+	protected static $MapAddTypeControl = false; //MOVE TO SITECONFIG
 		static function setMapAddTypeControl($v) {self::$MapAddTypeControl = $v;}
-	protected static $MapControlSizeOneToThree = 3;
+	protected static $MapControlSizeOneToThree = 3; //MOVE TO SITECONFIG
 		static function setMapControlSizeOneToThree($v) {self::$MapControlSizeOneToThree = $v;}
-	protected static $MapScaleInfoSizeInPixels = 100;
+	protected static $MapScaleInfoSizeInPixels = 100; //MOVE TO SITECONFIG
 		static function setMapScaleInfoSizeInPixels($v) {self::$MapScaleInfoSizeInPixels = $v;}
-	protected static $DefaultLatitude = 0.000000001;
+	protected static $DefaultLatitude = 0.000000001; //MOVE TO SITECONFIG
 		static function setDefaultLatitude($v) {self::$DefaultLatitude = $v;}
-	protected static $DefaultLongitude = 0.0000000001;
+	protected static $DefaultLongitude = 0.0000000001; //MOVE TO SITECONFIG
 		static function setDefaultLongitude($v) {self::$DefaultLongitude = $v;}
-	protected static $DefaultZoom = 0;
+	protected static $DefaultZoom = 0; //MOVE TO SITECONFIG
 		static function setDefaultZoom($v) {self::$DefaultZoom = $v;}
-	protected static $ShowStaticMapFirst = 0;
+	protected static $ShowStaticMapFirst = 0; //MOVE TO SITECONFIG
 		static function setShowStaticMapFirst($v) {self::$ShowStaticMapFirst = $v; }
 		public function getShowStaticMapFirst() {(!self::$ShowStaticMapFirst || Session::get("StaticMapsOff"))? false : true;}
-	protected static $number_shown_in_around_me = 7;
+	protected static $number_shown_in_around_me = 7; //MOVE TO SITECONFIG
 		static function get_number_shown_in_around_me() {return self::$number_shown_in_around_me;}
 		static function set_number_shown_in_around_me($v) {self::$number_shown_in_around_me = $v;}
 
@@ -147,12 +151,12 @@ class GoogleMap extends ViewableData {
 		static function set_save_static_map_locally($v) {self::$save_static_map_locally = $v;}
 
 /* ADDRESS FINDER */
-	protected static $AddAddressFinder = true;
+	protected static $AddAddressFinder = true; //MOVE TO SITECONFIG
 		static function setAddAddressFinder($v) {self::$AddAddressFinder = $v;}
 		public function getAddAddressFinder() {return self::$AddAddressFinder;}
 	protected static $DefaultCountryCode = "NZ";
 		static function setDefaultCountryCode($v) {self::$DefaultCountryCode = $v;}
-	protected static $DefaultAddressText = " New Zealand";
+	protected static $DefaultAddressText = " New Zealand"; //MOVE TO SITECONFIG
 		static function setDefaultAddressText($v) {self::$DefaultAddressText = $v;}
 
 /* DIRECTIONS SETTINGS */
@@ -188,7 +192,7 @@ class GoogleMap extends ViewableData {
 	public function setAddress($v) {$this->Address = Convert::raw2js($v);}
 	public function setUpdateServerUrlAddressSearchPoint($v) {$this->UpdateServerUrlAddressSearchPoint = Director::absoluteBaseURL().$v;}
 	public function getUpdateServerURLAddressSearchPoint() {return $this->UpdateServerUrlAddressSearchPoint;}
-	public function setUpdateServerUrlDragend($v) {$this->UpdateServerUrlDragend = Director::absoluteBaseURL().$v; }
+	public function setUpdateServerUrlDragend($v) {$this->UpdateServerUrlDragend = Director::absoluteBaseURL().$v;}
 	public function getUpdateServerUrlDragend() {return $this->UpdateServerUrlDragend;}
 	public function allowAddPointsToMap() {self::$AddPointsToMap = true;}
 
@@ -268,14 +272,14 @@ class GoogleMap extends ViewableData {
 	public function loadGoogleMap() {
 		$js = '';
 		$this->loadDefaults();
-		if(!self::$includesDone) {
+		if(!self::$includes_are_done) {
 			Requirements::themedCSS("googleMap");
 			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 			Requirements::javascript('googlemap/javascript/googleMapStatic.js');
 			Requirements::javascript("googlemap/javascript/loadAjaxInfoWindow.js");
-			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>');
+			Requirements::insertHeadTags('<style type="text/css">v\:* {behavior:url(#default#VML);}</style>', "GoogleMapCustomHeadTag");
 			if(!$this->getShowStaticMapFirst()) {
-				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;&amp;sensor".$this->showFalseOrTrue(self::$UsesSensor)."&amp;key=".GoogleMapAPIKey);
+				Requirements::javascript("http://maps.google.com/maps?file=api&amp;v=2.x&amp;&amp;sensor".$this->showFalseOrTrue(self::$uses_sensor)."&amp;key=".GoogleMapAPIKey);
 				Requirements::javascript("googlemap/javascript/googleMaps.js");
 				$js .= 'var scriptsLoaded = true; jQuery(document).ready( function() { initiateGoogleMap();} );';
 			}
@@ -285,9 +289,8 @@ class GoogleMap extends ViewableData {
 			}
 			$js .= 'var absoluteBaseURL = "'. Director::absoluteBaseURL() .'";';
 			$js .= $this->createJavascript();
-
-			Requirements::customScript($js);
-			self::$includesDone = true;
+			Requirements::customScript($js, "GoogleMapCustomScript");
+			self::$includes_are_done = true;
 		}
 	}
 
@@ -463,11 +466,11 @@ class GoogleMap extends ViewableData {
 
 	private static function make_static_map_url_into_image($staticMapURL, $title) {
 		$fullStaticMapURL  = '';
-		$UsesSensor = "false";
-		if(self::$UsesSensor) {
-			$UsesSensor = "true";
+		$uses_sensor = "false";
+		if(self::$uses_sensor) {
+			$uses_sensor = "true";
 		}
-		$fullStaticMapURL = 'http://maps.google.com/maps/api/staticmap?sensor='.$UsesSensor.'&amp;'.self::$StaticMapSettings.'&amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
+		$fullStaticMapURL = 'http://maps.google.com/maps/api/staticmap?sensor='.$uses_sensor.'&amp;'.self::$StaticMapSettings.'&amp;'.$staticMapURL.'&amp;key='.GoogleMapAPIKey;
 		if(self::$save_static_map_locally) {
 			$fileName = str_replace(array('&', '|', ',', '=', ';'), array('', '', '', '', ''), $staticMapURL);
 			$length = strlen($fileName);
@@ -504,12 +507,14 @@ class GoogleMap extends ViewableData {
 				addCurrentAddressFinder:'.$this->showFalseOrTrue(self::$AddCurrentAddressFinder).',
 				addZoomInButton:"'.self::$AddZoomInButton.'",
 				addCloseUpButton:"'.self::$AddCloseUpButton.'",
-				addDeleteMarkerButton:"'.self::$AddDeleteMarkerButton.'",
 				addCloseWindowButton:"'.self::$AddCloseWindowButton.'",
-		/* MARKER AND ICONS (include title to have a title)*/
+		/* MARKER */
 				addPointsToMap:'.$this->showFalseOrTrue(self::$AddPointsToMap).',
+				addDeleteMarkerButton:"'.self::$AddDeleteMarkerButton.'",
+				allowMarkerDragAndDrop:"'.$this->showFalseOrTrue(self::$AllowMarkerDragAndDrop).'",
 				markerOptions: '.self::$MarkerOptions.',
 				preloadImages:'.$this->showFalseOrTrue(self::$PreloadImages).',
+		/* ICONS */
 				defaultIconUrl: "'.self::$DefaultIconUrl.'",
 				iconFolder: "'.self::$IconFolder.'",
 				iconWidth:'.self::$IconWidth.',

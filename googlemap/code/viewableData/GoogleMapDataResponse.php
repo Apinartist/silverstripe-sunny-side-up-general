@@ -38,9 +38,25 @@ class GoogleMapDataResponse extends Controller {
 
 	function init() {
 		parent::init();
-		$this->owner = DataObject::get_by_id("SiteTree", intval($this->request->param("OwnerID")));
+		$id = 0;
+		if($this->request->param("OwnerID")) {
+			$id = intval($this->request->param("OwnerID"));
+		}
+		elseif(isset($_GET["i"])) {
+			$i = intval($_GET["i"]);
+			$point = DataObject::get_by_id("GoogleMapLocationsObject", $i);
+			if(!$point) {
+				//New POINT
+			}
+			else {
+				$id = $point->ParentID;
+			}
+		}
+		if($id) {
+			$this->owner = DataObject::get_by_id("SiteTree", $id);
+		}
 		//HACK
-		if(!$this->owner) {
+		elseif(!$this->owner) {
 			$this->owner = DataObject::get_one("SiteTree", "\"Title\" = '".Convert::raw2sql($this->request->param("Title"))."'");
 		}
 		if(!$this->owner  & !in_array($this->request->param("Action"), self::$actions_without_owner)) {
@@ -210,16 +226,16 @@ class GoogleMapDataResponse extends Controller {
 		return "no lng and lat";
 	}
 
-
 	public function updatemexml() {
 		//we use request here, because the data comes from javascript!
 		if($this->owner->canEdit()) {
-			if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) && isset($_REQUEST["i"]) ) {
+			if(isset($_REQUEST["x"]) && isset($_REQUEST["y"]) && isset($_REQUEST["i"]) && isset($_REQUEST["a"]) ) {
 				$lng = floatval($_REQUEST["x"]);
 				$lat = floatval($_REQUEST["y"]);
 				$id = intval($_REQUEST["i"]);
+				$action = $_REQUEST["a"];
 				if($lng && $lat) {
-					if( 0 == $id ) {
+					if( 0 == $id && "add" == $action ) {
 						$point = new GoogleMapLocationsObject;
 						$point->ParentID = $this->owner->ID;
 						$point->Latitude = $lat;
@@ -227,7 +243,7 @@ class GoogleMapDataResponse extends Controller {
 						$point->write();
 						return $point->ID;
 					}
-					elseif($id > 0) {
+					elseif($id > 0 && "move" == $action) {
 						$point = DataObject::get_by_id("GoogleMapLocationsObject", $id);
 						if($point) {
 							if($point->ParentID == $this->owner->ID) {
@@ -246,9 +262,8 @@ class GoogleMapDataResponse extends Controller {
 							return "could not find location";
 						}
 					}
-					elseif($id < 1) {
-
-						$point = DataObject::get_by_id("GoogleMapLocationsObject", (-1 * $id));
+					elseif($id && "remove" == $action) {
+						$point = DataObject::get_by_id("GoogleMapLocationsObject", ($id));
 						if($point) {
 							if($point->ParentID == $this->owner->ID) {
 								$point->delete();
@@ -260,10 +275,16 @@ class GoogleMapDataResponse extends Controller {
 							}
 						}
 						else {
-							return "could not find location";
+							return "could not find location.";
 						}
 					}
 				}
+				else {
+					return "point not defined.";
+				}
+			}
+			else {
+				return "not enough information was provided.";
 			}
 		}
 		return  "point could NOT be updated.";
