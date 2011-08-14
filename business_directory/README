@@ -1,7 +1,5 @@
-/*
- * setup:
- * Business
- * | many-many- Certifications
- * | many-many- Products
- *
- */
+//REQUIREMENTS:
+
+1. geo_browser
+
+2. google maps

@@ -17,23 +17,23 @@ class BusinessPage extends Page {
 	 **/ 
 	static $db = array (
 		"IntroParagraph" => "Text",
-		"Phone" => "Varchar",
-		"Email" => "Varchar",
-		"Skype" => "Varchar",
-		"IM" => "Varchar",
-		"ListingEmail" => "Varchar",
+		"Phone" => "Varchar(100)",
+		"Email" => "Varchar(100)",
+		"Skype" => "Varchar(100)",
+		"IM" => "Varchar(100)",
+		"ListingEmail" => "Varchar(100)",
 		"MailingAddress" => "Text",
 		"Notes" => "Text",
-		"CertificationYear" => "Int",
-		"Website" => "Varchar",
-		"SocialMediaLink1" => "Varchar",
-		"SocialMediaLink2" => "Varchar",
+		"OpeningHoursNote" => "Text",
+		"Website" => "Varchar(200)",
+		"SocialMediaLink1" => "Varchar(255)",
+		"SocialMediaLink2" => "Varchar(255)",
 		"FirstName" => "Varchar(255)",
 		"LastName" => "Varchar(255)",
 		"AlternativeContactDetails" => "Text",
 		"OrganisationDescription" => "Text",
-		'ReasonForFounding' => 'Text',
-		'LastEmailSent' => 'SSDatetime'
+		"ReasonForFounding" => "Text",
+		"LastEmailSent" => "SSDatetime"
 	);
 
 	/**
@@ -52,12 +52,7 @@ class BusinessPage extends Page {
 		'OpeningHours' => 'OpeningHour'
 	);
 
-	/**
-	 * Standard SS static
-	 **/ 
-	static $belongs_many_many = array (
-		"Parents" => "SiteTree"
-	);
+
 	
 	/**
 	 * Standard SS static
@@ -67,6 +62,17 @@ class BusinessPage extends Page {
 		'ProductCategories' => 'ProductCategoryPage',
 		'Members' => 'Member'
 	);
+
+	/**
+	 * Standard SS static
+	 **/ 
+	public static $many_many_extraFields = array(
+		'Certifications' => array(
+			'CertificationYear' => 'Int',
+			'CertificationCode' => 'Text'
+		)
+	);
+
 
 	/**
 	 * Standard SS static
@@ -89,7 +95,6 @@ class BusinessPage extends Page {
 	 * Standard SS static
 	 **/ 
 	static $defaults = array (
-		"CertificationYear" => "0",
 		"HasGeoInfo" => 1,
 		"ProvideComments" => true
 	);
@@ -157,6 +162,19 @@ class BusinessPage extends Page {
 		}
 	}
 
+	function EditLink() {
+		if($this->CanNotEdit()) {
+			return "Security/login/?BackURL=".urlencode($this->Link());
+		}
+	}
+
+	function CanNotEdit($member = null) {
+		if($this->canEdit($member)) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Standard SS method
 	 **/
@@ -165,25 +183,51 @@ class BusinessPage extends Page {
 		$generalFields = new FieldSet(
 			new HeaderField("MainDetails", "Main Details", 3),
 			new TextField("Title", "Business Name"),
-			new TextareaField("IntroParagraph", "Introduction, one paragraph (two or three sentences)", 4),
-			new TextareaField("OrganisationDescription", "Organisation Description, one paragraph (two or three sentences)", 4),
-			new TextareaField("ReasonForFounding", "Reason For Founding, one paragraph (two or three sentences)", 4),
+			new TextareaField("IntroParagraph", "Introduction", 4),
+			new TextareaField("OrganisationDescription", "Organisation Description", 4),
+			new TextareaField("ReasonForFounding", "Reason For Founding", 4),
 
 			// Contact tab
 			new HeaderField("ContactDetails", "Contact Details", 3),
+			new TextareaField("OpeningHours", "Opening Hours", 4),			
 			new TextField("FirstName", "First Name"),
 			new TextField("LastName", "Last Name"),
-			new TextField("Phone", "Phone (country code, area code, number, extension)", $this->Phone, true,true,true),
-			new EmailField("Email", "Administrator Email (not public)"),
+			new TextField("Phone", "Phone", $this->Phone, true,true,true),
+			new EmailField("Email", "Administrator Email"),
 			new EmailField("ListingEmail", "Listing Email (public)"),
 			new TextField("Skype", "Skype Address"),
-			new TextField("IM", "Instant Messaging ID (MSN, Gmail, etc...)"),
+			new TextField("IM", "Instant Messaging ID / Address"),
 			new TextareaField("MailingAddress", "Mailing Address", 4),
-			new TextareaField("Notes", "Notes (only use this field if needed) - SHOWN TO GENERAL PUBLIC",5),
+			new TextareaField("Notes", "Notes",5),
 			new TextField("Website", "Website"),
-			new TextAreaField("AlternativeContactDetails", "Alternative Contact Details - NOT SHOWN TO PUBLIC", 4),
-			new NumericField("CertificationYear", "Certification Year")
+			new TextAreaField("AlternativeContactDetails", "Alternative Contact Details", 4)
 		);
+		foreach($generalFields as $field) {
+			switch($field->Name()) {
+				case "IntroParagraph" :
+				case "OrganisationDescription":
+				case "ReasonForFounding":
+					$field->setRightTitle("up to one paragraph (two or three sentences)");
+					break;
+				case "Phone":
+					$field->setRightTitle("country code - area code - number - extension e.g. +1-555-1235555-998");
+					break;
+				case "Email":
+				case "AlternativeContactDetails":
+					$field->setRightTitle("for internal use only - not shown on this website");
+					break;
+				case "ListingEmail":
+					$field->setRightTitle("public");
+					break;
+				case "IM":
+					$field->setRightTitle("e.g. MSN, Gmail, etc...");
+					break;
+				case "Notes":
+					$field->setRightTitle("Only use this field if needed - PUBLIC");
+					break;
+				default:
+			}
+		}
 		if($cms) {
 			$fields = parent::getCMSFields( $cms );
 			// Extra content fields
@@ -387,7 +431,13 @@ class BusinessPage_Controller extends Page_Controller {
 		}
 		else {
 			if($this->canEdit()) {
+				GoogleMap::setAddPointsToMap(true);
+				GoogleMap::setAddDeleteMarkerButton(true);
 				$this->addUpdateServerUrlDragend();
+			}
+			else {
+				GoogleMap::setAddPointsToMap(false);
+				GoogleMap::setAddDeleteMarkerButton(false);
 			}
 			$this->addMap("showPagePointsMapXML");			
 			return Array();

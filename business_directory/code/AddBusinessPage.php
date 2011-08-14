@@ -28,10 +28,6 @@ class AddBusinessPage extends Page {
 	 * Standard SS static
 	 **/ 
 	static $icon = "business_directory/images/treeicons/AddBusinessPage";
-	
-	static $db = array(
-		"SearchPage" => "SiteTree"
-	);
 
 	function canCreate($member = null) {
 		return !DataObject::get_one("AddBusinessPage", "\"ClassName\" = 'AddBusinessPage'");
@@ -54,12 +50,12 @@ class AddBusinessPage_Controller extends Page_Controller {
 		if(isset($_GET["address"])) {
 			$address = $_GET["address"];
 		}
-		$name = '';
+		$businessName = '';
 		if(isset($_GET["name"])) {
-			$name = $_GET["name"];
+			$businessName = $_GET["name"];
 		}
 		$fields = new FieldSet();
-		$fields->push(new TextField($name = "NewListingName", $title = "New Listing Name", $name));
+		$fields->push(new TextField($name = "NewListingName", $title = "New Listing Name", $businessName));
 		$fields->push(new AddressFinderField($name = "NewListingAddress", $title = "Address / Location for listing", $address));
 		$fields->push(new HiddenField($name = "ParentPageID", $this->parentPageID));
 		$validator = new RequiredFields("NewListingName", "NewListingAddress");
