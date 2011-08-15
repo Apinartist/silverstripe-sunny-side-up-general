@@ -80,7 +80,8 @@ class CampaignMonitorMemberDOD extends DataObjectDecorator {
 							$userIsDeleted = $CMWrapper->subscriberIsDeleted($this->owner->Email);
 							if((!$userIsSubscribed && $userIsSubscribed != "?") && (!$userIsUnsubscribed || $userIsUnsubscribed =! "?") &&(!$userIsDeleted || !$userIsDeleted )) {
 								if (!$CMWrapper->subscriberAdd($this->owner->Email, $this->owner->getName())) {
-									user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
+									//NEED TO IMPLEMENT: http://www.campaignmonitor.com/api/method/client-getsuppressionlist/									
+									//user_error(_t('CampaignMonitorMemberDOD.GETCMSMESSAGESUBSATTEMPTFAILED', 'Subscribe attempt failed: ') .$this->owner->Email.", ". $CMWrapper->lastErrorMessage, E_USER_WARNING);
 								}
 							}
 						}
