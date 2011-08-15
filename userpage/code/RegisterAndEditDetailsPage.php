@@ -49,7 +49,10 @@ class RegisterAndEditDetailsPage extends Page {
 	 **/ 
 
 	public function link_for_going_to_page_via_making_user($link) {
-		return Director::link()."/?BackURL=".urlencode($link);
+		$registerAndEditDetailsPage = DataObject::get_one("RegisterAndEditDetailsPage");
+		if($registerAndEditDetailsPage) {
+			return $registerAndEditDetailsPage->Link()."/?BackURL=".urlencode($link);
+		}
 	}
 
 	public function getCMSFields() {
