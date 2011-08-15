@@ -121,9 +121,13 @@ class AddBusinessPage_Controller extends Page_Controller {
 					if($address && count($addressArray)) {
 						$allowedParents = BusinessPage::get_can_be_child_off();
 						if(is_array($allowedParents) && in_array($parentPage->ClassName, $allowedParents)) {
-							$page = DataObject::get_one("BusinessPage", "ParentID = ".$parentPage->ID." AND Title = '".Convert::raw2sql($name)."'");
+							$extension = '';
+							if(Versioned::current_stage() == "Live") {
+								$extension = "_Live";
+							}							
+							$page = DataObject::get_one("BusinessPage", "ParentID = ".$parentPage->ID." AND SiteTree{$extension}.Title = '".Convert::raw2sql($name)."'");
 							if($page ) {
-							
+								//do nothing
 							}
 							else {
 								$page = new BusinessPage();
