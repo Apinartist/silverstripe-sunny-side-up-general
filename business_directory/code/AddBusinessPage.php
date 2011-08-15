@@ -101,7 +101,7 @@ class AddBusinessPage_Controller extends Page_Controller {
 			}
 			$nextLink = $this->linkWithExtras(array("parent" => $parentPage->ID, "address" => $addressArray, "name" => $data["NewListingName"]), 'createnewbusinesslistingfrompoint');
 			if(!Member::currentMember()) {
-				$nextLink = Director::link_for_going_to_page_via_making_user($nextLink);
+				$nextLink = RegisterAndEditDetailsPage::link_for_going_to_page_via_making_user($nextLink);
 			}
 			Director::redirect($nextLink);
 			return;
