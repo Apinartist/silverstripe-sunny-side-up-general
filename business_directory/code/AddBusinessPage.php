@@ -73,7 +73,15 @@ class AddBusinessPage_Controller extends Page_Controller {
 		//add new search record here....
 		if(!isset($data["NewListingAddress"])) {$data["NewListingAddress"] = '';}
 		if(!isset($data["NewListingName"])) {$data["NewListingName"] = '';}
-		if(DataObject::get_one("SiteTree", "\"Title\" = '".Convert::raw2sql($data["NewListingName"])."'") || !$data["NewListingName"] || strlen($data["NewListingName"]) < 3) {
+		$extension = '';
+		if(Versioned::current_stage() == "Live") {
+			$extension = "_Live";
+		}
+		if(
+			DataObject::get_one("SiteTree", "\"SiteTree{$extension}\".\"Title\" = '".Convert::raw2sql($data["NewListingName"])."'") ||
+			!$data["NewListingName"] ||
+			strlen($data["NewListingName"]) < 3
+		) {
 			$form->addErrorMessage('NewListingName','Sorry, but a listing with that name already exists.', "bad");
 			Director::redirectBack();
 			return;
