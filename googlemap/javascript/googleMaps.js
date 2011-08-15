@@ -137,7 +137,6 @@ GMC.prototype.setupMap = function (mapDivName) {
 	);
 	GEvent.addListener(map, "singlerightclick", function(point, image, marker) {
 			if(marker) {
-				//GEvent.trigger(marker, "clickHideMe");
 				marker.hide();
 				map.closeInfoWindow();
 				GMO.updateLists();
@@ -408,9 +407,9 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickCloseUp\')">'+this.opts.addCloseUpButton+'</a>');
 	}
 	if(this.opts.addDeleteMarkerButton) {
-		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickHideMe\')">'+this.opts.addDeleteMarkerButton+'</a>');
+		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="GEvent.trigger(GMO.lastMarker,\'clickRemoveMe\')">'+this.opts.addDeleteMarkerButton+'</a>');
 	}
-	if(this.opts.addCloseUpButton) {
+	if(this.opts.addCloseWindowButton) {
 		infoTabExtraLinksArray.push('<a href="javascript:void(0)" onclick="map.closeInfoWindow();">'+this.opts.addCloseWindowButton+'</a>');
 	}
 	if(infoTabExtraLinksArray.length) {
@@ -426,11 +425,8 @@ GMC.prototype.openMarkerInfoTabs = function(m) {
 	GEvent.addListener(m, "clickCloseUp", function() {
 		m.showMapBlowup();//zoom into marker
 	});
-	GEvent.addListener(m, "clickHideMe", function() {
-		map.closeInfoWindow();
-		m.hide();
-		var currentLayerId = m.layerId
-		GMO.updateLists();
+	GEvent.addListener(m, "clickRemoveMe", function() {
+		GEvent.trigger(marker, "singlerightclick");
 	});
 	var tabsHtml = [new GInfoWindowTab("info", html)];
 	//directions and address finder

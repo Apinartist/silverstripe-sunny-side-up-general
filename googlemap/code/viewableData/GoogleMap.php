@@ -69,7 +69,7 @@ class GoogleMap extends ViewableData {
 	/* MARKERS */
 	protected static $AddPointsToMap = false;
 		static function setAddPointsToMap($v) {self::$AddPointsToMap = $v;}
-	protected static $AddDeleteMarkerButton = false;
+	protected static $AddDeleteMarkerButton = "delete this point";
 		static function setAddDeleteMarkerButton($v) {self::$AddDeleteMarkerButton = $v;}
 	protected static $AllowMarkerDragAndDrop = false;
 		static function setAllowMarkerDragAndDrop($v) {self::$AllowMarkerDragAndDrop = $v;}
