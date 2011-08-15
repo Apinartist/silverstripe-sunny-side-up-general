@@ -5,11 +5,11 @@
 	.typography label {}
 	.typography li label, .typography p label {font-size: 0.8em;}
 		.typography label.FormHeading{display: block; color: #808383; font-weight: bold; margin-bottom: 1em;}
-		.typography label.left{float: left; display: block; width: 270px; border-bottom: 1px solid #B5AB8B;}
+		.typography label.left{float: left; display: block; width: 270px; border-top: 1px solid #B5AB8B;}
 			.typography .dropdown label.left{padding-bottom: 3px;}
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 
-	.typography .field{width: 100%; padding-bottom: 0.8em;padding-top: 0.8em;}
+	.typography .field{width: 100%; padding-bottom: 0.8em;padding-top: 0.8em; clear: left;}
 		.typography .middleColumn, .typography .Actions, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 270px;}
 			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #B5AB8B; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif;}
 			.typography .middleColumn textarea{}
@@ -35,6 +35,7 @@
 .typography .checkbox  input {float: left;}
 
 .typography .confirmedpassword .middleColumn {margin-left: 0px;}
+.typography .confirmedpassword .middleColumn a{display: block; margin-left: 270px; width: 376px}
 .typography .confirmedpassword .middleColumn .middleColumn {margin-left: 120px;}
 
 .typography .fieldgroup .middleColumn {margin-left: 0px;}
