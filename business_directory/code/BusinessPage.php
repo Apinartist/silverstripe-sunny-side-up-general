@@ -432,12 +432,12 @@ class BusinessPage_Controller extends Page_Controller {
 		else {
 			if($this->canEdit()) {
 				GoogleMap::setAddPointsToMap(true);
-				GoogleMap::setAddDeleteMarkerButton(true);
+				GoogleMap::setAddDeleteMarkerButton("remove this location");
 				$this->addUpdateServerUrlDragend();
 			}
 			else {
 				GoogleMap::setAddPointsToMap(false);
-				GoogleMap::setAddDeleteMarkerButton(false);
+				GoogleMap::setAddDeleteMarkerButton("");
 			}
 			$this->addMap("showPagePointsMapXML");			
 			return Array();
