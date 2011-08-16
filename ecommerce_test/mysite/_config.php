@@ -4,6 +4,10 @@ global $project; $project = 'mysite';
 global $database; $database = 'ecommerce';
 require_once('conf/ConfigureFromEnv.php');
 
+//===================---------------- START mysite MODULE ----------------===================
+Object::add_extension('SiteConfig', 'SiteConfigExtras');
+//===================---------------- END mysite MODULE ----------------===================
+
 //===================---------------- START sapphire MODULE ----------------===================
 MySQLDatabase::set_connection_charset('utf8');
 SSViewer::set_theme('main');
@@ -47,7 +51,6 @@ PageComment::enableModeration();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 
 
-// copy the lines below to your mysite/_config.php file and set as required.
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET

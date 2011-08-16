@@ -50,8 +50,8 @@ class Page_Controller extends ContentController {
 		parent::init();
 		$this->addBasicMetatagRequirements();
 		if($bgImage = $this->MyBackgroundImage()) {
-			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}")
-		};		
+			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}");
+		}
 	}
 
 	function IsNotHome() {
