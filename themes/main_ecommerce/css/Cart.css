@@ -14,3 +14,14 @@ even when theme-ing ecommerce, these should not be themed
 
 .ajaxQuantityField {text-align: center;}
 .removeOneLink {float: left; padding-right: 5px;}
+
+
+#Sidebar {width: 180px;}
+#Sidebar table {width: 100%;}
+#Sidebar th, #Sidebar td {font-size: 14px; padding: 2px;}
+#Sidebar td.quantity .ecomquantityfield {white-space: nowrap;}
+#Sidebar td.quantity img {margin: 0px;}
+#Sidebar {float: right; width: auto; padding:12px; border: 1px dotted grey; background-color: #B5AB8B; border-radius: 5px }
+#Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
+#Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside;}
+.itemdetails span {width: 100px;}

@@ -4,6 +4,8 @@
   * Also make sure you have the site's general layout and typography styled before you do this.
   **/
 
+
+
 #ProductGroup {
 }
 
@@ -23,14 +25,13 @@
 
 /* 3) Product Settings */
 
-.productItem {
+#Products .productItem {
 	list-style:none;
 	float: left;
 	width: 140px;
-	height: 330px;
 	overflow: hidden;
 	margin: 0 5px 5px 0;
-	padding: 5px;
+	padding: 25px;
 }
 
 		.productItem .productActions{
