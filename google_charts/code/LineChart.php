@@ -249,9 +249,14 @@ class LineChart_Interactive extends LineChart {
 		
 		foreach($this->lines as $line) {
 			$yTitles[] = $line['legend'];
-			var_dump($line['y']);
-			$values[] = array_map('floatval', $line['y']);
-			var_dump($values);
+			$newLine = array();
+			foreach($line['y'] as $value) {
+				if($value !== null) {
+					$value = floatval($value);
+				}
+				$newLine[] = $value;
+			}
+			$values[] = $newLine;
 			if(isset($line['color'])) {
 				$colors[] = $line['color'];
 			}
