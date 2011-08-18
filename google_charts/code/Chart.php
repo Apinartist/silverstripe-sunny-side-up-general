@@ -18,6 +18,8 @@ class Chart extends ViewableData {
 	 */
 	protected static $base_url = 'http://chart.apis.google.com/chart?';
 	
+	public static $secure_requirements = false;
+	
 	/**
 	 * The default width of generated charts in pixels.  Can be set with Chart::$default_width = 400; in your _config.php
 	 * 

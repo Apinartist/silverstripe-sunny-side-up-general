@@ -21,9 +21,10 @@ class WordCloudChart extends Chart {
 	 * Includes the needed JS files via the Requirements system
 	 */
 	static function addRequirements() {
-		Requirements::css('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.css');
-		Requirements::javascript('http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.js');
-		Requirements::javascript('http://www.google.com/jsapi');
+		$s = Chart::$secure_requirements ? 's' : '';
+		Requirements::css("http$s://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.css");
+		Requirements::javascript("http$s://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.js");
+		Requirements::javascript("http$s://www.google.com/jsapi");
 		Requirements::javascript('googlecharts/javascript/wordcloud.js');
 	}
 	
@@ -123,9 +124,10 @@ class WordCloudChart_Rotating extends Chart {
 	 * Includes the needed JS files via the Requirements system
 	 */
 	static function addRequirements() {
-		Requirements::javascript('http://www.google.com/jsapi');
-		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js');
-		Requirements::javascript('http://word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js');
+		$s = Chart::$secure_requirements ? 's' : '';
+		Requirements::javascript("http$s://www.google.com/jsapi");
+		Requirements::javascript("http$s://word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js");
+		Requirements::javascript("http$s://word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js");
 		Requirements::javascript('googlecharts/javascript/wordcloudrotating.js');
 	}
 	

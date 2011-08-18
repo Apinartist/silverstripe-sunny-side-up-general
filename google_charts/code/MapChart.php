@@ -144,7 +144,8 @@ class MapChart_Geo extends MapChart {
 	
 	
 	public static function addRequirements() {
-		Requirements::javascript('http://www.google.com/jsapi');
+		$s = Chart::$secure_requirements ? 's' : '';
+		Requirements::javascript("http$s://www.google.com/jsapi");
 		Requirements::javascript('googlecharts/javascript/geomap.js');
 	}
 	
