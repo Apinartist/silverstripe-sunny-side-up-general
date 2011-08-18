@@ -52,7 +52,7 @@ class SmartChimpSignupPage extends Page {
 		));
 		$fields->addFieldsToTab('Root.Content.MailChimpConfig',array(
 			new CheckboxField('IsDefaultList', 'This is the default newsletter'),
-			new TextField('MCApiKey', _t('SmartChimp.MCAPIKEY', 'Username')),
+			new TextField('MCApiKey', _t('SmartChimp.MCAPIKEY', 'API Key')),
 			new TextField('MCListKey', _t('SmartChimp.MCLISTKEY', 'Unique ID for List')),
 			new HTMLEditorField('MCSuccessContent', _t('SmartChimp.MCSuccessContent', 'Signup Success Content'))
 		));
@@ -79,7 +79,7 @@ class SmartChimpSignupPage extends Page {
 		$api = $this->getAPI();
 		if($api && $this->ID) {
 			$campaignArray = $api->campaigns(array("list_id" => $this->MCListKey));
-			if(count($campaignArray)) {
+			if(is_array($campaignArray) && count($campaignArray)) {
 				foreach($campaignArray as $key => $campaign) {
 					if($campaign["status"] == "sent") {
 						$obj = DataObject::get_one("SmartChimpNewsletter", "`ParentID` = ".$this->ID." AND `CampaignID` = '".$campaign["id"]."'");
