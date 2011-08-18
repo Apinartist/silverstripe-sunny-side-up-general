@@ -402,11 +402,13 @@ class InteractiveChart extends Extension {
  */
 class InteractiveChart_Axis extends Extension {
 	/**
-	 * A list of valid axis title positions
+	 * A list of valid positions
 	 *
 	 * @var array
 	 */
-	public static $axis_titles_positions = array('in', 'out', 'none');
+	public static $positions = array('in', 'out', 'none');
+	
+	public static $view_window_modes = array('pretty', 'maximized', 'explicit');
 	
 	/**
 	 * The current axis title position
@@ -420,7 +422,32 @@ class InteractiveChart_Axis extends Extension {
 	 *
 	 * @var string
 	 */
-	protected $gridlineColor;
+	
+	protected $hAxisBaseline, $hAxisBaselineColor;
+	protected $reverseHAxisDirection;
+	protected $hAxisFormat;
+	protected $hAxisGridlineColor;
+	protected $hAxisLogScale;
+	protected $hAxisTextPosition;
+	protected $hAxisTextColor, $hAxisTextFontName, $hAxisTextFontSize;
+	protected $hAxisTitle, $hAxisTitleColor, $hAxisTitleFontName, $hAxisTitleFontSize;
+	protected $hAxisMin, $hAxisMax;
+	protected $hAxisViewWindowMode, $hAxisViewWindowMin, $hAxisViewWindowMax;
+	
+	protected $hAxisSlantedText, $hAxisSlantedTextAngle;
+	protected $hAxisMaxAlternation;
+	protected $hAxisShowTextEvery;
+	
+	protected $vAxisBaseline, $vAxisBaselineColor;
+	protected $reverseVAxisDirection;
+	protected $vAxisFormat;
+	protected $vAxisGridlineColor;
+	protected $vAxisLogScale;
+	protected $vAxisTextPosition;
+	protected $vAxisTextColor, $vAxisTextFontName, $vAxisTextFontSize;
+	protected $vAxisTitle, $vAxisTitleColor, $vAxisTitleFontName, $vAxisTitleFontSize;
+	protected $vAxisMin, $vAxisMax;
+	protected $vAxisViewWindowMode, $vAxisViewWindowMin, $vAxisViewWindowMax;
 	
 	/**
 	 * Updates array of parameters
@@ -432,11 +459,207 @@ class InteractiveChart_Axis extends Extension {
 			$options['axisTitlesPosition'] = $this->axisTitlesPosition;
 		}
 		
-		// Gridline Color
-		if($this->gridlineColor) {
-			$options['gridlineColor'] = $this->gridlineColor;
+		// Horizontal Axis Baseline
+		if($this->hAxisBaseline !== null) {
+			$hAxis['baseline'] = $this->hAxisBaseline;
+		}
+		if($this->hAxisBaselineColor) {
+			$hAxis['baselineColor'] = $this->hAxisBaselineColor;
 		}
 		
+		// Horizontal Axis Direction
+		if($this->reverseHAxisDirection) {
+			$hAxis['direction'] = -1;
+		}
+		
+		// Horizontal Axis Format
+		if($this->hAxisFormat) {
+			$hAxis['format'] = $this->hAxisFormat;
+		}
+		
+		// Horizontal Axis Gridline Color
+		if($this->hAxisGridlineColor) {
+			$hAxis['gridlineColor'] = $this->hAxisGridlineColor;
+		}
+		
+		// Horizontal Axis Log Scale
+		if($this->hAxisLogScale) {
+			$hAxis['logScale'] = true;
+		}
+		
+		// Horizontal Axis Text Position
+		if($this->hAxisTextPosition) {
+			$hAxis['textPosition'] = $this->hAxisTextPosition;
+		}
+		
+		// Horizontal Axis Text Style
+		if($this->hAxisTextColor) {
+			$hAxisTextStyle['color'] = $this->hAxisTextColor;
+		}
+		if($this->hAxisTextFontName) {
+			$hAxisTextStyle['fontName'] = $this->hAxisTextFontName;
+		}
+		if($this->hAxisTextFontSize) {
+			$hAxisTextStyle['fontSize'] = $this->hAxisTextFontSize;
+		}
+		if(isset($hAxisTextStyle)) {
+			$hAxis['textStyle'] = $hAxisTextStyle;
+		}
+		
+		// Horizontal Axis Title
+		if($this->hAxisTitle) {
+			$hAxis['title'] = $this->hAxisTitle;
+		}
+		
+		// Horizontal Axis Title Style
+		if($this->hAxisTitleColor) {
+			$hAxisTitleStyle['color'] = $this->hAxisTitleColor;
+		}
+		if($this->hAxisTitleFontName) {
+			$hAxisTitleStyle['fontName'] = $this->hAxisTitleFontName;
+		}
+		if($this->hAxisTitleFontSize) {
+			$hAxisTitleStyle['fontSize'] = $this->hAxisTitleFontSize;
+		}
+		if(isset($hAxisTitleStyle)) {
+			$hAxis['textStyle'] = $hAxisTitleStyle;
+		}
+		
+		// Horizontal Axis Min & Max
+		if($this->hAxisMin !== null) {
+			$hAxis['minValue'] = $this->hAxisMin;
+		}
+		if($this->hAxisMax !== null) {
+			$hAxis['maxValue'] = $this->hAxisMax;
+		}
+		
+		// Horizontal Axis View Window
+		if($this->hAxisViewWindowMode) {
+			$hAxis['viewWindowMode'] = $this->hAxisViewWindowMode;
+		}
+		if($this->hAxisViewWindowMin !== null) {
+			$hAxisViewWindow['min'] = $this->hAxisViewWindowMin;
+		}
+		if($this->hAxisViewWindowMax !== null) {
+			$hAxisViewWindow['max'] = $this->hAxisViewWindowMax;
+		}
+		if(isset($hAxisViewWindow)) {
+			$hAxis['viewWindow'] = $hAxisViewWindow;
+		}
+		
+		// Horizontal Axis Slanted Text
+		if($this->hAxisSlantedText !== null) {
+			$hAxis['slantedText'] = $this->hAxisSlantedText ? true : false;
+		}
+		if($this->hAxisSlantedTextAngle) {
+			$hAxis['slantedTextAngle'] = $this->hAxisSlantedTextAngle;
+		}
+		
+		// Horizontal Axis Max Alteration
+		if($this->hAxisMaxAlternation) {
+			$hAxis['maxAlternation'] = $this->hAxisMaxAlternation;
+		}
+		
+		// Horizontal Axis Show Text Every
+		if($this->hAxisShowTextEvery) {
+			$hAxis['showTextEvery'] = $this->hAxisShowTextEvery;
+		}
+		
+		if(isset($hAxis)) {
+			$options['hAxis'] = $hAxis;
+		}
+		
+		// Vertical Axis Baseline
+		if($this->vAxisBaseline !== null) {
+			$vAxis['baseline'] = $this->vAxisBaseline;
+		}
+		if($this->vAxisBaselineColor) {
+			$vAxis['baselineColor'] = $this->vAxisBaselineColor;
+		}
+		
+		// Vertical Axis Direction
+		if($this->reverseVAxisDirection) {
+			$vAxis['direction'] = -1;
+		}
+		
+		// Vertical Axis Format
+		if($this->vAxisFormat) {
+			$vAxis['format'] = $this->vAxisFormat;
+		}
+		
+		// Vertical Axis Gridline Color
+		if($this->vAxisGridlineColor) {
+			$vAxis['gridlineColor'] = $this->vAxisGridlineColor;
+		}
+		
+		// Vertical Axis Log Scale
+		if($this->vAxisLogScale) {
+			$vAxis['logScale'] = true;
+		}
+		
+		// Vertical Axis Text Position
+		if($this->vAxisTextPosition) {
+			$vAxis['textPosition'] = $this->vAxisTextPosition;
+		}
+		
+		// Vertical Axis Text Style
+		if($this->vAxisTextColor) {
+			$vAxisTextStyle['color'] = $this->vAxisTextColor;
+		}
+		if($this->vAxisTextFontName) {
+			$vAxisTextStyle['fontName'] = $this->vAxisTextFontName;
+		}
+		if($this->vAxisTextFontSize) {
+			$vAxisTextStyle['fontSize'] = $this->vAxisTextFontSize;
+		}
+		if(isset($vAxisTextStyle)) {
+			$vAxis['textStyle'] = $vAxisTextStyle;
+		}
+		
+		// Vertical Axis Title
+		if($this->vAxisTitle) {
+			$vAxis['title'] = $this->vAxisTitle;
+		}
+		
+		// Vertical Axis Title Style
+		if($this->vAxisTitleColor) {
+			$vAxisTitleStyle['color'] = $this->vAxisTitleColor;
+		}
+		if($this->vAxisTitleFontName) {
+			$vAxisTitleStyle['fontName'] = $this->vAxisTitleFontName;
+		}
+		if($this->vAxisTitleFontSize) {
+			$vAxisTitleStyle['fontSize'] = $this->vAxisTitleFontSize;
+		}
+		if(isset($vAxisTitleStyle)) {
+			$vAxis['textStyle'] = $vAxisTitleStyle;
+		}
+		
+		// Vertical Axis Min & Max
+		if($this->vAxisMin !== null) {
+			$vAxis['minValue'] = $this->vAxisMin;
+		}
+		if($this->vAxisMax !== null) {
+			$vAxis['maxValue'] = $this->vAxisMax;
+		}
+		
+		// Vertical Axis View Window
+		if($this->vAxisViewWindowMode) {
+			$vAxis['viewWindowMode'] = $this->vAxisViewWindowMode;
+		}
+		if($this->vAxisViewWindowMin !== null) {
+			$vAxisViewWindow['min'] = $this->vAxisViewWindowMin;
+		}
+		if($this->vAxisViewWindowMax !== null) {
+			$vAxisViewWindow['max'] = $this->vAxisViewWindowMax;
+		}
+		if(isset($vAxisViewWindow)) {
+			$vAxis['viewWindow'] = $vAxisViewWindow;
+		}
+		
+		if(isset($vAxis)) {
+			$options['vAxis'] = $vAxis;
+		}
 	}
 	
 	/**
@@ -445,7 +668,7 @@ class InteractiveChart_Axis extends Extension {
 	 * @param string $positon Must be a value from {@see $axis_titles_positions}
 	 */
 	public function setAxisTitlesPosition($position) {
-		if(in_array($position, self::$axis_titles_positions)) {
+		if(in_array($position, self::$positions)) {
 			$this->axisTitlesPosition = $position;
 		}
 	}
@@ -455,8 +678,158 @@ class InteractiveChart_Axis extends Extension {
 	 *
 	 * @param string $colour The colour in #RRGGBB format
 	 */
-	function setGridlineColor($color) {
-		$this->gridlineColor = $color;
+	
+	
+	// Horizontal Axis
+	
+	public function setHAxisBaseline($baseline) {
+		$this->hAxisBaseline = $baseline;
 	}
 	
+	public function setHAxisBaselineColor($color) {
+		$this->hAxisBaselineColor = $color;
+	}
+	
+	public function reverseHAxisDirection() {
+		$this->reverseHAxisDirection = true;
+	}
+	
+	public function setHAxisFormat($format) {
+		$this->hAxisFormat = $format;
+	}
+	
+	public function setHAxisGridlineColor($color) {
+		$this->hAxisGridlineColor = $color;
+	}
+	
+	public function setHAxisLogScale() {
+		$this->hAxisLogScale = true;
+	}
+	
+	public function setHAxisTextPosition($position) {
+		if(in_array($position, self::$positions)) {
+			$this->hAxisTextPosition = $position;
+		}
+	}
+	
+	public function setHAxisTextStyle($color, $fontName, $fontSize) {
+		$this->hAxisTextColor = $color;
+		$this->hAxisTextFontName = $fontName;
+		$this->hAxisTextFontSize = $fontSize;
+	}
+	
+	public function setHAxisTitle($title) {
+		$this->hAxisTitle = $title;
+	}
+	
+	public function setHAxisTitleTextStyle($color, $fontName, $fontSize) {
+		$this->hAxisTitleColor = $color;
+		$this->hAxisTitleFontName = $fontName;
+		$this->hAxisTitleFontSize = $fontSize;
+	}
+	
+	public function setHAxisMin($value) {
+		$this->hAxisMin = $value;
+	}
+	
+	public function setHAxisMax($value) {
+		$this->hAxisMax = $value;
+	}
+	
+	public function setHAxisViewWindowMode($mode) {
+		if(in_array($mode, self::$view_window_modes)) {
+			$this->hAxisViewWindowMode = $mode;
+		}
+	}
+	
+	public function setHAxisViewWindowMin($value) {
+		$this->hAxisViewWindowMin = $value;
+	}
+	
+	public function setHAxisViewWindowMax($value) {
+		$this->hAxisViewWindowMax = $value;
+	}
+	
+	public function setHAxisSlantedText($slanted, $angle = null) {
+		$this->hAxisSlantedText = $slanded;
+		$this->hAxisSlantedTextAngle = $angle;
+	}
+	
+	public function setHAxisMaxAlternation($alternation) {
+		$this->hAxisMaxAlternation = $alternation;
+	}
+	
+	public function setHAxisShowTextEvery($number) {
+		$this->hAxisShowTextEvery = $number;
+	}
+	
+	// Vertical Axis
+	
+	public function setVAxisBaseline($baseline) {
+		$this->vAxisBaseline = $baseline;
+	}
+	
+	public function setVAxisBaselineColor($color) {
+		$this->vAxisBaselineColor = $color;
+	}
+	
+	public function reverseVAxisDirection() {
+		$this->reverseVAxisDirection = true;
+	}
+	
+	public function setVAxisFormat($format) {
+		$this->vAxisFormat = $format;
+	}
+	
+	public function setVAxisGridlineColor($color) {
+		$this->vAxisGridlineColor = $color;
+	}
+	
+	public function setVAxisLogScale() {
+		$this->vAxisLogScale = true;
+	}
+	
+	public function setVAxisTextPosition($position) {
+		if(in_array($position, self::$positions)) {
+			$this->vAxisTextPosition = $position;
+		}
+	}
+	
+	public function setVAxisTextStyle($color, $fontName, $fontSize) {
+		$this->vAxisTextColor = $color;
+		$this->vAxisTextFontName = $fontName;
+		$this->vAxisTextFontSize = $fontSize;
+	}
+	
+	public function setVAxisTitle($title) {
+		$this->vAxisTitle = $title;
+	}
+	
+	public function setVAxisTitleTextStyle($color, $fontName, $fontSize) {
+		$this->vAxisTitleColor = $color;
+		$this->vAxisTitleFontName = $fontName;
+		$this->vAxisTitleFontSize = $fontSize;
+	}
+	
+	public function setVAxisMin($value) {
+		$this->vAxisMin = $value;
+	}
+	
+	public function setVAxisMax($value) {
+		$this->vAxisMax = $value;
+	}
+	
+	public function setVAxisViewWindowMode($mode) {
+		if(in_array($mode, self::$view_window_modes)) {
+			$this->vAxisViewWindowMode = $mode;
+		}
+	}
+	
+	public function setVAxisViewWindowMin($value) {
+		$this->vAxisViewWindowMin = $value;
+	}
+	
+	public function setVAxisViewWindowMax($value) {
+		$this->vAxisViewWindowMax = $value;
+	}
 }
