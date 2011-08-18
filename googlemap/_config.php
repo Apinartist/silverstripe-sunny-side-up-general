@@ -26,7 +26,7 @@ define("GoogleMapAPIKey", "abc");
 //GoogleMapLocationsDOD::set_page_classes_without_map(array("UserDefinedForms"));
 
 //SENSOR - SOME CRAZY STUFF
-GoogleMap::setUsesSensor(true); // should be set to false!
+GoogleMap::set_uses_sensor(true); // should be set to false!
 
 // MAP
 GoogleMap::setDefaultLatitude(12.0001);
