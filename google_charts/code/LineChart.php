@@ -56,16 +56,33 @@ class LineChart extends Chart {
 	 * @return string
 	 */
 	public function Link(array $params = null) {
-		
 		if(count($this->lines) > 0) {
 			foreach($this->lines as $line) {
-				if($this->type == 'lxy' && isset($line['x'])) {
-					$coordinates[] = implode(',', $line['x']);
+				$lineY = $line['y'];
+				if($this->type == 'lxy') {
+					$checkNull = true;
+					if(isset($line['x'])) {
+						$coordinates[] = implode(',', $line['x']);
+					}
+					else {
+						$lineY = array_diff($lineY, array(null));
+						if(count($lineY) > 0) {
+							$factor = round(100 / (count($line['y']) - 1), 1);
+							$x = array();
+							foreach($lineY as $index => $value) {
+								$x[] = $factor * $index;
+							}
+							$coordinates[] = implode(',', $x);
+						}
+						else {
+							continue;
+						}
+					}
 				}
 				
 				if($this->factor) {
 					$y = array();
-					foreach($line['y'] as $value) {
+					foreach($lineY as $value) {
 						$yVal = $this->factor * $value;
 						if ($this->round !== false) {
 							$yVal = round($yVal, $this->round);
@@ -74,8 +91,9 @@ class LineChart extends Chart {
 					}
 					$coordinates[] = implode(',', $y);
 				} else {
-					$coordinates[] = implode(',', $line['y']);
+					$coordinates[] = implode(',', $lineY);
 				}
+				
 				if(isset($line['color'])) {
 					$colors[] = (is_array($line['color']) ? implode('|', $line['color']) : $line['color']);
 				} else if ($this->generateColor) {
