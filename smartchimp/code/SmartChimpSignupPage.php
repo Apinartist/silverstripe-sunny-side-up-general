@@ -81,7 +81,7 @@ class SmartChimpSignupPage extends Page {
 			$sourceClass = "SmartChimpNewsletter"
 		);
 		$table->setPageSize(100);
-		$table->setPermissions(array('export', 'show', 'edit'));
+		$table->setPermissions(array('export', 'show', 'edit', 'delete'));
 		return $table;
 	}
 
