@@ -81,20 +81,23 @@ class SmartChimpSignupPage extends Page {
 			$sourceClass = "SmartChimpNewsletter"
 		);
 		$table->setPageSize(100);
-		$table->setPermissions(array('export', 'show'));
+		$table->setPermissions(array('export', 'show', 'edit'));
 		return $table;
 	}
+
+	function SmartChimpNewslettersShow() {
+		return DataObject::get("SmartChimpNewsletter", "\"ParentID\" = ".$this->ID." AND \"Hide\" <> 1");
+	}
+	
 	function RetrieveCampaigns() {
 		$dos = new DataObjectSet();
 		SmartChimpNewsletter::clean_up_characters();
 		$api = $this->getAPI();
 		if($api && $this->ID) {
-			echo "has api";
 			$campaignArray = $api->campaigns(array("list_id" => $this->MCListKey));
 			if(is_array($campaignArray) && count($campaignArray)) {
-					echo "has campaigns";
 				foreach($campaignArray as $key => $campaign) {
-					if($campaign["status"] == "sent" && 1 == 1 ) {
+					if($campaign["status"] == "sent") {
 						$obj = DataObject::get_one("SmartChimpNewsletter", "`ParentID` = ".$this->ID." AND `CampaignID` = '".$campaign["id"]."'");
 						if($obj) {
 							//do nothing
@@ -119,9 +122,6 @@ class SmartChimpSignupPage extends Page {
 							}
 							$obj->write();
 						}
-					}
-					else {
-						echo "has unsent campaigns";
 					}
 				}
 			}
@@ -266,9 +266,6 @@ class SmartChimpSignupPage extends Page {
 		}
 	}
 
-	function RunTest() {
-
-	}
 
 }
 
@@ -288,9 +285,6 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 	}
 
 
-	function test() {
-		$this->RunTest();
-		return array();
-	}
+
 }
 

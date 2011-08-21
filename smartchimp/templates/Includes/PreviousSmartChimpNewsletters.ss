@@ -1,8 +1,8 @@
-<% if SmartChimpNewsletters %>
+<% if SmartChimpNewslettersShow %>
 <div id="PreviousSmartChimpNewsletters">
 	<h2>Previous Editions</h2>
 		<ul id="SmartChimpNewsletters">
-		<% control SmartChimpNewsletters %>
+		<% control SmartChimpNewslettersShow %>
 			<li>
 				<h5><a href="$PermaLink" class="popup">$Title</a></h5>
 				<p class="smartChimpNewslettersDate">Sent on: $Date.Long</p>
