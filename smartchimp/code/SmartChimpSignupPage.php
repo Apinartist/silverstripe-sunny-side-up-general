@@ -78,7 +78,10 @@ class SmartChimpSignupPage extends Page {
 		$table = new HasManyComplexTableField(
 			$controller = $this,
 			$name = "SmartChimpNewsletters",
-			$sourceClass = "SmartChimpNewsletter"
+			$sourceClass = "SmartChimpNewsletter",
+			$fieldList = null,
+			$detailFormFields = null,
+			$sourceFilter = "ParentID = ".$this->ID
 		);
 		$table->setPageSize(100);
 		$table->setPermissions(array('export', 'show', 'edit', 'delete'));
