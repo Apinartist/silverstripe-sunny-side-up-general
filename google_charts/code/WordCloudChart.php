@@ -142,7 +142,12 @@ class WordCloudChart_Rotating extends Chart {
 		$max = max($words);
 		$min = min($words);
 		
-		$aFactor = (self::$font_max - self::$font_min) / ($max - $min);
+		$difference = $max - $min;
+		if ($difference < 1) {
+			$difference = 1;
+		}
+		
+		$aFactor = (self::$font_max - self::$font_min) / $difference;
 		$bFactor = self::$font_max - $max * $aFactor;
 		foreach($words as $word => $total) {
 			$words[$word] = round($total * $aFactor + $bFactor, 1);
