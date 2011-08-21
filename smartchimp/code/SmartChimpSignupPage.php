@@ -29,14 +29,14 @@ class SmartChimpSignupPage extends Page {
 		"IsDefaultList" => 1
 	);
 
-	static $mc_api_version = '1.2';
+	static $mc_api_version = '1.2.1';
 
 	protected static $api = null;
 
 	function getAPI() {
 		if($this->MCApiKey && $this->MCListKey) {
 			if(!(self::$api instanceOf MCAPI)) {
-				require_once('third_party/MCAPI.class.php');
+				require_once('../third_party/'.self::$mc_api_version.'/MCAPI.class.php');
 				self::$api = new MCAPI("$this->MCApiKey");
 			}
 			return self::$api;
@@ -250,6 +250,9 @@ class SmartChimpSignupPage extends Page {
 		}
 	}
 
+	function RunTest() {
+
+	}
 
 }
 
@@ -265,6 +268,12 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 
 	function update() {
 		$this->RetrieveCampaigns();
+		return array();
+	}
+
+
+	function update() {
+		$this->RunTest();
 		return array();
 	}
 }
