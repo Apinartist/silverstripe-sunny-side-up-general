@@ -44,13 +44,9 @@ class SmartChimpNewsletter extends DataObject {
 	public static $defaults = array();//use fieldName => Default Value
 	public static $searchable_fields = array("Title" => "PartialMatchFilter");
 	public static $field_labels = array("Title" => "Title");
-	public static $summary_fields = array("Name" => "Name");
+	public static $summary_fields = array("Title" => "Title");
 	public static $singular_name = "MailChimp Newsletter";
 	public static $plural_name = "MailChimp Newsletters";
-
-	function Title() {
-		return $this->Title();
-	}
 
 	static function clean_up_characters() {
 		DB::query("UPDATE `SmartChimpNewsletter` SET `TextContent` = REPLACE(`TextContent`,'â€™','\'');");
@@ -61,6 +57,19 @@ class SmartChimpNewsletter extends DataObject {
 		DB::query("UPDATE `SmartChimpNewsletter` SET `TextContent` = REPLACE(`TextContent`,'â€','\"');");
 		DB::query("UPDATE `SmartChimpNewsletter` SET `TextContent` = REPLACE(`TextContent`,' ','\"');");
 	}
+
+	static $field_types = array(
+		"CampaignID" => "TextField",//id
+		"Date" => "TextField",//send_time
+		"Title" => "TextField",//title
+		"Subject" => "TextField",//title
+		"PermaLink" => "TextField",//archive_url
+		"WebID" => "NumericField", //web_id
+		"Status" => "TextField", //should be sent!
+		"TextContent" => "TextareaField", //html
+		"HTMLContent" => "TextareaField", //text
+		"Done" => "CheckboxField"		
+	);
 
 }
 

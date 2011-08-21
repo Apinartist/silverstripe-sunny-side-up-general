@@ -36,7 +36,7 @@ class SmartChimpSignupPage extends Page {
 	function getAPI() {
 		if($this->MCApiKey && $this->MCListKey) {
 			if(!(self::$api instanceOf MCAPI)) {
-				require_once('../third_party/'.self::$mc_api_version.'/MCAPI.class.php');
+				require_once(Director::baseFolder().'/smartchimp/thirdparty/mcapi/'.self::$mc_api_version.'/MCAPI.class.php');
 				self::$api = new MCAPI("$this->MCApiKey");
 			}
 			return self::$api;
@@ -48,7 +48,8 @@ class SmartChimpSignupPage extends Page {
 		$fields = parent::getCMSFields();
 
 		$fields->addFieldsToTab('Root.Content.SentNewsletters',array(
-			new LiteralField('HowToRetrieve', '<p>To retrieve sent newsletters, simply save this page or <a href="'.$this->Link().'?flush=1">click here</a>.</p>')
+			new LiteralField('HowToRetrieve', '<p>To retrieve sent newsletters, simply save this page or <a href="'.$this->Link("update").'?flush=1">click here</a>.</p>'),
+			$this->SmartChimpNewslettersTable()
 		));
 		$fields->addFieldsToTab('Root.Content.MailChimpConfig',array(
 			new CheckboxField('IsDefaultList', 'This is the default newsletter'),
@@ -73,15 +74,27 @@ class SmartChimpSignupPage extends Page {
 		return $fields;
 	}
 
+	function SmartChimpNewslettersTable() {
+		$table = new HasManyComplexTableField(
+			$controller = $this,
+			$name = "SmartChimpNewsletters",
+			$sourceClass = "SmartChimpNewsletter"
+		);
+		$table->setPageSize(100);
+		$table->setPermissions(array('export', 'show'));
+		return $table;
+	}
 	function RetrieveCampaigns() {
 		$dos = new DataObjectSet();
 		SmartChimpNewsletter::clean_up_characters();
 		$api = $this->getAPI();
 		if($api && $this->ID) {
+			echo "has api";
 			$campaignArray = $api->campaigns(array("list_id" => $this->MCListKey));
 			if(is_array($campaignArray) && count($campaignArray)) {
+					echo "has campaigns";
 				foreach($campaignArray as $key => $campaign) {
-					if($campaign["status"] == "sent") {
+					if($campaign["status"] == "sent" && 1 == 1 ) {
 						$obj = DataObject::get_one("SmartChimpNewsletter", "`ParentID` = ".$this->ID." AND `CampaignID` = '".$campaign["id"]."'");
 						if($obj) {
 							//do nothing
@@ -106,6 +119,9 @@ class SmartChimpSignupPage extends Page {
 							}
 							$obj->write();
 						}
+					}
+					else {
+						echo "has unsent campaigns";
 					}
 				}
 			}
@@ -272,7 +288,7 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 	}
 
 
-	function update() {
+	function test() {
 		$this->RunTest();
 		return array();
 	}
