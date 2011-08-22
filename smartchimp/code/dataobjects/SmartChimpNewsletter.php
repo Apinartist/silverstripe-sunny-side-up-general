@@ -35,8 +35,14 @@ class SmartChimpNewsletter extends DataObject {
 	static $casting = array(
 		"DateNice" => "Text",
 		"ShowOrHide" => "Text",
+		"YearMonth" => "Int",
+		"Month" => "Int",
 		"Link" => "Text"
 	);
+
+	function getYearMonth() {
+		return $this->obj('Date')->format("F")." ".$this->obj('Date')->format("Y");
+	}
 
 	function getDateNice() {
 		return $this->obj('Date')->Long();
