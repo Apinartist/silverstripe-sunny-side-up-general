@@ -99,13 +99,13 @@ class TemplateOverviewPage extends Page {
 
 	public function ListOfAllClasses() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-			if(!self::$list_of_all_classes)  {
+		if(!self::$list_of_all_classes)  {
 			$ArrayOfAllClasses =  Array();
 			$classes = ClassInfo::subclassesFor("SiteTree");
 			foreach($classes as $className) {
 				if(!in_array($className, self::$classes_to_exclude)) {
 					if($this->showAll) {
-						$objects = DataObject::get($className, 'ClassName = "'.$className.'"');
+						$objects = DataObject::get($className, 'ClassName = "'.$className.'"', "RAND() ASC", null, "0, 25");
 						$count = 0;
 						if(is_object($objects) && $objects->count()) {
 							foreach($objects as $obj) {
