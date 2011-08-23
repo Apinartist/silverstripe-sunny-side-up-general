@@ -87,7 +87,7 @@ class SocialNetworkingLinksDataObject extends DataObject {
 			$fields->addFieldToTab("Root.Main", new LiteralField("Link", '<p>'.$this->IconHTML().'</p>'));
 		}
 		$fields->removeFieldFromTab("Root.Main", "InternalLinkID");		
-		$fields->addFieldToTab("Root.Main", new TreeDropdownField("InternalLinkID", "Internal Link"), "URL");		
+		$fields->addFieldToTab("Root.Main", new TreeDropdownField("InternalLinkID", "Internal Link", "SiteTree"), "URL");		
 		return $fields;
 	}
 
