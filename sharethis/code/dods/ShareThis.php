@@ -136,7 +136,6 @@ class ShareThis extends SiteTreeDecorator {
 					$itemArray["Title"] = $bookmark['title'];
 					$itemArray["URL"] = $bookmark["url"];
 					$itemArray["Key"] = $key;
-					$itemArray["Key"] = $key;
 					if(isset($bookmark["icon"]) ) {
 						$itemArray["ImageSource"] = $bookmark["icon"];
 						$itemArray["UseStandardImage"] = 0;
