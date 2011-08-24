@@ -52,14 +52,10 @@ class PDFCrowdConverter extends Object {
 		}
 		$folderFilename = $this->file2FolderFilename($filename);
 		if($folderFilename && $useCacheIfAvailable) {
-			
 			if(file_exists($folderFilename)) {
-				//read file
-				$fh = fopen($folderFilename, 'r');
-				$pdfAsString = fread($fh, filesize($folderFilename));
-				fclose($fh);
-				//output
-				return $this->outputPDF($pdfAsString, $filename);
+				$url = Director::absoluteBaseURL().$this->file2FolderFilename($filename, true);
+				header("Location: $url");
+				exit();
 			}
 		}
 		try {   
@@ -88,11 +84,16 @@ class PDFCrowdConverter extends Object {
 		}
 	}
 
-	protected function file2FolderFilename($filename) {
+	protected function file2FolderFilename($filename, $withoutBase = false) {
 		if(self::$save_pdfs_here) {
 			$folder = Director::baseFolder()."/".self::$save_pdfs_here."/";
 			$folderObject = Folder::findOrMake($folder);
-			$folderFilename = $folderObject->getFullPath() . $filename;
+			if($withoutBase) {
+				$folderFilename = $folderObject->getRelativePath() . $filename;
+			}
+			else {
+				$folderFilename = $folderObject->getFullPath() . $filename;
+			}
 			return $folderFilename;
 		}
 	}
