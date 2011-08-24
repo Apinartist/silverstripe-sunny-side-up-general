@@ -59,7 +59,7 @@ class PDFCrowdConverter extends Object {
 			}
 		}
 		try {   
-			$pdf = "xxx"; //$this->pdf->convertURI($url);
+			$pdf = $this->pdf->convertURI($url);
 		}
 		catch(PdfcrowdException $e) {
 			return "Pdfcrowd Error: " . $e->getMessage();
