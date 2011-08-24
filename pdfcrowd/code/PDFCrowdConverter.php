@@ -39,43 +39,45 @@ class PDFCrowdConverter extends Object {
 		parent::__construct();
 	}
 
-	public function ConvertURL($url, $filename, $useCacheIfAvailable = true) {
+	public function ConvertPage($page) {
+		return $this->ConvertURL(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf", true);
+	}
+
+	//CACHING DOES NOT WORK!
+	public function ConvertURL($url, $filename, $useCacheIfAvailable = false) {
+		
 		$folderFilename = '';
 		if(isset($_GET["flush"])) {
 			$useCacheIfAvailable = false;
 		}
-		if($folderFilename = $this->file2FolderFilename($filename) && $useCacheIfAvailable) {
+		$folderFilename = $this->file2FolderFilename($filename);
+		if($folderFilename && $useCacheIfAvailable) {
+			
 			if(file_exists($folderFilename)) {
 				//read file
 				$fh = fopen($folderFilename, 'r');
-				$pdf = fread($fh, filesize($folderFilename));
+				$pdfAsString = fread($fh, filesize($folderFilename));
 				fclose($fh);
 				//output
-				return $this->outputPDF($pdf, $filename);
+				return $this->outputPDF($pdfAsString, $filename);
 			}
 		}
 		try {   
-			$pdf = $this->pdf->convertURI($url);
+			$pdf = "xxx"; //$this->pdf->convertURI($url);
 		}
 		catch(PdfcrowdException $e) {
 			return "Pdfcrowd Error: " . $e->getMessage();
 		}
-		if($folderFilename = $this->file2FolderFilename($filename)  && $pdf) {
-			try {
-				$this->removeCachedPDF($filename);
-				$fh = fopen($folderFilename, 'w');
-				fwrite($fh, $pdf);
-				fclose($fh);
+		if($folderFilename = $this->file2FolderFilename($filename)) {
+			if(!$pdf) {
+				$pdf = "error occured";
 			}
-			catch(Exception $e) {
-				user_error("can't write pdf'", E_USER_WARNING);
-			}
+			$this->removeCachedPDF($filename);
+			$fh = fopen($folderFilename, 'w');
+			fwrite($fh, $pdf);
+			fclose($fh);
 		}
 		return $this->outputPDF($pdf, $filename);
-	}
-
-	public function ConvertPage($page) {
-		return $this->convert(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf");
 	}
 
 	public function removeCachedPDF($filename) {
@@ -89,8 +91,8 @@ class PDFCrowdConverter extends Object {
 	protected function file2FolderFilename($filename) {
 		if(self::$save_pdfs_here) {
 			$folder = Director::baseFolder()."/".self::$save_pdfs_here."/";
-			Folder::findOrMake($folder);
-			$folderFilename = $folder . $filename;
+			$folderObject = Folder::findOrMake($folder);
+			$folderFilename = $folderObject->getFullPath() . $filename;
 			return $folderFilename;
 		}
 	}
