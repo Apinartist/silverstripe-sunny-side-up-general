@@ -16,6 +16,10 @@ class PDFCrowdConverter extends Object {
 
 	protected static $singleton = null;
 
+	protected static $save_pdfs_here = 'assets/pdfs'; //e.g. assets/pdfs
+		public static function set_save_pdfs_here($s) {self::$save_pdfs_here = $s;}
+		public static function get_save_pdfs_here() {return self::$save_pdfs_here;}
+		
 	public $pdf = null;
 
 	/**
@@ -35,19 +39,62 @@ class PDFCrowdConverter extends Object {
 		parent::__construct();
 	}
 
-	public function ConvertURL($url, $filename) {
+	public function ConvertURL($url, $filename, $useCacheIfAvailable = true) {
+		$folderFilename = '';
+		if(isset($_GET["flush"])) {
+			$useCacheIfAvailable = false;
+		}
+		if($folderFilename = $this->file2FolderFilename($filename) && $useCacheIfAvailable) {
+			if(file_exists($folderFilename)) {
+				//read file
+				$fh = fopen($folderFilename, 'r');
+				$pdf = fread($fh, filesize($folderFilename));
+				fclose($fh);
+				//output
+				return $this->outputPDF($pdf, $filename);
+			}
+		}
 		try {   
 			$pdf = $this->pdf->convertURI($url);
-			return $this->outputPDF($pdf, $filename);
 		}
 		catch(PdfcrowdException $e) {
 			return "Pdfcrowd Error: " . $e->getMessage();
 		}
+		if($folderFilename = $this->file2FolderFilename($filename)  && $pdf) {
+			try {
+				$this->removeCachedPDF($filename);
+				$fh = fopen($folderFilename, 'w');
+				fwrite($fh, $pdf);
+				fclose($fh);
+			}
+			catch(Exception $e) {
+				user_error("can't write pdf'", E_USER_WARNING);
+			}
+		}
+		return $this->outputPDF($pdf, $filename);
 	}
 
 	public function ConvertPage($page) {
 		return $this->convert(Director::AbsoluteURL($page->Link), $page->URLSegment.".pdf");
 	}
+
+	public function removeCachedPDF($filename) {
+		if($folderFilename = $this->file2FolderFilename($filename)) {
+			if(file_exists($folderFilename)) {				
+				unlink($folderFilename);
+			}
+		}
+	}
+
+	protected function file2FolderFilename($filename) {
+		if(self::$save_pdfs_here) {
+			$folder = Director::baseFolder()."/".self::$save_pdfs_here."/";
+			Folder::findOrMake($folder);
+			$folderFilename = $folder . $filename;
+			return $folderFilename;
+		}
+	}
+
 
 	public static function outputPDF($pdfAsString, $filename) {
 		// set HTTP response headers
