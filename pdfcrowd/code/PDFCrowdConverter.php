@@ -16,7 +16,7 @@ class PDFCrowdConverter extends Object {
 
 	protected static $singleton = null;
 
-	protected static $save_pdfs_here = 'assets/pdfs'; //e.g. assets/pdfs
+	protected static $save_pdfs_here = 'pdfs'; //e.g. assets/pdfs
 		public static function set_save_pdfs_here($s) {self::$save_pdfs_here = $s;}
 		public static function get_save_pdfs_here() {return self::$save_pdfs_here;}
 		
