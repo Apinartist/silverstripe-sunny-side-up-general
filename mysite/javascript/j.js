@@ -63,9 +63,9 @@
 })(jQuery);
 
 
-    $(document).ready(function(){ 
-        $("#Nav").superfish(); 
-    });
+jQuery(document).ready(function(){ 
+	jQuery("#Nav").superfish(); 
+});
 
 /*
  * Superfish v1.4.8 - jQuery menu widget
