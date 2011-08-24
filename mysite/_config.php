@@ -21,10 +21,11 @@ Member::set_password_validator( new NZGovtPasswordValidator());
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
-Requirements::set_combined_files_folder("_cache");
+Requirements::set_combined_files_folder(if($theme = SSViewer::current_theme()) {return THEMES_DIR . "/$theme" . ($subtheme ? "_$subtheme" : null);} return project(););
 //Director::forceWWW();
 FulltextSearchable::enable();
 if(Director::isLive()) {
+	Director::forceWWW();
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
 else {
@@ -92,33 +93,26 @@ MetaTagAutomation::set_hide_keywords_altogether(true);
 //MetaTagAutomation::set_use_themed_favicon(true);
 //===================---------------- END metatags MODULE ----------------===================
 
-
 //===================---------------- START sharethis MODULE ----------------===================
-ShareThis::set_always_include (true);
-ShareThis::set_share_this_all_in_one(false); // all-in-one button - see http://sharethis.com/developers/api_examples/
+// --- CONFIG -> REQUIRED - configure your social media from the site config panel
+DataObject::add_extension('SiteConfig', 'SocialNetworkingConfig');
+
+// --- SHARE THIS LINK -> links to your visitors page on facebook, linkedin, etc... so that they can share your website
 DataObject::add_extension('SiteTree', 'ShareThis');
-ShareThis::set_always_include (true);
-ShareThis::set_include_by_default(true);
-
-//ShareThis::set_share_this_all_in_one(true); // all-in-one button - see http://sharethis.com/developers/api_examples/
-//ShareThis::set_show_title_with_icon(false);
-//ShareThis::set_alternate_icons(array("live" => "mysite/images/madgif.gif"));
+//ShareThis::set_share_this_all_in_one(true);
 //ShareThis::set_use_bw_effect(true);
+//ShareThis::set_share_this_icons_to_include(array("facebook", "google", "linkedin"));   //OR
+//ShareThis::set_share_this_icons_to_exclude(array("myspace"));
 
-//hide / add completely
-//ShareThis::set_icons_to_include(array("facebook", "google", "linkedin"));   //OR
-//ShareThis::set_icons_to_exclude(array("myspace"));
+// --- SOCIAL NETWORKING LINK -> links to your page on facebook, linkedin, etc...
+DataObject::add_extension('SiteTree', 'SocialNetworkingLinks');
 
-//DataObject::add_extension('SiteTree', 'SocialNetworkingLinks');
-//SocialNetworkingLinks::set_always_include (false);
-//SocialNetworkingLinks::set_include_by_default(true);
-//SocialNetworkingLinks::set_show_title_with_icon(false);
-
+// --- SORTING -> allow the links to social media to be sortable
 //optional//requires: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
 Object::add_extension('ShareThisDataObject', 'DataObjectSorterDOD');
+Object::add_extension('SocialNetworkingLinksDataObject', 'DataObjectSorterDOD');
 DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
-//
-
+//===================---------------- END sharethis MODULE ----------------===================
 
 
 //===================---------------- START simplestspam MODULE ----------------===================

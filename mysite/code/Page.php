@@ -37,7 +37,7 @@ class Page extends SiteTree {
 			}
 		}
 		if($this->ParentID) {
-			if($parent = DataObject::get_by_id("SiteTree", "ParentID = ".$this->ParentID)) {
+			if($parent = DataObject::get_by_id("SiteTree", $this->ParentID)) {
 				return $parent->MyBackgroundImage();
 			}
 		}
