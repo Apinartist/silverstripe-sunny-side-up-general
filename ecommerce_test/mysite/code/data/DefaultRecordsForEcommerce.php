@@ -216,11 +216,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$product->Publish('Stage', 'Live');
 				$product->Status = "Published";
 				$product->flushCache();
+				$descriptionOptions = array("", "Per Month", "", "", "Per Year", "This option has limited warranty");
 				if(!DataObject::get("ProductVariation", "ProductID  = ".$product->ID)) {
 					foreach($variationCombos as $variationCombo) {
 						$productVariation = new ProductVariation();
 						$productVariation->ProductID = $product->ID;
 						$productVariation->Price = $product->Price * 2;
+						$productVariation->Description = $descriptionOptions[rand(0, 5)];
 						$productVariation->write();
 						$existingAttributeValues = $productVariation->AttributeValues();
 						$existingAttributeValues->add($variationCombo["Size"]);
@@ -286,7 +288,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
 				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
 				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
-				"LoginToOrderLinkLabel" => "Log in now to checkout order"
+				"LoginToOrderLinkLabel" => "Log in now to checkout order",
 				"Children" => array(
 					array(
 						"ClassName" => "OrderConfirmationPage",
