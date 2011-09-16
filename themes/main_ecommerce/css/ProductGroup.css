@@ -25,13 +25,17 @@
 
 /* 3) Product Settings */
 
-#Products .productItem {
+.productList .productItem {
 	list-style:none;
 	float: left;
 	width: 140px;
 	overflow: hidden;
 	margin: 0 5px 5px 0;
 	padding: 25px;
+}
+
+.productList .productItem img, .productList .productItem h3 {
+	padding: 0; margin:0
 }
 
 		.productItem .productActions{
