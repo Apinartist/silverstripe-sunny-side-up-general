@@ -6,7 +6,7 @@ class Page extends SiteTree {
 	);
 
 	public static $has_one = array(
-		"BackgroundImage" => "Image"	
+		"BackgroundImage" => "Image"
 	);
 
 	function MyBackgroundImage() {
@@ -23,7 +23,7 @@ class Page extends SiteTree {
 		if($siteConfig = SiteConfig::current_site_config()) {
 			return $siteConfig->BackgroundImage();
 		}
-	}	
+	}
 
 }
 class Page_Controller extends ContentController {
@@ -49,7 +49,8 @@ class Page_Controller extends ContentController {
 	public function init() {
 		parent::init();
 		$this->addBasicMetatagRequirements();
-		if($bgImage = $this->MyBackgroundImage()) {
+		$bgImage = $this->MyBackgroundImage();
+		if($bgImage && $bgImage->exists()) {
 			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}");
 		}
 	}

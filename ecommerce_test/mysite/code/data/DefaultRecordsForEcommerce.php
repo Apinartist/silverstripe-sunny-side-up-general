@@ -11,22 +11,22 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$order->delete();
 			}
 		}
-		
+
 		$obj = new CartCleanupTask();
 		$obj->cleanupUnlinkedOrderObjects();
 
 		$this->hacks();
-		
+
 		$this->CreatePages();
-		
+
 		$this->AddVariations();
-		
+
 		$this->AddMyModifiers();
-		
+
 		$this->UpdateMyRecords();
 
 		$this->createTags();
-		
+
 		$this->createRecommendedProducts();
 	}
 
@@ -150,27 +150,27 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 		if($colourObject) {
 			$redObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'red'");
-			if(!$redObject) {		
+			if(!$redObject) {
 				$redObject = new ProductAttributeValue();
 				$redObject->Value = "red";
 				$redObject->TypeID = $colourObject->ID;
 				$redObject->Sort = 100;
 				$redObject->write();
-			}			
+			}
 			$blueObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'blue'");
-			if(!$blueObject) {		
+			if(!$blueObject) {
 				$blueObject = new ProductAttributeValue();
 				$blueObject->Value = "blue";
 				$blueObject->TypeID = $colourObject->ID;
 				$blueObject->Sort = 110;
 				$blueObject->write();
-			}			
+			}
 		}
 		else {
 			die("COULD NOT CREATE COLOUR OBJECT");
 		}
 		$sizeObject = DataObject::get_one("ProductAttributeType", "\"Name\" = 'Size'");
-		if(!$sizeObject) {		
+		if(!$sizeObject) {
 			$sizeObject = new ProductAttributeType();
 			$sizeObject->Name = "Size";
 			$sizeObject->Label = "Size";
@@ -179,26 +179,26 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 		if($sizeObject) {
 			$smallObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'S'");
-			if(!$smallObject) {		
+			if(!$smallObject) {
 				$smallObject = new ProductAttributeValue();
 				$smallObject->Value = "S";
 				$smallObject->TypeID = $sizeObject->ID;
 				$smallObject->Sort = 100;
 				$smallObject->write();
-			}			
+			}
 			$xtraLargeObject = DataObject::get_one("ProductAttributeValue", "\"Value\" = 'XL'");
-			if(!$xtraLargeObject) {		
+			if(!$xtraLargeObject) {
 				$xtraLargeObject = new ProductAttributeValue();
 				$xtraLargeObject->Value = "XL";
 				$xtraLargeObject->TypeID = $sizeObject->ID;
 				$xtraLargeObject->Sort = 110;
 				$xtraLargeObject->write();
-			}			
+			}
 		}
 		else {
 			die("COULD NOT CREATE SIZE OBJECT");
 		}
-		
+
 		$products = DataObject::get("Product", "", "", "", "0, 5");
 		if($products && $colourObject && $sizeObject) {
 			$variationCombos = array(
@@ -206,7 +206,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				array("Size" => $xtraLargeObject, "Colour" => $blueObject),
 				array("Size" => $smallObject, "Colour" => $redObject),
 				array("Size" => $smallObject, "Colour" => $blueObject)
-			);			
+			);
 			foreach($products as $product) {
 				$existingAttributeTypes = $product->VariationAttributes();
 				$existingAttributeTypes->add($sizeObject);
@@ -226,7 +226,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						$existingAttributeValues->add($variationCombo["Size"]);
 						$existingAttributeValues->add($variationCombo["Colour"]);
 						$existingAttributeValues->write();
-						DB::alteration_message(" Creating variation for ".$product->Title . " // COLOUR ".$variationCombo["Colour"]->Value. " SIZE ".$variationCombo["Size"]->Value, "created");					
+						DB::alteration_message(" Creating variation for ".$product->Title . " // COLOUR ".$variationCombo["Colour"]->Value. " SIZE ".$variationCombo["Size"]->Value, "created");
 					}
 				}
 			}
@@ -286,16 +286,27 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
 				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
 				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
-				"LoginToOrderLinkLabel" => "Log in now to checkout order"				
-			),
-			array(
-				"ClassName" => "OrderConfirmationPage",
-				"URLSegment" => "confirmorder",
-				"Title" => "Order Confirmation",
-				"MenuTitle" => "Order Confirmation",
-				"ShowInMenus" => 0,
-				"ShowInSearch" => 0,
-				"Content" => "<p>Please review your order below.</p>"
+				"LoginToOrderLinkLabel" => "Log in now to checkout order"
+				"Children" => array(
+					array(
+						"ClassName" => "OrderConfirmationPage",
+						"URLSegment" => "confirmorder",
+						"Title" => "Order Confirmation",
+						"MenuTitle" => "Order Confirmation",
+						"ShowInMenus" => 0,
+						"ShowInSearch" => 0,
+						"Content" => "<p>Please review your order below.</p>"
+					),
+					array(
+						"ClassName" => "AccountPage",
+						"URLSegment" => "account page",
+						"Title" => "Account Page",
+						"MenuTitle" => "Account Page",
+						"ShowInMenus" => 0,
+						"ShowInSearch" => 0,
+						"Content" => "<p>Update your details below.</p>"
+					)
+				)
 			),
 			array(
 				"ClassName" => "CartPage",
@@ -304,17 +315,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"MenuTitle" => "Cart",
 				"ShowInMenus" => 0,
 				"ShowInSearch" => 0,
-				"Content" => "<p>Please review your order below.</p>"		
+				"Content" => "<p>Please review your order below.</p>"
 			),
-			array(
-				"ClassName" => "AccountPage",
-				"URLSegment" => "account page",
-				"Title" => "Account Page",
-				"MenuTitle" => "Account Page",
-				"ShowInMenus" => 0,
-				"ShowInSearch" => 0,
-				"Content" => "<p>Update your details below.</p>"		
-			)			
 		);
 	}
 
@@ -332,6 +334,16 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"InternalItemID" => "AAA".$i
 			);
 		}
+		$array[]  = array(
+			"ClassName" => "AnyPriceProductPage",
+			"URLSegment" => "donation",
+			"Title" => "Make a donation",
+			"MenuTitle" => "Donate",
+			"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
+			"Price" => 10 + $i + ($i / 100),
+			"Featured" => (round($i / 15) == $i / 15) ? 1 : 0,
+			"InternalItemID" => "AAA".$i
+		);
 		return $array;
 	}
 
