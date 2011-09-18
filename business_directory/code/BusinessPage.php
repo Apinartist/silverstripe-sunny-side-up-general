@@ -9,12 +9,12 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $icon = "business_directory/images/treeicons/BusinessPage";
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $db = array (
 		"IntroParagraph" => "Text",
 		"Phone" => "Varchar(100)",
@@ -38,7 +38,7 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $has_one = array (
 		'Image1' => 'Image',
 		'Image2' => 'Image',
@@ -47,16 +47,16 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $has_many = array (
 		'OpeningHours' => 'OpeningHour'
 	);
 
 
-	
+
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $many_many = array (
 		'Certifications' => 'CertificationPage',
 		'ProductCategories' => 'ProductCategoryPage',
@@ -65,7 +65,7 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	public static $many_many_extraFields = array(
 		'Certifications' => array(
 			'CertificationYear' => 'Int',
@@ -76,24 +76,24 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $can_be_root = false;
 
 	/**
 	 *permissions and actions
 	 * List of permission codes a user can have to allow a user to create a page of this type.
-	 **/ 
+	 **/
  	static $need_permission = array(
 		'ADMIN',
 		'CMS_ACCESS_BusinessAdmin',
 		'ACCESS_FORUM',
 		'ACCESS_BUSINESS'
-	); 
+	);
 
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $defaults = array (
 		"HasGeoInfo" => 1,
 		"ProvideComments" => true
@@ -101,50 +101,50 @@ class BusinessPage extends Page {
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $allowed_children = array("ProductPage");
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $default_child = "ProductPage";
 
 	/**
 	 * CODE of the group that business page admins are put in.
-	 **/ 
+	 **/
 	protected static $member_group_code = "listing-member";
 		static function get_member_group_code() {return self::$member_group_code;}
 		static function set_member_group_code($s) {self::$member_group_code = $s;}
 	/**
 	 * NAME of the group that business page admins are put in.
-	 **/ 
+	 **/
 	static $member_group_title = "Business Members";
 		static function get_member_group_title() {return self::$member_group_title;}
-		static function set_member_group_title($s) {self::$member_group_title = $s;}	
+		static function set_member_group_title($s) {self::$member_group_title = $s;}
 
 	/**
 	 * Permission code
-	 **/ 
+	 **/
 	static $access_code = "ACCESS_BUSINESS";
 
 	/**
 	 * Standard SS static
-	 **/ 
+	 **/
 	static $casting = array(
 		"HiddenEmail" => "Varchar",
 		"DescriptiveEmail" => "Varchar"
 	);
-	
+
 
 	protected static $can_be_child_of = array("BrowseSuburbPage", "BrowseCitiesPage");
 		static function get_can_be_child_off() {return self::$can_be_child_of;}
 		static function set_can_be_child_off($a) {self::$can_be_child_of = $a;}
 		static function add_can_be_child_off($s) {self::$can_be_child_of[] = $s;}
-		
-	
+
+
 	/**
 	 * Standard SS method
-	 **/ 
+	 **/
 	function canEdit($member = null) {
 		if(!$member) {
 			$member = Member::currentUser();
@@ -179,6 +179,13 @@ class BusinessPage extends Page {
 	 * Standard SS method
 	 **/
 	public function getCMSFields( $cms = null ) {
+
+		if($certificationOptionsDOS = DataObject::get("CertificationPage")) {
+			$certificationOptions = $certificationOptionsDOS->toDropDownMap("ID", "Title", "-- No Certifications --");
+		}
+		else {
+			$certificationOptions = array(0 => "No Certification", -1 => "Certified");
+		}
 		//'Requirements::javascript( 'business_directory/javascript/BusinessPage_CMS.js' );
 		$generalFields = new FieldSet(
 			new HeaderField("MainDetails", "Main Details", 3),
@@ -189,18 +196,20 @@ class BusinessPage extends Page {
 
 			// Contact tab
 			new HeaderField("ContactDetails", "Contact Details", 3),
-			new TextareaField("OpeningHours", "Opening Hours", 4),			
+			new TextareaField("OpeningHoursNote", "Opening Hours", 4),
 			new TextField("FirstName", "First Name"),
 			new TextField("LastName", "Last Name"),
 			new TextField("Phone", "Phone", $this->Phone, true,true,true),
-			new EmailField("Email", "Administrator Email"),
+			new EmailField("Email", "Administrator Email (hidden)"),
 			new EmailField("ListingEmail", "Listing Email (public)"),
 			new TextField("Skype", "Skype Address"),
 			new TextField("IM", "Instant Messaging ID / Address"),
 			new TextareaField("MailingAddress", "Mailing Address", 4),
 			new TextareaField("Notes", "Notes",5),
 			new TextField("Website", "Website"),
-			new TextAreaField("AlternativeContactDetails", "Alternative Contact Details", 4)
+			new TextAreaField("AlternativeContactDetails", "Alternative Contact Details", 4),
+			new HeaderField("CertificationHeader", "Certification", 3),
+			new CheckboxSetField("Certifications", "Certifications Sold", $certificationOptions)
 		);
 		foreach($generalFields as $field) {
 			switch($field->Name()) {
@@ -214,7 +223,7 @@ class BusinessPage extends Page {
 					break;
 				case "Email":
 				case "AlternativeContactDetails":
-					$field->setRightTitle("for internal use only - not shown on this website");
+					$field->setRightTitle("for internal use only");
 					break;
 				case "ListingEmail":
 					$field->setRightTitle("public");
@@ -231,6 +240,7 @@ class BusinessPage extends Page {
 		if($cms) {
 			$fields = parent::getCMSFields( $cms );
 			// Extra content fields
+			$fields->removeFieldFromTab("Root.Behaviour","ProvideComments");
 			$fields->removeFieldFromTab("Root.Content.Main","Content");
 			$fields->removeFieldFromTab("Root.Content", "MainImage" );
 			//$fields->removeFieldFromTab($rootTabname."Main","Title");
@@ -240,7 +250,7 @@ class BusinessPage extends Page {
 			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image1", "Image 1",null,null,null,'BusinessImages/'.$this->ID) );
 			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image2", "Image 2",null,null,null,'BusinessImages/'.$this->ID) );
 			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image3", "Image 3",null,null,null,'BusinessImages/'.$this->ID) );
-			$fields->addFieldToTab($rootTabname."General", $generalFields );
+			$fields->addFieldsToTab($rootTabname."General", $generalFields );
 			return $fields;
 		}
 		else {
@@ -255,12 +265,12 @@ class BusinessPage extends Page {
 
 
 	/**
-	 * Look up a particular parent class 
+	 * Look up a particular parent class
 	 *
 	 *@param String - $type: name of the class you are looking for
-	 *@param Object -$obj: site tree class, to call this function, you usually provide null or $this. 
-	 *@return Object | false: returns a SiteTree Object with classname = $type. 
-	 **/ 
+	 *@param Object -$obj: site tree class, to call this function, you usually provide null or $this.
+	 *@return Object | false: returns a SiteTree Object with classname = $type.
+	 **/
 	protected function getAncestorObject($type, $obj = null) {
 		if(!$obj) {
 			$child = $this;
@@ -284,7 +294,7 @@ class BusinessPage extends Page {
 	 * returns a link to an email that hides the actual email.
 	 * When the link is clicked on, the user will be redirected to a page that starts an email.
 	 * @return String
-	 **/ 
+	 **/
 	function getHiddenEmail (){
 		if($this->ListingEmail) {
 			$array = explode("@",$this->ListingEmail);
@@ -295,7 +305,7 @@ class BusinessPage extends Page {
 	/**
 	 * returns a visual representation of an email that hides the actual email.
 	 * @return String
-	 **/ 
+	 **/
 	function getDescriptiveEmail (){
 		if($this->ListingEmail) {
 			$array = explode("@",$this->ListingEmail);
@@ -304,10 +314,14 @@ class BusinessPage extends Page {
 		}
 	}
 
+	function getProvideComments() {
+		return $this->CanNotEdit();
+	}
+
 	/**
 	 * standard SS method, sorts out related members (adds new ones, deletes old ones)
 	 * and sends an email to let them know the listing was updated.
-	 **/ 
+	 **/
 	function onBeforeWrite() {
 		// If first write then add current member to Business members
 		/*$currentUser = Member::currentUser();
@@ -418,10 +432,14 @@ class BusinessPage extends Page {
 class BusinessPage_Controller extends Page_Controller {
 
 
+	function init() {
+		parent::init();
+	}
+
 	/**
 	 *TO DO: this contains map related stuff... which should be removed
 	 *
-	 **/ 
+	 **/
 	public function index($action) {
 		//Debug::show($action);
 		//Debug::show($this->owner->isAjax);
@@ -439,7 +457,7 @@ class BusinessPage_Controller extends Page_Controller {
 				GoogleMap::setAddPointsToMap(false);
 				GoogleMap::setAddDeleteMarkerButton("");
 			}
-			$this->addMap("showPagePointsMapXML");			
+			$this->addMap("showPagePointsMapXML");
 			return Array();
 		}
 	}
@@ -475,6 +493,23 @@ class BusinessPage_Controller extends Page_Controller {
 		$form->saveInto($businessPage);
 		$businessPage->writeToStage('Stage');$businessPage->publish('Stage', 'Live');
 		Director::redirectBack();
+	}
+
+
+	function HasContacDetails() {
+		if(
+			$this->Phone
+			|| $this->Fax
+			|| $this->ListingEmail
+			|| $this->Website
+			|| $this->SocialMediaLink1
+			|| $this->SocialMediaLink2
+			|| $this->Skype
+			|| $this->IM
+			|| $this->MailingAddress
+		){
+			return true;
+		}
 	}
 
 }
