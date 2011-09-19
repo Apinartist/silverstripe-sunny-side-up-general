@@ -9,4 +9,4 @@
 			#Nav #SubNav li a {font-size: 1.5em;color: #808383;}
 				#Nav #SubNav li a:hover, #Nav #SubNav li.current a, #Nav #SubNav li.section a {color: #000;}
 
-	#Nav li:hover #SubNav {display: block;}
+	#Nav li:hover .hasCSSHover {display: block;}
