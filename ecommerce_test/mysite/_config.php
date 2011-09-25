@@ -287,3 +287,9 @@ ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockOrderEntry");
 //MinMaxModifier::set_adjustment_message("Based on stock availability, quantities have been adjusted as follows: ");
 //MinMaxModifier::set_sorry_message("Sorry, your selected value not is available");
 //===================---------------- END ecommerc_stockcontrol MODULE ----------------===================
+
+
+//===================---------------- START ecommerce_quick_add MODULE ----------------===================
+Object::add_extension("Product", "AddToCartPageDecorator");
+Object::add_extension("ProductGroup", "AddToCartPageDecorator");
+//===================---------------- END ecommerce_quick_add MODULE ----------------===================

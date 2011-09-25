@@ -38,6 +38,160 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 	}
 
+	/**
+	 *
+	 *Children = child pages....
+	 **/
+
+	private function Pages() {
+		return array(
+			array(
+				"URLSegment" => "home",
+				"Title" => "Sunny Side Up Silverstripe Demo",
+				"MenuTitle" => "Home",
+				"Content" => "<p>
+					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
+					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
+					Thank you <a href=\"http://www.silverstripe.org\"Silverstripe Community</a> for the foundation.
+				</p>
+				<p>
+					This demo is based on the <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> version of ecommerce and also includes a bunch of modules.  Together, they offer the following functionality:
+				</p>
+				<ul>
+					<li>all the e-commerce basics: add to cart, checkout, pay, receive confirmation</li>
+					<li>variations (e.g. for use in colour and size)</li>
+					<li>tax (per country)</li>
+					<li>delivery</li>
+					<li>discounts</li>
+					<li>product tags</li>
+					<li>donations (user sets the amount (s)he wants to pay)</li>
+				</ul>
+				<p>
+					If you like to get access to the back-end of the website then contact us to get a username and password.
+				</p>
+				",
+				"Children" => array(
+					array(
+						"URLSegment" => "tag-explanation",
+						"Title" => "Tag Explanations",
+						"MenuTitle" => "Tags",
+						"ShowInMenus" => false,
+						"ShowInSearch" => false,
+						"Content" => "<p>This page can explain the tags shown for various products. </p>",
+					)
+				)
+			),
+			array(
+				"ClassName" => "ProductGroup",
+				"URLSegment" => "ProductGroup",
+				"Title" => "Products",
+				"MenuTitle" => "Products",
+				"Content" => "<p>Please review our products below.</p>",
+				"Children" => $this->getProducts()
+			),
+			array(
+				"ClassName" => "CheckoutPage",
+				"URLSegment" => "checkout",
+				"Title" => "Checkout",
+				"MenuTitle" => "Checkout",
+				"Content" => "<p>For further information on our terms of trade, please visit .....</p>",
+				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
+				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
+				"FinalizedOrderLinkLabel" => "View completed order",
+				"CurrentOrderLinkLabel" => "View current order",
+				"StartNewOrderLinkLabel" => "Start new order",
+				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
+				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
+				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
+				"LoginToOrderLinkLabel" => "Log in now to checkout order",
+				"Children" => array(
+					array(
+						"ClassName" => "OrderConfirmationPage",
+						"URLSegment" => "confirmorder",
+						"Title" => "Order Confirmation",
+						"MenuTitle" => "Order Confirmation",
+						"ShowInMenus" => 0,
+						"ShowInSearch" => 0,
+						"Content" => "<p>Please review your order below.</p>"
+					),
+					array(
+						"ClassName" => "AccountPage",
+						"URLSegment" => "account page",
+						"Title" => "Account Page",
+						"MenuTitle" => "Account Page",
+						"ShowInMenus" => 0,
+						"ShowInSearch" => 0,
+						"Content" => "<p>Update your details below.</p>"
+					)
+				)
+			),
+			array(
+				"ClassName" => "CartPage",
+				"URLSegment" => "cart",
+				"Title" => "Cart",
+				"MenuTitle" => "Cart",
+				"ShowInMenus" => 0,
+				"ShowInSearch" => 0,
+				"Content" => "<p>Please review your order below.</p>"
+			),
+			array(
+				"ClassName" => "AddToCartPage",
+				"URLSegment" => "quick-add",
+				"Title" => "Quick Add",
+				"MenuTitle" => "Quick Add",
+				"ShowInMenus" => 1,
+				"ShowInSearch" => 1,
+				"Content" => "<p>Choose your products below and continue through to the checkout...</p>"
+			),
+			array(
+				"ClassName" => "AnyPriceProductPage",
+				"URLSegment" => "donation",
+				"Title" => "Make a donation",
+				"MenuTitle" => "Donate",
+				"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
+				"Price" => 0,
+				"Featured" => 0,
+				"InternalItemID" => "DONATE"
+			),
+			array(
+				"ClassName" => "Page",
+				"URLSegment" => "contact-us",
+				"Title" => "Contact Us",
+				"MenuTitle" => "Contact Us",
+				"ShowInMenus" => 1,
+				"ShowInSearch" => 1,
+				"Content" => "<p>Email us: ecommerce[at]sunnysideup[dot]co[dot]nz</p>"
+			),
+			array(
+				"ClassName" => "TypographyTestPage",
+				"URLSegment" => "typo",
+				"Title" => "Typography Test page",
+				"MenuTitle" => "Typo Page",
+				"ShowInMenus" => 0,
+				"ShowInSearch" => 0,
+			)
+		);
+	}
+
+	private function getProducts() {
+		$array = array();
+		for($i = 1; $i < 20; $i++) {
+			$array[$i] = array(
+				"ClassName" => "Product",
+				"URLSegment" => "product$i",
+				"Title" => "Product $i",
+				"MenuTitle" => "Product $i",
+				"Content" => "<p>Description for Product $i ...</p>",
+				"Price" => 10 + $i + ($i / 100),
+				"Featured" => (round($i / 15) == $i / 15) ? 1 : 0,
+				"InternalItemID" => "AAA".$i
+			);
+		}
+		return $array;
+	}
+
+
+
 	private function AddVariations() {
 		$colourObject = DataObject::get_one("ProductAttributeType", "\"Name\" = 'Colour'");
 		if(!$colourObject) {
@@ -134,149 +288,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 				}
 			}
 		}
-	}
-
-	/**
-	 *
-	 *Children = child pages....
-	 **/
-
-	function Pages() {
-		return array(
-			array(
-				"URLSegment" => "home",
-				"Title" => "Sunny Side Up Silverstripe Demo",
-				"MenuTitle" => "Home",
-				"Content" => "<p>
-					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
-					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
-					Thank you <a href=\"http://www.silverstripe.org\"Silverstripe Community</a> for the foundation.
-				</p>
-				<p>
-					This demo is based on the <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> version of ecommerce and also includes a bunch of modules.  Together, they offer the following functionality:
-				</p>
-				<ul>
-					<li>all the e-commerce basics: add to cart, checkout, pay, receive confirmation</li>
-					<li>variations (e.g. for use in colour and size)</li>
-					<li>tax (per country)</li>
-					<li>delivery</li>
-					<li>discounts</li>
-					<li>product tags</li>
-					<li>donations (user sets the amount (s)he wants to pay)</li>
-				</ul>
-				<p>
-					If you like to get access to the back-end of the website then contact us to get a username and password.
-				</p>
-				",
-				"Children" => array(
-					array(
-						"URLSegment" => "tag-explanation",
-						"Title" => "Tag Explanations",
-						"MenuTitle" => "Tags",
-						"ShowInMenus" => false,
-						"ShowInSearch" => false,
-						"Content" => "<p>This page can explain the tags shown for various products. </p>",
-					)
-				)
-			),
-			array(
-				"ClassName" => "ProductGroup",
-				"URLSegment" => "ProductGroup",
-				"Title" => "Products",
-				"MenuTitle" => "Products",
-				"Content" => "<p>Please review our products below.</p>",
-				"Children" => $this->getProducts()
-			),
-			array(
-				"ClassName" => "CheckoutPage",
-				"URLSegment" => "checkout",
-				"Title" => "Checkout",
-				"MenuTitle" => "Checkout",
-				"Content" => "<p>For further information on our terms of trade, please visit .....</p>",
-				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
-				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
-				"FinalizedOrderLinkLabel" => "View completed order",
-				"CurrentOrderLinkLabel" => "View current order",
-				"StartNewOrderLinkLabel" => "Start new order",
-				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
-				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
-				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
-				"LoginToOrderLinkLabel" => "Log in now to checkout order",
-				"Children" => array(
-					array(
-						"ClassName" => "OrderConfirmationPage",
-						"URLSegment" => "confirmorder",
-						"Title" => "Order Confirmation",
-						"MenuTitle" => "Order Confirmation",
-						"ShowInMenus" => 0,
-						"ShowInSearch" => 0,
-						"Content" => "<p>Please review your order below.</p>"
-					),
-					array(
-						"ClassName" => "AccountPage",
-						"URLSegment" => "account page",
-						"Title" => "Account Page",
-						"MenuTitle" => "Account Page",
-						"ShowInMenus" => 0,
-						"ShowInSearch" => 0,
-						"Content" => "<p>Update your details below.</p>"
-					)
-				)
-			),
-			array(
-				"ClassName" => "CartPage",
-				"URLSegment" => "cart",
-				"Title" => "Cart",
-				"MenuTitle" => "Cart",
-				"ShowInMenus" => 0,
-				"ShowInSearch" => 0,
-				"Content" => "<p>Please review your order below.</p>"
-			),
-			array(
-				"ClassName" => "AnyPriceProductPage",
-				"URLSegment" => "donation",
-				"Title" => "Make a donation",
-				"MenuTitle" => "Donate",
-				"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
-				"Price" => 0,
-				"Featured" => 0,
-				"InternalItemID" => "DONATE"
-			),
-			array(
-				"ClassName" => "Page",
-				"URLSegment" => "contact-us",
-				"Title" => "Contact Us",
-				"MenuTitle" => "Contact Us",
-				"ShowInMenus" => 1,
-				"ShowInSearch" => 1,
-				"Content" => "<p>Email us: ecommerce[at]sunnysideup[dot]co[dot]nz</p>"
-			),
-			array(
-				"ClassName" => "TypographyTestPage",
-				"URLSegment" => "typo",
-				"Title" => "Typography Test page",
-				"MenuTitle" => "Typo Page",
-				"ShowInMenus" => 0,
-				"ShowInSearch" => 0,
-			)
-		);
-	}
-
-	private function getProducts() {
-		$array = array();
-		for($i = 1; $i < 20; $i++) {
-			$array[$i] = array(
-				"ClassName" => "Product",
-				"URLSegment" => "product$i",
-				"Title" => "Product $i",
-				"MenuTitle" => "Product $i",
-				"Content" => "<p>Description for Product $i ...</p>",
-				"Price" => 10 + $i + ($i / 100),
-				"Featured" => (round($i / 15) == $i / 15) ? 1 : 0,
-				"InternalItemID" => "AAA".$i
-			);
-		}
-		return $array;
 	}
 
 
