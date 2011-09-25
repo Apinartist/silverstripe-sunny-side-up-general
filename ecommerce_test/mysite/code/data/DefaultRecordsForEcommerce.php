@@ -53,7 +53,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
 					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
 					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
-					A big thank you also for all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
+					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
 				</p>
 				<p>
 					This demo is based on the <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> version of ecommerce and also includes a bunch of modules.  Functionality includes:
