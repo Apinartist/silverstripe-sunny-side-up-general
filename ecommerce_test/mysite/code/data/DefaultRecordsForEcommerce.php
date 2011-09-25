@@ -47,7 +47,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		return array(
 			array(
 				"URLSegment" => "home",
-				"Title" => "Sunny Side Up Silverstripe Demo",
+				"Title" => "Sunny Side Up Silverstripe Ecommerce Demo",
 				"MenuTitle" => "Home",
 				"Content" => "<p>
 					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
