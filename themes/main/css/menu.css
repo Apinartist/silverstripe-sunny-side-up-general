@@ -4,6 +4,7 @@
 		#Nav li a {font-size: 1.9em;color: #fff; text-decoration: none;}
 			#Nav li a:hover, #Nav li.current a, #Nav li.section a {color: #FFCC33;}
 				#Nav li.current li.link a, #Nav li.section  li.link  a {color: #808383;}
+				#Nav li.current li.link a:hover, #Nav li.section  li.link  a:hover {color: #000;}
 	#Nav ul {bottom: 3.7em; background-color: #B5AB8B;border-top: 1px solid: #fff; width: auto; display: none;}
 		#Nav ul li {padding: 0.53em 1.3em; float: right; }
 			#Nav ul li.first {}
