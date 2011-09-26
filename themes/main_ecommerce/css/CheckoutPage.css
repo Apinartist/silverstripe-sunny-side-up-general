@@ -6,3 +6,6 @@
 
 
 .loadingCartData #InformationTable, .loadingCartData #Amount {color: #e7e7e7!important;}
+
+#MethodFields_PayPalPayment {margin-left: 270px}
+#MethodFields_PayPalPayment img {display: inline-block; float: none; margin-left: 0px; margin-right: 10px}
