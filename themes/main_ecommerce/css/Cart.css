@@ -16,9 +16,9 @@ even when theme-ing ecommerce, these should not be themed
 .removeOneLink {float: left; padding-right: 5px;}
 
 
-#Sidebar {float: right; width: 200px; padding:12px; border: 1px dotted grey; background-color: #B5AB8B; border-radius: 5px; font-size: 77%; }
+#Sidebar {position: fixed; top: 10px; right: 10px; width: 200px; padding:12px; border: 1px dotted grey; background-color: #B5AB8B; border-radius: 5px; font-size: 77%; }
 #Sidebar table {width: 100%;}
-#Sidebar th, #Sidebar td {font-size: 14px; padding: 2px;}
+#Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
 #Sidebar td.quantity .ecomquantityfield {white-space: nowrap;}
 #Sidebar td.quantity img {margin: 0px;}
 #Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
