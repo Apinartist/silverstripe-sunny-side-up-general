@@ -21,6 +21,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->addStock();
 
+		$this->addSpecialPrice();
 
 	}
 
@@ -178,7 +179,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	private function getProducts() {
 		$array = array();
-		for($i = 1; $i < 20; $i++) {
+		for($i = 1; $i < 50; $i++) {
 			$array[$i] = array(
 				"ClassName" => "Product",
 				"URLSegment" => "product$i",
@@ -371,9 +372,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 	}
 
-	function addMinimumPurchase(){
-
-	}
 
 	function addStock(){
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "6");
@@ -385,30 +383,96 @@ class DefaultRecordsForEcommerce extends DataObject {
 			if($i > 0 && $i < 3) {
 				$product->MinQuantity = 12;
 				$this->addToTitle($product, "minimum per order of 12", true);
+				DB::alteration_message("adding minimum quantity for: ".$product->Title, "created");
 			}
 			if($i > 2 && $i < 5) {
 				$product->MaxQuantity = 12;
 				$this->addToTitle($product, "maximum per order of 12", true);
+				DB::alteration_message("adding maximum quantity for: ".$product->Title, "created");
 			}
 			if($i > 4 && $i < 7) {
 				$product->setActualQuantity(1);
 				$product->UnlimitedStock = 0;
 				$this->addToTitle($product, "limited stock", true);
+				DB::alteration_message("adding limited stock for: ".$product->Title, "created");
 			}
 		}
-		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation' AND ProductID NOT IN(".implode(",",$idArray).")", "RAND()", "", "10");
+		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation' AND ProductID NOT IN(".implode(",",$idArray).")", "RAND()", "", "50");
+		$i = 0;
 		foreach($variations as $variation) {
 			if(!in_array($variation->ProductID, $idArray)  && count($idArray) < 9)  {
-				$variation->setActualQuantity(1);
-				$variation->Description = " - limited stock!";
-				$variation->UnlimitedStock = 0;
-				$variation->write();
-				$variation->writeToStage("Stage");
-				$this->addToTitle($variation->Product(), "limited variation stock", true);
 				$idArray[$variation->ProductID] = $variation->ProductID;
+				$i++;
+				if($i > 0 && $i < 3) {
+					$variation->MaxQuantity = 12;
+					$variation->Description = " - min quantity per order 12!";
+					$variation->write();
+					$variation->writeToStage("Stage");
+					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
+
+				}
+				if($i > 2 && $i < 5) {
+					$variation->MaxQuantity = 12;
+					$variation->Description = " - max quantity per order 12!";
+					$variation->write();
+					$variation->writeToStage("Stage");
+					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
+				}
+				if($i > 4 && $i < 7) {
+					$variation->setActualQuantity(1);
+					$variation->Description = " - limited stock!";
+					$variation->UnlimitedStock = 0;
+					$variation->write();
+					$variation->writeToStage("Stage");
+					$this->addToTitle($variation->Product(), "limited variation stock", true);
+					$idArray[$variation->ProductID] = $variation->ProductID;
+					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
+				}
 			}
 		}
 	}
+
+
+	function addSpecialPrice(){
+		$group = new Group();
+		$group->Title = "Discount Customers";
+		$group->Code = "discountcustomers";
+		$group->write();
+		$member = new Member();
+		$member->FirstName = 'Bob';
+		$member->Surname = 'Jones';
+		$member->Email = 'bob@jones.com';
+		$member->Password = 'test123';
+		$member->write();
+		$member->Groups()->add($group);
+		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		foreach($products as $product) {
+			$complexObjectPrice = new ComplexPriceObject();
+			$complexObjectPrice->Price = $product->Price - 1.5;
+			$complexObjectPrice->From = date("Y-m-d h:n:s", strtotime("now"));
+			$complexObjectPrice->Until = date("Y-m-d h:n:s", strtotime("next year"));
+			$complexObjectPrice->ProductID = $product->ID;
+			$complexObjectPrice->write();
+			$complexObjectPrice->Groups()->add($group);
+			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price. You can then <a href=\"Security/logout/?BackURL=".$product->Link()."\"log out again to see the original price.</p>";
+			$this->addToTitle($product, "member price", true);
+		}
+		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "2");
+		foreach($variations as $variation) {
+			$complexObjectPrice = new ComplexPriceObject();
+			$complexObjectPrice->Price = $variation->Price - 1.5;
+			$complexObjectPrice->From = date("Y-m-d h:n:s", strtotime("now"));
+			$complexObjectPrice->Until = date("Y-m-d h:n:s", strtotime("next year"));
+			$complexObjectPrice->ProductVariationID = $variation->ID;
+			$complexObjectPrice->write();
+			$complexObjectPrice->Groups()->add($group);
+			$product = $variation->Product();
+			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price</p>";
+			$this->addToTitle($product, "member price", true);
+		}
+
+	}
+
 
 	//====================================== ASSISTING FUNCTIONS =========================
 

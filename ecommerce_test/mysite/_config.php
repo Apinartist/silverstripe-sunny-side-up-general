@@ -293,3 +293,11 @@ ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockOrderEntry");
 Object::add_extension("Product", "AddToCartPageDecorator");
 Object::add_extension("ProductGroup", "AddToCartPageDecorator");
 //===================---------------- END ecommerce_quick_add MODULE ----------------===================
+
+
+//===================---------------- START ecommerce_group_pricing MODULE ----------------===================
+//MUST SET - WHERE APPLICABLE
+DataObject::add_extension("Product", "ComplexPriceBuyableDecorator");
+DataObject::add_extension("ProductVariation", "ComplexPriceBuyableDecorator");
+DataObject::add_extension("ComplexPriceObject", "ComplexPriceBuyableDecorator_ComplexPriceObject");
+//===================---------------- END ecommerce_group_pricing MODULE ----------------===================
