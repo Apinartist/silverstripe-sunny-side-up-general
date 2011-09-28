@@ -68,10 +68,14 @@ class DefaultRecordsForEcommerce extends DataObject {
 					<li>product tags</li>
 					<li>quick add pages</li>
 					<li>donations (user sets the amount (s)he wants to pay)</li>
+					<li>member group discounts</li>
 				</ul>
 				<p>This website is updated around once a month.</p>
 				<p>
 					If you like to get access to the back-end of the website or you have some feedback then contact us.
+				</p>
+				<p>
+					We are also available for paid support (please contact us).
 				</p>
 				",
 				"Children" => array(
@@ -87,11 +91,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 			),
 			array(
 				"ClassName" => "ProductGroup",
-				"URLSegment" => "ProductGroup",
-				"Title" => "Products",
-				"MenuTitle" => "Products",
+				"URLSegment" => "shop",
+				"Title" => "Shop",
+				"MenuTitle" => "Shop",
 				"Content" => "<p>Please review our products below.</p>",
-				"Children" => $this->getProducts()
+				"Children" => $this->getProductGroups()
 			),
 			array(
 				"ClassName" => "CheckoutPage",
@@ -177,9 +181,25 @@ class DefaultRecordsForEcommerce extends DataObject {
 		);
 	}
 
-	private function getProducts() {
+	private function getProductGroups() {
 		$array = array();
-		for($i = 1; $i < 50; $i++) {
+		for($j = 1; $j < 6; $j++) {
+			$array[$j] = array(
+				"ClassName" => "ProductGroup",
+				"URLSegment" => "product-group-$j",
+				"Title" => "Product Group $j",
+				"MenuTitle" => "Product group $j",
+				"Content" => "<p>Please review our products below.</p>",
+				"Children" => $this->getProducts($j)
+			);
+		}
+		return $array;
+	}
+
+	private function getProducts($j) {
+		$startingPoint = $j * 12;
+		$endPoint = $startingPoint + rand(3, 30);
+		for($i = $startingPoint; $i < $endPoint; $i++) {
 			$array[$i] = array(
 				"ClassName" => "Product",
 				"URLSegment" => "product$i",
