@@ -149,7 +149,18 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"MenuTitle" => "Quick Add",
 				"ShowInMenus" => 1,
 				"ShowInSearch" => 1,
-				"Content" => "<p>Choose your products below and continue through to the checkout...</p>"
+				"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+				"Children" => array(
+					array(
+						"ClassName" => "AddUpProductsToOrderPage",
+						"URLSegment" => "add-up-order",
+						"Title" => "Add Up Order",
+						"MenuTitle" => "Add Up Order",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+					)
+				)
 			),
 			array(
 				"ClassName" => "AnyPriceProductPage",

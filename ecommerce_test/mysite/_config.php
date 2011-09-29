@@ -58,7 +58,7 @@ PageComment::enableModeration();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample", "GSTTaxModifier"));
+Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample", "GSTTaxModifier", "OrderMarker"));
 
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
