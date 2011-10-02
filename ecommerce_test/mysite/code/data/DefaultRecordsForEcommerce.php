@@ -173,11 +173,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Content" => "
 					<p>
 						This website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for e-commerce evaluation purposes.
-						If you would like help in building an e-commerce website using the Silverstripe CMS then we can help.
+						If you would like help in building an e-commerce website using the Silverstripe CMS then do not hesitate to contact us.
 						We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
-						In many cases, we have provided the back-bone (PHP) for sites, while our clients take care of the front-end (HTML / CSS / JS) work.
+						In many cases, we have provide the back-bone (PHP) for sites, while our clients take care of the front-end (HTML / CSS / JS).
+						For a basic e-commerce site (PHP ONLY), you can expect around <a href=\"http://www.xe.com/ucc/convert/?Amount=1200&From=NZD&To=EUR\">NZD1200</a>.
+						More complex sites will require an investment of several times this amount.
 					</p>
-					<p>You can contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz.</p>
+					<p>Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.</p>
 				"
 			),
 			array(
