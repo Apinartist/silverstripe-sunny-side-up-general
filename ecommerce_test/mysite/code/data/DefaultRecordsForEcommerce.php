@@ -165,9 +165,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 			),
 			array(
 				"ClassName" => "Page",
-				"URLSegment" => "contact-us",
-				"Title" => "Contact Us",
-				"MenuTitle" => "Contact Us",
+				"URLSegment" => "help",
+				"Title" => "HELP!",
+				"MenuTitle" => "HELP!",
 				"ShowInMenus" => 1,
 				"ShowInSearch" => 1,
 				"Content" => "
