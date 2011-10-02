@@ -2,6 +2,8 @@
 
 class DefaultRecordsForEcommerce extends DataObject {
 
+	protected $examplePages = null;
+
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 
@@ -23,10 +25,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->addSpecialPrice();
 
+		$this->collateExamplePages();
+
 	}
 
 	function checkreset(){
-		if(DataObject::get("Product")) {
+		if(DataObject::get_one("Product")) {
+			echo "<script type=\"text/javascript\">window.location = \"/build-ecommerce/reset/?flush=1\";</script>";
 			die("data has not been reset yet... <a href=\"/build-ecommerce/reset/\">reset data now....</a>");
 		}
 	}
@@ -57,25 +62,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
 				</p>
 				<p>
-					This demo is based on the <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> version of ecommerce and also includes a bunch of modules.  Functionality includes:
-				</p>
-				<ul>
-					<li>all the e-commerce basics: add to cart, checkout, pay, receive confirmation</li>
-					<li>variations (for use in for example product colour and size)</li>
-					<li>tax (per country)</li>
-					<li>delivery</li>
-					<li>discounts</li>
-					<li>product tags</li>
-					<li>quick add pages</li>
-					<li>donations (user sets the amount (s)he wants to pay)</li>
-					<li>member group discounts</li>
-				</ul>
-				<p>This website is updated around once a month.</p>
-				<p>
-					If you like to get access to the back-end of the website or you have some feedback then contact us.
+					If you like to get access to the back-end of the website or you have some feedback then please contact us.
+					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for paid support.
+					We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
 				</p>
 				<p>
-					We are also available for paid support (please contact us).
+					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
 				</p>
 				",
 				"Children" => array(
@@ -287,8 +279,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 		else {
 			die("COULD NOT CREATE SIZE OBJECT");
 		}
-
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		$this->addExamplePages("products with variations (size, colour, etc...)", $products);
 		if($products && $colourObject && $sizeObject) {
 			$variationCombos = array(
 				array("Size" => $xtraLargeObject, "Colour" => $redObject),
@@ -327,6 +319,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 
 	private function AddMyModifiers() {
+		$this->addExamplePages("Delivery charges", DataObject::get_one("CheckoutPage"));
 		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'pickup'")) {
 			$obj = new PickUpOrDeliveryModifierOptions();
 			$obj->IsDefault = 1;
@@ -362,6 +355,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	function createTags(){
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		$this->addExamplePages("Product Tags", $products);
 		foreach($products as $product){
 			$idArray[] = $product->ID;
 			$titleArray[] = $product->MenuTitle;
@@ -388,6 +382,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	function createRecommendedProducts(){
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		$this->addExamplePages("Products with recommended <i>additions</i>.", $products);
 		foreach($products as $product){
 			$idArrayProducts[] = $product->ID;
 			$this->addToTitle($product, "with recommendations", true);
@@ -405,66 +400,70 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 
 	function addStock(){
-		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "6");
+		$extension = "";
+		if(Versioned::current_stage() == "Live") {
+			$extension = "_Live";
+		}
+		$products = DataObject::get("Product", "SiteTree{$extension}.ClassName = 'Product' AND ProductVariation.ID IS NULL", "RAND()", "LEFT JOIN ProductVariation ON ProductVariation.ProductID = Product{$extension}.ID", "3");
 		$i = 0;
 		$idArray = array();
 		foreach($products as $product) {
 			$i++;
 			$idArray[$product->ID] = $product->ID;
-			if($i > 0 && $i < 3) {
+			if($i == 1) {
+				$this->addExamplePages("Minimum quantity per order", $product);
 				$product->MinQuantity = 12;
 				$this->addToTitle($product, "minimum per order of 12", true);
 				DB::alteration_message("adding minimum quantity for: ".$product->Title, "created");
 			}
-			if($i > 2 && $i < 5) {
+			if($i == 2) {
+				$this->addExamplePages("Maxiumum quantity per order", $product);
 				$product->MaxQuantity = 12;
 				$this->addToTitle($product, "maximum per order of 12", true);
 				DB::alteration_message("adding maximum quantity for: ".$product->Title, "created");
 			}
-			if($i > 4 && $i < 7) {
+			if($i == 3) {
+				$this->addExamplePages("Limited stock product", $product);
 				$product->setActualQuantity(1);
 				$product->UnlimitedStock = 0;
 				$this->addToTitle($product, "limited stock", true);
 				DB::alteration_message("adding limited stock for: ".$product->Title, "created");
 			}
 		}
-		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation' AND ProductID NOT IN(".implode(",",$idArray).")", "RAND()", "", "50");
+		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "3");
 		$i = 0;
 		foreach($variations as $variation) {
-			if(!in_array($variation->ProductID, $idArray)  && count($idArray) < 9)  {
-				$idArray[$variation->ProductID] = $variation->ProductID;
-				$i++;
-				if($i > 0 && $i < 3) {
-					$variation->MaxQuantity = 12;
-					$variation->Description = " - min quantity per order 12!";
-					$variation->write();
-					$variation->writeToStage("Stage");
-					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
-
-				}
-				if($i > 2 && $i < 5) {
-					$variation->MaxQuantity = 12;
-					$variation->Description = " - max quantity per order 12!";
-					$variation->write();
-					$variation->writeToStage("Stage");
-					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
-				}
-				if($i > 4 && $i < 7) {
-					$variation->setActualQuantity(1);
-					$variation->Description = " - limited stock!";
-					$variation->UnlimitedStock = 0;
-					$variation->write();
-					$variation->writeToStage("Stage");
-					$this->addToTitle($variation->Product(), "limited variation stock", true);
-					$idArray[$variation->ProductID] = $variation->ProductID;
-					DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
-				}
+			$i++;
+			if($i == 1) {
+				$variation->MaxQuantity = 12;
+				$variation->Description = " - min quantity per order 12!";
+				$variation->write();
+				$variation->writeToStage("Stage");
+				$this->addExamplePages("Minimum quantity product variation (colour / size / etc... option)", $variation->Product());
+				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
+			}
+			if($i == 2) {
+				$variation->MaxQuantity = 12;
+				$variation->Description = " - max quantity per order 12!";
+				$variation->write();
+				$variation->writeToStage("Stage");
+				$this->addExamplePages("Maximum quantity product variation (colour / size / etc... option)", $variation->Product());
+				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
+			}
+			if($i == 3) {
+				$variation->setActualQuantity(1);
+				$variation->Description = " - limited stock!";
+				$variation->UnlimitedStock = 0;
+				$variation->write();
+				$variation->writeToStage("Stage");
+				$this->addExamplePages("Limited stockproduct variation (colour / size / etc... option)", $variation->Product());
+				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
 			}
 		}
 	}
 
 
-	function addSpecialPrice(){
+	protected function addSpecialPrice(){
 		$group = new Group();
 		$group->Title = "Discount Customers";
 		$group->Code = "discountcustomers";
@@ -477,20 +476,48 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$member->write();
 		$member->Groups()->add($group);
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		$this->addExamplePages("Special price for particular customers", $products);
+		$i = 0;
 		foreach($products as $product) {
+			$i++;
 			$complexObjectPrice = new ComplexPriceObject();
-			$complexObjectPrice->Price = $product->Price - 1.5;
+			if($i == 1) {
+				$complexObjectPrice->Price = $product->Price - 1.5;
+			}
+			elseif($i == 2) {
+				$complexObjectPrice->Percentage = 10;
+				$complexObjectPrice->Reduction = 2.5;
+			}
+			else {
+				$complexObjectPrice->Price = $product->Price - 1.5;
+				$complexObjectPrice->Percentage = 10;
+				$complexObjectPrice->Reduction = 2.5;
+			}
 			$complexObjectPrice->From = date("Y-m-d h:n:s", strtotime("now"));
 			$complexObjectPrice->Until = date("Y-m-d h:n:s", strtotime("next year"));
 			$complexObjectPrice->ProductID = $product->ID;
 			$complexObjectPrice->write();
 			$complexObjectPrice->Groups()->add($group);
-			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price. You can then <a href=\"Security/logout/?BackURL=".$product->Link()."\"log out again to see the original price.</p>";
+			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price. You can then <a href=\"Security/logout/?BackURL=".$product->Link()."\">log out</a> again to see the original price.</p>";
 			$this->addToTitle($product, "member price", true);
 		}
 		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "2");
+		$i = 0;
 		foreach($variations as $variation) {
+			$i++;
 			$complexObjectPrice = new ComplexPriceObject();
+			if($i == 1) {
+				$complexObjectPrice->Price = $product->Price - 1.5;
+			}
+			elseif($i == 2) {
+				$complexObjectPrice->Percentage = 10;
+				$complexObjectPrice->Reduction = 2.5;
+			}
+			else {
+				$complexObjectPrice->Price = $product->Price - 1.5;
+				$complexObjectPrice->Percentage = 10;
+				$complexObjectPrice->Reduction = 2.5;
+			}
 			$complexObjectPrice->Price = $variation->Price - 1.5;
 			$complexObjectPrice->From = date("Y-m-d h:n:s", strtotime("now"));
 			$complexObjectPrice->Until = date("Y-m-d h:n:s", strtotime("next year"));
@@ -498,10 +525,36 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$complexObjectPrice->write();
 			$complexObjectPrice->Groups()->add($group);
 			$product = $variation->Product();
+			$this->addExamplePages("Special price for particular customers for product variations", $product);
 			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price</p>";
 			$this->addToTitle($product, "member price", true);
 		}
 
+	}
+
+	protected function collateExamplePages(){
+		$this->addExamplePages("Donation page", DataObject::get_one("AnyPriceProductPage"));
+		$this->addExamplePages("Quick Add Page", DataObject::get_one("AddToCartPage"));
+		$this->addExamplePages("Corporate Account Order Page", DataObject::get_one("AddUpProductsToOrderPage"));
+		$html = '<h2>List of features on show on this demo site</h2><ul>';
+		foreach($this->examplePages as $examplePages) {
+			$html .= '<li><span class="exampleTitle">'.$examplePages->Title.'</span>';
+			if($examplePages->Pages) {
+				$html .= '<ul>';
+				foreach($examplePages->Pages as $page) {
+					$html .= '<li><a href="'.$page->Link().'">'.$page->Title.'</a></li>';
+				}
+				$html .= '</ul>';
+			}
+			$html .= '</li>';
+		}
+		$html .= '</ul>';
+		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
+		$homePage->Content .= $html;
+		$homePage->writeToStage('Stage');
+		$homePage->Publish('Stage', 'Live');
+		$homePage->Status = "Published";
+		$homePage->flushCache();
 	}
 
 
@@ -581,6 +634,16 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$page->Status = "Published";
 			$page->flushCache();
 		}
+	}
+
+	private function addExamplePages($name, $pages) {
+		if(!($pages instanceof DataObjectSet)) {
+			$pages = new DataObjectSet(array($pages));
+		}
+		if(!$this->examplePages) {
+			$this->examplePages = new DataObjectSet();
+		}
+		$this->examplePages->push(new ArrayData(array("Title" => $name, "Pages" => $pages)));
 	}
 
 }

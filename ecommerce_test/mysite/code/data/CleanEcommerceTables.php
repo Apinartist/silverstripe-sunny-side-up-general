@@ -179,7 +179,9 @@ class CleanEcommerceTables extends Controller {
 			DB::query("TRUNCATE TABLE \"".$row[0]."\";");
 			DB::alteration_message("deleting ".$row[0], "deleted");
 		}
-		echo "<hr /><hr /><hr /><hr /><hr /><a href=\"/dev/build\">build database</a>";
+		echo "<hr /><hr /><hr /><hr /><hr /><a href=\"/dev/build\">build database</a>
+		<script type=\"text/javascript\">window.location = \"/dev/build/?flush=1\";</script>"
+		;
 	}
 
 
