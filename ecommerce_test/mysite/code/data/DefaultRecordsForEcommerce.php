@@ -625,7 +625,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->addExamplePages("Corporate Account Order Page", DataObject::get_one("AddUpProductsToOrderPage"));
 		$this->addExamplePages("Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
 		$this->addExamplePages("Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
-		$html = '<h2>List of examples shown on this demo site</h2><ul>';
+		$html = '<h2>examples shown on this demo site</h2><ul>';
 		foreach($this->examplePages as $examplePages) {
 			$html .= '<li><span class="exampleTitle">'.$examplePages["Title"].'</span>'.$examplePages["List"].'</li>';
 		}
