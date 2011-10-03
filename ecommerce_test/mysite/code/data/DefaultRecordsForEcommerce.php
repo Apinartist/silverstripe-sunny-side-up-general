@@ -267,7 +267,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$endPoint = rand(3, 15);
 		for($j = 0; $j < $endPoint; $j++) {
 			$i = rand(1, 500);
-			$price = ($i % 12) ? $i + ($i / 100) : 0;
+			$price = $i < 475 ? $i + ($i / 100) : 0;
 			$weight = ($i % 3) ? 0 : 1.234;
 			$model = ($i % 4) ? "" : "model $i";
 			$quantifier = ($i % 5) ? "" : "per month";
@@ -658,7 +658,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			<li>ecommerce_digitalproducts</li>
 			<li>ecommerce_dimensions</li>
 			<li>ecommerce_discount_coupon</li>
-			<li>ecommerce_googleanaltyics</li>
+			<li>ecommerce_googleanalytics</li>
 			<li>ecommerce_modifier_example</li>
 			<li>ecommerce_modifiers</li>
 			<li>ecommerce_multicurrency</li>
