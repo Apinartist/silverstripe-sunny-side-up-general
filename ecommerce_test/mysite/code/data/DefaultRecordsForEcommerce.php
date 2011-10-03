@@ -180,9 +180,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 			),
 			array(
 				"ClassName" => "Page",
-				"URLSegment" => "help",
-				"Title" => "HELP!",
-				"MenuTitle" => "HELP!",
+				"URLSegment" => "about-us",
+				"Title" => "about us",
+				"MenuTitle" => "about us",
 				"ShowInMenus" => 1,
 				"ShowInSearch" => 1,
 				"Content" => "
@@ -190,10 +190,22 @@ class DefaultRecordsForEcommerce extends DataObject {
 						This website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for e-commerce evaluation purposes.
 						If you would like help in building an e-commerce website using the Silverstripe CMS then do not hesitate to contact us.
 						We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
-						In many cases, we have provide the back-bone (PHP) for sites, while our clients take care of the front-end (HTML / CSS / JS).
-						For a basic e-commerce site (PHP ONLY), you can expect around <a href=\"http://www.xe.com/ucc/convert/?Amount=1200&From=NZD&To=EUR\">NZD1200</a>.
-						More complex sites will require an investment of several times this amount.
+						In many cases, we have provided the back-bone (PHP) for sites, with our clients taking care of the front-end (HTML / CSS / JS).
+						Here are our charges for e-commerce websites:
 					</p>
+					<ul>
+						<li>install only: <a href=\"http://www.xe.com/ucc/convert/?Amount=700&From=NZD&To=EUR\">NZD700</a>.</li>
+						<li>small-size site, PHP + Javascript only: <a href=\"http://www.xe.com/ucc/convert/?Amount=1200&From=NZD&To=EUR\">NZD1200</a>.</li>
+						<li>small-size site, PHP + Javascript + CSS: <a href=\"http://www.xe.com/ucc/convert/?Amount=2400&From=NZD&To=EUR\">NZD2400</a>.</li>
+						<li>small-size site, PHP + Javascript + CSS + Design: <a href=\"http://www.xe.com/ucc/convert/?Amount=4800&From=NZD&To=EUR\">NZD4800</a>.</li>
+						<li>medium-size site, PHP + Javascript only: <a href=\"http://www.xe.com/ucc/convert/?Amount=3600&From=NZD&To=EUR\">NZD3600</a>.</li>
+						<li>medium-size site, PHP + Javascript + CSS: <a href=\"http://www.xe.com/ucc/convert/?Amount=7200&From=NZD&To=EUR\">NZD7200</a>.</li>
+						<li>medium-size site, PHP + Javascript + CSS + Design: <a href=\"http://www.xe.com/ucc/convert/?Amount=10800&From=NZD&To=EUR\">NZD10800</a>.</li>
+						<li>large-size site, PHP + Javascript only: <a href=\"http://www.xe.com/ucc/convert/?Amount=10800&From=NZD&To=EUR\">NZD10800</a>.</li>
+						<li>large-size site, PHP + Javascript + CSS: <a href=\"http://www.xe.com/ucc/convert/?Amount=21600&From=NZD&To=EUR\">NZD21600</a>.</li>
+						<li>large-size site, PHP + Javascript + CSS + Design: <a href=\"http://www.xe.com/ucc/convert/?Amount=43200&From=NZD&To=EUR\">NZD43200</a>.</li>
+
+					</ul>
 					<p>
 						Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.
 					</p>
