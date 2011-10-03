@@ -64,11 +64,11 @@
 .typography q {}
 
 /* links */
-.typography a{color: #333;  border-bottom: 1px dotted transparent;}
-	.typography a:link{text-decoration: none; }
+.typography a{ border-bottom: 1px dotted transparent;  color: #808383; }
+	.typography a:link{text-decoration: underline;}
 	.typography a:visited{text-decoration: none; }
 	.typography a:focus {outline: none;}
-	.typography a:hover{border-bottom: 1px dotted #FFCC33; color: #317010}
+	.typography a:hover{border-bottom: 1px dotted #FFCC33; text-decoration: none;}
 	.typography a:active{color: red;}
 	.typography a.externalLink{ background:transparent url(/themes/main/images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
 
