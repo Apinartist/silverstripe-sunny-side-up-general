@@ -73,47 +73,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
 				</p>
-				<p>Modules included are:</p>
-				<ul>
-					<li>ecommerce_alsorecommended</li>
-					<li>ecommerce_alternativeproductgroup</li>
-					<li>ecommerce_anypriceproduct</li>
-					<li>ecommerce_brandbrowsing</li>
-					<li>ecommerce_complex_pricing</li>
-					<li>ecommerce_corporate_account</li>
-					<li>ecommerce_coupon</li>
-					<li>ecommerce_custom_order_number</li>
-					<li>ecommerce_delivery</li>
-					<li>ecommerce_digitalproducts</li>
-					<li>ecommerce_dimensions</li>
-					<li>ecommerce_discount_coupon</li>
-					<li>ecommerce_googleanaltyics</li>
-					<li>ecommerce_modifier_example</li>
-					<li>ecommerce_modifiers</li>
-					<li>ecommerce_multicurrency</li>
-					<li>ecommerce_nl_connectivity</li>
-					<li>ecommerce_nz_connectivity</li>
-					<li>ecommerce_product_tags</li>
-					<li>ecommerce_product_variation</li>
-					<li>ecommerce_quick_add</li>
-					<li>ecommerce_repeatorders</li>
-					<li>ecommerce_reports</li>
-					<li>ecommerce_shipping_fastwaynz</li>
-					<li>ecommerce_statistics</li>
-					<li>ecommerce_stockcontrol</li>
-					<li>ecommerce_tax</li>
-					<li>ecommerce_vote</li>
-					<li>payment_directcredit</li>
-					<li>payment_dps</li>
-					<li>payment_epaydk</li>
-					<li>payment_instore</li>
-					<li>payment_ogone</li>
-					<li>payment_paymate</li>
-					<li>payment_paymentexpress</li>
-					<li>payment_paypal</li>
-					<li>payment_paystation_hosted</li>
-					<li>payment_securatech</li>
-				</ul>
 				",
 				"Children" => array(
 					array(
@@ -673,6 +632,47 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$html .= '</ul>
 		<p>At any time you can <a href="/shoppingcart/clear/">reset the shopping cart</a> to start a new order.</p>
 		<p>Also, do not hesitate to review <a href="http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite/_config.php">the settings for this project</a> - as shown in the mysite/_config.php file.</p>
+		<h2>Modules included are:</h2>
+		<ul>
+			<li>ecommerce_alsorecommended</li>
+			<li>ecommerce_alternativeproductgroup</li>
+			<li>ecommerce_anypriceproduct</li>
+			<li>ecommerce_brandbrowsing</li>
+			<li>ecommerce_complex_pricing</li>
+			<li>ecommerce_corporate_account</li>
+			<li>ecommerce_coupon</li>
+			<li>ecommerce_custom_order_number</li>
+			<li>ecommerce_delivery</li>
+			<li>ecommerce_digitalproducts</li>
+			<li>ecommerce_dimensions</li>
+			<li>ecommerce_discount_coupon</li>
+			<li>ecommerce_googleanaltyics</li>
+			<li>ecommerce_modifier_example</li>
+			<li>ecommerce_modifiers</li>
+			<li>ecommerce_multicurrency</li>
+			<li>ecommerce_nl_connectivity</li>
+			<li>ecommerce_nz_connectivity</li>
+			<li>ecommerce_product_tags</li>
+			<li>ecommerce_product_variation</li>
+			<li>ecommerce_quick_add</li>
+			<li>ecommerce_repeatorders</li>
+			<li>ecommerce_reports</li>
+			<li>ecommerce_shipping_fastwaynz</li>
+			<li>ecommerce_statistics</li>
+			<li>ecommerce_stockcontrol</li>
+			<li>ecommerce_tax</li>
+			<li>ecommerce_vote</li>
+			<li>payment_directcredit</li>
+			<li>payment_dps</li>
+			<li>payment_epaydk</li>
+			<li>payment_instore</li>
+			<li>payment_ogone</li>
+			<li>payment_paymate</li>
+			<li>payment_paymentexpress</li>
+			<li>payment_paypal</li>
+			<li>payment_paystation_hosted</li>
+			<li>payment_securatech</li>
+		</ul>
 		';
 		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
 		$homePage->Content .= $html;
