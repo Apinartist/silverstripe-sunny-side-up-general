@@ -111,12 +111,9 @@ OrderAddress::set_use_separate_shipping_address(true);
 //Product_Image::set_thumbnail_size(140, 100);
 //Product_Image::set_content_image_width(200);
 //Product_Image::set_large_image_width(200);
-//ProductGroup::set_include_child_groups(true);
-//ProductGroup::only_show_products_that_can_purchase(true);
-//ProductGroup::add_sort_option( $key = "price", $title = "Lowest Price", $sql = "Price ASC");
+ProductGroup::add_sort_option( $key = "popular", $title = "Most Popular", $sql = "\"NumberSold\" DESC");
+ProductGroup::add_sort_option( $key = "featured", $title = "Featured", $sql = "\"FeaturedProduct\" DESC, \"Title\" DESC");
 //ProductGroup::remove_sort_option( $key = "title");
-//ProductGroup::set_sort_options_default( $key = "price");
-//ProductGroup::set_only_show_products_that_can_purchase(true);
 
 // * * * EMAILS
 Email::setAdminEmail("cool@bool.com");

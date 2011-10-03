@@ -2,7 +2,7 @@
 
 class DefaultRecordsForEcommerce extends DataObject {
 
-	protected $examplePages = null;
+	protected $examplePages = array();
 
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
@@ -24,6 +24,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->addStock();
 
 		$this->addSpecialPrice();
+
+		$this->productsInManyGroups();
 
 		$this->collateExamplePages();
 
@@ -55,14 +57,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "home",
 				"Title" => "Sunny Side Up Silverstripe E-commerce Demo",
 				"MenuTitle" => "Home",
-				"Content" => "<p>
+				"Content" => "
+				<p>
 					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
-					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
+					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <br />
+					<a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
+				</p><p>
 					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
 					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
 				</p>
 				<p>
-					If you like to get access to the CMS or you have some feedback then please <a href=\"/help/\"contact us</a>.
+					If you like to get access to the CMS or you have some feedback then please <a href=\"/help/\">contact us</a>.
 					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for paid support.
 				</p>
 				<p>
@@ -93,7 +98,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "checkout",
 				"Title" => "Checkout",
 				"MenuTitle" => "Checkout",
-				"Content" => "<p>For further information on our terms of trade, please visit .....</p>",
+				"Content" => "<p>For further information on our terms of trade, please visit .... NOTE: a checkout page can also be broken down into several steps (pages) using a setting in the CMS.</p>",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
 				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
 				"FinalizedOrderLinkLabel" => "View completed order",
@@ -131,7 +136,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"MenuTitle" => "Cart",
 				"ShowInMenus" => 0,
 				"ShowInSearch" => 0,
-				"Content" => "<p>Please review your order below.</p>"
+				"Content" => "<p>Please review your order below. A Cart Page is like a checkout page but without the checkout form.</p>"
 			),
 			array(
 				"ClassName" => "AddToCartPage",
@@ -150,7 +155,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"ShowInMenus" => 1,
 						"ShowInSearch" => 1,
 						"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
-					)
+					),
+					array(
+						"ClassName" => "PriceListPage",
+						"URLSegment" => "price-list",
+						"Title" => "Price List",
+						"MenuTitle" => "Price List",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"NumberOfProductsPerPage" => 100,
+						"Content" => "<p>please review all our prices below...</p>"
+					),
 				)
 			),
 			array(
@@ -179,7 +194,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 						For a basic e-commerce site (PHP ONLY), you can expect around <a href=\"http://www.xe.com/ucc/convert/?Amount=1200&From=NZD&To=EUR\">NZD1200</a>.
 						More complex sites will require an investment of several times this amount.
 					</p>
-					<p>Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.</p>
+					<p>
+						Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.
+					</p>
 				"
 			),
 			array(
@@ -193,40 +210,86 @@ class DefaultRecordsForEcommerce extends DataObject {
 		);
 	}
 
-	private function getProductGroups() {
+	private function getProductGroups($numberOfGroups = 7) {
+		$numberOfGroups--;
 		$array = array();
-		for($j = 1; $j < 6; $j++) {
+		for($j = 1; $j < $numberOfGroups; $j++) {
+			$parentCode = $this->randomName();
+			if(($j == 1) && ($numberOfGroups > 3) ) {
+				$children1 = $this->getProductGroups($numberOfGroups);
+				$children2 = $this->getProductGroups($numberOfGroups);
+				$children = array_merge($children1, $children2);
+			}
+			else {
+				$children = $this->getProducts($parentCode);
+			}
+			$levelOfProductsToShow = rand(0, 5);
+			$defaultSortOrder = ($j % 2) ? "title" : "featured";
 			$array[$j] = array(
 				"ClassName" => "ProductGroup",
-				"URLSegment" => "product-group-$j",
-				"Title" => "Product Group $j",
-				"MenuTitle" => "Product group $j",
+				"URLSegment" => "product-group-".$parentCode,
+				"Title" => "Product Group ".$parentCode,
+				"MenuTitle" => "Product group ".$parentCode,
 				"Content" => "<p>Please review our products below.</p>",
-				"Children" => $this->getProducts($j)
+				"LevelOfProductsToShow" => $levelOfProductsToShow,
+				"NumberOfProductsPerPage" => $levelOfProductsToShow + 5,
+				"DefaultSortOrder" => $defaultSortOrder,
+				"Content" =>
+					'<p>
+						This product group page has the following characteristics:
+					</p>
+					<ul>
+						<li>level of products to show: '.$levelOfProductsToShow.'</li>
+						<li>number of products per page: '.($levelOfProductsToShow + 5).'</li>
+						<li>default sort order: '.$defaultSortOrder.'</li>
+					</ul>
+					',
+				"ProductsAlsoInOthersGroups" => "Boolean",
+				"Children" =>  $children,
 			);
 		}
 		return $array;
 	}
 
-	private function getProducts($j) {
-		$startingPoint = $j * 12;
-		$endPoint = $startingPoint + rand(3, 30);
-		for($i = $startingPoint; $i < $endPoint; $i++) {
+	private function getProducts($parentCode) {
+		$endPoint = rand(3, 15);
+		for($j = 0; $j < $endPoint; $j++) {
+			$i = rand(1, 500);
+			$price = ($i % 12) ? 0 : (10 + $i + ($i / 100));
+			$weight = ($i % 3) ? 0 : 1.234;
+			$model = ($i % 4) ? "" : "model $i";
+			$quantifier = ($i % 5) ? "" : "per month";
+			$featured = ($i % 5) ? 0 : 1;
+			$allowPurchase = ($i % 9) ? 1 : 0;
+			$numberSold = $i;
 			$array[$i] = array(
 				"ClassName" => "Product",
-				"URLSegment" => "product$i",
-				"Title" => "Product $i",
+				"URLSegment" => "product-$parentCode-$i",
+				"Title" => "Product $parentCode $i",
 				"MenuTitle" => "Product $i",
-				"Content" => "<p>Description for Product $i ...</p>",
-				"Price" => 10 + $i + ($i / 100),
-				"Featured" => (round($i / 15) == $i / 15) ? 1 : 0,
-				"InternalItemID" => "AAA".$i
+				"Content" => "<p>
+					Description for Product $i ... It has the following hidden characteristics:
+				<p>
+				<ul>
+					<li>Weight: ".$weight.";</li>
+					<li>Model: ".$model.";</li>
+					<li>Featured Product: ".$featured.";</li>
+					<li>Quantifier (e.g. per dozen): ".$quantifier.";</li>
+					<li>Purchase Allowed: ".$allowPurchase.";</li>
+					<li>Number Sold: ".$numberSold.";</li>
+				</ul>",
+				"Price" => $price,
+				"InternalItemID" => "AAA".$i,
+				'Weight' => $weight,
+				'Model' => $model,
+				'Quantifier' => $quantifier,
+				"FeaturedProduct" => $featured,
+				'AllowPurchase' => $allowPurchase ,
+				'NumberSold' => $numberSold
 			);
 		}
 		return $array;
 	}
-
-
 
 	private function AddVariations() {
 		$colourObject = DataObject::get_one("ProductAttributeType", "\"Name\" = 'Colour'");
@@ -413,7 +476,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		if(Versioned::current_stage() == "Live") {
 			$extension = "_Live";
 		}
-		$products = DataObject::get("Product", "SiteTree{$extension}.ClassName = 'Product' AND ProductVariation.ID IS NULL", "RAND()", "LEFT JOIN ProductVariation ON ProductVariation.ProductID = Product{$extension}.ID", "3");
+		$products = DataObject::get("Product", "SiteTree{$extension}.ClassName = 'Product' AND ProductVariation.ID IS NULL", "RAND()", "LEFT JOIN ProductVariation ON ProductVariation.ProductID = Product{$extension}.ID", "0, 3");
 		$i = 0;
 		$idArray = array();
 		foreach($products as $product) {
@@ -439,7 +502,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				DB::alteration_message("adding limited stock for: ".$product->Title, "created");
 			}
 		}
-		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "3");
+		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "0, 3");
 		$i = 0;
 		foreach($variations as $variation) {
 			$i++;
@@ -538,27 +601,37 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price</p>";
 			$this->addToTitle($product, "member price", true);
 		}
+	}
 
+	protected function productsInManyGroups(){
+		$products = DataObject::get("Product", "\"ClassName\" = 'Product'", "RAND()", null, 2);
+		$productGroups = DataObject::get("ProductGroup", "\"ClassName\" = 'ProductGroup'", "RAND()", null, 3);
+		foreach($products as $product) {
+			$groups = $product->ProductGroups();
+			foreach($productGroups as $productGroup) {
+				$groups->add($productGroup);
+			}
+			$this->addExamplePages("Product shown in more than one Product Group", $product);
+		}
 	}
 
 	protected function collateExamplePages(){
+		$this->addExamplePages("Checkout Page", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Order Confirmation Page", DataObject::get_one("OrderConfirmationPage"));
+		$this->addExamplePages("Cart Page (review cart without checkout)", DataObject::get_one("CartPage"));
+		$this->addExamplePages("Account Page", DataObject::get_one("AccountPage"));
 		$this->addExamplePages("Donation page", DataObject::get_one("AnyPriceProductPage"));
 		$this->addExamplePages("Quick Add Page", DataObject::get_one("AddToCartPage"));
 		$this->addExamplePages("Corporate Account Order Page", DataObject::get_one("AddUpProductsToOrderPage"));
-		$html = '<h2>List of features on show on this demo site</h2><ul>';
+		$this->addExamplePages("Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
+		$this->addExamplePages("Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
+		$html = '<h2>List of examples shown on this demo site</h2><ul>';
 		foreach($this->examplePages as $examplePages) {
-			$html .= '<li><span class="exampleTitle">'.$examplePages->Title.'</span>';
-			if($examplePages->Pages) {
-				$html .= '<ul>';
-				foreach($examplePages->Pages as $page) {
-					$html .= '<li><a href="'.$page->Link().'">'.$page->Title.'</a></li>';
-				}
-				$html .= '</ul>';
-			}
-			$html .= '</li>';
+			$html .= '<li><span class="exampleTitle">'.$examplePages["Title"].'</span>'.$examplePages["List"].'</li>';
 		}
 		$html .= '</ul>
 		<p>At any time you can <a href="/shoppingcart/clear/">reset the shopping cart</a> to start a new order.</p>
+		<p>Also, do not hesitate to review <a href="http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite/_config.php">the settings for this project</a> - as shown in the mysite/_config.php file.</p>
 		';
 		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
 		$homePage->Content .= $html;
@@ -574,9 +647,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 	private function MakePage($fields, $parentPage = null) {
 		$page = DataObject::get_one("SiteTree", "\"URLSegment\" = '".$fields["URLSegment"]."'");
 		if(!$page) {
-			$className = "Page";
 			if(isset($fields["ClassName"])) {
 				$className = $fields["ClassName"];
+			}
+			else {
+				$className = "Page";
 			}
 			$page = new $className();
 		}
@@ -648,13 +723,28 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	private function addExamplePages($name, $pages) {
-		if(!($pages instanceof DataObjectSet)) {
-			$pages = new DataObjectSet(array($pages));
+		$html = '<ul>';
+		if($pages instanceof DataObjectSet) {
+			foreach($pages as $page) {
+				$html .= '<li><a href="'.$page->Link().'">'.$page->Title.'</a></li>';
+			}
 		}
-		if(!$this->examplePages) {
-			$this->examplePages = new DataObjectSet();
+		elseif($pages instanceof SiteTree) {
+			$html .= '<li><a href="'.$pages->Link().'">'.$pages->Title.'</a></li>';
 		}
-		$this->examplePages->push(new ArrayData(array("Title" => $name, "Pages" => $pages)));
+		$html .= '</ul>';
+		$i = count($this->examplePages);
+		$this->examplePages[$i]["Title"] = $name;
+		$this->examplePages[$i]["List"] = $html;
+	}
+
+	private $fruitArray = array("Apple", "Crabapple", "Hawthorn", "Pear", "Apricot", "Peach", "Nectarines", "Plum", "Cherry", "Blackberry", "Raspberry", "Mulberry", "Strawberry", "Cranberry", "Blueberry", "Barberry", "Currant", "Gooseberry", "Elderberry", "Grapes", "Grapefruit", "Kiwi fruit", "Rhubarb", "Pawpaw", "Melon", "Watermelon", "Figs", "Dates", "Olive", "Jujube", "Pomegranate", "Lemon", "Lime", "Key Lime", "Mandarin", "Orange", "Sweet Lime", "Tangerine", "Avocado", "Guava", "Kumquat", "Lychee", "Passion Fruit", "Tomato", "Banana", "Gourd", "Cashew Fruit", "Cacao", "Coconut", "Custard Apple", "Jackfruit", "Mango", "Neem", "Okra", "Pineapple", "Vanilla", "Carrot");
+
+	private function randomName() {
+		return array_pop($this->fruitArray);
 	}
 
 }
+
+
+
