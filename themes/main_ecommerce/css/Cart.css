@@ -24,3 +24,24 @@ even when theme-ing ecommerce, these should not be themed
 #Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
 #Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside;}
 .itemdetails span {width: 100px;}
+
+ul.productActions {margin: 0px; padding: 0px;}
+ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0;}
+ul.productActions li a, .goToCart a {
+	display: -moz-inline-stack;
+	display: inline-block;
+	width: auto;
+	height: auto;
+	background-color: #82274B;
+	line-height: 43px;
+	vertical-align: text-bottom;
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-style: normal;
+	border-radius: 7px;
+	text-decoration: none!important;
+	padding:  0 10px;
+}
+
+ul.productActions li a:hover, .goToCart a:hover {background-color: #317010;}
