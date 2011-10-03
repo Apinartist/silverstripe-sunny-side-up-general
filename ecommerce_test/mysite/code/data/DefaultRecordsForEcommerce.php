@@ -191,7 +191,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						If you would like help in building an e-commerce website using the Silverstripe CMS then do not hesitate to contact us.
 						We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
 						In many cases, we have provided the back-bone (PHP) for sites, with our clients taking care of the front-end (HTML / CSS / JS).
-						Here are our charges for e-commerce websites:
+						Here are our estimated charges for e-commerce websites:
 					</p>
 					<ul>
 						<li>install only: <a href=\"http://www.xe.com/ucc/convert/?Amount=700&From=NZD&To=EUR\">NZD700</a>.</li>
