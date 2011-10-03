@@ -259,8 +259,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$weight = ($i % 3) ? 0 : 1.234;
 			$model = ($i % 4) ? "" : "model $i";
 			$quantifier = ($i % 5) ? "" : "per month";
-			$featured = ($i % 5) ? 0 : 1;
-			$allowPurchase = ($i % 9) ? 1 : 0;
+			$featured = ($i % 5) ? FALSE : TRUE;
+			$allowPurchase = ($i % 9) ? TRUE : FALSE;
 			$numberSold = $i;
 			$array[$i] = array(
 				"ClassName" => "Product",
