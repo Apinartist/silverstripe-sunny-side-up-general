@@ -98,7 +98,18 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "checkout",
 				"Title" => "Checkout",
 				"MenuTitle" => "Checkout",
-				"Content" => "<p>For further information on our terms of trade, please visit .... NOTE: a checkout page can also be broken down into several steps (pages) using a setting in the CMS.</p>",
+				"Content" => "
+					<p>
+						For further information on our terms of trade, please visit ....
+						NOTE: a checkout page can also be broken down into several steps (pages) using a setting in the CMS. These steps are:
+					</p>
+					<ul>
+						<li><a href=\"/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
+						<li><a href=\"/orderstep/ordermodifiers/#OrderModifiersOuter\">Modifiers (tax / delivery / etc...)</a></li>
+						<li><a href=\"/orderstep/orderconfirmation/#OrderConfirmationOuter\">Confirm Order</a></li>
+						<li><a href=\"/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
+					</ul>
+				",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
 				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
 				"FinalizedOrderLinkLabel" => "View completed order",
