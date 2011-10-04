@@ -27,6 +27,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->productsInManyGroups();
 
+		$this->createShopAdmin();
+
 		$this->collateExamplePages();
 
 	}
@@ -566,7 +568,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$member = new Member();
 		$member->FirstName = 'Bob';
 		$member->Surname = 'Jones';
-		$member->Email = 'bob@jones.com';
+		$member->Email = 'bob@silverstripe-ecommerce.com';
 		$member->Password = 'test123';
 		$member->write();
 		$member->Groups()->add($group);
@@ -593,7 +595,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$complexObjectPrice->ProductID = $product->ID;
 			$complexObjectPrice->write();
 			$complexObjectPrice->Groups()->add($group);
-			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price. You can then <a href=\"Security/logout/?BackURL=".$product->Link()."\">log out</a> again to see the original price.</p>";
+			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@silverstripe-ecommerce.com, password: test123 to get a special price. You can then <a href=\"Security/logout/?BackURL=".$product->Link()."\">log out</a> again to see the original price.</p>";
 			$this->addToTitle($product, "member price", true);
 		}
 		$variations = DataObject::get("ProductVariation", "ClassName = 'ProductVariation'", "RAND()", "", "2");
@@ -636,6 +638,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 			}
 			$this->addExamplePages("Product shown in more than one Product Group", $product);
 		}
+	}
+
+	protected function createShopAdmin() {
+		$member = new Member();
+		$member->FirstName = 'Shop';
+		$member->Surname = 'Admin';
+		$member->Email = 'shop@silverstripe-ecommerce.com';
+		$member->Password = 'test123';
+		$member->write();
+		$group = EcommerceRole::get_customer_group();
+		$member->Groups()->add($group);
 	}
 
 	protected function collateExamplePages(){
