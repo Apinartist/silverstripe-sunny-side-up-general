@@ -298,3 +298,9 @@ DataObject::add_extension("Product", "ComplexPriceBuyableDecorator");
 DataObject::add_extension("ProductVariation", "ComplexPriceBuyableDecorator");
 DataObject::add_extension("ComplexPriceObject", "ComplexPriceBuyableDecorator_ComplexPriceObject");
 //===================---------------- END ecommerce_group_pricing MODULE ----------------===================
+
+
+//===================---------------- START googleAnalyticsbasics MODULE ----------------===================
+DataObject::add_extension('SiteTree', 'GoogleAnalytics');
+GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
+//===================---------------- END googleAnalyticsbasics MODULE ----------------===================
