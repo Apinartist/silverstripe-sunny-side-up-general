@@ -69,11 +69,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
 				</p>
 				<p>
-					If you like to get access to the CMS or you have some feedback then please <a href=\"/help/\">contact us</a>.
-					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for paid support.
+					If you have some feedback then please <a href=\"/about-us/\">contact us</a>.
+					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for <a href=\"/about-us/\">paid support</a>.
 				</p>
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
+					You can log-in as follows: shop@silverstripe-eommerce.com / test123.
 				</p>
 				",
 				"Children" => array(
@@ -647,7 +648,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$member->Email = 'shop@silverstripe-ecommerce.com';
 		$member->Password = 'test123';
 		$member->write();
-		$group = EcommerceRole::get_customer_group();
+		$group = EcommerceRole::get_admin_group();
 		$member->Groups()->add($group);
 	}
 
