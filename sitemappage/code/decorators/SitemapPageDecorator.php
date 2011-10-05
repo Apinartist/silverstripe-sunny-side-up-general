@@ -14,14 +14,14 @@ class SitemapPageDecorator extends SiteTreeDecorator {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$where = '1 = 1';
 		$inc = self::get_sitemap_classes_to_include();
-		$exc = self::get_sitemap_classes_to_include();
+		$exc = self::get_sitemap_classes_to_exclude();
 		if(is_array($inc) && count($inc)) {
 			$where = "{$bt}ClassName{$bt} IN ('".implode("','", $inc)."')";
 		}
-		elseif(is_array($inc) && count($inc)) {
-			$where = "{$bt}ClassName{$bt} NOT IN ('".implode("','", $inc)."')";
+		elseif(is_array($exc) && count($exc)) {
+			$where = "{$bt}ClassName{$bt} NOT IN ('".implode("','", $exc)."')";
 		}
-		return DataObject::get("SiteTree", "{$bt}ShowInMenus{$bt} = 1 AND {$bt}ShowInSearch{$bt} = 1 AND {$bt}ParentID{$bt} = ".$this->owner->ID." AND {$bt}ClassName{$bt} <> 'SiteMapPage' AND ".$where);
+		return DataObject::get("SiteTree", "{$bt}ShowInMenus{$bt} = 1 AND {$bt}ShowInSearch{$bt} = 1 AND {$bt}ParentID{$bt} = {$this->owner->ID} AND {$bt}ClassName{$bt} <> 'SiteMapPage' AND $where");
 	}
 
 }
