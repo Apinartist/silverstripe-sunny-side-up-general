@@ -112,6 +112,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						<li><a href=\"/orderstep/orderconfirmation/#OrderConfirmationOuter\">Confirm Order</a></li>
 						<li><a href=\"/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
 					</ul>
+					<p>To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)</p>
 				",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
 				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
@@ -201,7 +202,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"ShowInSearch" => 1,
 				"Content" => "
 					<p>
-						This website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for e-commerce evaluation purposes.
+						This demo e-commerce website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for evaluation and testing purposes.
 						If you would like help in building an e-commerce website using the Silverstripe CMS then do not hesitate to contact us.
 						We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
 						In many cases, we have provided the back-bone (PHP + Javascript) for sites, with our clients taking care of the front-end (HTML + CSS ).
@@ -449,6 +450,28 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->Sort= 100;
 			$obj->write();
 		}
+		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'GST'")) {
+			$obj = new GSTTaxModifierOptions();
+			$obj->CountryCode = "NZ";
+			$obj->Code = "GST";
+			$obj->Name = "Goods and Services Tax";
+			$obj->InclusiveOrExclusive = "Inclusive";
+			$obj->Rate = 0.15;
+			$obj->PriceSuffix = "";
+			$obj->AppliesToAllCountries = false;
+			$obj->write();
+		}
+		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'WCT'")) {
+			$obj = new GSTTaxModifierOptions();
+			$obj->CountryCode = "AU";
+			$obj->Code = "ACT";
+			$obj->Name = "Australian Carbon Tax";
+			$obj->InclusiveOrExclusive = "Exclusive";
+			$obj->Rate = 0.05;
+			$obj->PriceSuffix = "";
+			$obj->AppliesToAllCountries = false;
+			$obj->write();
+		}
 	}
 
 	function createTags(){
@@ -654,6 +677,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	protected function collateExamplePages(){
 		$this->addExamplePages("Checkout Page", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Delivery options (add product to cart first)", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Taxes (NZ based GST - add product to cart first", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Order Confirmation Page", DataObject::get_one("OrderConfirmationPage"));
 		$this->addExamplePages("Cart Page (review cart without checkout)", DataObject::get_one("CartPage"));
 		$this->addExamplePages("Account Page", DataObject::get_one("AccountPage"));

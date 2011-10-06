@@ -116,12 +116,17 @@ ProductGroup::add_sort_option( $key = "featured", $title = "Featured", $sql = "\
 //ProductGroup::remove_sort_option( $key = "title");
 
 // * * * EMAILS
-Email::setAdminEmail("cool@bool.com");
+Email::setAdminEmail("sales@silverstripe-ecommerce.com");
 //Order_Email::set_send_all_emails_plain(true);
 //Order_Email::set_copy_to_admin_for_all_emails(false);
 
-// * * * LOGS
-//OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck"));
+
+// * * * PROCESS: LOGS AND STATUS
+OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck", "OrderStatusLog_CheckAvailability"));
+//OrderStatusLog::set_order_status_log_class_used_for_submitting_order("OrderStatusLog_PaymentCheck");
+//OrderStep::set_order_steps_to_include(array("OrderStep_Created","OrderStep_Submitted","OrderStep_SentInvoice","OrderStep_Paid","OrderStep_Sent","OrderStep_Archived"));
+OrderStep::add_order_step_to_include("OrderStep_CheckAvailability", $placeAfter = "OrderStep_Created");
+//OrderStep::remove_order_step_to_include("OrderStep_SentInvoice");
 
 // * * * HELP
 // __________________________________ END ECOMMERCE MODULE CONFIG __________________________________
