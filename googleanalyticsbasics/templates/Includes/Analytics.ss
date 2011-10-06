@@ -7,11 +7,11 @@
 	<% if GoogleAnalyticsCodeTwo %>
 	_gaq.push(function() {
 		// create the second async tracker
-		_gaq._createAsyncTracker({$GoogleAnalyticsCodeTwo}, 'secondGATracker');
+		_gaq._createAsyncTracker('{$GoogleAnalyticsCodeTwo}', 'secondGATracker');
 	});
-	_gaq.push(['secondGATracker._trackPageview']);  
+	_gaq.push(['secondGATracker._trackPageview']);
 	<% end_if %>
-	
+
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
