@@ -202,10 +202,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"ShowInSearch" => 1,
 				"Content" => "
 					<p>
-						This demo e-commerce website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for evaluation and testing purposes.
+						This demo e-commerce website has been developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> for evaluation and testing.
 						If you would like help in building an e-commerce website using the Silverstripe CMS then do not hesitate to contact us.
 						We charge <a href=\"http://www.xe.com/ucc/convert/?Amount=150&From=NZD&To=EUR\">NZD150</a> per hour for any e-commerce development work.
-						In many cases, we have provided the back-bone (PHP + Javascript) for sites, with our clients taking care of the front-end (HTML + CSS ).
+						In many cases, we have provided the back-bone (PHP + Javascript) for sites, with our clients taking care of the front-end (HTML + CSS).
 						Here are our estimated charges for e-commerce websites:
 					</p>
 					<ul>
@@ -219,7 +219,18 @@ class DefaultRecordsForEcommerce extends DataObject {
 						<li>large-size site, PHP + Javascript only: <a href=\"http://www.xe.com/ucc/convert/?Amount=10800&From=NZD&To=EUR\">NZD10800</a>.</li>
 						<li>large-size site, PHP + Javascript + CSS: <a href=\"http://www.xe.com/ucc/convert/?Amount=21600&From=NZD&To=EUR\">NZD21600</a>.</li>
 						<li>large-size site, PHP + Javascript + CSS + Design: <a href=\"http://www.xe.com/ucc/convert/?Amount=43200&From=NZD&To=EUR\">NZD43200</a>.</li>
-
+					</ul>
+					<h2>Track Record</h2>
+					<p>
+						We are one of a few companies who have actually built a solid number of e-comemrce sites.
+						Our work includes:
+					</p>
+					<ul>
+						<li><a href=\"http://www.photowarehosue.co.nz\">photowarehouse</a> - a large retailer site with over four thousand products</li>
+						<li><a href=\"http://www.kprcatering.co.nz\">kpr catering</a> - a catering company</li>
+						<li><a href=\"http://www.resumetemplates-usa.com\">resume templates usa</a> - a US based company selling curriculum vitae (resume) templates</li>
+						<li><a href=\"http://www.snapper.co.nz\">snapper</a> - a company selling public transport cards</li>
+						<li><a href=\"http://www.regalsalmon.co.nz\">regal salmon</a> - a salmon company</li>
 					</ul>
 					<p>
 						Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.
@@ -588,6 +599,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$group = new Group();
 		$group->Title = "Discount Customers";
 		$group->Code = "discountcustomers";
+		$group->ParentID = EcommerceRole::get_customer_group()->ID;
 		$group->write();
 		$member = new Member();
 		$member->FirstName = 'Bob';
