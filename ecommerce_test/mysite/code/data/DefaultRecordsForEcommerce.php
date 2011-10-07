@@ -222,7 +222,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</ul>
 					<h2>Track Record</h2>
 					<p>
-						We are one of a few companies who have actually built a solid number of e-comemrce sites.
+						We are one of a few companies who have actually built a solid number of e-comemrce sites using the Silverstripe CMS.
 						Our work includes:
 					</p>
 					<ul>
@@ -230,6 +230,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						<li><a href=\"http://www.kprcatering.co.nz\">kpr catering</a> - a catering company</li>
 						<li><a href=\"http://www.resumetemplates-usa.com\">resume templates usa</a> - a US based company selling curriculum vitae (resume) templates</li>
 						<li><a href=\"http://www.snapper.co.nz\">snapper</a> - a company selling public transport cards</li>
+						<li><a href=\"http://www.guyton.co.nz\">guytons</a> - a famous fish shop</li>
 						<li><a href=\"http://www.regalsalmon.co.nz\">regal salmon</a> - a salmon company</li>
 					</ul>
 					<p>
