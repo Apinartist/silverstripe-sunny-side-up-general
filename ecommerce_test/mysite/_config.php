@@ -122,10 +122,10 @@ Email::setAdminEmail("sales@silverstripe-ecommerce.com");
 
 
 // * * * PROCESS: LOGS AND STATUS
-OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck", "OrderStatusLog_CheckAvailability"));
+//OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck", "OrderStatusLog_CheckAvailability"));
 //OrderStatusLog::set_order_status_log_class_used_for_submitting_order("OrderStatusLog_PaymentCheck");
 //OrderStep::set_order_steps_to_include(array("OrderStep_Created","OrderStep_Submitted","OrderStep_SentInvoice","OrderStep_Paid","OrderStep_Sent","OrderStep_Archived"));
-OrderStep::add_order_step_to_include("OrderStep_CheckAvailability", $placeAfter = "OrderStep_Created");
+//OrderStep::add_order_step_to_include("OrderStep_CheckAvailability", $placeAfter = "OrderStep_Created");
 //OrderStep::remove_order_step_to_include("OrderStep_SentInvoice");
 
 // * * * HELP
@@ -309,3 +309,10 @@ DataObject::add_extension("ComplexPriceObject", "ComplexPriceBuyableDecorator_Co
 DataObject::add_extension('SiteTree', 'GoogleAnalytics');
 GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
+
+
+//===================---------------- START ecommerce_check_availability MODULE ----------------===================
+OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck", "OrderStatusLog_CheckAvailability"));
+OrderStep::add_order_step_to_include("OrderStep_CheckAvailability", $placeAfter = "OrderStep_Created");
+//===================---------------- END ecommerce_check_availability MODULE ----------------===================
+
