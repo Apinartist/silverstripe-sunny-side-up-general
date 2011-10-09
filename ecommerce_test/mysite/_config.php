@@ -311,8 +311,4 @@ GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
 
-//===================---------------- START ecommerce_check_availability MODULE ----------------===================
-OrderStatusLog::set_available_log_classes_array(array("OrderStatusLog_PaymentCheck", "OrderStatusLog_CheckAvailability"));
-OrderStep::add_order_step_to_include("OrderStep_CheckAvailability", $placeAfter = "OrderStep_Created");
-//===================---------------- END ecommerce_check_availability MODULE ----------------===================
 

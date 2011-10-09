@@ -46,6 +46,14 @@ class DefaultRecordsForEcommerce extends DataObject {
 		foreach($pages as $fields) {
 			$this->MakePage($fields);
 		}
+		$termsPage = DataObject::get_one("Page", "URLSegment = 'terms-and-conditions'");
+		$checkoutPage = DataObject::get_one("CheckoutPage");
+		$checkoutPage->TermsPageID = $termsPage->ID;
+		$checkoutPage->writeToStage('Stage');
+		$checkoutPage->Publish('Stage', 'Live');
+		$checkoutPage->Status = "Published";
+		$checkoutPage->flushCache();
+		DB::alteration_message("adding terms page to checkout page");
 	}
 
 	/**
@@ -141,6 +149,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"ShowInMenus" => 0,
 						"ShowInSearch" => 0,
 						"Content" => "<p>Update your details below.</p>"
+					),
+					array(
+						"ClassName" => "Page",
+						"URLSegment" => "terms-and-conditions",
+						"Title" => "Terms and Conditions",
+						"MenuTitle" => "Terms",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"Content" => "<p>All terms and conditions go here...</p>"
 					)
 				)
 			),
@@ -462,6 +479,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->Sort= 100;
 			$obj->write();
 		}
+		$obj = null;
 		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'GST'")) {
 			$obj = new GSTTaxModifierOptions();
 			$obj->CountryCode = "NZ";
@@ -473,7 +491,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->AppliesToAllCountries = false;
 			$obj->write();
 		}
-		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'WCT'")) {
+		$obj = null;
+		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'ACT'")) {
 			$obj = new GSTTaxModifierOptions();
 			$obj->CountryCode = "AU";
 			$obj->Code = "ACT";
