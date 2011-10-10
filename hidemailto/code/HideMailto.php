@@ -142,7 +142,7 @@ class HideMailto_Controller extends ContentController {
 			// Create the redirect
 			echo $this->renderWith("HideMailto");
 			$emailString = $this->makeMailtoString($user, $domain, $subject);
-			header("Location: " . $emailString);
+			//header("Location: " . $emailString);
 			header("Refresh: 0; url=". $emailString);
 		}
 		else {
