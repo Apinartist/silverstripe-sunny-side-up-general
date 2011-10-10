@@ -28,6 +28,17 @@ class BrowseBusinessDecorator extends SiteTreeDecorator {
 		return $array;
 	}
 
+	public function BusinessList(){
+		$array = $this->getChildIDs();
+		if($array && count($array)) {
+			$extension = '';
+			if(Versioned::current_stage() == "Live") {
+				$extension = "_Live";
+			}
+			return DataObject::get("BusinessPage", "\"SiteTree$extension\".\"ID\" IN (".implode(",", $array).")");
+		}
+	}
+
 	public function getChildIDs() {
 		$array = array();
 		if($children = DataObject::get("SiteTree", "ParentID = ".$this->owner->ID)) {
@@ -42,11 +53,11 @@ class BrowseBusinessDecorator extends SiteTreeDecorator {
 					}
 				}
 			}
-			
+
 		}
 		return $array;
 	}
-	
+
 	function onBeforeWrite() {
 		$array = array();
 		$field = '';

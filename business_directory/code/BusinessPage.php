@@ -199,7 +199,7 @@ class BusinessPage extends Page {
 			new TextareaField("OpeningHoursNote", "Opening Hours", 4),
 			new TextField("FirstName", "First Name"),
 			new TextField("LastName", "Last Name"),
-			new TextField("Phone", "Phone", $this->Phone, true,true,true),
+			new TextField("Phone", "Phone"),
 			new EmailField("Email", "Administrator Email (hidden)"),
 			new EmailField("ListingEmail", "Listing Email (public)"),
 			new TextField("Skype", "Skype Address"),
