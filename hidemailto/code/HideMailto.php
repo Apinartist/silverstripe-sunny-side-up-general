@@ -10,9 +10,21 @@ class HideMailto extends SiteTreeDecorator {
 	protected static $default_subject = "enquiry";
 		static function set_default_subject($subject) {self::$default_subject = $subject;}
 
-	protected static $dot_replacer = ",";
-		static function set_dot_replacer($dot_replacer) {self::$dot_replacer = $dot_replacer;}
-		static function get_dot_replacer() {return self::$dot_replacer;}
+	protected static $replace_characters = array(
+		"." => "&x2e;",
+		"@" => "&x40;",
+		"a" => "&x61;",
+		"b" => "&x62;",
+		"c" => "&x63;",
+		"d" => "&x64;",
+		"e" => "&x65;",
+		"f" => "&x66;",
+		"g" => "&x67;",
+		"h" => "&x68;",
+		"i" => "&x69;"
+	);
+		static function set_replace_characters($replace_characters) {self::$replace_characters = $replace_characters;}
+		static function get_replace_characters() {return self::$replace_characters;}
 
 	static function convert_email($email, $subject = '') {
 		$obj = new DataObject();
@@ -21,24 +33,17 @@ class HideMailto extends SiteTreeDecorator {
 		if(!$subject) {
 			$subject = self::$default_subject;
 		}
+		$flipArray = array_flip(self::get_replace_characters())
+		$email = str_replace(self::get_replace_characters(), $flipArraym, $email);
 		//mailto part
-		$array = explode("@",$email);
-		$url = explode(".", $array[1]);
-		$obj->MailTo =
-			"mailto/".
-			urlencode(str_replace(".", self::get_dot_replacer(), $array[0]))."/".
-			urlencode(str_replace(".", self::get_dot_replacer(), $array[1])).'/'.
-			Convert::raw2mailto($subject)."/";
-		$obj->Text = "".$array[0]." [at] ".implode(" . ",$url);
+		$obj->MailTo = "mailto:".$email."?subject=".Convert::raw2mailto($subject);
+		$obj->Text = $email;
 		$obj->Original = $email;
-		if($subject) {
-			$obj->Original .= "?subject=".Convert::raw2mailto($subject);
-		}
 		$obj->Subject = $subject;
-		$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1]."', '".Convert::raw2mailto($subject)."')); return true;";
+		//$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1]."', '".Convert::raw2mailto($subject)."')); return true;";
 		//TO DO: add a JS function that puts the
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-		Requirements::javascript("hidemailto/javascript/HideMailto2Email.js");
+		//Requirements::javascript("hidemailto/javascript/HideMailto2Email.js");
 		return $obj;
 	}
 
@@ -141,9 +146,10 @@ class HideMailto_Controller extends ContentController {
 		if((is_string(self::$allowed_domains) && self::$allowed_domains == '*') || in_array($domain, self::$allowed_domains)) {
 			// Create the redirect
 			header("Location: " . $emailString);
-			echo $this->renderWith("HideMailto");
-			$emailString = $this->makeMailtoString($user, $domain, $subject);
 			header("Refresh: 0; url=". $emailString);
+			echo $this->customise(array("RedirectBackURL" => $this->RedirectBackURL(), "Email" => $this->makeMailtoString($user, $domain, $subject))->renderWith("HideMailto");
+			$emailString = $this->makeMailtoString($user, $domain, $subject);
+
 		}
 		else {
 			user_error("We're not allowed to redirect to the domain '$domain', because it's not listed in the _config.php file", E_USER_ERROR);
@@ -161,11 +167,14 @@ class HideMailto_Controller extends ContentController {
 		return $this->redirectBackURL;
 	}
 
+
 	protected function makeMailtoString($user, $domain, $subject = '') {
 		$target = 'mailto:' . $user . '@' . $domain;
 		if($subject) {
 			$target .= '?subject=' . Convert::raw2mailto($subject);
 		}
+		$target = str_replace(".", "&x2e;", $target);
+		$target = str_replace("@", "&x40;", $target);
 		return $target;
 	}
 }
