@@ -17,7 +17,7 @@ class ShareThis extends SiteTreeDecorator {
 	*/
 
 	protected static $share_this_all_in_one = 0;
-		static function set_share_this_all_in_one($value) {$value = self::clean_boolean_value($value); self::$share_this_all_in_one = $value;}
+		static function set_share_this_all_in_one($value) {self::$share_this_all_in_one = $value;}
 
 
 	/**
