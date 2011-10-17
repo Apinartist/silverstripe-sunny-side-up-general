@@ -38,6 +38,9 @@
 	padding: 0; margin:0
 }
 
+.productList .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; padding: 3px;}
+.productList .productItem h3 a:hover {background-color: #317010; color: #fff!important;}
+
 		.productItem .productActions{
 			padding:0;
 			margin:0;
