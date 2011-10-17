@@ -17,3 +17,9 @@
 .next a {background-image: url(/themes/main_ecommerce/images/next.png);}
 .prev a{background-image: url(/themes/main_ecommerce/images/previous.png);}
 	.next a:hover, 	.prev a:hover {background-position: 0 -87px; border-bottom: none!important;}
+
+
+#InformationTable {width: auto!important;}
+
+#CartPageMessage  {margin: 20px;}
+#CartPageMessage p {font-size: 12px!important; line-height: 1.5;}
