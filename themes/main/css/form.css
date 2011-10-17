@@ -66,13 +66,13 @@
 
 /* shadow */
 input[type=text], input[type=password], textarea, select {
-	-moz-box-shadow: 3px 3px 4px #ccc;
-	-webkit-box-shadow: 3px 3px 4px #ccc;
-	box-shadow: 3px 3px 4px #ccc;
+	-moz-box-shadow: 3px 3px 4px #808383;
+	-webkit-box-shadow: 3px 3px 4px #808383;
+	box-shadow: 3px 3px 4px #808383;
 	/* For IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383')";
 	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383');
 }
 
 
