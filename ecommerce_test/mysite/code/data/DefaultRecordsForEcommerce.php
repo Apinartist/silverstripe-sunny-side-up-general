@@ -5,9 +5,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 	protected $examplePages = array();
 
 	function requireDefaultRecords() {
+
 		parent::requireDefaultRecords();
 
 		$this->checkreset();
+
+		$this->createImages();
 
 		$this->CreatePages();
 
@@ -284,7 +287,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "product-group-".$parentCode,
 				"Title" => "Product Group ".$parentCode,
 				"MenuTitle" => "Product group ".$parentCode,
-				"Content" => "<p>Please review our products below.</p>",
 				"LevelOfProductsToShow" => $levelOfProductsToShow,
 				"NumberOfProductsPerPage" => $levelOfProductsToShow + 5,
 				"DefaultSortOrder" => $defaultSortOrder,
@@ -302,6 +304,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Children" =>  $children,
 			);
 		}
+		$array[] = array(
+			"ClassName" => "ProductGroupWithTags",
+			"URLSegment" => "shop-by-tag",
+			"Title" => "Shop by Tag",
+			"MenuTitle" => "Shop by Tag",
+			"Content" => "<p>Please use the tags to find the products you are after.</p>",
+		);
 		return $array;
 	}
 
@@ -315,9 +324,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$quantifier = ($i % 5) ? "" : "per month";
 			$featured = ($i % 5) ? FALSE : TRUE;
 			$allowPurchase = ($i % 9) ? TRUE : FALSE;
+			$imageID = $this->getRandomImageID();
+			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
 			$numberSold = $i;
 			$array[$i] = array(
 				"ClassName" => "Product",
+				"ImageID" => $imageID,
 				"URLSegment" => "product-$parentCode-$i",
 				"Title" => "Product $parentCode $i",
 				"MenuTitle" => "Product $i",
@@ -714,6 +726,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->addExamplePages("Account Page", DataObject::get_one("AccountPage"));
 		$this->addExamplePages("Donation page", DataObject::get_one("AnyPriceProductPage"));
 		$this->addExamplePages("Quick Add Page", DataObject::get_one("AddToCartPage"));
+		$this->addExamplePages("Shop by Tag Page ", DataObject::get_one("ProductGroupWithTags"));
 		$this->addExamplePages("Corporate Account Order Page", DataObject::get_one("AddUpProductsToOrderPage"));
 		$this->addExamplePages("Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
 		$this->addExamplePages("Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
@@ -814,6 +827,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$array = array(
 			array("T" => "SiteConfig", "F" => "Title", "V" => "Silverstripe Ecommerce Demo", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Tagline", "V" => "Built by Sunny Side Up", "W" => ""),
+			array("T" => "SiteConfig", "F" => "CopyrightNotice", "V" => "This demo (not the underlying modules) are &copy; Sunny Side Up Ltd", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Theme", "V" => "main", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
@@ -875,6 +889,37 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	private function randomName() {
 		return array_pop($this->fruitArray);
+	}
+
+	private $imageArray = array();
+
+	private function getRandomImageID(){
+		if(!count($this->imageArray)) {
+			$folder = Folder::findOrMake("randomimages");
+			$images = DataObject::get("Image", "ParentID = ".$folder->ID, "RAND()");
+			$this->imageArray = $images->map("ID", "ID");
+		}
+		return array_pop($this->imageArray);
+	}
+
+	private function createImages($width = 170, $height = 120) {
+		$folder = Folder::findOrMake("randomimages");
+		$folder->syncChildren();
+		if($folder->Children()->count() < 250) {
+			for($i = 0; $i < 10; $i++) {
+				$r = mt_rand(0, 255);
+				$g = mt_rand(0, 255);
+				$b = mt_rand(0, 255);
+				$im = @imagecreate($width, $height) or die("Cannot Initialize new GD image stream");
+				$background_color = imagecolorallocate($im, $r, $g, $b);
+				$baseFolderPath = Director::baseFolder();
+				$fileName = $baseFolderPath."/assets/randomimages/img_".sprintf("%03d", $r)."_".sprintf("%03d", $g)."_".sprintf("%03d", $b).".png";
+				if(!file_exists($fileName)) {
+					imagepng($im, $fileName);
+				}
+				imagedestroy($im);
+			}
+		}
 	}
 
 }
