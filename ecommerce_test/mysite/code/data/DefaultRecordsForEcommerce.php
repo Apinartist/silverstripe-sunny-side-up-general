@@ -897,7 +897,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 		if(!count($this->imageArray)) {
 			$folder = Folder::findOrMake("randomimages");
 			$images = DataObject::get("Image", "ParentID = ".$folder->ID, "RAND()");
-			$this->imageArray = $images->map("ID", "ID");
+			if($images) {
+				$this->imageArray = $images->map("ID", "ID");
+			}
+			else {
+				$this->imageArray = array(0 => 0);
+			}
 		}
 		return array_pop($this->imageArray);
 	}
