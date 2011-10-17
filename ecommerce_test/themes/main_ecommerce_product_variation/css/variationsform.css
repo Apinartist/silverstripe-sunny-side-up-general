@@ -9,3 +9,6 @@
   {margin-left: 130px;}
 #Form_VariationForm div.middleColumn select   {width: 270px;}
 #Form_VariationForm div.middleColumn input   {width: 264px;}
+#Form_VariationForm .field .middleColumn .message,
+#Form_VariationForm .field span.message,
+#Form_VariationForm .middleColumn .message {width: 262px;}
