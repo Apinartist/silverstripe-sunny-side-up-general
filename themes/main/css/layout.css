@@ -13,7 +13,7 @@ body {
 		#Nav {} /* see MENU.CSS spreadsheet */
 		#Breadcrumbs {text-align: right; padding: 7px; position: absolute; top: 0; font-size: 12px; }
 		#SidebarSection {width: 200px; float: right; padding: 67px 20px 0 0;}
-		#Layout {padding: 67px 270px 500px 210px;}
+		#Layout {padding: 67px 270px 500px 210px; max-width: 770px;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
 
