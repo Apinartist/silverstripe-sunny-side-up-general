@@ -8,6 +8,7 @@
  </head>
 <body>
 	<h2>Sending Email ...</h2>
+	<a href="$Email">send email now</a>
 	<a href="{$RedirectBackURL}">please click to continue to {$RedirectBackURL}</a>
 </body>
 </html>

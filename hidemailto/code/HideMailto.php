@@ -11,17 +11,17 @@ class HideMailto extends SiteTreeDecorator {
 		static function set_default_subject($subject) {self::$default_subject = $subject;}
 
 	protected static $replace_characters = array(
-		"." => "&x2e;",
-		"@" => "&x40;",
-		"a" => "&x61;",
-		"b" => "&x62;",
-		"c" => "&x63;",
-		"d" => "&x64;",
-		"e" => "&x65;",
-		"f" => "&x66;",
-		"g" => "&x67;",
-		"h" => "&x68;",
-		"i" => "&x69;"
+		"." => "&#x2e;",
+		"@" => "&#x40;",
+		"a" => "&#x61;",
+		"b" => "&#x62;",
+		"c" => "&#x63;",
+		"d" => "&#x64;",
+		"e" => "&#x65;",
+		"f" => "&#x66;",
+		"g" => "&#x67;",
+		"h" => "&#x68;",
+		"i" => "&#x69;"
 	);
 		static function set_replace_characters($replace_characters) {self::$replace_characters = $replace_characters;}
 		static function get_replace_characters() {return self::$replace_characters;}
@@ -33,7 +33,7 @@ class HideMailto extends SiteTreeDecorator {
 		if(!$subject) {
 			$subject = self::$default_subject;
 		}
-		$flipArray = array_flip(self::get_replace_characters())
+		$flipArray = array_flip(self::get_replace_characters());
 		$email = str_replace(self::get_replace_characters(), $flipArray, $email);
 		//mailto part
 		$obj->MailTo = "mailto:".$email."?subject=".Convert::raw2mailto($subject);
