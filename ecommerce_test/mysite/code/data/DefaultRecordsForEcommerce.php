@@ -85,7 +85,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				</p>
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
-					You can log-in as follows: shop@silverstripe-eommerce.com / test123.
+					You can <a href=\"/Security/login/?backURL=/admin/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
 				</p>
 				",
 				"Children" => array(
@@ -513,6 +513,18 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->AppliesToAllCountries = false;
 			$obj->write();
 		}
+		$obj = null;
+		if(!DataObject::get_one("DiscountCouponOption", "\"Code\" = 'AAA'")) {
+			$obj = new DiscountCouponOption();
+			$obj->Title = "Example Coupon";
+			$obj->Code = "AAA";
+			$obj->StartDate = date("Y-m-d", strtotime("Yesterday"));
+			$obj->EndDate = date("Y-m-d", strtotime("Next Year"));
+			$obj->DiscountAbsolute = 10;
+			$obj->DiscountPercentage = 7.5;
+			$obj->CanOnlyBeUsedOnce = false;
+			$obj->write();
+		}
 	}
 
 	function createTags(){
@@ -721,6 +733,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->addExamplePages("Checkout Page", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Delivery options (add product to cart first)", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Taxes (NZ based GST - add product to cart first", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Discount Coupon (try <i>AAA</i>)", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Order Confirmation Page", DataObject::get_one("OrderConfirmationPage"));
 		$this->addExamplePages("Cart Page (review cart without checkout)", DataObject::get_one("CartPage"));
 		$this->addExamplePages("Account Page", DataObject::get_one("AccountPage"));
@@ -745,7 +758,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			<li>ecommerce_brandbrowsing</li>
 			<li>ecommerce_complex_pricing</li>
 			<li>ecommerce_corporate_account</li>
-			<li>ecommerce_coupon</li>
 			<li>ecommerce_custom_order_number</li>
 			<li>ecommerce_delivery</li>
 			<li>ecommerce_digitalproducts</li>

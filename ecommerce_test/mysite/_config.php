@@ -58,7 +58,7 @@ PageComment::enableModeration();
 // __________________________________START ECOMMERCE MODULE CONFIG __________________________________
 //The configuration below is not required, but allows you to customise your ecommerce application - check for the defalt value first.
 // * * * DEFINITELY MUST SET
-Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample", "GSTTaxModifier", "OrderMarker"));
+Order::set_modifiers(array("PickUpOrDeliveryModifier", "ModifierExample", "GSTTaxModifier", "OrderMarker", "DiscountCouponModifier"));
 
 
 // * * * HIGHLY RECOMMENDED SETTINGS NON-ECOMMERCE
@@ -310,5 +310,12 @@ DataObject::add_extension('SiteTree', 'GoogleAnalytics');
 GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
+
+
+//===================---------------- START ecommerce_discount_coupon MODULE ----------------===================
+StoreAdmin::add_managed_model("DiscountCouponOption");
+//DiscountCouponOptions::set_coupons_can_only_be_used_once(true);
+//Order::add_modifiers("DiscountCouponModifier");
+//===================---------------- END ecommerce_discount_coupon MODULE ----------------===================
 
 
