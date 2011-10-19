@@ -17,4 +17,11 @@ body {
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
 
+#Sidebar {position: absolute; top: 10px; right: 10px; width: 200px; padding:12px; border: 1px dotted grey; background-color: #B5AB8B; border-radius: 5px; font-size: 77%; }
+#Sidebar table {width: 100%;}
+#Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
+#Sidebar td.quantity img {margin: 0px;}
+#Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
+#Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside;}
+
 
