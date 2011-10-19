@@ -16,14 +16,6 @@ even when theme-ing ecommerce, these should not be themed
 .ajaxQuantityField {text-align: center;}
 .removeOneLink {float: left; padding-right: 5px;}
 
-
-#Sidebar {position: fixed; top: 10px; right: 10px; width: 200px; padding:12px; border: 1px dotted grey; background-color: #B5AB8B; border-radius: 5px; font-size: 77%; }
-#Sidebar table {width: 100%;}
-#Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
-#Sidebar td.quantity .ecomquantityfield {white-space: nowrap;}
-#Sidebar td.quantity img {margin: 0px;}
-#Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
-#Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside;}
 .itemdetails span {width: 100px;}
 
 ul.productActions {margin: 0px; padding: 0px;}
@@ -48,3 +40,5 @@ ul.productActions li a, .goToCart a {
 ul.productActions li a:hover, .goToCart a:hover {background-color: #317010;}
 
 .summary {font-weight: bold;}
+
+.ecomquantityfield {white-space: nowrap;}
