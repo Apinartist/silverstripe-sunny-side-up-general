@@ -5,7 +5,12 @@
   **/
 
 
-.loadingCartData #InformationTable, .loadingCartData #Amount {color: #e7e7e7!important;}
+.loadingCartData  #Table_Order_Total, .loadingCartData #Amount {
+	color: #e7e7e7!important;
+	background-image: url(/themes/main_ecommerce/images/loading.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
 
 #MethodFields_PayPalPayment {margin-left: 270px}
 #MethodFields_PayPalPayment img {display: inline-block; float: none; margin-left: 0px; margin-right: 10px}

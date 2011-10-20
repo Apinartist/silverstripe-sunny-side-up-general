@@ -14,6 +14,14 @@ even when theme-ing ecommerce, these should not be themed
 
 
 .ajaxQuantityField {text-align: center;}
+.ecomquantityfield {position: relative;}
+.ecomquantityfield img{margin: 0!important; padding: 0!important; }
+.ecomquantityfield a{position: absolute; display: none; top: 0px}
+.ecomquantityfield:hover a{display: block;}
+.ecomquantityfield a.removeOneLink {left: 0px; }
+.ecomquantityfield a.addOneLink {right: 0px; }
+
+
 .removeOneLink {float: left; padding-right: 5px;}
 
 .itemdetails span {width: 100px;}
