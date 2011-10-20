@@ -118,10 +118,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 						NOTE: a checkout page can also be broken down into several steps (pages) using a setting in the CMS. These steps are:
 					</p>
 					<ul>
-						<li><a href=\"/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
-						<li><a href=\"/orderstep/ordermodifiers/#OrderModifiersOuter\">Modifiers (tax / delivery / etc...)</a></li>
-						<li><a href=\"/orderstep/orderconfirmation/#OrderConfirmationOuter\">Confirm Order</a></li>
-						<li><a href=\"/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
+						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
+						<li><a href=\"checkout/orderstep/ordermodifiers/#OrderModifiersOuter\">Modifiers (tax / delivery / etc...)</a></li>
+						<li><a href=\"checkout/orderstep/orderconfirmation/#OrderConfirmationOuter\">Confirm Order</a></li>
+						<li><a href=\"checkout/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
 					</ul>
 					<p>To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)</p>
 				",
