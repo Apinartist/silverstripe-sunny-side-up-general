@@ -21,7 +21,7 @@ Member::set_password_validator( new NZGovtPasswordValidator());
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
-Requirements::set_combined_files_folder(if($theme = SSViewer::current_theme()) {return THEMES_DIR . "/$theme" . ($subtheme ? "_$subtheme" : null);} return project(););
+Requirements::set_combined_files_folder("themes/main");
 //Director::forceWWW();
 FulltextSearchable::enable();
 if(Director::isLive()) {
@@ -68,7 +68,7 @@ BlogEntry::allow_wysiwyg_editing();
 
 //===================---------------- START googleAnalyticsbasics MODULE ----------------===================
 Object::add_extension('SiteTree', 'GoogleAnalytics');
-GoogleAnalytics::$googleAnalyticsCode = "UA-24418935-1"; //e.g. UA-xxxx-y
+GoogleAnalytics::$googleAnalyticsCode = "UA-8998394-4"; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
 
