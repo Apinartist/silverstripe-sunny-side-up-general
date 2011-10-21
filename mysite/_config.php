@@ -25,7 +25,7 @@ Requirements::set_combined_files_folder("themes/main");
 //Director::forceWWW();
 FulltextSearchable::enable();
 if(Director::isLive()) {
-	Director::forceWWW();
+	//Director::forceWWW();
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
 else {
