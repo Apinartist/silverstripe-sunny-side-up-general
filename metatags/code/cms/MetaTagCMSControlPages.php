@@ -6,16 +6,16 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 	/***************************************************
 	 * CONFIG                                          *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
-	protected static $url_segment = 'metatagmanagementpages'; 
+	protected static $url_segment = 'metatagmanagementpages';
 		static function set_url_segment($s){self::$url_segment = $s;}
 		static function get_url_segment(){return self::$url_segment;}
 
 	protected static $small_words_array = array('of','a','the','and','an','or','nor','but','is','if','then','else','when','at','from','by','on','off','for','in','out','over','to','into','with');
 		static function set_small_words_array($a){self::$small_words_array = $a;}
 		static function get_small_words_array(){return self::$small_words_array;}
-		
+
 	protected $updatableFields = array(
 		"Title",
 		"MetaTitle",
@@ -30,14 +30,14 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 	/**
 	 * First table is main table - e.g. $this->tableArray[0] should work
 	 *
-	 **/ 
+	 **/
 	protected $tableArray = array("SiteTree", "SiteTree_Live");
 
 
 	/***************************************************
 	 * ACTIONS                                         *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
 
 	function index() {
@@ -65,7 +65,7 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 
 	function togglecopyfromtitle($request) {
 		if($fieldName = $request->param("ID")) {
-			if(in_array($fieldName, $this->updatableFields)) {		
+			if(in_array($fieldName, $this->updatableFields)) {
 				DB::query("UPDATE \"SiteConfig\" SET \"$fieldName\" = IF(\"$fieldName\" = 1, 0, 1)");
 				Session::set("MetaTagCMSControlMessage",  _t("MetaTagCMSControl.UPDATEDCONFIG", "Updated configuration."));
 				return $this->returnAjaxOrRedirectBack();
@@ -73,7 +73,7 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 		}
 		Session::set("MetaTagCMSControlMessage",  _t("MetaTagCMSControl.NOTUPDATEDCONFIG", "Could not update configuration."));
 		return $this->returnAjaxOrRedirectBack();
-	} 
+	}
 
 	function setpageflag($request){
 		if($fieldName = $request->param("ID")) {
@@ -111,14 +111,14 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 					}
 					foreach($this->tableArray as $table) {
 						$table = str_replace("_Live", "", $table);
-						
+
 						DB::query("UPDATE \"$table\" SET \"$fieldName\" = '".$value."' WHERE \"$table\".\"ID\" = ".$recordID);
 						$urlSegmentValue = '';
 						if($fieldName == "Title") {
 							$urlSegmentValue = $record->generateURLSegment($value);
 						}
 						if($urlSegmentValue) {
-							DB::query("UPDATE \"$table\" SET \"URLSegment\" = '".$urlSegmentValue."' WHERE \"$table\".\"ID\" = ".$recordID);
+							DB::query("UPDATE \"$table\" SET \"URLSegment\" = '".$urlSegmentValue."' WHERE \"$table\".\"ID\" = ".$recordID." AND \"URLSegment\" <> 'home'");
 						}
 					}
 					return  _t("MetaTagCMSControl.UPDATE", "Updated <i>".$record->Title."</i>");
@@ -137,14 +137,14 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 			Director::redirect($this->Link());
 			return array();
 		}
-	}	
+	}
 
 	/***************************************************
 	 * CONTROLS                                        *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
-	
+
 	function MyRecords() {
 		$excludeWhere = "AND \"ShowInSearch\" = 1 AND \"ClassName\" <> 'ErrorPage'";
 		$pages = DataObject::get($this->tableArray[0], "ParentID = ".$this->ParentID. " ".$excludeWhere, '', '', $this->myRecordsLimit());
@@ -172,7 +172,7 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 				if(DataObject::get_one($this->tableArray[0], "ParentID = ".$page->ID. " ".$excludeWhere)) {
 					$page->ChildrenLink = $this->createLevelLink($page->ID);
 				}
-				
+
 				$dos[$page->ID] = new DataObjectSet();
 				$segmentArray = array();
 				$item = $page;
@@ -219,9 +219,9 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 	/***************************************************
 	 * PROTECTED                                       *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
-	
+
 
 	/* admin only functions */
 	protected function updateAllMetaTitles() {
@@ -242,8 +242,8 @@ class MetaTagCMSControlPages extends MetaTagCMSControlFiles {
 		}
 		$newtitle = implode(' ', $words);
 		return $newtitle;
-	} 
-	
+	}
+
 }
 
 
