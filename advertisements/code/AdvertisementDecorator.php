@@ -105,7 +105,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			}
 			else {
 				$txt = sprintf(
-					_t("AdvertisementDecorator.CREATE",'<p>Please <a href="/admin/%1$s/">create %2$s</a> on the <a href="/admin/%1$s/">%3$s tab</a> first, or see below on how to create %2$s from a folder.</p>'),
+					_t("AdvertisementDecorator.CREATE",'<p>Please <a href="admin/%1$s/">create %2$s</a> on the <a href="admin/%1$s/">%3$s tab</a> first, or see below on how to create %2$s from a folder.</p>'),
 					AdvertisementAdmin::$url_segment,
 					Advertisement::$plural_name,
 					AdvertisementAdmin::$menu_title
@@ -125,7 +125,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$txt = sprintf(_t("AdvertisementDecorator.EDIT", 'Edit %1$s'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			$txt = sprintf(
-				_t("AdvertisementDecorator.PLEASEMANAGEEXISTING",'<p>Please manage existing %1$s on the <a href="/admin/%2$s/">%3$s tab</a>.</p>'),
+				_t("AdvertisementDecorator.PLEASEMANAGEEXISTING",'<p>Please manage existing %1$s on the <a href="admin/%2$s/">%3$s tab</a>.</p>'),
 				Advertisement::$plural_name,
 				AdvertisementAdmin::$url_segment,
 				AdvertisementAdmin::$menu_title
@@ -137,13 +137,13 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 
 			$txtRemove = sprintf(_t("AdvertisementDecorator.REMOVE", 'Remove all %1$s from this page (%1$s will not be deleted)'), Advertisement::$plural_name);
 			$txtConfirmRemove = sprintf(_t("AdvertisementDecorator.CONFIRMREMOVE", 'Are you sure you want to remove all %1$s from this page?'), Advertisement::$plural_name);
-			$removeallLink = '/advertisements/removealladvertisements/'.$this->owner->ID.'/';
+			$removeallLink = 'advertisements/removealladvertisements/'.$this->owner->ID.'/';
 			$jquery = 'if(confirm(\''.$txtConfirmRemove.'\')) {jQuery(\'#removealladvertisements\').load(\''.$removeallLink.'\');} return false;';
 			$fields->addFieldToTab($tabName, new LiteralField("removealladvertisements", '<p><a href="'.$removeallLink.'" onclick="'.$jquery.'"  id="removealladvertisements">'.$txtRemove.'</a></p>'));
 
 			$txtDelete = sprintf(_t("AdvertisementDecorator.DELETE", 'Delete all %1$s from from this website (but not the images associated with them)'), Advertisement::$plural_name);
 			$txtConfirmDelete = sprintf(_t("AdvertisementDecorator.CONFIRMDELETE", 'Are you sure you want to delete all %1$s - there is no UNDO?'), Advertisement::$plural_name);
-			$deleteallLink = '/advertisements/deletealladvertisements/'.$this->owner->ID.'/';
+			$deleteallLink = 'advertisements/deletealladvertisements/'.$this->owner->ID.'/';
 			$jquery = 'if(confirm(\''.$txtConfirmDelete.'\')) {jQuery(\'#deletealladvertisements\').load(\''.$deleteallLink.'\');} return false;';
 			$fields->addFieldToTab($tabName, new LiteralField("deletealladvertisements", '<p><a href="'.$deleteallLink.'" onclick="'.$jquery.'"  id="deletealladvertisements">'.$txtDelete.'</a></p>'));
 
