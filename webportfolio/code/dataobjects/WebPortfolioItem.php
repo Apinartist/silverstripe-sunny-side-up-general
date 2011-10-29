@@ -24,7 +24,8 @@ class WebPortfolioItem extends DataObject {
 		"CodingBackEnd" => "Varchar(255)",
 		"Copy" => "Varchar(255)",
 		"Photography" => "Varchar(255)",
-		"ScreenshotTaken" => "Date"
+		"ScreenshotTaken" => "Date",
+		"Code" => "Varchar"
 	);
 
 	static $has_one = array(

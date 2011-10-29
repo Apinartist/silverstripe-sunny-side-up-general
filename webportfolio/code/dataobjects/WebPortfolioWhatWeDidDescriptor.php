@@ -9,8 +9,8 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 
 	public static $db = array(
 		"Name" => "Varchar(255)",
-		"Description" => "Text",
-		"SortNumber" => "Int"
+		"Code" => "Varchar(255)",
+		"Description" => "Text"
 	);
 
 	public static $belongs_many_many = array(
@@ -20,13 +20,15 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 	public static $default_sort = "SortNumber";
 
 	public static $searchable_fields = array(
-		"Name" => "PartialMatchFilter",
-		"SortNumber"
+		"Name" => "PartialMatchFilter"
 	);
 
 	public static $summary_fields = array(
-		"Name",
-		"SortNumber"
+		"Name"
+	);
+
+	public static $indexes = array(
+		"Code" => true
 	);
 
 	public static $singular_name = "What We Did Descriptor";
@@ -36,14 +38,18 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 	function Link() {
 		$link = '';
 		if($page = DataObject::get_one("WebPortfolioPage")) {
-			$link = $page->Link().'show/'.$page->generateURLSegment($this->Name)."/";
+			if(!$this->Code) {
+				$this->Code = $page->generateURLSegment($this->Name);
+				$this->write();
+			}
+			$link = $page->Link().'show/'.$this->Code."/";
 		}
 		return $link;
 	}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-
+		$fields->removeFieldByName("Code");
 		if($this->ID) {
 			$dos = DataObject::get("WebPortfolioWhatWeDidDescriptor", "WebPortfolioWhatWeDidDescriptor.ID <> ".$this->ID);
 			if($dos) {
@@ -76,6 +82,12 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 			if($mergeID) {
 				$this->mergeInto = DataObject::get_by_id("WebPortfolioWhatWeDidDescriptor", $mergeID);
 			}
+		}
+		if($page = DataObject::get_one("WebPortfolioPage")) {
+			$link = $page->Link().'show/'.$this->Code."/";
+		}
+		if($page = DataObject::get_one("WebPortfolioPage")) {
+			$this->Code = $page->generateURLSegment($this->Name);
 		}
 	}
 

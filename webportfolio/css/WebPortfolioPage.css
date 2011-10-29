@@ -4,3 +4,4 @@
 #WebPortfolioItems li .portFolioItem{margin-left: 295px}
 #WebPortfolioItems li span{display: block; font-size: 0.8em;}
 #WebPortfolioItems li span.notes{padding-top: 20px;}
+.returnToNormal {clear: left}

@@ -1,7 +1,7 @@
 $Content
-<% if WebPortfolioItems %>
+<% if SelectedWebPortfolioItems %>
 <ul id="WebPortfolioItems">
-<% control WebPortfolioItems %>
+<% control SelectedWebPortfolioItems %>
 	<li class="$EvenOdd $FirstLast">
 		<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" title="$Client.ATT">
 			<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
@@ -50,14 +50,13 @@ $Content
 
 			<% if WhatWeDid %>
 				<span class="whatWeDid"><strong>Work completed:</strong>
-					<% control WhatWeDid %><a href="$Link">$Name</a><% if Last %>.<% else %>,<% end_if %><% end_control %>
+					<% control WhatWeDid %><a href="$Link">$Name</a><% if Last %>.<% else %>, <% end_if %><% end_control %>
 				</span>
 			<% end_if %>
 
 			<% if Agent %>
 				<span class="agent"><strong>Agency:</strong> <% control Agent %><a href="AgentWebAddress.URL" class="externalLink">$Name</a><% end_control %></span>
 			<% end_if %>
-
 
 			<% if ScreenshotTaken %>
 				<span class="screenshotTaken"><strong>Screenshot taken:</strong> $ScreenshotTaken.Nice</span>
@@ -75,5 +74,6 @@ $Content
 <% end_control %>
 </ul>
 <% end_if %>
+<% if HasFilter %><p class="returnToNormal"><a href="$Link">show all items for <i>$MenuTitle</i></a></p><% end_if %>
 $Form
 $PageComments
