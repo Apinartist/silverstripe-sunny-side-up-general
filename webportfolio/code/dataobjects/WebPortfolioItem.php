@@ -67,4 +67,50 @@ class WebPortfolioItem extends DataObject {
 	public static $plural_name = "Items";
 
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$dos = DataObject::get("WebPortfolioWhatWeDidDescriptor");
+		if($dos && $this->ID) {
+			$dosArray = $dos->toDropDownMap();
+			$fields->addFieldsToTab(
+				"Root.WhatWeDid",
+				array(
+					new CheckboxSetField("WhatWeDid", "Select work done", $dosArray),
+					new TextField("AddWhatWeDid", "Add a job")
+				)
+			);
+		}
+		return $fields;
+	}
+
+	protected $newWhatWeDid = null;
+
+	function onAfterWrite(){
+		parent::onAfterWrite();
+		if($this->newWhatWeDid) {
+			$this->newWhatWeDid->WebPortfolioItem()->add($this);
+			$this->WhatWeDid()->add($this->newWhatWeDid);
+		}
+		if(isset($_REQUEST["AddWhatWeDid"])) {
+			unset($_REQUEST["AddWhatWeDid"]);
+		}
+		$this->newWhatWeDid = null;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		if(isset($_REQUEST["AddWhatWeDid"])) {
+			$name = Convert::raw2sql($_REQUEST["AddWhatWeDid"]);
+			if($name) {
+				$this->newWhatWeDid = DataObject::get_one("WebPortfolioWhatWeDidDescriptor", "\"Name\" = '$name'");
+				if(!$this->newWhatWeDid) {
+					$this->newWhatWeDid = new WebPortfolioWhatWeDidDescriptor();
+					$this->newWhatWeDid->Name = $name;
+					$this->newWhatWeDid->write();
+					//TO DO - does not work!!!
+				}
+			}
+		}
+	}
+
 }

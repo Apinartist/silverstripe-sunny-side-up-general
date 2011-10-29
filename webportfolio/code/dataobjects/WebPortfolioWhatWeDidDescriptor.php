@@ -36,9 +36,48 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 	function Link() {
 		$link = '';
 		if($page = DataObject::get_one("WebPortfolioPage")) {
-			$link = $page->Link().'show/'.$page->generateURLSegment($this->Name);
+			$link = $page->Link().'show/'.$page->generateURLSegment($this->Name)."/";
 		}
 		return $link;
 	}
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		if($this->ID) {
+			$dos = DataObject::get("WebPortfolioWhatWeDidDescriptor", "WebPortfolioWhatWeDidDescriptor.ID <> ".$this->ID);
+			if($dos) {
+				$dosArray = $dos->toDropDownMap("ID", "Name", "-- do not merge --");
+				$fields->addFieldToTab("Root.Merge", new DropdownField("MergeID", "Merge <i>$this->Name</i> into:", $dosArray));
+			}
+		}
+		return $fields;
+	}
+
+
+	protected $mergeInto = null;
+
+	function onAfterWrite(){
+		parent::onAfterWrite();
+		if($this->mergeInto) {
+			DB::query("UPDATE \"WebPortfolioItem_WhatWeDid\" SET \"WebPortfolioWhatWeDidDescriptorID\" = ".$this->mergeInto->ID." WHERE \"WebPortfolioWhatWeDidDescriptorID\"  = ".$this->ID);
+			$this->delete();
+		}
+		if(isset($_REQUEST["MergeID"])) {
+			unset($_REQUEST["MergeID"]);
+		}
+		$this->mergeInto = null;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		if(isset($_REQUEST["MergeID"])) {
+			$mergeID = intval($_REQUEST["MergeID"]);
+			if($mergeID) {
+				$this->mergeInto = DataObject::get_by_id("WebPortfolioWhatWeDidDescriptor", $mergeID);
+			}
+		}
+	}
+
 
 }

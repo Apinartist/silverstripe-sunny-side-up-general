@@ -46,4 +46,8 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		Requirements::themedCSS("WebPortfolioPage");
 	}
 
+	function show(){
+
+	}
+
 }
