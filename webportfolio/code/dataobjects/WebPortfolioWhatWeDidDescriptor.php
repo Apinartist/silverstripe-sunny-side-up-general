@@ -17,7 +17,7 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 		"WebPortfolioItem" => "WebPortfolioItem"
 	);
 
-	public static $default_sort = "SortNumber";
+	public static $default_sort = "Name";
 
 	public static $searchable_fields = array(
 		"Name" => "PartialMatchFilter"
