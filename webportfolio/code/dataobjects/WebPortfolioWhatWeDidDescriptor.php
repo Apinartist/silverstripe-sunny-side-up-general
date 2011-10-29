@@ -49,7 +49,7 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->removeFieldByName("Code");
+		$fields->removeByName("Code");
 		if($this->ID) {
 			$dos = DataObject::get("WebPortfolioWhatWeDidDescriptor", "WebPortfolioWhatWeDidDescriptor.ID <> ".$this->ID);
 			if($dos) {
