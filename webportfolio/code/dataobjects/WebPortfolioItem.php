@@ -19,16 +19,25 @@ class WebPortfolioItem extends DataObject {
 		"Favourites" => "Boolean",
 		"Notes" => "Varchar(255)",
 		"Client" => "Varchar(255)",
+		"Design" => "Varchar(255)",
+		"Coding" => "Varchar(255)",
+		"Copy" => "Varchar(255)",
+		"Photography" => "Varchar(255)",
 		"ScreenshotTaken" => "Date"
 	);
 
 	static $has_one = array(
 		"Agent" => "WebPortfolioAgent",
-		"Screenshot" => "Image"
+		"Screenshot" => "Image",
+
 	);
 
 	static $many_many = array(
-		"WhatWeDid" => "WebPortfolioWhatWeDidDescriptor"
+		"WhatWeDid" => "WebPortfolioWhatWeDidDescriptor",
+	);
+
+	static $belongs_many_many = array(
+		"WhatWeDid" => "WebPortfolioWhatWeDidDescriptor",
 	);
 
 	static $defaults = array(
@@ -37,7 +46,7 @@ class WebPortfolioItem extends DataObject {
 		"Favourites" => false
 	);
 
-	public static $default_sort = "WebAddress";
+	public static $default_sort = "Favourites DESC, Created DESC";
 
 	public static $searchable_fields = array(
 		"WebAddress",
@@ -56,5 +65,6 @@ class WebPortfolioItem extends DataObject {
 	public static $singular_name = "Item";
 
 	public static $plural_name = "Items";
+
 
 }

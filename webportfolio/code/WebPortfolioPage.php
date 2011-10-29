@@ -17,35 +17,20 @@ class WebPortfolioPage extends Page {
 
 	public static $has_one = array();
 
-	public static $has_many = array(
-		"PortfolioItem" => "PortfolioItem"
+	public static $many_many = array(
+		"WebPortfolioItems" => "WebPortfolioItem"
 	);
 
 	public function getCMSFields() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Content.Portfolio",
-			new HasManyComplexTableField(
+			new ManyManyComplexTableField(
 				$controller = $this,
-				$name = "PortfolioItem",
-				$sourceClass = "PortfolioItem",
-				$fieldList,
-				$detailFormFields = null,
-				$sourceFilter = "{$bt}PortfolioItem{$bt}.{$bt}ParentID{$bt} = ".$this->ID,
-				$sourceSort = "",
-				$sourceJoin = ""
+				$name = "WebPortfolioItems",
+				$sourceClass = "WebPortfolioItem"
 			)
 		);
 		return $fields;
-	}
-
-	function canCreate() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		return !DataObject::get("SiteTree", "{$bt}ClassName{$bt} = 'WebPortfolioPage'");
-	}
-
-	function canDelete() {
-		return false;
 	}
 
 
@@ -56,6 +41,7 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		PrettyPhoto::include_code();
 		Requirements::javascript("webportfolio/javascript/webportfolio.js");
 		Requirements::themedCSS("WebPortfolioPage");
 	}

@@ -1,0 +1,6 @@
+#WebPortfolioItems {list-style: none; margin-left: 0px; padding-left: 0px;}
+#WebPortfolioItems li {background-image: none; margin-left: 0px; padding-left: 0px; list-style-image: none; clear: left; padding-top: 20px}
+#WebPortfolioItems li img{float: left;}
+#WebPortfolioItems li .portFolioItem{margin-left: 295px}
+#WebPortfolioItems li span{display: block; font-size: 0.8em;}
+#WebPortfolioItems li span.notes{padding-top: 20px;}
