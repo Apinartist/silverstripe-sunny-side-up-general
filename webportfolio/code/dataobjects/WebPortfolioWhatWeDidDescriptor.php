@@ -57,6 +57,16 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 				$fields->addFieldToTab("Root.Merge", new DropdownField("MergeID", "Merge <i>$this->Name</i> into:", $dosArray));
 			}
 		}
+		$dos = DataObject::get("WebPortfolioItem");
+		if($dos && $this->ID) {
+			$dosArray = $dos->toDropDownMap();
+			$fields->addFieldsToTab(
+				"Root.WebPortfolioItem",
+				array(
+					new CheckboxSetField("WebPortfolioItem", "Carried out for", $dosArray)
+				)
+			);
+		}
 		return $fields;
 	}
 
