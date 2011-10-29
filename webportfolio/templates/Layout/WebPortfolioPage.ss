@@ -1,4 +1,8 @@
-$Content
+<div id="MainContentSection">
+	<h1 id="PageTitle">$Title</h1>
+	$Content
+</div>
+
 <% if SelectedWebPortfolioItems %>
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
