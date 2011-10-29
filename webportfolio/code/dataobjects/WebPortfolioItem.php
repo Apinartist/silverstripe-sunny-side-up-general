@@ -63,6 +63,10 @@ class WebPortfolioItem extends DataObject {
 		"Client"
 	);
 
+	public static $casting = array(
+		"Title" => "Varchar"
+	);
+
 	public static $singular_name = "Item";
 
 	public static $plural_name = "Items";
@@ -112,6 +116,11 @@ class WebPortfolioItem extends DataObject {
 				}
 			}
 		}
+	}
+
+	function Title() {return $this->getTitle();}
+	function getTitle() {
+		return $this->WebAddress;
 	}
 
 }
