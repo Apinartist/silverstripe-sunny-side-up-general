@@ -54,8 +54,8 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		$code = Convert::raw2sql($this->request->param("ID"));
 		if($code) {
 			$obj = DataObject::get_one("WebPortfolioWhatWeDidDescriptor", "\"Code\" = '$code'");
-			$this->Title .= " (".$obj->Name.")";
-			$this->MetaTitle .= " (".$obj->Name.")";
+			$this->Title .= " - ".$obj->Name;
+			$this->MetaTitle .= " - ".$obj->Name;
 			if($obj) {
 				$components = $obj->getManyManyComponents('WebPortfolioItem');
 				if($components && $components->count()) {
