@@ -20,7 +20,8 @@ class WebPortfolioItem extends DataObject {
 		"Notes" => "Varchar(255)",
 		"Client" => "Varchar(255)",
 		"Design" => "Varchar(255)",
-		"Coding" => "Varchar(255)",
+		"CodingFrontEnd" => "Varchar(255)",
+		"CodingBackEnd" => "Varchar(255)",
 		"Copy" => "Varchar(255)",
 		"Photography" => "Varchar(255)",
 		"ScreenshotTaken" => "Date"

@@ -31,8 +31,12 @@ $Content
 				<span class="design"><strong>Design:</strong> $Design</span>
 			<% end_if %>
 
-			<% if Coding %>
-				<span class="coding"><strong>Coding:</strong> $Coding</span>
+			<% if CodingFrontEnd %>
+				<span class="coding"><strong>Interaction coding:</strong> $CodingFrontEnd</span>
+			<% end_if %>
+
+			<% if CodingBackEnd %>
+				<span class="coding"><strong>Functionality coding:</strong> $CodingBackEnd</span>
 			<% end_if %>
 
 			<% if Copy %>
