@@ -1,5 +1,5 @@
 <% if FilterList %>
-<div id="SideBar">
+<div id="Sidebar">
 	<div class="sidebarBox filterList">
 		<ul>
 	<% control FilterList %>
@@ -10,13 +10,6 @@
 </div>
 <% end_if %>
 
-
-<div id="ShoppingCart">
-	<h3 id="CartHeader">My Cart</h3>
-
-		<p class="noItems">There are no items in your cart.</p>
-
-</div>
 
 
 <div id="MainContentSection">
