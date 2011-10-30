@@ -48,11 +48,13 @@ class WebPortfolioPage_Controller extends Page_Controller {
 
 	protected $IDArray = array();
 	protected $hasFilter = false;
+	protected $currentCode = "";
 
 	function show(){
 		$this->hasFilter = true;
 		$code = Convert::raw2sql($this->request->param("ID"));
 		if($code) {
+			$this->currentCode = $code;
 			$obj = DataObject::get_one("WebPortfolioWhatWeDidDescriptor", "\"Code\" = '$code'");
 			$this->Title .= " - ".$obj->Name;
 			$this->MetaTitle .= " - ".$obj->Name;
@@ -101,7 +103,16 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	}
 
 	function FilterList() {
-		DataObject::get("WebPortfolioWhatWeDidDescriptor", null, null, " INNER JOIN \"WebPortfolioItem_WhatWeDid\" ON \"WebPortfolioItem_WhatWeDid\".\"WebPortfolioWhatWeDidDescriptorID\" = \"WebPortfolioWhatWeDidDescriptor\".\"ID\"");
+		$items = DataObject::get("WebPortfolioWhatWeDidDescriptor", null, null, " INNER JOIN \"WebPortfolioItem_WhatWeDid\" ON \"WebPortfolioItem_WhatWeDid\".\"WebPortfolioWhatWeDidDescriptorID\" = \"WebPortfolioWhatWeDidDescriptor\".\"ID\"");
+		foreach($items as $item) {
+			if($item->Code == $this->currentCode ) {
+				$item->LinkingMode = "current";
+			}
+			else {
+				$item->LinkingMode = "link";
+			}
+		}
+		return $items;
 	}
 
 }

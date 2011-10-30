@@ -2,7 +2,13 @@
 	<h1 id="PageTitle">$Title</h1>
 	$Content
 </div>
-
+<% if FilterList %>
+<ul>
+	<% control FilterList %>
+	<li class="$LinkingMode"><a href="$Link">$Name</a></li>
+	<% end_control %>
+</ul>
+<% end_if %>
 <% if SelectedWebPortfolioItems %>
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
