@@ -21,7 +21,7 @@
 					<% if NotPubliclyAvailable %>
 					This site is not publicly available.
 					<% else %>
-					<a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a> -
+					<strong>Site:</strong> <a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a> -
 					<% end_if %>
 				<% end_if %>
 				<% if Notes %>$Notes<% end_if %>
