@@ -13,7 +13,7 @@ body {
 		#Nav {} /* see MENU.CSS spreadsheet */
 		#Breadcrumbs {text-align: right; padding: 7px; position: absolute; top: 0; font-size: 12px; }
 		#SidebarSection {width: 200px; float: right; padding: 67px 20px 0 0;}
-		#Layout {padding: 67px 270px 500px 210px; max-width: 770px;}
+		#Layout {padding: 67px 270px 50px 210px; max-width: 770px;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
 
@@ -25,7 +25,7 @@ body {
 #Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside; list-style-image: none;}
 #Sidebar ul li.current a{color: #317010 !important;}
 
-#Footer {clear: both; padding-top: 40px; }
+#Footer {clear: both; padding-top: 300px; }
 .backToTop {font-size: 0.75em; float: right; padding-bottom: 10px; }
 .backToTop a{ text-decoration: none!important;}
 #CopyrightMessage {border-top: 1px solid #d6dbdb;font-size: 0.75em; clear: right}
