@@ -74,11 +74,19 @@ class WebPortfolioPage_Controller extends Page_Controller {
 			if(!count($this->IDArray)) {
 				$this->IDArray = array(0 => 0);
 			}
-			return DataObject::get("WebPortfolioItem", "\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).")");
 		}
 		else {
+				$components = $obj->getManyManyComponents('WebPortfolioItem');
+				if($components && $components->count()) {
+					$this->IDArray = $components->column("ID");
+				}
 			return $this->WebPortfolioItems();
 		}
+		return DataObject::get(
+			"WebPortfolioItem",
+			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).")",
+			"Favourites DESC, RAND()"
+		);
 	}
 
 	function HasFilter(){
