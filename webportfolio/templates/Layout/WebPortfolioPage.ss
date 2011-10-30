@@ -21,12 +21,10 @@
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
 	<li class="$EvenOdd $FirstLast">
-		<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" title="$Client.ATT">
+		<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" title="website for $Client.ATT">
 			<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
 		</a>
 		<div class="portFolioItem">
-
-			<div class="webPortfolioMoreInfo">
 
 			<span class="notes">
 				<% if NoLongerAvailable %>
@@ -41,6 +39,7 @@
 				<% if Notes %>$Notes<% end_if %>
 			</span>
 
+			<div class="webPortfolioMoreInfo">
 
 			<% if Client %>
 				<span class="client"><strong>Client:</strong> $Client</span>
@@ -91,6 +90,6 @@
 <% end_control %>
 </ul>
 <% end_if %>
-<% if HasFilter %><p class="returnToNormal"><a href="$Link">show all items for <i>$MenuTitle</i></a></p><% end_if %>
+<% if HasFilter %><p class="returnToNormal"><a href="$Link">show all items in <i>$MenuTitle</i></a></p><% end_if %>
 $Form
 $PageComments

@@ -93,8 +93,9 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		}
 		return DataObject::get(
 			"WebPortfolioItem",
-			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).")",
-			"Favourites DESC, RAND()"
+			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).") AND \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioPageID\" = ".$this->ID,
+			"Favourites DESC, RAND()",
+			" INNER JOIN \"WebPortfolioPage_WebPortfolioItems\" ON \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioItemID\" = \"WebPortfolioItem\".\"ID\""
 		);
 	}
 
