@@ -16,22 +16,6 @@
 
 
 			<% if Client %>
-				<span class="client">
-					<strong>Website for:</strong>
-				<% if NoLongerAvailable %>
-					This site no longer available
-				<% else %>
-					<% if NotPubliclyAvailable %>
-					This site is not publicly available
-					<% else %>
-					<a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a>
-					<% end_if %>
-				</span>
-				<% end_if %>
-
-			<% end_if %>
-
-			<% if Client %>
 				<span class="client"><strong>Client:</strong> $Client</span>
 			<% end_if %>
 
@@ -72,10 +56,20 @@
 
 			</div>
 
+			<span class="notes">
+				<% if NoLongerAvailable %>
+					This site no longer available.
+				<% else %>
+					<% if NotPubliclyAvailable %>
+					This site is not publicly available.
+					<% else %>
+					<a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a> -
+					<% end_if %>
+				</span>
+				<% end_if %>
+				<% if Notes %>$Notes<% end_if %>
+			</span>
 
-		<% if Notes %>
-			<span class="notes">$Notes</span>
-		<% end_if %>
 
 		</div>
 	</li>
