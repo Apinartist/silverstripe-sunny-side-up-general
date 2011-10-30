@@ -100,4 +100,8 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		return $this->hasFilter;
 	}
 
+	function FilterList() {
+		DataObject::get("WebPortfolioWhatWeDidDescriptor", null, null, " INNER JOIN \"WebPortfolioItem_WhatWeDid\" ON \"WebPortfolioItem_WhatWeDid\".\"WebPortfolioWhatWeDidDescriptorID\" = \"WebPortfolioWhatWeDidDescriptor\".\"ID\"");
+	}
+
 }
