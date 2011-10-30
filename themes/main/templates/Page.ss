@@ -11,6 +11,10 @@
  		<div id="Layout" class="typography">
 			<% include Breadcrumbs %>
 			$Layout
+			<div id="Footer">
+				<span class="backToTop"><a href="#Wrapper">back to top</a></span>
+				<p id="CopyrightMessage">&copy; The copyright for this design (theme) belongs to Sunny Side Up Ltd. All rights reserved.</p>
+			</div>
 		</div>
 	</div>
 	<% include ShareThis %>
