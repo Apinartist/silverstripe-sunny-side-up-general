@@ -2,6 +2,6 @@
 #WebPortfolioItems li {background-image: none; margin-left: 0px; padding-left: 0px; list-style-image: none; clear: left; padding-top: 20px}
 #WebPortfolioItems li img{float: left;}
 #WebPortfolioItems li .portFolioItem{margin-left: 280px}
-#WebPortfolioItems li span{display: block; font-size: 0.8em;}
-#WebPortfolioItems li span.notes{padding-bottom: 20px;}
+#WebPortfolioItems li span{display: block; font-size: 0.75em;}
+#WebPortfolioItems li span.notes{padding-bottom: 20px; }
 .returnToNormal {clear: left}
