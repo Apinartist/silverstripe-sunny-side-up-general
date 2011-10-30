@@ -11,8 +11,6 @@
 <% end_if %>
 
 
-<div id="Sidebar">
-
 <div id="ShoppingCart">
 	<h3 id="CartHeader">My Cart</h3>
 
