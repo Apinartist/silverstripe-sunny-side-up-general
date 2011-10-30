@@ -2,6 +2,7 @@
 <div id="Sidebar">
 	<div class="sidebarBox filterList">
 		<ul>
+			<li class="$LinkingMode"><a href="$Link">All</a></li>
 	<% control FilterList %>
 			<li class="$LinkingMode"><a href="$Link">$Name</a></li>
 	<% end_control %>
