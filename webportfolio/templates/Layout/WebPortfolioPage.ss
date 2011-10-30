@@ -1,14 +1,30 @@
+<% if FilterList %>
+<div id="SideBar">
+	<div class="sidebarBox filterList">
+		<ul>
+	<% control FilterList %>
+			<li class="$LinkingMode"><a href="$Link">$Name</a></li>
+	<% end_control %>
+		</ul>
+	</div>
+</div>
+<% end_if %>
+
+
+<div id="Sidebar">
+
+<div id="ShoppingCart">
+	<h3 id="CartHeader">My Cart</h3>
+
+		<p class="noItems">There are no items in your cart.</p>
+
+</div>
+
+
 <div id="MainContentSection">
 	<h1 id="PageTitle">$Title</h1>
 	$Content
 </div>
-<% if FilterList %>
-<ul>
-	<% control FilterList %>
-	<li class="$LinkingMode"><a href="$Link">$Name</a></li>
-	<% end_control %>
-</ul>
-<% end_if %>
 <% if SelectedWebPortfolioItems %>
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
