@@ -19,16 +19,20 @@
 				<span class="client">
 					<strong>Website for:</strong>
 				<% if NoLongerAvailable %>
-					$Client - site no longer available
+					This site no longer available
 				<% else %>
 					<% if NotPubliclyAvailable %>
-					$Client - this site is not publicly available
+					This site is not publicly available
 					<% else %>
-					<a href="$WebAddress.URL" class="webPortfolioShowMore">$Client</a>
+					<a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a>
 					<% end_if %>
 				</span>
 				<% end_if %>
 
+			<% end_if %>
+
+			<% if Client %>
+				<span class="client"><strong>Client:</strong> $Client</span>
 			<% end_if %>
 
 			<% if Design %>
@@ -54,7 +58,7 @@
 
 			<% if WhatWeDid %>
 				<span class="whatWeDid"><strong>Work completed:</strong>
-					<% control WhatWeDid %><a href="$Link">$Name</a><% if Last %>.<% else %>, <% end_if %><% end_control %>
+					<% control WhatWeDid %><a href="$Link"<% if Description %> title="$Description.ATT"<% end_if %>>$Name</a><% if Last %>.<% else %>, <% end_if %><% end_control %>
 				</span>
 			<% end_if %>
 
@@ -63,7 +67,7 @@
 			<% end_if %>
 
 			<% if ScreenshotTaken %>
-				<span class="screenshotTaken"><strong>Screenshot taken:</strong> $ScreenshotTaken.Nice</span>
+				<span class="screenshotTaken"><strong>Screenshot taken:</strong> $ScreenshotTaken.Year</span>
 			<% end_if %>
 
 			</div>
