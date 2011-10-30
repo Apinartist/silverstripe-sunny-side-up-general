@@ -68,19 +68,26 @@ class WebPortfolioPage_Controller extends Page_Controller {
 
 	function SelectedWebPortfolioItems(){
 		if($this->hasFilter) {
-			if(!is_array($this->IDArray)) {
-				$this->IDArray = array(0 => 0);
-			}
-			if(!count($this->IDArray)) {
-				$this->IDArray = array(0 => 0);
-			}
+
 		}
 		else {
-				$components = $obj->getManyManyComponents('WebPortfolioItem');
-				if($components && $components->count()) {
-					$this->IDArray = $components->column("ID");
-				}
-			return $this->WebPortfolioItems();
+			$components = $this->getManyManyComponents('WebPortfolioItems');
+			if($components && $components->count()) {
+				$this->IDArray = $components->column("ID");
+			}
+		}
+		$reset = false;
+		if(!$this->IDArray) {
+			$reset = true;
+		}
+		elseif(!is_array($this->IDArray)) {
+			$reset = true;
+		}
+		elseif(!count($this->IDArray)) {
+			$reset = true;
+		}
+		if($reset) {
+			$this->IDArray = array(0 => 0);
 		}
 		return DataObject::get(
 			"WebPortfolioItem",
