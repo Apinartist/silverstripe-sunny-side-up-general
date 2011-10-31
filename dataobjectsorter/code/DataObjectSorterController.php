@@ -62,7 +62,7 @@ class DataObjectSorterController extends Controller{
 					}
 				}
 				else {
-						user_error("No objects could be found that matched: select from ".$class." where ".$where, E_USER_WARNING);
+					return null;
 				}
 			}
 			else {
