@@ -44,7 +44,18 @@
 .typography blockquote{ padding: 0 30px 0 70px; font-style: italic; background-image: url(/themes/main/images/blockquote_start.png); background-repeat: no-repeat; background-position: 0 0; font-size: 1.3em;}
 	.typography blockquote p {font-size: 1em;}
 .typography address {font-style: italic; margin-left: 3em; font-family: 'courier new', courier, monospace}
-.typography pre {font-family: "courier new", courier, monospace; line-height: 1.5; font-size: 1em; padding: 0.7em; background-color: #B5AB8B; margin: 0.3em 0; text-indent: -0.3em; color: beige; line-height: 0.8}
+.typography pre {font-family: "courier new", courier, monospace; line-height: 1.7; font-size: 0.7em; padding: 0.7em; margin: 0.3em 0;
+	background-color: #f7f7f7;
+	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
+	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
+	background-position:10px center;
+	background-repeat:no-repeat;
+	border:           1px solid #fff;
+	border-radius:    10px;
+	-moz-border-radius:10px;
+	-moz-box-shadow:   0px 1px 2px rgba(97,108,125,0.4), inset 0 1px 1px rgba(255,255,255,0.8);
+	-webkit-box-shadow:0px 1px 2px rgba(97,108,125,0.4), inset 0 1px 1px rgba(255,255,255,0.8);
+}
 
 /* tables */
 .typography table{margin: 1em 0; width: 80%; margin-left: auto; margin-right: auto;}
