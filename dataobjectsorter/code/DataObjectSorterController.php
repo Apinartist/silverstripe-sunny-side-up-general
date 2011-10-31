@@ -48,13 +48,7 @@ class DataObjectSorterController extends Controller{
 				elseif(is_numeric($filterField)) {
 					$where = "{$bt}ParentID{$bt} = '$filterField'";
 				}
-				$sort = "";
-				if(DataObjectSorterDOD::get_do_not_add_alternative_sort_field()) {
-					$sort = "{$bt}Sort{$bt} ASC";
-				}
-				else{
-					$sort = "{$bt}AlternativeSortNumber{$bt} ASC";
-				}
+				$sort = "{$bt}Sort{$bt} ASC";
 				$objects = DataObject::get($class, $where, $sort);
 				if($objects && $objects->count()) {
 					foreach($objects as $obj) {

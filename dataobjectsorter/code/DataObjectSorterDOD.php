@@ -8,28 +8,18 @@
 
 class DataObjectSorterDOD extends DataObjectDecorator {
 
+	static function set_also_update_sort_field($b) {user_error("This method has been depreciated", E_USER_NOTICE);}
 
-	protected static $also_update_sort_field = false;
-		static function set_also_update_sort_field($v) {self::$also_update_sort_field = $v;}
-		static function get_also_update_sort_field() {return self::$also_update_sort_field;}
-
-	protected static $do_not_add_alternative_sort_field = false;
-		static function set_do_not_add_alternative_sort_field($v) {self::$do_not_add_alternative_sort_field = $v;}
-		static function get_do_not_add_alternative_sort_field() {return self::$do_not_add_alternative_sort_field;}
+	static function set_do_not_add_alternative_sort_field($b) {user_error("This method has been depreciated", E_USER_NOTICE);}
 
 	function extraStatics(){
 		//this is not actually working because in dev/build, this statement is executed BEFORE the settting above is applied!
 		//maybe add field in another way????
-		if(self::$do_not_add_alternative_sort_field) {
-			return array();
-		}
-		else {
-			return array(
-				'db' =>   array(
-					"AlternativeSortNumber" => "Int"
-				)
-			);
-		}
+		return array(
+			'db' =>   array(
+				"Sort" => "Int"
+			)
+		);
 	}
 
 
@@ -43,12 +33,7 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 		if($this->owner->canEdit()) {
 			$extraSet = '';
 			$extraWhere = '';
-			if(self::$do_not_add_alternative_sort_field) {
-				$field = "Sort";
-			}
-			else {
-				$field = "AlternativeSortNumber";
-			}
+			$field = "Sort";
 			$baseDataClass = ClassInfo::baseDataClass($this->owner->ClassName);
 			if($baseDataClass) {
 				if(isset ($_REQUEST["dos"])) {
@@ -56,15 +41,11 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 						$i++;
 						$position = intval($position);
 						$id = intval($id);
-						if(self::$also_update_sort_field && !self::$do_not_add_alternative_sort_field) {
-							$extraSet = ", {$bt}".$baseDataClass."{$bt}.{$bt}Sort{$bt} = ".$position;
-							$extraWhere = " OR {$bt}".$baseDataClass."{$bt}.{$bt}Sort{$bt} <> ".$position;
-						}
 						$sql = "
 							UPDATE {$bt}".$baseDataClass."{$bt}
-							SET {$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} = ".$position. " ".$extraSet."
+							SET {$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} = ".$position. "
 							WHERE {$bt}".$baseDataClass."{$bt}.{$bt}ID{$bt} = ".$id."
-								AND ({$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} <> ".$position." ".$extraWhere.")
+								AND ({$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} <> ".$position." )
 							LIMIT 1;";
 						//echo $sql .'<hr />';
 						DB::query($sql);
@@ -87,14 +68,14 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 	 *legacy function
 	 **/
 
-	function dataObjectSorterPopupLink($filterField, $filterValue) {
-		return DataObjectSorterController::popup_link($this->owner->ClassName, $filterField, $filterValue, $linkText = "sort this list");
+	function dataObjectSorterPopupLink($filterField = '', $filterValue = '') {
+		return DataObjectSorterController::popup_link($this->owner->ClassName, $filterField, $filterValue, $linkText = "Sort ".$this->owner->plural_name());
 	}
 
 	function updateCMSFields(&$fields) {
-		if(self::$do_not_add_alternative_sort_field) {
-			$fields->removeFieldFromTab("Root.Main", "AlternativeSortNumber");
-		}
+		$fields->removeFieldFromTab("Root.Main", "Sort");
+		$link = self::dataObjectSorterPopupLink();
+		$fields->addFieldToTab("Root.Sort", new LiteralField("DataObjectSorterPopupLink", $link));
 	}
 
 }
