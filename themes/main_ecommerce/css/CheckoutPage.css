@@ -26,5 +26,5 @@
 
 #InformationTable {width: auto!important;}
 
-#CartPageMessage  {margin: 20px;}
-#CartPageMessage p {font-size: 12px!important; line-height: 1.5;}
+#CartPageMessage  {margin-top: 20px; margin-bottom: 20px; }
+#CartPageMessage p {font-size: 12px!important; padding: 0px; padding-left: 10px;}
