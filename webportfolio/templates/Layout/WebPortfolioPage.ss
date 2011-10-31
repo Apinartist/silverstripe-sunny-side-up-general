@@ -5,7 +5,7 @@
 			<li class="<% if HasFilter %>link<% else %>current<% end_if %>"><a href="$Link">All</a></li>
 	<% control FilterList %>
 			<li class="$LinkingMode"><a href="$Link">$Name</a>
-	<% if LinkingMode = current %><span>$Decription</span><% end_if %>
+	<% if LinkingMode = current %><span>$Description</span><% end_if %>
 			</li>
 	<% end_control %>
 		</ul>
