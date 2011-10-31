@@ -4,7 +4,9 @@
 		<ul>
 			<li class="<% if HasFilter %>link<% else %>current<% end_if %>"><a href="$Link">All</a></li>
 	<% control FilterList %>
-			<li class="$LinkingMode"><a href="$Link">$Name</a></li>
+			<li class="$LinkingMode"><a href="$Link">$Name</a>
+	<% if LinkingMode = current %><span>$Decription</span><% end_if %>
+			</li>
 	<% end_control %>
 		</ul>
 	</div>
@@ -28,18 +30,18 @@
 
 			<span class="notes">
 				<% if NoLongerAvailable %>
-					This site no longer available.
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> is no longer available.
 				<% else %>
 					<% if NotPubliclyAvailable %>
-					This site is not publicly available.
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> is not publicly available.
 					<% else %>
-					<a href="$WebAddress.URL" class="webPortfolioShowMore">$WebAddress</a> -
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">$WebAddress</a>
 					<% end_if %>
 				<% end_if %>
-				<% if Notes %>$Notes<% end_if %>
+				<% if Notes %> - $Notes<% end_if %>
 			</span>
 
-			<div class="webPortfolioMoreInfo">
+			<div class="webPortfolioMoreInfo" id="WebPortfolioItem$ID">
 
 			<% if Client %>
 				<span class="client"><strong>Client:</strong> $Client</span>
@@ -80,10 +82,17 @@
 				<span class="screenshotTaken"><strong>Screenshot taken:</strong> $ScreenshotTaken.Year</span>
 			<% end_if %>
 
+			<span class="visit">
+				<% if NoLongerAvailable %>
+				<% else %>
+					<% if NotPubliclyAvailable %>
+					<% else %>
+					<strong>Visit:</strong> <a href="$WebAddress.URL">$WebAddress.URL</a>
+					<% end_if %>
+				<% end_if %>
+			</span>
+
 			</div>
-
-
-
 
 		</div>
 	</li>
