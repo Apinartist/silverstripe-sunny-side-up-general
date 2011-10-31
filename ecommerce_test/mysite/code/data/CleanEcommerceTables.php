@@ -116,11 +116,6 @@ VirtualPage
 VirtualPage_Live
 VirtualPage_versions
 WeightShippingModifier
-*/
-
-
-class CleanEcommerceTables extends Controller {
-
 	protected $Tarray = array(
 		"Order",
 		"OrderAttribute",
@@ -166,6 +161,11 @@ class CleanEcommerceTables extends Controller {
 
 	);
 
+*/
+
+
+class CleanEcommerceTables extends Controller {
+
 	function init() {
 		parent::init();
 		if(!Permission::check("ADMIN")) {
@@ -185,25 +185,5 @@ class CleanEcommerceTables extends Controller {
 	}
 
 
-
-	function deleteall () {
-
-		foreach($this->Tarray as $t) {
-			if(mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$t."'"))) {
-				DB::query("DROP TABLE IF EXISTS \"$t\"");
-				DB::alteration_message("deleted $t", "deleted");
-			}
-			else {
-				DB::alteration_message("could not find $t", "edited");
-			}
-			if(mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$t."'"))) {
-				DB::query("DROP TABLE IF EXISTS \"$t\"");
-				DB::alteration_message("deleted $t", "deleted");
-			}
-			else {
-				DB::alteration_message("could not find $t", "edited");
-			}
-		}
-	}
 
 }

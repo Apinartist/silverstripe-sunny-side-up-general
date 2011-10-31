@@ -774,17 +774,22 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$order->ShippingAddressID = $shippingAddress->ID;
 
 		//get a random product
-		$product = DataObject::get_one("Product");
-		$triedArray = array($product->ID);
 		$extension = "";
 		if(Versioned::current_stage() == "Live") {
 			$extension = "_Live";
 		}
 		$count = 0;
-		while($product && !$product->canPurchase() && $count < 50) {
-			$product = DataObject::get_one("Product", "\"ClassName\" = 'Product' AND \"Product{$extension}\".\"ID\" NOT IN (".implode(",", $triedArray).")");
+		$noProductYet = true;
+		$triedArray = array(0 => 0);
+		while($noProductYet && $count < 50) {
+			$product = DataObject::get_one("Product", "\"ClassName\" = 'Product' AND \"Product{$extension}\".\"ID\" NOT IN (".implode(",", $triedArray).") AND Price > 0");
 			if($product) {
-				$triedArray[] = $product->ID;
+				if($product->canPurchase()) {
+					$noProductYet = false;
+				}
+				else {
+					$triedArray[] = $product->ID;
+				}
 			}
 			$count++;
 		}
@@ -866,72 +871,72 @@ class DefaultRecordsForEcommerce extends DataObject {
 		<p>As part of this demo, we automatically add an order - as follows:</p>
 		<pre>
 		$order = new Order();
-		$order->UseShippingAddress = true;
-		$order->CustomerOrderNote = "THIS IS AN AUTO-GENERATED ORDER";
-		$order->write();
+		$order-&gt;UseShippingAddress = true;
+		$order-&gt;CustomerOrderNote = "THIS IS AN AUTO-GENERATED ORDER";
+		$order-&gt;write();
 
 		$member = new Member();
-		$member->FirstName = \'Tom\';
-		$member->Surname = \'Cruize\';
-		$member->Email = \'tom@silverstripe-ecommerce.com\';
-		$member->Password = \'test123\';
-		$member->write();
-		$order->MemberID = $member->ID;
+		$member-&gt;FirstName = \'Tom\';
+		$member-&gt;Surname = \'Cruize\';
+		$member-&gt;Email = \'tom@silverstripe-ecommerce.com\';
+		$member-&gt;Password = \'test123\';
+		$member-&gt;write();
+		$order-&gt;MemberID = $member-&gt;ID;
 
 		$billingAddress = new BillingAddress();
-		$billingAddress->Prefix = "Dr";
-		$billingAddress->FirstName = "Tom";
-		$billingAddress->Surname = "Cruize";
-		$billingAddress->Address = "Lamp Drive";
-		$billingAddress->Address2 = "Linux Mountain";
-		$billingAddress->City = "Apache Town";
-		$billingAddress->PostalCode = "555";
-		$billingAddress->Country = "NZ";
-		$billingAddress->Phone = "555 5555555";
-		$billingAddress->MobilePhone = "444 44444";
-		$billingAddress->Email = "tom@silverstripe-ecommerce.com";
-		$billingAddress->write();
-		$order->BillingAddressID = $billingAddress->ID;
+		$billingAddress-&gt;Prefix = "Dr";
+		$billingAddress-&gt;FirstName = "Tom";
+		$billingAddress-&gt;Surname = "Cruize";
+		$billingAddress-&gt;Address = "Lamp Drive";
+		$billingAddress-&gt;Address2 = "Linux Mountain";
+		$billingAddress-&gt;City = "Apache Town";
+		$billingAddress-&gt;PostalCode = "555";
+		$billingAddress-&gt;Country = "NZ";
+		$billingAddress-&gt;Phone = "555 5555555";
+		$billingAddress-&gt;MobilePhone = "444 44444";
+		$billingAddress-&gt;Email = "tom@silverstripe-ecommerce.com";
+		$billingAddress-&gt;write();
+		$order-&gt;BillingAddressID = $billingAddress-&gt;ID;
 
 		$shippingAddress = new ShippingAddress();
-		$shippingAddress->ShippingPrefix = "Dr";
-		$shippingAddress->ShippingFirstName = "Tom";
-		$shippingAddress->ShippingSurname = "Cruize";
-		$shippingAddress->ShippingAddress = "Lamp Drive";
-		$shippingAddress->ShippingAddress2 = "Linux Mountain";
-		$shippingAddress->ShippingCity = "Apache Town";
-		$shippingAddress->ShippingPostalCode = "555";
-		$shippingAddress->ShippingCountry = "NZ";
-		$shippingAddress->ShippingPhone = "555 5555555";
-		$shippingAddress->ShippingMobilePhone = "444 44444";
-		$shippingAddress->write();
-		$order->ShippingAddressID = $shippingAddress->ID;
+		$shippingAddress-&gt;ShippingPrefix = "Dr";
+		$shippingAddress-&gt;ShippingFirstName = "Tom";
+		$shippingAddress-&gt;ShippingSurname = "Cruize";
+		$shippingAddress-&gt;ShippingAddress = "Lamp Drive";
+		$shippingAddress-&gt;ShippingAddress2 = "Linux Mountain";
+		$shippingAddress-&gt;ShippingCity = "Apache Town";
+		$shippingAddress-&gt;ShippingPostalCode = "555";
+		$shippingAddress-&gt;ShippingCountry = "NZ";
+		$shippingAddress-&gt;ShippingPhone = "555 5555555";
+		$shippingAddress-&gt;ShippingMobilePhone = "444 44444";
+		$shippingAddress-&gt;write();
+		$order-&gt;ShippingAddressID = $shippingAddress-&gt;ID;
 
 		//get a random product
 		$product = DataObject::get_one("Product");
-		$triedArray = array($product->ID);
+		$triedArray = array($product-&gt;ID);
 		$extension = "";
 		if(Versioned::current_stage() == "Live") {
 			$extension = "_Live";
 		}
 		$count = 0;
-		while($product && !$product->canPurchase() && $count < 50) {
+		while($product && !$product-&gt;canPurchase() && $count &lt; 50) {
 			$product = DataObject::get_one("Product", "\"ClassName\" = \'Product\' AND \"Product{$extension}\".\"ID\" NOT IN (".implode(",", $triedArray).")");
 			if($product) {
-				$triedArray[] = $product->ID;
+				$triedArray[] = $product-&gt;ID;
 			}
 			$count++;
 		}
 
 		//adding product order item
 		$item = new Product_OrderItem();
-		$item->Quantity = 7;
-		$item->BuyableID = $product->ID;
-		$item->OrderID = $order->ID;
-		$item->write();
+		$item-&gt;Quantity = 7;
+		$item-&gt;BuyableID = $product-&gt;ID;
+		$item-&gt;OrderID = $order-&gt;ID;
+		$item-&gt;write();
 		//final save
-		$order->write();
-		$order->tryToFinaliseOrder();
+		$order-&gt;write();
+		$order-&gt;tryToFinaliseOrder();
 		</pre>
 		';
 		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
