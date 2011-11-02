@@ -75,7 +75,7 @@ Geoip::$default_country_code = 'NZ';
 //OR
 //i18n::set_locale('en_NZ');
 //Object::useCustomClass('SS_Datetime','ZendDate',true);
-//Currency::setCurrencySymbol("");
+Currency::setCurrencySymbol("€");
 
 // * * * SHOPPING CART AND ORDER
 EcomQuantityField::set_hide_plus_and_minus(false);
