@@ -141,7 +141,7 @@ class HideMailto_Controller extends ContentController {
 			$domain = urldecode(Director::urlParam('URL'));
 			$subject = Director::urlParam('Subject');
 		}
-
+		$emailString = "mailto: $user@$domain?subject=".$subject;
 		// Make sure the domain is in the allowed domains
 		if((is_string(self::$allowed_domains) && self::$allowed_domains == '*') || in_array($domain, self::$allowed_domains)) {
 			// Create the redirect
