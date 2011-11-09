@@ -147,7 +147,7 @@ class HideMailto_Controller extends ContentController {
 			// Create the redirect
 			header("Location: " . $emailString);
 			header("Refresh: 0; url=". $emailString);
-			echo $this->customise(array("RedirectBackURL" => $this->RedirectBackURL(), "Email" => $this->makeMailtoString($user, $domain, $subject))->renderWith("HideMailto");
+			echo $this->customise(array("RedirectBackURL" => $this->RedirectBackURL(), "Email" => $this->makeMailtoString($user, $domain, $subject)))->renderWith("HideMailto");
 			$emailString = $this->makeMailtoString($user, $domain, $subject);
 
 		}
