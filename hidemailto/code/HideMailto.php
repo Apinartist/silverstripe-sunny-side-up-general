@@ -137,8 +137,8 @@ class HideMailto_Controller extends ContentController {
 		}
 		else {
 			// Action is not numeric, assume that Action is the username, ID is the domain and optional OtherID is the email subject
-			$user = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('Name')));
-			$domain = str_replace(HideMailto::get_dot_replacer(), ".", urldecode(Director::urlParam('URL')));
+			$user = urldecode(Director::urlParam('Name'));
+			$domain = urldecode(Director::urlParam('URL'));
 			$subject = Director::urlParam('Subject');
 		}
 
