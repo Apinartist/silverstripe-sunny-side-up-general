@@ -73,22 +73,42 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Sunny Side Up Silverstripe E-commerce Demo",
 				"MenuTitle" => "Home",
 				"Content" => "
+				<h2>What is this?</h2>
 				<p>
-					This is a demo site for the Silverstripe E-commerce, developed by Sunny Side Up.
-					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <br />
-					<a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
-				</p><p>
-					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
-					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe Ecommerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
+					This is a demo site for the Silverstripe E-commerce, developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a>.
+					It is based on the Silverstripe e-commerce project, but includes a bunch of advanced code.
+					It has been created to showcase what you can do with e-commerce, to test and review features, and to promote our work.
 				</p>
+				<h2>Thank you</h2>
 				<p>
+					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
+					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe E-commerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
+				</p>
+				<h2>Login details</h2>
+				<p>
+					You can <a href=\"admin/shop/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
+				</p>
+				<h2>Testing</h2>
+				<p>
+					This site can reset itself so please go ahead and try whatever you want.
+					At any time you can <a href=\"/shoppingcart/clear/\">reset the shopping cart</a> to start a new order.
+					Also, make sure to <a href=\"admin/shop/\">open the cms</a> (see login details above).
 					If you have some feedback then please <a href=\"/about-us/\">contact us</a>.
 					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for <a href=\"/about-us/\">paid support</a>.
 				</p>
+				<h2>For developers</h2>
+				<p>
+					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <br />
+					<a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
+				</p>
+				<h3>downloads</h3>
+				<p>
+					Please log in (see login details above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
-					You can <a href=\"/Security/login/?backURL=/admin/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
 				</p>
+				<h3>data model</h3>
+				<p>Please review <a href=\"http://ecommerce.localhost/ecommerce/docs/en/SSUE-commerceDataModel.png\">our latest data model</a></p>
 				",
 				"Children" => array(
 					array(
@@ -98,6 +118,20 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"ShowInMenus" => false,
 						"ShowInSearch" => false,
 						"Content" => "<p>This page can explain the tags shown for various products. </p>",
+					),
+					array(
+						"ClassName" => "DownloadPage",
+						"URLSegment" => "downloads",
+						"Title" => "downloads",
+						"MenuTitle" => "downloads",
+						"ShowInMenus" => true,
+						"ShowInSearch" => true,
+						"Content" => "
+						<p>
+							Below is a full list of source code used on this site.
+							The SSU Branch of e-commerce is part of the <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">open source e-commerce project</a>, more source code can be found there.
+							Also, check out the <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite/_config.php\">mysite/_config.php</a>.
+						</p>",
 					)
 				)
 			),
@@ -117,23 +151,24 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Content" => "
 					<p>
 						For further information on our terms of trade, please visit ....
-						NOTE: a checkout page can also be broken down into several steps (pages) using a setting in the CMS. These steps are:
+					</p>
+					<h2>want to break up the checkout page into steps?</h2>
+					<p>
+						A checkout page can also be broken down into several steps (pages) using a setting in the Content Management System.
 					</p>
 					<ul>
 						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
 						<li><a href=\"checkout/orderstep/ordermodifiers/#OrderModifiersOuter\">Modifiers (tax / delivery / etc...)</a></li>
+						<li><a href=\"checkout/orderstep/orderconfirmation/#OrderConfirmationOuter\">Double-check Order</a></li>
 						<li><a href=\"checkout/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
 					</ul>
 					<p>To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)</p>
 				",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
-				"AlreadyCompletedMessage" => "<p>Sorry, but this order has already been completed and can no longer be edited.</p>",
-				"FinalizedOrderLinkLabel" => "View completed order",
 				"CurrentOrderLinkLabel" => "View current order",
-				"StartNewOrderLinkLabel" => "Start new order",
+				"SaveOrderLinkLable" => "Save order",
 				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
 				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
-				"MustLoginToCheckoutMessage" => "<p>You must log in first before you can check out this order.</p>",
 				"LoginToOrderLinkLabel" => "Log in now to checkout order",
 				"Children" => array(
 					array(
@@ -147,10 +182,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 					),
 					array(
 						"ClassName" => "AccountPage",
-						"URLSegment" => "account page",
-						"Title" => "Account Page",
-						"MenuTitle" => "Account Page",
-						"ShowInMenus" => 0,
+						"URLSegment" => "my account",
+						"Title" => "My Account",
+						"MenuTitle" => "My Account",
+						"ShowInMenus" => 1,
 						"ShowInSearch" => 0,
 						"Content" => "<p>Update your details below.</p>"
 					),
@@ -190,7 +225,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"MenuTitle" => "Add Up Order",
 						"ShowInMenus" => 1,
 						"ShowInSearch" => 1,
-						"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+						"Content" => "<p>Choose your products below and continue through to the checkout...  This page helps customers who want to put a <i>name</i> or <i>identifier</i> with each order item - for example a group of people purchasing together.</p>",
 					),
 					array(
 						"ClassName" => "PriceListPage",
@@ -301,7 +336,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 						<li>default sort order: '.$defaultSortOrder.'</li>
 					</ul>
 					',
-				"ProductsAlsoInOthersGroups" => "Boolean",
 				"Children" =>  $children,
 			);
 		}
@@ -319,12 +353,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$endPoint = rand(3, 15);
 		for($j = 0; $j < $endPoint; $j++) {
 			$i = rand(1, 500);
-			$price = $i < 475 ? $i + ($i / 100) : 0;
-			$weight = ($i % 3) ? 0 : 1.234;
-			$model = ($i % 4) ? "" : "model $i";
-			$quantifier = ($i % 5) ? "" : "per month";
-			$featured = ($i % 5) ? FALSE : TRUE;
-			$allowPurchase = ($i % 9) ? TRUE : FALSE;
+			$q = rand(1, 500); $price = $q < 475 ? $q + ($q / 100) : 0;
+			$q = rand(1, 500); $weight = ($q % 3) ? "" : "<li>Weight: 1.234;</li>";
+			$q = rand(1, 500); $model = ($q % 4) ? "" : "<li>Model: model $i;</li>";
+			$q = rand(1, 500); $featured = ($q % 5) ? "" : "<li>Featured Product;</li>;";
+			$q = rand(1, 500); $quantifier = ($q % 5) ? "" : "<li>Quantifier (e.g. per dozen): per month;</li>";
+			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "" : "<li>Purchase Allowed: No</li>";
 			$imageID = $this->getRandomImageID();
 			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
 			$numberSold = $i;
@@ -335,24 +369,24 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Product $parentCode $i",
 				"MenuTitle" => "Product $i",
 				"Content" => "<p>
-					Description for Product $i ... It has the following hidden characteristics:
+					Description for Product $i ... For testing purposed - the following characteristics were added to this product:
 				<p>
 				<ul>
-					<li>Weight: ".$weight.";</li>
-					<li>Model: ".$model.";</li>
-					<li>Featured Product: ".$featured.";</li>
-					<li>Quantifier (e.g. per dozen): ".$quantifier.";</li>
-					<li>Purchase Allowed: ".$allowPurchase.";</li>
+					$weight
+					$model
+					$featured
+					$quantifier
+					$allowPurchase
 					<li>Number Sold: ".$numberSold.";</li>
 				</ul>",
 				"Price" => $price,
 				"InternalItemID" => "AAA".$i,
-				'Weight' => $weight,
-				'Model' => $model,
-				'Quantifier' => $quantifier,
-				"FeaturedProduct" => $featured,
-				'AllowPurchase' => $allowPurchase ,
-				'NumberSold' => $numberSold
+				"Weight" => $weight ? "1.234" : 0,
+				"Model" => $model ? "model $i" : "",
+				"Quantifier" => $quantifier,
+				"FeaturedProduct" => $featured ? 1 : 0,
+				"AllowPurchase" => $allowPurchase ? 0 : 1,
+				"NumberSold" => $numberSold
 			);
 		}
 		return $array;
@@ -373,6 +407,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			if(!$redObject) {
 				$redObject = new ProductAttributeValue();
 				$redObject->Value = "red";
+				$redObject->RGBCode = "ff0000";
+				$redObject->ContrastRGBCode = "BFC1C1";
 				$redObject->TypeID = $colourObject->ID;
 				$redObject->Sort = 100;
 				$redObject->write();
@@ -381,6 +417,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			if(!$blueObject) {
 				$blueObject = new ProductAttributeValue();
 				$blueObject->Value = "blue";
+				$blueObject->RGBCode = "0000ff";
+				$blueObject->ContrastRGBCode = "BFC1C1";
 				$blueObject->TypeID = $colourObject->ID;
 				$blueObject->Sort = 110;
 				$blueObject->write();
@@ -433,6 +471,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$existingAttributeTypes->add($colourObject);
 				$existingAttributeTypes->write();
 				$this->addToTitle($product, "with variation", false);
+				$product->Content .= "<p>On this page you can see two example of how you customers can add variations to their products (form / table)... In a real-life shop you would probably choose one or the other.</p>";
 				$product->writeToStage('Stage');
 				$product->Publish('Stage', 'Live');
 				$product->Status = "Published";
@@ -631,7 +670,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$variation->UnlimitedStock = 0;
 				$variation->write();
 				$variation->writeToStage("Stage");
-				$this->addExamplePages("Limited stockproduct variation (colour / size / etc... option)", $variation->Product());
+				$this->addExamplePages("Limited stock for product variation (colour / size / etc... option)", $variation->Product());
 				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
 			}
 		}
@@ -701,7 +740,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$complexObjectPrice->write();
 			$complexObjectPrice->Groups()->add($group);
 			$product = $variation->Product();
-			$this->addExamplePages("Special price for particular customers for product variations", $product);
+			$this->addExamplePages("Special price for particular customers for product variations $i", $product);
 			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price</p>";
 			$this->addToTitle($product, "member price", true);
 		}
@@ -825,118 +864,76 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$html .= '<li><span class="exampleTitle">'.$examplePages["Title"].'</span>'.$examplePages["List"].'</li>';
 		}
 		$html .= '</ul>
-		<p>At any time you can <a href="/shoppingcart/clear/">reset the shopping cart</a> to start a new order.</p>
-		<p>Also, do not hesitate to review <a href="http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite/_config.php">the settings for this project</a> - as shown in the mysite/_config.php file.</p>
-		<h2>Modules included are:</h2>
-		<ul>
-			<li>ecommerce_alsorecommended</li>
-			<li>ecommerce_alternativeproductgroup</li>
-			<li>ecommerce_anypriceproduct</li>
-			<li>ecommerce_brandbrowsing</li>
-			<li>ecommerce_complex_pricing</li>
-			<li>ecommerce_corporate_account</li>
-			<li>ecommerce_custom_order_number</li>
-			<li>ecommerce_delivery</li>
-			<li>ecommerce_digitalproducts</li>
-			<li>ecommerce_dimensions</li>
-			<li>ecommerce_discount_coupon</li>
-			<li>ecommerce_googleanalytics</li>
-			<li>ecommerce_modifier_example</li>
-			<li>ecommerce_modifiers</li>
-			<li>ecommerce_multicurrency</li>
-			<li>ecommerce_nl_connectivity</li>
-			<li>ecommerce_nz_connectivity</li>
-			<li>ecommerce_product_tags</li>
-			<li>ecommerce_product_variation</li>
-			<li>ecommerce_quick_add</li>
-			<li>ecommerce_repeatorders</li>
-			<li>ecommerce_reports</li>
-			<li>ecommerce_shipping_fastwaynz</li>
-			<li>ecommerce_statistics</li>
-			<li>ecommerce_stockcontrol</li>
-			<li>ecommerce_tax</li>
-			<li>ecommerce_vote</li>
-			<li>payment_directcredit</li>
-			<li>payment_dps</li>
-			<li>payment_epaydk</li>
-			<li>payment_instore</li>
-			<li>payment_ogone</li>
-			<li>payment_paymate</li>
-			<li>payment_paymentexpress</li>
-			<li>payment_paypal</li>
-			<li>payment_paystation_hosted</li>
-			<li>payment_securatech</li>
-		</ul>
 		<h2>adding an order programatically</h2>
 		<p>As part of this demo, we automatically add an order - as follows:</p>
 		<pre>
-		$order = new Order();
-		$order-&gt;UseShippingAddress = true;
-		$order-&gt;CustomerOrderNote = "THIS IS AN AUTO-GENERATED ORDER";
-		$order-&gt;write();
+			$order = new Order();
+			$order-&gt;UseShippingAddress = true;
+			$order-&gt;CustomerOrderNote = "THIS IS AN AUTO-GENERATED ORDER";
+			$order-&gt;write();
 
-		$member = new Member();
-		$member-&gt;FirstName = \'Tom\';
-		$member-&gt;Surname = \'Cruize\';
-		$member-&gt;Email = \'tom@silverstripe-ecommerce.com\';
-		$member-&gt;Password = \'test123\';
-		$member-&gt;write();
-		$order-&gt;MemberID = $member-&gt;ID;
+			$member = new Member();
+			$member-&gt;FirstName = \'Tom\';
+			$member-&gt;Surname = \'Cruize\';
+			$member-&gt;Email = \'tom@silverstripe-ecommerce.com\';
+			$member-&gt;Password = \'test123\';
+			$member-&gt;write();
+			$order-&gt;MemberID = $member-&gt;ID;
 
-		$billingAddress = new BillingAddress();
-		$billingAddress-&gt;Prefix = "Dr";
-		$billingAddress-&gt;FirstName = "Tom";
-		$billingAddress-&gt;Surname = "Cruize";
-		$billingAddress-&gt;Address = "Lamp Drive";
-		$billingAddress-&gt;Address2 = "Linux Mountain";
-		$billingAddress-&gt;City = "Apache Town";
-		$billingAddress-&gt;PostalCode = "555";
-		$billingAddress-&gt;Country = "NZ";
-		$billingAddress-&gt;Phone = "555 5555555";
-		$billingAddress-&gt;MobilePhone = "444 44444";
-		$billingAddress-&gt;Email = "tom@silverstripe-ecommerce.com";
-		$billingAddress-&gt;write();
-		$order-&gt;BillingAddressID = $billingAddress-&gt;ID;
+			$billingAddress = new BillingAddress();
+			$billingAddress-&gt;Prefix = "Dr";
+			$billingAddress-&gt;FirstName = "Tom";
+			$billingAddress-&gt;Surname = "Cruize";
+			$billingAddress-&gt;Address = "Lamp Drive";
+			$billingAddress-&gt;Address2 = "Linux Mountain";
+			$billingAddress-&gt;City = "Apache Town";
+			$billingAddress-&gt;PostalCode = "555";
+			$billingAddress-&gt;Country = "NZ";
+			$billingAddress-&gt;Phone = "555 5555555";
+			$billingAddress-&gt;MobilePhone = "444 44444";
+			$billingAddress-&gt;Email = "tom@silverstripe-ecommerce.com";
+			$billingAddress-&gt;write();
+			$order-&gt;BillingAddressID = $billingAddress-&gt;ID;
 
-		$shippingAddress = new ShippingAddress();
-		$shippingAddress-&gt;ShippingPrefix = "Dr";
-		$shippingAddress-&gt;ShippingFirstName = "Tom";
-		$shippingAddress-&gt;ShippingSurname = "Cruize";
-		$shippingAddress-&gt;ShippingAddress = "Lamp Drive";
-		$shippingAddress-&gt;ShippingAddress2 = "Linux Mountain";
-		$shippingAddress-&gt;ShippingCity = "Apache Town";
-		$shippingAddress-&gt;ShippingPostalCode = "555";
-		$shippingAddress-&gt;ShippingCountry = "NZ";
-		$shippingAddress-&gt;ShippingPhone = "555 5555555";
-		$shippingAddress-&gt;ShippingMobilePhone = "444 44444";
-		$shippingAddress-&gt;write();
-		$order-&gt;ShippingAddressID = $shippingAddress-&gt;ID;
+			$shippingAddress = new ShippingAddress();
+			$shippingAddress-&gt;ShippingPrefix = "Dr";
+			$shippingAddress-&gt;ShippingFirstName = "Tom";
+			$shippingAddress-&gt;ShippingSurname = "Cruize";
+			$shippingAddress-&gt;ShippingAddress = "Lamp Drive";
+			$shippingAddress-&gt;ShippingAddress2 = "Linux Mountain";
+			$shippingAddress-&gt;ShippingCity = "Apache Town";
+			$shippingAddress-&gt;ShippingPostalCode = "555";
+			$shippingAddress-&gt;ShippingCountry = "NZ";
+			$shippingAddress-&gt;ShippingPhone = "555 5555555";
+			$shippingAddress-&gt;ShippingMobilePhone = "444 44444";
+			$shippingAddress-&gt;write();
+			$order-&gt;ShippingAddressID = $shippingAddress-&gt;ID;
 
-		//get a random product
-		$product = DataObject::get_one("Product");
-		$triedArray = array($product-&gt;ID);
-		$extension = "";
-		if(Versioned::current_stage() == "Live") {
-			$extension = "_Live";
-		}
-		$count = 0;
-		while($product && !$product-&gt;canPurchase() && $count &lt; 50) {
-			$product = DataObject::get_one("Product", "\"ClassName\" = \'Product\' AND \"Product{$extension}\".\"ID\" NOT IN (".implode(",", $triedArray).")");
-			if($product) {
-				$triedArray[] = $product-&gt;ID;
+			//get a random product
+			$product = DataObject::get_one("Product");
+			$triedArray = array($product-&gt;ID);
+			$extension = "";
+			if(Versioned::current_stage() == "Live") {
+				$extension = "_Live";
 			}
-			$count++;
-		}
+			$count = 0;
+			while($product && !$product-&gt;canPurchase() && $count &lt; 50) {
+				$product = DataObject::get_one("Product", "\"ClassName\" = \'Product\' AND \"Product{$extension}\".\"ID\" NOT IN (".implode(",", $triedArray).")");
+				if($product) {
+					$triedArray[] = $product-&gt;ID;
+				}
+				$count++;
+			}
 
-		//adding product order item
-		$item = new Product_OrderItem();
-		$item-&gt;Quantity = 7;
-		$item-&gt;BuyableID = $product-&gt;ID;
-		$item-&gt;OrderID = $order-&gt;ID;
-		$item-&gt;write();
-		//final save
-		$order-&gt;write();
-		$order-&gt;tryToFinaliseOrder();
+			//adding product order item
+			$item = new Product_OrderItem();
+			$item-&gt;Quantity = 7;
+			$item-&gt;BuyableID = $product-&gt;ID;
+			$item-&gt;OrderID = $order-&gt;ID;
+			$item-&gt;write();
+			//final save
+			$order-&gt;write();
+			$order-&gt;tryToFinaliseOrder();
 		</pre>
 		';
 		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
@@ -993,9 +990,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
 			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
 			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
-			array("T" => "CartPage", "F" => "CheckoutPageID", "V" => DataObject::get_one("CheckoutPage", "ClassName = 'CheckoutPage'")->ID, "W" => ""),
 			array("T" => "CartPage", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
-			array("T" => "CartPage_Live", "F" => "CheckoutPageID", "V" => DataObject::get_one("CheckoutPage", "ClassName = 'CheckoutPage'")->ID, "W" => ""),
 			array("T" => "CartPage_Live", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 		);
 		foreach($array as $innerArray) {

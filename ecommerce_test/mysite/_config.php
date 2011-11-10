@@ -232,7 +232,7 @@ ProductAttributeDecoratorColour_Value::set_default_colour("000000");
 
 //===================---------------- START ecommerce_delivery MODULE ----------------===================
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
-PickUpOrDeliveryModifier::set_form_header("Delivery Option (REQUIRED)");
+PickUpOrDeliveryModifier::set_form_header("Select Delivery Option");
 StoreAdmin::add_managed_model("PickUpOrDeliveryModifierOptions");
 //===================---------------- END ecommerce_delivery  MODULE ----------------===================
 
