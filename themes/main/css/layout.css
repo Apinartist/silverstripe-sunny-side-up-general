@@ -32,6 +32,7 @@ body {
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383');
 
 }
+#Sidebar .sidebarBox {padding-bottom: 30px; }
 #Sidebar table {width: 100%;}
 #Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
 #Sidebar td.quantity img {margin: 0px;}
