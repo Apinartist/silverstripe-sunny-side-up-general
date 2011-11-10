@@ -1,0 +1,1084 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Docs For Class OrderStatusLog</title>
+	<link rel="stylesheet" type="text/css" id="layout" href="../media/layout.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../media/style.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../media/print.css" media="print">
+</head>
+
+<body>
+<div id="header">
+	<div id="navLinks">
+        
+                                    
+                            	        [ <a href="../classtrees_default.html">Class Tree: default</a> ]
+            [ <a href="../elementindex_default.html">Index: default</a> ]
+        		[ <a href="../elementindex.html">All elements</a> ]		
+	</div>
+	<div id="packagePosition">
+		<div id="packageTitle2">default</div>
+		<div id="packageTitle">default</div>
+		<div id="elementPath"> &middot; </div>
+	</div>
+</div>
+
+<div id="nav" class="small">
+	<div id="packages">
+		Packages:
+					<p><a href="../li_default.html">default</a></p>
+			</div>
+
+				<div id="index">
+			<div id="files">
+								Files:<br>
+								<a href="../default/_address---BillingAddress.php.html">		BillingAddress.php
+		</a><br>
+			<a href="../default/_address---EcommerceCountry.php.html">		EcommerceCountry.php
+		</a><br>
+			<a href="../default/_address---EcommerceRegion.php.html">		EcommerceRegion.php
+		</a><br>
+			<a href="../default/_Order.php.html">		Order.php
+		</a><br>
+			<a href="../default/_address---OrderAddress.php.html">		OrderAddress.php
+		</a><br>
+			<a href="../default/_OrderAttribute.php.html">		OrderAttribute.php
+		</a><br>
+			<a href="../default/_OrderItem.php.html">		OrderItem.php
+		</a><br>
+			<a href="../default/_OrderModifier.php.html">		OrderModifier.php
+		</a><br>
+			<a href="../default/_process---OrderStatusLog.php.html">		OrderStatusLog.php
+		</a><br>
+			<a href="../default/_process---OrderStep.php.html">		OrderStep.php
+		</a><br>
+			<a href="../default/_address---ShippingAddress.php.html">		ShippingAddress.php
+		</a><br>
+				</div>
+			<div id="interfaces">
+							</div>
+			<div id="classes">
+				Classes:<br>
+								<a href="../default/BillingAddress.html">		BillingAddress
+		</a><br>
+			<a href="../default/EcommerceCountry.html">		EcommerceCountry
+		</a><br>
+			<a href="../default/EcommerceRegion.html">		EcommerceRegion
+		</a><br>
+			<a href="../default/Order.html">		Order
+		</a><br>
+			<a href="../default/OrderAddress.html">		OrderAddress
+		</a><br>
+			<a href="../default/OrderAttribute.html">		OrderAttribute
+		</a><br>
+			<a href="../default/OrderItem.html">		OrderItem
+		</a><br>
+			<a href="../default/OrderModifier.html">		OrderModifier
+		</a><br>
+			<a href="../default/OrderStatusLog.html">		OrderStatusLog
+		</a><br>
+			<a href="../default/OrderStatusLog_Archived.html">		OrderStatusLog_Archived
+		</a><br>
+			<a href="../default/OrderStatusLog_Cancel.html">		OrderStatusLog_Cancel
+		</a><br>
+			<a href="../default/OrderStatusLog_Dispatch.html">		OrderStatusLog_Dispatch
+		</a><br>
+			<a href="../default/OrderStatusLog_DispatchElectronicOrder.html">		OrderStatusLog_DispatchElectronicOrder
+		</a><br>
+			<a href="../default/OrderStatusLog_DispatchPhysicalOrder.html">		OrderStatusLog_DispatchPhysicalOrder
+		</a><br>
+			<a href="../default/OrderStatusLog_PaymentCheck.html">		OrderStatusLog_PaymentCheck
+		</a><br>
+			<a href="../default/OrderStatusLog_Submitted.html">		OrderStatusLog_Submitted
+		</a><br>
+			<a href="../default/OrderStep.html">		OrderStep
+		</a><br>
+			<a href="../default/OrderStep_Archived.html">		OrderStep_Archived
+		</a><br>
+			<a href="../default/OrderStep_Confirmed.html">		OrderStep_Confirmed
+		</a><br>
+			<a href="../default/OrderStep_Created.html">		OrderStep_Created
+		</a><br>
+			<a href="../default/OrderStep_Paid.html">		OrderStep_Paid
+		</a><br>
+			<a href="../default/OrderStep_Sent.html">		OrderStep_Sent
+		</a><br>
+			<a href="../default/OrderStep_SentInvoice.html">		OrderStep_SentInvoice
+		</a><br>
+			<a href="../default/OrderStep_SentReceipt.html">		OrderStep_SentReceipt
+		</a><br>
+			<a href="../default/OrderStep_Submitted.html">		OrderStep_Submitted
+		</a><br>
+			<a href="../default/ShippingAddress.html">		ShippingAddress
+		</a><br>
+				</div>
+		</div>
+	</div>
+
+<div id="body">
+	    		<h1>Class: OrderStatusLog</h1>
+	<p style="margin: 0px;">Source Location: /process/OrderStatusLog.php</p>
+	
+
+<div class="leftcol">
+	<h3><a href="#class_details">Class Overview</a> <span class="smalllinenumber">[line 13]</span></h3>
+	<div id="classTree"><pre>DataObject
+   |
+   --OrderStatusLog</pre>
+</div>
+	<div class="small">
+	<p></p>
+		<h4>Author(s):</h4>
+	<ul>
+			</ul>
+	<h4>Version:</h4>
+	<ul>
+			</ul>
+
+	<h4>Copyright:</h4>
+	<ul>
+			</li>
+	</div>
+</div>
+
+<div class="middlecol">
+	<h3><a href="#class_vars">Variables</a></h3>
+	<ul class="small">
+				<li><a href="../default/OrderStatusLog.html#var$available_log_classes_array">$available_log_classes_array</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$casting">$casting</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$db">$db</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$defaults">$defaults</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$default_sort">$default_sort</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$has_one">$has_one</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$order_status_log_class_used_for_submitting_order">$order_status_log_class_used_for_submitting_order</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$plural_name">$plural_name</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$searchable_fields">$searchable_fields</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$singular_name">$singular_name</a></li>
+				<li><a href="../default/OrderStatusLog.html#var$summary_fields">$summary_fields</a></li>
+			</ul>
+	<h3><a href="#class_consts">Constants</a></h3>
+	<ul class="small">
+			</ul>
+</div>
+<div class="rightcol">
+	<h3><a href="#class_methods">Methods</a></h3>
+	<ul class="small">
+				<li><a href="../default/OrderStatusLog.html#methodadd_available_log_classes_array">add_available_log_classes_array</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodcanCreate">canCreate</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodcanDelete">canDelete</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodcanEdit">canEdit</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodcanView">canView</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodCustomerNote">CustomerNote</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodEmailCustomerNice">EmailCustomerNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodEmailSentNice">EmailSentNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetCMSFields">getCMSFields</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetCustomerNote">getCustomerNote</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetEmailCustomerNice">getEmailCustomerNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetEmailSentNice">getEmailSentNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetInternalUseOnlyNice">getInternalUseOnlyNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodgetType">getType</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodget_available_log_classes_array">get_available_log_classes_array</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodget_order_status_log_class_used_for_submitting_order">get_order_status_log_class_used_for_submitting_order</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodi18n_plural_name">i18n_plural_name</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodi18n_singular_name">i18n_singular_name</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodInternalUseOnlyNice">InternalUseOnlyNice</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodonAfterWrite">onAfterWrite</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodonBeforeWrite">onBeforeWrite</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodpopulateDefaults">populateDefaults</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodscaffoldSearchFields">scaffoldSearchFields</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodset_available_log_classes_array">set_available_log_classes_array</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodset_order_status_log_class_used_for_submitting_order">set_order_status_log_class_used_for_submitting_order</a></li>
+				<li><a href="../default/OrderStatusLog.html#methodType">Type</a></li>
+			</ul>
+</div>
+
+<div id="content">
+<hr>
+	<div class="contents">
+	<h2>Child classes:</h2>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html">OrderStatusLog_Submitted</a></dt>
+		<dd>OrderStatusLog_Submitted is an important class that is created when an order is submitted.</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html">OrderStatusLog_Cancel</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Dispatch.html">OrderStatusLog_Dispatch</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html">OrderStatusLog_PaymentCheck</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html">OrderStatusLog_Archived</a></dt>
+		<dd>OrderStatusLog_Submitted is an important class that is created when an order is submitted.</dd>
+	</dl>
+	</p>
+	</div>
+
+	<div class="leftCol">
+    	<h2>Inherited Variables</h2>
+		<h2>Inherited Constants</h2>
+		</div>
+
+	<div class="rightCol">
+	<h2>Inherited Methods</h2>
+		</div>
+	<br clear="all">
+	<hr>
+
+	<a name="class_details"></a>
+	<h2>Class Details</h2>
+		<p class="small" style="color: #334B66;">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_vars"></a>
+	<h2>Class Variables</h2>
+		<a name="var$available_log_classes_array"></a>
+	<p></p>
+	<h4>static $available_log_classes_array = <span class="value">array(&quot;OrderStatusLog_PaymentCheck&quot;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 63]</p>
+		<p align="center"><strong>$available_log_classes_array tells us what order log classes are to be used.
+</strong></p>
+<p>OrderStatusLog_Submitted should always be used and does not need to be listed here.</p><h4>Tags:</h4>
+<ul>
+	<li><b>var</b> - - $available_log_classes_array</li>
+	<li><b>access</b> - protected</li>
+</ul>
+		<p><b>Type:</b> Array</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$casting"></a>
+	<p></p>
+	<h4>static $casting = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;CustomerNote&quot;&nbsp;=&gt;&nbsp;&quot;HTMLText&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Type&quot;&nbsp;=&gt;&nbsp;&quot;Varchar&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;EmailCustomerNice&quot;&nbsp;=&gt;&nbsp;&quot;Varchar&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;EmailSentNice&quot;&nbsp;=&gt;&nbsp;&quot;Varchar&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;InternalUseOnlyNice&quot;&nbsp;=&gt;&nbsp;&quot;Varchar&quot;<br>
+&nbsp;&nbsp;&nbsp;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 28]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$db"></a>
+	<p></p>
+	<h4>static $db = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Title'&nbsp;=&gt;&nbsp;'Varchar(100)',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Note'&nbsp;=&gt;&nbsp;'HTMLText',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'EmailCustomer'&nbsp;=&gt;&nbsp;'Boolean',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'EmailSent'&nbsp;=&gt;&nbsp;'Boolean',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'InternalUseOnly'&nbsp;=&gt;&nbsp;'Boolean'<br>
+&nbsp;&nbsp;&nbsp;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 15]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$defaults"></a>
+	<p></p>
+	<h4>static $defaults = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;InternalUseOnly&quot;&nbsp;=&gt;&nbsp;true<br>
+&nbsp;&nbsp;&nbsp;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 44]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$default_sort"></a>
+	<p></p>
+	<h4>static $default_sort = <span class="value">&nbsp;&quot;\&quot;Created\&quot;&nbsp;DESC&quot;</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 144]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$has_one"></a>
+	<p></p>
+	<h4>static $has_one = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Author&quot;&nbsp;=&gt;&nbsp;&quot;Member&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Order&quot;&nbsp;=&gt;&nbsp;&quot;Order&quot;<br>
+&nbsp;&nbsp;&nbsp;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 23]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$order_status_log_class_used_for_submitting_order"></a>
+	<p></p>
+	<h4>static $order_status_log_class_used_for_submitting_order = <span class="value">&nbsp;&quot;OrderStatusLog_Submitted&quot;</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 76]</p>
+		<p align="center"><strong>the order status log class used to record that the order has been submitted.
+</strong></p>
+<h4>Tags:</h4>
+<ul>
+	<li><b>var</b> - - $order_status_log_class_used_for_submitting_order</li>
+	<li><b>access</b> - protected</li>
+</ul>
+		<p><b>Type:</b> String</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$plural_name"></a>
+	<p></p>
+	<h4>static $plural_name = <span class="value">&nbsp;&quot;Order&nbsp;Log&nbsp;Entries&quot;</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 141]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$searchable_fields"></a>
+	<p></p>
+	<h4>static $searchable_fields = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'OrderID'&nbsp;=&gt;&nbsp;array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'field'&nbsp;=&gt;&nbsp;'NumericField',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title'&nbsp;=&gt;&nbsp;'Order&nbsp;Number'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),&quot;Title&quot;=&gt;&quot;PartialMatchFilter&quot;,&quot;Note&quot;=&gt;&quot;PartialMatchFilter&quot;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 128]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$singular_name"></a>
+	<p></p>
+	<h4>static $singular_name = <span class="value">&nbsp;&quot;Order&nbsp;Log&nbsp;Entry&quot;</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 138]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$summary_fields"></a>
+	<p></p>
+	<h4>static $summary_fields = <span class="value">array(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Created&quot;&nbsp;=&gt;&nbsp;&quot;Date&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Type&quot;&nbsp;=&gt;&nbsp;&quot;Type&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Title&quot;&nbsp;=&gt;&nbsp;&quot;Title&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;EmailSentNice&quot;&nbsp;=&gt;&nbsp;&quot;Email&nbsp;sent&nbsp;to&nbsp;customer&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;InternalUseOnlyNice&quot;&nbsp;=&gt;&nbsp;&quot;Internal&nbsp;use&nbsp;only&quot;<br>
+&nbsp;&nbsp;&nbsp;)</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 36]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		<p><b>Type:</b> mixed</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_methods"></a>
+	<h2>Class Methods</h2>
+		<a name="methodadd_available_log_classes_array"></a>
+	<p></p>
+	<h3>static add_available_log_classes_array</h3>
+	<div class="indent">
+		<p>
+		<code>static void add_available_log_classes_array(
+
+$s)</code>
+		</p>
+	
+		<p class="linenumber">[line 66]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$s</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodget_available_log_classes_array"></a>
+	<p></p>
+	<h3>static get_available_log_classes_array</h3>
+	<div class="indent">
+		<p>
+		<code>static void get_available_log_classes_array(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 64]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodget_order_status_log_class_used_for_submitting_order"></a>
+	<p></p>
+	<h3>static get_order_status_log_class_used_for_submitting_order</h3>
+	<div class="indent">
+		<p>
+		<code>static void get_order_status_log_class_used_for_submitting_order(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 78]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodset_available_log_classes_array"></a>
+	<p></p>
+	<h3>static set_available_log_classes_array</h3>
+	<div class="indent">
+		<p>
+		<code>static void set_available_log_classes_array(
+
+$a)</code>
+		</p>
+	
+		<p class="linenumber">[line 65]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type">array</span>
+		<b>$a</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodset_order_status_log_class_used_for_submitting_order"></a>
+	<p></p>
+	<h3>static set_order_status_log_class_used_for_submitting_order</h3>
+	<div class="indent">
+		<p>
+		<code>static void set_order_status_log_class_used_for_submitting_order(
+
+$s)</code>
+		</p>
+	
+		<p class="linenumber">[line 77]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$s</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+
+	<a name="methodcanCreate"></a>
+	<p></p>
+	<h3>canCreate</h3>
+	<div class="indent">
+		<p>
+		<code>Boolean canCreate(
+[
+$member = null])</code>
+		</p>
+	
+		<p class="linenumber">[line 113]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html#methodcanCreate">OrderStatusLog_Submitted::canCreate()</a></dt>
+		<dd>can only be created when the order is submitted</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html#methodcanCreate">OrderStatusLog_Cancel::canCreate()</a></dt>
+		<dd>can only be created when the order is submitted</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html#methodcanCreate">OrderStatusLog_Archived::canCreate()</a></dt>
+		<dd>can only be created when the order is submitted</dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$member</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodcanDelete"></a>
+	<p></p>
+	<h3>canDelete</h3>
+	<div class="indent">
+		<p>
+		<code>Boolean canDelete(
+[
+$member = null])</code>
+		</p>
+	
+		<p class="linenumber">[line 105]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html#methodcanDelete">OrderStatusLog_Submitted::canDelete()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html#methodcanDelete">OrderStatusLog_Cancel::canDelete()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Dispatch.html#methodcanDelete">OrderStatusLog_Dispatch::canDelete()</a></dt>
+		<dd>Only shop admin can delete this</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodcanDelete">OrderStatusLog_PaymentCheck::canDelete()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html#methodcanDelete">OrderStatusLog_Archived::canDelete()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$member</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodcanEdit"></a>
+	<p></p>
+	<h3>canEdit</h3>
+	<div class="indent">
+		<p>
+		<code>Boolean canEdit(
+[
+$member = null])</code>
+		</p>
+	
+		<p class="linenumber">[line 121]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html#methodcanEdit">OrderStatusLog_Submitted::canEdit()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html#methodcanEdit">OrderStatusLog_Cancel::canEdit()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html#methodcanEdit">OrderStatusLog_Archived::canEdit()</a></dt>
+		<dd>This record is not editable</dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$member</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodcanView"></a>
+	<p></p>
+	<h3>canView</h3>
+	<div class="indent">
+		<p>
+		<code>Boolean canView(
+[
+$member = null])</code>
+		</p>
+	
+		<p class="linenumber">[line 84]</p>
+		<h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type"></span>
+		<b>$member</b> 
+		- 
+		</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodCustomerNote"></a>
+	<p></p>
+	<h3>CustomerNote</h3>
+	<div class="indent">
+		<p>
+		<code>String CustomerNote(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 239]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodCustomerNote">OrderStatusLog_DispatchPhysicalOrder::CustomerNote()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodCustomerNote">OrderStatusLog_PaymentCheck::CustomerNote()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodEmailCustomerNice"></a>
+	<p></p>
+	<h3>EmailCustomerNice</h3>
+	<div class="indent">
+		<p>
+		<code>void EmailCustomerNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 49]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodEmailSentNice"></a>
+	<p></p>
+	<h3>EmailSentNice</h3>
+	<div class="indent">
+		<p>
+		<code>void EmailSentNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 52]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetCMSFields"></a>
+	<p></p>
+	<h3>getCMSFields</h3>
+	<div class="indent">
+		<p>
+		<code>FieldSet getCMSFields(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 155]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodgetCMSFields">OrderStatusLog_DispatchPhysicalOrder::getCMSFields()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodgetCMSFields">OrderStatusLog_PaymentCheck::getCMSFields()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetCustomerNote"></a>
+	<p></p>
+	<h3>getCustomerNote</h3>
+	<div class="indent">
+		<p>
+		<code>void getCustomerNote(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 240]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodgetCustomerNote">OrderStatusLog_DispatchPhysicalOrder::getCustomerNote()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodgetCustomerNote">OrderStatusLog_PaymentCheck::getCustomerNote()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetEmailCustomerNice"></a>
+	<p></p>
+	<h3>getEmailCustomerNice</h3>
+	<div class="indent">
+		<p>
+		<code>void getEmailCustomerNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 50]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetEmailSentNice"></a>
+	<p></p>
+	<h3>getEmailSentNice</h3>
+	<div class="indent">
+		<p>
+		<code>void getEmailSentNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 53]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetInternalUseOnlyNice"></a>
+	<p></p>
+	<h3>getInternalUseOnlyNice</h3>
+	<div class="indent">
+		<p>
+		<code>void getInternalUseOnlyNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 56]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodgetType"></a>
+	<p></p>
+	<h3>getType</h3>
+	<div class="indent">
+		<p>
+		<code>void getType(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 194]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodi18n_plural_name"></a>
+	<p></p>
+	<h3>i18n_plural_name</h3>
+	<div class="indent">
+		<p>
+		<code>void i18n_plural_name(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 142]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html#methodi18n_plural_name">OrderStatusLog_Submitted::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html#methodi18n_plural_name">OrderStatusLog_Cancel::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Dispatch.html#methodi18n_plural_name">OrderStatusLog_Dispatch::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchElectronicOrder.html#methodi18n_plural_name">OrderStatusLog_DispatchElectronicOrder::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodi18n_plural_name">OrderStatusLog_DispatchPhysicalOrder::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodi18n_plural_name">OrderStatusLog_PaymentCheck::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html#methodi18n_plural_name">OrderStatusLog_Archived::i18n_plural_name()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodi18n_singular_name"></a>
+	<p></p>
+	<h3>i18n_singular_name</h3>
+	<div class="indent">
+		<p>
+		<code>void i18n_singular_name(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 139]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Submitted.html#methodi18n_singular_name">OrderStatusLog_Submitted::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Cancel.html#methodi18n_singular_name">OrderStatusLog_Cancel::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Dispatch.html#methodi18n_singular_name">OrderStatusLog_Dispatch::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchElectronicOrder.html#methodi18n_singular_name">OrderStatusLog_DispatchElectronicOrder::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodi18n_singular_name">OrderStatusLog_DispatchPhysicalOrder::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_PaymentCheck.html#methodi18n_singular_name">OrderStatusLog_PaymentCheck::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+		<dl>
+	<dt><a href="../default/OrderStatusLog_Archived.html#methodi18n_singular_name">OrderStatusLog_Archived::i18n_singular_name()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodInternalUseOnlyNice"></a>
+	<p></p>
+	<h3>InternalUseOnlyNice</h3>
+	<div class="indent">
+		<p>
+		<code>void InternalUseOnlyNice(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 55]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodonAfterWrite"></a>
+	<p></p>
+	<h3>onAfterWrite</h3>
+	<div class="indent">
+		<p>
+		<code>void onAfterWrite(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 221]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodonBeforeWrite"></a>
+	<p></p>
+	<h3>onBeforeWrite</h3>
+	<div class="indent">
+		<p>
+		<code>void onBeforeWrite(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 208]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodonBeforeWrite">OrderStatusLog_DispatchPhysicalOrder::onBeforeWrite()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodpopulateDefaults"></a>
+	<p></p>
+	<h3>populateDefaults</h3>
+	<div class="indent">
+		<p>
+		<code>void populateDefaults(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 146]</p>
+				
+	<p>Overridden in child classes as:<br />
+		<dl>
+	<dt><a href="../default/OrderStatusLog_DispatchPhysicalOrder.html#methodpopulateDefaults">OrderStatusLog_DispatchPhysicalOrder::populateDefaults()</a></dt>
+		<dd></dd>
+	</dl>
+	</p>
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodscaffoldSearchFields"></a>
+	<p></p>
+	<h3>scaffoldSearchFields</h3>
+	<div class="indent">
+		<p>
+		<code>Fieldset scaffoldSearchFields(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 202]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodType"></a>
+	<p></p>
+	<h3>Type</h3>
+	<div class="indent">
+		<p>
+		<code>String Type(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 193]</p>
+				
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_consts"></a>
+	<h2>Class Constants</h2>
+	</div>
+	<div id="credit">
+		<hr>
+		Documentation generated on Tue, 08 Nov 2011 22:34:28 +1100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+	</div>
+</div>
+</body>
+</html>
