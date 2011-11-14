@@ -44,6 +44,18 @@ class Chart extends ViewableData {
 	public static $pixels_max = 300000;
 	
 	/**
+	 * The maximum width (in pixels) of the graph.
+	 * @var int
+	 */
+	public static $width_max = 1000;
+	
+	/**
+	 * The maximum height (in pixels) of the graph.
+	 * @var int
+	 */
+	public static $height_max = 1000;
+	
+	/**
 	 * Counts the number of chart instances so each can be assigned a unique numeric ID
 	 * 
 	 * @todo should this be protected instead of public?
