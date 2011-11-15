@@ -543,7 +543,7 @@ class Chart extends ViewableData {
 			if($this->axisLabels) {
 				foreach($this->axisLabels as $index => $labels) {
 					if($labels) {
-						$axesLabels[] = "$index:|" . implode('|', $labels);
+						$axesLabels[] = "$index:|" . implode('|', $labels) . '|';
 					}
 				}
 				if(isset($axesLabels)) {
