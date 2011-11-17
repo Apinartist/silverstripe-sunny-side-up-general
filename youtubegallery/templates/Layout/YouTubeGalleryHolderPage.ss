@@ -9,5 +9,5 @@ $Content
 		</div>
 	</li>
 <% end_control %>
-</div>
+</ul>
 $Form
