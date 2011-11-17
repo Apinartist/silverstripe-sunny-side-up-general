@@ -10,12 +10,14 @@
  * @author Romain Louis <romain@sunnysideup.co.nz>
  */
 class MapChart extends Chart {
-
-	
 	
 	public static $max_dimensions = array(
 		't' => array(400, 220),
 		'map' => array(600, 500)
+	);
+	
+	public static $area_centering = array(
+		'world' => array(-70, -170, 85, 180)
 	);
 	
 	public static $types = array('t', 'map');	
@@ -25,12 +27,13 @@ class MapChart extends Chart {
 	
 	public static $areas = array('africa', 'asia', 'europe', 'middle_east', 'south_america', 'usa', 'world');
 	
-	
 	protected $type = 't';
 	protected $area = 'world';
 	
 	protected $records = array();
 	protected $colors = array();
+	
+	protected $centered = false;
 	
 	protected $positionLeft, $positionRight, $positionTop, $positionBottom; 
 	
@@ -45,16 +48,24 @@ class MapChart extends Chart {
 				if(isset($fields[1]) && $this->markerType) {
 					$marker = $text = $fields[1];
 					$offset = '';
+					$repeat = false;
 					if(is_array($marker)) {
-						list($text, $offsets) = $marker;
+						list($text, $offsets, $repeat) = $marker;
 						$offset = ',,:' . implode(':', $offsets);
 					}
 					$text = urlencode($text);
 					$markers[] = "$this->markerType$text,$this->markerColor,0,$i,$this->markerSize$offset";
+					if($repeat) {
+						$j = count($records) + (isset($extraMarkers) ? count($extraMarkers) : 0);
+						$extraMarkers[] = "$this->markerType$text,$this->markerColor,0,$j,$this->markerSize$offset";
+					}
 				}
 			}
 			$params[Chart::$data_param] = 't:' . implode(',', $values);
 			if(isset($markers)) {
+				if(isset($extraMarkers)) {
+					$markers = array_merge($markers, $extraMarkers);
+				}
 				$params[self::$marker_param] = implode('|', $markers);
 			}
 		}
@@ -67,12 +78,15 @@ class MapChart extends Chart {
 		if($marker) $this->records[$title][] = $marker;
 	}
 	
-
-	
 	public function getTypeForLink() {
 		$type = parent::getTypeForLink();
-		if($type == 'map' && isset($this->positionTop)) {
-			$type .= ":auto=$this->positionLeft,$this->positionRight,$this->positionTop,$this->positionBottom";
+		if($type == 'map') {
+			if($this->centered && isset(self::$area_centering[$this->area])) {
+				$type .= ":fixed=" . implode(',', self::$area_centering[$this->area]);
+			}
+			else if(isset($this->positionTop)) {
+				$type .= ":auto=$this->positionLeft,$this->positionRight,$this->positionTop,$this->positionBottom";
+			}
 		}
 		return $type;
 	}
@@ -97,6 +111,10 @@ class MapChart extends Chart {
 		$this->positionTop = $top;
 		$this->positionBottom = $bottom;
 	}
+	
+	public function center() {
+		$this->centered = true;
+	}
 }
 
 /**
@@ -115,9 +133,7 @@ class MapChart_Geo extends MapChart {
 	 * @var array
 	 */
 	public static $extensions = array('InteractiveChart');
-
-
-
+	
 	public static $types = array('regions', 'markers');
 	
 	public static $regions = array('world', 'us_metro',
