@@ -7,7 +7,7 @@
  */
 class YouTubeGalleryHolderPage extends Page {
 
-	static $icon = "mysite/images/treeicons/YouTubeGalleryHolderPage";
+	static $icon = "youtubegallery/images/treeicons/YouTubeGalleryHolderPage";
 
 	static $default_child = 'YouTubeGalleryPage';
 
