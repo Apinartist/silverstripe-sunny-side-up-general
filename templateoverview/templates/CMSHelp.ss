@@ -28,7 +28,7 @@
 </head>
 <body class="typography">
 
-	<h1><i>$SiteTitle</i> - help menu</h1>
+	<h1>$SiteTitle - help menu</h1>
 
 	<h2>General</h2>
 	<p>General help with the Silverstripe Content Management System (CMS) is provided by <a href="http://userhelp.silverstripe.org/" target="_blank">Silvertripe Ltd</a>  (http://userhelp.silverstripe.org/).</p>
