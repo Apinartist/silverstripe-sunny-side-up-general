@@ -11,7 +11,7 @@
 			size: A4 landscape
 			margin: 5%;
 		}
-		ul#HelpImages , #HelpImages li, #HelpImages img, #HelpImages h3 {padding-left: 0px; margin-left: 0px; float: none; border: none; padding: 0px!important; margin: 0px!important; text-align: left; display: block}
+		ol#HelpImages ,ul#HelpImages , #HelpImages li, #HelpImages img, #HelpImages h3 {padding-left: 0px; margin-left: 0px; float: none; border: none; padding: 0px!important; margin: 0px!important; text-align: left; display: block}
 		#HelpImages, #TOC li {text-transform: capitalize;}
 		#HelpImages li{page-break-before:always; list-style: none; border-top: 1px #555 dotted; margin-left: 0px; clear: both;}
 		#HelpImages a img {border: 1px solid #e8e8e8;}
@@ -32,15 +32,24 @@
 
 	<h2>General</h2>
 	<p>General help with the Silverstripe Content Management System (CMS) is provided by <a href="http://userhelp.silverstripe.org/" target="_blank">Silvertripe Ltd</a>  (http://userhelp.silverstripe.org/).</p>
+	<ol>
+		<li><a href="http://userhelp.silverstripe.org/introduction-and-logging-in/">getting started - how to log in</a></li>
+		<li><a href="http://userhelp.silverstripe.org/basic-overview/">the CMS basics</a></li>
+		<li><a href="http://userhelp.silverstripe.org/for-website-content-editors/creating-and-editing-content/">editing pages </a></li>
+		<li><a href="http://userhelp.silverstripe.org/for-website-content-editors/managing-your-site/">managing the website</a></li>
+		<li><a href="http://userhelp.silverstripe.org/for-website-content-editors/web-content-best-practices/">best practices </a></li>
+		<li><a href="http://userhelp.silverstripe.org/for-website-content-editors/forms/">forms</a></li>
+		<li><a href="http://userhelp.silverstripe.org/for-website-administrators/changing-and-managing-users/">managing users</a></li>
+	</ol>
 	<% if HelpFiles %>
-	<h2 id="TOCHeading">Specific</h2>
-	<p>Help specifically for <i>$SiteTitle</i>.</p>
-	<ul id="TOC">
+	<h2 id="TOCHeading">Specific to $SiteTitle</h2>
+	<p>Below are some screenshots that are specific to this site.</p>
+	<ol id="TOC">
 		<% control HelpFiles %>
 		<li class="$EvenOdd $FirstLast"><a href="#Pos$Pos" class="small">$Title</a></li>
 		<% end_control %>
-	</ul>
-	<ul id="HelpImages">
+	</ol>
+	<ol id="HelpImages">
 		<% control HelpFiles %>
 		<li class="$EvenOdd $FirstLast" id="Pos$Pos">
 			<h3><a class="backToTop" href="#TOCHeading">^</a> $Title</h3>
@@ -48,7 +57,7 @@
 		</li>
 
 		<% end_control %>
-	</ul>
+	</ol>
 	<% else %>
 	<p>There are no help files.</p>
 	<% end_if %>
@@ -79,6 +88,15 @@
 						);
 					}
 				);
+				jQuery(document).ready(function() {
+					jQuery("a[@href^=http]").each(
+						function(){
+							if(this.href.indexOf(location.hostname) == -1) {
+								$(this).attr('target', '_blank');
+							}
+						}
+					)
+				});
 			}
 		);
 	--></script>
