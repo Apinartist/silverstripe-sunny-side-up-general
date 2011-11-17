@@ -39,7 +39,7 @@ class YouTubeGalleryPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.VideoInfo", new TextField("YouTubeVideoCode", "You Tube Video Code or URL (e.g. 5v5ViXUeofA or http://www.youtube.com/watch?v=5v5ViXUeofA"));
+		$fields->addFieldToTab("Root.Content.VideoInfo", new TextField("YouTubeVideoCode", "You Tube Video Code or URL ( e.g. 5v5ViXUeofA or http://www.youtube.com/watch?v=5v5ViXUeofA )"));
 		return $fields;
 	}
 
