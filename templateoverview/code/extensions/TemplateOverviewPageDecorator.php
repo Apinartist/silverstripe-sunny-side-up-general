@@ -9,9 +9,6 @@
 
 class TemplateOverviewPageDecorator extends DataObjectDecorator {
 
-	protected static $help_file_directory_name = "_help";
-		static function set_help_file_directory_name($s) {self::$help_file_directory_name = $s;}
-		static function get_help_file_directory_name() {return self::$help_file_directory_name;}
 
 	function updateCMSFields(&$fields) {
 		if(method_exists($this->owner,'getHowToMakeThisTemplateWorkArray')) {
@@ -31,59 +28,6 @@ class TemplateOverviewPageDecorator extends DataObjectDecorator {
 			}
 			$fields->addFieldToTab("Root.Help", new LiteralField("MoreHelp", $obj->renderWith("TemplateOverviewPageCMSDetail")));
 		}
-		$fileArray = $this->getListOfHelpFiles();
-		if($fileArray && count($fileArray)) {
-			$linkArray = array();
-			foreach($fileArray as $file) {
-				$linkArray[] = '<li><a href="'.$file.'">'.$file.'</a></li>';
-			}
-			$fields->addFieldToTab("Root.Help", new LiteralField(
-				"HelpImages",
-				"<h3>How to ...</h3><ul>".implode("",$linkArray)."</ul>"
-			));
-		}
-	}
-
-	private function getListOfHelpFiles() {
-		$fileArray = array();
-		$directory = "/".self::get_help_file_directory_name()."/";
-		$baseDirectory = Director::baseFolder()."/".$directory;
-		if(is_dir(Director::baseFolder()."/".$baseDirectory)) {
-			//get all image files with a .jpg extension.
-			$images = $this->getDirectoryList($baseDirectory , array("png", "jpg"));
-			//print each file name
-			if($images && count($images)) {
-				foreach($images as $image){
-					if($image) {
-						if(file_exists($directory.$image)) {
-							$fileArray[] = $directory.$image;
-						}
-					}
-				}
-			}
-		}
-		return $fileArray;
-	}
-
-	private function getDirectoryList ($directory, $extensionArray) {
-		//	create an array to hold directory list
-		$results = array();
-		// create a handler for the directory
-		$handler = opendir($directory);
-		// open directory and walk through the filenames
-		while ($file = readdir($handler)) {
-			// if file isn't this directory or its parent, add it to the results
-			if ($file != "." && $file != ".." && !is_dir($file)) {
-				$extension = substr(strrchr($file, '.'), 1);
-				if(in_array($extension, $extensionArray)) {
-					$results[] = $file;
-				}
-			}
-		}
-	// tidy up: close the handler
-		closedir($handler);
-		// done!
-		return $results;
 	}
 
 }
