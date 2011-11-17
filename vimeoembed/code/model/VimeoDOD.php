@@ -17,7 +17,7 @@ class VimeoDOD extends DataObjectDecorator {
 		static function get_include_vimeo_in_page_classes(){return self::$include_vimeo_in_page_classes;}
 
 	public function updateCMSFields(&$fields) {
-		if($this->hasVimeo()) {
+		if($this->HasVimeo()) {
 			$listObject = DataObject::get("VimeoDataObject");
 			if($listObject) {
 				$tab = _t("VimeoDOD.TAB", "Root.Content.Vimeo");
