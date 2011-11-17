@@ -81,10 +81,6 @@ class YouTubeGalleryPage_Controller extends Page_Controller {
 	}
 
 
-	function YouTubeGalleryItems() {
-		return DataObject::get_by_id("YouTubeGalleryPage", $this->ID);
-	}
-
 
 }
 
