@@ -24,9 +24,22 @@ class CMSHelp extends ContentController {
 	 * standard SS Method
 	 *
 	 */
-	function index() {
+	function init() {
+		// Only administrators can run this method
+		if(!Permission::check("ADMIN") && !Permission::check("SHOPADMIN")) {
+			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
+		}
+		parent::init();
 		Requirements::themedCSS("typography");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+	}
+
+
+	/**
+	 * standard SS Method
+	 *
+	 */
+	function index() {
 		return array();
 	}
 
