@@ -89,10 +89,10 @@
 					}
 				);
 				jQuery(document).ready(function() {
-					jQuery("a[@href^=http]").each(
+					jQuery("a[href^=http]").each(
 						function(){
 							if(this.href.indexOf(location.hostname) == -1) {
-								$(this).attr('target', '_blank');
+								jQuery(this).attr('target', '_blank');
 							}
 						}
 					)
