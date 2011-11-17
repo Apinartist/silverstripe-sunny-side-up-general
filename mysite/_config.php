@@ -49,7 +49,7 @@ CMSMenu::remove_menu_item("ReportAdmin");
 CMSMenu::remove_menu_item("HelpAdmin");
 LeftAndMain::setLogo($location = "", $style = "");
 PageComment::enableModeration();
-//===================---------------- ENBD cms MODULE  ----------------===================
+//===================---------------- END cms MODULE  ----------------===================
 
 
 //===================---------------- start testemail ----------------===================
