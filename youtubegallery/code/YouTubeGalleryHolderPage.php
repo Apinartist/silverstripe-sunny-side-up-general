@@ -29,7 +29,6 @@ class YouTubeGalleryHolderPage_Controller extends Page_Controller {
 
 	function YouTubeGalleryPageChildren() {
 		return DataObject::get("YouTubeGalleryPage", "ParentID = ".$this->ID);
-
 	}
 
 
