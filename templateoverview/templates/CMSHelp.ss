@@ -13,7 +13,7 @@
 		}
 		ul#HelpImages , #HelpImages li, #HelpImages img, #HelpImages h3 {padding-left: 0px; margin-left: 0px; float: none; border: none; padding: 0px!important; margin: 0px!important; text-align: left; display: block}
 		#HelpImages{text-transform: capitalize;}
-		#HelpImages li {page-break-before:always; list-style: none; border-top: 1px #555 dotted; margin-left: 0px; clear: both;}
+		#HelpImages li, #TOC li {page-break-before:always; list-style: none; border-top: 1px #555 dotted; margin-left: 0px; clear: both;}
 		#HelpImages a img {border: 1px solid #e8e8e8;}
 		#HelpImages a:hover img {border: 1px solid black;}
 		#HelpImages a.small img {width: 33%; }
