@@ -7,7 +7,7 @@
 
 ul#SiteMap{}
 	ul#SiteMap li {position: relative; list-style: none; list-style-image: none;}
-			ul#SiteMap li a.siteMapPageExpander {}
+			ul#SiteMap li a.siteMapPageExpander {display: none!important}
 			ul#SiteMap a.pageTitle{display: block; font-size: 12px; padding:12px 0 12px 18px;}
 				ul#SiteMap a.SiteMapLevel1{font-size: 14px; font-weight: bold; border-bottom: 1px solid #efefef; padding:12px 0 12px 18px;}
 				ul#SiteMap a.SiteMapLevel2{border-bottom: 1px solid #f8f8f8;}
