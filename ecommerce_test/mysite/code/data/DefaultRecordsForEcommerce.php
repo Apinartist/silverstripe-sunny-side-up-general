@@ -585,7 +585,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "4");
 		$this->addExamplePages("Product Tags", $products);
 		foreach($products as $pos => $product){
-			$idArray[$product->ID] = $product->ID;
+			$idArray[$pos] = $product->ID;
 			$titleArray[] = $product->MenuTitle;
 			$this->addToTitle($product, "with tag", true);
 		}
