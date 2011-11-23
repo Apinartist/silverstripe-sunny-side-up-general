@@ -30,6 +30,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->productsInManyGroups();
 
+		$this->productsWithSpecialTax();
+
 		$this->createShopAdmin();
 
 		$this->createOrder();
@@ -553,6 +555,18 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->AppliesToAllCountries = false;
 			$obj->write();
 		}
+		if(!DataObject::get_one("GSTTaxModifierOptions", "Code = 'ADD'")) {
+			$obj = new GSTTaxModifierOptions();
+			$obj->CountryCode = "";
+			$obj->Code = "ADD";
+			$obj->Name = "Additional Tax";
+			$obj->InclusiveOrExclusive = "Inclusive";
+			$obj->Rate = 0.65;
+			$obj->PriceSuffix = "";
+			$obj->DoesNotApplyToAllProducts = true;
+			$obj->AppliesToAllCountries = true;
+			$obj->write();
+		}
 		$obj = null;
 		if(!DataObject::get_one("DiscountCouponOption", "\"Code\" = 'AAA'")) {
 			$obj = new DiscountCouponOption();
@@ -568,10 +582,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	function createTags(){
-		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
+		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "4");
 		$this->addExamplePages("Product Tags", $products);
-		foreach($products as $product){
-			$idArray[] = $product->ID;
+		foreach($products as $pos => $product){
+			$idArray[$product->ID] = $product->ID;
 			$titleArray[] = $product->MenuTitle;
 			$this->addToTitle($product, "with tag", true);
 		}
@@ -582,7 +596,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$t1->Explanation = "explains Tag 1";
 		$t1->write();
 		$existingProducts = $t1->Products();
-		$existingProducts->addMany($idArray);
+		$existingProducts->addMany(array($idArray[0],$idArray[1]));
 		DB::alteration_message("Creating tag: ".$t1->Title." for ".implode(",", $titleArray), "created");
 		$t2 = new EcommerceProductTag();
 		$t2->Title = "TAG 2";
@@ -590,8 +604,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$t2->Explanation = "explains Tag 2";
 		$t2->write();
 		$existingProducts = $t2->Products();
-		$existingProducts->addMany($idArray);
+		$existingProducts->addMany(array($idArray[2],$idArray[3]));
 		DB::alteration_message("Creating tag: ".$t2->Title." for ".implode(",", $titleArray), "created");
+		$productGroupWithTags = DataObject::get_one("ProductGroupWithTags");
+		$existingTags = $productGroupWithTags->EcommerceProductTags();
+		$existingTags->addMany(array($t1->ID, $t2->ID));
 	}
 
 	function createRecommendedProducts(){
@@ -746,6 +763,29 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 	}
 
+	protected function productsWithSpecialTax(){
+		$products = DataObject::get("Product", "\"ClassName\" = 'Product'", "RAND()", null, 2);
+		$taxToAdd = DataObject::get_one("GSTTaxModifierOptions", "\"Code\" = 'ADD'");
+		if($taxToAdd && $products) {
+			foreach($products as $product) {
+				$additionalTax = $product->AdditionalTax();
+				$additionalTax->addMany(array($taxToAdd->ID));
+				$this->addExamplePages("product with additional taxes (add to cart to see this feature in action)", $product);
+			}
+		}
+		$products = DataObject::get("AnyPriceProductPage");
+		$allStandardTaxes = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
+		if($allStandardTaxes && $products) {
+			foreach($products as $product) {
+				$excludedTax = $product->ExcludedFrom();
+				foreach($allStandardTaxes as $taxToExclude) {
+					$excludedTax->addMany(array($taxToExclude->ID));
+				}
+				$this->addExamplePages("product without taxes (add to cart to see this feature in action)", $product);
+			}
+		}
+	}
+
 	protected function productsInManyGroups(){
 		$products = DataObject::get("Product", "\"ClassName\" = 'Product'", "RAND()", null, 2);
 		$productGroups = DataObject::get("ProductGroup", "\"ClassName\" = 'ProductGroup'", "RAND()", null, 3);
@@ -846,17 +886,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	protected function collateExamplePages(){
-		$this->addExamplePages("Checkout Page", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Checkout page", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Delivery options (add product to cart first)", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Taxes (NZ based GST - add product to cart first", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages("Taxes (NZ based GST - add product to cart first)", DataObject::get_one("CheckoutPage"));
 		$this->addExamplePages("Discount Coupon (try <i>AAA</i>)", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Order Confirmation Page", DataObject::get_one("OrderConfirmationPage"));
-		$this->addExamplePages("Cart Page (review cart without checkout)", DataObject::get_one("CartPage"));
-		$this->addExamplePages("Account Page", DataObject::get_one("AccountPage"));
+		$this->addExamplePages("Order Confirmation page", DataObject::get_one("OrderConfirmationPage"));
+		$this->addExamplePages("Cart page (review cart without checkout)", DataObject::get_one("CartPage"));
+		$this->addExamplePages("Account page", DataObject::get_one("AccountPage"));
 		$this->addExamplePages("Donation page", DataObject::get_one("AnyPriceProductPage"));
-		$this->addExamplePages("Quick Add Page", DataObject::get_one("AddToCartPage"));
-		$this->addExamplePages("Shop by Tag Page ", DataObject::get_one("ProductGroupWithTags"));
-		$this->addExamplePages("Corporate Account Order Page", DataObject::get_one("AddUpProductsToOrderPage"));
+		$this->addExamplePages("Quick Add page", DataObject::get_one("AddToCartPage"));
+		$this->addExamplePages("Shop by Tag page ", DataObject::get_one("ProductGroupWithTags"));
+		$this->addExamplePages("Corporate Account Order page", DataObject::get_one("AddUpProductsToOrderPage"));
 		$this->addExamplePages("Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
 		$this->addExamplePages("Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
 		$html = '<h2>examples shown on this demo site</h2><ul>';
