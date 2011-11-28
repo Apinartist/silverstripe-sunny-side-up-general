@@ -294,31 +294,12 @@ class BusinessPage extends Page {
 				default:
 			}
 		}
-		if(!$useInFrontEnd) {
-			$fields = parent::getCMSFields();
-			// Extra content fields
-			$fields->removeFieldFromTab("Root.Behaviour","ProvideComments");
-			$fields->removeFieldFromTab("Root.Content.Main","Content");
-			$fields->removeFieldFromTab("Root.Content", "Main" );
-			$fields->removeFieldFromTab("Root.Content", "MainImage" );
-			//$fields->removeFieldFromTab($rootTabname."Main","Title");
-			$fields->removeFieldFromTab("Root.Content.Main","MenuTitle"); // Leave this as automatic
-			$rootTabname = "Root.Content.";
-			// Image fields
-			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image1", "Image 1",null,null,null,'BusinessImages/'.$this->ID) );
-			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image2", "Image 2",null,null,null,'BusinessImages/'.$this->ID) );
-			$fields->addFieldToTab($rootTabname."Images", new ImageField("Image3", "Image 3",null,null,null,'BusinessImages/'.$this->ID) );
-			$fields->addFieldsToTab($rootTabname."General", $generalFields );
-			return $fields;
-		}
-		else {
-			// Image fields
-			$generalFields->push(new HeaderField("Images", "Images",3) );
-			$generalFields->push(new SimpleImageField("Image1", "Image 1",null,null,null,'BusinessImages/'.$this->ID) );
-			$generalFields->push(new SimpleImageField("Image2", "Image 2",null,null,null,'BusinessImages/'.$this->ID) );
-			$generalFields->push(new SimpleImageField("Image3", "Image 3",null,null,null,'BusinessImages/'.$this->ID) );
-			return $generalFields;
-		}
+		// Image fields
+		$generalFields->push(new HeaderField("Images", "Images",3) );
+		$generalFields->push(new SimpleImageField("Image1", "Image 1",null,null,null,'BusinessImages/'.$this->ID) );
+		$generalFields->push(new SimpleImageField("Image2", "Image 2",null,null,null,'BusinessImages/'.$this->ID) );
+		$generalFields->push(new SimpleImageField("Image3", "Image 3",null,null,null,'BusinessImages/'.$this->ID) );
+		return $generalFields;
 	}
 
 
