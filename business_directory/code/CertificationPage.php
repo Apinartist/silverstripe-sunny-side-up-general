@@ -23,7 +23,7 @@ class CertificationPage extends Page {
 	 *Standard SS Static
 	 **/
 	static $has_one = array(
-		"Logo" => "Image",
+		"Logo" => "Image"
 	);
 
 	/**
@@ -32,6 +32,7 @@ class CertificationPage extends Page {
 	static $belongs_many_many = array(
 		'Businesses' => 'BusinessPage'
 	);
+
 
 	/**
 	 *Standard SS Static
@@ -43,6 +44,11 @@ class CertificationPage extends Page {
 	 **/
 	function getCMSFields( $cms ) {
 		$fields = parent::getCMSFields( $cms );
+		$members = DataObject::get('Member');
+		if ($galleries) {
+			$galleries = $galleries->toDropdownMap('ID', 'Title', '(Select one)', true);
+		}
+		$fields->addFieldToTab('Root.Content.Main', new DropdownField('GalleryID', 'Gallery', $galleries), 'Content');
 		$fields->addFieldToTab("Root.Content.MoreInfo", new TextField("Website") );
 		$fields->addFieldToTab("Root.Content.Logo", new ImageField("Logo", "Logo", $value = null, $form = null, $rightTitle = null, $folderName = "/assets/CertificationLogos/") );
 		return $fields;

@@ -209,7 +209,8 @@ class BusinessPage extends Page {
 			new TextField("Website", "Website"),
 			new TextAreaField("AlternativeContactDetails", "Alternative Contact Details", 4),
 			new HeaderField("CertificationHeader", "Certification", 3),
-			new CheckboxSetField("Certifications", "Certifications Sold", $certificationOptions)
+			new CheckboxSetField("Certifications", "Products Sold under Certifications...", $certificationOptions),
+			new TextField("NewCertification", "Other certifying agents")
 		);
 		foreach($generalFields as $field) {
 			switch($field->Name()) {
@@ -434,6 +435,7 @@ class BusinessPage_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
+		Requirements::javascript("business_directory/javascript/BusinessPage.js");
 	}
 
 	/**
@@ -492,6 +494,17 @@ class BusinessPage_Controller extends Page_Controller {
 		$businessPage = DataObject::get_by_id("BusinessPage", $this->ID);
 		$form->saveInto($businessPage);
 		$businessPage->writeToStage('Stage');$businessPage->publish('Stage', 'Live');
+		if(isset($data["NewCertification"])) {
+			$certName = Convert::raw2sql($data["NewCertification"]);
+			$cert = new CertificationPage();
+			$cert->Title = $certName;
+			$cert->MetaTitle = $certName;
+			$cert->MenuTitle = $certName;
+			$cert->MenuTitle = $certName;
+			$cert->writeToStage("Stage");
+		}
+		$certs = $businessPage->Certifications();
+		$certs->add($cert);
 		Director::redirectBack();
 	}
 
