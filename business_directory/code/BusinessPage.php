@@ -178,7 +178,7 @@ class BusinessPage extends Page {
 	/**
 	 * Standard SS method
 	 **/
-	public function getCMSFields( $cms = null ) {
+	public function getCMSFields($useInFrontEnd = false) {
 
 		if($certificationOptionsDOS = DataObject::get("CertificationPage")) {
 			$certificationOptions = $certificationOptionsDOS->toDropDownMap("ID", "Title", "-- No Certifications --");
@@ -238,11 +238,12 @@ class BusinessPage extends Page {
 				default:
 			}
 		}
-		if($cms) {
-			$fields = parent::getCMSFields( $cms );
+		if(!$useInFrontEnd) {
+			$fields = parent::getCMSFields();
 			// Extra content fields
 			$fields->removeFieldFromTab("Root.Behaviour","ProvideComments");
 			$fields->removeFieldFromTab("Root.Content.Main","Content");
+			$fields->removeFieldFromTab("Root.Content", "Main" );
 			$fields->removeFieldFromTab("Root.Content", "MainImage" );
 			//$fields->removeFieldFromTab($rootTabname."Main","Title");
 			$fields->removeFieldFromTab("Root.Content.Main","MenuTitle"); // Leave this as automatic
