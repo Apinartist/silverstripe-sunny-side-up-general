@@ -178,7 +178,63 @@ class BusinessPage extends Page {
 	/**
 	 * Standard SS method
 	 **/
-	public function getCMSFields($useInFrontEnd = false) {
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+		if($certificationOptionsDOS = DataObject::get("CertificationPage")) {
+			$certificationOptions = $certificationOptionsDOS->toDropDownMap("ID", "Title", "-- No Certifications --");
+		}
+		else {
+			$certificationOptions = array(0 => "No Certification", -1 => "Certified");
+		}
+		$fields->removeFieldFromTab("Root.Content.Main","Content");
+		$fields->removeFieldFromTab("Root.Content","Metadata");
+		$fields->removeFieldFromTab("Root.Content","GoogleSitemap");
+		$fields->removeFieldFromTab("Root.Content","Summary");
+		$fields->addFieldsToTab(
+			"Root.Content.Main",
+			array(
+				new TextField("Title", "Business Name"),
+				new TextareaField("IntroParagraph", "Introduction", 4),
+				new TextareaField("OrganisationDescription", "Organisation Description", 4),
+				new TextareaField("ReasonForFounding", "Reason For Founding", 4)
+			)
+		);
+		$fields->addFieldsToTab(
+			"Root.Content.ContactDetails",
+			array(
+				new TextareaField("OpeningHoursNote", "Opening Hours", 4),
+				new TextField("FirstName", "First Name"),
+				new TextField("LastName", "Last Name"),
+				new TextField("Phone", "Phone"),
+				new EmailField("Email", "Administrator Email (hidden)"),
+				new EmailField("ListingEmail", "Listing Email (public)"),
+				new TextField("Skype", "Skype Address"),
+				new TextField("IM", "Instant Messaging ID / Address"),
+				new TextareaField("MailingAddress", "Mailing Address", 4),
+				new TextareaField("Notes", "Notes",5),
+				new TextField("Website", "Website"),
+				new TextAreaField("AlternativeContactDetails", "Alternative Contact Details", 4)
+			)
+		);
+		$fields->addFieldsToTab(
+			"Root.Content.Certifications",
+			array(
+				new CheckboxSetField("Certifications", "Products Sold under Certifications...", $certificationOptions),
+				new TextField("NewCertification", "Other certifying agents")
+			)
+		);
+		$fields->addFieldsToTab(
+			"Root.Content.Images",
+			array(
+				new ImageField("Image1", "Image 1",null,null,null,'BusinessImages/'.$this->ID) ,
+				new ImageField("Image2", "Image 2",null,null,null,'BusinessImages/'.$this->ID) ,
+				new ImageField("Image3", "Image 3",null,null,null,'BusinessImages/'.$this->ID)
+			)
+		);
+		return $fields;
+	}
+
+	public function getFrontEndFields($useInFrontEnd = false) {
 
 		if($certificationOptionsDOS = DataObject::get("CertificationPage")) {
 			$certificationOptions = $certificationOptionsDOS->toDropDownMap("ID", "Title", "-- No Certifications --");
