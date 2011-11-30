@@ -50,3 +50,5 @@ ul.productActions li a:hover, .goToCart a:hover {background-color: #317010;}
 .summary {font-weight: bold;}
 
 .ecomquantityfield {white-space: nowrap;}
+
+.tableSubTitle li {list-style: none; font-size: 0.8em!important;}
