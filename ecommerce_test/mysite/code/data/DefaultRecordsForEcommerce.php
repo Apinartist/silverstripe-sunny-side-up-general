@@ -86,7 +86,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
 					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe E-commerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
 				</p>
-				<h2>Login details</h2>
+				<h2 id=\"LoginDetails\">Log in details</h2>
 				<p>
 					You can <a href=\"admin/shop/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
 				</p>
@@ -103,9 +103,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <br />
 					<a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/\">http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/</a>.
 				</p>
-				<h3>downloads</h3>
+				<h3>downloads, svn and git</h3>
 				<p>
-					Please log in (see login details above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
+					Please log in (see <a href=\"#LoginDetails\"login details</a> above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
 				</p>
@@ -156,7 +156,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</p>
 					<h2>want to break up the checkout page into steps?</h2>
 					<p>
-						A checkout page can also be broken down into several steps (pages) using a setting in the Content Management System.
+						A checkout page can also be broken down into several steps (pages).
+						You can switch between the one-page-checkout and the step-by-step-checkout option using a simple checkbox in the <a href=\"/admin/\">CMS (content management system)</a>.
 					</p>
 					<ul>
 						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
