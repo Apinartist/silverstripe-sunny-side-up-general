@@ -48,12 +48,12 @@ class Advertisement extends DataObject {
 		"LinkedPage" => "SiteTree"
 	);
 
-
 	public static $belongs_many_many = array(
 		"Parents" => "SiteTree",
 	);
 
 	static $casting = array(
+		"FullTitle" => "HTMLText",
 		"Link" => "Varchar",
 		"GroupID" => "Int"
 	);
@@ -65,16 +65,22 @@ class Advertisement extends DataObject {
 		"Sort" => 1000
 	);
 
-	public static $default_sort = "Sort ASC, Title ASC";
+	public static $default_sort = "\"Sort\" ASC, \"Title\" ASC";
 
-
-	public static $searchable_fields = array("Title" => "PartialMatchFilter");
+	public static $searchable_fields = array(
+		"Title" => "PartialMatchFilter"
+	);
 
 	public static $singular_name = "Advertisement";
 		static function set_singular_name($v) {self::$singular_name = $v;}
 
 	public static $plural_name = "Advertisements";
 		static function set_plural_name($v) {self::$plural_name = $v;}
+
+	static $summary_fields = array(
+		"FullTitle" => "Image",
+		"Link" => "Link"
+	);
 
 	function getLink() {
 		$link = '';
@@ -92,6 +98,24 @@ class Advertisement extends DataObject {
 
 	function Link() {
 		return $this->getLink();
+	}
+
+	function getFullTitle() {
+		$s = $this->Title;
+		if($this->AdvertisementImageID) {
+			$image = $this->AdvertisementImage();
+			if($image && $image->exists()) {
+				$thumb = $image->setSize(30,30);
+				if($thumb) {
+					$s = " <img src=\"".$thumb->Link()."\" title=\"".$thumb->Link()."\"/ style=\"vertical-align: top; display: block; float: left; padding-right: 10px; \"><div style=\"width: left;\">".$s."</div>";
+				}
+			}
+		}
+		return $s;
+	}
+
+	function FullTitle() {
+		return $this->getFullTitle();
 	}
 
 	function getGroupID() {
@@ -116,6 +140,7 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root.Main", "ExternalLink");
 		$fields->removeFieldFromTab("Root.Parents", "Parents");
 		$fields->removeFieldFromTab("Root", "Parents");
+		$fields->addFieldToTab("Root.Main", new ReadonlyField("Link"));
 		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = self::$singular_name." image. ".self::recommended_image_size_statement()));
 		if($this->ID) {
 			$treeField = new TreeMultiselectField("Parents", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all ".self::$singular_name." pages)"), "SiteTree");
@@ -134,7 +159,6 @@ class Advertisement extends DataObject {
 			$fields->addFieldToTab("Root.Position", new NumericField($name = "Sort", "Sort undex number (the lower the number, the earlier it shows up"));
 		}
 		$fields->removeFieldFromTab("Root.Main", "AlternativeSortNumber");
-
 		return $fields;
 	}
 
@@ -216,5 +240,8 @@ class Advertisement extends DataObject {
 		return $resizedImage;
 	}
 
+	function ThinyThumb() {
+		return "bla";
+	}
 
 }

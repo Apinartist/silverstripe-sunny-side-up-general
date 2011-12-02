@@ -91,16 +91,16 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				Advertisement::recommended_image_size_statement(),
 				Advertisement::$singular_name
 			);
-			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', $txt, 'Folder'));			
+			$fields->addFieldToTab($tabName, new TreeDropdownField( 'AdvertisementsFolderID', $txt, 'Folder'));
 			//$advertisementsCount = DB::query("SELECT COUNT(ID) FROM \"Advertisement\" $whereDB ;")->value();
 			$advertisements = DataObject::get("Advertisement", $where);
 			$txt = sprintf(_t("AdvertisementDecorator.ACTUAL", 'Current %1$s Shown'), Advertisement::$plural_name);
 			$fields->addFieldToTab($tabName, $this->MyHeaderField($txt));
 			if($advertisements) {
 				$txt = sprintf(_t("AdvertisementDecorator.SELECT", 'Select %1$s to show ... (list below shows all slides available, but on the ticked ones are shown.)'), Advertisement::$plural_name);
-				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", $txt, $advertisements));
+				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", $txt, $advertisements->toDropdownMap("ID", "FullTitle")));
 				if(class_exists("DataObjectSorterController")) {
-					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement")));
+					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement", "FullTitle")));
 				}
 			}
 			else {
