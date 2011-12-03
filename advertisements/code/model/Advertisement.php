@@ -7,16 +7,20 @@
 
 class Advertisement extends DataObject {
 
+	protected static $thumbnail_size = 30;
+		static function set_thumbnail_size($i) {self::$thumbnail_size = $i;}
+		static function get_thumbnail_size() {return self::$thumbnail_size;}
+
 	protected static $width = 0;
-		static function set_width($v) {self::$width = $v;}
+		static function set_width($i) {self::$width = $i;}
 		static function get_width() {return self::$width;}
 
 	protected static $height = 0;
-		static function set_height($v) {self::$height = $v;}
+		static function set_height($i) {self::$height = $i;}
 		static function get_height() {return self::$height;}
 
 	protected static $resize_images = false;
-		static function set_resize_images($v) {self::$resize_images = $v;}
+		static function set_resize_images($b) {self::$resize_images = $b;}
 		static function get_resize_images() {return self::$resize_images;}
 
 	static function recommended_image_size_statement() {
@@ -105,9 +109,9 @@ class Advertisement extends DataObject {
 		if($this->AdvertisementImageID) {
 			$image = $this->AdvertisementImage();
 			if($image && $image->exists()) {
-				$thumb = $image->setSize(30,30);
+				$thumb = $image->setSize(self::get_thumbnail_size(),self::get_thumbnail_size());
 				if($thumb) {
-					$s = " <img src=\"".$thumb->Link()."\" title=\"".$thumb->Link()."\"/ style=\"vertical-align: top; display: block; float: left; padding-right: 10px; \"><div style=\"width: left;\">".$s."</div>";
+					$s = " <img src=\"".$thumb->Link()."\" title=\"".$thumb->Link()."\"/ style=\"vertical-align: top; display: block; float: left; padding-right: 10px; \"><div style=\"width: 100%;\">".$s."</div><div style=\"clear: left;\"></div>";
 				}
 			}
 		}
