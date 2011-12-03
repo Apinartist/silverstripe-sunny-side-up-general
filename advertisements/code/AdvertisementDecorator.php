@@ -100,7 +100,13 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 				$txt = sprintf(_t("AdvertisementDecorator.SELECT", 'Select %1$s to show ... (list below shows all slides available, but on the ticked ones are shown.)'), Advertisement::$plural_name);
 				$fields->addFieldToTab($tabName, new CheckboxSetField("Advertisements", $txt, $advertisements->toDropdownMap("ID", "FullTitle")));
 				if(class_exists("DataObjectSorterController")) {
-					$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement", "FullTitle")));
+					$shownAdvertisements = $this->owner->getManyManyComponents('Advertisements');
+					if($shownAdvertisements) {
+						$array = $shownAdvertisements->column("ID");
+						$idString = implode(",",$array);
+						$link = DataObjectSorterController::popup_link("Advertisement", $filterField = "ID", $filterValue = $idString, $linkText = "sort ".Advertisement::$plural_name, $titleField = "FullTitle");
+						$fields->addFieldToTab($tabName, new LiteralField("AdvertisementsSorter", $link));
+					}
 				}
 			}
 			else {
