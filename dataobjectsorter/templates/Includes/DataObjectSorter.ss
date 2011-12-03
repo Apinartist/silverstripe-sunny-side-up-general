@@ -5,7 +5,7 @@
 </div>
 <ul id="DataObjectSorterList">
 <% control Children  %>
-	<li id="dos_{$ID}"><div class="sortHandle"><img src="dataobjectsorter/images/arrow.png" alt="move" width="16" height="16" class="moveMe" />$Title</div></li>
+	<li id="dos_{$ID}"><div class="sortHandle"><img src="dataobjectsorter/images/arrow.png" alt="move" width="16" height="16" class="moveMe" />$SortTitle</div></li>
 <% end_control  %>
 </ul>
 <% else  %>
