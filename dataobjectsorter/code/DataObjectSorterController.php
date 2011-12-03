@@ -3,21 +3,78 @@
  *@author nicolaas [at] sunnysideup.co.nz
  *@description: allows you to sort dataobjects, you need to provide them in this way: http://www.mysite.com/dataobjectsorter/[dataobjectname]/
  *
+ *
+ *
  *@package: dataobjectsorter
  **/
 
 class DataObjectSorterController extends Controller{
 
+
+	/**
+	 * returns a link for sorting objects. You can use this in the CMS like this....
+	 * <code>
+	 * if(class_exists("DataObjectSorterController")) {
+	 * 	$fields->addFieldToTab("Root.Position", new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement", $filterField = "", $filterValue = "", $linkText = "sort ".Advertisement::$plural_name, $titleField = "FullTitle")));
+	 * }
+	 * else {
+	 * 	$fields->addFieldToTab("Root.Position", new NumericField($name = "Sort", "Sort index number (the lower the number, the earlier it shows up"));
+	 * }
+	 * </code>
+	 *
+	 * @param String $className - DataObject Class Name you want to sort
+	 * @param String | Int $filterField - Field you want to filter for OR ParentID number (i.e. you are sorting children of Parent with ID = $filterField)
+	 * @param String $filterValue - filter field should be equal to this integer OR string. You can provide a list of IDs like this: 1,2,3,4 where the filterFiel is probably equal to ID or MyRelationID
+	 * @param String $linkText - text to show on the link
+	 * @param String $titleField - field to show in the sort list. This defaults to the DataObject method "getTitle", but you can use "name" or something like that.
+	 * @return String
+	 */
+	function popup_link($className, $filterField = "", $filterValue = "", $linkText = "sort this list", $titleField = "") {
+		$obj = singleton($className);
+		if($obj->canEdit()) {
+			$link = 'dataobjectsorter/sort/'.$className."/";
+			if($filterField) {
+				$link .= $filterField.'/';
+			}
+			if($filterValue) {
+			 $link .= $filterValue.'/';
+			}
+			if($titleField) {
+				$link .= $titleField.'/';
+			}
+			return '
+			<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$className.$filterField.$filterValue.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">'.$linkText.'</a>';
+		}
+	}
+
+
+	/**
+	 * standard SS variable
+	 *
+	 */
 	static $allowed_actions = array("sort", "startsort", "dodataobjectsort" );
 
+
+	/**
+	 * the standard action...
+	 * no need to add anything here now
+	 */
 	function sort() {
 		return array();
 	}
 
+
+	/**
+	 * not sure why we have this here....
+	 */
 	function startsort() {
 		return array();
 	}
 
+
+	/**
+	 * runs the actual sorting...
+	 */
 	function dodataobjectsort() {
 		$class = Director::URLParam("ID");
 		if($class) {
@@ -34,6 +91,10 @@ class DataObjectSorterController extends Controller{
 		}
 	}
 
+	/**
+	 * runs the actual sorting...
+	 * @return Object - return dataobject set of items to be sorted
+	 */
 	public function Children() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$class = Director::URLParam("ID");
@@ -97,7 +158,10 @@ class DataObjectSorterController extends Controller{
 		}
 	}
 
-
+	/**
+	 * adds
+	 * @param String $className - name of the class being sorted
+	 */
 	function add_requirements($className) {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("dataobjectsorter/javascript/jquery-ui-1.7.2.custom.min.js");
@@ -105,43 +169,6 @@ class DataObjectSorterController extends Controller{
 		Requirements::themedCSS("dataobjectsorter");
 		Requirements::customScript('var DataObjectSorterURL = "'.Director::absoluteURL("dataobjectsorter/dodataobjectsort/".$className."/").'";', 'initDataObjectSorter');
 	}
-
-	/**
-	 * returns a link for sorting objects. You can use this in the CMS like this....
-	 * <code>
-	 * if(class_exists("DataObjectSorterController")) {
-	 * 	$fields->addFieldToTab("Root.Position", new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement", $filterField = "", $filterValue = "", $linkText = "sort ".Advertisement::$plural_name, $titleField = "FullTitle")));
-	 * }
-	 * else {
-	 * 	$fields->addFieldToTab("Root.Position", new NumericField($name = "Sort", "Sort index number (the lower the number, the earlier it shows up"));
-	 * }
-	 * </code>
-	 *
-	 * @param String $className - DataObject Class Name you want to sort
-	 * @param String | Int $filterField - Field you want to filter for OR ParentID number (i.e. you are sorting children of Parent with ID = $filterField)
-	 * @param String $filterValue - filter field should be equal to this integer OR string. You can provide a list of IDs like this: 1,2,3,4 where the filterFiel is probably equal to ID or MyRelationID
-	 * @param String $linkText - text to show on the link
-	 * @param String $titleField - field to show in the sort list. This defaults to the DataObject method "getTitle", but you can use "name" or something like that.
-	 * @return String
-	 */
-	function popup_link($className, $filterField = "", $filterValue = "", $linkText = "sort this list", $titleField = "") {
-		$obj = singleton($className);
-		if($obj->canEdit()) {
-			$link = 'dataobjectsorter/sort/'.$className."/";
-			if($filterField) {
-				$link .= $filterField.'/';
-			}
-			if($filterValue) {
-			 $link .= $filterValue.'/';
-			}
-			if($titleField) {
-				$link .= $titleField.'/';
-			}
-			return '
-			<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$className.$filterField.$filterValue.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">'.$linkText.'</a>';
-		}
-	}
-
 
 
 }
