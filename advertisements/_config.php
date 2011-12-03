@@ -22,6 +22,7 @@ Director::addRules(10, array(
 //AdvertisementDecorator::set_page_classes_without_advertisements(array("UserDefineForm", "ErrorPage")); // excluded from the specified classes
 //AdvertisementDecorator::set_page_classes_with_advertisements(array("HomePage")); //ONLY shown on specified classes
 //AdvertisementAdmin::set_menu_title("Manage Slides");
+//Advertisement::set_thumbnail_size(100);
 //Advertisement::set_singular_name("Slide");
 //Advertisement::set_plural_name("Slides");
 //Advertisement::set_width(100);
