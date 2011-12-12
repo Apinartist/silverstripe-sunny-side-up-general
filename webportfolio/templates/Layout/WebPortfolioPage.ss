@@ -23,19 +23,19 @@
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
 	<li class="$EvenOdd $FirstLast">
-		<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" title="website for $Client.ATT">
+		<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" title="website for $WebAddress">
 			<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
 		</a>
 		<div class="portFolioItem">
 
 			<span class="notes">
 				<% if NoLongerAvailable %>
-					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> is no longer available.
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> (for $Client) is no longer available.
 				<% else %>
 					<% if NotPubliclyAvailable %>
-					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> is not publicly available.
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">This site</a> (for $Client) is not publicly available.
 					<% else %>
-					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">$WebAddress</a>
+					<a href="#" class="webPortfolioShowMore" rel="WebPortfolioItem$ID">$WebAddress</a> (for $Client)
 					<% end_if %>
 				<% end_if %>
 				<% if Notes %> - $Notes<% end_if %>
