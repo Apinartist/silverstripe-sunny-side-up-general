@@ -91,7 +91,7 @@ class SmartChimpSignupPage extends Page {
 	function SmartChimpNewslettersShow() {
 		return DataObject::get("SmartChimpNewsletter", "\"ParentID\" = ".$this->ID." AND \"Hide\" <> 1");
 	}
-	
+
 	function RetrieveCampaigns() {
 		$dos = new DataObjectSet();
 		SmartChimpNewsletter::clean_up_characters();
@@ -131,76 +131,6 @@ class SmartChimpSignupPage extends Page {
 		}
 	}
 
-
-	function Form() {
-		if (Session::get('SmartChimp.SUCCESS')) {
-			Session::clear('SmartChimp.SUCCESS');
-			return false;
-		}
-		$requiredFields = new RequiredFields('email');
-		if($this->FirstFieldRequired) {
-			$requiredFields->appendRequiredFields(array('fname'));
-		}
-		if($this->LastFieldRequired) {
-			$requiredFields->appendRequiredFields(array('lname'));
-		}
-		$form = new Form($this, 'Form',
-			new FieldSet(
-				new TextField('fname', 'First name'),
-				new TextField('lname', 'Last name'),
-				new TextField('email', 'Email address')
-			),
-			new FieldSet(
-				new FormAction('SignupAction', 'Sign up')
-			),
-			$requiredFields
-		);
-
-		$this->extend('updateSmartChimpForm', $form);
-
-		return $form;
-	}
-
-	function ShortForm() {
-		if (Session::get('SmartChimp.SUCCESS')) {
-			Session::clear('SmartChimp.SUCCESS');
-			return false;
-		}
-
-		$form = new Form($this, 'Form',
-			new FieldSet(
-				new TextField('email', 'Email Address')
-			),
-			new FieldSet(
-				new FormAction('SignupAction', 'Sign up')
-			),
-			new RequiredFields('email')
-		);
-
-		$this->extend('updateSmartChimpForm', $form);
-
-		return $form;
-	}
-
-	public function mcsuccess() {
-		if (Session::get('SmartChimp.SUCCESS')) {
-			$this->Content = $this->MCSuccessContent;
-		}
-		return array(true);
-	}
-
-	function SignupAction($raw_data, $form) {
-		$data = Convert::raw2sql($raw_data);
-		$outcome = $this->subscribe($data['email'], $data['fname'],  $data['lname']);
-		if (true === $outcome) {
-			Session::set('SmartChimp.SUCCESS', true);
-			return $this->mcsuccess();
-		}
-		else {
-			$form->sessionMessage($outcome, 'warning');
-			return array(true);
-		}
-	}
 
 	function subscribe($email, $firstname, $lastname) {
 		$api = $this->getAPI();
@@ -285,6 +215,73 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 	function update() {
 		$this->RetrieveCampaigns();
 		return array();
+	}
+
+	function Form() {
+		if (Session::get('SmartChimp.SUCCESS')) {
+			Session::clear('SmartChimp.SUCCESS');
+			return false;
+		}
+		$requiredFields = new RequiredFields('email');
+		if($this->FirstFieldRequired) {
+			$requiredFields->appendRequiredFields(array('fname'));
+		}
+		if($this->LastFieldRequired) {
+			$requiredFields->appendRequiredFields(array('lname'));
+		}
+		$form = new Form($this, 'Form',
+			new FieldSet(
+				new TextField('fname', 'First name'),
+				new TextField('lname', 'Last name'),
+				new TextField('email', 'Email address')
+			),
+			new FieldSet(
+				new FormAction('SignupAction', 'Sign up')
+			),
+			$requiredFields
+		);
+		$this->extend('updateSmartChimpForm', $form);
+		return $form;
+	}
+
+	function ShortForm() {
+		if (Session::get('SmartChimp.SUCCESS')) {
+			Session::clear('SmartChimp.SUCCESS');
+			return false;
+		}
+		$form = new Form($this, 'Form',
+			new FieldSet(
+				new TextField('email', 'Email Address')
+			),
+			new FieldSet(
+				new FormAction('SignupAction', 'Sign up')
+			),
+			new RequiredFields('email')
+		);
+
+		$this->extend('updateSmartChimpForm', $form);
+
+		return $form;
+	}
+
+	public function mcsuccess() {
+		if (Session::get('SmartChimp.SUCCESS')) {
+			$this->Content = $this->MCSuccessContent;
+		}
+		return array(true);
+	}
+
+	function SignupAction($raw_data, $form) {
+		$data = Convert::raw2sql($raw_data);
+		$outcome = $this->subscribe($data['email'], $data['fname'],  $data['lname']);
+		if (true === $outcome) {
+			Session::set('SmartChimp.SUCCESS', true);
+			return $this->mcsuccess();
+		}
+		else {
+			$form->sessionMessage($outcome, 'warning');
+			return array(true);
+		}
 	}
 
 
