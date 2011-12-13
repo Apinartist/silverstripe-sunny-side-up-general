@@ -268,7 +268,7 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 		if (Session::get('SmartChimp.SUCCESS')) {
 			$this->Content = $this->MCSuccessContent;
 		}
-		return array(true);
+		return array();
 	}
 
 	function SignupAction($raw_data, $form) {
@@ -280,7 +280,7 @@ class SmartChimpSignupPage_Controller extends Page_Controller {
 		}
 		else {
 			$form->sessionMessage($outcome, 'warning');
-			return array(true);
+			Director::redirectBack();
 		}
 	}
 
