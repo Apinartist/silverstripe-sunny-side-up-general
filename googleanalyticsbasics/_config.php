@@ -8,6 +8,7 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START googleAnalyticsbasics MODULE ----------------===================
+//MUST SET
 //Object::add_extension('SiteTree', 'GoogleAnalytics');
 //GoogleAnalytics::$googleAnalyticsCode = ""; //e.g. UA-xxxx-y
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
