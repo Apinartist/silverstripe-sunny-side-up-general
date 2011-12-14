@@ -193,7 +193,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 			$parent = DataObject::get_by_id("SiteTree", $this->owner->ParentID);
 		}
 		elseif($this->owner->URLSegment != "home") {
-			$parent = DataObject::get("SiteTree", "URLSegment = 'home'");
+			$parent = DataObject::get("SiteTree", "URLSegment = 'home' AND \"ClassName\" <> 'RedirectorPage'");
 		}
 		if($parent) {
 			if($this->classHasAdvertisements($parent->ClassName)) {
@@ -269,7 +269,7 @@ class AdvertisementDecorator extends SiteTreeDecorator {
 	}
 
 
-	protected function advertisementsToShow() {
+	public function advertisementsToShow() {
 		if($this->owner->UseParentAdvertisements) {
 			$parent = $this->advertisementParent();
 			if($parent) {
