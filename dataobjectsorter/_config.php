@@ -8,8 +8,12 @@
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START dataobjectsorter MODULE ----------------===================
+//MUST SET
+
+//MAY SET
 // You can extend a DataObject OR SiteTree
 //Object::add_extension('SiteTree', 'DataObjectSorterDOD');
+//Object::add_extension('MyDataObject', 'DataObjectSorterDOD');
 //DataObjectSorterDOD::set_also_update_sort_field(true);
 //DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
 //===================---------------- END dataobjectsorter MODULE ----------------===================
