@@ -20,5 +20,4 @@
 // MUST HAVE
 //SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
 //Object::add_extension('SiteConfig', 'SimplestSpamSiteConfigExtension');
-
 //===================---------------- END simplestspam MODULE ----------------===================
