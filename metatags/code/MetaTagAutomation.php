@@ -79,7 +79,7 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		$fields->removeFieldFromTab("Root.Content.Metadata", "ExtraMeta");
 		if(1 == self::$disable_update_popup){
 			Requirements::clear('sapphire/javascript/UpdateURL.js');
-			Requirements::javascript(SS_METATAG_DIR.'/javascript/UpdateURL.js');
+			Requirements::javascript(SS_METATAGS_DIR.'/javascript/UpdateURL.js');
 		}
 		$linkToManager = "/" . MetaTagCMSControlPages::get_url_segment() ."/";
 		$fields->addFieldToTab('Root.Content.Metadata', new LiteralField("LinkToManagerHeader", "<p>Open the Meta Tag Manager to <a href=\"$linkToManager\" target=\"_blank\">Review and Edit</a> the Meta Data for all pages on this site. Also make sure to review the general <a href=\"/admin/show/root/\">settings for Search Engines</a>.</p>"), "URL");
@@ -223,7 +223,7 @@ class MetaTagAutomation_controller extends Extension {
 		array_merge($jsArray, $additionalJS);
 		$cssArray =
 			array(
-				array("media" => null, "location" => SS_METATAG_DIR.'/css/reset.css'),
+				array("media" => null, "location" => SS_METATAGS_DIR.'/css/reset.css'),
 				array("media" => null, "location" => $themeFolder.'css/typography.css'),
 				array("media" => null, "location" => $themeFolder.'css/layout.css'),
 				array("media" => null, "location" => $themeFolder.'css/form.css'),
@@ -265,7 +265,7 @@ class MetaTagAutomation_controller extends Extension {
 		$array = MetaTagAutomation::get_google_font_collection();
 		if($array && count($array)) {
 			foreach($array as $font) {
-				Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.$font.'" rel="stylesheet" type="text/css" />');
+				Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.urlencode($font).'" rel="stylesheet" type="text/css" />');
 			}
 		}
 	}

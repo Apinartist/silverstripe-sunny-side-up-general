@@ -6,16 +6,19 @@
  * Nicolaas modules [at] sunnysideup.co.nz
  **/
 
+define('SS_METATAGS_DIR', 'metatags');
+
+
 Director::addRules(8, array(
 	MetaTagCMSControlPages::get_url_segment().'//$Action/$ID/$OtherID' => 'MetatagCMSControlPages',
 	MetaTagCMSControlFiles::get_url_segment().'//$Action/$ID/$OtherID' => 'MetatagCMSControlFiles'
 ));
-define('SS_METATAG_DIR', 'metatags');
 
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START metatags MODULE ----------------===================
-//dont forget to add $this->addBasicMetatagRequirements() to Page_Controller->init(); and add this to your theme: $ExtendedMetatags
+// dont forget to add $this->addBasicMetatagRequirements() to Page_Controller->init();
+// and add this to your Page.ss template file: $ExtendedMetatags
 //MUST SET ...
 //Object::add_extension('SiteConfig', 'MetaTagSiteConfigExtension');
 //Object::add_extension('SiteTree', 'MetaTagAutomation');
