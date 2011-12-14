@@ -14,6 +14,9 @@
  *
  **/
 
+define('SS_PRETTYPHOTO_DIR', 'prettyphoto');
+
+
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START prettyphoto MODULE ----------------===================
 //PrettyPhoto::set_theme("dark_rounded");//"dark_rounded", "dark_square", "facebook", "light_rounded", "light_square" OR create your own!
