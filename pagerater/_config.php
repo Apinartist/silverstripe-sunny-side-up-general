@@ -4,6 +4,9 @@
  *@author nicolaas[at] sunnysideup.co.nz
  **/
 
+define('SS_PAGERATER_DIR', 'pagerater');
+
+
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START pagerater MODULE ----------------===================
 //Object::add_extension("SiteTree", "PageRater");
