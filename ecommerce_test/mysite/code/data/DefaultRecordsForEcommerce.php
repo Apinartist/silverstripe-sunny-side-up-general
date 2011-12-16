@@ -976,6 +976,20 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$order-&gt;write();
 			$order-&gt;tryToFinaliseOrder();
 		</pre>
+		<h2>API Access</h2>
+		<p>
+			E-commerce allows you to access its model using the built-in Silverstripe API.
+			This is great for communication with third party applications.
+			Access examples are listed below:
+		</p>
+		<ul>
+			<li><a href="/api/v1/Order/">view all orders</a></li>
+			<li><a href="/api/v1/Order/1">view order with ID = 1</a></li>
+		</ul>
+		<p>
+			For more information on the restful server API, you can visit the <a href="http://api.silverstripe.org/2.4/sapphire/api/RestfulServer.html">help documents</a> on this topic.
+			In the help documents you can read that potentially orders could also be created through third-party gateways.
+		</p>
 		';
 		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
 		$homePage->Content .= $html;
