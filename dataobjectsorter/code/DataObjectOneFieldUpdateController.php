@@ -30,7 +30,7 @@ class DataObjectOneFieldUpdateController extends Controller{
 		static function get_objects() {return self::$objects;}
 
 
-	public static function popup_link($ClassName, $FieldName, $where = '', $sort = '') {
+	public static function popup_link($ClassName, $FieldName, $where = '', $sort = '', $linkText = '') {
 		$obj = singleton($ClassName);
 		$params = array();
 		if($where) {
@@ -41,8 +41,11 @@ class DataObjectOneFieldUpdateController extends Controller{
 		}
 		if($obj->canEdit()) {
 			$link = 'dataobjectonefieldupdate/show/'.$ClassName."/".$FieldName.'/?'.implode("&amp;", $params);
+			if(!$linkText) {
+				$linkText = 'click here to edit';
+			}
 			return '
-				<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$ClassName.$FieldName.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">click here to edit</a>';
+				<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$ClassName.$FieldName.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">'.$linkText.'</a>';
 		}
 	}
 
