@@ -57,6 +57,15 @@ class Page_Controller extends ContentController {
 		return $this->URLSegment != "home";
 	}
 
+	function Siblings() {
+		if($this->ParentID) {
+			$extension = "";
+			if(Versioned::current_stage() == "Live") {
+				$extension = "_Live";
+			}
+			return DataObject::get("SiteTree", "ShowInMenus = 1 AND ParentID = ".$this->ParentID." AND SiteTree{$extension}.ID <>".$this->ID);
+		}
+	}
 
 }
 
