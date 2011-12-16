@@ -7,31 +7,37 @@ function drawMapChart_Geo(params) {
 	var records = params['records'];
 	var totals = params['totals'];
 	var options = params['options'];
-	
+	if(params['markers'] != undefined) {
+		var markers = params['markers'];
+	}
 	
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Country');
 	data.addColumn('number', title);
+	data.addColumn('string', 'Marker');
 	
 	data.addRows(records.length);
 	
 	for(var i = 0; i < records.length; i++) {
 		data.setValue(i, 0, records[i]);
 		data.setValue(i, 1, totals[i]);
+		if(markers != undefined) {
+			data.setValue(i, 2, markers[i]);
+		}
 	}
 	
 	
-	if (params['options']['formatting']) {
+	if(params['options']['formatting']) {
 		var formatting = params['options']['formatting'];
 		params['options']['formatting'] = null;
-		for (var type in formatting) {
+		for(var type in formatting) {
 			var columns = formatting[type];
 			for (var index in columns) {
 				var formatRules = columns[index];
 				var formatter;
 				
-				if (type == 'number') {
+				if(type == 'number') {
 					formatter = new google.visualization.NumberFormat(formatRules);
 				}
 				

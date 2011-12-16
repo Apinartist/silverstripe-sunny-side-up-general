@@ -11,24 +11,15 @@
  */
 class MapChart extends Chart {
 	
-	public static $max_dimensions = array(
-		't' => array(400, 220),
-		'map' => array(600, 500)
-	);
+	static $max_dimensions = array(600, 500);
 	
-	public static $area_centering = array(
-		'world' => array(-70, -170, 85, 180)
-	);
+	static $area_centering = array(-70, -170, 85, 180);
 	
-	public static $types = array('t', 'map');	
+	static $types = array('map');	
 	
-	public static $area_param = 'chtm';
-	public static $country_param = 'chld';
+	static $country_param = 'chld';
 	
-	public static $areas = array('africa', 'asia', 'europe', 'middle_east', 'south_america', 'usa', 'world');
-	
-	protected $type = 't';
-	protected $area = 'world';
+	protected $type = 'map';
 	
 	protected $records = array();
 	protected $colors = array();
@@ -37,11 +28,9 @@ class MapChart extends Chart {
 	
 	protected $positionLeft, $positionRight, $positionTop, $positionBottom; 
 	
-	
 	public function Link(array $params = null) {
-		$params[self::$area_param] = $this->area;
 		if(count($this->records) > 0) {
-			$params[self::$country_param] = implode($this->type == 't' ? '' : '|', array_keys($this->records));
+			$params[self::$country_param] = implode('|', array_keys($this->records));
 			$records = array_values($this->records);
 			foreach($records as $i => $fields) {
 				$values[] = $fields[0];
@@ -80,25 +69,23 @@ class MapChart extends Chart {
 	
 	public function getTypeForLink() {
 		$type = parent::getTypeForLink();
-		if($type == 'map') {
-			if($this->centered && isset(self::$area_centering[$this->area])) {
-				$type .= ":fixed=" . implode(',', self::$area_centering[$this->area]);
-			}
-			else if(isset($this->positionTop)) {
-				$type .= ":auto=$this->positionLeft,$this->positionRight,$this->positionTop,$this->positionBottom";
-			}
+		if($this->centered) {
+			$type .= ":fixed=" . implode(',', self::$area_centering);
+		}
+		else if(isset($this->positionTop)) {
+			$type .= ":auto=$this->positionLeft,$this->positionRight,$this->positionTop,$this->positionBottom";
 		}
 		return $type;
 	}
 	
 	public function getFinalWidth() {
 		$width = parent::getFinalWidth();
-		return isset(self::$max_dimensions[$this->type]) ? min($width, self::$max_dimensions[$this->type][0]) : $width;
+		return in_array($this->type, self::$types) ? min($width, self::$max_dimensions[0]) : $width;
 	}
 	
 	public function getFinalHeight() {
 		$height = parent::getFinalHeight();
-		return isset(self::$max_dimensions[$this->type]) ? min($height, self::$max_dimensions[$this->type][1]) : $height;
+		return in_array($this->type, self::$types) ? min($height, self::$max_dimensions[1]) : $height;
 	}
 	
 	public function setColors(array $colors) {
@@ -185,7 +172,6 @@ class MapChart_Geo extends MapChart {
 		}
 	}	
 	
-	
 	public function getJavascriptParams() {
 		$params = array(
 			'id' => "GM_$this->id",
@@ -194,8 +180,15 @@ class MapChart_Geo extends MapChart {
 		
 		foreach($this->records as $record) {
 			$totals[] = floatval($record[0]);
+			if(isset($record[1])) {
+				$marker = $record[1];
+				$markers[] = is_array($marker) ? $marker[0] : $marker;
+			}
 		}
 		$params['totals'] = $totals;
+		if(isset($markers)) {
+			$params['markers'] = $markers;
+		}
 		
 		if($this->showTitle && $this->title) {
 			$params['title'] = $this->title;
@@ -208,10 +201,8 @@ class MapChart_Geo extends MapChart {
 			'region' => $this->region
 		);
 		
-		
 		if(count($this->colors) > 0) $options['colors'] = $this->colors;
 		if(isset($this->showLegend)) $options['showLegend'] = $this->showLegend;
-		
 		
 		$this->extend('updateJavascriptParams', $options);
 		
