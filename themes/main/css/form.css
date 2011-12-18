@@ -10,13 +10,13 @@
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 
 	.typography .field{width: 100%; padding-bottom: 0.8em;padding-top: 0.8em; clear: left;}
-		.typography .middleColumn, .typography .Actions, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 270px;}
+		.typography .middleColumn, .typography .Actions,.typography input.action, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 270px;}
 			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #B5AB8B; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif; margin-top: 0px}
 			.typography .middleColumn textarea{margin-top: 0px;}
 			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important; margin-top: 0px; padding-top: 0px;}
 			.typography .middleColumn li{list-style: none!important; margin-top: 0px; padding-top: 0px;}
-				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #317010;}
-				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #82274B;}
+				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #82274B;}
+				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #317010;}
 
 		.typography .middleColumn .radio, .typography .middleColumn .checkbox,
 		.typography .middleColumn .radio:hover, .typography .middleColumn .checkbox:hover,
@@ -47,7 +47,7 @@
 .typography label.right {display: block; margin-left: 270px; width: 370px; font-size: 0.8em}
 
 /* BUTTON */
-.typography .Actions input {
+.typography .Actions input, .typography input.action  {
 	display: -moz-inline-stack;
 	display: inline-block;
 	width: auto;
@@ -61,7 +61,8 @@
 	font-style: normal;
 	border-radius: 7px;
 }
-.typography .Actions input:hover {background-color: #317010;}
+.typography .Actions input:hover,.typography  input.action:hover {background-color: #317010;}
+
 
 
 /* shadow */
