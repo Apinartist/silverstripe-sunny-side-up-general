@@ -61,6 +61,8 @@
 	font-style: normal;
 	border-radius: 7px;
 }
+.typography .Actions input.action {margin-left: 0px;}
+
 .typography .Actions input:hover,.typography  input.action:hover {background-color: #317010;}
 
 
