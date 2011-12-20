@@ -478,8 +478,6 @@ class Chart extends ViewableData {
 			$params = array();
 		}
 		
-		
-		
 		$params[self::$type_param] = $this->getTypeForLink();
 		$params[self::$size_param] = "{$this->getFinalWidth()}x{$this->getFinalHeight()}";
 		
@@ -543,7 +541,7 @@ class Chart extends ViewableData {
 			if($this->axisLabels) {
 				foreach($this->axisLabels as $index => $labels) {
 					if($labels) {
-						$axesLabels[] = "$index:|" . implode('|', $labels) . (is_a($this, 'LineChart') ? '' : '|');
+						$axesLabels[] = "$index:|" . implode('|', $labels) . (is_a($this, 'BarChart') || ! is_a($this, 'LineChart') ? '|' : '');
 					}
 				}
 				if(isset($axesLabels)) {
