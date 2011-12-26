@@ -70,6 +70,6 @@
 	font-size:20px;
 }
 
-.resultsBar {font-size: 12px;}
+.resultsBar, .pageNumbers {font-size: 12px;}
 
 td.price {text-align: right;}
