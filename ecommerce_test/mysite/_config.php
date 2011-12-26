@@ -200,14 +200,22 @@ Payment::set_supported_methods(array(
 //MAY SET
 ProductsAndGroupsModelAdmin::add_managed_model("ProductAttributeValue");
 ProductsAndGroupsModelAdmin::add_managed_model("ProductAttributeType");
-Object::add_extension("ProductAttributeValue", "ProductAttributeDecoratorColour_Value");
-Object::add_extension("ProductAttributeType", "ProductAttributeDecoratorColour_Type");
-ProductAttributeDecoratorColour_Value::set_default_contrast_colour("FFFFFF");
-ProductAttributeDecoratorColour_Value::set_default_colour("000000");
 //ProductWithVariationDecorator_Controller::set_use_js_validation(false);
 //ProductWithVariationDecorator_Controller::set_alternative_validator_class_name("MyValidatorClass");
 // __________________________________ END ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
 
+
+
+// __________________________________ START ECOMMERCE PRODUCT VARIATIONS COLOUR MODULE CONFIG __________________________________
+//MUST SET
+Object::add_extension("ProductAttributeValue", "ProductAttributeDecoratorColour_Value");
+Object::add_extension("ProductAttributeType", "ProductAttributeDecoratorColour_Type");
+//MAY SET
+ProductAttributeDecoratorColour_Value::set_default_contrast_colour("FFFFFF");
+ProductAttributeDecoratorColour_Value::set_default_colour("000000");
+ProductAttributeDecoratorColour_Value::set_put_styling_in_dropdown_options(true);
+//ColourDropdownField::set_js_location_for_select_styling("ecommerce_product_variation_colours/javascript/ColourDropdownField.js")
+// __________________________________ END ECOMMERCE PRODUCT VARIATIONS COLOUR MODULE CONFIG __________________________________
 
 
 
