@@ -31,14 +31,14 @@ even when theme-ing ecommerce, these should not be themed
 .itemdetails span {width: 100px;}
 
 ul.productActions {margin: 0px; padding: 0px;}
-ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0;}
+ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0; line-height: 0.8;}
 ul.productActions li a, .goToCart a {
 	display: -moz-inline-stack;
 	display: inline-block;
 	width: auto;
 	height: auto;
 	background-color: #82274B;
-	line-height: 43px;
+	line-height: 1;
 	vertical-align: text-bottom;
 	text-align: center;
 	color: #ffffff;
@@ -46,7 +46,7 @@ ul.productActions li a, .goToCart a {
 	font-style: normal;
 	border-radius: 7px;
 	text-decoration: none!important;
-	padding:  0 10px;
+	padding:  10px 10px;
 }
 
 ul.productActions li a:hover, .goToCart a:hover {background-color: #317010;}
