@@ -16,7 +16,7 @@
 /* general font-size changes */
 .typography p, .typography li, .typography address {font-size: 1em;}
 	.typography td p {font-size: 1em;}
-	.typography td li {font-size: 1em;}
+	.typography td li {font-size: 1em; list-style-position: inside; }
 	.typography li p {font-size: 1em;}
 	.typography li li {font-size: 0.95em;}
 		.typography li li li {font-size: 0.85em;}
