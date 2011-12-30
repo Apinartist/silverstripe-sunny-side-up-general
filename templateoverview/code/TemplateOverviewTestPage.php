@@ -16,7 +16,7 @@ class TemplateOverviewTestPage extends Page {
 			if($classObjects) {
 				foreach($classObjects as $classObject) {
 					$className = $classObject->ClassNameLink;
-					if($className && class_exists($className)) {
+					if($className && class_exists($className) && $className != "TemplateOverviewTestPage") {
 						$page = DataObject::get_one($className,"\"ClassName\" = '$className'");
 						if($page) {
 							$url1 = Director::absoluteURL($page->Link());
@@ -30,7 +30,13 @@ class TemplateOverviewTestPage extends Page {
 		}
 	}
 
+	/**
+	 * to do: to be completed....
+	 *
+	 */
 	protected function checkURL($url){
+		print_r(get_headers($url, 1));
+		return ;
 		$handle = curl_init($url);
 		curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 		/* Get the HTML or whatever is linked in $url. */
