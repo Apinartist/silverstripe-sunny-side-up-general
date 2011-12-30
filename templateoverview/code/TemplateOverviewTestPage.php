@@ -9,6 +9,45 @@ class TemplateOverviewTestPage extends Page {
 	//appearance
 	static $icon = "templateoverview/images/treeicons/TemplateOverviewTestPage";
 
+	function requireDefaultRecords(){
+		parent::requireDefaultRecords();
+		if(isset($_REQUEST["checkallpages"])) {
+			$classObjects = DataObject::get("TemplateOverviewDescription");
+			if($classObjects) {
+				foreach($classObjects as $classObject) {
+					$className = $classObject->ClassNameLink;
+					if($className && class_exists($className)) {
+						$page = DataObject::get_one($className,"\"ClassName\" = '$className'");
+						if($page) {
+							$url1 = Director::absoluteURL($page->Link());
+							$url2 = Director::absoluteURL("/admin/show/".$page->ID);
+							$this->checkURL($url1);
+							$this->checkURL($url2);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected function checkURL($url){
+		$handle = curl_init($url);
+		curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+		/* Get the HTML or whatever is linked in $url. */
+		$response = curl_exec($handle);
+		/* Check for 404 (file not found). */
+		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+		if($httpCode == 404) {
+			DB::alteration_message("could not find ".$url);
+		}
+		elseif($httpCode == 500) {
+			DB::alteration_message("Error in opening ".$url, "deleted");
+		}
+		else {
+			DB::alteration_message("".$url." returned $httpCode", "deleted");
+		}
+		curl_close($handle);
+	}
 
 }
 

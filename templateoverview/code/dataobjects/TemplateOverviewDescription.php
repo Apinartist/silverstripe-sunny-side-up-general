@@ -12,7 +12,7 @@ class TemplateOverviewDescription extends DataObject {
 	static $db = array(
 		"Description" => "Text",
 		"ToDoListHyperLink" => "Varchar(255)",
-		"ClassNameLink" => "Varchar(60)"
+		"ClassNameLink" => "Varchar(120)"
 	);
 
 	static $has_one = array(
