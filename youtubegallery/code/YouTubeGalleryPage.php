@@ -71,6 +71,18 @@ class YouTubeGalleryPage extends Page {
 		);
 	}
 
+	function HasFlashModule(){
+		return class_exists("FlashObject");
+	}
+
+	function IFrameObjectData() {
+		return new ArrayData(array(
+			"Title" => $this->Title,
+			"Width" => self::get_player_width(), //425
+			"Height" => self::get_player_height(), //344,
+			"Code" => $this->YouTubeVideoCode //344,
+		));
+	}
 
 }
 
