@@ -5,10 +5,27 @@
 .productImage {float: right!important;}
 #Form_VariationForm {width: 420px; clear: none;}
 #Form_VariationForm label.left {width: 120px;}
-#Form_VariationForm .middleColumn, #Form_VariationForm .Actions, #Form_VariationForm p.ForgotPassword, #Form_VariationForm p.checkbox
+#Form_VariationForm .middleColumn,
+ #Form_VariationForm .Actions,
+ #Form_VariationForm p.ForgotPassword,
+ #Form_VariationForm p.checkbox
+ #Form_VariationForm  .field span.message
   {margin-left: 130px;}
 #Form_VariationForm div.middleColumn select   {width: 270px;}
 #Form_VariationForm div.middleColumn input   {width: 264px;}
 #Form_VariationForm .field .middleColumn .message,
 #Form_VariationForm .field span.message,
 #Form_VariationForm .middleColumn .message {width: 262px;}
+
+
+/* exception */
+#bodyModuleProduct #Form_VariationForm .middleColumn,
+#bodyModuleProduct #Form_VariationForm .Actions,
+#bodyModuleProduct #Form_VariationForm p.ForgotPassword,
+#bodyModuleProduct #Form_VariationForm p.checkbox {
+	margin-left: 245px;
+}
+
+#bodyModuleProduct #Form_VariationForm label.left {
+	width: 245px;
+}
