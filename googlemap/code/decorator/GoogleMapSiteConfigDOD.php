@@ -10,7 +10,7 @@ class GoogleMapSiteConfigDOD extends DataObjectDecorator {
 		return array(
 			'db' => array(
 				"GoogleMapDefaultTitle" => "Varchar(150)"
-			)
+			),
 			'default' => array()
 		);
 	}
