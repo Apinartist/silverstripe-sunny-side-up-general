@@ -44,7 +44,7 @@ body {
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
 #PageComments_holder p.comment{margin-bottom: 0px; padding-bottom: 0px; font-style: italic;}
 #PageComments_holder p.info{margin: 0px; padding: 0px; font-size: 10px; font-weight: bold;}
-
+ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 
 #Footer {clear: both; padding-top: 300px; }
 .backToTop {font-size: 0.75em; float: right; padding-bottom: 10px; }
