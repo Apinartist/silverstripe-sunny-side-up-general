@@ -42,7 +42,7 @@ body {
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
 
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
-#PageComments_holder p.comment{margin-bottom: 0px; padding-bottom: 0px; font-style: italic;}
+#PageComments_holder p.comment{margin: 0px; padding: 0px; font-style: italic;}
 #PageComments_holder p.info{margin: 0px; padding: 0px; font-size: 10px; font-weight: bold;}
 ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 
