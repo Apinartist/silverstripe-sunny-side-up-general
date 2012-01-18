@@ -13,11 +13,11 @@
 .typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {padding: 1em 0 0em 0; font-family: 'Yanone Kaffeesatz' }
 	.typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {text-transform: lowercase; }
 
-/* general font-size changes */
+/* general font-size changes and combos */
 .typography p, .typography li, .typography address {font-size: 1em;}
 	.typography td p {font-size: 1em;}
 	.typography td li {font-size: 1em; list-style-position: inside; }
-	.typography li p {font-size: 1em;}
+	.typography li p {font-size: 1em; margin-top: 0x; padding-top: 0px;}
 	.typography li li {font-size: 0.95em;}
 		.typography li li li {font-size: 0.85em;}
 
