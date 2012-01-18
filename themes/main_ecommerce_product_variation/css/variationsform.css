@@ -3,6 +3,7 @@
     color: red;
 }
 #Form_VariationForm div.field {padding-top: 0px;}
+#Form_VariationForm div.field, .Actions {font-size: 0.8em;}
 
 .productImage {float: right!important;}
 #Form_VariationForm {width: 420px; clear: none;}
