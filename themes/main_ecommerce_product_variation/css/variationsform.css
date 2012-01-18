@@ -5,6 +5,10 @@
 #Form_VariationForm div.field {padding-top: 0px;}
 #Form_VariationForm div.field, .Actions {font-size: 0.8em;}
 
+/* START HACK --------------- */
+#Quantity {display: none!important;}
+/* END  HACK --------------- */
+
 .productImage {float: right!important;}
 #Form_VariationForm {width: 420px; clear: none;}
 #Form_VariationForm label.left {width: 120px;}
