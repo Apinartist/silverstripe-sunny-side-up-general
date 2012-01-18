@@ -41,6 +41,19 @@ body {
 #Sidebar ul li.current a{color: #317010 !important;}
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
 
+#PageComments_holder {margin-top: 40px; font-size: 0.8em; }
+#PageComments_holder p.comment{margin-bottom: 0px; padding-bottom: 0px; font-style: italic;}
+#PageComments_holder p.info{margin: 0px; padding: 0px; font-size: 10px; font-weight: bold;}
+ul#PageComments li {background-color: #B5AB8B;
+	border:           1px solid #fff;
+	border-radius:    10px;
+	-moz-box-shadow: 3px 3px 4px #808383;
+	-webkit-box-shadow: 3px 3px 4px #808383;
+	box-shadow: 3px 3px 4px #808383;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383'
+}
+
 #Footer {clear: both; padding-top: 300px; }
 .backToTop {font-size: 0.75em; float: right; padding-bottom: 10px; }
 .backToTop a{ text-decoration: none!important;}
