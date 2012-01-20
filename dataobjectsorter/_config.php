@@ -14,8 +14,7 @@
 // You can extend a DataObject OR SiteTree
 //Object::add_extension('SiteTree', 'DataObjectSorterDOD');
 //Object::add_extension('MyDataObject', 'DataObjectSorterDOD');
-//DataObjectSorterDOD::set_also_update_sort_field(true);
-//DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
+//DataObjectOneFieldUpdateController::set_page_size(10)
 //===================---------------- END dataobjectsorter MODULE ----------------===================
 
 Director::addRules(90, array(
