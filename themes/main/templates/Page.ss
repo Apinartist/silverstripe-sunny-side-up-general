@@ -19,6 +19,7 @@
 	</div>
 	<% include ShareThis %>
 </div>
+<% include TemplateOverviewPageDevelopmentFooter %>
 <% include Analytics %>
 </body>
 </html>
