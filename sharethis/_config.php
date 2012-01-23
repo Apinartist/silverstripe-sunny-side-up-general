@@ -28,5 +28,4 @@ define('SS_SHARETHIS_DIR', 'sharethis');
 //optional//requires: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
 //Object::add_extension('ShareThisDataObject', 'DataObjectSorterDOD');
 //Object::add_extension('SocialNetworkingLinksDataObject', 'DataObjectSorterDOD');
-//DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
 //===================---------------- END sharethis MODULE ----------------===================
