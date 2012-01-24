@@ -10,13 +10,25 @@
 
 class MetaTagAutomation extends SiteTreeDecorator {
 
-		/*
-		protected static $meta_data_coding = "www.sunnysideup.co.nz";}
-		protected static $meta_data_country = "www.sunnysideup.co.nz";}
-		protected static $meta_data_country = "www.sunnysideup.co.nz";}
-		if(!$siteConfig->MetaDataCountry) {$siteConfig->MetaDataCountry = "New Zealand";}
-		if(!$siteConfig->MetaDataCopyright) {$siteConfig->MetaDataCopyright = "Site Owner";}
-		*/
+		/**
+		 * Who coded the site?
+		 * can be overruled by setting in the siteconfig
+		 * (editable in the CMS). A default value can be set here.
+		 * @var String
+		 */
+		protected static $meta_data_coding = "";}
+			static set_meta_data_coding($s) {self::$meta_data_coding = $s;}
+			static get_meta_data_coding() {return self::$meta_data_coding;}
+
+		/**
+		 * Who designed the site?
+		 * can be overruled by setting in the siteconfig
+		 * (editable in the CMS). A default value can be set here.
+		 * @var String
+		 */
+		protected static $meta_data_design = "";}
+			static set_meta_data_design($s) {self::$set_meta_data_design = $s;}
+			static get_meta_data_design() {return self::$meta_data_design;}
 
 	/* pop-ups and form interaction */
 	protected static $disable_update_popup = false;
@@ -324,9 +336,14 @@ class MetaTagAutomation_controller extends Extension {
 		if(!$page->ExtraMeta && $siteConfig->ExtraMeta) {
 			$page->ExtraMeta = $siteConfig->ExtraMeta;
 		}
-		if(!$siteConfig->MetaDataCoding) {$siteConfig->MetaDataCoding = "www.sunnysideup.co.nz";}
-		if(!$siteConfig->MetaDataCountry) {$siteConfig->MetaDataCountry = "New Zealand";}
-		if(!$siteConfig->MetaDataCopyright) {$siteConfig->MetaDataCopyright = "Site Owner";}
+		if(!$siteConfig->MetaDataCoding) {self::get_meta_data_coding();}
+		if(!$siteConfig->MetaDataDesign) {self::get_meta_data_design();}
+		if(!$siteConfig->MetaDataCountry) {
+			$siteConfig->MetaDataCountry = Geoip::countryCode2name(Geoip::$default_country_code);
+		}
+		if(!$siteConfig->MetaDataCopyright) {
+			$siteConfig->MetaDataCopyright = $this->Title;
+		}
 		if($addExtraSearchEngineData) {
 			$tags .= '
 			<meta name="robots" content="'.$noopd.'all, index, follow" />

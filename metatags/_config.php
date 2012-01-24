@@ -26,6 +26,8 @@ Director::addRules(8, array(
 //MAY SET ...
 /* pop-ups and form interaction */
 //MetaTagAutomation::set_disable_update_popup(false);
+//MetaTagAutomation::set_meta_data_coding("your name goes here");
+//MetaTagAutomation::set_meta_data_design("your designer's name goes here");
 /* meta descriptions */
 //MetaTagAutomation::set_meta_desc_length(24);
 /* meta keywords */
