@@ -17,8 +17,8 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		 * @var String
 		 */
 		protected static $meta_data_coding = "";}
-			static set_meta_data_coding($s) {self::$meta_data_coding = $s;}
-			static get_meta_data_coding() {return self::$meta_data_coding;}
+			static function set_meta_data_coding($s) {self::$meta_data_coding = $s;}
+			static function get_meta_data_coding() {return self::$meta_data_coding;}
 
 		/**
 		 * Who designed the site?
@@ -27,8 +27,8 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		 * @var String
 		 */
 		protected static $meta_data_design = "";}
-			static set_meta_data_design($s) {self::$set_meta_data_design = $s;}
-			static get_meta_data_design() {return self::$meta_data_design;}
+			static function set_meta_data_design($s) {self::$set_meta_data_design = $s;}
+			static function get_meta_data_design() {return self::$meta_data_design;}
 
 	/* pop-ups and form interaction */
 	protected static $disable_update_popup = false;
