@@ -16,7 +16,7 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		 * (editable in the CMS). A default value can be set here.
 		 * @var String
 		 */
-		protected static $meta_data_coding = "";}
+		protected static $meta_data_coding = "";
 			static function set_meta_data_coding($s) {self::$meta_data_coding = $s;}
 			static function get_meta_data_coding() {return self::$meta_data_coding;}
 
@@ -26,7 +26,7 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		 * (editable in the CMS). A default value can be set here.
 		 * @var String
 		 */
-		protected static $meta_data_design = "";}
+		protected static $meta_data_design = "";
 			static function set_meta_data_design($s) {self::$set_meta_data_design = $s;}
 			static function get_meta_data_design() {return self::$meta_data_design;}
 
