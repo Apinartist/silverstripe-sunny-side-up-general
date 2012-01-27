@@ -156,6 +156,7 @@ class Advertisement extends DataObject {
 		}
 		$fields->addFieldToTab("Root.OptionalLink", new TextField($name = "ExternalLink", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINK", "link to external site (e.g. http://www.wikipedia.org) - this will override an internal link")));
 		$fields->addFieldToTab("Root.OptionalLink", new TreeDropdownField($name = "LinkedPageID", $title = _t("Advertisement.GETCMSFIELDSEXTERNALLINKID", "link to a page on this website"), $sourceObject = "SiteTree"));
+		$fields->addFieldToTab("Root.OptionalLink", new CheckboxField($name = "RemoveInternalLink", $title = _t("Advertisement.RemoveInternalLink", "remove internal link")));
 		if(class_exists("DataObjectSorterController")) {
 			$fields->addFieldToTab("Root.Position", new LiteralField("AdvertisementsSorter", DataObjectSorterController::popup_link("Advertisement", $filterField = "", $filterValue = "", $linkText = "Sort ".Advertisement::$plural_name, $titleField = "FullTitle")));
 		}
@@ -168,6 +169,9 @@ class Advertisement extends DataObject {
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
+		if(isset($_REQUEST["RemoveInternalLink"]) && $_REQUEST["RemoveInternalLink"]) {
+			$this->LinkedPageID= 0;
+		}
 		if(!$this->Sort) {
 			$this->Sort = self::$defaults["Sort"];
 		}
