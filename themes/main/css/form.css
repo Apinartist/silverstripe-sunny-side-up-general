@@ -79,3 +79,7 @@ input[type=text], input[type=password], textarea, select {
 }
 
 
+.checkboxset .middleColumn ul {
+	-moz-column-width: 14em;
+	-webkit-column-width: 14em;
+}
