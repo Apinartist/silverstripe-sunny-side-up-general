@@ -10,6 +10,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->checkreset();
 
+		$this->runEcommerceDefaults();
+
 		$this->createImages();
 
 		$this->CreatePages();
@@ -696,10 +698,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 
 	protected function addSpecialPrice(){
+
+		$task = new CreateEcommerceMemberGroups();
+		$task->run(false);
+		$customerGroup = EcommerceRole::get_customer_group();
+		if(!$customerGroup) {
+			die("could not create customer group");
+		}
 		$group = new Group();
 		$group->Title = "Discount Customers";
 		$group->Code = "discountcustomers";
-		$group->ParentID = EcommerceRole::get_customer_group()->ID;
+		$group->ParentID = $customerGroup->ID;
 		$group->write();
 		$member = new Member();
 		$member->FirstName = 'Bob';
@@ -1115,6 +1124,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 			}
 		}
 		return array_pop($this->imageArray);
+	}
+
+	private function runEcommerceDefaults() {
+		$buildTask = new CreateEcommerceMemberGroups($request);
+		$buildTask->run($request);
 	}
 
 	private function createImages($width = 170, $height = 120) {
