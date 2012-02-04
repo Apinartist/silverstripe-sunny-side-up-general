@@ -42,6 +42,12 @@ class SiteMapPage_Controller extends Page_Controller {
 		else {
 			Requirements::themedCSS('SiteMapPageOpen');
 		}
+		$page = DataObject::get_one("Page", "ClassName = 'Page'");
+		if($page) {
+			if(!method_exists($page, "SiteMapPages")) {
+				trigger_error("You need to add the SiteMapPages method to the Page class", E_USER_NOTICE);
+			}
+		}
 	}
 }
 
