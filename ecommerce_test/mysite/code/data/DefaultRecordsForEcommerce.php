@@ -1127,6 +1127,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	private function runEcommerceDefaults() {
+		$request = true;
 		$buildTask = new CreateEcommerceMemberGroups($request);
 		$buildTask->run($request);
 	}
