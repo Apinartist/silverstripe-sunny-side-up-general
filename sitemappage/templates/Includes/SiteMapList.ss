@@ -1,5 +1,6 @@
+<% if LevelOneSiteMapPages %>
 <ul id="SiteMap">
-<% control Menu(1) %>
+<% control LevelOneSiteMapPages %>
 	<li class="$FirstLast<% if SiteMapPages %><% else %> noChildrenLI<% end_if %>">
 		<% if SiteMapPages %><a href="#" class="siteMapPageExpander SiteMapNodeImploded SiteMapLevel1" rel="$ID">+</a> <% end_if %>
 		<a href="$Link" class="pageTitle SiteMapLevel1">$Title</a>
@@ -30,3 +31,4 @@
 	</li>
 <% end_control %>
 </ul>
+<% end_if %>
