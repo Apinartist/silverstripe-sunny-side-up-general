@@ -2,7 +2,7 @@
 
 class SitemapPageDecorator extends SiteTreeDecorator {
 
-	protected static $sitemap_classes_to_exclude = array();
+	protected static $sitemap_classes_to_exclude = array("ErrorPage");
 		static function set_sitemap_classes_to_exclude($v) {self::$sitemap_classes_to_exclude = $v;}
 		static function get_sitemap_classes_to_exclude() {return self::$sitemap_classes_to_exclude;}
 
@@ -11,17 +11,16 @@ class SitemapPageDecorator extends SiteTreeDecorator {
 		static function get_sitemap_classes_to_include() {return self::$sitemap_classes_to_include;}
 
 	function SiteMapPages() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		$where = '1 = 1';
 		$inc = self::get_sitemap_classes_to_include();
 		$exc = self::get_sitemap_classes_to_exclude();
 		if(is_array($inc) && count($inc)) {
-			$where = "{$bt}ClassName{$bt} IN ('".implode("','", $inc)."')";
+			$where = "\"ClassName\" IN ('".implode("','", $inc)."')";
 		}
 		elseif(is_array($exc) && count($exc)) {
-			$where = "{$bt}ClassName{$bt} NOT IN ('".implode("','", $exc)."')";
+			$where = "\"ClassName\" NOT IN ('".implode("','", $exc)."')";
 		}
-		return DataObject::get("SiteTree", "{$bt}ShowInMenus{$bt} = 1 AND {$bt}ShowInSearch{$bt} = 1 AND {$bt}ParentID{$bt} = {$this->owner->ID} AND {$bt}ClassName{$bt} <> 'SiteMapPage' AND $where");
+		return DataObject::get("SiteTree", "\"ShowInMenus\" = 1 AND \"ShowInSearch\" = 1 AND \"ParentID\" = {$this->owner->ID} AND \"ClassName\" <> 'SiteMapPage' AND $where");
 	}
 
 }
