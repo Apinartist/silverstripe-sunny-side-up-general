@@ -43,5 +43,13 @@ class SiteMapPage_Controller extends Page_Controller {
 			Requirements::themedCSS('SiteMapPageOpen');
 		}
 	}
+
+	function LevelOneSiteMapPages() {
+		return DataObject::get("SiteTree", " \"ParentID\" = 0 AND ".$this->getWhereStatementForSiteMapPages());
+	}
+
+
 }
+
+
 
