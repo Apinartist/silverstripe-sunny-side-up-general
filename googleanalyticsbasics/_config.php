@@ -12,7 +12,7 @@
 //Object::add_extension('SiteTree', 'GoogleAnalytics');
 //GoogleAnalytics::$googleAnalyticsCode = ""; //e.g. UA-xxxx-y
 //MAY SET - to track downloads
-//Requirements::javascript("googleanalyticsbasics/javascript/trackDownloads.js")
+//Requirements::javascript("googleanalyticsbasics/javascript/trackDownloads.js");
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
 
