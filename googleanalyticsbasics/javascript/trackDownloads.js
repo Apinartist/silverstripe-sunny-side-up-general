@@ -5,7 +5,6 @@
  * - Added dlTracking function
  **/
 
-var _gaq = _gaq || [];
 
 (function($) {
 	$(document).ready(function() {
