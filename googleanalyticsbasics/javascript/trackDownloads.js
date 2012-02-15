@@ -7,9 +7,12 @@
 
 
 (function($) {
-	$(document).ready(function() {
-		googleanalytics.dlTracking();
-	});
+
+	jQuery(document).ready(
+		function() {
+			googleanalytics.dlTracking();
+		}
+	);
 
 	var googleanalytics = {
 
@@ -25,5 +28,6 @@
 				}
 			);
 		}
+	}
 
 })(jQuery);
