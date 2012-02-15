@@ -11,7 +11,7 @@
 //MUST SET
 //Object::add_extension('SiteTree', 'GoogleAnalytics');
 //GoogleAnalytics::$googleAnalyticsCode = ""; //e.g. UA-xxxx-y
-//MAY SET - to track downloads
+//MAY SET - to track downloads - you may want to add this to your Page_Controller::init
 //Requirements::javascript("googleanalyticsbasics/javascript/trackDownloads.js");
 //===================---------------- END googleAnalyticsbasics MODULE ----------------===================
 
