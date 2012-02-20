@@ -42,6 +42,7 @@ body {
 #Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside; list-style-image: none;}
 #Sidebar ul li.current a{color: #317010 !important;}
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
+#Sidebar p{line-height: 1;}
 
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
 #PageComments_holder p.comment{margin: 0px; padding: 0px; font-style: italic;line-height: 0.9;}

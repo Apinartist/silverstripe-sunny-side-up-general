@@ -8,7 +8,7 @@
 	#Nav ul {bottom: 3.7em; background-color: #B5AB8B;border-top: 1px solid: #fff; width: auto; display: none; -moz-border-radius-topleft: 5px; border-top-left-radius: 5px;}
 		#Nav ul li {padding: 0.53em 1.3em; float: right; }
 			#Nav ul li.first {}
-			#Nav ul li a {font-size: 1.5em;color: #808383;}
+			#Nav ul li a {font-size: 1em;color: #808383;}
 				#Nav ul li a:hover, #Nav ul li.current a, #Nav ul li.section a {color: #000;}
 
 	#Nav li:hover .hasCSSHover {display: block;}
