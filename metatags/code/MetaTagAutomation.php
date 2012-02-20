@@ -331,7 +331,7 @@ class MetaTagAutomation_controller extends Extension {
 			<link rel="shortcut icon" href="'.$faviconBase.'favicon.ico" type="image/x-icon" />';
 		if(!MetaTagAutomation::get_hide_keywords_altogether()) {
 			$tags .= '
-			<meta name="keywords" http-equiv="keywords" content="'.Convert::raw2att($keywords).'" />'.$description;
+			<meta name="keywords" http-equiv="keywords" content="'.Convert::raw2att($keywords).'" />';
 		}
 		if(!$page->ExtraMeta && $siteConfig->ExtraMeta) {
 			$page->ExtraMeta = $siteConfig->ExtraMeta;
@@ -354,7 +354,8 @@ class MetaTagAutomation_controller extends Extension {
 			<meta name="date-modified-yyyymmdd" content="'.$lastEdited->Format("Ymd").'" />
 			<meta name="country" content="'.$siteConfig->MetaDataCountry.'" />
 			<meta http-equiv="imagetoolbar" content="no" />
-			'.$page->ExtraMeta;
+			'.$page->ExtraMeta.
+			$description;
 		}
 		return $tags;
 	}
