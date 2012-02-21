@@ -60,6 +60,25 @@ class ImageGalleryPage extends Page {
 		}
 	}
 
+	function NextGallery(){
+		$pages = $livePage = Versioned::get_one_by_stage("ImageGalleryPage", "Live", "ImageGalleryPage.ID <> ".$this->ID, "\"Sort\" > ".$this->Sort, null,1 );
+		if($pages) {
+			foreach($pages as $page) {
+				return $page;
+			}
+		}
+	}
+
+	function PreviousGallery(){
+		$pages = Versioned::get_one_by_stage("ImageGalleryPage", "Live", "ImageGalleryPage", "ImageGalleryPage.ID <> ".$this->ID, "\"Sort\" > ".$this->Sort, null,1 );
+		if($pages) {
+			foreach($pages as $page) {
+				return $page;
+			}
+		}
+	}
+
+
 
 }
 
