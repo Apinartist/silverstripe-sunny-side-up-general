@@ -6,7 +6,7 @@
 	<div class="boxThoseGalleries" >
 		<% if MyChildGalleries %>
 			<ul id="Galleries">
-				<% control MyChildGalleries %>
+				<% control MyChildGalleries	 %>
 					<li class="$FirstLast $EvensOdd $LinkingMode">
 						<% if ImageGalleryEntries %><% control ImageGalleryEntries.First %>$Image.CroppedImage(100, 100)<% end_control %><% end_if %>
 						<div class="details">

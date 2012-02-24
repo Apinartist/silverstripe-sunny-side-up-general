@@ -2,7 +2,7 @@
 
 class ImageGalleryHolder extends Page {
 
-	static $icon = 'cms/images/treeicons/folder';
+	static $icon = 'imagegallery_basic/images/treeicons/ImageGalleryHolder';
 
 	static $allowed_children = array('ImageGalleryPage');
 
