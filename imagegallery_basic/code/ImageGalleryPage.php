@@ -2,7 +2,7 @@
 
 class ImageGalleryPage extends Page {
 
-	static $icon = "mymodule/images/treeicons/ImageGalleryPage-file.gif";
+	static $icon = "imagegallery_basic/images/treeicons/ImageGalleryPage";
 
 	static $allowed_children = array("ImageGalleryPage"); //can also be "none";
 
