@@ -20,8 +20,8 @@ class ImageGalleryPage extends Page {
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.Images", new TreeDropdownField($name = "AutomaticallyIncludedFolderID", $title = "Automatically Included Folder (save page to update) - go to Files and Images section to create folder and upload images.", $sourceObjectName = "Folder"));
-		$fields->addFieldToTab("Root.Content.Images", ImageGalleryEntry::get_has_many_complex_table_field($this, "ImageGalleryEntries"));
+		$fields->addFieldToTab("Root.Content.Gallery", new TreeDropdownField($name = "AutomaticallyIncludedFolderID", $title = "Automatically Included Folder (save page to update) - go to Files and Images section to create folder and upload images.", $sourceObjectName = "Folder"));
+		$fields->addFieldToTab("Root.Content.Gallery", ImageGalleryEntry::get_has_many_complex_table_field($this, "ImageGalleryEntries"));
 		return $fields;
 	}
 
@@ -61,7 +61,11 @@ class ImageGalleryPage extends Page {
 	}
 
 	function NextGallery(){
-		$pages = $livePage = Versioned::get_one_by_stage("ImageGalleryPage", "Live", "ImageGalleryPage.ID <> ".$this->ID, "\"Sort\" > ".$this->Sort, null,1 );
+		$extension = '';
+		if(Versioned::current_stage() == "Live") {
+			$extension = "_Live";
+		}
+		$pages = $livePage = DataObject::get("ImageGalleryPage", "ImageGalleryPage$extension.ID <> ".$this->ID." AND TimeDiff(\"Created\",'".$this->Created."') > 0", "\"Created\" ASC", null,1 );
 		if($pages) {
 			foreach($pages as $page) {
 				return $page;
@@ -70,7 +74,11 @@ class ImageGalleryPage extends Page {
 	}
 
 	function PreviousGallery(){
-		$pages = Versioned::get_one_by_stage("ImageGalleryPage", "Live", "ImageGalleryPage", "ImageGalleryPage.ID <> ".$this->ID, "\"Sort\" > ".$this->Sort, null,1 );
+		$extension = '';
+		if(Versioned::current_stage() == "Live") {
+			$extension = "_Live";
+		}
+		$pages = DataObject::get("ImageGalleryPage", "ImageGalleryPage$extension.ID <> ".$this->ID." AND TimeDiff(\"Created\",'".$this->Created."') < 0", "\"Created\" DESC", null,1 );
 		if($pages) {
 			foreach($pages as $page) {
 				return $page;
