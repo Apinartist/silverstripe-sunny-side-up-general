@@ -162,8 +162,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						You can switch between the one-page-checkout and the step-by-step-checkout option using a simple checkbox in the <a href=\"/admin/\">CMS (content management system)</a>.
 					</p>
 					<ul>
-						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items</a></li>
-						<li><a href=\"checkout/orderstep/ordermodifiers/#OrderModifiersOuter\">Modifiers (tax / delivery / etc...)</a></li>
+						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items and Other Charges</a></li>
 						<li><a href=\"checkout/orderstep/orderconfirmation/#OrderConfirmationOuter\">Double-check Order</a></li>
 						<li><a href=\"checkout/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
 					</ul>
@@ -215,13 +214,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Content" => "<p>Please review your order below. A Cart Page is like a checkout page but without the checkout form.</p>"
 			),
 			array(
-				"ClassName" => "AddToCartPage",
-				"URLSegment" => "quick-add",
-				"Title" => "Quick Add",
-				"MenuTitle" => "Quick Add",
+				"ClassName" => "Page",
+				"URLSegment" => "alternative-views",
+				"Title" => "Alternative Views of Product and Product Groups",
+				"MenuTitle" => "Alternative Views",
 				"ShowInMenus" => 1,
 				"ShowInSearch" => 1,
-				"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+				"Content" => "<p>In this section we present a number of alternative ways to view products and product groups.</p>",
 				"Children" => array(
 					array(
 						"ClassName" => "AddUpProductsToOrderPage",
@@ -242,6 +241,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"NumberOfProductsPerPage" => 100,
 						"Content" => "<p>please review all our prices below...</p>"
 					),
+					array(
+						"ClassName" => "AddToCartPage",
+						"URLSegment" => "quick-add",
+						"Title" => "Quick Add",
+						"MenuTitle" => "Quick Add",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+					)
 				)
 			),
 			array(
