@@ -8,7 +8,6 @@
 
 
 
-
 .productImage img {float: none;}
 
 .priceDisplay{
@@ -30,3 +29,5 @@ li.featured a {color: #317010!important;}
  .variationsTable {width: auto; font-size: 13px!important;}
  .variationsTable .action a {text-decoration: none; font-weight: bold; display: block; padding: 3px; color: #82274B;}
 .variationsTable .action a:hover {color: #317010;}
+
+.goToCheckoutLink {display: none!important;}
