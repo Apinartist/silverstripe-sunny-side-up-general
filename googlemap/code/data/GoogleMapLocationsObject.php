@@ -32,15 +32,15 @@ class GoogleMapLocationsObject extends DataObject {
 	);
 
 	static $summary_fields = array (
-		'PointString' => 'Text',
-		'Address' => 'Text',
-		'FullAddress' => 'Text',
-		'CountryNameCode' => 'Varchar(3)',
-		'AdministrativeAreaName' => 'Varchar(255)',
-		'SubAdministrativeAreaName' => 'Varchar(255)',
-		'LocalityName' => 'Varchar(255)',
-		'ThoroughfareName' => 'Varchar(255)',
-		'PostalCodeNumber' => 'Varchar(30)'
+		'PointString',
+		'Address',
+		'FullAddress',
+		'CountryNameCode',
+		'AdministrativeAreaName',
+		'SubAdministrativeAreaName',
+		'LocalityName',
+		'ThoroughfareName',
+		'PostalCodeNumber'
 	);
 
 	static $has_one = array (
