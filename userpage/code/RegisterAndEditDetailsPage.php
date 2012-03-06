@@ -46,7 +46,7 @@ class RegisterAndEditDetailsPage extends Page {
 	 * redirect back to the another page
 	 *@param String - $link
 	 *@return String - $link
-	 **/ 
+	 **/
 
 	public function link_for_going_to_page_via_making_user($link) {
 		$registerAndEditDetailsPage = DataObject::get_one("RegisterAndEditDetailsPage");
@@ -116,11 +116,11 @@ class RegisterAndEditDetailsPage extends Page {
 			if(!$page->MetaTitleLoggedIn){$page->MetaTitleLoggedIn = "Welcome back"; $update[] =  "updated MetaTitleLoggedIn";}
 			if(strlen($page->ContentLoggedIn) < 17){$page->ContentLoggedIn = "<p>Welcome back - you can do the following ....</p>"; $update[] =  "updated ContentLoggedIn";}
 
-			//THANK YOU FOR UPDATING 
+			//THANK YOU FOR UPDATING
 			if(!$page->ThankYouTitle){$page->ThankYouTitle = "Thank you for updating your details"; $update[] =  "updated ThankYouTitle";}
 			if(strlen($page->ThankYouContent) < 17){$page->ThankYouContent = "<p>Thank you for updating your details. </p>"; $update[] =  "updated ThankYouContent";}
 
-			//ERRORS! 
+			//ERRORS!
 			if(!$page->ErrorEmailAddressAlreadyExists){$page->ErrorEmailAddressAlreadyExists = "Sorry, that email address is already in use by someone else. You may have setup an account in the past or mistyped your email address."; $update[] =  "updated ErrorEmailAddressAlreadyExists";}
 			if(!$page->ErrorBadEmail){$page->ErrorBadEmail = "Sorry, that does not appear a valid email address."; $update[] =  "updated ErrorBadEmail";}
 			if(!$page->ErrorPasswordDoNotMatch){$page->ErrorPasswordDoNotMatch = "Your passwords do not match. Please try again."; $update[] =  "updated ErrorPasswordDoNotMatch";}
@@ -216,6 +216,9 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		// Optional spam protection
 		if(class_exists('SpamProtectorManager')) {
 			SpamProtectorManager::update_form($form);
+		}
+		if(!isset($_REQUEST["Password"])) {
+			$this->fields()->fieldByName("Password")->SetValue("");
 		}
 		return $form;
 	}
