@@ -206,6 +206,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 		$form = new Form($this, "Form", $fields, $actions, $requiredFields);
 		// Load any data avaliable into the form.
 		if($member) {
+			$member->Password = null;
 			$form->loadDataFrom($member);
 		}
 		$data = Session::get("FormInfo.Form_Form.data");
@@ -269,8 +270,12 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			$form->addErrorMessage("Password", $this->ErrorMustSupplyPassword,"bad");
 			return Director::redirectBack();
 		}
-
+		$password = $member->Password;
+		if(isset($data["Password"]["Password"]) && strlen($data["Password"]["Password"]) > 3) {
+			$password = $data["Password"]["Password"];
+		}
 		$form->saveInto($member);
+		$member->changePassword($password);
 		$member->write();
 		if($newMember) {
 			$form->saveInto($member);
