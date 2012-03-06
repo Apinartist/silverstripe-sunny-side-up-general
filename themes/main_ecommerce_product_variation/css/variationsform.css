@@ -29,7 +29,11 @@
 #bodyModuleProduct #Form_VariationForm .middleColumn,
 #bodyModuleProduct #Form_VariationForm .Actions,
 #bodyModuleProduct #Form_VariationForm p.ForgotPassword,
-#bodyModuleProduct #Form_VariationForm p.checkbox {
+#bodyModuleProduct #Form_VariationForm p.checkbox,
+#bodyModuleProduct #Form_VariationForm span.message{
+	margin-left: 245px;
+}
+#bodyModuleProduct #Form_VariationForm .middleColumn span.message{
 	margin-left: 245px;
 }
 
