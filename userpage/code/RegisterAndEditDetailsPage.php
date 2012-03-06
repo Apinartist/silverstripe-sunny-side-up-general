@@ -218,7 +218,7 @@ class RegisterAndEditDetailsPage_Controller extends Page_Controller {
 			SpamProtectorManager::update_form($form);
 		}
 		if(!isset($_REQUEST["Password"])) {
-			$this->fields()->fieldByName("Password")->SetValue("");
+			$form->fields()->fieldByName("Password")->SetValue("");
 		}
 		return $form;
 	}
