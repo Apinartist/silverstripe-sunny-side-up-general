@@ -100,6 +100,21 @@ class DataIntegrityTest extends DevelopmentAdmin {
 							}
 						}
 					}
+					$rawCount = DB::query("SELECT COUNT(\"ID\") FROM \"$dataClass\"")->value();
+					if($rawCount < 1000){
+						$realCount = 0;
+						$objects = DataObject::get($dataClass);
+						if($objects) {
+							$realCount = $objects->count();
+						}
+						if($rawCount != $realCount) {
+							DB::alteration_message("The DB Table Row Count ($rawCount) does not seem to match the DataObject Count ($realCount) for $dataClass.  This could indicate a error.", "deleted");
+						}
+					}
+					else {
+						DB::alteration_message("<span style=\"color: yellow\">We cant fully check $dataClass because it as more than 1000 records</span>");
+					}
+
 				}
 				else {
 					if( mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$dataClass."'"))) {
