@@ -32,7 +32,7 @@ even when theme-ing ecommerce, these should not be themed
 
 ul.productActions {margin: 0px; padding: 0px;}
 ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0; line-height: 0.8;}
-ul.productActions li a, .goToCart a {
+ul.productActions li a, .goToCart a, a.selectVariation {
 	display: -moz-inline-stack;
 	display: inline-block;
 	width: auto;
