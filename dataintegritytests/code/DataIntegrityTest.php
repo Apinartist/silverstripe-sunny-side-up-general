@@ -50,6 +50,13 @@ class DataIntegrityTest extends DevelopmentAdmin {
 		$notCheckedArray = array();
 		//remove dataobject
 		array_shift($dataClasses);
+		$rows = DB::query("SHOW TABLES;");
+		$actualTables = array();
+		if($rows) {
+			foreach($rows as $row) {
+				$actualTables[$row['Tables_in_dev_catdev_db']] = $row['Tables_in_dev_catdev_db'];
+			}
+		}
 		echo "<h1>Report of fields that may not be required.</h1>";
 		echo "<p>NOTE: it may contain fields that are actually required (e.g. versioning or many-many relationships) and it may also leave out some obsolete fields.  Use as a guide only.</p>";
 		foreach($dataClasses as $dataClass) {
@@ -108,17 +115,26 @@ class DataIntegrityTest extends DevelopmentAdmin {
 							$realCount = $objects->count();
 						}
 						if($rawCount != $realCount) {
-							DB::alteration_message("The DB Table Row Count ($rawCount) does not seem to match the DataObject Count ($realCount) for $dataClass.  This could indicate a error.", "deleted");
+							DB::alteration_message("The DB Table Row Count ($rawCount) does not seem to match the DataObject Count ($realCount) for $dataClass.  This could indicate an error as generally these numbers should match.", "deleted");
+						}
+						if($realCount > $rawCount) {
+							$objects = DataObject::get($dataClass);
+							foreach($objects as $object) {
+								if(DB::query("SELECT COUNT(\"ID\") FROM \"$dataClass\" WHERE \"ID\" = ".$object->ID.";")->value() != 1) {
+									DB::alteration_message("Now trying to recreate missing items....", "created");
+									$object->write(true, false, true, false);
+								}
+							}
 						}
 					}
 					else {
 						DB::alteration_message("<span style=\"color: yellow\">We cant fully check $dataClass because it as more than 1000 records</span>");
 					}
-
+					unset($actualTables[$dataClass]);
 				}
 				else {
 					if( mysql_num_rows( mysql_query("SHOW TABLES LIKE '".$dataClass."'"))) {
-						DB::alteration_message ("  **** The $dataClass table exists, but according to the data-scheme it should not be there ".$row, "deleted");
+						DB::alteration_message ("  **** The $dataClass table exists, but according to the data-scheme it should not be there ", "deleted");
 					}
 					else {
 						$notCheckedArray[] = $dataClass;
@@ -135,6 +151,40 @@ class DataIntegrityTest extends DevelopmentAdmin {
 				DB::alteration_message ($table, "created");
 			}
 		}
+		if(count($actualTables)) {
+			echo "<h3>Other Tables in Database not directly linked to a Silverstripe DataObject:</h3>";
+			foreach($actualTables as $table) {
+				$show = true;
+				if(class_exists($table)) {
+					$classExistsMessage = " a PHP class with this name exists.";
+					$obj = singleton($table);
+					//to do: make this more reliable - checking for versioning rather than SiteTree
+					if($obj instanceof SiteTree) {
+						$show = false;
+					}
+				}
+				else {
+					$classExistsMessage = " NO PHP class with this name exists.";
+					if(substr($table, -5) == "_Live") {
+						$show = false;
+					}
+					if(substr($table, -9) == "_versions") {
+						$show = false;
+					}
+					//many 2 many tables...
+					$array = explode("_", $table);
+					if(count($array) == 2) {
+						if(class_exists($array[0]) && class_exists($array[1])) {
+							$show = false;
+						}
+					}
+				}
+				if($show) {
+					DB::alteration_message ($table." - ".$classExistsMessage, "created");
+				}
+			}
+		}
+
 		echo "<a href=\"".Director::absoluteURL("/dbintegritycheck")."\">back to main menu.</a>";
 	}
 
