@@ -17,6 +17,15 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 		}
 	}
 
+	/**
+	 * Add js and css requirements.
+	 * Defined here rather than in WishListDecorator_Controller so that it can used with a list 
+	 * of dataobjects and not just on a single page.
+	 */
+	function AddWishListRequirements() {
+		WishListDecorator_Controller::set_inline_requirements();
+	}
+
 }
 
 class WishListDecorator_Controller extends Extension {
@@ -266,12 +275,6 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ template variables
 
-	/**
-	 * Add js and css requirements.
-	 */
-	function AddWishListRequirements() {
-		self::set_inline_requirements();
-	}
 
 	/**
 	 * Retrieve wishlist entries from session and return.
