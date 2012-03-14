@@ -25,14 +25,18 @@ class WishListDecorator_Controller extends Extension {
 
 	/**
 	 * Provides a list of allowed methods that can be called via RESTful api.
+	 *
+	 * Use an array of string instead of an array associative array of strings to booleans.
+	 * The latter causes an infinite redirect in come cases, no exactly sure why but using
+	 * an array of strings seems to fix the problem.
 	 */
 	static $allowed_actions = array(
-		"addtowishlist" => true,
-		"removefromwishlist" => true,
-		"clearwishlist" => true,
-		"savewishlist" => true,
-		"retrievewishlist" => true,
-		"loadlist" => true
+		"addtowishlist",
+		"removefromwishlist",
+		"clearwishlist",
+		"savewishlist",
+		"retrievewishlist",
+		"loadlist",
 	);
 
 	/**
