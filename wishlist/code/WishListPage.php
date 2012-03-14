@@ -9,8 +9,14 @@
 
 class WishListPage extends Page {
 
+	/**
+	 * Icon to use for this page type.
+	 */
 	static $icon = "wishlist/images/treeicons/WishListPage";
 
+	/**
+	 * Additional page database fields.
+	 */
 	static $db = array(
 		"AddedToListText" => "Varchar(255)",
 		"AddedToListTextError" => "Varchar(255)",
@@ -27,6 +33,10 @@ class WishListPage extends Page {
 	);
 
 
+	/**
+	 * Add page CMS fields.
+	 * @return FieldSet 
+	 */
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Content.SaveAndRemoveMessages", new TextField($name = "AddedToListText", $title = "added to list"));
@@ -44,6 +54,10 @@ class WishListPage extends Page {
 		return $fields;
 	}
 
+	/**
+	 * Add default records to database. 
+	 * Make sure you call parent::requireDefaultRecords().
+	 */
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$update = array();
@@ -81,12 +95,19 @@ class WishListPage extends Page {
 
 class WishListPage_Controller extends Page_Controller {
 
+	/**
+	 * Initialisation function that is run before any action on the controller is called.
+	 */
 	function init() {
 		parent::init();
 		WishListDecorator_Controller::set_wish_list_to_member(WishListDecorator_Controller::get_wish_list_from_session_array());
 		WishListDecorator_Controller::set_inline_requirements();
 	}
 
+	/**
+	 * Return whether there are wish list items to be saved.
+	 * @return boolean
+	 */
 	function CanSaveWishList() {
 		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
 			if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
@@ -100,6 +121,10 @@ class WishListPage_Controller extends Page_Controller {
 		return false;
 	}
 
+	/**
+	 * Return whether there are wish list items to be retrieved (that haven't already been retrieved).
+	 * @return boolean
+	 */
 	function CanRetrieveWishList() {
 		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_serialized()) {
 			if($sessionOne = WishListDecorator_Controller::get_wish_list_from_session_serialized()) {
@@ -118,6 +143,10 @@ class WishListPage_Controller extends Page_Controller {
 		return false;
 	}
 
+	/**
+	 * Return whether the member or session wish list is non-empty and hence can be cleared.
+	 * @return boolean
+	 */
 	function CanClearWishList() {
 		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_array()) {
 			if(is_array($savedOne) && count($savedOne)) {

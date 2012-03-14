@@ -8,11 +8,14 @@
 
 class WishListMemberDecorator extends DataObjectDecorator {
 
-
+	/**
+	 * Define extra database fields for member object.
+	 * @return array 
+	 */
 	function extraStatics() {
 		return array(
 			'db' => array(
-				// We use  fields for City, Suburb and Phone number
+				//Wish list will be stored as a serialised array.
 				'WishList' => 'Text'
 			)
 		);

@@ -2,6 +2,11 @@
 
 class WishListDecorator_DataObject extends DataObjectDecorator {
 
+	/**
+	 * Return where this page is on the current members wishlist.
+	 * This decoration probably should be added to Product and not SiteTree (as far as I can tell).
+	 * @return boolean
+	 */
 	function IsOnWishList() {
 		$array = WishListDecorator_Controller::get_wish_list_from_session_array();
 		if(isset($array[$this->owner->ID])) {
@@ -18,6 +23,9 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ statics
 
+	/**
+	 * Provides a list of allowed methods that can be called via RESTful api.
+	 */
 	static $allowed_actions = array(
 		"addtowishlist" => true,
 		"removefromwishlist" => true,
@@ -27,12 +35,34 @@ class WishListDecorator_Controller extends Extension {
 		"loadlist" => true
 	);
 
+	/**
+	 * Whether requirements have already been added to the current page.
+	 */
 	private static $requirements_added = false;
 
+	/**
+	 * Name of session variable for storing wishlist data.
+	 */
 	protected static $session_variable_name = "WishListDecoratorArray";
-		static function set_session_variable_name($v){self::$session_variable_name = $v;}
-		static function get_session_variable_name () {return self::$session_variable_name;}
+	/**
+	 * Set the name of the session variable, to change from default.
+	 * @param string
+	 */
+	static function set_session_variable_name($v){
+		self::$session_variable_name = $v;
+	}
+	/**
+	 * Return the name of the session variable.
+	 * @return string
+	 */
+	static function get_session_variable_name () {
+		return self::$session_variable_name;
+	}
 
+	/**
+	 * Return wish list data from session as an array.
+	 * @return array
+	 */
 	public static function get_wish_list_from_session_array() {
 		//store in static variable so that you do not have to retrieve all the time...
 		$string = self::get_wish_list_from_session_serialized();
@@ -40,6 +70,10 @@ class WishListDecorator_Controller extends Extension {
 		return unserialize($string);
 	}
 
+	/**
+	 * Return wish list data from session as a serialised array.
+	 * @return string (serialised array)
+	 */
 	public static function get_wish_list_from_session_serialized() {
 		$string = Session::get(self::get_session_variable_name()."_data");
 		if(!is_string($string)) {
@@ -57,6 +91,10 @@ class WishListDecorator_Controller extends Extension {
 		return $string;
 	}
 
+	/**
+	 * Return wish list data from current member as an array.
+	 * @return array
+	 */
 	public static function get_wish_list_from_member_array() {
 		//store in static variable so that you do not have to retrieve all the time...
 		$string = self::get_wish_list_from_member_serialized();
@@ -64,6 +102,10 @@ class WishListDecorator_Controller extends Extension {
 		return unserialize($string);
 	}
 
+	/**
+	 * Return wish list data from current member as a serialised array.
+	 * @return string (serialised array)
+	 */
 	public static function get_wish_list_from_member_serialized() {
 		$member = Member::currentMember();
 		$string = '';
@@ -76,6 +118,10 @@ class WishListDecorator_Controller extends Extension {
 		return $string;
 	}
 
+	/**
+	 * Save wish list data to session and current member.
+	 * @param array
+	 */
 	static function set_wish_list_to_session_and_member($array) {
 		//make sure it is an array
 		if(!is_array($array)) {
@@ -93,6 +139,10 @@ class WishListDecorator_Controller extends Extension {
 		}
 	}
 
+	/**
+	 * Save wish list data to current member.
+	 * @param array
+	 */
 	static function set_wish_list_to_member($array) {
 		$member = Member::currentMember();
 		if($member) {
@@ -103,6 +153,10 @@ class WishListDecorator_Controller extends Extension {
 		return false;
 	}
 
+	/**
+	 * Add js and css requirements to current page.
+	 * Can be called more than once and will only add requirements once.
+	 */
 	static function set_inline_requirements() {
 		if(!Director::is_ajax() && !self::$requirements_added) {
 			self::$requirements_added = true;
@@ -122,6 +176,11 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ actions
 
+	/**
+	 * Add the current page to the wishlist.
+	 * Returns html if this is ajax otherwise redirects back.
+	 * @return string | null
+	 */
 	function addtowishlist() {
 		$id = $this->getIDForWishList();
 		$outcome = false;
@@ -136,6 +195,11 @@ class WishListDecorator_Controller extends Extension {
 		return $this->standardReturn($outcome, "AddedToListText", "AddedToListTextError", "WishListLinkInner");
 	}
 
+	/**
+	 * Remove the current page to the wishlist.
+	 * Returns html if this is ajax otherwise redirects back.
+	 * @return string | null
+	 */
 	function removefromwishlist() {
 		$id = $this->getIDForWishList();
 		$outcome = false;
@@ -153,11 +217,21 @@ class WishListDecorator_Controller extends Extension {
 		return $this->standardReturn($outcome, "RemovedFromListText", "RemovedFromListTextError", "WishListLinkInner");
 	}
 
+	/**
+	 * Save the wishlist from the session to the current member.
+	 * Returns html if this is ajax otherwise redirects back.
+	 * @return string | null
+	 */
 	function savewishlist() {
 		$outcome = self::set_wish_list_to_member(self::get_wish_list_from_session_array());
 		return $this->standardReturn($outcome, "SavedWishListText", "SavedWishListTextError", "WishListSaveAndRetrieveInner");
 	}
 
+	/**
+	 * Retrieve the wishlist from the current member and save to the session.
+	 * Returns html if this is ajax otherwise redirects back.
+	 * @return string | null
+	 */
 	function retrievewishlist() {
 		$outcome = false;
 		self::set_wish_list_to_session_and_member(self::get_wish_list_from_member_array());
@@ -165,12 +239,21 @@ class WishListDecorator_Controller extends Extension {
 		return $this->standardReturn($outcome, "RetrievedWishListText", "RetrievedWishListTextError", "WishListListInner");
 	}
 
+	/**
+	 * If this is ajax then return the wishlist html otherwise do nothing.
+	 * @return string | null
+	 */
 	function loadlist() {
 		if(Director::is_ajax()) {
 			return $this->owner->renderWith("WishListLinkInner");
 		}
 	}
 
+	/**
+	 * Set the wishlist to empty for the current member and in the session.
+	 * Returns html if this is ajax otherwise redirects back.
+	 * @return string | null
+	 */
 	function clearwishlist() {
 		$newArray = array();
 		self::set_wish_list_to_session_and_member($newArray);
@@ -179,10 +262,17 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ template variables
 
+	/**
+	 * Add js and css requirements.
+	 */
 	function AddWishListRequirements() {
 		self::set_inline_requirements();
 	}
 
+	/**
+	 * Retrieve wishlist entries from session and return.
+	 * @return DataObjectSet | null
+	 */
 	function WishList() {
 		$array = self::get_wish_list_from_session_array();
 		if(is_array($array) && count($array) ) {
@@ -194,6 +284,10 @@ class WishListDecorator_Controller extends Extension {
 		return null;
 	}
 
+	/**
+	 * Retrieve wish list message from session.
+	 * @return string
+	 */
 	function WishListMessage() {
 		//retrieve message
 		$msg = Session::get(self::get_session_variable_name()."_message");
@@ -203,7 +297,10 @@ class WishListDecorator_Controller extends Extension {
 		return $msg;
 	}
 
-
+	/**
+	 * Return number of items in member wish list.
+	 * @return int | null
+	 */
 	function NumberOfItemsInSavedOnes() {
 		$array = self::get_wish_list_from_member_array();
 		if(is_array($array) && ($count = count($array))) {
@@ -211,6 +308,10 @@ class WishListDecorator_Controller extends Extension {
 		}
 	}
 
+	/**
+	 * Return number of items in session wish list.
+	 * @return int | null
+	 */
 	function NumberOfItemsInSessionOnes() {
 		$array = self::get_wish_list_from_session_array();
 		if(is_array($array) && ($count = count($array))) {
@@ -220,8 +321,18 @@ class WishListDecorator_Controller extends Extension {
 
 	// ____ internal functions
 
-	protected function getVariableFromwishListPage ($variableName) {return $this->wishListPage()->$variableName;}
+	/**
+	 * Retrieve variable from wish list page.
+	 * @return mixed Depends on what $VariableName is.
+	 */
+	protected function getVariableFromwishListPage ($variableName) {
+		return $this->wishListPage()->$variableName;
+	}
 
+	/**
+	 * Return the ID to be stored in the wish list of the current page.
+	 * @return int
+	 */
 	protected function getIDForWishList() {
 		//check URL Param
 		//$id = intval(Director::URLParam("ID"));
@@ -231,12 +342,23 @@ class WishListDecorator_Controller extends Extension {
 		//return $id;
 	}
 
-
+	/**
+	 * Retrieve a single wish list page.
+	 * @return WishListPage
+	 */
 	protected function wishListPage() {
 		return DataObject::get_one("wishListPage");
 	}
 
-
+	/**
+	 * Return template html if this is an ajax call otherwise redirect back.
+	 * Set session message based on $outcome.
+	 * @param boolean $outcome Whether the current action was successful.
+	 * @param string $successMessageName Name of success message variable, to be retrieved from WishListPage.
+	 * @param string $errorMessageName Name of error message variable, to be retrieved from WishListPage.
+	 * @param string $template Name of template to render if this an ajax call.
+	 * @return string | null
+	 */
 	protected function standardReturn($outcome, $successMessageName, $errorMessageName, $template) {
 		if($outcome) {
 			Session::set(self::get_session_variable_name()."_message", $this->getVariableFromwishListPage($successMessageName));
@@ -261,6 +383,5 @@ class WishListDecorator_Controller extends Extension {
 			}
 		}
 	}
-
 
 }
