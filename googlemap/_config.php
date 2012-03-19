@@ -83,15 +83,15 @@ GoogleMap::setAddCloseUpButton(""); //add a "close-up" link on info window, shou
 GoogleMap::setAddCloseWindowButton(""); //add a "close window" link on info window, shouldbe emptry string or text for button.
 GoogleMap::set_ajax_info_window_text("view details");
 
-// MARKER 
+// MARKER
 GoogleMap::setMarkerOptions("{draggable:false,bouncy:true,title: \"click me\"}"); //marker options (see http://code.google.com/apis/maps/documentation/reference.html for details)
-GoogleMap::$AddPointsToMap(true);
-GoogleMap::$AddDeleteMarkerButton("remove this location");
-GoogleMap::$AllowMarkerDragAndDrop(true);,
-GoogleMap::$MarkerOptions(true);
-GoogleMap::$PreloadImages(true);
+GoogleMap::AddPointsToMap(true);
+GoogleMap::AddDeleteMarkerButton("remove this location");
+GoogleMap::AllowMarkerDragAndDrop(true);,
+GoogleMap::MarkerOptions(true);
+GoogleMap::PreloadImages(true);
 
-//ICONS 
+//ICONS
 GoogleMap::setPreloadImages(true); //pre-load marker images
 GoogleMap::setDefaultIconUrl(""); //default Icon Url
 GoogleMap::setIconFolder("googlemap/images/icons/"); //default Icon Folder - icons need to be name: i1, i2, i3, i4, etc...
