@@ -15,8 +15,6 @@
 			.typography .middleColumn textarea{margin-top: 0px;}
 			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important; margin-top: 0px; padding-top: 0px;}
 			.typography .middleColumn li{list-style: none!important; margin-top: 0px; padding-top: 0px;}
-				.typography .middleColumn input:hover, .typography .middleColumn textarea:hover, .typography .middleColumn select:hover{border: 1px solid #82274B;}
-				.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #317010;}
 
 		.typography .middleColumn .radio, .typography .middleColumn .checkbox,
 		.typography .middleColumn .radio:hover, .typography .middleColumn .checkbox:hover,
@@ -71,6 +69,8 @@
 	padding-right: 20px;
 
 }
+.typography .middleColumn input:focus, .typography .middleColumn textarea:focus, .typography .middleColumn select:focus{border: 1px solid #317010;}
+
 .typography .Actions input.action {margin-left: 0px;}
 
 .typography .Actions input:hover,.typography  input.action:hover {
@@ -94,6 +94,12 @@ input[type=text], input[type=password], textarea, select {
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BFC1C1');
 }
 input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover {
+	-moz-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
 
 }
 

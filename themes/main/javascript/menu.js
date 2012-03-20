@@ -25,7 +25,12 @@
 					out: function(){jQuery(this).fadeTo(750, 0.33);}  // function = onMouseOut callback (required)
 				}
 			);
-
+			jQuery("#Nav").children("li").each(
+				function(i, el) {
+					var parentOffset = jQuery(el).offset();
+					jQuery(el).children("ul").css("left", parentOffset.left + "px");
+				}
+			);
 		},
 
 		menuIn: function() {jQuery(this).children("ul").fadeIn()},
