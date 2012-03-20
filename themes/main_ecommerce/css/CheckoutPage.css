@@ -28,3 +28,6 @@
 
 #CartPageMessage  {margin-top: 20px; margin-bottom: 20px; }
 #CartPageMessage p {font-size: 12px!important; padding: 0px; padding-left: 10px;}
+
+#Checkout ul.steps {padding: 0px; margin: 0;}
+#Checkout ul.steps li {background-image: none; padding: 0px; margin: 0; float: left; width: auto; padding-right: 20px; font-size: 10px; display: inline-block;}
