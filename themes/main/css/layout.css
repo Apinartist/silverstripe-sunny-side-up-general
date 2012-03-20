@@ -13,25 +13,22 @@ body {
 #Wrapper{}
 	#Container{}
 		#Nav {} /* see MENU.CSS spreadsheet */
-		#Breadcrumbs {text-align: right; padding: 7px; position: absolute; top: 0; font-size: 12px; }
+		#Breadcrumbs {text-align: right; padding: 0; position: absolute; top: 7px; font-size: 12px; }
 		#SidebarSection {width: 200px; float: right; padding: 67px 20px 0 0;}
 		#Layout {padding: 67px 270px 50px 210px; max-width: 770px;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
 
-#Sidebar {position: absolute; top: 10px; right: 10px; width: 200px; padding:12px; font-size: 77%;
+#Sidebar {
+position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-size: 77%;
 	background-color: #f7f7f7;
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
-	background-position:10px center;
+	background-position:0px center;
 	background-repeat:no-repeat;
-	border:           1px solid #fff;
-	border-radius:    10px;
-	-moz-box-shadow: 3px 3px 4px #808383;
-	-webkit-box-shadow: 3px 3px 4px #808383;
-	box-shadow: 3px 3px 4px #808383;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383')";
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808383');
+	border:           0px solid #fff;
+-moz-border-radius-bottomright: 5px; border-bottom-right-radius: 5px;
+	border-top: 18px solid #808383;
 
 }
 #Sidebar .sidebarBox {padding-bottom: 30px; }

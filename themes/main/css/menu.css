@@ -1,11 +1,11 @@
 #Nav, #Nav ul, #Nav ul ul {position: fixed; right: 0; width: 100%; text-transform: lowercase;}
-#Nav {bottom: 0px; background-color: #808383; z-index: 999}
+#Nav {bottom: 0px; background-color: #808383; z-index: 999; }
 	#Nav li {padding: 0.77em 1.7em; float: right; list-style: none;}
 		#Nav li a {font-size: 1.9em;color: #fff; text-decoration: none;}
 			#Nav li a:hover, #Nav li.current a, #Nav li.section a {color: #FFCC33;}
 				#Nav li.current li.link a, #Nav li.section  li.link  a {color: #808383;}
 				#Nav li.current li.link a:hover, #Nav li.section  li.link  a:hover {color: #000;}
-	#Nav ul {bottom: 3.9em; background-color: #B5AB8B;border-top: 1px solid: #fff; width: auto; display: none; -moz-border-radius-topleft: 5px; border-top-left-radius: 5px;}
+	#Nav ul {bottom: 3.9em; background-color: #BFC1C1;border-top: 1px solid: #fff; width: auto; display: none; -moz-border-radius-topleft: 5px; border-top-left-radius: 5px;}
 		#Nav ul li {padding: 0.53em 1.3em; float: right; }
 			#Nav ul li.first {}
 			#Nav ul li a {font-size: 1.2em;color: #808383;}

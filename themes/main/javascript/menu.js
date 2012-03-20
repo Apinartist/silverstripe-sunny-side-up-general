@@ -18,6 +18,13 @@
 				}
 			);
 			jQuery(".hasCSSHover").removeClass("hasCSSHover");
+			jQuery("#Nav").hoverIntent(
+				{
+					over: function(){jQuery(this).fadeTo(750, 1);},  // function = onMouseOver callback (required)
+					timeout: 750,   // number = milliseconds delay before onMouseOut function call
+					out: function(){jQuery(this).fadeTo(750, 0.33);}  // function = onMouseOut callback (required)
+				}
+			);
 
 		},
 
