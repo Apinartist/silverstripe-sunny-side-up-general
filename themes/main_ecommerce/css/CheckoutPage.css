@@ -17,7 +17,7 @@
 
 .checkoutStepPrevNextHolder { position: relative; height: 87px; padding-bottom: 20px; padding-top: 20px; }
 .checkoutStepPrevNextHolder a {width: 87px; height: 87px; display: block;text-indent: -2000px;}
-.next a {position: absolute; left: 270px;}
+.next a {position: absolute; right: 0px;}
 .prev a {position: absolute; left: 0px;}
 .next a {background-image: url(/themes/main_ecommerce/images/next.png);}
 .prev a{background-image: url(/themes/main_ecommerce/images/previous.png);}
