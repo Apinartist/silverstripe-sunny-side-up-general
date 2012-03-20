@@ -41,3 +41,5 @@ padding: 10px; margin: 10px 0;
 }
 #Checkout ul.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block;}
 #Checkout ul.steps li.current {color: #317010;}
+
+.selectorderaddress ul {border-top: 1px solid #BFC1C1;}
