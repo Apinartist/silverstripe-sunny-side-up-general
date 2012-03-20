@@ -103,4 +103,7 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	-webkit-column-width: 14em;
 }
 
-.readonly .middleColumn span {display: block; border-top: 1px solid #BFC1C1;}
+.readonly .middleColumn span {display: block;
+
+border: 1px solid #BFC1C1; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif;
+}
