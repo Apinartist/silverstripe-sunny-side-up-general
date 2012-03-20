@@ -15,8 +15,8 @@
 #MethodFields_PayPalPayment {margin-left: 270px}
 #MethodFields_PayPalPayment img {display: inline-block; float: none; margin-left: 0px; margin-right: 10px}
 
-.orderStepPrevNextHolder { position: relative; height: 87px; padding-bottom: 20px; padding-top: 20px; }
-.orderStepPrevNextHolder a {width: 87px; height: 87px; display: block;text-indent: -2000px;}
+.checkoutStepPrevNextHolder { position: relative; height: 87px; padding-bottom: 20px; padding-top: 20px; }
+.checkoutPrevNextHolder a {width: 87px; height: 87px; display: block;text-indent: -2000px;}
 .next a {position: absolute; left: 270px;}
 .prev a {position: absolute; left: 0px;}
 .next a {background-image: url(/themes/main_ecommerce/images/next.png);}
