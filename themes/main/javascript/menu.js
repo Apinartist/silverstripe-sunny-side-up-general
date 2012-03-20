@@ -25,6 +25,7 @@
 					out: function(){jQuery(this).fadeTo(750, 0.33);}  // function = onMouseOut callback (required)
 				}
 			);
+			jQuery("#Nav").fadeTo(750, 0.33);;
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
