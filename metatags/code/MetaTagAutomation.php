@@ -338,12 +338,8 @@ class MetaTagAutomation_controller extends Extension {
 		}
 		if(!$siteConfig->MetaDataCoding) {MetaTagAutomation::get_meta_data_coding();}
 		if(!$siteConfig->MetaDataDesign) {MetaTagAutomation::get_meta_data_design();}
-		if(!$siteConfig->MetaDataCountry) {
-			$siteConfig->MetaDataCountry = Geoip::countryCode2name(Geoip::$default_country_code);
-		}
-		if(!$siteConfig->MetaDataCopyright) {
-			$siteConfig->MetaDataCopyright = $siteConfig->Title;
-		}
+		if(!$siteConfig->MetaDataCountry) {$siteConfig->MetaDataCountry = Geoip::countryCode2name(Geoip::$default_country_code);}
+		if(!$siteConfig->MetaDataCopyright) {$siteConfig->MetaDataCopyright = $siteConfig->Title;}
 		if($addExtraSearchEngineData) {
 			$tags .= '
 			<meta name="robots" content="'.$noopd.'all, index, follow" />
