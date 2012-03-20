@@ -165,9 +165,9 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		$siteConfig = SiteConfig::current_site_config();
 		$updateDatedFieldArray = array();
 		if(self::$disable_update_popup) 					{ $updateDatedFieldArray["URLSegment"] = _t('SiteTree.URLSegment','URL Segment ');}
-		if($siteConfig->UpdateMenuTitle) 	  			{ $updateDatedFieldArray["MenuTitle"] = _t('SiteTree.METADESC','Menu Title '); }
+		if($siteConfig->UpdateMenuTitle) 	  			{ $updateDatedFieldArray["MenuTitle"] = _t('SiteTree.MENUTITLE','Menu Title '); }
 		if($siteConfig->UpdateMetaTitle) 					{ $updateDatedFieldArray["MetaTitle"] = _t('SiteTree.METATITLE','Title '); }
-		if($siteConfig->UpdateMetaDescription) 	  { $updateDatedFieldArray["MetaDescription"] = _t('SiteTree.METADESC','Description '); }
+		if($siteConfig->UpdateMetaDescription) 	  { $updateDatedFieldArray["MetaDescription"] = _t('SiteTree.METADESCRIPTION','Description '); }
 		return $updateDatedFieldArray;
 	}
 
@@ -309,7 +309,7 @@ class MetaTagAutomation_controller extends Extension {
 		else {
 			$lastEdited = new DateTime();
 		}
-		$lastEdited->value = $this->owner->LastEdited;
+		$lastEdited->value = $page->LastEdited;
 
 		//use base url rather than / so that sites that aren't a run from the root directory can have a favicon
 		$faviconBase = Director::baseURL();
