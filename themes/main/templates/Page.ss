@@ -13,7 +13,7 @@
 			$Layout
 			<div id="Footer">
 				<span class="backToTop"><a href="#Wrapper">back to top</a></span>
-				<p id="CopyrightMessage">$SiteConfig.CopyrightNotice</p>
+				<div id="CopyrightMessage">$SiteConfig.CopyrightNotice</div>
 			</div>
 		</div>
 	</div>
