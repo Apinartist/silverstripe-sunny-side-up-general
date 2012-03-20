@@ -47,8 +47,8 @@ position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-siz
 ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 
 #Footer {clear: both; padding-top: 300px; }
-.backToTop {font-size: 0.75em; float: right; padding-bottom: 10px; }
+.backToTop {float: right; padding-bottom: 10px; }
 .backToTop a{ text-decoration: none!important;}
-#CopyrightMessage {border-top: 1px solid #d6dbdb;font-size: 0.75em; clear: right}
+#CopyrightMessage {border-top: 1px solid #d6dbdb;clear: right}
 
 
