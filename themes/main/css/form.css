@@ -102,3 +102,5 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	-moz-column-width: 14em;
 	-webkit-column-width: 14em;
 }
+
+.readonly .middleColumn span {display: block; border-top: 1px solid #BFC1C1;}
