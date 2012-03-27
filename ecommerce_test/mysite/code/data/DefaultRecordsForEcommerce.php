@@ -399,7 +399,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$q = rand(1, 500); $weight = ($q % 3) ? 0 : 1234;
 			$q = rand(1, 500); $model = ($q % 4) ? "" : "model $i";
 			$q = rand(1, 500); $featured = ($q % 5) ? "NO" : "YES";
-			$q = rand(1, 500); $quantifier = ($q % 5) ? "" : "per month";
+			$q = rand(1, 500); $quantifier = ($q % 5) ? "per month" : "";
 			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "NO" : "YES";
 			$imageID = $this->getRandomImageID();
 			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
