@@ -212,7 +212,14 @@ class BarChart_Interactive extends BarChart {
 		
 		foreach($this->lines as $serie) {
 			$yTitles[] = $serie['legend'];
-			$values[] = array_map('floatval', $serie['y']);
+			$newSerie = array();
+			foreach($serie['y'] as $value) {
+				if($value !== null) {
+					$value = floatval($value);
+				}
+				$newSerie[] = $value;
+			}
+			$values[] = $newSerie;
 			if (isset($serie['color'])) {
 				$colors[] = $serie['color'];
 			}
