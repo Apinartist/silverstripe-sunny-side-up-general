@@ -21,9 +21,10 @@ function drawBarChart_Interactive(params) {
 		data.setCell(i, 0, xTitles[i]);
 		for(var j = 0; j < yTitles.length; j++) {
 			var value = values[j][i];
-			if(value !== null) {
-				data.setCell(i, j + 1, value);
+			if(value === null) {
+				value = 0;
 			}
+			data.setCell(i, j + 1, value);
 		}
 	}
 	
