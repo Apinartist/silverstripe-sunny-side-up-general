@@ -30,10 +30,10 @@ li.featured a {color: #317010!important;}
  .variationsTable .action a {text-decoration: none; font-weight: bold; display: block; padding: 3px; color: #82274B;}
 .variationsTable .action a:hover {color: #317010;}
 
-#Products .displayStyleShort li {width: 100%; margin: 0px; padding: 0px;}
-#Products .displayStyleShort li a {float: left; }
-#Products .displayStyleShort li p {margin-left: 30%; float: left;}
-#Products .displayStyleShort ul.productActions {float: right;}
+
+
 
 
 .goToCheckoutLink {display: none!important;}
+
+#Product .productActions {margin-top: 20px; margin-bottom: 20px;}

@@ -25,31 +25,6 @@
 
 /* 3) Product Settings */
 
-.productList .productItem {
-	list-style:none;
-	float: left;
-	width: 142px;
-	overflow: hidden;
-	margin: 0 5px 5px 0;
-	padding: 25px;
-}
-
-.productList .productItem img, .productList .productItem h3 {
-	padding: 0; margin:0
-}
-
-.productList .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; padding: 3px;}
-.productList .productItem h3 a:hover {background-color: #317010; color: #fff!important;}
-
-		.productItem .productActions{
-			padding:0;
-			margin:0;
-		}
-		.productItem .productActions li {
-			list-style: none;
-			padding:0;
-			margin:0;
-		}
 
 .resultsBar .resultsShowing,
 .resultsBar .resultsShowing {
@@ -70,6 +45,82 @@
 	font-size:20px;
 }
 
-.resultsBar, .pageNumbers {font-size: 12px;}
+.resultsBar, .pageNumbers {font-size: 12px;
+	background-color: #f7f7f7;
+	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
+	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
+	background-position:0px center;
+	background-repeat:no-repeat;
+	border-top:       1px solid #808383;
+-moz-border-radius-topleft: 5px; border-top-left-radius: 5px;
+text-align: right;
+padding: 0.7em; margin: 0.3em 0;
+
+}
 
 td.price {text-align: right;}
+
+
+.productList .productItem {
+	list-style:none;
+}
+.productList .productActions{
+	padding:0;
+	margin:0;
+}
+.productList .productActions li {
+	list-style: none;
+	padding:0;
+	margin:0;
+}
+.productList img, .productList  h3 {
+	padding: 0; margin:0
+}
+#Products .displayStyleShort {margin-left: 0px; padding-left: 0px; }
+#Products .displayStyleShort>li {border-bottom: 1px solid #808383; clear: both; padding: 20px 0 20px 0; }
+#Products .displayStyleShort>li.last {border-bottom: 1px solid transparent; }
+#Products .displayStyleShort li h3 {float: left; display: block; width: auto; line-height: 1}
+#Products .displayStyleShort li p {margin: 0px; line-height: 1; font-weight: normal; float: right;}
+#Products .displayStyleShort ul.productActions {clear: both; text-align: right; padding: 10px 0 10px 0;}
+#Products .displayStyleShort ul.productActions li{display: inline;}
+#Products .displayStyleShort ul.productActions a {margin-top: 0px; margin-bottom: 10px; }
+
+#Products .displayStyleMoreDetail {margin-left: 0px; padding-left: 0px; }
+#Products .displayStyleMoreDetail>li {width: 100%; padding: 8px 0 8px 0px;  border-bottom: 1px solid #808383; clear: both;}
+#Products .displayStyleMoreDetail>li.last  {border-bottom: 1px solid transparent;}
+#Products .displayStyleMoreDetail li h3 {text-align: left; padding: 0; margin-bottom: 0.5em;}
+#Products .displayStyleMoreDetail li h3 a{display: inline;padding: 0;}
+#Products .displayStyleMoreDetail li h3 a:hover{color: #317010!important; background-color: transparent; border-bottom: 0px;}
+#Products .displayStyleMoreDetail li img {margin-right: 20px; float: left;}
+#Products .displayStyleMoreDetail li a {}
+#Products .displayStyleMoreDetail li p.moreInformation {padding: 0; margin: 0}
+#Products .displayStyleMoreDetail ul.productActions {}
+#Products .displayStyleMoreDetail ul.productActions li {text-align: right}
+#Products .displayStyleMoreDetail ul.productActions a { display: inline-block; }
+
+
+.displayStyledefault .productItem {
+	list-style:none;
+	float: left;
+	width: 25%;
+	overflow: hidden;
+	margin: 2%;
+	padding: 2%;
+	-moz-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
+}
+.displayStyledefault .productItem img {
+	display: block;
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.displayStyledefault .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; margin-top: 0.5em; }
+.displayStyledefault .productItem h3 a:hover {}
+.displayStyledefault .priceDisplay  {text-align: center; font-size: 0.8em; margin-top: -0.5em;}
+.displayStyledefault .productActions  a {display: block;}

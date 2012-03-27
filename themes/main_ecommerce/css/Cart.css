@@ -12,6 +12,7 @@
 
 
 
+
 /*
 even when theme-ing ecommerce, these should not be themed
 */
@@ -50,8 +51,17 @@ ul.productActions li a, .goToCart a, a.selectVariation {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	text-decoration: none!important;
-	padding-right: 20px
+	padding-right: 20px;
+	display: inline-block
 }
+
+.notInCart .addLink {display: inline-block!important;}
+.notInCart .removeLink {display: none!important;}
+.notInCart .goToCheckoutLink {display: none!important;}
+
+.inCart .addLink {display: none!important;}
+.inCart .removeLink {display: inline-block!important;}
+.inCart .goToCheckoutLink {display: inline-block!important;}
 
 #Sidebar .goToCart a {
 	font-size: 11px;
