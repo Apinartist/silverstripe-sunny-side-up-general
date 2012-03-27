@@ -37,7 +37,7 @@ class SiteConfigExtras extends DataObjectDecorator {
 
 		if($siteConfig) {
 			if(strlen($siteConfig->CopyrightNotice) < 17) {
-				$siteConfig->CopyrightNotice = '<p>&copy; 2010 website owner</p>';
+				$siteConfig->CopyrightNotice = '<p>&copy; website owner</p>';
 				$update[]= "created default entry for CopyrightNotice";
 			}
 			if(count($update)) {

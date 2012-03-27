@@ -144,7 +144,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"URLSegment" => "shop",
 				"Title" => "Shop",
 				"MenuTitle" => "Shop",
-				"Content" => "<p>Please review our products below.</p>",
+				"Content" => "
+					<p>For each product group you can set the products that should be included.&nbsp; The options are:</p>
+					<ul>
+					<li>None, just like this page.</li>
+					<li>Direct Children only</li>
+					<li>Child and Grand Child Products</li>
+					<li>etc...</li>
+					<li>All products on the site.&nbsp;</li>
+					</ul>
+					<p>You can also setup a \"custom\" list of products by using one of the Product Group extension pages.</p>
+				",
 				"Children" => $this->getProductGroups()
 			),
 			array(
@@ -156,17 +166,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 					<p>
 						For further information on our terms of trade, please visit ....
 					</p>
-					<h2>want to break up the checkout page into steps?</h2>
 					<p>
-						A checkout page can also be broken down into several steps (pages).
-						You can switch between the one-page-checkout and the step-by-step-checkout option using a simple checkbox in the <a href=\"/admin/\">CMS (content management system)</a>.
+						To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)
 					</p>
-					<ul>
-						<li><a href=\"checkout/orderstep/orderitems/#OrderItemsOuter\">Order Items and Other Charges</a></li>
-						<li><a href=\"checkout/orderstep/orderconfirmation/#OrderConfirmationOuter\">Double-check Order</a></li>
-						<li><a href=\"checkout/orderstep/orderformandpayment/#OrderFormAndPaymentOuter\">Client Details + Payment (payment will be separated at some stage)</a></li>
-					</ul>
-					<p>To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)</p>
 				",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
 				"CurrentOrderLinkLabel" => "View current order",
@@ -174,6 +176,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
 				"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
 				"LoginToOrderLinkLabel" => "Log in now to checkout order",
+				"HasCheckoutSteps" => 1,
+				"ContinueShoppingLabel" => "Continue Shopping",
+				"CurrentOrderLinkLabel" => "View Current Order",
+				"LoadOrderLinkLabel" => "Load order",
+				"DeleteOrderLinkLabel" => "Delete order",
 				"Children" => array(
 					array(
 						"ClassName" => "OrderConfirmationPage",
@@ -182,7 +189,16 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"MenuTitle" => "Order Confirmation",
 						"ShowInMenus" => 0,
 						"ShowInSearch" => 0,
-						"Content" => "<p>Please review your order below.</p>"
+						"Content" => "<p>Please review your order below.</p>",
+						"CurrentOrderLinkLabel" => "View current order",
+						"SaveOrderLinkLable" => "Save order",
+						"NoItemsInOrderMessage" => "<p>There are no items in your current order</p>",
+						"NonExistingOrderMessage" => "<p>We are sorry, but we can not find this order.</p>",
+						"LoginToOrderLinkLabel" => "Log in now to checkout order",
+						"ContinueShoppingLabel" => "Continue Shopping",
+						"CurrentOrderLinkLabel" => "View Current Order",
+						"LoadOrderLinkLabel" => "Load order",
+						"DeleteOrderLinkLabel" => "Delete order",
 					),
 					array(
 						"ClassName" => "AccountPage",
@@ -223,13 +239,24 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Content" => "<p>In this section we present a number of alternative ways to view products and product groups.</p>",
 				"Children" => array(
 					array(
+						"ClassName" => "ProductGroupWithTags",
+						"URLSegment" => "shop-by-tag",
+						"Title" => "Shop by Tag",
+						"MenuTitle" => "Shop by Tag",
+						"Content" => "<p>Please use the tags to find the products you are after.</p>",
+					),
+					array(
 						"ClassName" => "AddUpProductsToOrderPage",
 						"URLSegment" => "add-up-order",
 						"Title" => "Add Up Order",
 						"MenuTitle" => "Add Up Order",
 						"ShowInMenus" => 1,
 						"ShowInSearch" => 1,
-						"Content" => "<p>Choose your products below and continue through to the checkout...  This page helps customers who want to put a <i>name</i> or <i>identifier</i> with each order item - for example a group of people purchasing together.</p>",
+						"Content" => "
+							<p>
+								Choose your products below and continue through to the checkout...
+								This page helps customers who want to put a <i>name</i> or <i>identifier</i> with each order item - for example a group of people purchasing together.
+							</p>",
 					),
 					array(
 						"ClassName" => "PriceListPage",
@@ -329,8 +356,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 			else {
 				$children = $this->getProducts($parentCode);
 			}
-			$levelOfProductsToShow = rand(0, 5);
-			$defaultSortOrder = ($j % 2) ? "title" : "featured";
+			$levelOfProductsToShow = round(rand(1, 3));
+			$randomSortOrder = round(rand(0, 3));
+			$randomFilter = round(rand(0, 3));
+			$randomStyle = round(rand(0, 3));
+			$sortOrder = $randomSortOrder == 0 ? "inherit" : $randomSortOrder == 1 ? "" : $randomSortOrder == 2 ? "title" : "price"  ;
+			$filter = $randomFilter == 0 ? "inherit" : $randomFilter == 1 ? "" : $randomFilter == 2 ? "featuredonly" : "nonfeaturedonly"  ;
+			$style = $randomStyle == 0 ? "inherit" : $randomStyle == 1 ? "" : $randomStyle == 2 ? "Short" : "MoreDetail";
 			$array[$j] = array(
 				"ClassName" => "ProductGroup",
 				"URLSegment" => "product-group-".$parentCode,
@@ -338,7 +370,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"MenuTitle" => "Product group ".$parentCode,
 				"LevelOfProductsToShow" => $levelOfProductsToShow,
 				"NumberOfProductsPerPage" => $levelOfProductsToShow + 5,
-				"DefaultSortOrder" => $defaultSortOrder,
+				"DefaultSortOrder" => $sortOrder,
+				"DefaultFilter" => $filter,
+				"DisplayStyle" => $style,
 				"Content" =>
 					'<p>
 						This product group page has the following characteristics:
@@ -346,19 +380,14 @@ class DefaultRecordsForEcommerce extends DataObject {
 					<ul>
 						<li>level of products to show: '.$levelOfProductsToShow.'</li>
 						<li>number of products per page: '.($levelOfProductsToShow + 5).'</li>
-						<li>default sort order: '.$defaultSortOrder.'</li>
+						<li>sort order: '.$sortOrder.'</li>
+						<li>filter: '.$filter.'</li>
+						<li>display style: '.$style.'</li>
 					</ul>
 					',
 				"Children" =>  $children,
 			);
 		}
-		$array[] = array(
-			"ClassName" => "ProductGroupWithTags",
-			"URLSegment" => "shop-by-tag",
-			"Title" => "Shop by Tag",
-			"MenuTitle" => "Shop by Tag",
-			"Content" => "<p>Please use the tags to find the products you are after.</p>",
-		);
 		return $array;
 	}
 
@@ -367,11 +396,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 		for($j = 0; $j < $endPoint; $j++) {
 			$i = rand(1, 500);
 			$q = rand(1, 500); $price = $q < 475 ? $q + ($q / 100) : 0;
-			$q = rand(1, 500); $weight = ($q % 3) ? "" : "<li>Weight: 1.234;</li>";
-			$q = rand(1, 500); $model = ($q % 4) ? "" : "<li>Model: model $i;</li>";
-			$q = rand(1, 500); $featured = ($q % 5) ? "" : "<li>Featured Product;</li>;";
-			$q = rand(1, 500); $quantifier = ($q % 5) ? "" : "<li>Quantifier (e.g. per dozen): per month;</li>";
-			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "" : "<li>Purchase Allowed: No</li>";
+			$q = rand(1, 500); $weight = ($q % 3) ? 0 : 1234;
+			$q = rand(1, 500); $model = ($q % 4) ? "" : "model $i";
+			$q = rand(1, 500); $featured = ($q % 5) ? "NO" : "YES";
+			$q = rand(1, 500); $quantifier = ($q % 5) ? "" : "per month";
+			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "YES" : "NO";
 			$imageID = $this->getRandomImageID();
 			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
 			$numberSold = $i;
@@ -385,12 +414,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 					Description for Product $i ... For testing purposed - the following characteristics were added to this product:
 				<p>
 				<ul>
-					$weight
-					$model
-					$featured
-					$quantifier
-					$allowPurchase
-					<li>Number Sold: ".$numberSold.";</li>
+					<li>weight: $weight </li>
+					<li>model:  $model </li>
+					<li>featured $featured </li>
+					<li>quantifier: $quantifier </li>
+					<li>allow purchase: $allowPurchase </li>
+					<li>number sold: ".$numberSold.";</li>
 				</ul>",
 				"Price" => $price,
 				"InternalItemID" => "AAA".$i,
@@ -1058,10 +1087,21 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "SiteConfig", "F" => "Tagline", "V" => "Built by Sunny Side Up", "W" => ""),
 			array("T" => "SiteConfig", "F" => "CopyrightNotice", "V" => "This demo (not the underlying modules) are &copy; Sunny Side Up Ltd", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Theme", "V" => "main", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ShopClosed", "V" => "0", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ShopPricesAreTaxExclusive", "V" => "0", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ShopPhysicalAddress", "V" => "<address>The Shop<br />1 main street<br />Coolville 123<br />Landistan</address>", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "sales@silverstripe-ecommerce.com", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
 			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
+			array("T" => "SiteConfig", "F" => "NumberOfProductsPerPage", "V" => "5", "W" => ""),
+			array("T" => "SiteConfig", "F" => "OnlyShowProductsThatCanBePurchased", "V" => "0", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ProductsHaveWeight", "V" => "1", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
+			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
+			array("T" => "SiteConfig", "F" => "EmailLogoID", "V" => $this->getRandomImageID(), "W" => ""),
+			array("T" => "SiteConfig", "F" => "DefaultProductImage", "V" => $this->getRandomImageID(), "W" => ""),
+
 			array("T" => "CartPage", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 			array("T" => "CartPage_Live", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 		);
