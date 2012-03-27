@@ -400,7 +400,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$q = rand(1, 500); $model = ($q % 4) ? "" : "model $i";
 			$q = rand(1, 500); $featured = ($q % 5) ? "NO" : "YES";
 			$q = rand(1, 500); $quantifier = ($q % 5) ? "" : "per month";
-			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "YES" : "NO";
+			$q = rand(1, 500); $allowPurchase = ($q % 9) ? "NO" : "YES";
 			$imageID = $this->getRandomImageID();
 			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
 			$numberSold = $i;
@@ -426,8 +426,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Weight" => $weight ? "1.234" : 0,
 				"Model" => $model ? "model $i" : "",
 				"Quantifier" => $quantifier,
-				"FeaturedProduct" => $featured ? 1 : 0,
-				"AllowPurchase" => $allowPurchase ? 0 : 1,
+				"FeaturedProduct" => $featured == "YES"  ? 1 : 0,
+				"AllowPurchase" => $allowPurchase == "YES" ? 1 : 0,
 				"NumberSold" => $numberSold
 			);
 		}
@@ -1100,14 +1100,13 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
 			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
 			array("T" => "SiteConfig", "F" => "EmailLogoID", "V" => $this->getRandomImageID(), "W" => ""),
-			array("T" => "SiteConfig", "F" => "DefaultProductImage", "V" => $this->getRandomImageID(), "W" => ""),
+			array("T" => "SiteConfig", "F" => "DefaultProductImageID", "V" => $this->getRandomImageID(), "W" => ""),
 
 			array("T" => "CartPage", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 			array("T" => "CartPage_Live", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 		);
 		foreach($array as $innerArray) {
-			if(isset($innerArray["W"]) && $innerArray["W"]) {
-				$innerArray["W"] = " WHERE ".$innerArray["W"];
+			if(isset($innerArray["W"]) && $innerArray["W"]) {				$innerArray["W"] = " WHERE ".$innerArray["W"];
 			}
 			else {
 				$innerArray["W"] = '';
