@@ -1,4 +1,4 @@
-.typography{color:#808383; font-size: 1.7em;}
+.typography{color:#808383; font-size: 1.4em;}
 
 /* HEADINGS */
 .typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; }
@@ -14,7 +14,7 @@
 	.typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {text-transform: lowercase; }
 
 /* general font-size changes and combos */
-.typography p, .typography li, .typography address {font-size: 0.8em;}
+.typography p, .typography li, .typography address {font-size: 1em;}
 	.typography td p {font-size: 1em;}
 	.typography td li {font-size: 1em; list-style-position: inside; }
 	.typography li p {font-size: 1em; margin-top: 0px; padding-top: 0px;}

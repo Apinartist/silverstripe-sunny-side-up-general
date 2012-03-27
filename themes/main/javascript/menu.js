@@ -22,14 +22,19 @@
 				{
 					over: function(){jQuery(this).fadeTo(750, 1);},  // function = onMouseOver callback (required)
 					timeout: 750,   // number = milliseconds delay before onMouseOut function call
-					out: function(){jQuery(this).fadeTo(750, 0.33);}  // function = onMouseOut callback (required)
+					out: function(){jQuery(this).fadeTo(750, 0.6);}  // function = onMouseOut callback (required)
 				}
 			);
-			jQuery("#Nav").fadeTo(750, 0.33);;
+			jQuery("#Nav").fadeTo(750, 0.6);;
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
-					jQuery(el).children("ul").css("left", parentOffset.left + "px");
+					var left = parentOffset.left;
+					var docWidth = jQuery(document).width();
+					if(left > (docWidth - 270)) {
+						left = docWidth - 270;
+					}
+					jQuery(el).children("ul").css("left", left + "px");
 				}
 			);
 		},
