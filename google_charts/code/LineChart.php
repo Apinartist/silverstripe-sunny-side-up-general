@@ -21,6 +21,8 @@ class LineChart extends Chart {
 		'lxy'					//	Lets you specify both x- and y-coordinates for each point, rather just the y values.
 	);
 	
+	static $replace_null;
+	
 	/**
 	 * The current chart type.  Must be one of the values in LineChart::$types
 	 *
@@ -48,7 +50,7 @@ class LineChart extends Chart {
 	 * @var int
 	 */
 	protected $round = false;
-	
+		
 	/**
 	 * Returns a URL to this chart image on Google Charts
 	 * 
@@ -60,7 +62,6 @@ class LineChart extends Chart {
 			foreach($this->lines as $line) {
 				$lineY = $line['y'];
 				if($this->type == 'lxy') {
-					$checkNull = true;
 					if(isset($line['x'])) {
 						$coordinates[] = implode(',', $line['x']);
 					}
@@ -80,19 +81,22 @@ class LineChart extends Chart {
 					}
 				}
 				
-				if($this->factor) {
-					$y = array();
-					foreach($lineY as $value) {
-						$yVal = $this->factor * $value;
-						if ($this->round !== false) {
-							$yVal = round($yVal, $this->round);
+				$y = array();
+				foreach($lineY as $value) {
+					if($value === null) {
+						if($this->stat('replace_null') !== null) {
+							$value = $this->stat('replace_null');
 						}
-						$y[] = $yVal;
 					}
-					$coordinates[] = implode(',', $y);
-				} else {
-					$coordinates[] = implode(',', $lineY);
+					else if($this->factor) {
+						$value *= $this->factor;
+						if($this->round !== false) {
+							$value = round($value, $this->round);
+						}
+					}
+					$y[] = $value;
 				}
+				$coordinates[] = implode(',', $y);
 				
 				if(isset($line['color'])) {
 					$colors[] = (is_array($line['color']) ? implode('|', $line['color']) : $line['color']);

@@ -22,6 +22,8 @@ class BarChart extends LineChart {
 		'bvg'		 			//	Vertical bar chart with grouped bars
 	);
 	
+	static $replace_null = -1;
+	
 	/**
 	 * The name/key of the bar width/spacing parameter
 	 *
