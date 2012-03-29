@@ -20,12 +20,12 @@
 			jQuery(".hasCSSHover").removeClass("hasCSSHover");
 			jQuery("#Nav").hoverIntent(
 				{
-					over: function(){jQuery(this).animate({width: "100%", fontSize: "1em", bottom: "0", right: "0", float: "right", borderRadius: "0px"}).addClass("menuIn").removeClass("menuOut");},  // function = onMouseOver callback (required)
+					over: function(){jQuery(this).animate({width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"}).addClass("menuIn").removeClass("menuOut");},  // function = onMouseOver callback (required)
 					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
-					out: function(){jQuery(this).animate({width: "224px", bottom: "40px", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
+					out: function(){jQuery(this).animate({width: "224px", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
 				}
 			);
-			jQuery("#Nav").animate({width: "224px", bottom: "40px", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");
+			jQuery("#Nav").animate({width: "224px", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
