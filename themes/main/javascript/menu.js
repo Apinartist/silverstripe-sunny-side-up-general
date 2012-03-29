@@ -13,19 +13,19 @@
 			jQuery("#Nav li.level1").hoverIntent(
 				{
 					over: SSUhoverMenu.menuIn,  // function = onMouseOver callback (required)
-					timeout: 750,   // number = milliseconds delay before onMouseOut function call
+					timeout: 200,   // number = milliseconds delay before onMouseOut function call
 					out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
 				}
 			);
 			jQuery(".hasCSSHover").removeClass("hasCSSHover");
 			jQuery("#Nav").hoverIntent(
 				{
-					over: function(){jQuery(this).fadeTo(750, 1);},  // function = onMouseOver callback (required)
-					timeout: 750,   // number = milliseconds delay before onMouseOut function call
-					out: function(){jQuery(this).fadeTo(750, 0.6);}  // function = onMouseOut callback (required)
+					over: function(){jQuery(this).animate({width: "100%", fontSize: "1em", bottom: "0", right: "0", float: "right", borderRadius: "0px"}).addClass("menuIn").removeClass("menuOut");},  // function = onMouseOver callback (required)
+					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
+					out: function(){jQuery(this).animate({width: "224px", bottom: "40px", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
 				}
 			);
-			jQuery("#Nav").fadeTo(750, 0.6);;
+			jQuery("#Nav").animate({width: "224px", bottom: "40px", right: "20px", float: "left", borderRadius: "3px"}).addClass("menuOut").removeClass("menuIn");
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
@@ -34,14 +34,15 @@
 					if(left > (docWidth - 270)) {
 						left = docWidth - 270;
 					}
-					jQuery(el).children("ul").css("left", left + "px");
+					leftString = left + "px";
+					jQuery(el).children("ul").animate({left: leftString});
 				}
 			);
 		},
 
-		menuIn: function() {jQuery(this).children("ul").fadeIn()},
+		menuIn: function() {jQuery(this).children("ul").slideDown()},
 
-		menuOut: function() {jQuery(this).children("ul").fadeOut()}
+		menuOut: function() {jQuery(this).children("ul").slideUp()}
 
 	}
 
