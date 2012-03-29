@@ -138,8 +138,9 @@ class CampaignMonitorWrapper extends Object {
 		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
-	public function campaignGetSummary() {
-		user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
+	public function campaignGetSummary($campaignID) {
+		self::$cm->campaignGetSummary($campaignID);
+		//user_error(_t('CampaignMonitorWrapper.GETCMSMESSFUNCNOTIMPLOWPRIORITY', 'this function has not been implemented yet - low priority!'), E_USER_ERROR);
 	}
 
 	public function campaignGetUnsubscribes() {
