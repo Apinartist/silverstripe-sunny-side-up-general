@@ -172,10 +172,6 @@ class CampaignMonitorWrapper extends Object {
 		}
 	}
 	
-	public function clientGetSentCampaigns() {
-		return file_get_contents('http://api.createsend.com/api/v3/clients/' . self::$client_ID . '/campaigns.xml');
-	}
-	
 	public function clientGetDetail() {
 		return self::$cm->clientGetDetail( self::$client_ID );
 	}
