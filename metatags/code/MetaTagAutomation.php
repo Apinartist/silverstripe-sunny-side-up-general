@@ -328,6 +328,7 @@ class MetaTagAutomation_controller extends Extension {
 			$titleTag
 			.'
 			<link rel="icon" href="'.$faviconBase.'favicon.ico" type="image/x-icon" />
+			<link rel="apple-touch-icon" href="'.$faviconBase.'apple-touch-icon.png" type="image/x-icon" />
 			<link rel="shortcut icon" href="'.$faviconBase.'favicon.ico" type="image/x-icon" />';
 		if(!MetaTagAutomation::get_hide_keywords_altogether()) {
 			$tags .= '
