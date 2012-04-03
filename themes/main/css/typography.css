@@ -1,16 +1,16 @@
 .typography{color:#808383; font-size: 1.4em;}
 
 /* HEADINGS */
-.typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; }
-	.typography h1#PageTitle{margin-top: 0!important; padding-top: 0!important;}
-.typography h2 {color: #317010; font-size: 1.33em; font-family: 'Yanone Kaffeesatz'}
+.typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; text-transform: uppercase;}
+	.typography h1#PageTitle, .typography h1.pageTitle{margin-top: 0!important; padding-top: 0!important; }
+.typography h2 {color: #317010; font-size: 1.33em; }
 .typography h3 {color: #82274B; font-size: 1em;font-size: 1em;}
 .typography h4{font-size: 1em;font-weight: bold; }
 .typography h5{font-size: 1em; color: #317010;}
 .typography h6{font-size: 0.87em; color: #BFC1C1; text-decoration: underline;}
 .typography h1:first-child,.typography h2:first-child,.typography h3:first-child,.typography h4:first-child,.typography h5:first-child,.typography h6:first-child {margin-top: 0px; padding-top: 0px;}
 /* heading combos */
-.typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {padding: 1em 0 0em 0; font-family: 'Yanone Kaffeesatz' }
+.typography h1, .typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {padding: 1em 0 0em 0; font-family: 'Voces' }
 	.typography h2, .typography h3, .typography h4, .typography h5, .typography h6 {text-transform: lowercase; }
 
 /* general font-size changes and combos */
@@ -130,4 +130,38 @@
 
 /* IMAGES
 -------------------------------------------- */
+
+
+
+.typography .action, .typography .Actions input, .typography input.action
+  {
+	color: #808383;
+	padding: 10px;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#ffcc33);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#ffffff),
+		to(#ffcc33));
+	border-radius: 0 0 30px 0;
+	-moz-border-radius: 0 0  30px 0;
+	-webkit-border-radius: 0 0 30px 0;
+	border: 1px solid #808383;
+	text-decoration: none!important;
+	padding-right: 17px!important;
+}
+.typography .action:hover, .typography .Actions input:hover, .typography input.action:hover {
+	border: 1px solid #808383;
+	color: #317010;
+	-moz-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.7);
+	text-decoration: none;
+}
+
 
