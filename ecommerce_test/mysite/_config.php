@@ -99,17 +99,13 @@ Object::add_extension('ContentController', 'MetaTagAutomation_controller');
 //MetaTagAutomation_controller::set_design("owner");
 //MetaTagAutomation_controller::set_coding("owner");
 /* fonts */
-MetaTagAutomation::add_google_font("Yanone+Kaffeesatz:200,300,400,700");
+MetaTagAutomation::add_google_font("Voces");
 MetaTagAutomation::add_google_font("Quattrocento+Sans");
 /* combined files */
 //MetaTagAutomation_controller::set_folder_for_combined_files("cache");
 //MetaTagAutomation_controller::set_combine_css_files_into_one(0);
 //MetaTagAutomation_controller::set_combine_js_files_into_one(0);
 //===================---------------- END metatags MODULE ----------------===================
-
-
-
-
 
 
 //===================---------------- START payment MODULE ----------------===================
