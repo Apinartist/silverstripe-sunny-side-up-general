@@ -14,14 +14,11 @@
 
 #MethodFields_PayPalPayment {margin-left: 270px}
 #MethodFields_PayPalPayment img {display: inline-block; float: none; margin-left: 0px; margin-right: 10px}
-
-.checkoutStepPrevNextHolder { position: relative; height: 87px; padding-bottom: 20px; padding-top: 20px; }
-.checkoutStepPrevNextHolder a {width: 87px; height: 87px; display: block;text-indent: -2000px;}
+.checkoutStepPrevNextHolder { position: relative; padding-bottom: 20px; padding-top: 20px; }
+.checkoutStepPrevNextHolder a {display: block;}
+.checkoutStepPrevNextHolder a:hover {display: block;}
 .next a {position: absolute; right: 0px;}
 .prev a {position: absolute; left: 0px;}
-.next a {background-image: url(/themes/main_ecommerce/images/next.png);}
-.prev a{background-image: url(/themes/main_ecommerce/images/previous.png);}
-	.next a:hover, 	.prev a:hover {background-position: 0 -87px; border-bottom: none!important;}
 
 
 #InformationTable {width: 100%!important;}
@@ -48,3 +45,6 @@ padding: 10px; margin: 10px 0;
 
 #Checkout h2.orderStepHeading {margin-top:70px;}
 #OrderFormAddressHolder form {padding-top: 0px;}
+
+.productImage {float: left; margin-right: 1em;}
+

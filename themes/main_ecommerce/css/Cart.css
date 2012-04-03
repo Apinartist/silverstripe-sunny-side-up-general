@@ -34,25 +34,12 @@ even when theme-ing ecommerce, these should not be themed
 ul.productActions {margin: 0px; padding: 0px;}
 ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0; line-height: 0.8;}
 ul.productActions li a, .goToCart a, a.selectVariation {
-		color: #808383;
-	padding: 7px;
-	background: -moz-linear-gradient(
-		top,
-		#ffffff 0%,
-		#ffcc33);
-	background: -webkit-gradient(
-		linear, left top, left bottom,
-		from(#ffffff),
-		to(#ffcc33));
-	border-radius: 0 0 30px 0;
-	-moz-border-radius: 0 0  30px 0;
-	-webkit-border-radius: 0 0 30px 0;
-	border: 1px solid #808383;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	text-decoration: none!important;
 	padding-right: 20px;
-	display: inline-block
+	display: inline-block;
+	padding: 7px;
 }
 
 .notInCart .addLink {display: inline-block!important;}
@@ -84,3 +71,6 @@ ul.productActions li a:hover, .goToCart a:hover {
 .ecomquantityfield {white-space: nowrap;}
 
 .tableSubTitle li {list-style: none; font-size: 0.8em!important;}
+
+.cartMessage span {background-color: transparent!important}
+
