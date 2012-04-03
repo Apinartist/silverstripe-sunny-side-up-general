@@ -10,7 +10,7 @@
 		<% include Navigation %>
  		<div id="Layout" class="typography">
 			<% include Breadcrumbs %>
-			$Layout
+			<div id="LayoutHolder">$Layout</div>
 			<div id="Footer">
 				<span class="backToTop"><a href="#Wrapper">back to top</a></span>
 				<div id="CopyrightMessage">$SiteConfig.CopyrightNotice</div>

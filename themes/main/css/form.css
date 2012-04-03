@@ -107,6 +107,7 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 .optionset .middleColumn ul, .checkboxset .middleColumn ul {
 	-moz-column-width: 14em;
 	-webkit-column-width: 14em;
+	column-width: 14em;
 }
 
 .readonly .middleColumn span {display: block;
