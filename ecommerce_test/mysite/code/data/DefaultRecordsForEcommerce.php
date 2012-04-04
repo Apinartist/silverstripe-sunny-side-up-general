@@ -411,15 +411,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Product $parentCode $i",
 				"MenuTitle" => "Product $i",
 				"Content" => "<p>
-					Description for Product $i ... For testing purposed - the following characteristics were added to this product:
+					Description for Product $i ... For testing purposes - the following characteristics were added to this product:
 				<p>
 				<ul>
-					<li>weight: $weight </li>
-					<li>model:  $model </li>
-					<li>featured $featured </li>
-					<li>quantifier: $quantifier </li>
-					<li>allow purchase: $allowPurchase </li>
-					<li>number sold: ".$numberSold.";</li>
+					<li>weight: <i>$weight</i> </li>
+					<li>model: <i>".($model ? $model : "NONE")."</i></li>
+					<li>featured: <i>$featured<i></li>
+					<li>quantifier: <i>".($quantifier ? $quantifier : "NONE")."</i></li>
+					<li>allow purchase: <i>$allowPurchase</i></li>
+					<li>number sold: <i>".$numberSold."</i></li>
 				</ul>",
 				"Price" => $price,
 				"InternalItemID" => "AAA".$i,
