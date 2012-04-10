@@ -392,7 +392,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	private function getProducts($parentCode) {
-		$endPoint = rand(3, 15);
+		$endPoint = rand(10, 20);
 		for($j = 0; $j < $endPoint; $j++) {
 			$i = rand(1, 500);
 			$q = rand(1, 500); $price = $q < 475 ? $q + ($q / 100) : 0;
@@ -411,13 +411,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Product $parentCode $i",
 				"MenuTitle" => "Product $i",
 				"Content" => "<p>
-					Description for Product $i ... For testing purposes - the following characteristics were added to this product:
+					Description for Product $i ...
+
+					For testing purposes - the following characteristics were added to this product:
 				<p>
 				<ul>
-					<li>weight: <i>$weight</i> </li>
-					<li>model: <i>".($model ? $model : "NONE")."</i></li>
-					<li>featured: <i>$featured<i></li>
-					<li>quantifier: <i>".($quantifier ? $quantifier : "NONE")."</i></li>
+					<li>weight: <i>".($weight == 0 ?"[none]" : $weight." grams")."</i> </li>
+					<li>model: <i>".($model ? $model : "[none]")."</i></li>
+					<li>featured: <i>$featured</i></li>
+					<li>quantifier: <i>".($quantifier ? $quantifier : "[none]")."</i></li>
 					<li>allow purchase: <i>$allowPurchase</i></li>
 					<li>number sold: <i>".$numberSold."</i></li>
 				</ul>",
