@@ -37,3 +37,7 @@ li.featured a {color: #317010!important;}
 .goToCheckoutLink {}
 
 #Product .productActions {margin-top: 20px; margin-bottom: 20px;}
+
+
+#Product .actionCell ul, #Product .actionCell li {margin: 0; padding: 0}
+.priceDisplay {display: none;}
