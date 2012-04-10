@@ -31,3 +31,6 @@
 table.infotable{
 	width:100%;
 }
+
+tr.total td{font-weight: bold;}
+#SubTotal td{font-weight: bold;}

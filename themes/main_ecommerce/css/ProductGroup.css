@@ -86,15 +86,16 @@ td.price {text-align: right;}
 #Products .displayStyleShort ul.productActions a {margin-top: 0px; margin-bottom: 10px; }
 
 #Products .displayStyleMoreDetail {margin-left: 0px; padding-left: 0px; }
-#Products .displayStyleMoreDetail>li {width: 100%; padding: 8px 0 8px 0px;  border-bottom: 1px solid #808383; clear: both;}
-#Products .displayStyleMoreDetail>li.last  {border-bottom: 1px solid transparent;}
+#Products .displayStyleMoreDetail>li {width: 100%; padding: 8px 0 28px 0px;  clear: both; position:relative;}
+#Products .displayStyleMoreDetail>li.last  {}
 #Products .displayStyleMoreDetail li h3 {text-align: left; padding: 0; margin-bottom: 0.5em;}
 #Products .displayStyleMoreDetail li h3 a{display: inline;padding: 0;}
 #Products .displayStyleMoreDetail li h3 a:hover{color: #317010!important; background-color: transparent; border-bottom: 0px;}
 #Products .displayStyleMoreDetail li img {margin-right: 20px; float: left;}
 #Products .displayStyleMoreDetail li a {}
-#Products .displayStyleMoreDetail li p.moreInformation {padding: 0; margin: 0}
-#Products .displayStyleMoreDetail ul.productActions {}
+#Products .displayStyleMoreDetail li p.moreInformation {padding: 0; margin: 0; padding-bottom: 10px;}
+#Products .displayStyleMoreDetail .priceDisplay {position: absolute; top:0;right: 0; display: inline-block; padding-top: 0.37em}
+#Products .displayStyleMoreDetail ul.productActions  {position: absolute; bottom: 28px; right: 0px;}
 #Products .displayStyleMoreDetail ul.productActions li {text-align: right}
 #Products .displayStyleMoreDetail ul.productActions a { display: inline-block; }
 

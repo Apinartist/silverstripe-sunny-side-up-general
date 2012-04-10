@@ -34,6 +34,6 @@ li.featured a {color: #317010!important;}
 
 
 
-.goToCheckoutLink {display: none!important;}
+.goToCheckoutLink {}
 
 #Product .productActions {margin-top: 20px; margin-bottom: 20px;}
