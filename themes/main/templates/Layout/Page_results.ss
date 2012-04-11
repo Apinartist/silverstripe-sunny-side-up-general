@@ -5,11 +5,10 @@
 
 	<div id="Content">
 		<% if Results.MoreThanOnePage %>
-			<div id="Pages" class="first">
-				<p>Page $Results.CurrentPage of $Results.TotalPages</p>
-
-				<% if Results.NotLastPage %><a class="next" href="$Results.NextLink" title="View the next page">Next</a><% end_if %><% if Results.NotFirstPage %><a class="prev" href="$Results.PrevLink" title="View the previous page">Prev</a><% end_if %>
-				<span>
+			<div class="pageNumbers topPageNumbers">
+				<span class="numberOfPages">Page $Results.CurrentPage of $Results.TotalPages</span>
+				<span class="pageNumbers">
+					Go to page:
 		    	<% control Results.Pages %>
 							<% if CurrentBool %>$PageNum<% else %><a href="$Link" title="View page number $PageNum">$PageNum</a><% end_if %>
 					<% end_control %>
@@ -20,23 +19,21 @@
 		<ul id="SearchResults">
 			<% control Results %>
 				<li class="$EvenOdd">
-					<h3><% if MenuTitle %> $MenuTitle<% else %>$Title<% end_if %></h3>
+					<h3><a href="$Link">$Title</a></h3>
 					<p>$Content.Summary</p>
-					<a href="$Link" title="Read more about $Title">Read more &gt;&gt;</a>
 				</li>
 			<% end_control %>
 		</ul>
 
 		<% if Results.MoreThanOnePage %>
-			<div id="Pages">
-				<% if Results.NotLastPage %>
-				<a class="next" href="$Results.NextLink" title="View the next page">Next</a><% end_if %><% if Results.NotFirstPage %><a class="prev" href="$Results.PrevLink" title="View the previous page">Prev</a><% end_if %>
-				<span>
+			<div class="pageNumbers bottomPageNumbers">
+				<span class="numberOfPages">Page $Results.CurrentPage of $Results.TotalPages</span>
+				<span  class="pageNumbers">
+					Go to page:
 		    	<% control Results.Pages %>
 							<% if CurrentBool %>$PageNum<% else %><a href="$Link" title="View page number $PageNum ">$PageNum</a><% end_if %>
 					<% end_control %>
 				</span>
-				<p>Page $Results.CurrentPage of $Results.TotalPages</p>
 			</div>
 		<% end_if %>
 	</div>
