@@ -19,9 +19,10 @@
 .checkoutStepPrevNextHolder a:hover {display: block;}
 .next a {position: absolute; right: 0px;}
 .prev a {position: absolute; left: 0px;}
+.Actions .next {float: right;}
 
 
-#InformationTable {width: 100%!important;}
+#InformationTable, #AddressesTable {width: 100%!important;}
 
 #CartPageMessage  {margin-top: 20px; margin-bottom: 20px; }
 #CartPageMessage p {font-size: 12px!important; padding: 0px; padding-left: 10px;}
@@ -45,6 +46,7 @@ padding: 10px; margin: 10px 0;
 
 #Checkout h2.orderStepHeading {margin-top:70px;}
 #OrderFormAddressHolder form {padding-top: 0px;}
+ {padding-top: 0px;}
 
 .productImage {float: left; margin-right: 1em;}
 

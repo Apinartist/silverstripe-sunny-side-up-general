@@ -45,19 +45,6 @@
 	font-size:20px;
 }
 
-.resultsBar, .pageNumbers {font-size: 12px;
-	background-color: #f7f7f7;
-	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
-	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
-	background-position:0px center;
-	background-repeat:no-repeat;
-	border-top:       1px solid #808383;
--moz-border-radius-topleft: 5px; border-top-left-radius: 5px;
-text-align: right;
-padding: 0.7em; margin: 0.3em 0;
-
-}
-
 td.price {text-align: right;}
 
 
