@@ -30,7 +30,7 @@
 		border: 0;
 		margin-right: 7px;
 	}
-.loading {background-image: url(/themes/main_ecommerce/images/loading.gif); background-repeat: no-repeat; background-position: 95% 0;}
 #action_useDifferentShippingAddress {display: none;}
+.loading { background-image: url(/ecommerce/images/loading.gif)!important; background-repeat: no-repeat!important; background-position: 95% 0!important; }
 
 .doNotShow{display: none;}
