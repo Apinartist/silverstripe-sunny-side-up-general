@@ -39,5 +39,6 @@
 	</div>
 <% else %>
 <p id="NoSearchResults">Sorry, no results were found, please try a different keyword phrase.</p>
+<div id="SearchFormInLayout">$SearchForm</div>
 <% end_if %>
 </div>
