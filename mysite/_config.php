@@ -13,7 +13,6 @@ Object::add_extension("SiteConfig", "SiteConfigExtras");
 
 //===================---------------- START sapphire MODULE ----------------===================
 MySQLDatabase::set_connection_charset('utf8');
-SSViewer::set_theme('main');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
@@ -46,21 +45,10 @@ LeftAndMain::set_loading_image("themes/main/images/logo.gif");
 ModelAdmin::set_page_length(100);
 CMSMenu::remove_menu_item("CommentAdmin");
 CMSMenu::remove_menu_item("ReportAdmin");
-CMSMenu::remove_menu_item("HelpAdmin");
+//CMSMenu::remove_menu_item("HelpAdmin");
 LeftAndMain::setLogo($location = "", $style = "");
 PageComment::enableModeration();
 //===================---------------- END cms MODULE  ----------------===================
-
-
-//===================---------------- start testemail ----------------===================
-$protocolAndHost = Director::protocolAndHost();
-$devsitearray = array("http://localhost");
-if(in_array($protocolAndHost, $devsitearray)) {
-	Email::set_mailer( new TestMailer());
-}
-unset($devsitearray);
-unset($protocolAndHost);
-//===================---------------- end testemail ----------------===================
 
 //===================---------------- START blog MODULE ----------------===================
 BlogEntry::allow_wysiwyg_editing();
@@ -78,11 +66,11 @@ Object::add_extension('SiteConfig', 'MetaTagSiteConfigExtension');
 Object::add_extension('SiteTree', 'MetaTagAutomation');
 Object::add_extension('ContentController', 'MetaTagAutomation_controller');
 /* pop-ups and form interaction */
-MetaTagAutomation::set_disable_update_popup(false);
+//MetaTagAutomation::set_disable_update_popup(false);
 /* meta descriptions */
-MetaTagAutomation::set_meta_desc_length(27);
+//MetaTagAutomation::set_meta_desc_length(27);
 /* meta keywords */
-MetaTagAutomation::set_hide_keywords_altogether(true);
+//MetaTagAutomation::set_hide_keywords_altogether(true);
 //FONTS - see google fonts for options, include within CSS file as: body {font-family: Inconsolata;}
 //MetaTagAutomation::add_google_font("Inconsolata");
 /* combined files */
@@ -93,18 +81,25 @@ MetaTagAutomation::set_hide_keywords_altogether(true);
 //MetaTagAutomation::set_use_themed_favicon(true);
 //===================---------------- END metatags MODULE ----------------===================
 
-//===================---------------- START simplestspam MODULE ----------------===================
-SpamProtectorManager::set_spam_protector('SimplestSpamProtector');
-//===================---------------- END simplestspam MODULE ----------------===================
 
 
 //===================---------------- START templateoverview MODULE ----------------===================
-TemplateOverviewPage::set_auto_include(true);
-if(Director::isDev()) {
+//MUST SET
+TemplateOverviewBug::set_error_email("errors@sunnysideup.co.nz");
+$isDev = Director::isDev();
+if($isDev) {
 	Object::add_extension('Page_Controller', 'TemplateOverviewPageExtension');
 }
+if($isDev) {
+	Object::add_extension('SiteTree', 'TemplateOverviewPageDecorator');
+	Director::addRules(7, array('error/report' => 'ErrorNotifierController'));
+}
+TemplateOverviewPage::set_auto_include(true);
+LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
+//help files
+CMSHelp::set_help_file_directory_name("_help");
+LeftAndMain::$help_link = "admin/help/";
 //===================---------------- END templateoverview MODULE ----------------===================
-
 
 
 //===================---------------- START typography MODULE ----------------===================
@@ -115,12 +110,3 @@ TypographyTestPage::set_auto_include(true);
 UserDefinedForm::$required_identifier = "*";
 //===================---------------- END userdefinedforms MODULE ----------------===================
 
-
-//===================---------------- START picasarandomizer MODULE ----------------===================
-// MUST SET
-PicasaRandomImage::set_google_username("nfrancken");
-
-//OPTIONAL
-PicasaRandomImage::set_number_of_folders(3);
-PicasaRandomImage::set_number_of_images_per_folder(2);
-//===================---------------- END picasarandomizer MODULE ----------------===================

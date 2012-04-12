@@ -13,7 +13,6 @@ class Page extends SiteTree {
 		return $fields;
 	}
 
-
 	function requireDefaultRecords() {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		parent::requireDefaultRecords();
@@ -28,7 +27,6 @@ class Page extends SiteTree {
 			$page->publish("Stage", "Live");
 		}
 	}
-
 
 	function MyBackgroundImage() {
 		if($this->BackgroundImageID) {
@@ -45,19 +43,30 @@ class Page extends SiteTree {
 			return $siteConfig->BackgroundImage();
 		}
 	}
-
 }
 
 class Page_Controller extends ContentController {
 
 	public function init() {
 		parent::init();
+		$theme = Session::get("theme");
+		if(!$theme) {
+			$theme = "main";
+		}
+		SSViewer::set_theme($theme);
 		$this->addBasicMetatagRequirements();
 		$bgImage = $this->MyBackgroundImage();
 		if($bgImage && $bgImage->exists()) {
 			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}");
 		}
 	}
+
+	function settheme(HTTPRequest $request){
+		$newTheme = $request->param("ID");
+		Session::set("theme", $newTheme);
+		Director::redirect($this->Link());
+	}
+
 
 }
 
