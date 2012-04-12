@@ -1,0 +1,1 @@
+<p> <a href="http://creativemaze.com">Nouveau theme by Jo&atilde;o Alves</a>, Powered by <a href="http://www.silverstripe.com">SilverStripe CMS</a></p>

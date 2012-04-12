@@ -1,0 +1,81 @@
+#Layout h2{
+	font-size: 2.8em; 
+	color: #CF0F53; 
+	margin: 15px 0;
+	font-weight:normal;
+	font-family: "Lucida Grande", 'Tahoma', Verdana, sans-serif;
+}
+	#Layout h2 a{
+		color:#3E91C4;
+		text-decoration:none;
+	}
+	#Layout a:hover {
+		text-decoration:underline;
+	}
+
+#Product {
+	margin-left: 230px;
+}
+
+.product_details{
+	width: 220px;
+	float: right;
+	color: #666;
+	overflow: hidden;
+}
+.price_display{
+	font-weight:bold;
+	color:#4D583F;
+	font-size:1.6em;
+	text-align: center;
+}
+.featured,
+.quantityBox {
+	border: 1px solid #C7C7C7;
+	padding: 5px;
+	background-color: #F5FBFF;
+	color: #DB4A7D;
+	font-weight: bold;
+	text-align: center;
+}
+	.featured {
+		background: none;
+		border: none;
+		color: #DB4A7D;
+	}
+		.quantityBox a {
+			vertical-align: middle;
+			color: #DB4A7D;
+		}
+		.quantityBox a:hover {
+			text-decoration: none !important;
+		}
+	.productActions {
+		margin-top: 10px;
+	}
+		.productActions li {
+			text-align: right;
+			list-style: none;
+		}
+		.quantityBox .productActions a {
+			color: #78a33b !important;
+			line-height: 1.5em;
+			font-weight: normal;
+		}
+
+.quantityBox img{
+	border: none;
+}
+#ShoppingCart img{
+	border: none;
+}
+form#options label {
+	font-size: 10px;
+}
+
+form#options fieldset input#Quantity {
+	width:30px;
+}
+.productContent {
+	width: 300px;
+}

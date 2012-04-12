@@ -1,0 +1,86 @@
+
+.youtubegallery .pages{
+	float:left;
+	width: 100%;
+}
+.youtubegallery .paginator{
+	font-size : 12px;
+	margin:10px auto;
+	padding-top : 10px;
+}
+
+.youtubegallery .paginator a, 
+.youtubegallery .currentPage{
+	background : #FFFFFF none repeat scroll 0%;
+	border : 1px solid #DDDDDD;
+	padding: 2px 6px;
+	margin: 2px;
+	text-decoration: none;
+}
+
+.youtubegallery .paginator a:hover{
+	text-decoration: none;
+	background: #efecec;
+}
+
+.youtubegallery .currentPage{
+	color: #e31212;
+	font-weight: bold;
+}
+
+.youtubegallery .results{
+	color: #bdb6b6;
+	margin: 10px auto;
+}
+
+.youtubegallery .prev, 
+.youtubegallery .next{margin: 0pt 5px;}
+
+.youtubegallery ul.youtubevideos {
+	list-style:none; 
+	width:100%;
+	
+}
+
+.youtubegallery .typography .youtubevideos li{
+	margin:10px 5px; float:left;
+}
+	.youtubegallery .youtubevideos li img{
+			border:none;
+			padding: 2pt;
+	}
+	.youtubegallery .youtubevideos li .still{
+		float:left;
+		width: 160px;
+	}
+	.youtubegallery .typography .youtubevideos li .info{
+			float: left;
+			width: 430px;
+			margin:0 5px;
+	}
+	.youtubegallery .typography .youtubevideos li .info h6{
+			margin:2px 0;
+				color: #4EA3D7; 
+				margin: 0 0 18px 0;
+				font-weight: 300;
+				font-family: Georgia, 'Times New Roman', Times, serif; 
+				line-height: 120%;
+	}
+	.youtubegallery .typography .youtubevideos li .info{
+			font-size: 80%;
+	}
+
+.youtubegallery .clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.youtubegallery .clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .youtubegallery .clearfix {height: 1%;}
+.youtubegallery .clearfix {display: block;}
+/* End hide from IE-mac */

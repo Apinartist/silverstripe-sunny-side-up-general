@@ -1,0 +1,77 @@
+/* IE6 Hacks Stylesheet. */
+body {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+#Sidebar ul#Menu2 {
+	margin-right: 0;
+}
+/* put the avatar on the correct place on the profile page */
+#UserProfile p {
+	padding-left: 200px;
+}
+#BlogContent {
+	position: relative !important;
+	padding-left: 35px !important;
+}
+div.posterContent {
+	margin-left: 160px !important;
+}
+/** Correct margins and padding around forms **/
+label {
+	margin-bottom: -10px;
+}
+input.action {
+	padding: 2px !important;
+}
+#Sidebar input.action {
+	width: 50px;
+	margin-top: -27px;
+}
+#Sidebar .middleColumn {
+	width: 112px;
+}
+span.middleColumn {
+	display: inline-block;
+}
+
+
+/* Needed to keep the post next to the avatar on the forum module*/
+div.posterContent {
+		margin-left:125px;
+		margin-top: 0px;
+		padding:18px 0 18px 18px !important;
+		width:525px !important;
+		clear: none;
+	}
+/* Needed to keep the .featureRight and .featureLeft divs on the same line*/
+.featureRight {
+			width:41% !important;	
+}
+.featureLeft {
+		float: none !important;
+}
+
+
+/* Corrects some funky sidebar menus */
+ul#Menu2 li ul li ul {
+margin-top: -4px !important;
+}
+ul#Menu2 li a.levelb {
+background-color: #ffcbdd !important;
+width:160px !important;
+}
+ul#Menu2 li a.levelb:hover {
+background-color: #ff9abe !important;
+}
+ul#Menu2 li a.levelb:hover,
+      ul#Menu2 li li a.current,
+      ul#Menu2 li li a.current:hover,
+      ul#Menu2 li li a.section,
+      ul#Menu2 li li a.section:hover {
+            background: #ff9abe !important;
+}
+/*keep the footer nice*/
+#Footer {
+ margin: 10px auto 5px auto !important;
+}

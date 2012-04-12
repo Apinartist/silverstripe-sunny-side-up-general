@@ -1,0 +1,36 @@
+/**
+ SilverStripe Nouveau Theme
+ http://www.silverstripe.com
+ IE7 Hacks Stylesheet. 
+ */
+label {
+	margin-bottom: -10px;
+}
+/** The fonts are so ugly. **/
+#Sidebar li li {
+	font-size: 0.8em;
+}
+#Sidebar li li li a {
+	font-size: 0.8em;
+}
+ul#Menu2 li ul li ul {
+margin-top: -4px !important;
+}
+ul#Menu2 li a.levelb {
+background-color: #ffcbdd !important;
+width:160px !important;
+}
+ul#Menu2 li a.levelb:hover {
+background-color: #ff9abe !important;
+}
+ul#Menu2 li a.levelb:hover,
+      ul#Menu2 li li a.current,
+      ul#Menu2 li li a.current:hover,
+      ul#Menu2 li li a.section,
+      ul#Menu2 li li a.section:hover {
+            background: #ff9abe !important;
+}
+/* put the avatar on the correct place on the profile page */
+#UserProfile p {
+	padding-left: 200px;
+}

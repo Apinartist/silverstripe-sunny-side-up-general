@@ -1,10 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<!doctype html>
+<!--[if lt IE 7]> <html class=" ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class=" ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class=" ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<% base_tag %>
 	$ExtendedMetatags
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
-<body id="body$ClassName">
+<body id="Body$ClassName">
 <div id="Wrapper">
 	<div id="Container">
 		<% include Navigation %>
