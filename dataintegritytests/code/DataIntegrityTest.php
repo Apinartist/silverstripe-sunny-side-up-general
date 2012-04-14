@@ -53,8 +53,10 @@ class DataIntegrityTest extends DevelopmentAdmin {
 		$rows = DB::query("SHOW TABLES;");
 		$actualTables = array();
 		if($rows) {
-			foreach($rows as $row) {
-				$actualTables[$row['Tables_in_dev_catdev_db']] = $row['Tables_in_dev_catdev_db'];
+			foreach($rows as $key => $item) {
+				foreach($item as $table) {
+					$actualTables[$table] = $table;
+				}
 			}
 		}
 		echo "<h1>Report of fields that may not be required.</h1>";
