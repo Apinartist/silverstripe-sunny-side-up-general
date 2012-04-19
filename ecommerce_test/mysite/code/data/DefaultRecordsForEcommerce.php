@@ -2,7 +2,14 @@
 
 class DefaultRecordsForEcommerce extends DataObject {
 
-	protected $examplePages = array();
+	protected $examplePages = array(
+		0 => Array("Title" => "Basics", "List" => array()),
+		1 => Array("Title" => "Products and Product Groups", "List" => array()),
+		2 => Array("Title" => "Checkout Options", "List" => array()),
+		3 => Array("Title" => "Stock Control", "List" => array()),
+		4 => Array("Title" => "Pricing", "List" => array()),
+		5 => Array("Title" => "Other", "List" => array())
+	);
 
 	function requireDefaultRecords() {
 
@@ -17,6 +24,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->CreatePages();
 
 		$this->AddVariations();
+
+		$this->AddComboProducts();
 
 		$this->AddMyModifiers();
 
@@ -412,7 +421,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"MenuTitle" => "Product $i",
 				"Content" => "<p>
 					Description for Product $i ...
-
+					Aenean tincidunt nisl id ante pretium quis ornare libero varius. Nam cursus, mi quis dignissim laoreet, mauris turpis molestie ligula, et luctus urna nibh et ligula. Morbi in arcu ante, sit amet fermentum lacus. Cras elit lacus, feugiat sit amet faucibus quis, condimentum a leo. Donec molestie lacinia nisl a ullamcorper.
 					For testing purposes - the following characteristics were added to this product:
 				<p>
 				<ul>
@@ -434,6 +443,52 @@ class DefaultRecordsForEcommerce extends DataObject {
 			);
 		}
 		return $array;
+	}
+
+	private function AddComboProducts(){
+		$pages = new DataObjectSet();
+		$productGroups = DataObject::get("ProductGroup", "ParentID > 0", "\"Sort\" DESC", null, 3);
+		foreach($productGroups as $productGroup) {
+			$i = rand(1, 500);
+			$imageID = $this->getRandomImageID();
+			DB::query("Update \"File\" SET \"ClassName\" = 'Product_Image' WHERE ID = ".$imageID);
+			$numberSold = $i;
+			$fields = array(
+				"ClassName" => "CombinationProduct",
+				"ImageID" => $imageID,
+				"URLSegment" => "combo-product-$i",
+				"Title" => "Combination Product",
+				"MenuTitle" => "Combi Product $i",
+				"ParentID" => $productGroup->ID,
+				"Content" => "<p>
+					This is a combination Product.
+					Aenean tincidunt nisl id ante pretium quis ornare libero varius. Nam cursus, mi quis dignissim laoreet, mauris turpis molestie ligula, et luctus urna nibh et ligula. Morbi in arcu ante, sit amet fermentum lacus. Cras elit lacus, feugiat sit amet faucibus quis, condimentum a leo. Donec molestie lacinia nisl a ullamcorper.
+					For testing purposes - the following characteristics were added to this product:
+				<p>
+				<ul>
+					<li>featured: <i>YES</i></li>
+					<li>allow purchase: <i>YES</i></li>
+					<li>number sold: <i>".$numberSold."</i></li>
+				</ul>",
+				"InternalItemID" => "combo".$i,
+				"FeaturedProduct" => 1,
+				"AllowPurchase" => 1,
+				"NumberSold" => $numberSold,
+				"NewPrice" => 10
+			);
+			$this->MakePage($fields);
+			$page = DataObject::get_one("CombinationProduct", "ParentID = ".$productGroup->ID);
+			$includedProducts = $page->IncludedProducts();
+			$products = DataObject::get("Product", "\"AllowPurchase\" = 1", null, null, 3);
+			foreach($products as $product) {
+				$includedProducts->add($product);
+			}
+			$page->writeToStage('Stage');
+			$page->Publish('Stage', 'Live');
+			$page->Status = "Published";
+			$pages->push($page);
+		}
+		$this->addExamplePages(1, "Combination Products", $pages);
 	}
 
 	private function AddVariations() {
@@ -501,7 +556,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			die("COULD NOT CREATE SIZE OBJECT");
 		}
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
-		$this->addExamplePages("products with variations (size, colour, etc...)", $products);
+		$this->addExamplePages(1, "products with variations (size, colour, etc...)", $products);
 		if($products && $colourObject && $sizeObject) {
 			$variationCombos = array(
 				array("Size" => $xtraLargeObject, "Colour" => $redObject),
@@ -541,7 +596,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 
 	private function AddMyModifiers() {
-		$this->addExamplePages("Delivery charges", DataObject::get_one("CheckoutPage"));
 		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'pickup'")) {
 			$obj = new PickUpOrDeliveryModifierOptions();
 			$obj->IsDefault = 1;
@@ -625,7 +679,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	function createTags(){
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "4");
-		$this->addExamplePages("Product Tags", $products);
+		$this->addExamplePages(1, "Product Tags", $products);
 		foreach($products as $pos => $product){
 			$idArray[$pos] = $product->ID;
 			$titleArray[] = $product->MenuTitle;
@@ -655,7 +709,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 	function createRecommendedProducts(){
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
-		$this->addExamplePages("Products with recommended <i>additions</i>.", $products);
+		$this->addExamplePages(1, "Products with recommended <i>additions</i>.", $products);
 		foreach($products as $product){
 			$idArrayProducts[] = $product->ID;
 			$this->addToTitle($product, "with recommendations", true);
@@ -684,19 +738,19 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$i++;
 			$idArray[$product->ID] = $product->ID;
 			if($i == 1) {
-				$this->addExamplePages("Minimum quantity per order", $product);
+				$this->addExamplePages(3, "Minimum quantity per order", $product);
 				$product->MinQuantity = 12;
 				$this->addToTitle($product, "minimum per order of 12", true);
 				DB::alteration_message("adding minimum quantity for: ".$product->Title, "created");
 			}
 			if($i == 2) {
-				$this->addExamplePages("Maxiumum quantity per order", $product);
+				$this->addExamplePages(3, "Maxiumum quantity per order", $product);
 				$product->MaxQuantity = 12;
 				$this->addToTitle($product, "maximum per order of 12", true);
 				DB::alteration_message("adding maximum quantity for: ".$product->Title, "created");
 			}
 			if($i == 3) {
-				$this->addExamplePages("Limited stock product", $product);
+				$this->addExamplePages(3, "Limited stock product", $product);
 				$product->setActualQuantity(1);
 				$product->UnlimitedStock = 0;
 				$this->addToTitle($product, "limited stock", true);
@@ -712,7 +766,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$variation->Description = " - min quantity per order 12!";
 				$variation->write();
 				$variation->writeToStage("Stage");
-				$this->addExamplePages("Minimum quantity product variation (colour / size / etc... option)", $variation->Product());
+				$this->addExamplePages(3, "Minimum quantity product variation (colour / size / etc... option)", $variation->Product());
 				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
 			}
 			if($i == 2) {
@@ -720,7 +774,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$variation->Description = " - max quantity per order 12!";
 				$variation->write();
 				$variation->writeToStage("Stage");
-				$this->addExamplePages("Maximum quantity product variation (colour / size / etc... option)", $variation->Product());
+				$this->addExamplePages(3, "Maximum quantity product variation (colour / size / etc... option)", $variation->Product());
 				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
 			}
 			if($i == 3) {
@@ -729,7 +783,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$variation->UnlimitedStock = 0;
 				$variation->write();
 				$variation->writeToStage("Stage");
-				$this->addExamplePages("Limited stock for product variation (colour / size / etc... option)", $variation->Product());
+				$this->addExamplePages(3, "Limited stock for product variation (colour / size / etc... option)", $variation->Product());
 				DB::alteration_message("adding limited quantity for: ".$variation->Title, "created");
 			}
 		}
@@ -757,7 +811,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$member->write();
 		$member->Groups()->add($group);
 		$products = DataObject::get("Product", "ClassName = 'Product'", "RAND()", "", "2");
-		$this->addExamplePages("Special price for particular customers", $products);
+		$this->addExamplePages(4, "Special price for particular customers", $products);
 		$i = 0;
 		foreach($products as $product) {
 			$i++;
@@ -806,7 +860,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$complexObjectPrice->write();
 			$complexObjectPrice->Groups()->add($group);
 			$product = $variation->Product();
-			$this->addExamplePages("Special price for particular customers for product variations $i", $product);
+			$this->addExamplePages(4, "Special price for particular customers for product variations $i", $product);
 			$product->Content = "<p><a href=\"Security/login/?BackURL=".$product->Link()."\">Login</a> as bob@jones.com, password: test123 to get a special price</p>";
 			$this->addToTitle($product, "member price", true);
 		}
@@ -819,8 +873,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			foreach($products as $product) {
 				$additionalTax = $product->AdditionalTax();
 				$additionalTax->addMany(array($taxToAdd->ID));
-				$this->addExamplePages("product with additional taxes (add to cart to see this feature in action)", $product);
 			}
+			$this->addExamplePages(2, "product with additional taxes (add to cart to see this feature in action)", $products);
 		}
 		$products = DataObject::get("AnyPriceProductPage");
 		$allStandardTaxes = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
@@ -830,8 +884,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 				foreach($allStandardTaxes as $taxToExclude) {
 					$excludedTax->addMany(array($taxToExclude->ID));
 				}
-				$this->addExamplePages("product without taxes (add to cart to see this feature in action)", $product);
 			}
+			$this->addExamplePages(2, "product without taxes (add to cart to see this feature in action)", $products);
 		}
 	}
 
@@ -843,8 +897,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			foreach($productGroups as $productGroup) {
 				$groups->add($productGroup);
 			}
-			$this->addExamplePages("Product shown in more than one Product Group", $product);
 		}
+		$this->addExamplePages(1, "Product shown in more than one Product Group", $products);
 	}
 
 	protected function createShopAdmin() {
@@ -924,8 +978,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		//adding product order item
 		$item = new Product_OrderItem();
-		$item->Quantity = 7;
-		$item->BuyableID = $product->ID;
+		$item->addBuyableToOrderItem($product, 7);
 		$item->OrderID = $order->ID;
 		$item->write();
 		//final save
@@ -935,24 +988,28 @@ class DefaultRecordsForEcommerce extends DataObject {
 	}
 
 	protected function collateExamplePages(){
-		$this->addExamplePages("Checkout page", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Delivery options (add product to cart first)", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Taxes (NZ based GST - add product to cart first)", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Discount Coupon (try <i>AAA</i>)", DataObject::get_one("CheckoutPage"));
-		$this->addExamplePages("Order Confirmation page", DataObject::get_one("OrderConfirmationPage"));
-		$this->addExamplePages("Cart page (review cart without checkout)", DataObject::get_one("CartPage"));
-		$this->addExamplePages("Account page", DataObject::get_one("AccountPage"));
-		$this->addExamplePages("Donation page", DataObject::get_one("AnyPriceProductPage"));
-		$this->addExamplePages("Quick Add page", DataObject::get_one("AddToCartPage"));
-		$this->addExamplePages("Shop by Tag page ", DataObject::get_one("ProductGroupWithTags"));
-		$this->addExamplePages("Corporate Account Order page", DataObject::get_one("AddUpProductsToOrderPage"));
-		$this->addExamplePages("Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
-		$this->addExamplePages("Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
-		$html = '<h2>examples shown on this demo site</h2><ul>';
-		foreach($this->examplePages as $examplePages) {
-			$html .= '<li><span class="exampleTitle">'.$examplePages["Title"].'</span>'.$examplePages["List"].'</li>';
+		$this->addExamplePages(0, "Checkout page", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages(2, "Delivery options (add product to cart first)", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages(2, "Taxes (NZ based GST - add product to cart first)", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages(2, "Discount Coupon (try <i>AAA</i>)", DataObject::get_one("CheckoutPage"));
+		$this->addExamplePages(0, "Order Confirmation page", DataObject::get_one("OrderConfirmationPage"));
+		$this->addExamplePages(0, "Cart page (review cart without checkout)", DataObject::get_one("CartPage"));
+		$this->addExamplePages(0, "Account page", DataObject::get_one("AccountPage"));
+		$this->addExamplePages(1, "Donation page", DataObject::get_one("AnyPriceProductPage"));
+		$this->addExamplePages(1, "Quick Add page", DataObject::get_one("AddToCartPage"));
+		$this->addExamplePages(1, "Shop by Tag page ", DataObject::get_one("ProductGroupWithTags"));
+		$this->addExamplePages(5, "Corporate Account Order page", DataObject::get_one("AddUpProductsToOrderPage"));
+		$this->addExamplePages(4, "Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
+		$this->addExamplePages(1, "Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
+		$html = '<h2>examples shown on this demo site</h2>';
+		foreach($this->examplePages as $key => $exampleGroups) {
+			$html .= "<h3>".$exampleGroups["Title"]."</h3><ul>";
+			foreach($exampleGroups["List"] as $examplePages) {
+				$html .= '<li><span class="exampleTitle">'.$examplePages["Title"].'</span>'.$examplePages["List"].'</li>';
+			}
+			$html .= "</ul>";
 		}
-		$html .= '</ul>
+		$html .= '
 		<h2>adding an order programatically</h2>
 		<p>As part of this demo, we automatically add an order - as follows:</p>
 		<pre>
@@ -1016,8 +1073,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 			//adding product order item
 			$item = new Product_OrderItem();
-			$item-&gt;Quantity = 7;
-			$item-&gt;BuyableID = $product-&gt;ID;
+			$item-&gt;addBuyableToOrderItem($product, 7);
 			$item-&gt;OrderID = $order-&gt;ID;
 			$item-&gt;write();
 			//final save
@@ -1071,6 +1127,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 		if($parentPage) {
 			$page->ParentID = $parentPage->ID;
 		}
+		if($page->Title  && !$page->MetaTitle) {
+			$page->MetaTitle = $page->Title;
+		}
 		$page->writeToStage('Stage');
 		$page->Publish('Stage', 'Live');
 		$page->Status = "Published";
@@ -1089,20 +1148,20 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "SiteConfig", "F" => "Tagline", "V" => "Built by Sunny Side Up", "W" => ""),
 			array("T" => "SiteConfig", "F" => "CopyrightNotice", "V" => "This demo (not the underlying modules) are &copy; Sunny Side Up Ltd", "W" => ""),
 			array("T" => "SiteConfig", "F" => "Theme", "V" => "main", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "demo-orders@sunnysideup.co.nz", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ShopClosed", "V" => "0", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ShopPricesAreTaxExclusive", "V" => "0", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ShopPhysicalAddress", "V" => "<address>The Shop<br />1 main street<br />Coolville 123<br />Landistan</address>", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ReceiptEmail", "V" => "sales@silverstripe-ecommerce.com", "W" => ""),
-			array("T" => "SiteConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
-			array("T" => "SiteConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
-			array("T" => "SiteConfig", "F" => "NumberOfProductsPerPage", "V" => "5", "W" => ""),
-			array("T" => "SiteConfig", "F" => "OnlyShowProductsThatCanBePurchased", "V" => "0", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ProductsHaveWeight", "V" => "1", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
-			array("T" => "SiteConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
-			array("T" => "SiteConfig", "F" => "EmailLogoID", "V" => $this->getRandomImageID(), "W" => ""),
-			array("T" => "SiteConfig", "F" => "DefaultProductImageID", "V" => $this->getRandomImageID(), "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ShopClosed", "V" => "0", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ShopPricesAreTaxExclusive", "V" => "0", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ShopPhysicalAddress", "V" => "<address>The Shop<br />1 main street<br />Coolville 123<br />Landistan</address>", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ReceiptEmail", "V" => "sales@silverstripe-ecommerce.com", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "NumberOfProductsPerPage", "V" => "5", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "OnlyShowProductsThatCanBePurchased", "V" => "0", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ProductsHaveWeight", "V" => "1", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ProductsHaveModelNames", "V" => "1", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ProductsHaveQuantifiers", "V" => "1", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ProductsAlsoInOtherGroups", "V" => "1", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "EmailLogoID", "V" => $this->getRandomImageID(), "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "DefaultProductImageID", "V" => $this->getRandomImageID(), "W" => ""),
 
 			array("T" => "CartPage", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
 			array("T" => "CartPage_Live", "F" => "ContinuePageID", "V" => DataObject::get_one("ProductGroup")->ID, "W" => ""),
@@ -1137,7 +1196,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 	}
 
-	private function addExamplePages($name, $pages) {
+	private function addExamplePages($group, $name, $pages) {
 		$html = '<ul>';
 		if($pages instanceof DataObjectSet) {
 			foreach($pages as $page) {
@@ -1148,9 +1207,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$html .= '<li><a href="'.$pages->Link().'">'.$pages->Title.'</a></li>';
 		}
 		$html .= '</ul>';
-		$i = count($this->examplePages);
-		$this->examplePages[$i]["Title"] = $name;
-		$this->examplePages[$i]["List"] = $html;
+		$i = count($this->examplePages[$group]["List"]);
+		$this->examplePages[$group]["List"][$i]["Title"] = $name;
+		$this->examplePages[$group]["List"][$i]["List"] = $html;
 	}
 
 	private $fruitArray = array("Apple", "Crabapple", "Hawthorn", "Pear", "Apricot", "Peach", "Nectarines", "Plum", "Cherry", "Blackberry", "Raspberry", "Mulberry", "Strawberry", "Cranberry", "Blueberry", "Barberry", "Currant", "Gooseberry", "Elderberry", "Grapes", "Grapefruit", "Kiwi fruit", "Rhubarb", "Pawpaw", "Melon", "Watermelon", "Figs", "Dates", "Olive", "Jujube", "Pomegranate", "Lemon", "Lime", "Key Lime", "Mandarin", "Orange", "Sweet Lime", "Tangerine", "Avocado", "Guava", "Kumquat", "Lychee", "Passion Fruit", "Tomato", "Banana", "Gourd", "Cashew Fruit", "Cacao", "Coconut", "Custard Apple", "Jackfruit", "Mango", "Neem", "Okra", "Pineapple", "Vanilla", "Carrot");
@@ -1179,6 +1238,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$request = true;
 		$buildTask = new CreateEcommerceMemberGroups($request);
 		$buildTask->run($request);
+		$obj = new EcommerceDBConfig();
+		$obj->Title = "Test Configuration";
+		$obj->UseThisOne = 1;
+		$obj->write();
 	}
 
 	private function createImages($width = 170, $height = 120) {

@@ -149,8 +149,6 @@ Payment::set_supported_methods(array(
 
 // __________________________________ START ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
 //MAY SET
-ProductsAndGroupsModelAdmin::add_managed_model("ProductAttributeValue");
-ProductsAndGroupsModelAdmin::add_managed_model("ProductAttributeType");
 //ProductWithVariationDecorator_Controller::set_use_js_validation(false);
 //ProductWithVariationDecorator_Controller::set_alternative_validator_class_name("MyValidatorClass");
 // __________________________________ END ECOMMERCE PRODUCT VARIATIONS MODULE CONFIG __________________________________
@@ -191,7 +189,6 @@ ProductAttributeDecoratorColour_Value::set_put_styling_in_dropdown_options(true)
 
 //===================---------------- START ecommerce_delivery MODULE ----------------===================
 //NOTE: add http://svn.gpmd.net/svn/open/multiselectfield/tags/0.2/ for nicer interface
-StoreAdmin::add_managed_model("PickUpOrDeliveryModifierOptions");
 //===================---------------- END ecommerce_delivery  MODULE ----------------===================
 
 
@@ -199,7 +196,6 @@ StoreAdmin::add_managed_model("PickUpOrDeliveryModifierOptions");
 //===================---------------- START ecommerce_tax MODULE ----------------===================
 // *** GST TAX MODIFIER
 //MUST SET
-StoreAdmin::add_managed_model("GSTTaxModifierOptions");
 //MAY SET
 Object::add_extension('Product', 'GSTTaxDecorator');
 //Object::add_extension('ProductVariation', 'GSTTaxDecorator');
@@ -216,7 +212,7 @@ Object::add_extension('Product', 'GSTTaxDecorator');
 
 //===================---------------- START ecommerce_product_tag MODULE ----------------===================
 Object::add_extension("Product","EcommerceProductTagProductDecorator");
-ProductsAndGroupsModelAdmin::add_managed_model("EcommerceProductTag");
+//ProductsAndGroupsModelAdmin::add_managed_model("EcommerceProductTag");
 //===================---------------- END ecommerce_product_tag MODULE ----------------===================
 
 
@@ -238,8 +234,8 @@ BuyableStockDecorator::add_buyable("ProductVariation");
 
 //HIGHLY RECOMMENDED
 MinMaxModifier::set_use_stock_quantities(true); //make use of the stock quantity tables to keep track of them
-ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockManualUpdate");
-ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockOrderEntry");
+//ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockManualUpdate");
+//ProductsAndGroupsModelAdmin::add_managed_model("BuyableStockOrderEntry");
 
 
 //MAY SET
@@ -274,7 +270,7 @@ GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
 
 
 //===================---------------- START ecommerce_discount_coupon MODULE ----------------===================
-StoreAdmin::add_managed_model("DiscountCouponOption");
+//StoreAdmin::add_managed_model("DiscountCouponOption");
 //DiscountCouponOptions::set_coupons_can_only_be_used_once(true);
 //===================---------------- END ecommerce_discount_coupon MODULE ----------------===================
 
