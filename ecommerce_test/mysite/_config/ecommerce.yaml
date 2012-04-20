@@ -14,7 +14,11 @@
 ################### CONFIG #####################
 
 EcommerceDBConfig:
-	EcommerceDBConfigClass: EcommerceDBConfig
+	ecommerce_db_config_class_name: EcommerceDBConfig
+	array_of_buyables: [
+		Product,
+		ProductVariation
+	]
 
 ################### PAGES #####################
 
@@ -113,10 +117,6 @@ OrderAddress:
 
 
 ################### EXTENSIONS #####################
-
-Buyable:
-	array_of_buyables: ["Product", "ProductVariation"]
-
 
 EcommerceRole:
 	allow_customers_to_setup_accounts: true
