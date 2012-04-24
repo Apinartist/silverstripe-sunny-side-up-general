@@ -371,7 +371,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$randomStyle = round(rand(0, 3));
 			$sortOrder = $randomSortOrder == 0 ? "inherit" : $randomSortOrder == 1 ? "" : $randomSortOrder == 2 ? "title" : "price"  ;
 			$filter = $randomFilter == 0 ? "inherit" : $randomFilter == 1 ? "" : $randomFilter == 2 ? "featuredonly" : "nonfeaturedonly"  ;
-			$style = $randomStyle == 0 ? "inherit" : $randomStyle == 1 ? "" : $randomStyle == 2 ? "Short" : "MoreDetail";
+			$style = $j % 5 == 0 ? "inherit" : $j % 5 == 1 ? "" : $j % 5 == 2 ? $j % 5 == 3 "Short" : "MoreDetail";
 			$array[$j] = array(
 				"ClassName" => "ProductGroup",
 				"URLSegment" => "product-group-".$parentCode,
@@ -1001,6 +1001,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$this->addExamplePages(5, "Corporate Account Order page", DataObject::get_one("AddUpProductsToOrderPage"));
 		$this->addExamplePages(4, "Products with zero price", DataObject::get_one("Product", "\"Price\" = 0 AND ClassName = 'Product'"));
 		$this->addExamplePages(1, "Products that can not be sold", DataObject::get_one("Product", "\"AllowPurchase\" = 0 AND ClassName = 'Product'"));
+		$this->addExamplePages(1, "Product group with short product display template", DataObject::get_one("ProductGroup", "\"DisplayStyle\" = 'Short'"));
+		$this->addExamplePages(1, "Product group with medium length product display template", DataObject::get_one("ProductGroup", "\"DisplayStyle\" = ''"));
+		$this->addExamplePages(1, "Product group with more detail product display template", DataObject::get_one("ProductGroup", "\"DisplayStyle\" = 'MoreDetail'"));
 		$html = '<h2>examples shown on this demo site</h2>';
 		foreach($this->examplePages as $key => $exampleGroups) {
 			$html .= "<h3>".$exampleGroups["Title"]."</h3><ul>";
