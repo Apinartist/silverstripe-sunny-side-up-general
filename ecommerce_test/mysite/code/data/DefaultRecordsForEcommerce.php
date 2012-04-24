@@ -366,12 +366,51 @@ class DefaultRecordsForEcommerce extends DataObject {
 				$children = $this->getProducts($parentCode);
 			}
 			$levelOfProductsToShow = round(rand(1, 3));
-			$randomSortOrder = round(rand(0, 3));
-			$randomFilter = round(rand(0, 3));
-			$randomStyle = round(rand(0, 3));
-			$sortOrder = $randomSortOrder == 0 ? "inherit" : $randomSortOrder == 1 ? "" : $randomSortOrder == 2 ? "title" : "price"  ;
-			$filter = $randomFilter == 0 ? "inherit" : $randomFilter == 1 ? "" : $randomFilter == 2 ? "featuredonly" : "nonfeaturedonly"  ;
-			$style = $j % 5 == 0 ? "inherit" : $j % 5 == 1 ? "" : $j % 5 == 2 ? $j % 5 == 3 "Short" : "MoreDetail";
+			switch ($j % 4) {
+				case 0:
+					$sortOrder = "inherit";
+					break;
+				case 1:
+					$sortOrder = "";
+					break;
+				case 2:
+					$sortOrder = "title";
+					break;
+				case 3:
+					$sortOrder = "price";
+					break;
+			}
+			switch ($j % 4) {
+				case 0:
+					$filter = "inherit";
+					break;
+				case 1:
+					$filter = "";
+					break;
+				case 2:
+					$filter = "featuredonly";
+					break;
+				case 3:
+					$filter = "nonfeaturedonly";
+					break;
+			}
+			switch ($j % 5) {
+				case 0:
+					$style = "inherit";
+					break;
+				case 1:
+					$style = "inherit";
+					break;
+				case 2:
+					$style = "Short";
+					break;
+				case 3:
+					$style = "";
+					break;
+				case 4:
+					$style = "MoreDetail";
+					break;
+			}
 			$array[$j] = array(
 				"ClassName" => "ProductGroup",
 				"URLSegment" => "product-group-".$parentCode,
