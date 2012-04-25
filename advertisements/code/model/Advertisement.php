@@ -249,7 +249,7 @@ class Advertisement extends DataObject {
 	}
 
 	function ThinyThumb() {
-		return "bla";
+		return "This function has not been implemented";
 	}
 
 }
