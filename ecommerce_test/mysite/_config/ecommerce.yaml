@@ -56,6 +56,8 @@ ProductGroup:
 Product_Image:
 	thumbnail_width: 75
 	thumbnail_height: 75
+	small_image_width: 200
+	small_image_height: 200
 	content_image_width: 200
 	large_image_width: 600
 
