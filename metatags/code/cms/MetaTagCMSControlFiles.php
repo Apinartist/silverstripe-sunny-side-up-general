@@ -2,11 +2,11 @@
 
 class MetaTagCMSControlFiles extends Controller {
 
-	protected static $url_segment = 'metatagmanagementfiles'; 
+	protected static $url_segment = 'metatagmanagementfiles';
 		static function set_url_segment($s){self::$url_segment = $s;}
 		static function get_url_segment(){return self::$url_segment;}
 
-	protected static $records_per_page = 10; 
+	protected static $records_per_page = 10;
 		static function set_records_per_page($i){self::$records_per_page = $i;}
 		static function get_records_per_page(){return self::$records_per_page;}
 
@@ -20,7 +20,7 @@ class MetaTagCMSControlFiles extends Controller {
 	/**
 	 * First table is main table - e.g. $this->tableArray[0] should work
 	 *
-	 **/ 
+	 **/
 	protected $tableArray = array("File");
 
 	function init(){
@@ -30,7 +30,9 @@ class MetaTagCMSControlFiles extends Controller {
 		if(!Permission::checkMember($member, "CMS_ACCESS_LeftAndMain")) {
 			return Security::permissionFailure($this);
 		}
-		Requirements::javascript("sapphire/thirdparty/jquery/jquery.js");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 		Requirements::javascript("sapphire/thirdparty/jquery-form/jquery.form.js");
 		Requirements::javascript("metatags/javascript/MetaTagCMSControl.js");
 		Requirements::themedCSS("MetaTagCMSControl");
@@ -39,7 +41,7 @@ class MetaTagCMSControlFiles extends Controller {
 	/***************************************************
 	 * ACTIONS                                         *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
 	function index() {
 		return $this->renderWith("MetaTagCMSControlFiles");
@@ -95,7 +97,7 @@ class MetaTagCMSControlFiles extends Controller {
 		}
 		Session::set("MetaTagCMSControlMessage",  _t("MetaTagCMSControl.NOTCOPIEDFROMTITLE", "Copy not successful"));
 		return $this->returnAjaxOrRedirectBack();
-	}	
+	}
 
 	function update(){
 		if(isset($_GET["fieldName"])) {
@@ -168,7 +170,7 @@ class MetaTagCMSControlFiles extends Controller {
 	/***************************************************
 	 * CONTROLS                                        *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
 
 	function MyRecords() {
@@ -253,7 +255,7 @@ class MetaTagCMSControlFiles extends Controller {
 	/***************************************************
 	 * PROTECTED                                       *
 	 *                                                 *
-	 ***************************************************/ 
+	 ***************************************************/
 
 	protected function createLevelLink ($id) {
 		return $this->Link("childrenof") .  $id . "/";
@@ -268,7 +270,7 @@ class MetaTagCMSControlFiles extends Controller {
 		if(isset($_GET["start"])) {
 			$start = intval($_GET["start"]);
 		}
-		return "$start, ".self::get_records_per_page();		
+		return "$start, ".self::get_records_per_page();
 	}
 
 
