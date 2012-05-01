@@ -29,6 +29,8 @@ class DataObjectOneFieldOneRecordUpdateController extends Controller{
 			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 		Requirements::javascript("dataobjectsorter/javascript/dataobjectonefieldonerecordupdate.js");
 		$url = Director::absoluteURL("dataobjectonefieldonerecordupdate/updatefield/");
 		Requirements::customScript("DataObjectOneFieldOneRecordUpdateURL = '".$url."'");
