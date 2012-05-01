@@ -21,7 +21,7 @@ body {
 
 
 #Sidebar {
-position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-size: 77%;
+position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-size: 77%; padding-bottom: 200px;
 	background-color: #f7f7f7;
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
