@@ -63,10 +63,10 @@ td.price {text-align: right;}
 .productList img, .productList  h3 {
 	padding: 0; margin:0
 }
-#Products .displayStyleShort {margin-left: 0px; padding-left: 0px; }
-#Products .displayStyleShort>li {border-bottom: 1px solid #808383; clear: both; padding: 20px 0 20px 0; }
-#Products .displayStyleShort>li.last {border-bottom: 1px solid transparent; }
-#Products .displayStyleShort li h3 {float: left; display: block; width: auto; line-height: 1}
+#Products .displayStyleShort {margin-left: 0px; padding-left: 0px;  margin-bottom: 40px; margin-top:40px}
+#Products .displayStyleShort>li {border-bottom: 1px dotted #808383; clear: both; padding: 1.3em 0 1.3em 0; }
+#Products .displayStyleShort>li.last {border-bottom: 1px dotted transparent; }
+#Products .displayStyleShort li h3 {display: block; width: auto; line-height: 1;}
 #Products .displayStyleShort li p {margin: 0px; line-height: 1; font-weight: normal; float: right;}
 #Products .displayStyleShort ul.productActions {clear: both; text-align: right; padding: 10px 0 10px 0;}
 #Products .displayStyleShort ul.productActions li{display: inline;}

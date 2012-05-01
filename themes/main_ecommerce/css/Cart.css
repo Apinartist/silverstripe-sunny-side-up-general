@@ -4,7 +4,7 @@
   * Also make sure you have the site's general layout and typography styled before you do this.
   **/
 
-.hideOnZeroItems {display: none;}
+.hideOnZeroItems {}
 .hideForNow{display: none;}
 
 .show{display: block;}
@@ -75,5 +75,7 @@ ul.productActions li a:hover, .goToCart a:hover {
 .cartMessage span {background-color: transparent!important}
 
 .loading { background-image: url(/ecommerce/images/loading.gif)!important; background-repeat: no-repeat!important; background-position: 95% 0!important; position: relative; z-index: 999;}
+
+#InformationTable {width: 100%!important;}
 
 
