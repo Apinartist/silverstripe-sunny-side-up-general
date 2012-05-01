@@ -365,22 +365,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 			else {
 				$children = $this->getProducts($parentCode);
 			}
-			$levelOfProductsToShow = round(rand(1, 3));
-			switch ($j % 4) {
-				case 0:
-					$sortOrder = "inherit";
-					break;
-				case 1:
-					$sortOrder = "";
-					break;
-				case 2:
-					$sortOrder = "title";
-					break;
-				case 3:
-					$sortOrder = "price";
-					break;
-			}
-			switch ($j % 4) {
+			$levelOfProductsToShow = (rand(1, 3));
+			$filterNumber = (rand(0, 4));
+			switch ($filterNumber % 4) {
 				case 0:
 					$filter = "inherit";
 					break;
@@ -393,22 +380,30 @@ class DefaultRecordsForEcommerce extends DataObject {
 				case 3:
 					$filter = "nonfeaturedonly";
 					break;
+				default:
+					$filter = "";
 			}
-			switch ($j % 5) {
+			$styleNumber = (rand(0, 4));
+			switch ($styleNumber % 4) {
 				case 0:
 					$style = "inherit";
+					$numberOfProductsPerPage = 0;
+					$sortOrder = "inherit";
 					break;
 				case 1:
-					$style = "inherit";
+					$style = "Short";
+					$numberOfProductsPerPage = 50;
+					$sortOrder = "price";
 					break;
 				case 2:
-					$style = "Short";
+					$style = "";
+					$numberOfProductsPerPage = 9;
+					$sortOrder = "";
 					break;
 				case 3:
-					$style = "";
-					break;
-				case 4:
 					$style = "MoreDetail";
+					$numberOfProductsPerPage = 5;
+					$sortOrder = "title";
 					break;
 			}
 			$array[$j] = array(
@@ -417,7 +412,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Product Group ".$parentCode,
 				"MenuTitle" => "Product group ".$parentCode,
 				"LevelOfProductsToShow" => $levelOfProductsToShow,
-				"NumberOfProductsPerPage" => $levelOfProductsToShow + 5,
+				"NumberOfProductsPerPage" => $numberOfProductsPerPage,
 				"DefaultSortOrder" => $sortOrder,
 				"DefaultFilter" => $filter,
 				"DisplayStyle" => $style,
@@ -428,9 +423,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 					<ul>
 						<li>level of products to show: '.$levelOfProductsToShow.'</li>
 						<li>number of products per page: '.($levelOfProductsToShow + 5).'</li>
-						<li>sort order: '.$sortOrder.'</li>
-						<li>filter: '.$filter.'</li>
-						<li>display style: '.$style.'</li>
+						<li>sort order: '.($sortOrder ? $sortOrder : "[default]").'</li>
+						<li>filter: '.($filter ? $filter : "[default]").'</li>
+						<li>display style: '.($style ? $style : "[default]").'</li>
 					</ul>
 					',
 				"Children" =>  $children,
@@ -1247,6 +1242,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 		}
 		elseif($pages instanceof SiteTree) {
 			$html .= '<li><a href="'.$pages->Link().'">'.$pages->Title.'</a></li>';
+		}
+		else{
+			$html .= '<li>not available yet</li>';
 		}
 		$html .= '</ul>';
 		$i = count($this->examplePages[$group]["List"]);
