@@ -166,7 +166,7 @@ class TemplateOverviewPage extends Page {
 
 	protected function TemplateDetails($className) {
 		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		$obj = DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$className."' AND ParentID = ".$this->ID);
+		$obj = DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$className."'");
 		if(!$obj) {
 			$obj = new TemplateOverviewDescription();
 			$obj->ClassNameLink = $className;

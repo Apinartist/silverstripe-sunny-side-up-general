@@ -108,11 +108,13 @@ class TemplateOverviewDescription extends DataObject {
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		$data = ClassInfo::subclassesFor("SiteTree");
-		if($data) {
+		$templateOverviewPage = DataObject::get_one("TemplateOverviewPage");
+		if($data && $templateOverviewPage) {
 			foreach($data as $className) {
 				if(!DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '$className'")) {
 					$new = new TemplateOverviewDescription();
 					$new->ClassNameLink = $className;
+					$new->ParentID = $templateOverviewPage->ID;
 					$new->write();
 					DB::alteration_message("adding template description for $className");
 				}
