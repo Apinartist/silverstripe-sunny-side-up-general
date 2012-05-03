@@ -173,8 +173,7 @@ class TemplateOverviewPage extends Page {
 			$obj->ParentID = $this->ID;
 			$obj->write();
 		}
-		$obj->ParentID = $this->ID;
-		$obj->write();
+		DB::query("UPDATE TemplateOverviewDescription SET ParentID = ".$this->ID.";")
 		return $obj;
 	}
 
