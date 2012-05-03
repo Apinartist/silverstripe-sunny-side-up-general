@@ -173,6 +173,8 @@ class TemplateOverviewPage extends Page {
 			$obj->ParentID = $this->ID;
 			$obj->write();
 		}
+		$obj->ParentID = $this->ID;
+		$obj->write();
 		return $obj;
 	}
 
