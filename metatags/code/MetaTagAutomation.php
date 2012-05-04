@@ -203,10 +203,12 @@ class MetaTagAutomation extends SiteTreeDecorator {
 
 	function requireDefaultRecords(){
 		$folder = SSViewer::current_theme();
-		$destinationFile = Director::baseFolder()."/themes/".$folder."/css/editor.css";
-		$baseFile = Director::baseFolder(). "/".SS_METATAGS_DIR."/css/editor.css";
-		if(!file_exists($destinationFile) && file_exists($baseFile)) {
-			copy($baseFile, $destinationFile);
+		if($folder) {
+			$destinationFile = Director::baseFolder()."/themes/".$folder."/css/editor.css";
+			$baseFile = Director::baseFolder(). "/".SS_METATAGS_DIR."/css/editor.css";
+			if(!file_exists($destinationFile) && file_exists($baseFile)) {
+				copy($baseFile, $destinationFile);
+			}
 		}
 	}
 
