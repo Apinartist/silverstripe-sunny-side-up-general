@@ -85,9 +85,10 @@ var WishList = {
 			function(data, el) {
 				jQuery(WishList.saveAndRetrieveSelector)
 					.html(data)
-					.removeClass(WishList.loadingClass)
-					.addWishListSaveLink()
-					.addWishListRetrieveLink();
+					.removeClass(WishList.loadingClass);
+					//not need because live() is used rather than click() when attached event handlers
+					//.addWishListSaveLink()
+					//.addWishListRetrieveLink();
 			}
 		);
 		return true;
@@ -121,7 +122,10 @@ var WishList = {
 jQuery.fn.extend({
 
 	addWishListAddLinks: function() {
-		jQuery(this).find(WishList.addLinkSelector).click(
+		//using live() but on() should be used when jquery is upgraded to 1.7
+		//if jquery is upgraded past 1.4.3 but not to 1.7 then delegate() should be used
+		//more details here: http://api.jquery.com/live/
+		jQuery(this).find(WishList.addLinkSelector).live('click',
 			function(){
 				var url = jQuery(this).attr("href");
 				WishList.loadLinks(url, this);
@@ -136,7 +140,7 @@ jQuery.fn.extend({
 	},
 
 	addWishListRemoveLinks: function () {
-		jQuery(this).find(WishList.removeLinkSelector).click(
+		jQuery(this).find(WishList.removeLinkSelector).live('click',
 			function(){
 				if(WishList.noConfirmations || confirm(WishList.ConfirmDeleteText)) {
 					var url = jQuery(this).attr("href");
