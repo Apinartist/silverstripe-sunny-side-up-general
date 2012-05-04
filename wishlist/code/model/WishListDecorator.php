@@ -57,6 +57,7 @@ class WishListDecorator_Controller extends Extension {
 	 * Name of session variable for storing wishlist data.
 	 */
 	protected static $session_variable_name = "WishListDecoratorArray";
+
 	/**
 	 * Set the name of the session variable, to change from default.
 	 * @param string
@@ -197,15 +198,16 @@ class WishListDecorator_Controller extends Extension {
 	function addtowishlist() {
 		$id = $this->getIDForWishList();
 		$outcome = false;
+		$object = NULL;
 		if($id) {
-			if($page = DataObject::get_by_id("SiteTree", $id)) {
+			if($object = self::getWishListObject($id)){
 				$outcome = true;
 				$array = self::get_wish_list_from_session_array();
-				$array[$id]= $id;
+				$array[$object->ID]= $id;
 				self::set_wish_list_to_session_and_member($array);
 			}
 		}
-		return $this->standardReturn($outcome, "AddedToListText", "AddedToListTextError", "WishListLinkInner");
+		return $this->standardReturn($outcome, "AddedToListText", "AddedToListTextError", "WishListLinkInner", $object);
 	}
 
 	/**
@@ -216,18 +218,19 @@ class WishListDecorator_Controller extends Extension {
 	function removefromwishlist() {
 		$id = $this->getIDForWishList();
 		$outcome = false;
+		$object = NULL;
 		if($id) {
-			if($page = DataObject::get_by_id("SiteTree", $id)) {
+			if($object = self::getWishListObject($id)){
 				$outcome = true;
 				//get current wish list
 				$array = self::get_wish_list_from_session_array();
 				//remove from wish list
-				unset($array[$id]);
+				unset($array[$object->ID]);
 				//reset
 				self::set_wish_list_to_session_and_member($array);
 			}
 		}
-		return $this->standardReturn($outcome, "RemovedFromListText", "RemovedFromListTextError", "WishListLinkInner");
+		return $this->standardReturn($outcome, "RemovedFromListText", "RemovedFromListTextError", "WishListLinkInner", $object);
 	}
 
 	/**
@@ -284,9 +287,11 @@ class WishListDecorator_Controller extends Extension {
 		$array = self::get_wish_list_from_session_array();
 		if(is_array($array) && count($array) ) {
 			$stage = Versioned::current_stage();
-			$baseClass = "SiteTree";
-			$stageTable = ($stage == 'Stage') ? $baseClass : "{$baseClass}_{$stage}";
-			return DataObject::get("$baseClass", "$stageTable.ID IN (".implode(",", $array).")");
+			$objects = array();
+			foreach($array as $value){
+				$objects[] = self::getWishListObject($value);
+			}
+			return new DataObjectSet($objects);
 		}
 		return null;
 	}
@@ -344,6 +349,9 @@ class WishListDecorator_Controller extends Extension {
 		//check URL Param
 		//$id = intval(Director::URLParam("ID"));
 		//if(!$id) {
+		if(isset($_GET['id']) && $_GET['id'] && isset($_GET['class']) && $_GET['class']){
+			return array(intval($_GET['id']), $_GET['class']);
+		}
 		return $this->owner->ID;
 		//}
 		//return $id;
@@ -366,11 +374,12 @@ class WishListDecorator_Controller extends Extension {
 	 * @param string $template Name of template to render if this an ajax call.
 	 * @return string | null
 	 */
-	protected function standardReturn($outcome, $successMessageName, $errorMessageName, $template) {
+	protected function standardReturn($outcome, $successMessageName, $errorMessageName, $template, $object=NULL) {
+		$template_object = $object?$object:$this->owner;
 		if($outcome) {
 			Session::set(self::get_session_variable_name()."_message", $this->getVariableFromwishListPage($successMessageName));
 			if(Director::is_ajax()) {
-				return $this->owner->renderWith($template);
+				return $template_object->renderWith($template);
 			}
 			else {
 				Session::save();
@@ -381,7 +390,7 @@ class WishListDecorator_Controller extends Extension {
 		else {
 			Session::set(self::get_session_variable_name()."_message", $this->getVariableFromwishListPage($errorMessageName));
 			if(Director::is_ajax()) {
-				return $this->owner->renderWith($template);
+				return $template_object->renderWith($template);
 			}
 			else {
 				Session::save();
@@ -389,6 +398,27 @@ class WishListDecorator_Controller extends Extension {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * Instantiate a DataObject base on the id-classname pair passed.
+	 * Checks that classname is valid and is a DataObject.
+	 * Returns NULL is not valid or doesn't exist.
+	 * @param array (id, classname)
+	 * @return DataObject | null
+	 */
+	private static function getWishListObject($value){
+		if(is_array($value)){
+			list($id, $class) = $value;
+			if(class_exists($class) && $object = DataObject::get_by_id($class, intval($id))){
+				if($object instanceof DataObject){
+					return $object;
+				}
+			}
+		}else{
+			return DataObject::get_by_id("SiteTree", $value);
+		}
+		return NULL;
 	}
 
 }
