@@ -3,18 +3,25 @@
 class WishListDecorator_DataObject extends DataObjectDecorator {
 
 	/**
-	 * Return where this page is on the current members wishlist.
-	 * This decoration probably should be added to Product and not SiteTree (as far as I can tell).
+	 * Return whether this DataObject is on the current members wishlist.
 	 * @return boolean
 	 */
-	function IsOnWishList() {
+	function IsOnWishList($object=NULL) {
+		if(!$object){
+			$object = $this->owner;
+		}
 		$array = WishListDecorator_Controller::get_wish_list_from_session_array();
-		if(isset($array[$this->owner->ID])) {
+		$dataobject_index = WishListDecorator_Controller::getWishListIndex(array($object->ID, $object->ClassName));
+		if(isset($array[$dataobject_index])) {
 			return true;
 		}
-		else {
-			return false;
+		if($object instanceof SiteTree){
+			$sitetree_index = WishListDecorator_Controller::getWishListIndex($object->ID);
+			if(isset($array[$dataobject_index])) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -203,7 +210,7 @@ class WishListDecorator_Controller extends Extension {
 			if($object = self::getWishListObject($id)){
 				$outcome = true;
 				$array = self::get_wish_list_from_session_array();
-				$array[$object->ID]= $id;
+				$array[self::getWishListIndex($id)]= $id;
 				self::set_wish_list_to_session_and_member($array);
 			}
 		}
@@ -225,7 +232,7 @@ class WishListDecorator_Controller extends Extension {
 				//get current wish list
 				$array = self::get_wish_list_from_session_array();
 				//remove from wish list
-				unset($array[$object->ID]);
+				unset($array[self::getWishListIndex($id)]);
 				//reset
 				self::set_wish_list_to_session_and_member($array);
 			}
@@ -404,10 +411,10 @@ class WishListDecorator_Controller extends Extension {
 	 * Instantiate a DataObject base on the id-classname pair passed.
 	 * Checks that classname is valid and is a DataObject.
 	 * Returns NULL is not valid or doesn't exist.
-	 * @param array (id, classname)
+	 * @param int | array(id, classname)
 	 * @return DataObject | null
 	 */
-	private static function getWishListObject($value){
+	protected static function getWishListObject($value){
 		if(is_array($value)){
 			list($id, $class) = $value;
 			if(class_exists($class) && $object = DataObject::get_by_id($class, intval($id))){
@@ -419,6 +426,21 @@ class WishListDecorator_Controller extends Extension {
 			return DataObject::get_by_id("SiteTree", $value);
 		}
 		return NULL;
+	}
+	/**
+	 * Return a unique id that can be used as an index in the wishlist array.
+	 * We can't just the id for DataObjects because they can have duplicate ids for different types of objects.
+	 * SiteTree objects can't have duplicate ids so we their ids, 
+	 * and we also do this to be backwards compatible with existing wishlists 
+	 * (which only contain SiteTree objects).
+	 * @param int | array(id, classname)
+	 * @return int | string
+	 */
+	public static function getWishListIndex($value){
+		if(is_array($value)){
+			return $value[0].'.'.$value[1];
+		}
+		return $value;
 	}
 
 }
