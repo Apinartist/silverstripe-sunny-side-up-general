@@ -49,7 +49,8 @@ class Advertisement extends DataObject {
 
 	static $has_one = array(
 		"AdvertisementImage" => "Image",
-		"LinkedPage" => "SiteTree"
+		"LinkedPage" => "SiteTree",
+		"AdditionalImage" => "Image"
 	);
 
 	public static $belongs_many_many = array(
@@ -146,6 +147,7 @@ class Advertisement extends DataObject {
 		$fields->removeFieldFromTab("Root", "Parents");
 		$fields->addFieldToTab("Root.Main", new ReadonlyField("Link"));
 		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdvertisementImage", $title = self::$singular_name." image. ".self::recommended_image_size_statement()));
+		$fields->addFieldToTab("Root.Main", new ImageField($name = "AdditionalImage", $title = self::$singular_name." additional image. ".self::recommended_image_size_statement()));
 		if($this->ID) {
 			$treeField = new TreeMultiselectField("Parents", _t("Advertisement.GETCMSFIELDSPARENTID", "only show on ... (leave blank to show on all ".self::$singular_name." pages)"), "SiteTree");
 			/*$callback = $this->callbackFilterFunctionForMultiSelect();
