@@ -35,7 +35,7 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		static function set_disable_update_popup($b) {self::$disable_update_popup = $b;}
 
 	/* meta descriptions */
-	protected static $meta_desc_length = 12;
+	protected static $meta_desc_length = 24;
 		static function set_meta_desc_length($i) {self::$meta_desc_length = $i;}
 		static function get_meta_desc_length() {return self::$meta_desc_length;}
 
@@ -106,7 +106,7 @@ class MetaTagAutomation extends SiteTreeDecorator {
 	 * Update Metadata fields function
 	 */
 	public function onBeforeWrite () {
-		parent::onBeforeWrite();
+
 		$siteConfig = SiteConfig::current_site_config();
 		// if UpdateMeta checkbox is checked, update metadata based on content and title
 		// we only update this from the CMS to limit slow-downs in programatic updates
@@ -130,9 +130,14 @@ class MetaTagAutomation extends SiteTreeDecorator {
 			if($siteConfig->UpdateMetaDescription && self::$meta_desc_length ){
 				// Empty MetaDescription
 				// Check for Content, to prevent errors
-				if($this->owner->Content && !$this->owner->MetaDescription){
-					$this->owner->MetaDescription = DBField::create("HTMLText", $this->owner->Content)->Summary(MetaTagAutomation::get_meta_desc_length(), 15, "");
 
+				if($this->owner->Content){
+					//added a few hacks here
+					$contentField = DBField::create("Text", $this->owner->Content, "MetaDescription");
+					$flex = ceil(MetaTagAutomation::get_meta_desc_length() / 2)+5;
+					$summary = $contentField->Summary(MetaTagAutomation::get_meta_desc_length(), $flex);
+					$summary = str_replace("<br />", " ", $summary);
+					$this->owner->MetaDescription = strip_tags($summary);
 				}
 			}
 		}
