@@ -207,7 +207,7 @@ class WishListDecorator_Controller extends Extension {
 		$outcome = false;
 		$object = NULL;
 		if($id) {
-			if($object = self::getWishListObject($id)){
+			if($object = self::get_wish_list_object($id)){
 				$outcome = true;
 				$array = self::get_wish_list_from_session_array();
 				$array[self::getWishListIndex($id)]= $id;
@@ -227,7 +227,7 @@ class WishListDecorator_Controller extends Extension {
 		$outcome = false;
 		$object = NULL;
 		if($id) {
-			if($object = self::getWishListObject($id)){
+			if($object = self::get_wish_list_object($id)){
 				$outcome = true;
 				//get current wish list
 				$array = self::get_wish_list_from_session_array();
@@ -296,7 +296,9 @@ class WishListDecorator_Controller extends Extension {
 			$stage = Versioned::current_stage();
 			$objects = array();
 			foreach($array as $value){
-				$objects[] = self::getWishListObject($value);
+				if($object = self::get_wish_list_object($value)) {
+					$objects[] = $object;
+				}
 			}
 			if(count($objects)) {
 				return new DataObjectSet($objects);
@@ -416,7 +418,7 @@ class WishListDecorator_Controller extends Extension {
 	 * @param int | array(id, classname)
 	 * @return DataObject | null
 	 */
-	protected static function getWishListObject($value){
+	protected static function get_wish_list_object($value){
 		if(is_array($value)){
 			list($id, $class) = $value;
 			if(class_exists($class) && $object = DataObject::get_by_id($class, intval($id))){
@@ -424,7 +426,8 @@ class WishListDecorator_Controller extends Extension {
 					return $object;
 				}
 			}
-		}else{
+		}
+		else{
 			return DataObject::get_by_id("SiteTree", $value);
 		}
 		return NULL;
