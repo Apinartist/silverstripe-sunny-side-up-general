@@ -26,7 +26,7 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 
 	/**
 	 * Add js and css requirements.
-	 * Defined here rather than in WishListDecorator_Controller so that it can used with a list 
+	 * Defined here rather than in WishListDecorator_Controller so that it can used with a list
 	 * of dataobjects and not just on a single page.
 	 */
 	function AddWishListRequirements() {
@@ -298,7 +298,9 @@ class WishListDecorator_Controller extends Extension {
 			foreach($array as $value){
 				$objects[] = self::getWishListObject($value);
 			}
-			return new DataObjectSet($objects);
+			if(count($objects)) {
+				return new DataObjectSet($objects);
+			}
 		}
 		return null;
 	}
@@ -430,8 +432,8 @@ class WishListDecorator_Controller extends Extension {
 	/**
 	 * Return a unique id that can be used as an index in the wishlist array.
 	 * We can't just the id for DataObjects because they can have duplicate ids for different types of objects.
-	 * SiteTree objects can't have duplicate ids so we their ids, 
-	 * and we also do this to be backwards compatible with existing wishlists 
+	 * SiteTree objects can't have duplicate ids so we their ids,
+	 * and we also do this to be backwards compatible with existing wishlists
 	 * (which only contain SiteTree objects).
 	 * @param int | array(id, classname)
 	 * @return int | string
