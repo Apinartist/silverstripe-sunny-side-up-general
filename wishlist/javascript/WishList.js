@@ -23,7 +23,7 @@ var WishList = {
 
 	fullListSelector: "#WishListList",
 
-	fullListItemSelector: "#WishListList li",
+	fullListItemSelector: "#WishListList li, #WishList tr",
 
 	saveAndRetrieveSelector: ".wishListSaveAndRetrieve",
 
