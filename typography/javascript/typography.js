@@ -16,14 +16,20 @@
 					function(j, el) {
 						var rgb = jQuery(el).css("background-color");
 						var hex = typography.colorToHex(rgb);
-						jquery(el).text(jquery(el).text()+": "+hex);
+						jQuery(el).find("span").each(
+							function(k, elInner) {
+								var text = jQuery(elInner).html();
+								jQuery(elInner).html(text+": "+hex);
+							}
+						);
 					}
 				);
 				jQuery(".fontcolour"+i).each(
 					function(j, el) {
 						var rgb = jQuery(el).css("color");
 						var hex = typography.colorToHex(rgb);
-						jquery(el).text(jquery(el).text()+": "+hex);
+						var text = jQuery(el).html();
+						jQuery(el).html(text+": "+hex);
 					}
 				);
 			}

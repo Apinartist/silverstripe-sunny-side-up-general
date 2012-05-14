@@ -232,9 +232,9 @@
 <p class="fontcolour3">In laoreet libero in nunc bibendum iaculis.</p>
 <p class="fontcolour4">Proin ac odio quam. Ut pretium odio vitae est dignissim dignissim..</p>
 <p class="fontcolour5">Aenean sed lobortis felis.</p>
-<p class="fontcolour6">Aenean sed lobortis felis.</p>
-<p class="fontcolour7">Aenean sed lobortis felis.</p>
-<p style="color:#000;">Aenean sed lobortis felis.</p>
+<p class="fontcolour6">Cras a condimentum quam. Etiam nisi leo, luctus nec tincidunt vel, tristique vitae quam. Mauris non mi leo. </p>
+<p class="fontcolour7">Donec sit amet massa sit amet massa molestie ornare id ut dolor.</p>
+<p style="color:#000;">In laoreet libero in nunc bibendum iaculis.</p>
 <p style="color:#fff;">Aenean sed lobortis felis.</p>
 <h1>example of heading 1</h1>
 <p>
