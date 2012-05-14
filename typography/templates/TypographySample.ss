@@ -218,12 +218,12 @@
 		<tr>
 			<td class="colourCell backgroundcolour4">&nbsp;</td>
 			<td class="colourCell backgroundcolour5">&nbsp;</td>
-			<td style="background-color: #fff!important;">&nbsp;</td>
+			<td class="colourCell backgroundcolour6">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="colourCell backgroundcolour6">&nbsp;</td>
 			<td class="colourCell backgroundcolour7">&nbsp;</td>
-			<td style="background-color: #000!important;">&nbsp;</td>
+			<td style="background-color: #fff!important; color: #000;">white</td>
+			<td style="background-color: #000!important; color: #FFF;">black</td>
 		</tr>
 	</tbody>
 </table>
