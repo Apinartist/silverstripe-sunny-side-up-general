@@ -220,6 +220,11 @@
 			<td class="colourCell backgroundcolour5">&nbsp;</td>
 			<td style="background-color: #fff!important;">&nbsp;</td>
 		</tr>
+		<tr>
+			<td class="colourCell backgroundcolour6">&nbsp;</td>
+			<td class="colourCell backgroundcolour7">&nbsp;</td>
+			<td style="background-color: #000!important;">&nbsp;</td>
+		</tr>
 	</tbody>
 </table>
 <p class="fontcolour1">Cras a condimentum quam. Etiam nisi leo, luctus nec tincidunt vel, tristique vitae quam. Mauris non mi leo.  </p>
@@ -227,6 +232,10 @@
 <p class="fontcolour3">In laoreet libero in nunc bibendum iaculis.</p>
 <p class="fontcolour4">Proin ac odio quam. Ut pretium odio vitae est dignissim dignissim..</p>
 <p class="fontcolour5">Aenean sed lobortis felis.</p>
+<p class="fontcolour6">Aenean sed lobortis felis.</p>
+<p class="fontcolour7">Aenean sed lobortis felis.</p>
+<p style="color:#000;">Aenean sed lobortis felis.</p>
+<p style="color:#fff;">Aenean sed lobortis felis.</p>
 <h1>example of heading 1</h1>
 <p>
 	This is an example of a couple of left-align paragraphs with <strong>bold</strong>, <u>underlined</u>, and <em>italics</em> in it.
