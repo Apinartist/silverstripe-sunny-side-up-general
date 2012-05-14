@@ -208,7 +208,7 @@
 </p>
 <h1 id="ColourBlocks">Colour Blocks</h1>
 <p>The blocks below can help you identify the colours for the current website.</p>
-<table id="colourTable" summary="colour table" style="border-spacing: 10px;">
+<table id="colourTable" summary="colour table" style="border-spacing: 10px; border-collapse:separate">
 	<tbody>
 		<tr>
 			<td class="colourCell backgroundcolour1">colour 1</td>
