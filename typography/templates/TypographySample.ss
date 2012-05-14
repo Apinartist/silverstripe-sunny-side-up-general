@@ -208,22 +208,22 @@
 </p>
 <h1 id="ColourBlocks">Colour Blocks</h1>
 <p>The blocks below can help you identify the colours for the current website.</p>
-<table id="colourTable" summary="colour table" cellpadding="10" cellspacing="10">
+<table id="colourTable" summary="colour table" style="border-spacing: 10px;">
 	<tbody>
 		<tr>
-			<td class="colourCell backgroundcolour1" style="margin: 10px">colour 1</td>
-			<td class="colourCell backgroundcolour2" style="margin: 10px">colour 2</td>
-			<td class="colourCell backgroundcolour3" style="margin: 10px">colour 3</td>
+			<td class="colourCell backgroundcolour1">colour 1</td>
+			<td class="colourCell backgroundcolour2">colour 2</td>
+			<td class="colourCell backgroundcolour3">colour 3</td>
 		</tr>
 		<tr>
-			<td class="colourCell backgroundcolour4" style="margin: 10px">colour 4</td>
-			<td class="colourCell backgroundcolour5" style="margin: 10px">colour 5</td>
-			<td class="colourCell backgroundcolour6" style="margin: 10px">colour 6</td>
+			<td class="colourCell backgroundcolour4">colour 4</td>
+			<td class="colourCell backgroundcolour5">colour 5</td>
+			<td class="colourCell backgroundcolour6">colour 6</td>
 		</tr>
 		<tr>
-			<td class="colourCell backgroundcolour7" style="margin: 10px">colour 7</td>
-			<td style="background-color: #fff!important; color: #000;" style="margin: 10px">white</td>
-			<td style="background-color: #000!important; color: #FFF;" style="margin: 10px">black</td>
+			<td class="colourCell backgroundcolour7">colour 7</td>
+			<td style="background-color: #fff!important; color: #000;">white</td>
+			<td style="background-color: #000!important; color: #FFF;">black</td>
 		</tr>
 	</tbody>
 </table>
