@@ -206,7 +206,7 @@
 	The table below can show the ten main colours for your site.
 	In order to do so, they must be specified by a coder in your typography.css file (using td.colour1{background-color: YourColour1Here;}, td.colour2{background-color: YourColour2Here;}, etc...).
 </p>
-<h1>Colour Blocks</h1>
+<h1 id="ColourBlocks">Colour Blocks</h1>
 <p>The blocks below can help you identify the colours for the current website.</p>
 <table id="colourTable" summary="colour table">
 	<tbody>
