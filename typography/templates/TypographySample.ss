@@ -211,17 +211,17 @@
 <table id="colourTable" summary="colour table" style="border-spacing: 10px; border-collapse:separate">
 	<tbody>
 		<tr>
-			<td class="colourCell backgroundcolour1">colour 1</td>
-			<td class="colourCell backgroundcolour2">colour 2</td>
-			<td class="colourCell backgroundcolour3">colour 3</td>
+			<td class="colourCell backgroundcolour1"><span style="color: #FFF!important">colour 1</span><span style="color: #000!important">colour 1</span></td>
+			<td class="colourCell backgroundcolour2"><span style="color: #FFF!important">colour 2</span><span style="color: #000!important">colour 2</span></td>
+			<td class="colourCell backgroundcolour3"><span style="color: #FFF!important">colour 3</span><span style="color: #000!important">colour 3</span></td>
 		</tr>
 		<tr>
-			<td class="colourCell backgroundcolour4">colour 4</td>
-			<td class="colourCell backgroundcolour5">colour 5</td>
-			<td class="colourCell backgroundcolour6">colour 6</td>
+			<td class="colourCell backgroundcolour4"><span style="color: #FFF!important">colour 4</span><span style="color: #000!important">colour 4</span></td>
+			<td class="colourCell backgroundcolour5"><span style="color: #FFF!important">colour 5</span><span style="color: #000!important">colour 5</span></td>
+			<td class="colourCell backgroundcolour6"><span style="color: #FFF!important">colour 6</span><span style="color: #000!important">colour 6</span></td>
 		</tr>
 		<tr>
-			<td class="colourCell backgroundcolour7">colour 7</td>
+			<td class="colourCell backgroundcolour7"><span style="color: #FFF!important">colour 7</span><span style="color: #000!important">colour 7</span></td>
 			<td style="background-color: #fff!important; color: #000;">white</td>
 			<td style="background-color: #000!important; color: #FFF;">black</td>
 		</tr>
