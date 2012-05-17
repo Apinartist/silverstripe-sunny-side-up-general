@@ -11,7 +11,7 @@
 
 		firstTime: true,
 		animateIn: {opacity: "1"},
-		animateOut: {opacity: "0.85"},
+		animateOut: {opacity: "0.55"},
 		animateOutSecondTime: {width: "224px", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px"},
 		animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
 
@@ -32,11 +32,11 @@
 							SSUhoverMenu.firstTime = false;
 						}
 						else {
-							jQuery(this).animate(SSUhoverMenu.animateInSecondTime).addClass("menuIn").removeClass("menuOut");
+							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
 						}
 					},  // function = onMouseOver callback (required)
 					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
-					out: function(){jQuery(this).animate(SSUhoverMenu.animateOutSecondTime).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
+					out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
 				}
 			);
 			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
