@@ -65,12 +65,12 @@ class ShareThis extends SiteTreeDecorator {
 
 	function updateCMSFields(FieldSet &$fields) {
 		if(!$this->SiteConfig()->AlwaysIncludeShareThisLinks) {
-			$fields->addFieldToTab("Root.SocialMedia", new HeaderField("ShareThisHeader", "Allow users to share this page"));			
+			$fields->addFieldToTab("Root.SocialMedia", new HeaderField("ShareThisHeader", "Allow users to share this page"));
 			$fields->addFieldToTab("Root.SocialMedia", new CheckboxField("ShareIcons","Show Share Icons on this page", $this->SiteConfig()->IncludeByDefault));
 		}
 		$fields->addFieldToTab("Root.SocialMedia", new LiteralField('LinkToSiteConfigSocialMedia', '<p>Note: make sure to review the social media settings in the <a href="/admin/show/root/">Site Config</a>.</p>'));
 		$list = ShareThisOptions::get_all_options($title = $this->owner->Title, $link = $this->owner->Link(), $description = $this->owner->MetaDescription);
-		$fields->addFieldToTab("Root.SocialMedia", new HeaderField("ShareThisNow", "Share this page on your favourite social media sites ..."));			
+		$fields->addFieldToTab("Root.SocialMedia", new HeaderField("ShareThisNow", "Share this page on your favourite social media sites ..."));
 		$html = "<div><p>Click on any of the icons below to share the <i>'".$this->owner->Title."'</i> page. Any click will open a new tab/window where you will need to enter your login details.</p>";
 		foreach($list as $key => $innerArray) {
 			if(!isset($innerArray["click"])) {
@@ -79,7 +79,7 @@ class ShareThis extends SiteTreeDecorator {
 		}
 		$html .= '</div>';
 		$fields->addFieldToTab("Root.SocialMedia", new LiteralField('ShareNow', $html));
-		
+
 	}
 
 	public function ThisPageHasShareThis() {
@@ -187,6 +187,14 @@ class ShareThis extends SiteTreeDecorator {
 		return SiteConfig::current_site_config();
 	}
 	function populateDefaults() {
+		parent::populateDefaults();
+		if(isset(self::$defaults)) {
+			foreach(self::$defaults as $fieldName => $fieldValue) {
+				if(!isset($this->$fieldName) || $this->$fieldName === null) {
+					$this->$fieldName = $fieldValue;
+				}
+			}
+		}
 		if(DB::isActive()) {
 			$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultShareThisLinks;
 		}
