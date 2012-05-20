@@ -49,8 +49,15 @@ class ImageGalleryEntry extends DataObject {
 	);
 
 	public function populateDefaults() {
-		$this->Sort = 100;
 		parent::populateDefaults();
+		if(isset(self::$defaults)) {
+			foreach(self::$defaults as $fieldName => $fieldValue) {
+				if(!isset($this->$fieldName) || $this->$fieldName === null) {
+					$this->$fieldName = $fieldValue;
+				}
+			}
+		}
+		$this->Sort = 100;
 	}
 
 }
