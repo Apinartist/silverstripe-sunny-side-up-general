@@ -36,6 +36,12 @@ else {
 SiteTree::enable_nested_urls();
 i18n::set_locale('en_NZ');
 i18n::set_date_format("dd-MM-YYYY");
+/**
+ * This is a fix for i18n::include_by_locale() which would scan all modules for language
+ * files every time a translation was done because there are no language files for en_NZ.
+ * Add this means that we never scan for language files for the en_NZ locale.
+ */
+$GLOBALS['lang']['en_NZ'] = array();
 //===================---------------- END sapphire MODULE ----------------===================
 
 
