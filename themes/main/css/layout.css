@@ -14,7 +14,7 @@ body {
 	#Container{}
 		#Nav {} /* see MENU.CSS spreadsheet */
 		#Breadcrumbs {text-align: right; padding: 0; position: absolute; top: 7px; font-size: 12px; }
-		#SidebarSection {width: 200px; float: right; padding: 67px 20px 0 0;}
+		#SidebarSection {width: 20%; float: right; padding: 67px 20px 0 0;}
 		#Layout {padding: 67px 270px 50px 210px; max-width: 770px;}
 		.pageTitle {text-transform: uppercase;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
