@@ -120,6 +120,10 @@ class TemplateOverviewDescription extends DataObject {
 				}
 			}
 		}
+		$helpDirectory = Director::baseFolder()."/".CMSHelp::get_help_file_directory_name()."/";
+		if(!file_exists($helpDirectory)) {
+			mkdir($helpDirectory);
+		}
 	}
 
 	protected function validate() {

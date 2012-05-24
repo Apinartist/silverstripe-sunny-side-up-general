@@ -1,6 +1,6 @@
 <?php
 
-class CMSHelp extends ContentController {
+class CMSHelp::get_help_file_directory_name extends ContentController {
 
 	/**
 	 *@var String name of the directory in which the help files are kept
