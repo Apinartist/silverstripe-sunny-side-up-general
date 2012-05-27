@@ -51,31 +51,6 @@ class TemplateOverviewBug extends DataObject {
 
 
 
-	function onBeforeWrite() {
-		parent::onBeforeWrite();
-		$this->MemberID = Member::currentUserID();
-	}
-
-	function onAfterWrite() {
-		if(!$this->Fixed) {
-			if($this->NeedsMoreInformation) {
-				$email = new Email(self::get_error_email(), Email::$admin_email_address, $subject = "bug needs more information on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
-			}
-			else {
-				$email = new Email(Email::$admin_email_address, self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
-			}
-			$email->send();
-		}
-
-	}
-
-	function validate() {
-		if(!$this->Title) {
-			return new ValidationResult(false, _t("TemplateOverviewBug.NEEDSTITLE", "Bug report needs a title."));
-		}
-		return new ValidationResult();
-	}
-
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Screenshot1ID");
@@ -129,5 +104,29 @@ class TemplateOverviewBug extends DataObject {
 	function Link() {
 		return TemplateOverviewDescriptionModelAdmin::get_full_url_segment()."TemplateOverviewBug/".$this->ID."/edit/";
 	}
+
+
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		$this->MemberID = Member::currentUserID();
+	}
+
+	function onAfterWrite() {
+		if(!$this->Fixed) {
+			if($this->NeedsMoreInformation) {
+				$email = new Email(self::get_error_email(), Email::$admin_email_address, $subject = "bug needs more information on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
+			}
+			else {
+				$email = new Email(Email::$admin_email_address, self::get_error_email(), $subject = "new bug on ".Director::absoluteBaseURL(), $body = "see ".Director::absoluteBaseURL().TemplateOverviewDescriptionModelAdmin::get_full_url_segment());
+			}
+			$email->send();
+		}
+		if(!$this->Title) {
+			$this->Title = "BUG #".$this->ID;
+			$this->write();
+		}
+	}
+
 
 }
