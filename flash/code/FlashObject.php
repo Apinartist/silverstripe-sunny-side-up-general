@@ -126,7 +126,7 @@ class FlashObject extends ViewableData  {
 			$width,
 			$height,
 			0,
-			array(),
+			self::$param_array,
 			true //important!
 		);
 	}
