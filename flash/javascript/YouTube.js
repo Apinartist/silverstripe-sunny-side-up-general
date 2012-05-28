@@ -11,14 +11,13 @@ var YouTube = {
 		setElementID: function(v){YouTube.elementID = v;},
 
 	params: { allowScriptAccess: "always", wmode: "transparent", controls: 1  },
-	atts: { id: "ytPlayer"},
 
 	player: null,
 
 	loadVideo: function(videoID, width, height) {
 		swfobject.embedSWF("http://www.youtube.com/v/" + videoID +
                            "?version=3&enablejsapi=1&playerapiid=player1",
-                           YouTube.elementID, width, height, "9", null, null, YouTube.params, YouTube.params)
+                           YouTube.elementID, width, height, "9", null, null, YouTube.params, { id: YouTube.elementID})
 	},
 
 	play: function() {
