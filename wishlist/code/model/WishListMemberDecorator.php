@@ -10,7 +10,7 @@ class WishListMemberDecorator extends DataObjectDecorator {
 
 	/**
 	 * Define extra database fields for member object.
-	 * @return array 
+	 * @return array
 	 */
 	function extraStatics() {
 		return array(
@@ -19,6 +19,13 @@ class WishListMemberDecorator extends DataObjectDecorator {
 				'WishList' => 'Text'
 			)
 		);
+	}
+
+	/**
+	 * standard SS function - we dont need to show the Wish List field in the CMS.
+	 */
+	function updateCMSFields(&$fields) {
+		$fields->removeByName("WishList");
 	}
 
 
