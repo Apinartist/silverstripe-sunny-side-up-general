@@ -98,7 +98,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						This site is for testing only so try anything you like.
 						Any feedback is appreciated and, where practicable, will be implemented.
 					</strong>
-					Please feel free to starting <a href=\"/shop/\">shopping</a>
+					Please feel free to starting <a href=\"/shop/\">shopping</a>.
 				</p>
 				<h2>Thank you</h2>
 				<p>
