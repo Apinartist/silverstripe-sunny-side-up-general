@@ -274,7 +274,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"MenuTitle" => "Price List",
 						"ShowInMenus" => 1,
 						"ShowInSearch" => 1,
-						"NumberOfProductsPerPage" => 100,
+						"LevelOfProductsToShow" => -1,
+						"NumberOfLevelsToHide" => 99,
 						"Content" => "<p>please review all our prices below...</p>"
 					),
 					array(
