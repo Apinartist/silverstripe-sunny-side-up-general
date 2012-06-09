@@ -40,6 +40,9 @@ ProductGroup:
 		price:
 			Title: 'Lowest Price'
 			SQL: "\"Price\" ASC, \"Title\" ASC"
+		lastest:
+			Title: 'Latest Arrivals'
+			SQL: "\"Created\" DESC
 	filter_options:
 		default:
 			Title: 'All Searchable Products (default)'
