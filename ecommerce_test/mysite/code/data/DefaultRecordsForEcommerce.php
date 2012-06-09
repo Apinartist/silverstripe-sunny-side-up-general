@@ -89,8 +89,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 				<h2>What is this?</h2>
 				<p>
 					This is a demo site for the Silverstripe E-commerce, developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a>.
-					It is based on the Silverstripe e-commerce project, but includes a bunch of advanced code.
-					It has been created to showcase what you can do with e-commerce, to test and review features, and to promote our work.
+					It showcases the <a href=\"http://code.google.com/p/silverstripe-ecommerce\">Silverstripe e-commerce project</a>.
+					Please use the menu below to browse this site.
+					As this site is for testing only - ALL the products on here are fictious.
 				</p>
 				<h2>Thank you</h2>
 				<p>
