@@ -500,7 +500,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"ClassName" => "CombinationProduct",
 				"ImageID" => $imageID,
 				"URLSegment" => "combo-product-$i",
-				"Title" => "Combination Product",
+				"Title" => "Combination Product $i",
 				"MenuTitle" => "Combi Product $i",
 				"ParentID" => $productGroup->ID,
 				"Content" => "<p>
