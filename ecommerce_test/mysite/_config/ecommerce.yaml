@@ -78,7 +78,7 @@ Order:
 		CombinationProductModifier
 	]
 	maximum_ignorable_sales_payments_difference: 0.01
-	order_id_start_number: 0
+	order_id_start_number: 999
 	template_id_prefix: ""
 
 
