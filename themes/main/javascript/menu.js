@@ -11,7 +11,7 @@
 
 		firstTime: true,
 		animateIn: {opacity: "1"},
-		animateOut: {opacity: "0.55"},
+		animateOut: {opacity: "0.75"},
 		animateOutSecondTime: {width: "20%", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px", paddingRight: "24px"},
 		animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
 
