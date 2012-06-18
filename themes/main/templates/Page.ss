@@ -25,6 +25,7 @@
 	</div>
 	<% include ShareThis %>
 </div>
+$addBasicMetatagRequirements
 <% include TemplateOverviewPageDevelopmentFooter %>
 <% include Analytics %>
 </body>
