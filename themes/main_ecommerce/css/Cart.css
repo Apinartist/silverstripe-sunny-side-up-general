@@ -79,3 +79,4 @@ ul.productActions li a:hover, .goToCart a:hover {
 #InformationTable {width: 100%!important;}
 
 
+#Nav .itemsInClass {height: 0; line-height: 1; vertical-align: baseline; _vertical-align: bottom; position: relative; bottom: 1ex; font-size: 0.67em}
