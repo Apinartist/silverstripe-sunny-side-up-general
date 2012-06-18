@@ -46,13 +46,18 @@ class Page_Controller extends ContentController {
 
 	public function init() {
 		parent::init();
-		$this->addBasicMetatagRequirements();
-		$bgImage = $this->MyBackgroundImage();
-		if($bgImage && $bgImage->exists()) {
-			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}");
+		$theme = Session::get("theme");
+		if(!$theme) {
+			$theme = "main";
 		}
+		SSViewer::set_theme($theme);
 	}
 
+	function settheme(HTTPRequest $request){
+		$newTheme = $request->param("ID");
+		Session::set("theme", $newTheme);
+		Director::redirect($this->Link());
+	}
 	function IsNotHome() {
 		return $this->URLSegment != "home";
 	}

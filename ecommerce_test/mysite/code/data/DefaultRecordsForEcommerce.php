@@ -86,6 +86,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Title" => "Sunny Side Up Silverstripe E-commerce Demo",
 				"MenuTitle" => "Home",
 				"Content" => "
+
 				<h2>What is this?</h2>
 				<p>
 					This is a demo site for the Silverstripe E-commerce, developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a>.
@@ -100,15 +101,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</strong>
 					Please feel free to starting <a href=\"/shop/\">shopping</a>.
 				</p>
-				<h2>Thank you</h2>
-				<p>
-					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
-					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe E-commerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
-				</p>
-				<h2 id=\"LoginDetails\">Log in details</h2>
-				<p>
-					You can <a href=\"admin/shop/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
-				</p>
+
 				<h2>Testing</h2>
 				<p>
 					This site can reset itself so please go ahead and try whatever you want.
@@ -117,6 +110,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 					If you have some feedback then please <a href=\"/about-us/\">contact us</a>.
 					<a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a> is also available for <a href=\"/about-us/\">paid support</a>.
 				</p>
+				<h3 id=\"LoginDetails\">Log in details</h3>
+				<p>
+					You can <a href=\"admin/shop/\">log-in</a> as follows: shop@silverstripe-ecommerce.com / test123.
+				</p>
+
 				<h2>For developers</h2>
 				<p>
 					You can install an identical copy of this site (including test data) on your own development server by checking out this SVN repository: <br />
@@ -128,8 +126,29 @@ class DefaultRecordsForEcommerce extends DataObject {
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
 				</p>
+				<h3>themes</h3>
+				<p>
+					This website showcases the Sunny Side Up theme.
+					We are also implementing the Silverstripe 3.0 simple theme.
+					Use the links below to switch themes:
+				</p>
+				<ul>
+					<li><a href=\"/home/settheme/main/\">View Sunny Side Up Theme</a></li>
+					<li><a href=\"/home/settheme/simple/\">View Simple Theme</a></li>
+				</ul>
+				<p>
+					<strong>
+						If you would like to contribute a theme to e-commerce then we would be delighted.
+						Please contact us for more information.
+					</strong>
+				</p>
 				<h3>data model</h3>
 				<p>Please review <a href=\"http://ecommerce.localhost/ecommerce/docs/en/SSUE-commerceDataModel.png\">our latest data model</a></p>
+				<h2>Thank you</h2>
+				<p>
+					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
+					A big <i>kia ora</i> also to all the developers who contributed to <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">the Silverstripe E-commerce Project</a>, especially <a href=\"http://www.burnbright.co.nz/\">Jeremy</a>.
+				</p>
 				",
 				"Children" => array(
 					array(
@@ -172,7 +191,80 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</ul>
 					<p>You can also setup a \"custom\" list of products by using one of the Product Group extension pages.</p>
 				",
-				"Children" => $this->getProductGroups()
+				"Children" => array(
+					array(
+						"ClassName" => "ProductGroup",
+						"URLSegment" => "browse-products",
+						"Title" => "Browse All Products",
+						"MenuTitle" => "Browse Products",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"NumberOfProductsPerPage" => 70,
+						"Content" => "<p>In this section you can browse all the products...</p>",
+						"Children" => $this->getProductGroups()
+					),
+					array(
+						"ClassName" => "Page",
+						"URLSegment" => "alternative-views",
+						"Title" => "Alternative Views of Product and Product Groups",
+						"MenuTitle" => "Alternative Views",
+						"ShowInMenus" => 1,
+						"ShowInSearch" => 1,
+						"Content" => "<p>In this section we present a number of alternative ways to view products and product groups.</p>",
+						"Children" => array(
+							array(
+								"ClassName" => "ProductGroupWithTags",
+								"URLSegment" => "shop-by-tag",
+								"Title" => "Shop by Tag",
+								"MenuTitle" => "Shop by Tag",
+								"Content" => "<p>Please use the tags to find the products you are after.</p>",
+							),
+							array(
+								"ClassName" => "AddUpProductsToOrderPage",
+								"URLSegment" => "add-up-order",
+								"Title" => "Add Up Order",
+								"MenuTitle" => "Add Up Order",
+								"ShowInMenus" => 1,
+								"ShowInSearch" => 1,
+								"Content" => "
+									<p>
+										Choose your products below and continue through to the checkout...
+										This page helps customers who want to put a <i>name</i> or <i>identifier</i> with each order item - for example a group of people purchasing together.
+									</p>",
+							),
+							array(
+								"ClassName" => "PriceListPage",
+								"URLSegment" => "price-list",
+								"Title" => "Price List",
+								"MenuTitle" => "Price List",
+								"ShowInMenus" => 1,
+								"ShowInSearch" => 1,
+								"LevelOfProductsToShow" => -1,
+								"NumberOfLevelsToHide" => 99,
+								"Content" => "<p>please review all our prices below...</p>"
+							),
+							array(
+								"ClassName" => "AddToCartPage",
+								"URLSegment" => "quick-add",
+								"Title" => "Quick Add",
+								"MenuTitle" => "Quick Add",
+								"ShowInMenus" => 1,
+								"ShowInSearch" => 1,
+								"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
+							)
+						)
+					),
+					array(
+						"ClassName" => "AnyPriceProductPage",
+						"URLSegment" => "donation",
+						"Title" => "Make a donation",
+						"MenuTitle" => "Donate",
+						"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
+						"Price" => 0,
+						"Featured" => 0,
+						"InternalItemID" => "DONATE"
+					)
+				)
 			),
 			array(
 				"ClassName" => "CheckoutPage",
@@ -245,67 +337,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"ShowInMenus" => 0,
 				"ShowInSearch" => 0,
 				"Content" => "<p>Please review your order below. A Cart Page is like a checkout page but without the checkout form.</p>"
-			),
-			array(
-				"ClassName" => "Page",
-				"URLSegment" => "alternative-views",
-				"Title" => "Alternative Views of Product and Product Groups",
-				"MenuTitle" => "Alternative Views",
-				"ShowInMenus" => 1,
-				"ShowInSearch" => 1,
-				"Content" => "<p>In this section we present a number of alternative ways to view products and product groups.</p>",
-				"Children" => array(
-					array(
-						"ClassName" => "ProductGroupWithTags",
-						"URLSegment" => "shop-by-tag",
-						"Title" => "Shop by Tag",
-						"MenuTitle" => "Shop by Tag",
-						"Content" => "<p>Please use the tags to find the products you are after.</p>",
-					),
-					array(
-						"ClassName" => "AddUpProductsToOrderPage",
-						"URLSegment" => "add-up-order",
-						"Title" => "Add Up Order",
-						"MenuTitle" => "Add Up Order",
-						"ShowInMenus" => 1,
-						"ShowInSearch" => 1,
-						"Content" => "
-							<p>
-								Choose your products below and continue through to the checkout...
-								This page helps customers who want to put a <i>name</i> or <i>identifier</i> with each order item - for example a group of people purchasing together.
-							</p>",
-					),
-					array(
-						"ClassName" => "PriceListPage",
-						"URLSegment" => "price-list",
-						"Title" => "Price List",
-						"MenuTitle" => "Price List",
-						"ShowInMenus" => 1,
-						"ShowInSearch" => 1,
-						"LevelOfProductsToShow" => -1,
-						"NumberOfLevelsToHide" => 99,
-						"Content" => "<p>please review all our prices below...</p>"
-					),
-					array(
-						"ClassName" => "AddToCartPage",
-						"URLSegment" => "quick-add",
-						"Title" => "Quick Add",
-						"MenuTitle" => "Quick Add",
-						"ShowInMenus" => 1,
-						"ShowInSearch" => 1,
-						"Content" => "<p>Choose your products below and continue through to the checkout...</p>",
-					)
-				)
-			),
-			array(
-				"ClassName" => "AnyPriceProductPage",
-				"URLSegment" => "donation",
-				"Title" => "Make a donation",
-				"MenuTitle" => "Donate",
-				"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
-				"Price" => 0,
-				"Featured" => 0,
-				"InternalItemID" => "DONATE"
 			),
 			array(
 				"ClassName" => "Page",
