@@ -91,7 +91,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				<p>
 					This is a demo site for the Silverstripe E-commerce, developed by <a href=\"http://www.sunnysideup.co.nz\">Sunny Side Up</a>.
 					It showcases the <a href=\"http://code.google.com/p/silverstripe-ecommerce\">Silverstripe e-commerce project</a>.
-					It features all the core e-commerce functionality as well as a selection of <i>add-on</i> modules - such as tax and delivery.
+					It <a href=\"/home/features/\">features</a> all the core e-commerce functionality as well as a selection of <i>add-on</i> modules - such as tax and delivery.
 					For the <i>theme</i>, or visual presentation, we have used the default Sunny Side Up theme.
 					Of course, the idea is that you add your own theme if you are using e-commerce for any of your projects.
 					Please use the menu below to browse this site.
@@ -122,7 +122,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				</p>
 				<h3>downloads, svn and git</h3>
 				<p>
-					Please log in (see <a href=\"#LoginDetails\"login details</a> above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
+					Please log in (see <a href=\"#LoginDetails\">login details</a> above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
 				<p>
 					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
 				</p>
@@ -158,6 +158,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"ShowInMenus" => false,
 						"ShowInSearch" => false,
 						"Content" => "<p>This page can explain the tags shown for various products. </p>",
+					),
+					array(
+						"URLSegment" => "features",
+						"MetaTitle" => "Silverstripe E-Commerce Features",
+						"Title" => "Silverstripe E-Commerce Features",
+						"MenuTitle" => "Features",
+						"ShowInMenus" => true,
+						"ShowInSearch" => true,
+						"Content" => "",
 					),
 					array(
 						"ClassName" => "DownloadPage",
@@ -1172,12 +1181,12 @@ class DefaultRecordsForEcommerce extends DataObject {
 			In the help documents you can read that potentially orders could also be created through third-party gateways.
 		</p>
 		';
-		$homePage = DataObject::get_one("Page", "URLSegment = 'home'");
-		$homePage->Content .= $html;
-		$homePage->writeToStage('Stage');
-		$homePage->Publish('Stage', 'Live');
-		$homePage->Status = "Published";
-		$homePage->flushCache();
+		$featuresPage = DataObject::get_one("Page", "URLSegment = 'features'");
+		$featuresPage->Content .= $html;
+		$featuresPage->writeToStage('Stage');
+		$featuresPage->Publish('Stage', 'Live');
+		$featuresPage->Status = "Published";
+		$featuresPage->flushCache();
 	}
 
 
