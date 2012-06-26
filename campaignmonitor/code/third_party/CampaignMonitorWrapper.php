@@ -330,11 +330,15 @@ class CampaignMonitorWrapper extends Object {
 		return $result['Result']['Code'] == 0;
 	}
 
+	//Gets a list of all active subscribers for a list that have been added since the specified date
 	public function subscriberGetActive() {
-		//Gets a list of all active subscribers for a list that have been added since the specified date
-		//user_error("this function has not been implemented yet", E_USER_ERROR);
-		if(!$this->listID) {user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);}
-		return self::$cm->subscribersGetActive(0, $this->listID);
+		if(! $this->listID) {
+			user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);
+		}
+		$subscribers = self::$cm->subscribersGetActive(0, $this->listID);
+		if(is_array($subscribers) && isset($subscribers['anyType']) && is_array($subscribers['anyType']) && isset($subscribers['anyType']['Subscriber'])) {
+			return $subscribers['anyType']['Subscriber'];
+		}
 	}
 
 	public function subscriberGetBounced() {
