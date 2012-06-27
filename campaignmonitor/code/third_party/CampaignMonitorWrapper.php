@@ -293,8 +293,11 @@ class CampaignMonitorWrapper extends Object {
 		return $result['Result']['Code'] == 0;
 	}
 
-	public function subscriberAddAndResubscribe() {
-		user_error("this function has not been implemented yet", E_USER_ERROR);
+	public function subscriberAddAndResubscribe($subscriberEmail, $subscriberName) {
+		if(! $this->listID) {
+			user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);
+		}
+		return self::$cm->subscriberAddAndResubscribe($subscriberEmail, $subscriberName, $this->listID)
 	}
 
 	public function subscriberAddAndResubscribeWithCustomFields() {
