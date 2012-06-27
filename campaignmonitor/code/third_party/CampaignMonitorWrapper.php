@@ -297,7 +297,7 @@ class CampaignMonitorWrapper extends Object {
 		if(! $this->listID) {
 			user_error(_t('CampaignMonitorWrapper.GETCMSMESSLISTID', 'You need to set a listID for this function to work.'), E_USER_WARNING);
 		}
-		return self::$cm->subscriberAddAndResubscribe($subscriberEmail, $subscriberName, $this->listID)
+		return self::$cm->subscriberAddAndResubscribe($subscriberEmail, $subscriberName, $this->listID);
 	}
 
 	public function subscriberAddAndResubscribeWithCustomFields() {
