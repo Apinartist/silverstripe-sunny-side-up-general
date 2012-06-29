@@ -7,9 +7,15 @@
  */
 class InvisibleSpamField extends SpamProtectorField {
 
+
+	/**
+	 * list of fields that can be placed as honey pots
+	 * you can add your own one here...
+	 * @param Array $a
+	 */
 	protected static $definitions = array(
-		"Email" => array("Class" => "mustenterbecausitisrequired", "Name" => "your_email", "Label" => "extra email"),
-		"URL" => array("Class" => "urlthatisrequired", "Name" => "your_url", "Label" => "extra url"),
+		"Email" => array("Class" => "mustenterbecausitisrequired", "Name" => "must_not_enter_email_field", "Label" => "must not enter email here"),
+		"URL" => array("Class" => "urlthatisrequired", "Name" => "must_not_enter_url_field", "Label" => "extra url"),
 		"BLANK" => array("Class" => "leavethisblank", "Name" => "BLANK", "Label" => "Please leave this field blank to stop spam")
 	);
 		static function set_definitions($a) {self::$definitions = $a;}
@@ -22,16 +28,11 @@ class InvisibleSpamField extends SpamProtectorField {
 			);
 		}
 
-	protected static $used_field = "Email";
-		static function set_used_field($k) {self::$used_field = $k;}
-		static function get_used_field() {return self::$used_field;}
-
 	/**
 	 * minimum number of seconds for a user to complete a form
 	 * set to zero to ignore
-	 *@param $i Integer
+	 * @param Integer $i
 	 **/
-
 	protected static $min_seconds_completing_form = 10;
 		static function set_min_seconds_completing_form($i) {self::$min_seconds_completing_form = $i;}
 		static function get_min_seconds_completing_form() {return self::$min_seconds_completing_form;}
@@ -39,7 +40,7 @@ class InvisibleSpamField extends SpamProtectorField {
 	/**
 	 * maximum number of seconds for a user to complete a form
 	 * set to zero to ignore
-	 *@param $i Integer
+	 * @param Integer $i
 	 **/
 	protected static $max_seconds_completing_form = 600;
 		static function set_max_seconds_completing_form($i) {self::$max_seconds_completing_form = $i;}
@@ -48,9 +49,7 @@ class InvisibleSpamField extends SpamProtectorField {
 	/**
 	 * also consider: height: 0px; overflow: hidden; etc...
 	 **/
-
 	protected static $css_rules = array(
-		"position" => "absolute",
 		"text-indent" => "-2000px"
 	);
 		static function set_css_rules($a) {self::$css_rules = $a;}
@@ -58,25 +57,41 @@ class InvisibleSpamField extends SpamProtectorField {
 		static function add_css_rule($key, $value) {self::$css_rules[$key] = $value;}
 		static function remove_css_rule($key) {unset(self::$css_rules[$key]);}
 
+	/**
+	 * returns the label being used
+	 * @return String
+	 */
 	protected function labelUsed() {
-		return self::$definitions[self::$used_field]["Label"];
+		return self::$definitions[$this->usedField()]["Label"];
 	}
 
+	/**
+	 * returns the field name being used
+	 * @return String
+	 */
 	protected function fieldNameUsed() {
-		return self::$definitions[self::$used_field]["Name"];
+		return self::$definitions[$this->usedField()]["Name"];
 	}
 
+	/**
+	 * class name used
+	 * @return String
+	 */
 	protected function classNameUsed() {
-		return self::$definitions[self::$used_field]["Class"];
+		return self::$definitions[$this->usedField()]["Class"];
 	}
 
+	/**
+	 *
+	 * @return String
+	 */
 	function FieldHolder() {
 		if(is_array(self::$css_rules) && count(self::$css_rules)) {
 			$css = '';
 			foreach(self::$css_rules as $key => $value) {
 				$css .= '.css("'.$key.'", "'.$value.'")';
 			}
-			Requirements::customScript('jQuery(".'.$this->classNameUsed().'")'.$css.';', $this->classNameUsed);
+			Requirements::customScript('jQuery(".'.$this->classNameUsed().'")'.$css.';', $this->classNameUsed());
 		}
 		$Title = $this->labelUsed();
 		$Message = $this->XML_val('Message');
@@ -84,12 +99,13 @@ class InvisibleSpamField extends SpamProtectorField {
 		$Type = $this->XML_val('Type');
 		$extraClass = $this->XML_val('extraClass');
 		$Name = $this->fieldNameUsed();
+		$Class = $this->classNameUsed();
 		$Field = $this->XML_val('Field');
 		$messageBlock = (!empty($Message)) ? "<span class=\"message $MessageType\">$Message</span>" : "";
 		$name = $this->labelUsed();
 		$time = time();
 		return <<<HTML
-<div id="$Name" class="mustenterbecausitisrequired">
+<div id="$Name" class="$Class">
 	<label>$Title</label>
 	<div class="middleColumn">
 		{$Field}
@@ -99,13 +115,20 @@ class InvisibleSpamField extends SpamProtectorField {
 HTML;
 	}
 
+	/**
+	 *
+	 * @return String
+	 */
 	public function Field() {
 		$this->initialise();
 		$html = '<input type="text" name="'.$this->fieldNameUsed().'" class="text" />';
 		return $html;
 	}
 
-
+	/**
+	 *
+	 *
+	 */
 	public function validate($validator) {
 		// don't bother querying the SimplestSpam-service if fields were empty
 		if(!isset($_REQUEST[$this->fieldNameUsed()]) || $_REQUEST[$this->fieldNameUsed()]) {
@@ -165,5 +188,19 @@ HTML;
 	protected function initialise() {
 		return true;
 	}
+
+	/**
+	 * returns the key of the field to be used...
+	 * @return String
+	 */
+	protected function usedField(){
+		$key = Session::get("InvisibleSpamFieldKey");
+		if(!$key) {
+			$key = array_rand(self::get_definitions());
+			Session::set("InvisibleSpamFieldKey", $key);
+		}
+		return $key;
+	}
+
 }
 

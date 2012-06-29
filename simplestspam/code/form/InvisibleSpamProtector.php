@@ -27,10 +27,11 @@ class InvisibleSpamProtector implements SpamProtector {
 		return $form->Fields();
 	}
 
+	/*
 	function setFieldMapping($fieldToPostTitle, $fieldsToPostBody=null, $fieldToAuthorName=null, $fieldToAuthorUrl=null, $fieldToAuthorEmail=null, $fieldToAuthorOpenId=null) {
 
 	}
-
+	*/
 
 	public function getFormField($name = null, $title = null, $value = null, $form = null, $rightTitle = null) {
  		return new InvisibleSpamField($name, $title, $value, $form, $rightTitle);
