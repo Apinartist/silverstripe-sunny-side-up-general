@@ -44,13 +44,12 @@ class Page_Controller extends ContentController {
 	 * @var array
 	 */
 
+
 	public function init() {
+		//theme needs to be set TWO times...
+		$theme = Session::get("theme"); if(!$theme) {$theme = "main";}SSViewer::set_theme($theme);
 		parent::init();
-		$theme = Session::get("theme");
-		if(!$theme) {
-			$theme = "main";
-		}
-		SSViewer::set_theme($theme);
+		$theme = Session::get("theme"); if(!$theme) {$theme = "main";}SSViewer::set_theme($theme);
 	}
 
 	function settheme(HTTPRequest $request){
@@ -58,6 +57,7 @@ class Page_Controller extends ContentController {
 		Session::set("theme", $newTheme);
 		Director::redirect($this->Link());
 	}
+
 	function IsNotHome() {
 		return $this->URLSegment != "home";
 	}

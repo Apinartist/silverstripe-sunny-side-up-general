@@ -275,3 +275,8 @@ GoogleAnalytics::$googleAnalyticsCode = "UA-26108878-1"; //e.g. UA-xxxx-y
 //===================---------------- END ecommerce_discount_coupon MODULE ----------------===================
 
 
+$theme = Session::get("theme");
+if(!$theme) {
+	$theme = "main";
+}
+SSViewer::set_theme($theme);
