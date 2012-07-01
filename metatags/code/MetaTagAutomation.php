@@ -248,9 +248,15 @@ class MetaTagAutomation_controller extends Extension {
 				$this->owner->project().'/javascript/j.js'
 			);
 		array_merge($jsArray, $additionalJS);
+		if(file_exists(SS_METATAGS_DIR.'/css/reset.css')) {
+			$resetFile = Director::baseFolder()."/".$themeFolder.'/css/reset.css';
+		}
+		else {
+			$resetFile = SS_METATAGS_DIR.'/css/reset.css';
+		}
 		$cssArray =
 			array(
-				array("media" => null, "location" => SS_METATAGS_DIR.'/css/reset.css'),
+				array("media" => null, "location" => $resetFile),
 				array("media" => null, "location" => $themeFolder.'css/typography.css'),
 				array("media" => null, "location" => $themeFolder.'css/layout.css'),
 				array("media" => null, "location" => $themeFolder.'css/form.css'),
