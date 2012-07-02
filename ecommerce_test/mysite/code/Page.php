@@ -49,6 +49,9 @@ class Page_Controller extends ContentController {
 		//theme needs to be set TWO times...
 		$theme = Session::get("theme"); if(!$theme) {$theme = "main";}SSViewer::set_theme($theme);
 		parent::init();
+		if($theme == "main") {
+			$this->addBasicMetatagRequirements();
+		}
 		$theme = Session::get("theme"); if(!$theme) {$theme = "main";}SSViewer::set_theme($theme);
 	}
 
