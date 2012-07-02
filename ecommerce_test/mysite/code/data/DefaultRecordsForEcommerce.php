@@ -283,9 +283,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"Content" => "
 					<p>
 						For further information on our terms of trade, please visit ....
-					</p>
-					<p>
-						To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax)
+						To test the tax, set your country to New Zealand (GST inclusive) or Australia (exclusive tax).
 					</p>
 				",
 				"InvitationToCompleteOrder" => "<p>Please complete your details below to finalise your order.</p>",
