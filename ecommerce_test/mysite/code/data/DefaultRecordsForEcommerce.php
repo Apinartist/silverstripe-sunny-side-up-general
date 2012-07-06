@@ -266,8 +266,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 					array(
 						"ClassName" => "AnyPriceProductPage",
 						"URLSegment" => "donation",
-						"Title" => "Make a donation",
-						"MenuTitle" => "Donate",
+						"Title" => "Make a donation (example!)",
+						"MenuTitle" => "Donate (example!)",
 						"Content" => "<p>You can try out our <i>Any Price Product</i> below, by entering a value you want to <i>Donate</i>. This page can be used to allow customers to make payments such as donations or wherever they can determine the price.  You can send them a link to this page with an amount like this: <i>/donate/setamount/11.11</i></p>",
 						"Price" => 0,
 						"Featured" => 0,
