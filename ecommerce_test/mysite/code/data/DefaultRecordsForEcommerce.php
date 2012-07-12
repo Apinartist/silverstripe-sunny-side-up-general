@@ -124,7 +124,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				<p>
 					Please log in (see <a href=\"#LoginDetails\">login details</a> above) to the <a href=\"home/downloads/\">the Git / SVN / Download page </a> to fork / checkout / download the source code.
 				<p>
-					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu/\">Sunny Side Up Branch</a> of e-commerce, as well as a buch of complementary modules.
+					This demo is based on the <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/trunk/\">trunk</a> of e-commerce, as well as a bunch of complementary modules.
 				</p>
 				<h3>themes</h3>
 				<p>
