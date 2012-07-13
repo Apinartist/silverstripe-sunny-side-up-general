@@ -27,6 +27,6 @@
 <% if RandomImage %>
 <div class="sidebarBox" id="RandomImage">
 	<h3>Random Visual Thought</h3>
-	<div class="backgrounImage" style="background-image: url($RandomImage(1200).URL); width: 200px; height: 200px;"><img src="$RandomImage(1200).URL" alt="random image" width="200" style="display: none;" /></div>
+	<div id="RandomVisualThought" style="background-image: url($RandomImage(1200).URL); width: 200px; height: 200px;" rel="$RandomImage(1200).URL"></div>
 </div>
 <% end_if %>

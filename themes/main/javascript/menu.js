@@ -170,4 +170,27 @@
 
 
 
-
+jQuery(document).ready(
+	function(){
+		jQuery("#RandomVisualThought").click(
+			function(el) {
+				var rel = jQuery(this).attr("rel");
+				jQuery("body").append('<div id="RandomImageLarge"></div>');
+				jQuery("#RandomImageLarge")
+					.css("background-image", "url(" + rel + ")")
+					.css("background-size", "100% 100%")
+					.css("position", "fixed")
+					.css("width", "100%")
+					.css("height", "100%")
+					.css("z-index", "999999999")
+					.css("top", "0")
+					.css("left", "0")
+					.click(
+						function(){
+							jQuery(this).remove();
+						}
+					);
+			}
+		);
+	}
+)
