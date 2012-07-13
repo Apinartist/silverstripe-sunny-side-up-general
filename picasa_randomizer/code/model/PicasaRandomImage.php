@@ -34,7 +34,7 @@ class PicasaRandomImage extends DataObject {
 	public function requireDefaultRecords(){
 		parent::requireDefaultRecords();
 		$albums = $this->getAlbums(PicasaRandomImage::$google_username);
-		for($i = 0; $i < 1; $i++) {
+		for($i = 0; $i < 30; $i++) {
 			//get a random album
 			$album_title = $albums[array_rand($albums, 1)];
 			//google wants only the letters and numbers in the url
