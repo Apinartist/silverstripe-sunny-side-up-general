@@ -16,108 +16,86 @@
 class PicasaRandomImage extends DataObject {
 
 	static $db = array(
-		"URL" => "Varchar(255)",
-		"Title" => "Varchar(255)",
-		"Album" => "Varchar(255)"
-		"ThumbnailURL" => "Varchar(255)",
-		"ThumbnailWidth" => "Int",
-		"ThumbnailHeight" => "Int",
-		"FullURL" => "Varchar(255)",
-		"FullWidth" => "Int",
-		"FullHeight" => "Int"
-	);
-
-	static $indexes = array(
-		"Title" => true,
-		"Album" => true
+		"URL" => "Text",
 	);
 
 	protected static $google_username = '';
 		static  function set_google_username($v) {self::$google_username = $v;}
 		static  function get_google_username() {return self::$google_username;}
 
-	protected static $number_of_folders = 3;
-		static  function set_number_of_folders($v) {self::$number_of_folders = $v;}
-		static  function get_number_of_folders() {return self::$number_of_folders;}
+	public static function get_random_image($width){
+		$objects = DataObject::get("PicasaRandomImage", "", "RAND()");
+		if($objects && $obj = $objects->First()) {
+			$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
+			return $obj;
+		}
+	}
 
-	protected static $number_of_images_per_folder = 3;
-		static  function set_number_of_images_per_folder($v) {self::$number_of_images_per_folder = $v;}
-		static  function get_number_of_images_per_folder() {return self::$number_of_images_per_folder;}
-
-	function requireDefaultRecords() {
+	public function requireDefaultRecords(){
 		parent::requireDefaultRecords();
-		if(self::$google_username) {
-			// choose 5 random albums from the list
-			$currentObjects = DataObject::get($this->ClassName);
-			if($currentObjects) {
-				$actuallyHas = $currentObjects->count();
-				$shouldHave = self::$number_of_images_per_folder * self::$number_of_folders;
-				if($actuallyHas == $shouldHave) {
-					//do nothing
-					return;
-				}
-				else {
-					//reset
-					DB::query("DELETE FROM ".$this->ClassName.";");
-					DB::alteration_message("reset picasa random images", "created");
+		$albums = $this->getAlbums(PicasaRandomImage::$google_username);
+		for($i = 0; $i < 1; $i++) {
+			//get a random album
+			$album_title = $albums[array_rand($albums, 1)];
+			//google wants only the letters and numbers in the url
+			$album_title = ereg_replace("[^A-Za-z0-9]", "", $album_title);
+			//get the list of pictures from the album
+			$pictures = $this->showAlbumContent(PicasaRandomImage::$google_username, $album_title);
+			//get a random picture from the album
+			if(is_array($pictures)){
+				$randomPic = $pictures[array_rand($pictures,1)]['src'];
+				if(!DataObject::get("PicasaRandomImage", "URL <> '$randomPic'")) {
+					$obj = new PicasaRandomImage();
+					$obj->URL = $randomPic;
+					$obj->write();
+					DB::alteration_message("adding picasa random image: ".$this->URL."<img src=\"$randomPic\" alt=\"\">", "created");
 				}
 			}
-			// the feed URLs from where album and photo information will be fetched
-			$albums_feed = 'http://picasaweb.google.com/data/feed/api/user/' . self::$google_username . '?kind=album';
-			$album_feed = 'http://picasaweb.google.com/data/feed/api/user/' . self::$google_username . '?v=2';
-			$photo_feed = 'http://picasaweb.google.com/data/feed/api/user/' . self::$google_username . '/albumid/';
-			// read album feed into a SimpleXML object
-			$albums = simplexml_load_file($albums_feed);
-			if($albums) {
-				$albumCount = $albums->children('http://a9.com/-/spec/opensearchrss/1.0/')->totalResults;
-				//$albumcount = $photocount = (int) $album->children('http://schemas.google.com/photos/2007')->numphotos;
-				if($albumCount) {
-					$album_select = array_rand(range(1, $albumCount), self::$number_of_folders);
-					$i = 0;
-					foreach ($albums->entry as $album) {
-						$i++;
-						// if album is one of the chosen ones, continue
-						if (in_array($i, $album_select)) {
-							// get the number of photos for this album
-							$photocount = (int) $album->children('http://schemas.google.com/photos/2007')->numphotos;
-							if($photocount) {
-								// choose 2 random photos from this album
-								$photo_select = array_rand(range(1, $photocount), 2);
-								// get the ID of the current album
-								$album_id = $album->children('http://schemas.google.com/photos/2007')->id;
-								// read photo feed for this album into a SimpleXML object
-								$photos = simplexml_load_file($photo_feed . $album_id . '?v=2');
-								$j = 0;
-								foreach ($photos->entry as $photo) {
-									if (in_array($j, $photo_select)) {
-										$temp = array();
-										// get the photo and thumbnail information
-										$media = $photo->children('http://search.yahoo.com/mrss/');
-										// full image information
-										$group_content = $media->group->content;
-										$obj = new PicasaRandomImage();
-										$obj->FullURL = strval($group_content->attributes()->{'url'});
-										$obj->FullWidth = intval($group_content->attributes()->{'width'});
-										$obj->FullHeight = intval($group_content->attributes()->{'height'});
-										// thumbnail information, get the 3rd (=biggest) thumbnail version
-										// change the [2] to [0] or [1] to get smaller thumbnails
-										$group_thumbnail = $media->group->thumbnail[2];
-										$obj->ThumbnailURL = strval($group_thumbnail->attributes()->{'url'});
-										$obj->ThumbnailWidth = intval($group_thumbnail->attributes()->{'width'});
-										$obj->ThumbnailHeight = intval($group_thumbnail->attributes()->{'height'});
-										$obj->Album = strval($album->title[0]);
-										$obj->Title = strval($group_content->attributes()->{'title'});
-										$obj->write();
-										DB::alteration_message("adding picasa random image: ".$this->FullURL, "created");
-									};
-									$j++;
-								}
-							} else {user_error("no photos in album", E_USER_NOTICE); }
-						}
-					}
-				} else {user_error("no album count", E_USER_NOTICE);}
-			} else {user_error("no albums", E_USER_NOTICE);}
-		} else {user_error("no google username", E_USER_NOTICE);}
+		}
+	}
+
+	//GET THE REMOTE FILE INTO A VARIABLE
+	protected function curlit($url){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+		$return=curl_exec ($ch);
+		curl_close ($ch);
+		return $return;
+	}
+
+	//THIS IS BASED ON http://blogoscoped.com/archive/2007-03-22-n84.html
+	protected function showAlbumContent($userId, $albumName) {
+		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '/album/' . urlencode($albumName);
+		$xml = $this->curlit($url);
+		$xml = str_replace("xmlns='http://www.w3.org/2005/Atom'", '', $xml);
+
+		$dom = new domdocument;
+		$dom->loadXml($xml);
+
+		$xpath = new domxpath($dom);
+		$nodes = $xpath->query('//entry');
+		foreach ($nodes as $node) {
+			$tmp[]['src'] = $xpath->query('.//media:thumbnail/@url', $node)->item(0)->textContent;
+		}
+		return $tmp;
+	}
+
+	//THIS IS BASED ON http://blogoscoped.com/archive/2007-03-22-n84.html
+	protected function getAlbums($userId) {
+		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '?kind=album';
+		$xml = $this->curlit($url);
+		$xml = str_replace("xmlns='http://www.w3.org/2005/Atom'", '', $xml);
+
+		$dom = new domdocument;
+		$dom->loadXml($xml);
+
+		$xpath = new domxpath($dom);
+		$nodes = $xpath->query('//entry');
+		foreach ($nodes as $node) {
+			$tmp[] = $xpath->query('title', $node)->item(0)->textContent;
+		}
+		return $tmp;
 	}
 
 
