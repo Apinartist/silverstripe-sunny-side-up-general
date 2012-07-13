@@ -44,7 +44,7 @@ class PicasaRandomImage extends DataObject {
 			//get a random picture from the album
 			if(is_array($pictures)){
 				$randomPic = $pictures[array_rand($pictures,1)]['src'];
-				if(!DataObject::get("PicasaRandomImage", "URL <> '$randomPic'")) {
+				if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$randomPic'")) {
 					$obj = new PicasaRandomImage();
 					$obj->URL = $randomPic;
 					$obj->write();
