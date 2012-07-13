@@ -1,4 +1,4 @@
-<% if PicasaRandomImage %>
+<% if PicasaRandomImages %>
 <div id="PicasaRandomImages">
 	<% control PicasaRandomImages %>
 		<img src="$ThumbnailURL" alt="$Album - $Title" />

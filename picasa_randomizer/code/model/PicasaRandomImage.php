@@ -5,6 +5,11 @@
  *@PicasaRandomImage::set_google_username("tester")
  *@PicasaRandomImage::set_number_of_folders(3)
  *@PicasaRandomImage::set_number_of_images_per_folder(2)
+ * example link: https://picasaweb.google.com/data/feed/api/user/xxx
+ * example link: https://picasaweb.google.com/data/feed/api/user/nfrancken/albumid/5742357499437955281xxxx/
+ * large image: https://lh4.googleusercontent.com/-zs8sog5SG0U/T7DzuF3Lw9I/AAAAAAAAP4E/rPZiGlVL_eY/s2500/IMG_1715.JPG
+ * (Note 2500 as the width!)
+ *
  *
  **/
 
@@ -13,13 +18,18 @@ class PicasaRandomImage extends DataObject {
 	static $db = array(
 		"URL" => "Varchar(255)",
 		"Title" => "Varchar(255)",
+		"Album" => "Varchar(255)"
 		"ThumbnailURL" => "Varchar(255)",
 		"ThumbnailWidth" => "Int",
 		"ThumbnailHeight" => "Int",
 		"FullURL" => "Varchar(255)",
 		"FullWidth" => "Int",
-		"FullHeight" => "Int",
-		"Album" => "Varchar(255)"
+		"FullHeight" => "Int"
+	);
+
+	static $indexes = array(
+		"Title" => true,
+		"Album" => true
 	);
 
 	protected static $google_username = '';
