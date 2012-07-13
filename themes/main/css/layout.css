@@ -1,6 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Quattrocento+Sans);
+@import url(http://fonts.googleapis.com/css?family=Lato);
 @import url(http://fonts.googleapis.com/css?family=Voces);
-
 /* global fixes */
 #HiddenTextItems {display: block; font-size: 0px; text-indent: -9999px; line-height: 0;}
 .clear {clear: both;}
@@ -8,7 +7,7 @@
 
 
 body {
-	font-family: 'Quattrocento Sans', sans-serif;
+	font-family: 'Lato', sans-serif;
 	height: 100%;
 	background-position: 0 0; background-repeat: repeat-y; background-color: #fff;
 	background-image: url("/themes/main/images/logo.gif");

@@ -1,8 +1,6 @@
-
-<div id="PageResultHolder">
+<div id="Page_Results" class="mainSection content-container withSidebar">
+	<h1 id="PageTitle">Search Results</h1>
 <% if Results %>
-	<h1>Search Results</h1>
-
 	<div id="Content">
 		<% if Results.MoreThanOnePage %>
 			<div class="pageNumbers topPageNumbers">
@@ -38,7 +36,13 @@
 		<% end_if %>
 	</div>
 <% else %>
-<p id="NoSearchResults">Sorry, no results were found, please try a different keyword phrase.</p>
-<div id="SearchFormInLayout">$SearchForm</div>
+	<p id="NoSearchResults">Sorry, no results were found, please try a different keyword phrase.</p>
 <% end_if %>
 </div>
+<aside>
+	<div id="Sidebar">
+		<div class="sidebarTop"></div>
+		<% include Sidebar %>
+		<div class="sidebarBottom"></div>
+	</div>
+</aside>
