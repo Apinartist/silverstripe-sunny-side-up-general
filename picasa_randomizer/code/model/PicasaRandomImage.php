@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * adds pictures from your google picasa account to a data object for random retrieval.
  *@author nicolaas[at]sunnysideup.co.nz
  *@PicasaRandomImage::set_google_username("tester")
  *@PicasaRandomImage::set_number_of_folders(3)
@@ -19,9 +20,32 @@ class PicasaRandomImage extends DataObject {
 		"URL" => "Text",
 	);
 
+
+	/**
+	 * google username e.g. firstname.lastname (if your email address is firstname.lastname@google.com)
+	 * @var string
+	 */
 	protected static $google_username = '';
 		static  function set_google_username($v) {self::$google_username = $v;}
 		static  function get_google_username() {return self::$google_username;}
+
+	/**
+	 * set to 30 to take one in thirty albums
+	 * set to 1 to take all
+	 * @var Int
+	 */
+	protected static $take_album_one_in = 10;
+		static  function set_take_album_one_in($v) {self::$take_album_one_in = $v;}
+		static  function get_take_album_one_in() {return self::$take_album_one_in;}
+
+	/**
+	 * set to 30 to take one in thirty pictures
+	 * set to 1 to add all
+	 * @var Int
+	 */
+	protected static $take_picture_one_in = 10;
+		static  function set_take_picture_one_in($v) {self::$take_picture_one_in = $v;}
+		static  function get_take_picture_one_in() {return self::$take_picture_one_in;}
 
 	public static function get_random_image($width){
 		$objects = DataObject::get("PicasaRandomImage", "", "RAND()");
@@ -33,22 +57,28 @@ class PicasaRandomImage extends DataObject {
 
 	public function requireDefaultRecords(){
 		parent::requireDefaultRecords();
-		$albums = $this->getAlbums(PicasaRandomImage::$google_username);
-		for($i = 0; $i < 30; $i++) {
-			//get a random album
-			$album_title = $albums[array_rand($albums, 1)];
-			//google wants only the letters and numbers in the url
-			$album_title = ereg_replace("[^A-Za-z0-9]", "", $album_title);
-			//get the list of pictures from the album
-			$pictures = $this->showAlbumContent(PicasaRandomImage::$google_username, $album_title);
-			//get a random picture from the album
-			if(is_array($pictures)){
-				$randomPic = $pictures[array_rand($pictures,1)]['src'];
-				if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$randomPic'")) {
-					$obj = new PicasaRandomImage();
-					$obj->URL = $randomPic;
-					$obj->write();
-					DB::alteration_message("adding picasa random image: ".$this->URL."<img src=\"$randomPic\" alt=\"\">", "created");
+		if(isset($_GET["updatepicassapics"])) {
+			$albums = $this->getAlbums(PicasaRandomImage::$google_username);
+			foreach($albums as $albumTitle) {
+				if(!(rand(1, 10000) % self::get_take_album_one_in())) {
+					//google wants only the letters and numbers in the url
+					$albumTitle = ereg_replace("[^A-Za-z0-9]", "", $albumTitle);
+					//get the list of pictures from the album
+					$pictures = $this->showAlbumContent(PicasaRandomImage::$google_username, $albumTitle);
+					if(!(rand(1, 10000) % self::get_take_picture_one_in())) {
+						//get a random picture from the album
+						if(is_array($pictures)){
+							foreach($pictures as $picture) {
+								$url = $picture["src"];
+								if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$url'")) {
+									$obj = new PicasaRandomImage();
+									$obj->URL = $url;
+									$obj->write();
+									DB::alteration_message("adding picasa random image: ".$obj->URL."<img src=\"$url\" alt=\"\">", "created");
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -65,35 +95,47 @@ class PicasaRandomImage extends DataObject {
 	}
 
 	//THIS IS BASED ON http://blogoscoped.com/archive/2007-03-22-n84.html
-	protected function showAlbumContent($userId, $albumName) {
-		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '/album/' . urlencode($albumName);
+	protected function getAlbums($userId) {
+		$tmp = array();
+
+		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '?kind=album';
 		$xml = $this->curlit($url);
 		$xml = str_replace("xmlns='http://www.w3.org/2005/Atom'", '', $xml);
-
 		$dom = new domdocument;
-		$dom->loadXml($xml);
+		if($xml) {
+			$dom->loadXml($xml);
 
-		$xpath = new domxpath($dom);
-		$nodes = $xpath->query('//entry');
-		foreach ($nodes as $node) {
-			$tmp[]['src'] = $xpath->query('.//media:thumbnail/@url', $node)->item(0)->textContent;
+			$xpath = new domxpath($dom);
+			$nodes = $xpath->query('//entry');
+
+			foreach ($nodes as $node) {
+				$rights = $xpath->query('rights', $node)->item(0)->textContent;
+				if($rights == "public") {
+					$tmp[] = $xpath->query('title', $node)->item(0)->textContent;
+				}
+			}
 		}
 		return $tmp;
 	}
 
 	//THIS IS BASED ON http://blogoscoped.com/archive/2007-03-22-n84.html
-	protected function getAlbums($userId) {
-		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '?kind=album';
+	protected function showAlbumContent($userId, $albumName) {
+		$tmp = array();
+		$url = 'http://picasaweb.google.com/data/feed/api/user/' . urlencode($userId) . '/album/'.$albumName."/";
 		$xml = $this->curlit($url);
 		$xml = str_replace("xmlns='http://www.w3.org/2005/Atom'", '', $xml);
-
+		if($xml == "No album found.") {
+			DB::alteration_message("$albumName NOT FOUND", "deleted");
+			return $tmp;
+		}
 		$dom = new domdocument;
-		$dom->loadXml($xml);
-
-		$xpath = new domxpath($dom);
-		$nodes = $xpath->query('//entry');
-		foreach ($nodes as $node) {
-			$tmp[] = $xpath->query('title', $node)->item(0)->textContent;
+		if($xml){
+			$dom->loadXml($xml);
+			$xpath = new domxpath($dom);
+			$nodes = $xpath->query('//entry');
+			foreach ($nodes as $node) {
+				$tmp[]['src'] = $xpath->query('.//media:thumbnail/@url', $node)->item(0)->textContent;
+			}
 		}
 		return $tmp;
 	}
