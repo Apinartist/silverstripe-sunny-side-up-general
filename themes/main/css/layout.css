@@ -74,4 +74,32 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 	padding-right: 30px;
 }
 
-
+/***************************** START RANDOM IMAGE ******************/
+#RandomImage {
+	cursor: pointer;
+}
+#RandomImageLarge {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 9999999;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	background-color: #808383;
+	overflow: hidden;
+	background-size: 100% 100%;
+	cursor: pointer;
+}
+#RandomImageLarge img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	border: 0px;
+	pointer: pointer;
+}
+/***************************** END RANDOM IMAGE ******************/

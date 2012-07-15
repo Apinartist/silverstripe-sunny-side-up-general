@@ -170,27 +170,113 @@
 
 
 
-jQuery(document).ready(
-	function(){
+
+/*
+ *@author nicolaas[at]sunnysideup.co.nz
+ *
+ **/
+
+;(function(jQuery) {
+	jQuery(document).ready(
+		function() {
+			windowResizer.init();
+		}
+	);
+})(jQuery);
+
+var windowResizer = {
+
+	windowWidth: 0,
+
+	windowHeight: 0,
+
+	minWrapperWidth: 530,
+
+	minWrapperHeight: 400,
+		set_min_wrapper_height: function(v) {this.minWrapperHeight = v;},
+
+	maxWrapperWidth: 1920,
+
+	maxWrapperHeight: 1449,
+
+	imageWidth: "",
+
+	imageHeight: "",
+
+	imageSelector : '#RandomVisualThought',
+
+	init : function() {
+
 		jQuery("#RandomVisualThought").click(
 			function(el) {
-				var rel = jQuery(this).attr("rel");
-				jQuery("body").append('<div id="RandomImageLarge"></div>');
+				var url = jQuery(this).attr("rel");
+				width = 100;
+				height = 100;
+				jQuery("body").append('<div id="RandomImageLarge"><img src="'+url+'" alt="random image large" /></div>');
 				jQuery("#RandomImageLarge")
-					.css("background-image", "url(" + rel + ")")
-					.css("background-size", "100% 100%")
-					.css("position", "fixed")
-					.css("width", "100%")
-					.css("height", "100%")
-					.css("z-index", "999999999")
-					.css("top", "0")
-					.css("left", "0")
+					//.css('background-image', 'url('+url+')')
 					.click(
 						function(){
 							jQuery(this).remove();
 						}
 					);
+				windowResizer.resizeImage();
 			}
 		);
+		//redo when window is resized
+		jQuery(window).resize(
+			function() {
+				if(jQuery("#RandomImageLarge").length) {
+					windowResizer.resizeImage();
+				}
+			}
+		);
+
+	},
+
+	resizeImage : function() {
+		//get window height
+		this.windowWidth = jQuery(window).width();
+		this.windowHeight = jQuery(window).height();
+		//width within boundaries
+		if(1 == 2) {
+			if(this.windowWidth < this.minWrapperWidth) {
+				this.windowWidth = this.minWrapperWidth;
+			}
+			if(this.windowWidth > this.maxWrapperWidth) {
+				this.windowWidth = this.maxWrapperWidth;
+			}
+			//height within boundaries
+			if(this.windowHeight < this.minWrapperHeight) {
+				this.windowHeight = this.minWrapperHeight;
+			}
+			if(this.windowHeight > this.maxWrapperHeight) {
+				this.windowHeight = this.maxWrapperHeight;
+			}
+		}
+		var image = this.getImage();
+
+		// 2) Center image in the middle
+		this.imageWidth = 'auto';
+		this.imageHeight = this.windowHeight + 'px';
+		image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
+		if(jQuery(image).width() > jQuery(image).height()) {
+			if(jQuery(image).width() < this.windowWidth) {
+				this.imageWidth = this.windowWidth + 'px';
+				this.imageHeight = 'auto';
+				image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
+			}
+		}
+		if(jQuery(image).height() > this.windowHeight) {
+			var heightDifference = jQuery(image).height() - this.windowHeight;
+			jQuery(image).css("margin-top", "-"+Math.round(heightDifference / 2)+"px" )
+		}
+	},
+
+
+	getImage : function() {
+		return jQuery('#RandomImageLarge img');
 	}
-)
+
+}
+
