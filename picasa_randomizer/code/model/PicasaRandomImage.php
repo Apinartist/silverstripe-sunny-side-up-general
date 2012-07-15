@@ -3,9 +3,6 @@
 /**
  * adds pictures from your google picasa account to a data object for random retrieval.
  *@author nicolaas[at]sunnysideup.co.nz
- *@PicasaRandomImage::set_google_username("tester")
- *@PicasaRandomImage::set_number_of_folders(3)
- *@PicasaRandomImage::set_number_of_images_per_folder(2)
  * example link: https://picasaweb.google.com/data/feed/api/user/xxx
  * example link: https://picasaweb.google.com/data/feed/api/user/nfrancken/albumid/5742357499437955281xxxx/
  * large image: https://lh4.googleusercontent.com/-zs8sog5SG0U/T7DzuF3Lw9I/AAAAAAAAP4E/rPZiGlVL_eY/s2500/IMG_1715.JPG
@@ -34,18 +31,18 @@ class PicasaRandomImage extends DataObject {
 	 * set to 1 to take all
 	 * @var Int
 	 */
-	protected static $take_album_one_in = 10;
-		static  function set_take_album_one_in($v) {self::$take_album_one_in = $v;}
-		static  function get_take_album_one_in() {return self::$take_album_one_in;}
+	protected static $number_of_folders = 10;
+		static  function set_number_of_folders($i) {self::$number_of_folders = $i;}
+		static  function get_number_of_folders() {return self::$number_of_folders;}
 
 	/**
 	 * set to 30 to take one in thirty pictures
 	 * set to 1 to add all
 	 * @var Int
 	 */
-	protected static $take_picture_one_in = 10;
-		static  function set_take_picture_one_in($v) {self::$take_picture_one_in = $v;}
-		static  function get_take_picture_one_in() {return self::$take_picture_one_in;}
+	protected static $number_of_images_per_folder = 2;
+		static  function set_number_of_images_per_folder($i) {self::$number_of_images_per_folder = $i;}
+		static  function get_number_of_images_per_folder() {return self::$number_of_images_per_folder;}
 
 	public static function get_random_image($width){
 		$objects = DataObject::get("PicasaRandomImage", "", "RAND()");
@@ -59,23 +56,31 @@ class PicasaRandomImage extends DataObject {
 		parent::requireDefaultRecords();
 		if(isset($_GET["updatepicassapics"])) {
 			$albums = $this->getAlbums(PicasaRandomImage::$google_username);
-			foreach($albums as $albumTitle) {
-				if(!(rand(1, 10000) % self::get_take_album_one_in())) {
+			if(is_array($albums) && count($albums)) {
+				$selectedAlbums = array_rand($albums, (count($albums <= self::get_number_of_folders()) ? self::get_number_of_folders() : count($albums)));
+				if(!is_array($selectedAlbums)) {
+					$selectedAlbums = array($selectedAlbums);
+				}
+				foreach($selectedAlbums as $albumKey) {
+					$albumTitle = $albums[$albumKey];
 					//google wants only the letters and numbers in the url
 					$albumTitle = ereg_replace("[^A-Za-z0-9]", "", $albumTitle);
 					//get the list of pictures from the album
 					$pictures = $this->showAlbumContent(PicasaRandomImage::$google_username, $albumTitle);
-					if(!(rand(1, 10000) % self::get_take_picture_one_in())) {
+					if(is_array($pictures) && count($pictures)) {
+						$selectedPictures = array_rand($pictures, (count($pictures <= self::get_number_of_images_per_folder()) ? self::get_number_of_images_per_folder() : count($pictures)));
 						//get a random picture from the album
-						if(is_array($pictures)){
-							foreach($pictures as $picture) {
-								$url = $picture["src"];
-								if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$url'")) {
-									$obj = new PicasaRandomImage();
-									$obj->URL = $url;
-									$obj->write();
-									DB::alteration_message("adding picasa random image: ".$obj->URL."<img src=\"$url\" alt=\"\">", "created");
-								}
+						if(!is_array($selectedPictures)){
+							$selectedPictures = array($selectedPictures);
+						}
+						foreach($selectedPictures as $pictureKey) {
+							$picture = $pictures[$pictureKey];
+							$url = $picture["src"];
+							if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$url'")) {
+								$obj = new PicasaRandomImage();
+								$obj->URL = $url;
+								$obj->write();
+								DB::alteration_message("adding picasa random image: ".$obj->URL."<img src=\"$url\" alt=\"\">", "created");
 							}
 						}
 					}

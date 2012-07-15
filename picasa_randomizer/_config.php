@@ -13,5 +13,6 @@
 
 //OPTIONAL
 //PicasaRandomImage::set_number_of_folders(3);
-//PicasaRandomImage::set_number_of_images_per_folder(2);
+//PicasaRandomImage::set_take_album_one_in(2);
+//PicasaRandomImage::set_take_picture_one_in(2);
 //===================---------------- END picasarandomizer MODULE ----------------===================
