@@ -206,7 +206,6 @@ var windowResizer = {
 	imageSelector : '#RandomVisualThought',
 
 	init : function() {
-
 		jQuery("#RandomVisualThought").click(
 			function(el) {
 				var url = jQuery(this).attr("rel");
@@ -218,9 +217,17 @@ var windowResizer = {
 					.click(
 						function(){
 							jQuery(this).remove();
+							jQuery(document).removeAttr("keydown");
 						}
 					);
 				windowResizer.resizeImage();
+				jQuery(document).keydown(
+					function(e) {
+						if(jQuery('#RandomImageLarge').length) {
+							if (e.which == 27) {jQuery('#RandomImageLarge').click(); }  // esc   (does not work)
+						}
+					}
+				);
 			}
 		);
 		//redo when window is resized
