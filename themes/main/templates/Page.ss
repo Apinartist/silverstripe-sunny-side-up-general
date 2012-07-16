@@ -5,10 +5,8 @@
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<% base_tag %>
 	$ExtendedMetatags
-  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body id="Body$ClassName">
 <div id="Wrapper">
@@ -25,7 +23,6 @@
 	</div>
 	<% include ShareThis %>
 </div>
-$addBasicMetatagRequirements
 <% include TemplateOverviewPageDevelopmentFooter %>
 <% include Analytics %>
 </body>
