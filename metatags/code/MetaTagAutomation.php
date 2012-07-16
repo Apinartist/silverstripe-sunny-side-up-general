@@ -293,15 +293,17 @@ class MetaTagAutomation_controller extends Extension {
 			}
 			if(Session::get("testforie") > 0) {
 				Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
+				Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'">');
 			}
 			else {
 				Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
 				Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
 				Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
+				Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">');
 			}
-			$array = MetaTagAutomation::get_google_font_collection();
-			if($array && count($array)) {
-				foreach($array as $font) {
+			$googleFontArray = MetaTagAutomation::get_google_font_collection();
+			if($googleFontArray && count($googleFontArray)) {
+				foreach($googleFontArray as $font) {
 					Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.urlencode($font).'" rel="stylesheet" type="text/css" />');
 				}
 			}
@@ -378,6 +380,7 @@ class MetaTagAutomation_controller extends Extension {
 			<meta name="date-modified-yyyymmdd" content="'.$lastEdited->Format("Ymd").'" />
 			<meta name="country" content="'.$siteConfig->MetaDataCountry.'" />
 			<meta http-equiv="imagetoolbar" content="no" />
+			<meta name="viewport" content="width=device-width,initial-scale=1" />
 			<meta http-equiv="Content-Language" content="'.i18n::get_locale().'" />
 			'.$page->ExtraMeta.
 			$description;
