@@ -378,6 +378,7 @@ class MetaTagAutomation_controller extends Extension {
 			<meta name="date-modified-yyyymmdd" content="'.$lastEdited->Format("Ymd").'" />
 			<meta name="country" content="'.$siteConfig->MetaDataCountry.'" />
 			<meta http-equiv="imagetoolbar" content="no" />
+			<meta http-equiv="Content-Language" content="'.i18n::get_locale().'" />
 			'.$page->ExtraMeta.
 			$description;
 		}
