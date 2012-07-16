@@ -14,7 +14,7 @@ class DataObjectOneRecordUpdateController extends Controller{
 		}
 		$obj = singleton($className);
 		if($obj->canEdit()) {
-			$link = 'dataobjectonerecordupdate/show/'.$className."/".$recordID;
+			$link = '/dataobjectonerecordupdate/show/'.$className."/".$recordID;
 			return '
 				<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$className.$recordID.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">'.$linkText.'</a>';
 		}

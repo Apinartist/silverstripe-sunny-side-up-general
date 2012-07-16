@@ -32,7 +32,7 @@ class DataObjectSorterController extends Controller{
 	function popup_link($className, $filterField = "", $filterValue = "", $linkText = "sort this list", $titleField = "") {
 		$obj = singleton($className);
 		if($obj->canEdit()) {
-			$link = 'dataobjectsorter/sort/'.$className."/";
+			$link = '/dataobjectsorter/sort/'.$className."/";
 			if($filterField) {
 				$link .= $filterField.'/';
 			}

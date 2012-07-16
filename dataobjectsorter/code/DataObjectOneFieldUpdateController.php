@@ -40,7 +40,7 @@ class DataObjectOneFieldUpdateController extends Controller{
 			$params["sort"] = "sort=".urlencode($sort);
 		}
 		if($obj->canEdit()) {
-			$link = 'dataobjectonefieldupdate/show/'.$ClassName."/".$FieldName.'/?'.implode("&amp;", $params);
+			$link = '/dataobjectonefieldupdate/show/'.$ClassName."/".$FieldName.'/?'.implode("&amp;", $params);
 			if(!$linkText) {
 				$linkText = 'click here to edit';
 			}
