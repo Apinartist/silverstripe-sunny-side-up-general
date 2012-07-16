@@ -239,66 +239,71 @@ class MetaTagAutomation_controller extends Extension {
 	 * add all the basic js and css files - call from Page::init()
 	 */
 
-	function addBasicMetatagRequirements($additionalJS = array(), $additionalCSS = array()) {
-		$themeFolder = $this->getThemeFolder()."/";
-		$cssArrayLocationOnly = array();
-		$jsArray =
-			array(
-				THIRDPARTY_DIR."/jquery/jquery.js",
-				$this->owner->project().'/javascript/j.js'
-			);
-		array_merge($jsArray, $additionalJS);
-		if(file_exists(SS_METATAGS_DIR.'/css/reset.css')) {
-			$resetFile = Director::baseFolder()."/".$themeFolder.'/css/reset.css';
-		}
-		else {
-			$resetFile = SS_METATAGS_DIR.'/css/reset.css';
-		}
-		$cssArray =
-			array(
-				array("media" => null, "location" => $resetFile),
-				array("media" => null, "location" => $themeFolder.'css/typography.css'),
-				array("media" => null, "location" => $themeFolder.'css/layout.css'),
-				array("media" => null, "location" => $themeFolder.'css/form.css'),
-				array("media" => null, "location" => $themeFolder.'css/menu.css'),
-				array("media" => "print", "location" => $themeFolder.'css/print.css'),
-				array("media" => null, "location" => $themeFolder.'css/individualPages.css')
-			);
-		array_merge($cssArray, $additionalCSS);
-		foreach($jsArray as $js) {
-			Requirements::javascript($js);
-		}
-		foreach($cssArray as $cssArraySub) {
-			Requirements::css($cssArraySub["location"], $cssArraySub["media"]);
-			$cssArrayLocationOnly[] = $cssArraySub["location"];
-		}
-		Requirements::themedCSS($this->owner->ClassName);
-		if(self::$combine_css_files_into_one) {
-			Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.css",$cssArrayLocationOnly);
-		}
-		if(self::$combine_js_files_into_one) {
-			$prototypeArray =
+	private static $addBasicMetatagRequirementsCOMPLETED = false;
+
+	function addBasicMetatagRequirements($additionalJS = array(), $additionalCSS = array(), $force = false) {
+		if(!self::$addBasicMetatagRequirementsCOMPLETED || $force) {
+			self::$addBasicMetatagRequirementsCOMPLETED = true;
+			$themeFolder = $this->getThemeFolder()."/";
+			$cssArrayLocationOnly = array();
+			$jsArray =
 				array(
-					"sapphire/javascript/Validator.js",
-					THIRDPARTY_DIR."/prototype/prototype.js",
-					THIRDPARTY_DIR."/behaviour/behaviour.js",
-					"sapphire/javascript/prototype_improvements.js"
+					THIRDPARTY_DIR."/jquery/jquery.js",
+					$this->owner->project().'/javascript/j.js'
 				);
-			Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomationPrototype.js", $prototypeArray);
-			Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.js", $jsArray);
-		}
-		if(Session::get("testforie") > 0) {
-			Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
-		}
-		else {
-			Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
-			Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
-			Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
-		}
-		$array = MetaTagAutomation::get_google_font_collection();
-		if($array && count($array)) {
-			foreach($array as $font) {
-				Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.urlencode($font).'" rel="stylesheet" type="text/css" />');
+			array_merge($jsArray, $additionalJS);
+			if(file_exists(SS_METATAGS_DIR.'/css/reset.css')) {
+				$resetFile = Director::baseFolder()."/".$themeFolder.'/css/reset.css';
+			}
+			else {
+				$resetFile = SS_METATAGS_DIR.'/css/reset.css';
+			}
+			$cssArray =
+				array(
+					array("media" => null, "location" => $resetFile),
+					array("media" => null, "location" => $themeFolder.'css/typography.css'),
+					array("media" => null, "location" => $themeFolder.'css/layout.css'),
+					array("media" => null, "location" => $themeFolder.'css/form.css'),
+					array("media" => null, "location" => $themeFolder.'css/menu.css'),
+					array("media" => "print", "location" => $themeFolder.'css/print.css'),
+					array("media" => null, "location" => $themeFolder.'css/individualPages.css')
+				);
+			array_merge($cssArray, $additionalCSS);
+			foreach($jsArray as $js) {
+				Requirements::javascript($js);
+			}
+			foreach($cssArray as $cssArraySub) {
+				Requirements::css($cssArraySub["location"], $cssArraySub["media"]);
+				$cssArrayLocationOnly[] = $cssArraySub["location"];
+			}
+			Requirements::themedCSS($this->owner->ClassName);
+			if(self::$combine_css_files_into_one) {
+				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.css",$cssArrayLocationOnly);
+			}
+			if(self::$combine_js_files_into_one) {
+				$prototypeArray =
+					array(
+						"sapphire/javascript/Validator.js",
+						THIRDPARTY_DIR."/prototype/prototype.js",
+						THIRDPARTY_DIR."/behaviour/behaviour.js",
+						"sapphire/javascript/prototype_improvements.js"
+					);
+				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomationPrototype.js", $prototypeArray);
+				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.js", $jsArray);
+			}
+			if(Session::get("testforie") > 0) {
+				Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
+			}
+			else {
+				Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
+				Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
+				Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
+			}
+			$array = MetaTagAutomation::get_google_font_collection();
+			if($array && count($array)) {
+				foreach($array as $font) {
+					Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.urlencode($font).'" rel="stylesheet" type="text/css" />');
+				}
 			}
 		}
 	}
@@ -308,6 +313,7 @@ class MetaTagAutomation_controller extends Extension {
 	 */
 
 	function ExtendedMetatags($includeTitle = true, $addExtraSearchEngineData = true) {
+		$this->addBasicMetatagRequirements();
 		$tags = "";
 		$page = $this->owner;
 		$siteConfig = SiteConfig::current_site_config();
