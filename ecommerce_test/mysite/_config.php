@@ -217,8 +217,6 @@ MinMaxModifier::set_use_stock_quantities(true); //make use of the stock quantity
 
 
 //===================---------------- START ecommerce_quick_add MODULE ----------------===================
-Object::add_extension("Product", "AddToCartPageDecorator");
-Object::add_extension("ProductGroup", "AddToCartPageDecorator");
 //===================---------------- END ecommerce_quick_add MODULE ----------------===================
 
 
