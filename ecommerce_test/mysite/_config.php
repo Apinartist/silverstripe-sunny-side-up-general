@@ -132,6 +132,9 @@ ProductAttributeDecoratorColour_Value::set_default_contrast_colour("FFFFFF");
 ProductAttributeDecoratorColour_Value::set_default_colour("000000");
 ProductAttributeDecoratorColour_Value::set_put_styling_in_dropdown_options(true);
 //ColourDropdownField::set_js_location_for_select_styling("ecommerce_product_variation_colours/javascript/ColourDropdownField.js")
+//____________EASY SORTING - REQUIRES: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
+Object::add_extension('ProductAttributeValue', 'DataObjectSorterDOD');
+Object::add_extension('ProductAttributeType', 'DataObjectSorterDOD');
 // __________________________________ END ECOMMERCE PRODUCT VARIATIONS COLOUR MODULE CONFIG __________________________________
 
 
