@@ -25,7 +25,6 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 
 
 	function dodataobjectsort() {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
 		if(!Permission::check("CMS_ACCESS_CMSMain")) {
 			Security::permissionFailure($this, _t('Security.PERMFAILURE',' This page is secured and you need administrator rights to access it. Enter your credentials below and we will send you right along.'));
 		}
@@ -42,25 +41,25 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 						$position = intval($position);
 						$id = intval($id);
 						$sql = "
-							UPDATE {$bt}".$baseDataClass."{$bt}
-							SET {$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} = ".$position. "
-							WHERE {$bt}".$baseDataClass."{$bt}.{$bt}ID{$bt} = ".$id."
-								AND ({$bt}".$baseDataClass."{$bt}.{$bt}".$field."{$bt} <> ".$position." )
+							UPDATE \"".$baseDataClass."\"
+							SET \"".$baseDataClass."\".\"".$field."\" = ".$position. "
+							WHERE \"".$baseDataClass."\".\"ID\" = ".$id."
+								AND (\"".$baseDataClass."\".\"".$field."\" <> ".$position." )
 							LIMIT 1;";
 						//echo $sql .'<hr />';
 						DB::query($sql);
 						if("SiteTree" == $baseDataClass) {
-							$sql_Live = str_replace("{$bt}SiteTree{$bt}", "{$bt}SiteTree_Live{$bt}", $sql);
+							$sql_Live = str_replace("\"SiteTree\"", "\"SiteTree_Live\"", $sql);
 							//echo $sql_Live .'<hr />';
 							DB::query($sql_Live);
 						}
 					}
 				}
 			}
-			return "Updated record(s)";
+			return _t("DataObjectSorter.UPDATEDRECORDS", "Updated record(s)");
 		}
 		else {
-			return "please log-in as an administrator to make changes to the sort order";
+			return _t("DataObjectSorter.NOACCESS", "You do not have access rights to make these changes");
 		}
 	}
 
