@@ -75,14 +75,21 @@ class GoogleMapLocationsObject extends DataObject {
 		"Link" => "Varchar"
 	);
 
+	/**
+	 * Provides MySQL snippet to work out distance between GoogleMapLocationsObject and location
+	 * The method returns a string for use in queries
+	 * The query snippet returns the distance between the GoogleMapLocationsObject and the latitude and longitude provided
+	 * NOTE: 6378.137 is the radius of the earth in kilometers
+	 * @param Double $lon - longitude of location
+	 * @param Double $lat - latitude of location
+	 * @return String
+	 */
 	static function radiusDefinition($lon, $lat) {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Latitude{$bt} /180 ) * COS( (PI( ) * {$bt}GoogleMapLocationsObject{$bt}.{$bt}Longitude{$bt} /180 ) - ( PI( ) * $lon / 180 ) ) ) ) )";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * \"GoogleMapLocationsObject\".\"Latitude\" /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * \"GoogleMapLocationsObject\".\"Latitude\" /180 ) * COS( (PI( ) * \"GoogleMapLocationsObject\".\"Longitude\" /180 ) - ( PI( ) * $lon / 180 ) ) ) ) )";
 	}
 
 	static function radiusDefinitionOtherTable($lon, $lat, $table, $latitudeField, $longitudeField) {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
-		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * {$bt}".$table."{$bt}.{$bt}".$latitudeField."{$bt} /180 ) * COS( (PI( ) * {$bt}".$table."{$bt}.{$bt}".$longitudeField."{$bt} / 180 ) - ( PI( ) * $lon / 180 ) ) ) ) ) ";
+		return "(6378.137 * ACOS( ( SIN( PI( ) * ".$lat." /180 ) * SIN( PI( ) * \"".$table."\".\"".$latitudeField."\" /180 ) ) + ( COS( PI( ) * ".$lat." /180 ) * cos( PI( ) * \"".$table."\".\"".$latitudeField."\" /180 ) * COS( (PI( ) * \"".$table."\".\"".$longitudeField."\" / 180 ) - ( PI( ) * $lon / 180 ) ) ) ) ) ";
 	}
 
 	static function pointExists($addressArray) {
