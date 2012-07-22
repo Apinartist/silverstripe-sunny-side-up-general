@@ -31,6 +31,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 		$this->UpdateMyRecords();
 
+		$this->createCurrencies();
+
 		$this->createTags();
 
 		$this->createRecommendedProducts();
@@ -756,6 +758,27 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->CanOnlyBeUsedOnce = false;
 			$obj->write();
 		}
+	}
+
+	function createCurrencies(){
+		$obj = new EcommerceCurrency();
+		$obj->Code = "USD";
+		$obj->Name = "US Dollars";
+		$obj->InUse = 1;
+		$obj->write();
+		DB::alteration_message("created USD currency", "created");
+		$obj = new EcommerceCurrency();
+		$obj->Code = "EUR";
+		$obj->Name = "Euros";
+		$obj->InUse = 1;
+		$obj->write();
+		DB::alteration_message("created EUR currency", "created");
+		$obj = new EcommerceCurrency();
+		$obj->Code = "AUD";
+		$obj->Name = "Australian Dollar";
+		$obj->InUse = 0;
+		$obj->write();
+		DB::alteration_message("created AUD currency", "created");
 	}
 
 	function createTags(){

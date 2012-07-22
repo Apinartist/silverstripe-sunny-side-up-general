@@ -29,6 +29,9 @@ CheckoutPage_Controller:
 		orderconfirmationandpayment
 	]
 
+OrderConfirmationPage_Controller:
+	 include_as_checkout_step: true
+
 ProductGroup:
 	sort_options:
 		default:

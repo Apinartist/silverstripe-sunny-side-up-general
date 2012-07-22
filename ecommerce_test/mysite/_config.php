@@ -65,7 +65,7 @@ EcommerceConfig::set_folder_and_file_locations(array("mysite/_config/ecommerce.y
 
 // __________________________________ END PAYMENT MODULE CONFIG __________________________________
 Currency::setCurrencySymbol("€");
-Payment::set_site_currency("NZD");
+Payment::set_site_currency("EUR");
 Payment::set_supported_methods(array(
 	'PayPalPayment' => 'Paypal Payment'
 ));
@@ -102,7 +102,8 @@ MetaTagAutomation_controller::set_combine_js_files_into_one(true);
 
 
 //===================---------------- START payment MODULE ----------------===================
-Payment::set_site_currency("NZD");
+Payment::set_site_currency("EUR");
+Currency::setCurrencySymbol("€");
 Payment::set_supported_methods(array(
 	'DirectCreditPayment' => 'Direct Credit (payment into bank account)',
 	'InStorePayment' => 'Pay in Store on Pick-Up'
