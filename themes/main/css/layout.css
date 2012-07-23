@@ -73,7 +73,7 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 	padding: 0.7em; margin: 0.3em 0;
 	padding-right: 30px;
 }
-
+.pageNumbers {display: inline-block; height: 0.7em; overflow:hidden;}
 /***************************** START RANDOM IMAGE ******************/
 #RandomImage {
 	cursor: pointer;
