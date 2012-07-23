@@ -767,7 +767,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 		$obj->InUse = 1;
 		$obj->write();
 		DB::alteration_message("created USD currency", "created");
-		$obj = new EcommerceCurrency();
+		$obj = DataObject::get_one("EcommerceCurrency", "\"Code\" = 'EUR'");
+		if(!$obj) {
+			$obj = new EcommerceCurrency();
+		}
 		$obj->Code = "EUR";
 		$obj->Name = "Euros";
 		$obj->InUse = 1;
