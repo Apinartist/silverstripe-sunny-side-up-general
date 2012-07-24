@@ -10,9 +10,11 @@ Nicolaas Francken [at] sunnysideup.co.nz
 Requirements
 -----------------------------------------------
 SilverStripe 2.3.0 or greater.
+userforms - see: https://github.com/silverstripe/silverstripe-userforms
 
 Documentation
 -----------------------------------------------
+Please contact author for more details.
 
 Installation Instructions
 -----------------------------------------------
