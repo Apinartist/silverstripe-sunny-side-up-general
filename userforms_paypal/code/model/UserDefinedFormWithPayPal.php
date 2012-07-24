@@ -6,7 +6,7 @@
 class UserDefinedFormWithPayPal extends UserDefinedForm {
 
 	/**
-	 * map Paypal Fields ($key) to fields used in the userdefined form
+	 * map Template Fields ($key) to fields used in the userdefined form
 	 * For example, if the userdefinedforms contains a fields 'LastName'
 	 * then Paypal will be presented with its value as Surname.
 	 * @var Array
@@ -19,6 +19,7 @@ class UserDefinedFormWithPayPal extends UserDefinedForm {
 		'City' => array("City", "Town"),
 		'State' => array("State", "Province"),
 		'Zip' => array("Zip", "PostalCode", "Zipcode", "Postcode"),
+		'Country' => array("Country"),
 		'Email' => array("Email", "E-Mail"),
 	);
 		static function set_mapped_fields($a) {self::$mapped_fields = $a;}
@@ -33,9 +34,11 @@ class UserDefinedFormWithPayPal extends UserDefinedForm {
 	static $db = array(
 		"Amount" => "Double",
 		"ProductName" => "Varchar(100)",
-		"Currency" => "Varchar(5)",
+		"ProductCode" => "Varchar(10)",
+		"CurrencyCode" => "Varchar(5)",
 		"BusinessEmail" => "Varchar(100)",
-		"PaypalButtonLabel" => "Varchar(100)"
+		"PaypalButtonLabel" => "Varchar(100)",
+		"BeforePaymentInstructions" => "HTMLText"
 	);
 
 	/**
@@ -54,12 +57,23 @@ class UserDefinedFormWithPayPal extends UserDefinedForm {
 		$fields = parent::getCMSFields();
 
 		// define tabs
-		$fields->findOrMakeTab('Root.Content.Paypal', _t('UserDefinedFormWithPayPal.PAYPAL', 'Pay Pal'));
+		$fields->findOrMakeTab('Root.Content.Paypal', _t('UserDefinedFormWithPayPal.PAYPAL', 'PayPal'));
 		// field editor
-		$fields->addFieldToTab("Root.Content.Paypal", new NumericField("Amount", "Amount"));
-		$fields->addFieldToTab("Root.Content.Paypal", new TextField("Currency", "Currency Code"));
-		$fields->addFieldToTab("Root.Content.Paypal", new TextField("PaypalButtonLabel", "Pay now button Label (e.g. Pay Now)"));
+		$fields->addFieldToTab("Root.Content.Paypal", new EmailField("BusinessEmail", _t('UserDefinedFormWithPayPal.BusinessEmail', 'Email associated with your paypal account')));
+		$fields->addFieldToTab("Root.Content.Paypal", new NumericField("Amount", _t('UserDefinedFormWithPayPal.AMOUNT', 'Amount')));
+		$fields->addFieldToTab("Root.Content.Paypal", new TextField("CurrencyCode", _t('UserDefinedFormWithPayPal.CURRENCYCODE', 'Currency Code (e.g. NZD or USD or EUR)')));
+		$fields->addFieldToTab("Root.Content.Paypal", new TextField("ProductCode", _t('UserDefinedFormWithPayPal.PRODUCTCODE', 'Product code, something that unique identifies this form')));
+		$fields->addFieldToTab("Root.Content.Paypal", new TextField("ProductName", _t('UserDefinedFormWithPayPal.PRODUCTNAME', 'Product Name (as shown on PayPal Payment Form)')));
+		$fields->addFieldToTab("Root.Content.Paypal", new TextField("PaypalButtonLabel", _t('UserDefinedFormWithPayPal.PAYPALBUTTONLABEL', 'PayPal Button Text (e.g. pay now)')));
+		$fields->addFieldToTab("Root.Content.Paypal", new HTMLEditorField("BeforePaymentInstructions", _t('UserDefinedFormWithPayPal.BEFOREPAYMENTINSTRUCTIONS', 'Instructions to go with payment now button (e.g. click on the button above to proceed with your payment)')));
 		return $fields;
+	}
+
+	function onBeforeWrite(){
+		parent::onBeforeWrite();
+		if(!$this->ProductCode) {
+			$this->ProductCode = $this->Link();
+		}
 	}
 
 
@@ -80,6 +94,7 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 	 * @var SubmittedForm Object
 	 */
 	protected $mostLikeLySubmission = null;
+
 	/**
 	 * Process the form that is submitted through the site
 	 *
@@ -91,12 +106,12 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 		//pre process?
 		parent::process($data, $form);
 		//post process
-		$this->mostLikeLySubmission = DataObject::get_one("SubmittedForm", "\"Created\" DESC");
+		$this->mostLikeLySubmission = DataObject::get("SubmittedForm", null, "\"Created\" DESC", null, 1)->First();
 		Session::set("UserDefinedFormWithPayPalID", $this->mostLikeLySubmission->ID);
 		$paypalIdentifier1 = new SubmittedFormField();
 		$paypalIdentifier1->Name = "Paypal Identifier";
 		$paypalIdentifier1->Title = "Paypal Identifier";
-		$paypalIdentifier1->Value = $this->mostLikeLySubmission->ID;
+		$paypalIdentifier1->Value = $this->getCustomCode();
 		$paypalIdentifier1->ParentID = $this->mostLikeLySubmission->ID;
 		$paypalIdentifier1->write();
 		//add a double-check
@@ -106,7 +121,14 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 		$paypalIdentifier2->Value = print_r($data, 1);
 		$paypalIdentifier2->ParentID = $this->mostLikeLySubmission->ID;
 		$paypalIdentifier2->write();
-		return Director::redirect($this->Link() . 'finished' . $referrer);
+	}
+
+	/**
+	 * Handle notification from PAYPAL
+	 * to be completed.
+	 */
+	function getnotification(){
+		return array();
 	}
 
 	/**
@@ -119,22 +141,28 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 	function finished() {
 		$referrer = isset($_GET['referrer']) ? urldecode($_GET['referrer']) : null;
 		$this->mostLikeLySubmission = DataObject::get_by_id("SubmittedForm", intval(Session::get("UserDefinedFormWithPayPalID"))-0);
-		$customisedArray = array(
-			'Link' => $referrer,
-			'MerchantID' => $this->BusinessEmail,
-			'ProductName' => $this->ProductName,
-			'SubmittedFormID' => $this->mostLikeLySubmission->ID,
-			'Amount' => $this->Amount,
-			'PaypalButtonLabel' => $this->PaypalButtonLabel
-		);
-		foreach(UserDefinedFormWithPayPal::get_mapped_fields() as $paypalField => $forFieldsArray){
-			$customisedArray[$paypalField] = $this->getSubmittedFormValue($forFieldsArray);
-		}
-		if($this->mostLikeLySubmission) {
+		if($this->mostLikeLySubmission && $this->BusinessEmail) {
+			$customisedArray = array(
+				'Link' => $referrer,
+				'BeforePaymentInstructions' => $this->BeforePaymentInstructions,
+				'MerchantID' => $this->BusinessEmail,
+				'ProductName' => $this->ProductName,
+				'Custom' => $this->getCustomCode(),
+				'SubmittedFormID' => $this->mostLikeLySubmission->ID,
+				'Amount' => $this->Amount,
+				'PaypalButtonLabel' => $this->PaypalButtonLabel,
+				'CurrencyCode' => $this->CurrencyCode,
+				'ReturnLink' => $this->Link("paymentmade")
+			);
+			foreach(UserDefinedFormWithPayPal::get_mapped_fields() as $templateField => $forFieldsArray){
+				$customisedArray[$templateField] = $this->getSubmittedFormValue($forFieldsArray);
+			}
 			return $this->customise(
-				'Content' => $this->customise($customisedArray)->renderWith('ReceivedFormSubmissionWithPayPal'),
-				'Form' => '',
-			));
+				array(
+					'Content' => $this->customise($customisedArray)->renderWith('ReceivedFormSubmissionWithPayPal'),
+					'Form' => '',
+				)
+			);
 		}
 		else {
 			return parent::finished();
@@ -142,7 +170,17 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 	}
 
 	/**
-	 *
+	 * This is the new finished method;
+	 * @return ViewableData
+	 */
+	function paymentmade(){
+		return parent::finished();
+	}
+
+	/**
+	 * Checks for a list of fields in the submitted values to see
+	 * if it is part of the submitted form
+	 * e.g. if the user enters an Email in the form then we can pass this on to Paypal.
 	 * @param Array - array of fields to check for
 	 */
 	protected function getSubmittedFormValue($nameArray) {
@@ -160,5 +198,15 @@ class UserDefinedFormWithPayPal_Controller extends UserDefinedForm_Controller {
 		}
 		return "";
 	}
+
+	/**
+	 * returns the unique identifier for the transaction
+	 * we include the page ID and Version in case we need it.
+	 * @return String
+	 */
+	protected function getCustomCode(){
+		return $this->ProductCode."-".$this->mostLikeLySubmission->ID."#".$this->ID."-".$this->Version;
+	}
+
 
 }
