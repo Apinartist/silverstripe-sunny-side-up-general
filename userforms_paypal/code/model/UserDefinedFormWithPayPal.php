@@ -62,7 +62,7 @@ class UserDefinedFormWithPayPal extends UserDefinedForm {
 		$fields->addFieldToTab("Root.Content.Paypal", new HeaderField("UserDefinedFormWithPayPalRequiredFields", _t('UserDefinedFormWithPayPal.REQUIREDFIELDS', 'Required Fields')));
 		$fields->addFieldToTab("Root.Content.Paypal", new EmailField("BusinessEmail", _t('UserDefinedFormWithPayPal.BUSINESSEMAIL', 'Email associated with your paypal account - REQUIRED')));
 		$fields->addFieldToTab("Root.Content.Paypal", new NumericField("Amount", _t('UserDefinedFormWithPayPal.AMOUNT', 'Amount / Charge')));
-		$fields->addFieldToTab("Root.Content.Paypal", new TextField("ProductCode", _t('UserDefinedFormWithPayPal.PRODUCTCODE', 'Product Code, something that unique identifies this form')));
+		$fields->addFieldToTab("Root.Content.Paypal", new TextField("ProductCode", _t('UserDefinedFormWithPayPal.PRODUCTCODE', 'Product Code, something that uniquely identifies this form / product')));
 		$fields->addFieldToTab("Root.Content.Paypal", new TextField("ProductName", _t('UserDefinedFormWithPayPal.PRODUCTNAME', 'Product Name (as shown on PayPal Payment Form)')));
 		$fields->addFieldToTab("Root.Content.Paypal", new HeaderField("UserDefinedFormWithPayPalNOTRequiredFields", _t('UserDefinedFormWithPayPal.OPTIONALFIELDS', 'Optional Fields')));
 		$fields->addFieldToTab("Root.Content.Paypal", new TextField("CurrencyCode", _t('UserDefinedFormWithPayPal.CURRENCYCODE', 'Currency Code (e.g. NZD or USD or EUR)')));
