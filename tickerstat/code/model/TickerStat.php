@@ -54,7 +54,7 @@ class TickerStat extends DataObject {
 		"Name" => "Name of the statistic",
 		"Number" => "Current number",
 		"HasChange" => "Has Change within 24-hour period",
-		"ChangePerDay" => "The increase per day"
+		"ChangePerDay" => "The increase per day",
 		"SecondsBetweenChange" => "Number of seconds between each change",
 		"Direction" => "Does the number go up or down?"
 	);
@@ -130,7 +130,7 @@ class TickerStat extends DataObject {
 	 */
 	public function getDirection(){
 		$perSecond = $this->workOutGrowthRateInItemsPerSecond();
-		return round $perSecond > 0 : 1 : -1;
+		return $perSecond > 0 ? 1 : -1;
 	}
 
 	/**
@@ -213,8 +213,6 @@ class TickerStat extends DataObject {
 class TickerStat_Controller extends Controller {
 
 	protected static $number_of_records = 21;
-
-	protected static $url = "http://www.get-smart.co.nz/"
 
 	function init(){
 		parent::init();
