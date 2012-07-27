@@ -32,8 +32,8 @@ TickerStat = {
 		TickerStat.values[code] = number;
 		TickerStat.width[code] = width;
 		TickerStat.repeatFunctions[code] = function(){
-			myCode = code;
-			TickerStat.repeatFunctions[code+"_interval"] = window.setInterval(
+			var myCode = code;
+			TickerStat.repeatFunctions[myCode+"_interval"] = window.setInterval(
 				function() {
 					TickerStat.values[myCode] = TickerStat.values[myCode] + increment;
 					jQuery("#"+myCode).html(TickerStat.turnNumberIntroStringWithSpans(TickerStat.values[myCode], TickerStat.width[myCode]));

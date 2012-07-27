@@ -30,13 +30,14 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 	 * inserts a piece of JS into your template
 	 * #{code} - e.g. <div id="myCode"></div>
 	 * use in template like this <div id="myStat">$TickerStat(myStat)</div>
-	 * 
+	 *
 	 * @param String $code - id of the div AND name of the statistic
 	 * @param Int $width - number of digits for the stat
-	 * 
+	 *
 	 */
 	public function TickerStat($code, $width = 8){
-		$stat = DataObject::get_one("TickerStat", "\"Code\" = ''".Convert::raw2sql($code)."'");
+		Requirements::javascript("tickerstat/javascript/TickerStat.js");
+		$stat = DataObject::get_one("TickerStat", "\"Code\" = '".Convert::raw2sql($code)."'");
 		if($stat) {
 			return Requirements::customScript(
 				"TickerStat.createTicker(\"$code\", ".$stat->Number.", $width, ".$stat->SecondsBetweenChange.", ".$stat->Direction.");",

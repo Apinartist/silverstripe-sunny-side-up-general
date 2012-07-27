@@ -3,6 +3,10 @@
 
 class TickerStat extends DataObject {
 
+	/**
+	 * used to store the calculated value: GrowthRateInItemsPerSecond
+	 * @var Double | null
+	 */
 	private $perSecond = null;
 
 	/**
@@ -55,7 +59,7 @@ class TickerStat extends DataObject {
 		"Number" => "Current number",
 		"HasChange" => "Has Change within 24-hour period",
 		"ChangePerDay" => "The increase per day",
-		"SecondsBetweenChange" => "Number of seconds between each change",
+		"MilliSecondsBetweenChange" => "Number of milli seconds (1/1000 of a second) between each change",
 		"Direction" => "Does the number go up or down?"
 	);
 
@@ -104,8 +108,8 @@ class TickerStat extends DataObject {
 	 */
 	public function getMilliSecondsBetweenChange(){
 		$perSecond = $this->workOutGrowthRateInItemsPerSecond();
-		$perChange = (1/$perSecond) * 1000;
-		return $perChange;
+		$milliSecondsPerChange = (1/$perSecond) * 1000;
+		return $milliSecondsPerChange;
 	}
 
 	/**
