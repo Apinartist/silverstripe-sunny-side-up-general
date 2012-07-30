@@ -14,4 +14,5 @@ Director::addRules(50, array(
 
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START tickerstat MODULE ----------------===================
+//TickerStat_Controller::set_json_import_url("http://www.mystatisc.com.co.nz");
 //===================---------------- END tickerstat MODULE ----------------===================

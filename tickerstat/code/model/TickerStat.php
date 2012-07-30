@@ -3,6 +3,14 @@
 
 class TickerStat extends DataObject {
 
+
+	/**
+	 * number of items being retrieved to work out rate (e.g. 21)
+	 * @var INT
+	 */
+	protected static $number_of_previous = 21;
+		static function set_number_of_previous($i) {self::$number_of_previous = $i;}
+
 	/**
 	 * used to store the calculated value: GrowthRateInItemsPerSecond
 	 * @var Double | null
@@ -69,6 +77,7 @@ class TickerStat extends DataObject {
 	public static $summary_fields = array(
 		"Created" => "Created",
 		"Name" => "Name",
+		"Number" => "Number",
 		"HasChange" => "HasChange",
 		"ChangePerDay" => "ChangePerDay"
 	);
@@ -78,7 +87,13 @@ class TickerStat extends DataObject {
 	 */
 	public static $default_sort = "LastEdited DESC, Code ASC";
 
-	function canDelete($member) {
+	/**
+	 * standard SS method
+	 * Can the stat be deleted
+	 * @param Member
+	 * @return Boolean
+	 */
+	function canDelete($member = null) {
 		return false;
 	}
 
@@ -88,7 +103,7 @@ class TickerStat extends DataObject {
 	 */
 	public function getCMSFields(){
 		$fields = parent::getCMSFields();
-		$fields->removeByName("Version");
+		$fields->removeByName("Versions");
 		return $fields;
 	}
 
@@ -98,7 +113,7 @@ class TickerStat extends DataObject {
 	 * @return Boolean
 	 */
 	public function getHasChange(){
-		return $this->getChangePerDay() ? true : false;
+		return $this->getChangePerDay() ? 1 : 0;
 	}
 
 	/**
@@ -108,8 +123,11 @@ class TickerStat extends DataObject {
 	 */
 	public function getMilliSecondsBetweenChange(){
 		$perSecond = $this->workOutGrowthRateInItemsPerSecond();
-		$milliSecondsPerChange = (1/$perSecond) * 1000;
-		return $milliSecondsPerChange;
+		if($perSecond) {
+			$milliSecondsPerChange = (1/$perSecond) * 1000;
+			return round($milliSecondsPerChange);
+		}
+		return 0;
 	}
 
 	/**
@@ -124,7 +142,7 @@ class TickerStat extends DataObject {
 			echo "<br />Per Second".$perSecond;
 			echo "<br />Per Day".$perDay;
 		}
-		return round($perDay);
+		return round($perDay)-0;
 	}
 
 	/**
@@ -134,7 +152,7 @@ class TickerStat extends DataObject {
 	 */
 	public function getDirection(){
 		$perSecond = $this->workOutGrowthRateInItemsPerSecond();
-		return $perSecond > 0 ? 1 : -1;
+		return $perSecond >= 0 ? 1 : -1;
 	}
 
 	/**
@@ -218,6 +236,9 @@ class TickerStat_Controller extends Controller {
 
 	protected static $number_of_records = 21;
 
+	protected static $json_import_url = "";
+		static function set_json_import_url($s) {self::$json_import_url = $s;}
+
 	function init(){
 		parent::init();
 	}
@@ -259,15 +280,57 @@ class TickerStat_Controller extends Controller {
 	 */
 	function import(){
 		$stats = DataObject::get("TickerStat");
-		foreach($stats as $stat) {
-			$url = $stat->RequestURL;
-			if($this->checkIfExternalLinkWorks($url)) {
-				$fileContents = file_get_contents(self::$request_url);
-				if(intval($fileContents)) {
-					$stat->Number = intval($fileContents);
-					$stat->write();
+		if($stats) {
+			foreach($stats as $stat) {
+				$url = $stat->RequestURL;
+				if($this->checkIfExternalLinkWorks($url)) {
+					$fileContents = file_get_contents($url);
+					if(intval($fileContents)) {
+						$stat->Number = intval($fileContents);
+						$stat->write();
+					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * import stats from json
+	 * @param SS_HTTPRequest
+	 */
+	public function jsonimport(SS_HTTPRequest $request){
+		$url = self::$json_import_url;
+		if($this->checkIfExternalLinkWorks($url)) {
+			$fileContents = file_get_contents($url);
+			$json = @json_decode($fileContents, true);
+			if($json) {
+				echo "{";
+				foreach($json as $name => $number) {
+					if($name && $number) {
+						$tickerStat = DataObject::get_one("TickerStat", "\"Code\" = '$name'");
+						if(!$tickerStat) {
+							$tickerStat = new TickerStat();
+						}
+						$tickerStat->Number = intval($number);
+						$tickerStat->Code = $name;
+						if(!$tickerStat->Name) {
+							$tickerStat->Name = $name;
+						}
+						echo "\"$name\": $number";
+						$tickerStat->write();
+					}
+					else {
+						DB::alteration_message("error in number $number and name $name", "deleted");
+					}
+				}
+				echo "}";
+			}
+			else {
+				DB::alteration_message("Error retrieving JSON ".print_r($json, true), "deleted");
+			}
+		}
+		else {
+			DB::alteration_message("Error retrieving URL: ".$url, "deleted");
 		}
 	}
 

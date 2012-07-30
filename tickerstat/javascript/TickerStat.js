@@ -31,15 +31,17 @@ TickerStat = {
 	createTicker: function(code, number, width, milliSecondsBetweenIncrements, increment) {
 		TickerStat.values[code] = number;
 		TickerStat.width[code] = width;
-		TickerStat.repeatFunctions[code] = function(){
-			var myCode = code;
-			TickerStat.repeatFunctions[myCode+"_interval"] = window.setInterval(
-				function() {
-					TickerStat.values[myCode] = TickerStat.values[myCode] + increment;
-					jQuery("#"+myCode).html(TickerStat.turnNumberIntroStringWithSpans(TickerStat.values[myCode], TickerStat.width[myCode]));
-				},
-				milliSecondsBetweenIncrements
-			);
+		if(milliSecondsBetweenIncrements) {
+			TickerStat.repeatFunctions[code] = function(){
+				var myCode = code;
+				TickerStat.repeatFunctions[myCode+"_interval"] = window.setInterval(
+					function() {
+						TickerStat.values[myCode] = TickerStat.values[myCode] + increment;
+						jQuery("#"+myCode).html(TickerStat.turnNumberIntroStringWithSpans(TickerStat.values[myCode], TickerStat.width[myCode]));
+					},
+					milliSecondsBetweenIncrements
+				);
+			}
 		}
 		jQuery("#"+code).html(TickerStat.turnNumberIntroStringWithSpans(number, width));
 		TickerStat.repeatFunctions[code]();
