@@ -3,13 +3,20 @@
 
 class TickerStat extends DataObject {
 
-
 	/**
 	 * number of items being retrieved to work out rate (e.g. 21)
 	 * @var INT
 	 */
 	protected static $number_of_previous = 21;
 		static function set_number_of_previous($i) {self::$number_of_previous = $i;}
+
+	/**
+	 *
+	 * @var String
+	 */
+	protected static $json_import_url = "";
+		static function set_json_import_url($s) {self::$json_import_url = $s;}
+
 
 	/**
 	 * used to store the calculated value: GrowthRateInItemsPerSecond
@@ -211,7 +218,7 @@ class TickerStat extends DataObject {
 			if($this->perSecond) {
 				$currentTimeTS = strtotime("now");
 				$differenceBetweenMaxTimeAndCurrentTimeAsTS = $currentTimeTS - $maxTimeTS;
-				$this->Number = $this->Number + ($differenceBetweenMaxTimeAndCurrentTimeAsTS * $this->perSecond);
+				$this->Number += ($differenceBetweenMaxTimeAndCurrentTimeAsTS * $this->perSecond);
 			}
 		}
 		return $this->perSecond;
@@ -230,6 +237,94 @@ class TickerStat extends DataObject {
 		$this->debug = true;
 	}
 
+	/**
+	 * imports data
+	 * TO BE COMPLETED!
+	 *
+	 */
+	public function import(){
+		$oldStage = Versioned::current_stage();
+		Versioned::reading_stage('Stage');
+		$stats = DataObject::get("TickerStat");
+		if($stats) {
+			foreach($stats as $stat) {
+				$url = $stat->RequestURL;
+				if($this->checkIfExternalLinkWorks($url)) {
+					$fileContents = file_get_contents($url);
+					if(intval($fileContents)) {
+						$stat->Number = intval($fileContents);
+						$stat->write();
+					}
+				}
+			}
+		}
+		Versioned::reading_stage($oldStage);
+	}
+
+	/**
+	 * import stats from json
+	 */
+	public function jsonimport(){
+		$oldStage = Versioned::current_stage();
+		Versioned::reading_stage('Stage');
+		$url = self::$json_import_url;
+		if($this->checkIfExternalLinkWorks($url)) {
+			$fileContents = file_get_contents($url);
+			$json = @json_decode($fileContents, true);
+			if($json) {
+				if($this->debug) {echo "{";}
+				foreach($json as $name => $number) {
+					if($name && $number) {
+						$tickerStat = DataObject::get_one("TickerStat", "\"Code\" = '$name'");
+						if(!$tickerStat) {
+							$tickerStat = new TickerStat();
+						}
+						$tickerStat->Number = intval($number);
+						$tickerStat->Code = $name;
+						if(!$tickerStat->Name) {
+							$tickerStat->Name = $name;
+						}
+						if($this->debug) {echo "\"$name\": $number";}
+						$tickerStat->write();
+					}
+					elseif($this->debug) {
+						DB::alteration_message("error in number $number and name $name", "deleted");
+					}
+				}
+				if($this->debug) {echo "}";}
+			}
+			elseif($this->debug) {
+				DB::alteration_message("Error retrieving JSON ".print_r($json, true), "deleted");
+			}
+		}
+		elseif($this->debug) {
+			DB::alteration_message("Error retrieving URL: ".$url, "deleted");
+		}
+		Versioned::reading_stage($oldStage);
+	}
+
+	/**
+	 * tells us whether it can open the URL
+	 * @param String - URL
+	 * @return Boolean
+	 */
+	protected function checkIfExternalLinkWorks($url) {
+		// Version 4.x supported
+		$handle   = curl_init($url);
+		if (false === $handle){
+			return false;
+		}
+		curl_setopt($handle, CURLOPT_HEADER, false);
+		curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
+		curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") ); // request as if Firefox
+		curl_setopt($handle, CURLOPT_NOBODY, true);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
+		$connectable = curl_exec($handle);
+		curl_close($handle);
+		return $connectable;
+	}
+
+
 }
 
 /**
@@ -239,10 +334,7 @@ class TickerStat extends DataObject {
  */
 class TickerStat_Controller extends Controller {
 
-	protected static $number_of_records = 21;
 
-	protected static $json_import_url = "";
-		static function set_json_import_url($s) {self::$json_import_url = $s;}
 
 	function init(){
 		parent::init();
@@ -280,88 +372,6 @@ class TickerStat_Controller extends Controller {
 		if($page) {
 			Director::redirect($page->Link());
 		}
-	}
-
-	/**
-	 * imports data
-	 * TO BE COMPLETED!
-	 *
-	 */
-	function import(){
-		$stats = DataObject::get("TickerStat");
-		if($stats) {
-			foreach($stats as $stat) {
-				$url = $stat->RequestURL;
-				if($this->checkIfExternalLinkWorks($url)) {
-					$fileContents = file_get_contents($url);
-					if(intval($fileContents)) {
-						$stat->Number = intval($fileContents);
-						$stat->write();
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * import stats from json
-	 * @param SS_HTTPRequest
-	 */
-	public function jsonimport(SS_HTTPRequest $request){
-		$url = self::$json_import_url;
-		if($this->checkIfExternalLinkWorks($url)) {
-			$fileContents = file_get_contents($url);
-			$json = @json_decode($fileContents, true);
-			if($json) {
-				echo "{";
-				foreach($json as $name => $number) {
-					if($name && $number) {
-						$tickerStat = DataObject::get_one("TickerStat", "\"Code\" = '$name'");
-						if(!$tickerStat) {
-							$tickerStat = new TickerStat();
-						}
-						$tickerStat->Number = intval($number);
-						$tickerStat->Code = $name;
-						if(!$tickerStat->Name) {
-							$tickerStat->Name = $name;
-						}
-						echo "\"$name\": $number";
-						$tickerStat->write();
-					}
-					else {
-						DB::alteration_message("error in number $number and name $name", "deleted");
-					}
-				}
-				echo "}";
-			}
-			else {
-				DB::alteration_message("Error retrieving JSON ".print_r($json, true), "deleted");
-			}
-		}
-		else {
-			DB::alteration_message("Error retrieving URL: ".$url, "deleted");
-		}
-	}
-
-	/**
-	 * tells us whether it can open the URL
-	 * @param String - URL
-	 * @return Boolean
-	 */
-	protected function checkIfExternalLinkWorks($url) {
-		// Version 4.x supported
-		$handle   = curl_init($url);
-		if (false === $handle){
-			return false;
-		}
-		curl_setopt($handle, CURLOPT_HEADER, false);
-		curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
-		curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") ); // request as if Firefox
-		curl_setopt($handle, CURLOPT_NOBODY, true);
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
-		$connectable = curl_exec($handle);
-		curl_close($handle);
-		return $connectable;
 	}
 
 }
