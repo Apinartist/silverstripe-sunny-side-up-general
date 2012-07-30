@@ -19,14 +19,29 @@
 
 TickerStat = {
 
+	/**
+	 * @number of digits
+	 */
 	width: new Array(),
 
+	/**
+	 * storage for all values
+	 * @var Array
+	 */
 	values: new Array(),
 
-	repeatFunctions: new Array(),
 	/**
-	 * @param Int
-	 * @param String (HTML)
+	 * storage for all repeat functions
+	 * @var Array
+	 */
+	repeatFunctions: new Array(),
+
+	/**
+	 * @param String code - code the stat and ID for element in which to show it
+	 * @param String | Integer number - the number as a string (or as an integer)
+	 * @param Int width - number of digits
+	 * @param Int milliSecondsBetweenIncrements - number of milli seconds before the increment is added
+	 * @param Int increment (usuall 1 or -1)
 	 */
 	createTicker: function(code, number, width, milliSecondsBetweenIncrements, increment) {
 		TickerStat.values[code] = number;
