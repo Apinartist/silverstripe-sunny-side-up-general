@@ -42,9 +42,10 @@ TickerStat = {
 					milliSecondsBetweenIncrements
 				);
 			}
+			TickerStat.repeatFunctions[code]();
 		}
 		jQuery("#"+code).html(TickerStat.turnNumberIntroStringWithSpans(number, width));
-		TickerStat.repeatFunctions[code]();
+
 	},
 
 	/**
