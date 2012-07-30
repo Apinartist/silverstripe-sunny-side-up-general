@@ -208,6 +208,11 @@ class TickerStat extends DataObject {
 			else {
 				$this->perSecond = 0;
 			}
+			if($this->perSecond) {
+				$currentTimeTS = strtotime("now");
+				$differenceBetweenMaxTimeAndCurrentTimeAsTS = $currentTimeTS - $maxTimeTS;
+				$this->Number = $this->Number + ($differenceBetweenMaxTimeAndCurrentTimeAsTS * $this->perSecond);
+			}
 		}
 		return $this->perSecond;
 	}
@@ -243,6 +248,10 @@ class TickerStat_Controller extends Controller {
 		parent::init();
 	}
 
+	/**
+	 * returns dataobject as json
+	 * @return String (JSON)
+	 */
 	function json(SS_HTTPRequest $request){
 		$code = Convert::raw2sql($request->Param("ID"));
 		$TickerStat = DataObject::get_one("TickerStat", "\"Code\" = '$code'");
