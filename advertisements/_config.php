@@ -34,6 +34,4 @@ Director::addRules(10, array(
 
 //	WITH: http://sunny.svnrepository.com/svn/sunny-side-up-general/dataobjectsorter
 //Object::add_extension('Advertisement', 'DataObjectSorterDOD');
-//DataObjectSorterDOD::set_also_update_sort_field(true);
-//DataObjectSorterDOD::set_do_not_add_alternative_sort_field(true);
 //===================---------------- END advertisements MODULE ----------------===================
