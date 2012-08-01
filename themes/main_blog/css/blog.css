@@ -13,4 +13,4 @@
 
 p.authorDate, p.tags, p.blogVitals {font-size: 0.7em; margin-top: 0px; padding-top: 0px; padding-bottom: 0; margin-bottom: 0; width: 49%;}
 p.authorDate {float: right}
-p.blogVitals {margin-bottom: 3em; border-bottom: 1px solid #808383; text-align: right: width: 100%}
+p.blogVitals {margin-bottom: 3em; text-align: right; width: 100%}
