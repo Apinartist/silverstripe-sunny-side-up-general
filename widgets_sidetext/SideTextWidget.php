@@ -61,7 +61,7 @@ class SideTextWidget_DataObject extends DataObject{
 	}
 
 	function getCMSFields(){
-		HtmlEditorConfig::get('sidetextwidget')->setOption('priority',0);
+		HtmlEditorConfig::get('sidetextwidget')->setOption('priority',2);
 		HtmlEditorConfig::set_active("sidetextwidget");
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Caption");
@@ -97,4 +97,12 @@ class SideTextWidget_ModelAdmin extends ModelAdmin {
 
 }
 
+class SideTextWidget_CMSHack extends LeftAndMainDecorator {
+	function init(){
+		HtmlEditorConfig::get('cms')->setOption('theme_advanced_blockformats','p,h1');
+		HtmlEditorConfig::get('cms')->setButtonsForLine(1,'undo, redo, separator, cut, copy, pastetext, separator, ssimage, sslink, unlink, separator, fullscreen, advcode, formatselect');
+		HtmlEditorConfig::get('cms')->setButtonsForLine(2);
+		HtmlEditorConfig::get('cms')->setButtonsForLine(3);
+	}
+}
 
