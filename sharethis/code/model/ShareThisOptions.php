@@ -23,7 +23,7 @@ class ShareThisOptions extends Object {
 	protected static $icon;
 
 	public static function get_all_options($title, $link, $description) {
-		self::set_variables($title, $link, $description);		
+		self::set_variables($title, $link, $description);
 		self::$page_specific_data = array(
 
 "email" => array(
@@ -186,8 +186,8 @@ class ShareThisOptions extends Object {
 				category: currently not implemented
 			*/
 
-	public static function get_share_all($title, $link, $description = "") {
-		self::set_variables($title, $link, $description);
+	public static function get_share_all() {
+		//self::set_variables($title, $link, $description);
 		self::$share_all_data = '
 <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#&amp;type=website"></script>
 <script type="text/javascript">

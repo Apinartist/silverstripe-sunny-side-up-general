@@ -112,7 +112,7 @@ class ShareThis extends SiteTreeDecorator {
 	}
 
 	public function ShareAll() {
-		return ShareThisOptions::get_share_all($title, $link, $description);
+		return ShareThisOptions::get_share_all();
 	}
 
 
