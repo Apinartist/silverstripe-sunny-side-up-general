@@ -54,11 +54,6 @@ class Page_Controller extends ContentController {
 			$theme = "main";
 		}
 		SSViewer::set_theme($theme);
-		$this->addBasicMetatagRequirements();
-		$bgImage = $this->MyBackgroundImage();
-		if($bgImage && $bgImage->exists()) {
-			Requirements::customCSS("body {background-image: url(".$bgImage->Link().");}");
-		}
 	}
 
 	function settheme(HTTPRequest $request){

@@ -7,20 +7,26 @@ global $database; $database = "silverstripe_webdevelopment_com";
 require_once("conf/ConfigureFromEnv.php");
 
 
+//===================---------------- START php MODULE ----------------===================
+date_default_timezone_set("NZ");
+//===================---------------- END php MODULE ----------------===================
+
+
 //===================---------------- START mysite MODULE ----------------===================
 Object::add_extension("SiteConfig", "SiteConfigExtras");
 //===================---------------- END mysite MODULE ----------------===================
 
 //===================---------------- START sapphire MODULE ----------------===================
+SSViewer::set_theme('main');
 MySQLDatabase::set_connection_charset('utf8');
 Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
-Member::set_password_validator( new NZGovtPasswordValidator());
+//Member::set_password_validator( new NZGovtPasswordValidator()); //this does not really work
 SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
-Requirements::set_combined_files_folder("themes/main");
+//Requirements::set_combined_files_folder("themes/main"); //DO NOT USE!!!
 //Director::forceWWW();
 FulltextSearchable::enable();
 if(Director::isLive()) {
@@ -54,6 +60,10 @@ CMSMenu::remove_menu_item("ReportAdmin");
 //CMSMenu::remove_menu_item("HelpAdmin");
 LeftAndMain::setLogo($location = "", $style = "");
 PageComment::enableModeration();
+HtmlEditorConfig::get('cms')->setOption('paste_auto_cleanup_on_paste','true');
+HtmlEditorConfig::get('cms')->setOption('paste_remove_styles','true');
+HtmlEditorConfig::get('cms')->setOption('paste_remove_styles_if_webkit','true');
+HtmlEditorConfig::get('cms')->setOption('paste_strip_class_attributes','true');
 //===================---------------- END cms MODULE  ----------------===================
 
 //===================---------------- START blog MODULE ----------------===================
