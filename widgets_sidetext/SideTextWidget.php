@@ -61,22 +61,21 @@ class SideTextWidget_DataObject extends DataObject{
 	}
 
 	function getCMSFields(){
+		HtmlEditorConfig::get('sidetextwidget')->setOption('priority','-1');
+		HtmlEditorConfig::set_active("sidetextwidget");
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Caption");
 		$fields->removeByName("ImageLinkID");
 		$fields->removeByName("Image");
-		HtmlEditorConfig::get('cms')->setOption('theme_advanced_blockformats','p,h1');
-		HtmlEditorConfig::get('cms')->setButtonsForLine(1,'undo, redo, separator, cut, copy, pastetext, separator, ssimage, sslink, unlink, separator, fullscreen, advcode, formatselect');
-		HtmlEditorConfig::get('cms')->setButtonsForLine(2);
-		HtmlEditorConfig::get('cms')->setButtonsForLine(3);
 		$fields->addFieldsToTab(
 			"Root.Main",
-			new TextField( "Title", "Title" ),
-			new HTMLEditorField( "Body", "Text", 2, 2)
+			new TextField( "Title", "Title" )
+
 		);
 		$fields->addFieldToTab("Root.Images",new TreeDropdownField( "ImageLinkID", "Image Link", "SiteTree"));
 		$fields->addFieldToTab("Root.Images",new TextField( "Caption", "Image Caption" ));
 		$fields->addFieldToTab("Root.Images",new ImageField( "Image", "Image (width will be set to 100pixels)" ));
+		$fields->addFieldToTab("Root.Main",new HTMLEditorField( "Body", "Text", 2, 2));
 		return $fields;
 	}
 
