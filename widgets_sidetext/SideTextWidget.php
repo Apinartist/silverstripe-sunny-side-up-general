@@ -95,6 +95,10 @@ class SideTextWidget_ModelAdmin extends ModelAdmin {
 
 	public $showImportForm = false;
 
+	function init(){
+		parent::init();
+	}
+
 }
 
 class SideTextWidget_CMSHack extends LeftAndMainDecorator {
