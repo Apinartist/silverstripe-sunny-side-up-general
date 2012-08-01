@@ -72,11 +72,11 @@ class SideTextWidget_DataObject extends DataObject{
 		$fields->addFieldsToTab(
 			"Root.Main",
 			new TextField( "Title", "Title" ),
-			new ImageField( "Image", "Image (width will be set to 100pixels)" )
+			new HTMLEditorField( "Body", "Text", 2, 2)
 		);
 		$fields->addFieldToTab("Root.Images",new TreeDropdownField( "ImageLinkID", "Image Link", "SiteTree"));
 		$fields->addFieldToTab("Root.Images",new TextField( "Caption", "Image Caption" ));
-		$fields->addFieldToTab("Root.Images",new HTMLEditorField( "Body", "Text", 2, 2));
+		$fields->addFieldToTab("Root.Images",new ImageField( "Image", "Image (width will be set to 100pixels)" ));
 		return $fields;
 	}
 
