@@ -61,7 +61,7 @@ class SideTextWidget_DataObject extends DataObject{
 	}
 
 	function getCMSFields(){
-		HtmlEditorConfig::get('sidetextwidget')->setOption('priority','-1');
+		HtmlEditorConfig::get('sidetextwidget')->setOption('priority',0);
 		HtmlEditorConfig::set_active("sidetextwidget");
 		$fields = parent::getCMSFields();
 		$fields->removeByName("Caption");
