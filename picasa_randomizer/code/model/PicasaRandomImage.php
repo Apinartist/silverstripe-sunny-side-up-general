@@ -151,6 +151,11 @@ class PicasaRandomImage extends DataObject {
 
 class PicasaRandomImage_Controller extends ContentController{
 
+	static $allowed_actions = array(
+		"one" => "ADMIN",
+		"list" => "ADMIN"
+	)
+
 	function one($request){
 		$width = $request->Param("ID");
 		$image = PicasaRandomImage::get_random_image($width);
@@ -158,4 +163,19 @@ class PicasaRandomImage_Controller extends ContentController{
 			return $image->URL;
 		}
 	}
+
+	function list($request){
+		echo "\$array = array(";
+		$width = $request->Param("ID");
+		$dos = DataObject::get("PicasaRandomImage");
+		if($objects) {
+			foreach($objects as $obj) {
+				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
+				echo "\r\n";
+				echo '"\t'.$obj->URL.'"'
+			}
+		}
+		echo "\r\n);"
+	}
+
 }
