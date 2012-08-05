@@ -164,7 +164,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		}
 	}
 
-	function list($request){
+	function mylist($request){
 		echo "\$array = array(";
 		$width = $request->Param("ID");
 		$dos = DataObject::get("PicasaRandomImage");
