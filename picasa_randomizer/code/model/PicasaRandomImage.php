@@ -153,7 +153,7 @@ class PicasaRandomImage_Controller extends ContentController{
 
 	static $allowed_actions = array(
 		"one" => "ADMIN",
-		"list" => "ADMIN"
+		"mylist" => "ADMIN"
 	);
 
 	function one($request){
