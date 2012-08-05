@@ -147,3 +147,15 @@ class PicasaRandomImage extends DataObject {
 
 
 }
+
+
+class PicasaRandomImage_Controller extends ContentController{
+
+	function one($request){
+		$width = $request->Param("ID");
+		$image = PicasaRandomImage::get_random_image($width);
+		if($image) {
+			return $image->URL;
+		}
+	}
+}
