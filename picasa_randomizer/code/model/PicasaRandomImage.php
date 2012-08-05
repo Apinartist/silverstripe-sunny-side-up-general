@@ -167,6 +167,9 @@ class PicasaRandomImage_Controller extends ContentController{
 	function mylist($request){
 		echo "\$array = array(";
 		$width = $request->Param("ID");
+		if(!$width) {
+			$width = 2400;
+		}
 		$objects = DataObject::get("PicasaRandomImage");
 		if($objects) {
 			foreach($objects as $obj) {
