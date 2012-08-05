@@ -175,7 +175,7 @@ class PicasaRandomImage_Controller extends ContentController{
 				echo '"\t'.$obj->URL.'"';
 			}
 		}
-		echo "\r\n);"
+		echo "\r\n);";
 	}
 
 }
