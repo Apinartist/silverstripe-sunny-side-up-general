@@ -172,7 +172,7 @@ class PicasaRandomImage_Controller extends ContentController{
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				echo "\r\n";
-				echo '"\t'.$obj->URL.'"';
+				echo "'\t".$obj->URL.'"';
 			}
 		}
 		echo "\r\n);";
