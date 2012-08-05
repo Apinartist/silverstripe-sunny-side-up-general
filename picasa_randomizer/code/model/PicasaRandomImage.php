@@ -167,7 +167,7 @@ class PicasaRandomImage_Controller extends ContentController{
 	function mylist($request){
 		echo "\$array = array(";
 		$width = $request->Param("ID");
-		$dos = DataObject::get("PicasaRandomImage");
+		$objects = DataObject::get("PicasaRandomImage");
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
