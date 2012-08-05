@@ -154,7 +154,7 @@ class PicasaRandomImage_Controller extends ContentController{
 	static $allowed_actions = array(
 		"one" => "ADMIN",
 		"list" => "ADMIN"
-	)
+	);
 
 	function one($request){
 		$width = $request->Param("ID");
