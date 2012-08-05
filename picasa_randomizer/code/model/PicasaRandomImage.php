@@ -176,6 +176,9 @@ class PicasaRandomImage_Controller extends ContentController{
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				echo "\r\n";
 				echo "\t'".$obj->URL."'";
+				if(!$obj->Last()) {
+					echo ",";
+				}
 			}
 		}
 		echo "\r\n);";
