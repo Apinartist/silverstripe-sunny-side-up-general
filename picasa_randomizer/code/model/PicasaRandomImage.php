@@ -170,16 +170,22 @@ class PicasaRandomImage_Controller extends ContentController{
 	function review($request){
 		echo "<html><head></head><body></body>";
 		$width = $request->Param("ID");
-		if(!$width) {
+		if(!$limit) {
 			$width = 400;
 		}
-		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0");
+		$limit = $request->Param("ID");
+		if(!$limit) {
+			$limit = 0;
+		}
+		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0", "\"PicasaRandomImage\".\"ID\" ASC", null, "$limit, 100");
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
 			}
 		}
+		$limit = $limit + 100;
+		echo "<a href=\"/randompicassaimage/review/400/$limit/\">next 100</a>";
 		echo "
 		<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
 		<script type=\"text/javascript\">
@@ -207,7 +213,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if(!$width) {
 			$width = 2400;
 		}
-		$objects = DataObject::get("PicasaRandomImage");
+		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0");
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
