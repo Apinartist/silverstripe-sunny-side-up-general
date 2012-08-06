@@ -15,6 +15,7 @@ class PicasaRandomImage extends DataObject {
 
 	static $db = array(
 		"URL" => "Text",
+		"DoNotUse" => "Boolean"
 	);
 
 
@@ -45,7 +46,7 @@ class PicasaRandomImage extends DataObject {
 		static  function get_number_of_images_per_folder() {return self::$number_of_images_per_folder;}
 
 	public static function get_random_image($width){
-		$objects = DataObject::get("PicasaRandomImage", "", "RAND()");
+		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0", "RAND()");
 		if($objects && $obj = $objects->First()) {
 			$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 			return $obj;
@@ -153,6 +154,8 @@ class PicasaRandomImage_Controller extends ContentController{
 
 	static $allowed_actions = array(
 		"one" => "ADMIN",
+		"review" => "ADMIN",
+		"donotuse" => "ADMIN",
 		"mylist" => "ADMIN"
 	);
 
@@ -163,6 +166,23 @@ class PicasaRandomImage_Controller extends ContentController{
 			return $image->URL;
 		}
 	}
+
+	function review(){
+		echo "<html><head></head><body></body>";
+		$width = $request->Param("ID");
+		if(!$width) {
+			$width = 400;
+		}
+		$objects = DataObject::get("PicasaRandomImage");
+		if($objects) {
+			foreach($objects as $obj) {
+				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
+				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
+			}
+		}
+		echo "</body></html>";
+	}
+
 
 	function mylist($request){
 		echo "\$array = array(";
@@ -183,5 +203,14 @@ class PicasaRandomImage_Controller extends ContentController{
 		}
 		echo "\r\n);";
 	}
+
+	function donotuse(){
+		$id = intval($request->Param("ID"));
+		if($obj = DataObject::get_by_id("", $id)) {
+			$obj->DoNotUse = 1;
+			$obj->write();
+		}
+	}
+
 
 }
