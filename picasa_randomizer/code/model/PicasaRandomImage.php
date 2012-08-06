@@ -32,7 +32,7 @@ class PicasaRandomImage extends DataObject {
 	 * set to 1 to take all
 	 * @var Int
 	 */
-	protected static $number_of_folders = 10;
+	protected static $number_of_folders = 22;
 		static  function set_number_of_folders($i) {self::$number_of_folders = $i;}
 		static  function get_number_of_folders() {return self::$number_of_folders;}
 
@@ -41,7 +41,7 @@ class PicasaRandomImage extends DataObject {
 	 * set to 1 to add all
 	 * @var Int
 	 */
-	protected static $number_of_images_per_folder = 3;
+	protected static $number_of_images_per_folder = 7;
 		static  function set_number_of_images_per_folder($i) {self::$number_of_images_per_folder = $i;}
 		static  function get_number_of_images_per_folder() {return self::$number_of_images_per_folder;}
 
