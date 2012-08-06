@@ -76,7 +76,7 @@ class PicasaRandomImage extends DataObject {
 						foreach($selectedPictures as $pictureKey) {
 							$picture = $pictures[$pictureKey];
 							$url = $picture["src"];
-							if(!DataObject::get("PicasaRandomImage", "PicasaRandomImage.URL = '$url'")) {
+							if(!DataObject::get_one("PicasaRandomImage", "PicasaRandomImage.URL = '$url'")) {
 								$obj = new PicasaRandomImage();
 								$obj->URL = $url;
 								$obj->write();
