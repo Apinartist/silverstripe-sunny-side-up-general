@@ -184,8 +184,9 @@ class PicasaRandomImage_Controller extends ContentController{
 		<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
 		<script type=\"text/javascript\">
 			jQuery(\"a\").click(
-				function(){
-					var url = jQuery(this).attr(\"rel\");
+				function(event){
+					event.preventDefault();
+					var url = jQuery(this).attr(\"href\");
 					var img = jQuery(this);
 					jQuery.get(
 						url,
@@ -220,11 +221,12 @@ class PicasaRandomImage_Controller extends ContentController{
 		echo "\r\n);";
 	}
 
-	function donotuse(){
+	function donotuse($request){
 		$id = intval($request->Param("ID"));
-		if($obj = DataObject::get_by_id("", $id)) {
+		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
 			$obj->DoNotUse = 1;
 			$obj->write();
+			return "deleted";
 		}
 	}
 
