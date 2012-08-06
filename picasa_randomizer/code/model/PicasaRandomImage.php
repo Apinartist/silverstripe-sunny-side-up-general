@@ -168,7 +168,9 @@ class PicasaRandomImage_Controller extends ContentController{
 	}
 
 	function review($request){
-		echo "<html><head></head><body></body>";
+		echo "<html><head></head><body></body>
+		<h2>Review Pictures</h2>
+		<p>Click on pixies that you do not want to use.</p>";
 		$width = $request->Param("ID");
 		if(!$limit) {
 			$width = 400;
