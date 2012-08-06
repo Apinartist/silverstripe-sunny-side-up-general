@@ -167,7 +167,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		}
 	}
 
-	function review(){
+	function review($request){
 		echo "<html><head></head><body></body>";
 		$width = $request->Param("ID");
 		if(!$width) {
@@ -180,7 +180,23 @@ class PicasaRandomImage_Controller extends ContentController{
 				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
 			}
 		}
-		echo "</body></html>";
+		echo "
+		<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
+		<script type=\"text/javascript\">
+			jQuery(\"a\").click(
+				function(){
+					var url = jQuery(this).attr(\"rel\");
+					var img = jQuery(this);
+					jQuery.get(
+						url,
+						function() {
+							img.fadeOut();
+						}
+					);
+				}
+			);
+		</script>
+		</body></html>";
 	}
 
 
