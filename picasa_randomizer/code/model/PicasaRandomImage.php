@@ -175,7 +175,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if(!$limit) {
 			$width = 400;
 		}
-		$limit = $request->Param("ID");
+		$limit = $request->Param("OtherID");
 		if(!$limit) {
 			$limit = 0;
 		}
