@@ -10,51 +10,50 @@
 
 class MetaTagAutomation extends SiteTreeDecorator {
 
-		/**
-		 * Who coded the site?
-		 * can be overruled by setting in the siteconfig
-		 * (editable in the CMS). A default value can be set here.
-		 * @var String
-		 */
-		protected static $meta_data_coding = "";
-			static function set_meta_data_coding($s) {self::$meta_data_coding = $s;}
-			static function get_meta_data_coding() {return self::$meta_data_coding;}
-
-		/**
-		 * Who designed the site?
-		 * can be overruled by setting in the siteconfig
-		 * (editable in the CMS). A default value can be set here.
-		 * @var String
-		 */
-		protected static $meta_data_design = "";
-			static function set_meta_data_design($s) {self::$set_meta_data_design = $s;}
-			static function get_meta_data_design() {return self::$meta_data_design;}
-
-	/* pop-ups and form interaction */
+	/**
+	 * pop-ups and form interaction
+	 * @var Boolean
+	 */
 	protected static $disable_update_popup = false;
 		static function set_disable_update_popup($b) {self::$disable_update_popup = $b;}
 
-	/* meta descriptions */
+	/**
+	 * length of auto-generated meta descriptions in header
+	 * @var Int
+	 */
 	protected static $meta_desc_length = 24;
 		static function set_meta_desc_length($i) {self::$meta_desc_length = $i;}
 		static function get_meta_desc_length() {return self::$meta_desc_length;}
 
-	/* meta keywords
-	*/
+	/**
+	 * exclude meta keywords from header altogether
+	 * @var Boolean
+	 **/
 	protected static $hide_keywords_altogether = true;
 		static function set_hide_keywords_altogether($b) {self::$hide_keywords_altogether = $b; }
 		static function get_hide_keywords_altogether() {return self::$hide_keywords_altogether; }
 
+
+	/**
+	 * google fonts to be used
+	 * @var Array
+	 **/
 	protected static $google_font_collection = array();
 		static function add_google_font($s) {self::$google_font_collection[$s] = $s;}
 		static function remove_google_font($s) {unset(self::$google_font_collection[$s]);}
 		static function get_google_font_collection() {return self::$google_font_collection;}
 
-	/* favicon */
+	/**
+	 * @var Boolean
+	 **/
 	protected static $use_themed_favicon = false;
 		static function set_use_themed_favicon($b) {self::$use_themed_favicon = $b;}
 		static function get_use_themed_favicon() {return self::$use_themed_favicon;}
 
+	/**
+	 * standard SS method
+	 * @var Array
+	 **/
 	public function extraStatics() {
 		return array (
 			'db' => array(
@@ -66,12 +65,10 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		);
 	}
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$this->extend('updateCMSFields', $fields);
-		return $fields;
-	}
-
+	/**
+	 * standard SS method
+	 * @var Array
+	 **/
 	public function updateCMSFields(FieldSet &$fields) {
 		if(self::get_hide_keywords_altogether()) {
 			$fields->removeFieldFromTab("Root.Content.Metadata", "MetaKeywords");
@@ -230,28 +227,24 @@ class MetaTagAutomation extends SiteTreeDecorator {
 class MetaTagAutomation_controller extends Extension {
 
 	/* combined files */
+
 	protected static $folder_for_combined_files = "assets";
 		static function set_folder_for_combined_files($s) {self::$folder_for_combined_files = $s;}
+
 	protected static $combine_css_files_into_one = false;
 		public static function set_combine_css_files_into_one($s) {self::$combine_css_files_into_one = $s;}
+
 	protected static $combine_js_files_into_one = false;
 		public static function set_combine_js_files_into_one($s) {self::$combine_js_files_into_one = $s;}
-
-	static $allowed_actions = array(
-		"starttestforie",
-		"stoptestforie",
-		"resetextrameta"
-	);
 
 	/**
 	 * add all the basic js and css files - call from Page::init()
 	 */
-
-	private static $addBasicMetatagRequirementsCOMPLETED = false;
+	private static $metatags_building_completed = false;
 
 	function addBasicMetatagRequirements($additionalJS = array(), $additionalCSS = array(), $force = false) {
-		if(!self::$addBasicMetatagRequirementsCOMPLETED || $force) {
-			self::$addBasicMetatagRequirementsCOMPLETED = true;
+		if(!self::$metatags_building_completed || $force) {
+			self::$metatags_building_completed = true;
 			$themeFolder = $this->getThemeFolder();
 			$cssArrayLocationOnly = array();
 			$jsArray =
@@ -260,7 +253,6 @@ class MetaTagAutomation_controller extends Extension {
 					$this->owner->project().'/javascript/j.js'
 				);
 			array_merge($jsArray, $additionalJS);
-
 			$cssArray =
 				array(
 					array("media" => null, "location" => $themeFolder.'css/reset.css'),
@@ -279,7 +271,6 @@ class MetaTagAutomation_controller extends Extension {
 				Requirements::css($cssArraySub["location"], $cssArraySub["media"]);
 				$cssArrayLocationOnly[] = $cssArraySub["location"];
 			}
-			Requirements::themedCSS($this->owner->ClassName);
 			if(self::$combine_css_files_into_one) {
 				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.css",$cssArrayLocationOnly);
 			}
@@ -308,8 +299,8 @@ class MetaTagAutomation_controller extends Extension {
 	 */
 
 	function ExtendedMetatags($includeTitle = true, $addExtraSearchEngineData = true) {
-		$themeFolder = $this->getThemeFolder();
 		$this->addBasicMetatagRequirements();
+		$themeFolder = $this->getThemeFolder();
 		$tags = "";
 		$page = $this->owner;
 		$siteConfig = SiteConfig::current_site_config();
@@ -326,12 +317,7 @@ class MetaTagAutomation_controller extends Extension {
 			$noopd = "NOODP, ";
 			$description = '';
 		}
-		if(class_exists("SSDatetime")) {
-			$lastEdited = new SSDatetime();
-		}
-		else {
-			$lastEdited = new DateTime();
-		}
+		$lastEdited = new SSDatetime();
 		$lastEdited->value = $page->LastEdited;
 
 		//use base url rather than / so that sites that aren't a run from the root directory can have a favicon
@@ -361,8 +347,6 @@ class MetaTagAutomation_controller extends Extension {
 		if(!$page->ExtraMeta && $siteConfig->ExtraMeta) {
 			$page->ExtraMeta = $siteConfig->ExtraMeta;
 		}
-		if(!$siteConfig->MetaDataCoding) {MetaTagAutomation::get_meta_data_coding();}
-		if(!$siteConfig->MetaDataDesign) {MetaTagAutomation::get_meta_data_design();}
 		if(!$siteConfig->MetaDataCountry) {$siteConfig->MetaDataCountry = Geoip::countryCode2name(Geoip::$default_country_code);}
 		if(!$siteConfig->MetaDataCopyright) {$siteConfig->MetaDataCopyright = $siteConfig->Title;}
 		if($addExtraSearchEngineData) {
@@ -380,48 +364,8 @@ class MetaTagAutomation_controller extends Extension {
 			'.$page->ExtraMeta.
 			$description;
 		}
-		if(Session::get("testforie") > 0) {
-			Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
-			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'" />');
-		}
-		else {
-			Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
-			Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
-			Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
-			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />', 'use-ie-edge');
-		}
+		Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />', 'use-ie-edge');
 		return $tags;
-	}
-
-	/**
-	 * start internet explorer test
-	 */
-
-	function starttestforie() {
-		Session::set("testforie", Director::urlParam("ID"));
-		Requirements::customScript('alert("starting test for IE'.Session::get("testforie").' - to stop go to '.$this->owner->URLSegment.'/stoptestforie");');
-		return array();
-	}
-
-
-	/**
-	 * end internet explorer test
-	 */
-
-	function stoptestforie() {
-		Requirements::customScript('alert("stopped test for IE'.Session::get("testforie").' - to start go to '.$this->owner->URLSegment.'/starttestforie");');
-		Session::set("testforie", 0);
-		return array();
-	}
-
-	function resetextrameta(){
-		if($m = Member::currentMember()) {
-			if($m->IsAdmin()) {
-				DB::query("UPDATE SiteTree SET ExtraMeta = '';");
-				DB::query("UPDATE SiteTree_Live SET ExtraMeta = '';");
-				die("Extra Meta reset");
-			}
-		}
 	}
 
 	//maybe replaced with something more universal (e.g. SSViewer::get_theme_folder())
