@@ -31,9 +31,6 @@ if(Director::isDev()) {
 if(Director::isLive()) {
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
-else {
-	BasicAuth::protect_entire_site();
-}
 SiteTree::enable_nested_urls();
 i18n::set_locale('en_NZ');
 Geoip::$default_country_code = 'NZ';
@@ -62,14 +59,6 @@ EcommerceConfig::set_folder_and_file_locations(array("mysite/_config/ecommerce.y
 // __________________________________ END ECOMMERCE MODULE CONFIG __________________________________
 
 
-
-// __________________________________ END PAYMENT MODULE CONFIG __________________________________
-Currency::setCurrencySymbol("€");
-Payment::set_site_currency("EUR");
-Payment::set_supported_methods(array(
-	'PayPalPayment' => 'Paypal Payment'
-));
-// __________________________________ END PAYMENT MODULE CONFIG __________________________________
 
 
 //===================---------------- START metatags MODULE ----------------===================
