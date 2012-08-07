@@ -215,6 +215,14 @@ class MetaTagAutomation extends SiteTreeDecorator {
 				copy($baseFile, $destinationFile);
 			}
 		}
+		$folder = SSViewer::current_theme();
+		if($folder) {
+			$destinationFile = Director::baseFolder()."/themes/".$folder."/css/reset.css";
+			$baseFile = Director::baseFolder(). "/".SS_METATAGS_DIR."/css/reset.css";
+			if(!file_exists($destinationFile) && file_exists($baseFile)) {
+				copy($baseFile, $destinationFile);
+			}
+		}
 	}
 
 }
@@ -252,15 +260,10 @@ class MetaTagAutomation_controller extends Extension {
 					$this->owner->project().'/javascript/j.js'
 				);
 			array_merge($jsArray, $additionalJS);
-			if(file_exists(SS_METATAGS_DIR.'/css/reset.css')) {
-				$resetFile = Director::baseFolder()."/".$themeFolder.'/css/reset.css';
-			}
-			else {
-				$resetFile = SS_METATAGS_DIR.'/css/reset.css';
-			}
+
 			$cssArray =
 				array(
-					array("media" => null, "location" => $resetFile),
+					array("media" => null, "location" => $themeFolder.'css/reset.css'),
 					array("media" => null, "location" => $themeFolder.'css/typography.css'),
 					array("media" => null, "location" => $themeFolder.'css/layout.css'),
 					array("media" => null, "location" => $themeFolder.'css/form.css'),
@@ -291,16 +294,6 @@ class MetaTagAutomation_controller extends Extension {
 				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomationPrototype.js", $prototypeArray);
 				Requirements::combine_files(self::$folder_for_combined_files."/MetaTagAutomation.js", $jsArray);
 			}
-			if(Session::get("testforie") > 0) {
-				Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
-				Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'">');
-			}
-			else {
-				Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
-				Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
-				Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
-				Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">', 'use-ie-edge');
-			}
 			$googleFontArray = MetaTagAutomation::get_google_font_collection();
 			if($googleFontArray && count($googleFontArray)) {
 				foreach($googleFontArray as $font) {
@@ -315,6 +308,7 @@ class MetaTagAutomation_controller extends Extension {
 	 */
 
 	function ExtendedMetatags($includeTitle = true, $addExtraSearchEngineData = true) {
+		$themeFolder = $this->getThemeFolder();
 		$this->addBasicMetatagRequirements();
 		$tags = "";
 		$page = $this->owner;
@@ -343,7 +337,7 @@ class MetaTagAutomation_controller extends Extension {
 		//use base url rather than / so that sites that aren't a run from the root directory can have a favicon
 		$faviconBase = Director::baseURL();
 		if(MetaTagAutomation::get_use_themed_favicon()) {
-			$faviconBase .= $this->getThemeFolder()."/";
+			$faviconBase .= $themeFolder."/";
 		}
 		if($includeTitle) {
 			$titleTag = '
@@ -385,6 +379,16 @@ class MetaTagAutomation_controller extends Extension {
 			<meta http-equiv="Content-Language" content="'.i18n::get_locale().'" />
 			'.$page->ExtraMeta.
 			$description;
+		}
+		if(Session::get("testforie") > 0) {
+			Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
+			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'">');
+		}
+		else {
+			Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
+			Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
+			Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
+			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">', 'use-ie-edge');
 		}
 		return $tags;
 	}
