@@ -317,7 +317,7 @@ class MetaTagAutomation_controller extends Extension {
 			$noopd = "NOODP, ";
 			$description = '';
 		}
-		$lastEdited = new SSDatetime();
+		$lastEdited = new SS_Datetime();
 		$lastEdited->value = $page->LastEdited;
 
 		//use base url rather than / so that sites that aren't a run from the root directory can have a favicon
