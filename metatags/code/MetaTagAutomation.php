@@ -252,7 +252,7 @@ class MetaTagAutomation_controller extends Extension {
 	function addBasicMetatagRequirements($additionalJS = array(), $additionalCSS = array(), $force = false) {
 		if(!self::$addBasicMetatagRequirementsCOMPLETED || $force) {
 			self::$addBasicMetatagRequirementsCOMPLETED = true;
-			$themeFolder = $this->getThemeFolder()."/";
+			$themeFolder = $this->getThemeFolder();
 			$cssArrayLocationOnly = array();
 			$jsArray =
 				array(
@@ -337,7 +337,7 @@ class MetaTagAutomation_controller extends Extension {
 		//use base url rather than / so that sites that aren't a run from the root directory can have a favicon
 		$faviconBase = Director::baseURL();
 		if(MetaTagAutomation::get_use_themed_favicon()) {
-			$faviconBase .= $themeFolder."/";
+			$faviconBase .= $themeFolder;
 		}
 		if($includeTitle) {
 			$titleTag = '
@@ -382,13 +382,13 @@ class MetaTagAutomation_controller extends Extension {
 		}
 		if(Session::get("testforie") > 0) {
 			Requirements::insertHeadTags('<style type="text/css">@import url('.$themeFolder.'css/ie'.Session::get("testforie").'.css);</style>');
-			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'">');
+			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie='.Session::get("testforie").'" />');
 		}
 		else {
 			Requirements::insertHeadTags('<!--[if IE 6]><style type="text/css">@import url('.$themeFolder.'css/ie6.css);</style><![endif]-->','conditionalIE6');
 			Requirements::insertHeadTags('<!--[if IE 7]><style type="text/css">@import url('.$themeFolder.'css/ie7.css);</style><![endif]-->','conditionalIE7');
 			Requirements::insertHeadTags('<!--[if IE 8]><style type="text/css">@import url('.$themeFolder.'css/ie8.css);</style><![endif]-->','conditionalIE8');
-			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">', 'use-ie-edge');
+			Requirements::insertHeadTags('<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />', 'use-ie-edge');
 		}
 		return $tags;
 	}
@@ -426,7 +426,7 @@ class MetaTagAutomation_controller extends Extension {
 
 	//maybe replaced with something more universal (e.g. SSViewer::get_theme_folder())
 	private function getThemeFolder() {
-		return SSViewer::current_theme() ? THEMES_DIR . "/" . SSViewer::current_theme() : $this->owner->project();
+		return SSViewer::current_theme() ? THEMES_DIR . "/" . SSViewer::current_theme() ."/" : $this->owner->project() ."/" ;
 	}
 
 
