@@ -188,9 +188,10 @@ class PicasaRandomImage_Controller extends ContentController{
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				echo "
 				<li>
-					<img src=\"".$obj->URL."\" alt=\"\" />
+
 					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\" style=\"float: right;\">remove</a>
 					<br /><a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a>
+					<img src=\"".$obj->URL."\" alt=\"\" />
 					<hr style=\"clear: both\" />
 				</li>";
 			}
@@ -205,11 +206,11 @@ class PicasaRandomImage_Controller extends ContentController{
 				function(event){
 					event.preventDefault();
 					var url = jQuery(this).attr(\"href\");
-					var img = jQuery(this);
+					var holder = jQuery(this).parents(\"li\");
 					jQuery.get(
 						url,
 						function() {
-							img.fadeOut();
+							holder.fadeOut();
 						}
 					);
 				}
@@ -218,11 +219,11 @@ class PicasaRandomImage_Controller extends ContentController{
 				function(event){
 					event.preventDefault();
 					var url = jQuery(this).attr(\"href\");
-					var img = jQuery(this);
+					var holder = jQuery(this).parents(\"li\");
 					jQuery.get(
 						url,
 						function() {
-							img.fadeOut();
+							holder.css(\"backgroundColor\", \"green\");
 						}
 					);
 				}
