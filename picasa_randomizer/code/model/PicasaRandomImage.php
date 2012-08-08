@@ -170,7 +170,6 @@ class PicasaRandomImage_Controller extends ContentController{
 	}
 
 	function review($request){
-		DB::query("Update PicasaRandomImage SET DoNotUse = 0 WHERE ID = 22 OR ID = 6");
 		echo "<html><head></head><body></body>
 		<h2>Review Pictures</h2>
 		<p>Click on pixies that you do not want to use.</p>
@@ -183,13 +182,16 @@ class PicasaRandomImage_Controller extends ContentController{
 		if(!$limit) {
 			$limit = 0;
 		}
-		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0", "\"PicasaRandomImage\".\"ID\" ASC", null, "$limit, 100");
+		$objects = DataObject::get("PicasaRandomImage", "", "\"PicasaRandomImage\".\"ID\" ASC", null, "$limit, 100");
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				$style = "";
 				if($obj->Selected) {
 					$style = "style=\"background-color: green;\"";
+				}
+				if($obj->DoNotUse) {
+					$style = "style=\"text-decoration: line-through;\"";
 				}
 				echo "
 				<li $style>
@@ -262,7 +264,7 @@ class PicasaRandomImage_Controller extends ContentController{
 	function donotuse($request){
 		$id = intval($request->Param("ID"));
 		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
-			$obj->Selected = 1;
+			$obj->DoNotUse = 1;
 			$obj->write();
 			return "deleted";
 		}
@@ -271,7 +273,8 @@ class PicasaRandomImage_Controller extends ContentController{
 	function select($request){
 		$id = intval($request->Param("ID"));
 		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
-			$obj->DoNotUse = 1;
+			$obj->DoNotUse = 0;
+			$obj->Selected = 1;
 			$obj->write();
 			return "selected";
 		}
