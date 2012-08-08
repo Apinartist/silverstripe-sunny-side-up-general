@@ -190,7 +190,7 @@ class PicasaRandomImage_Controller extends ContentController{
 				<li>
 
 					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\" style=\"float: right;\">remove</a>
-					<br /><a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a>
+					<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"select\">select</a>
 					<img src=\"".$obj->URL."\" alt=\"\" />
 					<hr style=\"clear: both\" />
 				</li>";
@@ -260,7 +260,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
 			$obj->Selected = 1;
 			$obj->write();
-			return "selected";
+			return "deleted";
 		}
 	}
 
@@ -269,7 +269,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
 			$obj->DoNotUse = 1;
 			$obj->write();
-			return "deleted";
+			return "selected";
 		}
 	}
 
