@@ -183,7 +183,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
-				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
+				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
 			}
 		}
 		$limit = $limit + 100;
@@ -191,7 +191,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		echo "
 		<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
 		<script type=\"text/javascript\">
-			jQuery(\"a\").click(
+			jQuery(\"a.remove\").click(
 				function(event){
 					event.preventDefault();
 					var url = jQuery(this).attr(\"href\");
@@ -218,11 +218,13 @@ class PicasaRandomImage_Controller extends ContentController{
 		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0");
 		if($objects) {
 			foreach($objects as $obj) {
-				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
-				echo "\r\n";
-				echo "\t'".$obj->URL."'";
-				if(!$obj->Last()) {
-					echo ",";
+				if($obj->URL) {
+					$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
+					echo "\r\n";
+					echo "\t'".$obj->URL."'";
+					if(!$obj->Last()) {
+						echo ",";
+					}
 				}
 			}
 		}
