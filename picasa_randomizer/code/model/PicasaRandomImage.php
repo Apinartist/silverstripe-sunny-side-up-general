@@ -191,7 +191,7 @@ class PicasaRandomImage_Controller extends ContentController{
 					$style = "style=\"background-color: green;\"";
 				}
 				if($obj->DoNotUse) {
-					$style = "style=\"text-decoration: line-through;\"";
+					$style = "style=\"opacity: 0.3\"";
 				}
 				echo "
 				<li $style>
