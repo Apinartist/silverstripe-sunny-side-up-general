@@ -189,8 +189,8 @@ class PicasaRandomImage_Controller extends ContentController{
 				echo "
 				<li>
 					<img src=\"".$obj->URL."\" alt=\"\" />
-					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\">remove</a>
-					<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a>
+					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\" style=\"float: right;\">remove</a>
+					<br /><a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a>
 				</li>";
 			}
 		}
