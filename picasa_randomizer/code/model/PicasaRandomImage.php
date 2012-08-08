@@ -15,7 +15,8 @@ class PicasaRandomImage extends DataObject {
 
 	static $db = array(
 		"URL" => "Text",
-		"DoNotUse" => "Boolean"
+		"DoNotUse" => "Boolean",
+		"Selected" => "Boolean"
 	);
 
 
@@ -156,6 +157,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		"one" => "ADMIN",
 		"review" => "ADMIN",
 		"donotuse" => "ADMIN",
+		"select" => "ADMIN",
 		"mylist" => "ADMIN"
 	);
 
@@ -184,6 +186,7 @@ class PicasaRandomImage_Controller extends ContentController{
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
+				echo "<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a><br />";
 			}
 		}
 		$limit = $limit + 100;
@@ -215,7 +218,7 @@ class PicasaRandomImage_Controller extends ContentController{
 		if(!$width) {
 			$width = 2400;
 		}
-		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0");
+		$objects = DataObject::get("PicasaRandomImage", "\"DoNotUse\" = 0 AND \"Selected\" = 1");
 		if($objects) {
 			foreach($objects as $obj) {
 				if($obj->URL) {
@@ -232,6 +235,15 @@ class PicasaRandomImage_Controller extends ContentController{
 	}
 
 	function donotuse($request){
+		$id = intval($request->Param("ID"));
+		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
+			$obj->Selected = 1;
+			$obj->write();
+			return "selected";
+		}
+	}
+
+	function select($request){
 		$id = intval($request->Param("ID"));
 		if($obj = DataObject::get_by_id("PicasaRandomImage", $id)) {
 			$obj->DoNotUse = 1;
