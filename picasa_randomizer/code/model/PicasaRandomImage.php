@@ -170,6 +170,7 @@ class PicasaRandomImage_Controller extends ContentController{
 	}
 
 	function review($request){
+		DB::query("Update PicasaRandomImage SET DoNotUse = 0 WHERE ID = 22 OR ID = 6");
 		echo "<html><head></head><body></body>
 		<h2>Review Pictures</h2>
 		<p>Click on pixies that you do not want to use.</p>
