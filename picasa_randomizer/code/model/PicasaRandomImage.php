@@ -172,7 +172,8 @@ class PicasaRandomImage_Controller extends ContentController{
 	function review($request){
 		echo "<html><head></head><body></body>
 		<h2>Review Pictures</h2>
-		<p>Click on pixies that you do not want to use.</p>";
+		<p>Click on pixies that you do not want to use.</p>
+		<ul>";
 		$width = $request->Param("ID");
 		if(!$limit) {
 			$width = 400;
@@ -185,16 +186,34 @@ class PicasaRandomImage_Controller extends ContentController{
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
-				echo "<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\"><img src=\"".$obj->URL."\" alt=\"\" /></a>";
-				echo "<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a><br />";
+				echo "
+				<li>
+					<img src=\"".$obj->URL."\" alt=\"\" />
+					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\">remove</a>
+					<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"remove\">select</a>
+				</li>";
 			}
 		}
 		$limit = $limit + 100;
-		echo "<a href=\"/randompicassaimage/review/400/$limit/\">next 100</a>";
+		echo "
+		</ul><a href=\"/randompicassaimage/review/400/$limit/\">next 100</a>";
 		echo "
 		<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
 		<script type=\"text/javascript\">
 			jQuery(\"a.remove\").click(
+				function(event){
+					event.preventDefault();
+					var url = jQuery(this).attr(\"href\");
+					var img = jQuery(this);
+					jQuery.get(
+						url,
+						function() {
+							img.fadeOut();
+						}
+					);
+				}
+			);
+			jQuery(\"a.select\").click(
 				function(event){
 					event.preventDefault();
 					var url = jQuery(this).attr(\"href\");
