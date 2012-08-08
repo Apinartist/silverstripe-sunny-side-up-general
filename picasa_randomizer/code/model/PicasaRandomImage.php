@@ -187,9 +187,12 @@ class PicasaRandomImage_Controller extends ContentController{
 		if($objects) {
 			foreach($objects as $obj) {
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
+				$style = "";
+				if($obj->Selected) {
+					$style = "style=\"background-color: green;\""
+				}
 				echo "
-				<li>
-
+				<li $style>
 					<a href=\"/randompicassaimage/donotuse/".$obj->ID."/\" class=\"remove\" style=\"float: right;\">remove</a>
 					<a href=\"/randompicassaimage/select/".$obj->ID."/\" class=\"select\">select</a>
 					<img src=\"".$obj->URL."\" alt=\"\" />
