@@ -189,7 +189,7 @@ class PicasaRandomImage_Controller extends ContentController{
 				$obj->URL = str_replace('/s72/', '/s'.$width.'/', $obj->URL);
 				$style = "";
 				if($obj->Selected) {
-					$style = "style=\"background-color: green;\""
+					$style = "style=\"background-color: green;\"";
 				}
 				echo "
 				<li $style>
