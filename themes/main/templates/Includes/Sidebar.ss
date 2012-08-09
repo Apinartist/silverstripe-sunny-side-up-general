@@ -24,9 +24,24 @@
 </div>
 <% end_if %>
 
+
 <% if RandomImage %>
 <div class="sidebarBox" id="RandomImage">
-	<h3>Random Visual Thought</h3>
+	<h3>About Sunny Side Up</h3>
+	<p>
+		Sunny Side Up is a Wellington, Aotearoa / New Zealand based web development company.
+		Our web-sites include:
+	</p>
+	<ul>
+		<li><a href="http://www.ssmods.com/">ssmods.com</a>: buy web-development services, </li>
+		<li><a href="http://www.silverstripe-ecommerce.com/">silverstripe-ecommerce.com</a>: silverstripe e-commerce demo site, </li>
+		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for the Silverstripe CMS , and</li>
+		<li><a href="http://www.silverstripe-webdevelopment.com/">www.sunnysideup.co.nz</a>: our corporate site with a difference.</li>
+	</ul>
+	<p>
+		For those of you who prefer pictures over boring websites, here is one:
+	</p>
 	<div id="RandomVisualThought" style="background-image: url($RandomImage.URL); width: 200px; height: 200px;" rel="$RandomImage.URL"></div>
 </div>
 <% end_if %>
+
