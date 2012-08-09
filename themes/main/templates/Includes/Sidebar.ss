@@ -31,10 +31,14 @@
 	<p>
 		Sunny Side Up is a Wellington, Aotearoa / New Zealand based web development company.
 		Our web-sites include:
-		<a href="http://www.ssmods.com/">ssmods.com</a>: our web-development services,
-		<a href="http://www.silverstripe-ecommerce.com/">silverstripe-ecommerce.com</a>: silverstripe e-commerce demo site,
-		<a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for our Silverstripe modules , and
-		<a href="http://www.silverstripe-webdevelopment.com/">www.sunnysideup.co.nz</a>: our corporate site with a difference.
+	</p>
+	<ul>
+		<li><a href="http://www.ssmods.com/">ssmods.com</a>: our web-development services, </li>
+		<li><a href="http://www.silverstripe-ecommerce.com/">silverstripe-ecommerce.com</a>: silverstripe e-commerce demo site, </li>
+		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for our Silverstripe modules , and</li>
+		<li><a href="http://www.silverstripe-webdevelopment.com/">www.sunnysideup.co.nz</a>: our corporate site with a difference.</li>
+	</ul>
+	<p>
 		For those of you who prefer pictures over boring websites, here is one:
 	</p>
 	<div id="RandomVisualThought" style="background-image: url($RandomImage.URL); width: 200px; height: 200px;" rel="$RandomImage.URL"></div>
