@@ -12,16 +12,16 @@ class MenuCache extends DataObjectDecorator {
 		3 => "LayoutSection",
 		4 => "other",
 	);
-	static function set_fields(array $array) {self::$fields = $array;}
-	static function get_fields() {return self::$fields;}
+		static function set_fields(array $array) {self::$fields = $array;}
+		static function get_fields() {return self::$fields;}
 
 	/* sets the cache number used for getting the "$Layout" of the individual page */
 	protected static $layout_field = 3;
-	static function set_layout_field($number) {self::$layout_field = $number;}
-	static function get_layout_field() {return self::$layout_field;}
+		static function set_layout_field($number) {self::$layout_field = $number;}
+		static function get_layout_field() {return self::$layout_field;}
 
 	protected static $tables_to_clear = array("SiteTree", "SiteTree_Live", "SiteTree_versions");
-	static function get_tables_to_clear() {return self::$tables_to_clear;}
+		static function get_tables_to_clear() {return self::$tables_to_clear;}
 
 	function extraStatics(){
 		$dbArray = array(
@@ -45,6 +45,7 @@ class MenuCache extends DataObjectDecorator {
 
 	function updateCMSFields(FieldSet &$fields) {
 		$fields->addFieldToTab("Root.Caching", new CheckboxField("DoNotCacheMenu","Do Not Cache Menu"));
+		$fields->addFieldToTab("Root.Caching", new LiteralField("ClearCache","<a href=\"".$this->owner->Link("clearallfieldcaches")."\">clear cache (do this at the end of all edit sessions)</a>"));
 		return $fields;
 	}
 
@@ -120,10 +121,10 @@ class MenuCache_Controller extends Extension {
 				$content = $this->getHtml($fieldNumber);
 				$sql = "Update {$bt}SiteTree_Live{$bt} Set {$bt}".$fieldName."{$bt} = '".$this->compressAndPrepareHTML($content)."' WHERE {$bt}ID{$bt} = ".$this->owner->ID." LIMIT 1";
 				DB::query($sql);
-				return "<!-- will be cached next time as $fieldName START -->".$content."<!-- will be cached next time as  $fieldName END -->";
+				return $content;
 			}
 			else {
-				return "<!-- from cached field: $fieldName START -->".$this->owner->$fieldName."<!-- from cached field: $fieldName END -->";
+				return $this->owner->$fieldName;
 			}
 		}
 	}

@@ -62,15 +62,15 @@ NB. the idea is not to edit the module at all, but instead customise
 it from your mysite folder, so that you can upgrade the module without redoing the settings..
 
 3. setup the following files:
-/themes/themes_menucache/templates/Includes/CachedField0.ss
-/themes/themes_menucache/templates/Includes/CachedField1.ss
-/themes/themes_menucache/templates/Includes/CachedField2.ss
-/themes/themes_menucache/templates/Includes/CachedField3.ss
-/themes/themes_menucache/templates/Includes/CachedField4.ss
+/themes/mytheme_menucache/templates/Includes/CachedField0.ss
+/themes/mytheme_menucache/templates/Includes/CachedField1.ss
+/themes/mytheme_menucache/templates/Includes/CachedField2.ss
+/themes/mytheme_menucache/templates/Includes/CachedField3.ss
+/themes/mytheme_menucache/templates/Includes/CachedField4.ss
 
 4. within each of these files, include the actual template you want to use
 e.g. add <% include Navigation %> to
-/themes/themes_menucache/templates/Includes/CachedField0.ss
+/themes/mytheme_menucache/templates/Includes/CachedField0.ss
 
 5. within /themes/templates/Page.ss (or wherever), add
 $CachedField([0-4]) to add your cached area.

@@ -9,7 +9,7 @@
 //MENU CHACHING
 //Object::add_extension('SiteTree', 'MenuCache');
 //Object::add_extension('ContentController', 'MenuCache_Controller');
-//MenuCache::set_fields(array("Header", "Menu", "Footer", "LayoutSection"));
+//MenuCache::set_fields(array("Header", "Menu", "Footer", "LayoutSection", "Other"));
 //MenuCache::set_layout_field(3); //NOTA BENE - MAKE SURE TO SET TO ANYTHING BUT 0-4 IF YOU DO NOT INCLUDE A LAYOUT SECTION!
 
 //STATIC PUBLISHING
