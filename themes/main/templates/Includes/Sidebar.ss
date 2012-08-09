@@ -33,9 +33,9 @@
 		Our web-sites include:
 	</p>
 	<ul>
-		<li><a href="http://www.ssmods.com/">ssmods.com</a>: buy web-development services, </li>
+		<li><a href="http://www.ssmods.com/">ssmods.com</a>: our web-development services, </li>
 		<li><a href="http://www.silverstripe-ecommerce.com/">silverstripe-ecommerce.com</a>: silverstripe e-commerce demo site, </li>
-		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for the Silverstripe CMS , and</li>
+		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for our Silverstripe modules , and</li>
 		<li><a href="http://www.silverstripe-webdevelopment.com/">www.sunnysideup.co.nz</a>: our corporate site with a difference.</li>
 	</ul>
 	<p>
