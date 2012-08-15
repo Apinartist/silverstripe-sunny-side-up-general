@@ -39,9 +39,10 @@ class HideMailto extends SiteTreeDecorator {
 			$subject = self::$default_subject;
 		}
 		$flipArray = array_flip(self::get_replace_characters());
-		$email = str_replace($flipArray, self::get_replace_characters(), $email);
 		//mailto part
-		$obj->MailTo = "mailto:".$email."?subject=".Convert::raw2mailto($subject);
+		$mailTo = self::string_encoder("mailto:".$email."?subject=".Convert::raw2mailto($subject));
+		$email = self::string_encoder($email);
+		$obj->MailTo = $mailTo;
 		$obj->Text = $email;
 		$obj->Original = $email;
 		$obj->Subject = $subject;
@@ -50,6 +51,33 @@ class HideMailto extends SiteTreeDecorator {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		//Requirements::javascript("hidemailto/javascript/HideMailto2Email.js");
 		return $obj;
+	}
+
+
+	/**
+	 * encodes a string - randomly
+	 * @param String $string
+	 * @return String
+	 */
+	private static string_encoder($string){
+		$encodedString = '';
+		$nowCodeString = '';
+		$originalLength = strlen($string);
+		for ( $i = 0; $i < $originalLength; $i++){
+			$encodeMode = rand(1,2);
+			switch ($encodeMode){
+				case 1: // Decimal code
+					$nowCodeString = '&#' . ord($string[$i]) . ';';
+					break;
+				case 2: // Hexadecimal code
+					$nowCodeString = '&#x' . dechex(ord($string[$i])) . ';';
+					break;
+				default:
+					return 'ERROR: wrong encoding mode.';
+			}
+			$encodedString .= $nowCodeString;
+		}
+		return $encodedString;
 	}
 
 	function HideMailToObject() {
