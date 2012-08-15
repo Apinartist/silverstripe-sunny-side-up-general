@@ -38,31 +38,15 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 		parent::init();
 		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
 		Requirements::javascript("webportfolio/javascript/timeline-executive.js");
-		$js = <<<JS
-		    var timeline_config = {
-					width: 	"100%",
-					height: "100%",
-					source: 'webportfolio/thirdparty/timelineJS/examples/example_kitchensink.json',
-					//start_at_end:	true,								//OPTIONAL
-					//hash_bookmark: true,								//OPTIONAL
-					css: 	'../compiled/css/timeline.css',				//OPTIONAL
-					js: 	'../compiled/js/timeline-min.js'				//OPTIONAL
-			}
-JS;
 		Requirements::customScript($js);
 	}
 
 	protected $IDArray = array();
 
 	function SelectedWebPortfolioItems(){
-		if($this->hasFilter) {
-
-		}
-		else {
-			$components = $this->getManyManyComponents('WebPortfolioItems');
-			if($components && $components->count()) {
-				$this->IDArray = $components->column("ID");
-			}
+		$components = $this->getManyManyComponents('WebPortfolioItems');
+		if($components && $components->count()) {
+			$this->IDArray = $components->column("ID");
 		}
 		$reset = false;
 		if(!$this->IDArray) {
@@ -83,6 +67,64 @@ JS;
 			"Favourites DESC, RAND()",
 			" INNER JOIN \"WebPortfolioPage_WebPortfolioItems\" ON \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioItemID\" = \"WebPortfolioItem\".\"ID\""
 		);
+	}
+
+	function json(){
+		$json = '
+{
+    "timeline":
+    {
+        "headline":"'.$this->Title.'",
+        "type":"default",
+        "text":"'.Convert::raw2json($this->Content).'"';
+        //"asset": {
+        //    "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
+        //    "credit":"Credit Name Goes Here",
+        //    "caption":"Caption text goes here"
+        //},
+
+		$data = $this->SelectedWebPortfolioItems();
+		if($data) {
+			foreach($data as $site) {
+				$startDate = "2011,12,10";
+				$endDate = "2011,12,10";
+				$headline = "2011,12,10";
+				$text = "2011,12,10";
+        $json .= '
+        "date": [
+            {
+                "startDate":"",
+                "endDate":"2011,12,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional",
+                "asset": {
+                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
+                    "thumbnail":"optional-32x32px.jpg",
+                    "credit":"Credit Name Goes Here",
+                    "caption":"Caption text goes here"
+                }
+            }
+        ],
+        ';
+			}
+		}
+/*
+        "era": [
+            {
+                "startDate":"2011,12,10",
+                "endDate":"2011,12,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional"
+            }
+
+        ]
+        */
+		$json . ='
+    }
+}';
+		return $json;
 	}
 
 
