@@ -40,10 +40,11 @@ class HideMailto extends SiteTreeDecorator {
 		}
 		$flipArray = array_flip(self::get_replace_characters());
 		//mailto part
-		$mailTo = self::string_encoder("mailto:".$email."?subject=".Convert::raw2mailto($subject));
-		$email = self::string_encoder($email);
-		$obj->MailTo = $mailTo;
-		$obj->Text = $email;
+		$mailTo = "mailto:".$email."?subject=".Convert::raw2mailto($subject);
+		$mailToConverted = self::string_encoder($mailTo);
+		$convertedEmail = self::string_encoder($email);
+		$obj->MailTo = $mailToConverted;
+		$obj->Text = $convertedEmail;
 		$obj->Original = $email;
 		$obj->Subject = $subject;
 		//$obj->OnClick = "jQuery(this).attr('href', HideMailto2Email('".self::get_dot_replacer()."', '".$array[0]."', '".$array[1]."', '".Convert::raw2mailto($subject)."')); return true;";
@@ -59,7 +60,7 @@ class HideMailto extends SiteTreeDecorator {
 	 * @param String $string
 	 * @return String
 	 */
-	private static string_encoder($string){
+	private static function string_encoder($string){
 		$encodedString = '';
 		$nowCodeString = '';
 		$originalLength = strlen($string);
