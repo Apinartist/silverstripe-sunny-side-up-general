@@ -36,7 +36,7 @@
 		<li><a href="http://www.ssmods.com/">ssmods.com</a>: our web-development services, </li>
 		<li><a href="http://www.silverstripe-ecommerce.com/">silverstripe-ecommerce.com</a>: silverstripe e-commerce demo site, </li>
 		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for our Silverstripe modules , and</li>
-		<li><a href="http://www.silverstripe-webdevelopment.com/">www.sunnysideup.co.nz</a>: a general warning.</li>
+		<li><a href="http://www.sunnysideup.co.nz/">www.sunnysideup.co.nz</a>: our <i>splash</i>.</li>
 	</ul>
 	<p>
 		For those of you who prefer pictures over boring websites, here is one:
