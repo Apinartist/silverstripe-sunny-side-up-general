@@ -101,6 +101,8 @@ class TypographyTestPage_Controller extends Page_Controller {
 		$errorField4->setCustomValidationMessage("custom validation error");
 		$rightTitle = new TextField($name = "RightTitleField", $title = "Left Title is Default");
 		$rightTitle->setRightTitle("right title here");
+		$readonlyField = new ReadOnlyField($name = "ReadOnlyField", $title = "ReadOnlyField");
+		$readonlyField->setValue("read only value");
 		$form = new Form(
 			$controller = $this,
 			$name = "TestForm",
@@ -127,11 +129,13 @@ class TypographyTestPage_Controller extends Page_Controller {
 				new DropdownField($name = "DropdownField",$title = "Dropdown Field",$source = Geoip::getCountryDropDown()),
 				new OptionsetField($name = "OptionsetField",$title = "Optionset Field",$array),
 				new CheckboxSetField($name = "CheckboxSetField",$title = "Checkbox Set Field",$array),
-				new HeaderField($name = "HeaderField3", $title = "HeaderField Level 3", 3),
+				new HeaderField($name = "HeaderField3", $title = "Other Fields", 3),
 				new NumericField($name = "NumericField", $title = "Numeric Field "),
 				new DateField($name = "DateField", $title = "Date Field"),
 				new FileField($name = "FileField", $title = "Upload File"),
-				new CheckboxField($name = "CheckboxField", $title = "Checkbox Field")
+				new CheckboxField($name = "CheckboxField", $title = "Checkbox Field"),
+				new HeaderField($name = "HeaderField4", $title = "Read-only Field", 3),
+				$readonlyField
 			),
 			$actions = new FieldSet(
 					// List the action buttons here
