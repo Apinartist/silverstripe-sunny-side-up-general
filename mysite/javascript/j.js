@@ -39,14 +39,14 @@
 		},
 
 		externalLinks: function () {
-			$("a[href^='http://'], a[href^='https://'], a.externalLink").each(
-				function(i){
-					var link = "" + $(this).attr("href");
+			jQuery("a[href^='http://'], a[href^='https://'], a.externalLink").each(
+				function(i, el){
+					var link = "" + jQuery(el).attr("href");
 					var currentSite = "" + window.location;
 					var cutOff = 0 + currentSite.indexOf( "/", 10 );
 					if(link.substring(0, cutOff) != currentSite.substring(0,cutOff)) {
-						this.target= "_blank";
-						$(this).addClass("externalLink");
+						jQuery(el).attr("target", "_blank");
+						jQuery(el).addClass("externalLink");
 					}
 				}
 			);
