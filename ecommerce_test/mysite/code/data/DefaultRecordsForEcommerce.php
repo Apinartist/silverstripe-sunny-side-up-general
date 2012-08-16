@@ -380,10 +380,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 						Our work includes:
 					</p>
 					<ul>
-						<li><a href=\"http://www.photowarehosue.co.nz\">photowarehouse</a> - a large retailer site with over four thousand products - contracted by <a href=\"http://www.msodesign.com\">MSO Design</a> to develop back-end only</li>
+						<li><a href=\"http://www.photowarehouse.co.nz\">photowarehouse</a> - a large retailer site with over four thousand products - contracted by <a href=\"http://www.msodesign.com\">MSO Design</a> to develop back-end only</li>
 						<li><a href=\"http://www.kprcatering.co.nz\">kpr catering</a> - a catering company - contracted by <a href=\"http://www.msodesign.com\">MSO Design</a> to develop back-end only</li>
 						<li><a href=\"http://www.resumetemplates-usa.com\">resume templates usa</a> - a US based company selling curriculum vitae (resume) templates</li>
-						<li><a href=\"http://www.guyton.co.nz\">guytons</a> - a famous fish shop</li>
 					</ul>
 					<p>
 						Feel free to contact us by phone: +64 4 889 2773 or email: ecommerce [at] sunnysideup [dot] co [dot] nz for more information.
