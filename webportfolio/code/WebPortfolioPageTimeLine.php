@@ -41,40 +41,18 @@ class WebPortfolioPageTimeLine extends Page {
 
 class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 
+
+	protected static $ajax_file_location = "webportfolio/javascript/timeline-executive.js";
+		static function set_ajax_file_location($s){self::$ajax_file_location = $s;}
+		static function get_ajax_file_location(){return self::$ajax_file_location;}
+
 	function init() {
 		parent::init();
-		Requirements::customScript("var timeline_config_source = '".$this->Link("json/")."';", "timeline_config_source");
-		Requirements::javascript("webportfolio/javascript/timeline-executive.js");
+		Requirements::javascript(self::get_ajax_file_location());
 		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
+		Requirements::themedCSS("WebPortfolioPageTimeLine");
 	}
 
-	protected $IDArray = array();
-
-	function SelectedWebPortfolioItems(){
-		$components = $this->getManyManyComponents('WebPortfolioItems');
-		if($components && $components->count()) {
-			$this->IDArray = $components->column("ID");
-		}
-		$reset = false;
-		if(!$this->IDArray) {
-			$reset = true;
-		}
-		elseif(!is_array($this->IDArray)) {
-			$reset = true;
-		}
-		elseif(!count($this->IDArray)) {
-			$reset = true;
-		}
-		if($reset) {
-			$this->IDArray = array(0 => 0);
-		}
-		return DataObject::get(
-			"WebPortfolioItem",
-			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).") AND \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioPageID\" = ".$this->ID,
-			"Favourites DESC, RAND()",
-			" INNER JOIN \"WebPortfolioPage_WebPortfolioItems\" ON \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioItemID\" = \"WebPortfolioItem\".\"ID\""
-		);
-	}
 
 	function json(){
 		$json = '
@@ -141,6 +119,10 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
     }
 }';
 		return $json;
+	}
+
+	function JSONLink(){
+		return Director::absoluteURL($this->Link("json/"));
 	}
 
 	protected function html2json($html){
