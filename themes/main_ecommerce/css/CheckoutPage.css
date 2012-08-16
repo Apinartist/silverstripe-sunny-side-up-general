@@ -41,7 +41,11 @@
 #Checkout ol.steps li.current {color: #317010;}
 
 .selectorderaddress ul {border-top: 1px solid #BFC1C1; width: 376px;}
-.noLongerInUse {display: block; float: right;}
+.selectorderaddress ul li {clear: both; }
+.selectorderaddress ul input {float: left;}
+.selectorderaddress ul address {display: block; width: 60%; float: left; margin-left: 0px;}
+.selectorderaddress ul .clearer {clear: both; margin-bottom: 10px;}
+.noLongerInUse {display: inline-block; float: right; width: 20%;}
 
 
 #Checkout h2.orderStepHeading {margin-top:70px;}
@@ -50,3 +54,4 @@
 
 .productImage {float: left; margin-right: 1em;}
 
+#ContentHolder {clear: both; padding-top: 3em;}
