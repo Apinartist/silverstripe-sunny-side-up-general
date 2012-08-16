@@ -24,13 +24,14 @@ class WebPortfolioItem extends DataObject {
 		"CodingBackEnd" => "Varchar(255)",
 		"Copy" => "Varchar(255)",
 		"Photography" => "Varchar(255)",
-		"ScreenshotTaken" => "Date"
+		"ScreenshotTaken" => "Date",
+		"StartDate" => "Date",
+		"EndDate" => "Date"
 	);
 
 	static $has_one = array(
 		"Agent" => "WebPortfolioAgent",
 		"Screenshot" => "Image",
-
 	);
 
 	static $many_many = array(

@@ -13,12 +13,19 @@ class WebPortfolioPageTimeLine extends Page {
 
 	static $icon = "webportfolio/images/treeicons/WebPortfolioPageTimeLine";
 
+	public static $db = array(
+		"TimeLineHeader" => "Varchar",
+		"TimeLineIntro" => "HTMLText"
+	);
+
 	public static $many_many = array(
 		"WebPortfolioItems" => "WebPortfolioItem"
 	);
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Root.Content.Portfolio", new HTMLEditorField("TimeLineIntro", "Time line intro", 3));
+		$fields->addFieldToTab("Root.Content.Portfolio", new TextField("TimeLineHeader", "Time line header"));
 		$fields->addFieldToTab("Root.Content.Portfolio",
 			new ManyManyComplexTableField(
 				$controller = $this,
@@ -36,9 +43,9 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
-		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
+		Requirements::customScript("var timeline_config_source = '".$this->Link("json/")."';", "timeline_config_source");
 		Requirements::javascript("webportfolio/javascript/timeline-executive.js");
-		Requirements::customScript($js);
+		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
 	}
 
 	protected $IDArray = array();
@@ -74,39 +81,47 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 {
     "timeline":
     {
-        "headline":"'.$this->Title.'",
+        "headline":'.$this->html2json($this->TimeLineHeader).',
         "type":"default",
-        "text":"'.Convert::raw2json($this->Content).'"';
+        "text": '.$this->html2json($this->TimeLineIntro).',
+        "date": [';
+        //'.$this->html2json($this->TimeLineIntro).'';//
         //"asset": {
         //    "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
         //    "credit":"Credit Name Goes Here",
         //    "caption":"Caption text goes here"
         //},
 
-		$data = $this->SelectedWebPortfolioItems();
-		if($data) {
+		$data = $this->WebPortfolioItems();
+		if($data && $data->count()) {
+			$dayExistsArray = array();
 			foreach($data as $site) {
-				$startDate = "2011,12,10";
-				$endDate = "2011,12,10";
-				$headline = "2011,12,10";
-				$text = "2011,12,10";
+
+				if($site->StartDate) {
+					$startDateRaw = $site->StartDate;
+				}
+				else {
+					$startDateRaw = $this->Created;
+				}
+				$startDateArray = explode("-", $startDateRaw);
+				$startDate = intval($startDateArray[0]). ",".intval($startDateArray[1]). ",".intval($startDateArray[2]);
+				$headLine = str_replace("https://www.", "", $site->getTitle());
+				$headLine = str_replace("http://www.", "", $site->getTitle());
+				$headLine = str_replace("https://", "", $headLine);
+				$headLine = str_replace("http://", "", $headLine);
+				$headLine = str_replace(".", " . ", $headLine);
+				$headLine = $this->html2json($headLine); //
+				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
         $json .= '
-        "date": [
             {
-                "startDate":"",
-                "endDate":"2011,12,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional",
-                "asset": {
-                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
-                    "thumbnail":"optional-32x32px.jpg",
-                    "credit":"Credit Name Goes Here",
-                    "caption":"Caption text goes here"
-                }
+                "startDate":"'.$startDate.'",
+                "headline": '.$headLine.',
+                "text": '.$text.'
             }
-        ],
         ';
+        if(!$site->Last()) {
+					$json .= ",";
+				}
 			}
 		}
 /*
@@ -121,11 +136,22 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 
         ]
         */
-		$json . ='
+		$json .='
+      ]
     }
 }';
 		return $json;
 	}
 
+	protected function html2json($html){
+		if(!trim($html)) {
+			$html = "&nbsp;";
+		}
+		$json = Convert::raw2json($html);
+		$json = str_replace("\t", " ", $json);
+		$json = str_replace("\r", " ", $json);
+		$json = str_replace("\n", " ", $json);
+		return $json;
+	}
 
 }

@@ -1,7 +1,7 @@
 var timeline_config = {
 		width:              "100%",
 		height:             "600",
-		source:             'path_to_json/or_link_to_googlespreadsheet',
+		source:             'http://ssmods.com.localhost/home/json/',
 		start_at_end:       true,                          //OPTIONAL START AT LATEST DATE
 //		start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
 //		start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
