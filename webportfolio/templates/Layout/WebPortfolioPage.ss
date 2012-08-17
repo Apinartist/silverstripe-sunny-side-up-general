@@ -23,6 +23,7 @@
 <ul id="WebPortfolioItems">
 <% control SelectedWebPortfolioItems %>
 	<li class="$EvenOdd $FirstLast">
+		<% include WebPortfolioPageOneItem %>
 	</li>
 <% end_control %>
 </ul>
