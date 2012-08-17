@@ -2,7 +2,7 @@
 <div class="sidebarBox" id="SidebarChildren">
 	<h3>In the <i>$MenuTitle</i> section</h3>
 	<ul>
-		<% control Children %><li class="$FirstLast $LinkingMode"><a href="$Link">$Title</a></li><% end_control %>
+		<% control Children %><li class="$FirstLast $LinkingMode"><a href="$Link">$MenuTitle</a></li><% end_control %>
 	</ul>
 </div>
 <% end_if %>
@@ -12,7 +12,7 @@
 	<h3>Related pages</h3>
 	<% if Parent %><p class="parentPageInfo">Other pages in the <% control Parent %><a href="$Link">$Title</a><% end_control %> section.</p><% end_if %>
 	<ul>
-		<% control Siblings %><li class="$FirstLast $LinkingMode"><a href="$Link">$Title</a></li><% end_control %>
+		<% control Siblings %><li class="$FirstLast $LinkingMode"><a href="$Link">$MenuTitle</a></li><% end_control %>
 	</ul>
 </div>
 <% end_if %>
