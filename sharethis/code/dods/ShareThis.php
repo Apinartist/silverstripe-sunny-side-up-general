@@ -12,15 +12,6 @@ class ShareThis extends SiteTreeDecorator {
 
 
 	/**
-	* include a share this all in one
-	* @var boolean
-	*/
-
-	protected static $share_this_all_in_one = 0;
-		static function set_share_this_all_in_one($value) {self::$share_this_all_in_one = $value;}
-
-
-	/**
 	* use BW icons
 	* @var boolean
 	*/
@@ -108,11 +99,13 @@ class ShareThis extends SiteTreeDecorator {
 	}
 
 	public function IncludeShareAll() {
-		return self::$share_this_all_in_one;
+		return $this->SiteConfig()->ShareThisAllInOne;
 	}
 
 	public function ShareAll() {
-		return ShareThisOptions::get_share_all();
+		if($this->IncludeShareAll()) {
+			return ShareThisOptions::get_share_all();
+		}
 	}
 
 
@@ -186,6 +179,7 @@ class ShareThis extends SiteTreeDecorator {
 	protected function SiteConfig(){
 		return SiteConfig::current_site_config();
 	}
+
 	function populateDefaults() {
 		if(DB::isActive()) {
 			$this->owner->HasSocialNetworkingLinks = $this->SiteConfig()->IncludeByDefaultShareThisLinks;

@@ -195,8 +195,8 @@ SHARETHIS.addEntry(
 	{
 		title:"'.urldecode(self::$encoded_page_title).'",
 		summary:"'.urldecode(self::$encoded_page_title).'",
-		url:"'.urldecode(self::$icon).'",
-		icon:"'.urldecode(self::$encoded_page_url).'"
+		url:"'.urldecode(self::$encoded_page_url).'",
+		icon:"'.urldecode(self::$icon).'"
 	},
 	{button:true}
 );

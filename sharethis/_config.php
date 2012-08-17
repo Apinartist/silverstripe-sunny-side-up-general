@@ -16,7 +16,6 @@ define('SS_SHARETHIS_DIR', 'sharethis');
 
 // --- SHARE THIS LINK -> links to your visitors page on facebook, linkedin, etc... so that they can share your website
 //DataObject::add_extension('SiteTree', 'ShareThis');
-//ShareThis::set_share_this_all_in_one(true);
 //ShareThis::set_use_bw_effect(true);
 //ShareThis::set_share_this_icons_to_include(array("facebook", "google", "linkedin"));   //OR
 //ShareThis::set_share_this_icons_to_exclude(array("myspace"));
