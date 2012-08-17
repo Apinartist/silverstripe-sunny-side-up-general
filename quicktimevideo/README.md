@@ -41,7 +41,7 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.Movie", new FileIFrameField("QuickTimeVideoID", "Quick Time Video"));
+		$fields->addFieldToTab("Root.Content.Movie", new FileIFrameField("QuickTimeVideo", "Quick Time Video"));
 		return $fields;
 	}
 
