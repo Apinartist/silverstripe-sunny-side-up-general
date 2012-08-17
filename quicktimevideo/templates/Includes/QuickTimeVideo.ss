@@ -5,5 +5,5 @@
 	<param name="controller" value="false">
 	<param name="cache" value="false">
 	<param name="src" value="$Link">
-	<embed src="movie.mov" width="100%" height="100%" bgcolor="#eeeeee" kioskmode="true" scale="tofit" controller="false" cache="false"></embed>
+	<embed src="$Link" width="100%" height="100%" bgcolor="#eeeeee" kioskmode="true" scale="tofit" controller="false" cache="false"></embed>
 </object>
