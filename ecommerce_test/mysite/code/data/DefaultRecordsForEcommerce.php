@@ -464,7 +464,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"DefaultSortOrder" => $sortOrder,
 				"DefaultFilter" => $filter,
 				"DisplayStyle" => $style,
-				"ImageID" => this->getRandomImageID(),
+				"ImageID" => $this->getRandomImageID(),
 				"Content" =>
 					'<p>
 						This product group page has the following characteristics:
