@@ -42,7 +42,10 @@ position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-siz
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
 #Sidebar p{line-height: 1;}
 
-#Sidebar.closed {height: 0px!important; overflow: hidden!important; padding-top: 0px!important;padding-bottom: 0px!important;}
+#Layout.hiddenSidebar #Sidebar {position: inherit!important; right: auto!important;top: auto!important; width: auto!important; margin-bottom: 10px!important; padding-bottom: 10px!important;}
+#Sidebar.closed {height: 1em!important; overflow: hidden!important; padding-top: 0px!important;padding-bottom: 0px!important;  }
+#Layout.hiddenSidebar .sidebarTop{height: auto!important; cursor: pointer!important;}
+#Layout.hiddenSidebar .sidebarTop a{display: block; padding: 0.5em; text-align: center;}
 
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
 #PageComments_holder p.comment{margin: 0px; padding: 0px; font-style: italic;line-height: 0.9;}

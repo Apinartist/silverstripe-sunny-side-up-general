@@ -91,17 +91,7 @@ var windowResizer = {
 	imageSelector : '#RandomVisualThought',
 
 	init : function() {
-		this.getWindowSizing();
-		if(this.windowWidth < 700) {
-			jQuery("#Layout").addClass("hiddenSidebar")
-			jQuery("#Sidebar").toggleClass("closed").click(
-				function(){
-					jQuery("#Sidebar").toggleClass("open").toggleClass("closed");
-				}
-			);
-		}
-		else {
-		}
+		windowResizer.manageSidebar();
 		if(jQuery("#RandomVisualThought").length > 0) {
 			jQuery("#RandomVisualThought").click(
 				function(el) {
@@ -127,15 +117,16 @@ var windowResizer = {
 					);
 				}
 			);
-			//redo when window is resized
-			jQuery(window).resize(
-				function() {
-					if(jQuery("#RandomImageLarge").length) {
-						windowResizer.resizeImage();
-					}
-				}
-			);
 		}
+		//redo when window is resized
+		jQuery(window).resize(
+			function() {
+				windowResizer.manageSidebar();
+				if(jQuery("#RandomImageLarge").length) {
+					windowResizer.resizeImage();
+				}
+			}
+		);
 	},
 
 	resizeImage : function() {
@@ -179,6 +170,20 @@ var windowResizer = {
 
 	getImage : function() {
 		return jQuery('#RandomImageLarge img');
+	},
+
+	manageSidebar: function(){
+		this.getWindowSizing();
+		if(this.windowWidth < 700) {
+			jQuery("#Layout").addClass("hiddenSidebar");
+			jQuery("aside").insertBefore("#LayoutHolder div.mainSection");
+			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px").toggleClass("closed")
+			jQuery(".sidebarTop").html("<a href=\"#Sidebar\">find</a>").click(
+				function(){
+					jQuery("#Sidebar").toggleClass("open").toggleClass("closed");
+				}
+			);
+		}
 	},
 
 	getWindowSizing : function(){
