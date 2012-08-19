@@ -1,3 +1,4 @@
+
 <% if Children %>
 <div class="sidebarBox" id="SidebarChildren">
 	<h3>In the <i>$MenuTitle</i> section</h3>
@@ -25,7 +26,6 @@
 <% end_if %>
 
 
-<% if RandomImage %>
 <div class="sidebarBox" id="RandomImage">
 	<h3>About Sunny Side Up</h3>
 	<p>
@@ -38,10 +38,11 @@
 		<li><a href="http://www.silverstripe-webdevelopment.com/">silverstripe-webdevelopment.com</a>: test site for our Silverstripe modules , and</li>
 		<li><a href="http://www.sunnysideup.co.nz/">www.sunnysideup.co.nz</a>: our <i>splash</i>.</li>
 	</ul>
+<% if RandomImage %>
 	<p>
 		For those of you who prefer pictures over boring websites, here is one:
 	</p>
 	<div id="RandomVisualThought" style="background-image: url($RandomImage.URL); width: 200px; height: 200px;" rel="$RandomImage.URL"></div>
-</div>
 <% end_if %>
+</div>
 
