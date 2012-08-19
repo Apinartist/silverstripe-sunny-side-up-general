@@ -24,13 +24,13 @@ body {
 
 
 #Sidebar {
-position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-size: 77%; padding-bottom: 200px;
+	position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-size: 77%; padding-bottom: 200px;
 	background-color: #f7f7f7;
 	background-image: url(/themes/main/images/pat.png);
 	border:           0px solid #fff;
--moz-border-radius-bottomright: 5px; border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	border-bottom-right-radius: 5px;
 	border-top: 18px solid #808383;
-
 }
 #Sidebar .sidebarBox {padding-bottom: 30px; }
 #Sidebar table {width: 100%;}
@@ -45,7 +45,11 @@ position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-siz
 #Layout.hiddenSidebar #Sidebar {position: inherit!important; right: auto!important;top: auto!important; width: auto!important; margin-bottom: 10px!important; padding-bottom: 10px!important;}
 #Sidebar.closed {height: 1em!important; overflow: hidden!important; padding-top: 0px!important;padding-bottom: 0px!important;  }
 #Layout.hiddenSidebar .sidebarTop{height: auto!important; cursor: pointer!important;}
-#Layout.hiddenSidebar .sidebarTop a{display: block; padding: 0.5em; text-align: center;}
+#Layout.hiddenSidebar .sidebarTop a{padding: 0.5em; text-align: center;}
+#Layout.hiddenSidebar #Sidebar.closed .findLink {display: block;}
+#Layout.hiddenSidebar #Sidebar.open .findLink {display: none;}
+#Layout.hiddenSidebar #Sidebar.closed .closeLink {display: none;}
+#Layout.hiddenSidebar #Sidebar.open .closeLink {display: block;}
 
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
 #PageComments_holder p.comment{margin: 0px; padding: 0px; font-style: italic;line-height: 0.9;}

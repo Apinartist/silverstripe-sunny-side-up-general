@@ -178,7 +178,7 @@ var windowResizer = {
 			jQuery("#Layout").addClass("hiddenSidebar");
 			jQuery("aside").insertBefore("#LayoutHolder div.mainSection");
 			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px").toggleClass("closed")
-			jQuery(".sidebarTop").html("<a href=\"#Sidebar\">find</a>").click(
+			jQuery(".sidebarTop").html("<a href=\"#Sidebar\" class=\"findLink\">find</a><a href=\"#Sidebar\" class=\"closeLink\">close</a>").click(
 				function(){
 					jQuery("#Sidebar").toggleClass("open").toggleClass("closed");
 				}
