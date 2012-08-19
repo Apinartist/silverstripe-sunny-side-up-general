@@ -464,6 +464,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 				"DefaultSortOrder" => $sortOrder,
 				"DefaultFilter" => $filter,
 				"DisplayStyle" => $style,
+				"ImageID" => this->getRandomImageID(),
 				"Content" =>
 					'<p>
 						This product group page has the following characteristics:
@@ -664,6 +665,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						$productVariation->ProductID = $product->ID;
 						$productVariation->Price = $product->Price * 2;
 						$productVariation->Description = $descriptionOptions[rand(0, 5)];
+						$productVariation->ImageID = rand(0, 1) ? 0 : $this->getRandomImageID();
 						$productVariation->write();
 						$existingAttributeValues = $productVariation->AttributeValues();
 						$existingAttributeValues->add($variationCombo["Size"]);
@@ -1260,7 +1262,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			array("T" => "EcommerceDBConfig", "F" => "ShopClosed", "V" => "0", "W" => ""),
 			array("T" => "EcommerceDBConfig", "F" => "ShopPricesAreTaxExclusive", "V" => "0", "W" => ""),
 			array("T" => "EcommerceDBConfig", "F" => "ShopPhysicalAddress", "V" => "<address>The Shop<br />1 main street<br />Coolville 123<br />Landistan</address>", "W" => ""),
-			array("T" => "EcommerceDBConfig", "F" => "ReceiptEmail", "V" => "sales@silverstripe-ecommerce.com", "W" => ""),
+			array("T" => "EcommerceDBConfig", "F" => "ReceiptEmail", "V" => "\"Silverstrip E-comerce Demo\" <sales@silverstripe-ecommerce.com>", "W" => ""),
 			array("T" => "EcommerceDBConfig", "F" => "PostalCodeURL", "V" => "http://tools.nzpost.co.nz/tools/address-postcode-finder/APLT2008.aspx", "W" => ""),
 			array("T" => "EcommerceDBConfig", "F" => "PostalCodeLabel", "V" => "Check Code", "W" => ""),
 			array("T" => "EcommerceDBConfig", "F" => "NumberOfProductsPerPage", "V" => "5", "W" => ""),
