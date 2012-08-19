@@ -18,6 +18,7 @@ body {
 		#Breadcrumbs {text-align: right; padding: 0; position: absolute; top: 7px; font-size: 12px; }
 		#SidebarSection {width: 20%; float: right; padding: 67px 20px 0 0;}
 		#Layout {padding: 67px 270px 50px 210px; max-width: 770px;}
+		#Layout.hiddenSidebar {padding-right: 20px!important; }
 		.pageTitle {text-transform: uppercase;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
 
@@ -40,6 +41,8 @@ position: absolute; top: 40px; right: 20px; width: 200px; padding:12px; font-siz
 #Sidebar ul li.current a{color: #317010 !important;}
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
 #Sidebar p{line-height: 1;}
+
+#Sidebar.closed {height: 0px!important; overflow: hidden!important; padding-top: 0px!important;padding-bottom: 0px!important;}
 
 #PageComments_holder {margin-top: 40px; font-size: 0.8em; }
 #PageComments_holder p.comment{margin: 0px; padding: 0px; font-style: italic;line-height: 0.9;}

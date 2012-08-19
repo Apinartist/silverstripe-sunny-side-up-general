@@ -3,62 +3,192 @@
 	jQuery(document).ready(
 		function() {
 			SSUhoverMenu.init();
+			windowResizer.init();
 		}
 	);
 
+})(jQuery);
 
-	var SSUhoverMenu = {
+var SSUhoverMenu = {
 
-		firstTime: true,
-		animateIn: {opacity: "1"},
-		animateOut: {opacity: "0.75"},
-		animateOutSecondTime: {width: "20%", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px", paddingRight: "24px"},
-		animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
+	firstTime: true,
+	animateIn: {opacity: "1"},
+	animateOut: {opacity: "0.75"},
+	animateOutSecondTime: {width: "20%", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px", paddingRight: "24px"},
+	animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
 
-		init: function() {
-			jQuery("#Nav li.level1").hoverIntent(
-				{
-					over: SSUhoverMenu.menuIn,  // function = onMouseOver callback (required)
-					timeout: 200,   // number = milliseconds delay before onMouseOut function call
-					out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
-				}
-			);
-			jQuery(".hasCSSHover").removeClass("hasCSSHover");
-			jQuery("#Nav").hoverIntent(
-				{
-					over: function(){
-						if(SSUhoverMenu.firstTime) {
-							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-							SSUhoverMenu.firstTime = false;
-						}
-						else {
-							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-						}
-					},  // function = onMouseOver callback (required)
-					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
-					out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
-				}
-			);
-			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
-			jQuery("#Nav").children("li").each(
-				function(i, el) {
-					var parentOffset = jQuery(el).offset();
-					var left = parentOffset.left;
-					var docWidth = jQuery(document).width();
-					if(left > (docWidth - 270)) {
-						left = docWidth - 270;
+	init: function() {
+		jQuery("#Nav li.level1").hoverIntent(
+			{
+				over: SSUhoverMenu.menuIn,  // function = onMouseOver callback (required)
+				timeout: 200,   // number = milliseconds delay before onMouseOut function call
+				out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
+			}
+		);
+		jQuery(".hasCSSHover").removeClass("hasCSSHover");
+		jQuery("#Nav").hoverIntent(
+			{
+				over: function(){
+					if(SSUhoverMenu.firstTime) {
+						jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
+						SSUhoverMenu.firstTime = false;
 					}
-					leftString = left + "px";
-					jQuery(el).children("ul").animate({left: leftString});
+					else {
+						jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
+					}
+				},  // function = onMouseOver callback (required)
+				timeout: 1500,   // number = milliseconds delay before onMouseOut function call
+				out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
+			}
+		);
+		jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
+		jQuery("#Nav").children("li").each(
+			function(i, el) {
+				var parentOffset = jQuery(el).offset();
+				var left = parentOffset.left;
+				var docWidth = jQuery(document).width();
+				if(left > (docWidth - 270)) {
+					left = docWidth - 270;
+				}
+				leftString = left + "px";
+				jQuery(el).children("ul").animate({left: leftString});
+			}
+		);
+	},
+
+	menuIn: function() {jQuery(this).children("ul").slideDown()},
+
+	menuOut: function() {jQuery(this).children("ul").slideUp()}
+
+}
+
+
+/*
+ *@author nicolaas[at]sunnysideup.co.nz
+ *
+ **/
+
+
+var windowResizer = {
+
+	windowWidth: 0,
+
+	windowHeight: 0,
+
+	minWrapperWidth: 530,
+
+	minWrapperHeight: 400,
+		set_min_wrapper_height: function(v) {this.minWrapperHeight = v;},
+
+	maxWrapperWidth: 1920,
+
+	maxWrapperHeight: 1449,
+
+	imageWidth: "",
+
+	imageHeight: "",
+
+	imageSelector : '#RandomVisualThought',
+
+	init : function() {
+		this.getWindowSizing();
+		if(this.windowWidth < 700) {
+			jQuery("#Layout").addClass("hiddenSidebar")
+			jQuery("#Sidebar").toggleClass("closed").click(
+				function(){
+					jQuery("#Sidebar").toggleClass("open").toggleClass("closed");
 				}
 			);
-		},
+		}
+		else {
+		}
+		if(jQuery("#RandomVisualThought").length > 0) {
+			jQuery("#RandomVisualThought").click(
+				function(el) {
+					var url = jQuery(this).attr("rel");
+					width = 100;
+					height = 100;
+					jQuery("body").append('<div id="RandomImageLarge"><img src="'+url+'" alt="random image large" /></div>');
+					jQuery("#RandomImageLarge")
+						//.css('background-image', 'url('+url+')')
+						.click(
+							function(){
+								jQuery(this).remove();
+								jQuery(document).removeAttr("keydown");
+							}
+						);
+					windowResizer.resizeImage();
+					jQuery(document).keydown(
+						function(e) {
+							if(jQuery('#RandomImageLarge').length) {
+								if (e.which == 27) {jQuery('#RandomImageLarge').click(); }  // esc   (does not work)
+							}
+						}
+					);
+				}
+			);
+			//redo when window is resized
+			jQuery(window).resize(
+				function() {
+					if(jQuery("#RandomImageLarge").length) {
+						windowResizer.resizeImage();
+					}
+				}
+			);
+		}
+	},
 
-		menuIn: function() {jQuery(this).children("ul").slideDown()},
+	resizeImage : function() {
+		//get window height
+		this.getWindowSizing();
+		//width within boundaries
+		if(1 == 2) {
+			if(this.windowWidth < this.minWrapperWidth) {
+				this.windowWidth = this.minWrapperWidth;
+			}
+			if(this.windowWidth > this.maxWrapperWidth) {
+				this.windowWidth = this.maxWrapperWidth;
+			}
+			//height within boundaries
+			if(this.windowHeight < this.minWrapperHeight) {
+				this.windowHeight = this.minWrapperHeight;
+			}
+			if(this.windowHeight > this.maxWrapperHeight) {
+				this.windowHeight = this.maxWrapperHeight;
+			}
+		}
+		var image = this.getImage();
 
-		menuOut: function() {jQuery(this).children("ul").slideUp()}
+		// 2) Center image in the middle
+		this.imageWidth = 'auto';
+		this.imageHeight = this.windowHeight + 'px';
+		image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
+		if(jQuery(image).width() > jQuery(image).height()) {
+			if(jQuery(image).width() < this.windowWidth) {
+				this.imageWidth = this.windowWidth + 'px';
+				this.imageHeight = 'auto';
+				image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
+			}
+		}
+		if(jQuery(image).height() > this.windowHeight) {
+			var heightDifference = jQuery(image).height() - this.windowHeight;
+			jQuery(image).css("margin-top", "-"+Math.round(heightDifference / 2)+"px" )
+		}
+	},
 
+
+	getImage : function() {
+		return jQuery('#RandomImageLarge img');
+	},
+
+	getWindowSizing : function(){
+		this.windowWidth = jQuery(window).width();
+		this.windowHeight = jQuery(window).height();
 	}
+
+}
+
+
 
 
 /**
@@ -90,7 +220,7 @@
 * @param  g  onMouseOut function  || Nothing (use configuration options object)
 * @author    Brian Cherne brian(at)cherne(dot)net
 */
-
+;(function($) {
 	$.fn.hoverIntent = function(f,g) {
 		// default configuration options
 		var cfg = {
@@ -167,123 +297,3 @@
 		return this.bind('mouseenter',handleHover).bind('mouseleave',handleHover);
 	};
 })(jQuery);
-
-
-
-
-/*
- *@author nicolaas[at]sunnysideup.co.nz
- *
- **/
-
-;(function(jQuery) {
-	jQuery(document).ready(
-		function() {
-			windowResizer.init();
-		}
-	);
-})(jQuery);
-
-var windowResizer = {
-
-	windowWidth: 0,
-
-	windowHeight: 0,
-
-	minWrapperWidth: 530,
-
-	minWrapperHeight: 400,
-		set_min_wrapper_height: function(v) {this.minWrapperHeight = v;},
-
-	maxWrapperWidth: 1920,
-
-	maxWrapperHeight: 1449,
-
-	imageWidth: "",
-
-	imageHeight: "",
-
-	imageSelector : '#RandomVisualThought',
-
-	init : function() {
-		jQuery("#RandomVisualThought").click(
-			function(el) {
-				var url = jQuery(this).attr("rel");
-				width = 100;
-				height = 100;
-				jQuery("body").append('<div id="RandomImageLarge"><img src="'+url+'" alt="random image large" /></div>');
-				jQuery("#RandomImageLarge")
-					//.css('background-image', 'url('+url+')')
-					.click(
-						function(){
-							jQuery(this).remove();
-							jQuery(document).removeAttr("keydown");
-						}
-					);
-				windowResizer.resizeImage();
-				jQuery(document).keydown(
-					function(e) {
-						if(jQuery('#RandomImageLarge').length) {
-							if (e.which == 27) {jQuery('#RandomImageLarge').click(); }  // esc   (does not work)
-						}
-					}
-				);
-			}
-		);
-		//redo when window is resized
-		jQuery(window).resize(
-			function() {
-				if(jQuery("#RandomImageLarge").length) {
-					windowResizer.resizeImage();
-				}
-			}
-		);
-
-	},
-
-	resizeImage : function() {
-		//get window height
-		this.windowWidth = jQuery(window).width();
-		this.windowHeight = jQuery(window).height();
-		//width within boundaries
-		if(1 == 2) {
-			if(this.windowWidth < this.minWrapperWidth) {
-				this.windowWidth = this.minWrapperWidth;
-			}
-			if(this.windowWidth > this.maxWrapperWidth) {
-				this.windowWidth = this.maxWrapperWidth;
-			}
-			//height within boundaries
-			if(this.windowHeight < this.minWrapperHeight) {
-				this.windowHeight = this.minWrapperHeight;
-			}
-			if(this.windowHeight > this.maxWrapperHeight) {
-				this.windowHeight = this.maxWrapperHeight;
-			}
-		}
-		var image = this.getImage();
-
-		// 2) Center image in the middle
-		this.imageWidth = 'auto';
-		this.imageHeight = this.windowHeight + 'px';
-		image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
-		if(jQuery(image).width() > jQuery(image).height()) {
-			if(jQuery(image).width() < this.windowWidth) {
-				this.imageWidth = this.windowWidth + 'px';
-				this.imageHeight = 'auto';
-				image.width(windowResizer.imageWidth).height(windowResizer.imageHeight);
-			}
-		}
-		if(jQuery(image).height() > this.windowHeight) {
-			var heightDifference = jQuery(image).height() - this.windowHeight;
-			jQuery(image).css("margin-top", "-"+Math.round(heightDifference / 2)+"px" )
-		}
-	},
-
-
-	getImage : function() {
-		return jQuery('#RandomImageLarge img');
-	}
-
-}
-
