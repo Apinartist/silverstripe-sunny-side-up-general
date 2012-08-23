@@ -60,7 +60,7 @@ class EditableAncestryField extends EditableFormField {
 	}
 
 	public function Icon() {
-		return 'userforms_relatives/images/icons' . strtolower($this->class) . '.png';
+		return 'userforms_relatives/images/icons/' . strtolower($this->class) . '.png';
 	}
 
 }
