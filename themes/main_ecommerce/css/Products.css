@@ -37,6 +37,7 @@ li.featured a {color: #317010!important;}
 .goToCheckoutLink {}
 
 #Product .productActions {width: 15em;}
+#Product.olderVersion .productActionsHolder .message{position: inherit; left: auto; bottom: auto; margin: 1em 1em 1em 0;}
 
 
 #Product .actionCell ul, #Product .actionCell li {margin: 0; padding: 0}
