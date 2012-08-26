@@ -66,7 +66,7 @@ Product_Image:
 	small_image_width: 130
 	small_image_height: 130
 	content_image_width: 200
-	large_image_width: 600
+	large_image_width: 860
 
 
 
@@ -199,7 +199,7 @@ EcommercePaymentController:
 EcommerceConfigAjax:
 	definitions_class_name: EcommerceConfigAjaxDefinitions
 	cart_js_file_location: ecommerce/javascript/EcomCart.js
-	dialogue_js_file_location: ecommerce/thirdparty/simpledialogue_fixed/jquery.simpledialog.0.1.js
+	dialogue_js_file_location: ecommerce/thirdparty/colorbox/colorbox/jquery.colorbox.js
 
 ################### MODIFIERS #####################
 
