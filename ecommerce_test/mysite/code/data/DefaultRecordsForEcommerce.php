@@ -145,7 +145,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</strong>
 				</p>
 				<h3>data model</h3>
-				<p>Please review <a href=\"http://ecommerce.localhost/ecommerce/docs/en/SSUE-commerceDataModel.png\">our latest data model</a></p>
+				<p>Please review <a href=\"/ecommerce/docs/en/SSUE-commerceDataModel.png\">our latest data model</a></p>
 				<h2>Thank you</h2>
 				<p>
 					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
