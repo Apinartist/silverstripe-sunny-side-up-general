@@ -100,7 +100,7 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	-webkit-box-shadow:
 		0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 1px rgba(255,255,255,0.7);
-	min-height: 290px;
+	min-height: 230px;
 	position: relative;
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
@@ -114,13 +114,15 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	margin-left: auto;
 	margin-right: auto;
 }
-.displayStyledefault .productActions {
-    bottom: 10px;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 10px;
+.displayStyledefault .productActions, .productActionsHolder .message {
+	bottom: 10px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 10px;
 }
+.productActionsHolder .message {left: 10px; padding: 10px; }
+.productActionsHolder .message p {line-height: 1; font-size: 0.77em; font-weight: normal}
 
 .displayStyledefault .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; margin-top: 0.5em; }
 .displayStyledefault .productItem h3 a:hover {}
