@@ -9,6 +9,8 @@
 #ProductGroup {
 }
 
+.menuChildGroupsList li {clear: both;}
+
 .category {
 	overflow-x: hidden;
 }
@@ -63,6 +65,8 @@ td.price {text-align: right;}
 .productList img, .productList  h3 {
 	padding: 0; margin:0
 }
+#Products {clear: both;}
+
 #Products .displayStyleShort {margin-left: 0px; padding-left: 0px;  margin-bottom: 40px; margin-top:40px}
 #Products .displayStyleShort>li {border-bottom: 1px dotted #808383; clear: both; padding: 1.3em 0 1.3em 0; }
 #Products .displayStyleShort>li.last {border-bottom: 1px dotted transparent; }
