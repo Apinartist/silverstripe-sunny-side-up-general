@@ -39,6 +39,18 @@ class DownloadPage_Controller extends Page_Controller {
 			"SVNLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tags/0.3.0",
 			"GITLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tree/0.3.0",
 			"DownloadLink" => ""
+			),
+		"mysite" => array(
+			"Title" => "Mysite",
+			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite",
+			"GITLink" => "",
+			"DownloadLink" => "assets/downloads/mysite"
+			),
+		"themes" => array(
+			"Title" => "Mysite",
+			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/themes",
+			"GITLink" => "",
+			"DownloadLink" => "assets/downloads/themes"
 			)
 	);
 
