@@ -1549,7 +1549,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Integer sollicitudin enim sit amet leo lacinia varius.
 			Fusce fermentum sem vel est iaculis eleifend.";
 		$array = explode("//", $str);
-		$length = count($array)
+		$length = count($array);
 		$rand = rand(0, $length -1);
 		return $array[$rand];
 	}
