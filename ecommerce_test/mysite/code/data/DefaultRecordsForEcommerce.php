@@ -172,9 +172,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 					),
 					array(
 						"ClassName" => "DownloadPage",
-						"URLSegment" => "downloads",
-						"Title" => "downloads",
-						"MenuTitle" => "downloads",
+						"URLSegment" => "downloads-git-svn",
+						"Title" => "downloads / git / svn",
+						"MenuTitle" => "downloads / git / svn",
 						"ShowInMenus" => true,
 						"ShowInSearch" => true,
 						"Content" => "
