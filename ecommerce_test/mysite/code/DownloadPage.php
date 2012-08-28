@@ -21,7 +21,25 @@ class DownloadPage_Controller extends Page_Controller {
 			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/",
 			"GITLink" => "",
 			"DownloadLink" => "assets/download-all/ecommerce.zip"
-		)
+			),
+		"sapphire" => array(
+			"Title" => "Sapphire 2.4.7",
+			"SVNLink" => "https://github.com/silverstripe/sapphire/tags/2.4.7",
+			"GITLink" => "https://github.com/silverstripe/sapphire/tree/2.4.7",
+			"DownloadLink" => ""
+			),
+		"cms" => array(
+			"Title" => "CMS 2.4.7",
+			"SVNLink" => "https://github.com/silverstripe/silverstripe-cms/tags/2.4.7",
+			"GITLink" => "https://github.com/silverstripe/silverstripe-cms/tree/2.4.7",
+			"DownloadLink" => ""
+			),
+		"payment" => array(
+			"Title" => "Payment Module 0.3.0",
+			"SVNLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tags/0.3.0",
+			"GITLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tree/0.3.0",
+			"DownloadLink" => ""
+			)
 	);
 
 	function init() {
@@ -39,7 +57,10 @@ class DownloadPage_Controller extends Page_Controller {
 		$dos = new DataObjectSet();
 		$folders = $this->getFolderList();
 		foreach($folders as $folder) {
-			$svnLink = "https://silverstripe-ecommerce.googlecode.com/svn/modules/$folder/trunk";
+			$svnLink = "https://silverstripe-ecommerce.googlecode.com/svn/modules/$folder/trunk/";
+			if($folder == "ecommerce"){
+				$svnLink = "https://silverstripe-ecommerce.googlecode.com/svn/trunk/";
+			}
 			$gitLink = "https://github.com/sunnysideup/silverstripe-$folder";
 			$downloadLink = "assets/downloads/$folder.zip";
 			if(!isset($this->defaultDownloadArray[$folder])) {
@@ -51,7 +72,6 @@ class DownloadPage_Controller extends Page_Controller {
 				);
 			}
 		}
-
 		foreach($this->defaultDownloadArray as $key => $folderArray) {
 			if(!$this->canDownload() || !file_exists(Director::baseFolder()."/".$this->defaultDownloadArray[$key]["DownloadLink"])) {
 				unset($this->defaultDownloadArray[$key]["DownloadLink"]);
@@ -86,7 +106,6 @@ class DownloadPage_Controller extends Page_Controller {
 					if(
 						substr($file, 0, 10) == "ecommerce_" ||
 						substr($file, 0, 8) == "payment_" ||
-						$file == "payment" ||
 						$file == "ecommerce" ||
 						$file == "themes" ||
 						$file == "mysite"
