@@ -85,17 +85,15 @@ class DownloadPage_Controller extends Page_Controller {
 		if (is_dir($dir)) {
 			if ($dh = opendir($dir)) {
 				while (($file = readdir($dh)) !== false) {
-					if(is_dir($file)) {
-						if(
-							substr($file, 0, 10) == "ecommerce_" ||
-							substr($file, 0, 8) == "payment_" ||
-							$file == "payment" ||
-							$file == "ecommerce" ||
-							$file == "themes" ||
-							$file == "mysite"
-						) {
-							$array[] = $file;
-						}
+					if(
+						substr($file, 0, 10) == "ecommerce_" ||
+						substr($file, 0, 8) == "payment_" ||
+						$file == "payment" ||
+						$file == "ecommerce" ||
+						$file == "themes" ||
+						$file == "mysite"
+					) {
+						$array[] = $file;
 					}
 				}
 				closedir($dh);
