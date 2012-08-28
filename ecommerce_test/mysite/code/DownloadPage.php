@@ -20,12 +20,6 @@ class DownloadPage_Controller extends Page_Controller {
 			"Title" => "Entire Site",
 			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/",
 			"GITLink" => "",
-			"DownloadLink" => ""
-		),
-		"ecommerce" => array(
-			"Title" => "Main Ecommerce Folder",
-			"SVNLink" => "https://silverstripe-ecommerce.googlecode.com/svn/trunk",
-			"GITLink" => "https://github.com/sunnysideup/silverstripe-ecommerce",
 			"DownloadLink" => "assets/download-all/ecommerce.zip"
 		)
 	);
@@ -91,9 +85,17 @@ class DownloadPage_Controller extends Page_Controller {
 		if (is_dir($dir)) {
 			if ($dh = opendir($dir)) {
 				while (($file = readdir($dh)) !== false) {
-					is_dir($file);
-					if(substr($file, 0, 10) == "ecommerce_" || substr($file, 0, 8) == "payment_" ) {
-						$array[] = $file;
+					if(is_dir($file)) {
+						if(
+							substr($file, 0, 10) == "ecommerce_" ||
+							substr($file, 0, 8) == "payment_" ||
+							$file == "payment" ||
+							$file == "ecommerce" ||
+							$file == "themes" ||
+							$file == "mysite"
+						) {
+							$array[] = $file;
+						}
 					}
 				}
 				closedir($dh);
