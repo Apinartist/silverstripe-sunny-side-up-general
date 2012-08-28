@@ -180,8 +180,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"Content" => "
 						<p>
 							Below is a full list of source code used on this site.
-							The SSU Branch of e-commerce is part of the <a href=\"http://code.google.com/p/silverstripe-ecommerce/\">open source e-commerce project</a>, more source code can be found there.
-							Also, check out the <a href=\"http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite/_config.php\">mysite/_config.php</a>.
+							Downloads are only available to users who are logged in as shop administrator (you can find out how you can log in on the homepage).
 						</p>",
 					)
 				)

@@ -3,11 +3,12 @@
 
 class DownloadPage extends Page {
 
-	function canView(){
-		if(Member::currentMember()) {
-			return true;
+	function canDownload(){
+		if($member = Member::currentMember()) {
+			if($member->IsShopAdmin()) {
+				return true;
+			}
 		}
-		return false;
 	}
 
 }
@@ -23,9 +24,9 @@ class DownloadPage_Controller extends Page_Controller {
 		),
 		"ecommerce" => array(
 			"Title" => "Main Ecommerce Folder",
-			"SVNLink" => "https://silverstripe-ecommerce.googlecode.com/svn/branches/ssu",
-			"GITLink" => "https://github.com/sunnysideup/silverstripe-ecommerce-ssu-branch",
-			"DownloadLink" => "assets/downloads/ecommerce.zip"
+			"SVNLink" => "https://silverstripe-ecommerce.googlecode.com/svn/trunk",
+			"GITLink" => "https://github.com/sunnysideup/silverstripe-ecommerce",
+			"DownloadLink" => "assets/download-all/ecommerce.zip"
 		)
 	);
 
@@ -34,7 +35,9 @@ class DownloadPage_Controller extends Page_Controller {
 	}
 
 	function index() {
-		$this->createDownloads();
+		if($this->canDownload()){
+			$this->createDownloads();
+		}
 		return array();
 	}
 
@@ -44,8 +47,7 @@ class DownloadPage_Controller extends Page_Controller {
 		foreach($folders as $folder) {
 			$svnLink = "https://silverstripe-ecommerce.googlecode.com/svn/modules/$folder/trunk";
 			if(substr($folder, 0, 10) == "ecommerce_") {
-				$gitFolder = str_replace("_", "-", $folder);
-				$gitLink = "https://github.com/sunnysideup/silverstripe-$gitFolder";
+				$gitLink = "https://github.com/sunnysideup/silverstripe-$folder";
 			}
 			$downloadLink = "assets/downloads/$folder.zip";
 			if(!isset($this->defaultDownloadArray[$folder])) {
@@ -55,6 +57,11 @@ class DownloadPage_Controller extends Page_Controller {
 					"GITLink" => $gitLink,
 					"DownloadLink" => $downloadLink,
 				);
+			}
+		}
+		if(!$this->canDownload()) {
+			foreach($this->defaultDownloadArray as $key => $folderArray) {
+				unset($this->defaultDownloadArray[$key]["DownloadLink"]);
 			}
 		}
 		foreach($this->defaultDownloadArray as $folderArray) {
@@ -71,6 +78,10 @@ class DownloadPage_Controller extends Page_Controller {
 				zip -r assets/downloads/'.$folder.'.zip '.$folder.'/ -x "*.svn/*" -x "*.git/*"'
 			);
 		}
+		exec('
+			cd '.Director::baseFolder().'/assets/download-all/
+			zip -r assets/download-all/ecommerce.zip '.Director::baseFolder().'/assets/downloads/ -x "*.svn/*" -x "*.git/*"'
+		);
 	}
 
 	private function getFolderList() {
