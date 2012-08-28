@@ -17,37 +17,37 @@ class DownloadPage_Controller extends Page_Controller {
 
 	protected $defaultDownloadArray = array(
 		"all" => array(
-			"Title" => "Entire Site",
+			"Title" => "Entire Site (use svn link for best results)",
 			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/",
 			"GITLink" => "",
 			"DownloadLink" => "assets/download-all/ecommerce.zip"
 			),
 		"sapphire" => array(
-			"Title" => "Sapphire 2.4.7",
+			"Title" => "Sapphire 2.4.7 (provided by Silverstripe Ltd)",
 			"SVNLink" => "https://github.com/silverstripe/sapphire/tags/2.4.7",
 			"GITLink" => "https://github.com/silverstripe/sapphire/tree/2.4.7",
 			"DownloadLink" => ""
 			),
 		"cms" => array(
-			"Title" => "CMS 2.4.7",
+			"Title" => "CMS 2.4.7 (provided by Silverstripe Ltd)",
 			"SVNLink" => "https://github.com/silverstripe/silverstripe-cms/tags/2.4.7",
 			"GITLink" => "https://github.com/silverstripe/silverstripe-cms/tree/2.4.7",
 			"DownloadLink" => ""
 			),
 		"payment" => array(
-			"Title" => "Payment Module 0.3.0",
+			"Title" => "Payment Module 0.3.0 (provided by Silverstripe Ltd)",
 			"SVNLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tags/0.3.0",
 			"GITLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tree/0.3.0",
 			"DownloadLink" => ""
 			),
 		"mysite" => array(
-			"Title" => "Mysite",
+			"Title" => "mysite (example only)",
 			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/mysite",
 			"GITLink" => "",
 			"DownloadLink" => "assets/downloads/mysite"
 			),
 		"themes" => array(
-			"Title" => "Mysite",
+			"Title" => "themes (example only)",
 			"SVNLink" => "http://sunny.svnrepository.com/svn/sunny-side-up-general/ecommerce_test/themes",
 			"GITLink" => "",
 			"DownloadLink" => "assets/downloads/themes"
