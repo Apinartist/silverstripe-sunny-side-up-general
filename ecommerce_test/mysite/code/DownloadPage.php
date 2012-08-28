@@ -40,9 +40,7 @@ class DownloadPage_Controller extends Page_Controller {
 		$folders = $this->getFolderList();
 		foreach($folders as $folder) {
 			$svnLink = "https://silverstripe-ecommerce.googlecode.com/svn/modules/$folder/trunk";
-			if(substr($folder, 0, 10) == "ecommerce_") {
-				$gitLink = "https://github.com/sunnysideup/silverstripe-$folder";
-			}
+			$gitLink = "https://github.com/sunnysideup/silverstripe-$folder";
 			$downloadLink = "assets/downloads/$folder.zip";
 			if(!isset($this->defaultDownloadArray[$folder])) {
 				$this->defaultDownloadArray[$folder] = array(
