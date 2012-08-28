@@ -1383,11 +1383,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Suspendisse auctor eros non metus semper vel mattis enim auctor.
 			Maecenas aliquam feugiat lectus, eu pretium neque imperdiet sed.
 			Nullam semper velit quis velit condimentum ut hendrerit felis blandit.
-			//
 			Phasellus quis massa vel dolor consectetur ornare vel in justo.
-			//
 			Vivamus vel sem lacus, eget auctor nibh.
-			//
 			Quisque a massa sit amet odio malesuada placerat.
 			Cras ut nunc leo, eget bibendum diam.
 			//
@@ -1395,13 +1392,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Integer venenatis augue sit amet lectus auctor auctor.
 			Integer rhoncus velit molestie sem vehicula mattis.
 			Duis condimentum nunc a arcu ornare vitae fermentum ipsum egestas.
-			//
 			Ut eget tellus ligula, id convallis dui.
 			Pellentesque ultricies metus at nisi hendrerit ut fringilla sem fringilla.
 			Donec sit amet sem risus, ac rutrum dolor.
 			Maecenas nec elit quam, eget laoreet sem.
 			Donec egestas dui et nibh pharetra in ullamcorper risus aliquet.
-			//
 			Fusce vitae nibh quis erat cursus egestas non non turpis.
 			Pellentesque ac nunc sed nisl sollicitudin gravida.
 			Nulla sollicitudin velit consectetur lacus commodo lacinia non non mauris.
@@ -1414,7 +1409,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Suspendisse eget quam at justo tempus imperdiet eget nec purus.
 			Nullam vel lacus sit amet sem volutpat rutrum vel at dui.
 			Nulla scelerisque lorem a mi commodo vestibulum.
-			//
 			Maecenas quis dui sed mauris mattis mollis.
 			Morbi ac tortor id sapien ornare tincidunt ut quis enim.
 			Fusce id nisi vulputate augue dictum volutpat molestie nec metus.
@@ -1423,13 +1417,10 @@ class DefaultRecordsForEcommerce extends DataObject {
 			//
 			Vestibulum at est eu purus cursus semper.
 			Ut eu neque et lectus auctor tempus sed vel libero.
-			//
 			Donec in lorem at dolor facilisis vestibulum.
 			Vivamus fermentum felis nec nisl accumsan faucibus.
-			//
 			Maecenas at tellus ut nulla congue tempor vitae in nisi.
 			Mauris vitae nulla in libero mollis semper.
-			//
 			Cras ac eros lorem, in volutpat odio.
 			Nullam tristique egestas turpis, accumsan fermentum turpis feugiat ac.
 			Proin adipiscing turpis non nunc faucibus quis facilisis mauris fermentum.
@@ -1442,7 +1433,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Proin rutrum vestibulum dui, viverra rutrum nisl tempor non.
 			Praesent quis nibh nec risus gravida sodales ac eu neque.
 			Integer non leo non lectus convallis semper.
-			//
 			Integer viverra sapien eu dui vehicula ultrices.
 			Cras fermentum vulputate justo, ut pretium magna dignissim sed.
 			Nam tristique tellus vel lacus condimentum ac lobortis tortor dapibus.
@@ -1453,7 +1443,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Phasellus vulputate volutpat tortor, consectetur convallis nisl mollis a.
 			Vestibulum at turpis quis lacus commodo sollicitudin.
 			Phasellus placerat molestie purus, sed elementum leo congue et.
-			//
 			Sed volutpat massa id lacus sollicitudin vel vehicula magna imperdiet.
 			Suspendisse sit amet dui lacus, id scelerisque sem.
 			//
@@ -1462,22 +1451,17 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Aenean porta turpis at metus dapibus non rutrum magna ullamcorper.
 			Vivamus non orci risus, id commodo enim.
 			Sed adipiscing felis a dui ultrices ornare.
-			//
 			Praesent in risus nisl, id luctus sapien.
 			//
 			Nunc a risus sapien, a aliquet tellus.
-			//
 			Cras non nisl non lectus volutpat elementum eu ac nisl.
-			//
 			Donec mattis odio nec ante mollis mattis.
 			//
 			Integer auctor interdum nulla, ac semper velit aliquet sit amet.
 			Pellentesque egestas ultrices metus, vehicula malesuada sem viverra a.
 			Morbi blandit metus eu mi egestas imperdiet.
 			Vivamus volutpat turpis et nibh ornare vitae blandit tellus egestas.
-			//
 			Integer molestie dolor ut orci semper at luctus urna pharetra.
-			//
 			Morbi feugiat dolor eget velit dignissim vel scelerisque ligula aliquam.
 			Cras in lacus magna, sed gravida est.
 			Duis vulputate eleifend erat, pellentesque eleifend purus cursus eget.
@@ -1487,7 +1471,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			In dictum sapien ut velit tincidunt lobortis.
 			Nam nec lectus non leo vulputate rutrum et at erat.
 			Nam varius tristique turpis, eget euismod nisl lacinia vitae.
-			//
 			Maecenas euismod lorem sed mi dictum aliquam.
 			Phasellus at dui vitae est eleifend dictum a vitae lorem.
 			Fusce quis sapien et enim sollicitudin interdum sit amet imperdiet ligula.
@@ -1505,13 +1488,11 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Pellentesque posuere ante quis diam placerat sit amet eleifend purus volutpat.
 			Aenean id tellus et nisl luctus rhoncus.
 			Cras ut velit a diam lobortis tincidunt.
-
 			Mauris sit amet libero ut magna lacinia suscipit.
 			Nam ut risus nec mauris faucibus posuere pellentesque vitae est.
 			Maecenas dignissim bibendum sapien, id viverra urna sollicitudin id.
 			Aliquam non quam ac nulla convallis viverra quis eget nisi.
 			Sed rhoncus lectus non nisi consequat semper fermentum non ipsum.
-			//
 			Aenean tempus mauris ut lectus dictum eu eleifend purus ultrices.
 			Etiam id erat nunc, sed mattis mauris.
 			Suspendisse et metus orci, eget tempus urna.
@@ -1522,17 +1503,14 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Aenean sit amet sapien ut ipsum porta condimentum.
 			Nullam ullamcorper elementum augue, ut suscipit dolor adipiscing sed.
 			Maecenas congue leo a mi faucibus congue.
-			//
 			Sed imperdiet pharetra lorem, eget rhoncus sapien feugiat vitae.
 			Nullam mollis nulla ut risus faucibus imperdiet.
 			//
 			Proin eu orci in nunc euismod fermentum et ac dolor.
 			Duis nec risus in sapien tempus posuere sed nec massa.
 			Cras commodo nulla sit amet orci pretium dapibus.
-			//
 			Nulla sed elit eu justo hendrerit auctor.
 			Pellentesque ut quam a metus consequat venenatis vitae ut mauris.
-			//
 			Ut vulputate luctus arcu, at dapibus risus molestie ac.
 			Etiam euismod est nec est iaculis tristique.
 			Vivamus ornare felis quis leo aliquet elementum.
@@ -1541,7 +1519,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 			Phasellus eu ipsum ac lorem euismod vestibulum quis at metus.
 			Donec aliquet condimentum mi, in consequat elit dignissim nec.
 			Etiam eu ante vel libero congue vehicula.
-			//
 			Suspendisse volutpat ante eu ligula semper vitae venenatis lectus imperdiet.
 			Pellentesque porttitor nisl quam, a pretium nibh.
 			Pellentesque nec sem in neque suscipit posuere ut id odio.
