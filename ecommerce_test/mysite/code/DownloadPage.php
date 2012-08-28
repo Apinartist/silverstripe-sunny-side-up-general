@@ -59,8 +59,9 @@ class DownloadPage_Controller extends Page_Controller {
 				);
 			}
 		}
-		if(!$this->canDownload()) {
-			foreach($this->defaultDownloadArray as $key => $folderArray) {
+
+		foreach($this->defaultDownloadArray as $key => $folderArray) {
+			if(!$this->canDownload() || !file_exists(Director::baseFolder()."/".$this->defaultDownloadArray[$key]["DownloadLink"])) {
 				unset($this->defaultDownloadArray[$key]["DownloadLink"]);
 			}
 		}
