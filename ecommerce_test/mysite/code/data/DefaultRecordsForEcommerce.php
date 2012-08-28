@@ -221,7 +221,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"MenuTitle" => "Alternative Views",
 						"ShowInMenus" => 1,
 						"ShowInSearch" => 1,
-						"Content" => "<p>In this section we present a number of alternative ways to view products and product groups.</p>",
+						"Content" => "<p>In this section we present a number of alternative ways to view products and product groups. Please use the sidebar menu to browse through the options.</p>",
 						"Children" => array(
 							array(
 								"ClassName" => "ProductGroupWithTags",
