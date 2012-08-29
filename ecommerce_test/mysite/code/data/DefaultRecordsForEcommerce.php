@@ -146,6 +146,9 @@ class DefaultRecordsForEcommerce extends DataObject {
 				</p>
 				<h3>data model</h3>
 				<p>Please review <a href=\"/ecommerce/docs/en/SSUE-commerceDataModel.png\">our latest data model</a></p>
+				<h3>Customising your own copy of e-commerce</h3>
+				<p>We have created a PDF that shows a flow-chart of steps you take to <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/trunk/docs/en/CustomisingEcommerce.pdf\">customise your own e-commerce module</a>.</p>
+
 				<h2>Thank you</h2>
 				<p>
 					Thank you <a href=\"http://www.silverstripe.org\">Silverstripe Community</a> for the Silverstripe foundation.
