@@ -33,12 +33,9 @@ class HideMailto extends SiteTreeDecorator {
 	 */
 	static function convert_email($email, $subject = '') {
 		$obj = new DataObject();
-		$url = array();
-		$array = array();
 		if(!$subject) {
 			$subject = self::$default_subject;
 		}
-		$flipArray = array_flip(self::get_replace_characters());
 		//mailto part
 		$mailTo = "mailto:".$email."?subject=".Convert::raw2mailto($subject);
 		$mailToConverted = self::string_encoder($mailTo);
