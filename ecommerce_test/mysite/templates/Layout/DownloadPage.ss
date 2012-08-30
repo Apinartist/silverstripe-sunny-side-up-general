@@ -7,8 +7,6 @@
 		Below you see the TRUNK version.  Trunk is being used on this site.
 		For any production site, we recommend using a branch (e.g. 1.0, 2.0, 3.0).
 		Branches only get <i>patched</i> if community members report bugs.
-		For any URL, you can replace "trunk" with "branches/x.0" - e.g.
-		<strong>USE AT YOUR OWN RISK.</strong>
 		If you prefer a "never changing" tag then you can make your own by fixing a branch to a revision number or creating a github fork.
 	</p>
 	</div>
@@ -17,7 +15,7 @@
 	<div id="GITSectionBrowse" style="margin-top: 30px;">
 		<h4>Browse</h4>
 		<ul>
-	<% control Downloads %><% if GITLink %><li><a href="$GITLink">$Title</a></li><% end_if %><% end_control %>
+<% control Downloads %><% if GITLink %><li><a href="$GITLink">$Title</a></li><% end_if %><% end_control %>
 		</ul>
 	</div>
 
@@ -25,8 +23,8 @@
 		<h2>Sub-module Definition</h2>
 		<p>Browse to the root of your Silverstripe GIT-based project. Then paste the lines you can copy below.</p>
 		<pre style="white-space: pre;">
-	<% control Downloads %><% if FolderPadded %>git submodule add $GITLinkGIT $Folder
-	<% end_if %><% end_control %>
+<% control Downloads %><% if FolderPadded %>git submodule add $GITLinkGIT $Folder
+<% end_if %><% end_control %>
 		</pre>
 	</div>
 
@@ -34,7 +32,7 @@
 	<div id="SVNSectionBrowse" style="margin-top: 30px;">
 		<h4>Browse</h4>
 		<ul>
-	<% control Downloads %><% if SVNLink %><li><a href="$SVNLink">$Title</a></li><% end_if %><% end_control %>
+<% control Downloads %><% if SVNLink %><li><a href="$SVNLink">$Title</a></li><% end_if %><% end_control %>
 		</ul>
 	</div>
 
@@ -44,8 +42,8 @@
 		<pre>svn propedit svn:externals .</pre>
 		<p>Then paste the lines you can copy below.</p>
 		<pre style="white-space: pre;">
-	<% control Downloads %><% if FolderPadded %>$FolderPadded $SVNLink
-	<% end_if %><% end_control %>
+<% control Downloads %><% if FolderPadded %>$FolderPadded $SVNLink
+<% end_if %><% end_control %>
 		</pre>
 		<p>To finalise type:</p>
 		<pre>svn up</pre>
