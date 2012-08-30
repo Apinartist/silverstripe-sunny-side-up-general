@@ -24,18 +24,21 @@ class DownloadPage_Controller extends Page_Controller {
 			),
 		"sapphire" => array(
 			"Title" => "Sapphire 2.4.7 (provided by Silverstripe Ltd)",
+			"FolderPadded" => "sapphire",
 			"SVNLink" => "https://github.com/silverstripe/sapphire/tags/2.4.7",
 			"GITLink" => "https://github.com/silverstripe/sapphire/tree/2.4.7",
 			"DownloadLink" => ""
 			),
 		"cms" => array(
 			"Title" => "CMS 2.4.7 (provided by Silverstripe Ltd)",
+			"FolderPadded" => "cms",
 			"SVNLink" => "https://github.com/silverstripe/silverstripe-cms/tags/2.4.7",
 			"GITLink" => "https://github.com/silverstripe/silverstripe-cms/tree/2.4.7",
 			"DownloadLink" => ""
 			),
 		"payment" => array(
 			"Title" => "Payment Module 0.3.0 (provided by Silverstripe Ltd)",
+			"FolderPadded" => "payment",
 			"SVNLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tags/0.3.0",
 			"GITLink" => "https://github.com/silverstripe-labs/silverstripe-payment/tree/0.3.0",
 			"DownloadLink" => ""
@@ -78,6 +81,7 @@ class DownloadPage_Controller extends Page_Controller {
 			if(!isset($this->defaultDownloadArray[$folder])) {
 				$this->defaultDownloadArray[$folder] = array(
 					"Title" => $folder,
+					"FolderPadded" => $folder,
 					"SVNLink" => $svnLink,
 					"GITLink" => $gitLink,
 					"DownloadLink" => $downloadLink,
@@ -89,7 +93,16 @@ class DownloadPage_Controller extends Page_Controller {
 				unset($this->defaultDownloadArray[$key]["DownloadLink"]);
 			}
 		}
-		foreach($this->defaultDownloadArray as $folderArray) {
+		ksort($this->defaultDownloadArray);
+		foreach($this->defaultDownloadArray as $folder => $folderArray) {
+			$folderArray["Folder"] = $folder;
+			if(isset($folderArray["FolderPadded"])) {
+				$folderArray["FolderPadded"] = str_pad(trim($folderArray["FolderPadded"]), 45, " ",STR_PAD_RIGHT);
+			}
+			if(isset($folderArray["GITLink"])) {
+				$folderArray["GITLinkGIT"] = str_pad(str_replace("http://", "git://", $folderArray["GITLink"]), 85, " ",STR_PAD_RIGHT);
+			}
+
 			$dos->push(new ArrayData($folderArray));
 		}
 		return $dos;

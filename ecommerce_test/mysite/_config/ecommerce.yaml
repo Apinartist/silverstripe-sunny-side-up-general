@@ -111,7 +111,9 @@ OrderStep_Confirmed:
 		</div>"
 
 OrderStatusLog:
-	available_log_classes_array: "OrderStatusLog_PaymentCheck"
+	available_log_classes_array: [
+		OrderStatusLog_PaymentCheck
+	]
 	order_status_log_class_used_for_submitting_order: "OrderStatusLog_Submitted"
 
 EcommerceCountry:
