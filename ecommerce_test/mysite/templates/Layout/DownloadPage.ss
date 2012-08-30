@@ -1,22 +1,36 @@
 <div id="Download" class="mainSection content-container withSidebar">
 	<h2>Choose your download below:</h2>
 	$Content
-	<h3>Options</h3>
+	<h4>Contents</h4>
 	<ul>
+		<li><a href="#VersionInfo">What Version should I use?</a></li>
 		<li>GIT: <a href="#GITSectionBrowse">Browse</a>, <a href="#GITSection">Sub-modules</a></li>
 		<li>SVN: <a href="#SVNSectionBrowse">Browse</a>, <a href="#SVNSection">externals</a></li>
 		<li><a href="#DownloadSection">Downloads</a></li>
 	</ul>
 
+	<div id="VersionInfo" style="margin-top: 30px;">
+	<h3>What Version should I use?</h3>
+	<p>
+		Below you see the TRUNK version.  Trunk is being used on this site.
+		For any production site, we recommend using a branch (e.g. 1.0, 2.0, 3.0).
+		Branches only get <i>patched</i> if community members report bugs.
+		For any URL, you can replace "trunk" with "branches/x.0" - e.g.
+		<strong>USE AT YOUR OWN RISK.</strong>
+		If you prefer a "never changing" tag then you can make your own by fixing a branch to a revision number or creating a github fork.
+	</p>
+	</div>
+
+	<h3 style="margin-top: 30px;">GIT Hub</h3>
 	<div id="GITSectionBrowse" style="margin-top: 30px;">
-		<h2>GIT Browse</h2>
+		<h4>Browse</h4>
 		<ul>
 	<% control Downloads %><% if GITLink %><li><a href="$GITLink">$Title</a></li><% end_if %><% end_control %>
 		</ul>
 	</div>
 
 	<div id="GITSection" style="margin-top: 30px;">
-		<h2>GIT Submodule Definition</h2>
+		<h2>Submodule Definition</h2>
 		<p>Browse to the root of your Silverstripe GIT-based project. Then paste the lines you can copy below.</p>
 		<pre style="white-space: pre;">
 	<% control Downloads %><% if FolderPadded %>git submodule add $GITLinkGIT $Folder
@@ -24,16 +38,16 @@
 		</pre>
 	</div>
 
-
+	<h3 style="margin-top: 30px;">SVN</h3>
 	<div id="SVNSectionBrowse" style="margin-top: 30px;">
-		<h2>SVN Browse</h2>
+		<h4>Browse</h4>
 		<ul>
 	<% control Downloads %><% if SVNLink %><li><a href="$SVNLink">$Title</a></li><% end_if %><% end_control %>
 		</ul>
 	</div>
 
 	<div id="SVNSection" style="margin-top: 30px;">
-		<h2>SVN Externals Definition</h2>
+		<h4>Externals Definition</h4>
 		<p>To set these, using the command line, browse to the root folder of your Silvestripe SVN-based project and type:</p>
 		<pre>svn propedit svn:externals .</pre>
 		<p>Then paste the lines you can copy below.</p>
@@ -46,8 +60,8 @@
 	</div>
 
 
-	<div id="DownloadSection">
-	<h2>Downloads</h2>
+	<div id="DownloadSection" style="margin-top: 60px;">
+	<h3>Downloads</h3>
 	<p>Only logged in users can download.</p>
 	<ul>
 <% control Downloads %><% if DownloadLink %><li>Download (.zip): <a href="$DownloadLink">$DownloadLink</a></li><% end_if %><% end_control %>

@@ -100,7 +100,7 @@ class DownloadPage_Controller extends Page_Controller {
 				$folderArray["FolderPadded"] = str_pad(trim($folderArray["FolderPadded"]), 45, " ",STR_PAD_RIGHT);
 			}
 			if(isset($folderArray["GITLink"])) {
-				$folderArray["GITLinkGIT"] = str_pad(str_replace("http://", "git://", $folderArray["GITLink"]), 85, " ",STR_PAD_RIGHT);
+				$folderArray["GITLinkGIT"] = str_pad(str_replace("https://", "git://", $folderArray["GITLink"]), 85, " ",STR_PAD_RIGHT);
 			}
 
 			$dos->push(new ArrayData($folderArray));
