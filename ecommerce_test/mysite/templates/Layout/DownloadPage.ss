@@ -1,14 +1,6 @@
 <div id="Download" class="mainSection content-container withSidebar">
 	<h2>Choose your download below:</h2>
 	$Content
-	<h4>Contents</h4>
-	<ul>
-		<li><a href="#VersionInfo">What Version should I use?</a></li>
-		<li>GIT: <a href="#GITSectionBrowse">Browse</a>, <a href="#GITSection">Sub-modules</a></li>
-		<li>SVN: <a href="#SVNSectionBrowse">Browse</a>, <a href="#SVNSection">externals</a></li>
-		<li><a href="#DownloadSection">Downloads</a></li>
-	</ul>
-
 	<div id="VersionInfo" style="margin-top: 30px;">
 	<h3>What Version should I use?</h3>
 	<p>
@@ -68,3 +60,20 @@
 	</ul>
 	</div>
 </div>
+
+<aside>
+	<div id="Sidebar">
+		<div class="sidebarTop"></div>
+		<div id="SidebarPageContent" class="sidebarBox">
+			<h2>Contents</h2>
+			<ul>
+				<li><a href="#VersionInfo">What Version should I use?</a></li>
+				<li>GIT: <a href="#GITSectionBrowse">Browse</a>, <a href="#GITSection">Sub-modules</a></li>
+				<li>SVN: <a href="#SVNSectionBrowse">Browse</a>, <a href="#SVNSection">externals</a></li>
+				<li><a href="#DownloadSection">Downloads</a></li>
+			</ul>
+		</div>
+		<% include Sidebar %>
+		<div class="sidebarBottom"></div>
+	</div>
+</aside>
