@@ -52,9 +52,9 @@
 
 	<div id="DownloadSection" style="margin-top: 60px;">
 	<h3>Downloads</h3>
-	<p>Only logged in users can download.</p>
+	<p>Only <a href="Security/login/?BackURL=$Link.ATT">logged in</a> users can download.</p>
 	<ul>
-<% control Downloads %><% if DownloadLink %><li>Download (.zip): <a href="$DownloadLink">$DownloadLink</a></li><% end_if %><% end_control %>
+<% control Downloads %><% if DownloadLink %><li><a href="$DownloadLink">$DownloadLink</a></li><% end_if %><% end_control %>
 	</ul>
 	</div>
 </div>
