@@ -22,7 +22,7 @@
 	</div>
 
 	<div id="GITSection" style="margin-top: 30px;">
-		<h2>Submodule Definition</h2>
+		<h2>Sub-module Definition</h2>
 		<p>Browse to the root of your Silverstripe GIT-based project. Then paste the lines you can copy below.</p>
 		<pre style="white-space: pre;">
 	<% control Downloads %><% if FolderPadded %>git submodule add $GITLinkGIT $Folder
@@ -69,7 +69,7 @@
 			<ul>
 				<li><a href="#VersionInfo">What Version should I use?</a></li>
 				<li>GIT: <a href="#GITSectionBrowse">Browse</a>, <a href="#GITSection">Sub-modules</a></li>
-				<li>SVN: <a href="#SVNSectionBrowse">Browse</a>, <a href="#SVNSection">externals</a></li>
+				<li>SVN: <a href="#SVNSectionBrowse">Browse</a>, <a href="#SVNSection">Externals</a></li>
 				<li><a href="#DownloadSection">Downloads</a></li>
 			</ul>
 		</div>
