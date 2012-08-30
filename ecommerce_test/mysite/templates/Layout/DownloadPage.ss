@@ -22,7 +22,7 @@
 	<div id="GITSection" style="margin-top: 30px;">
 		<h2>Sub-module Definition</h2>
 		<p>Browse to the root of your Silverstripe GIT-based project. Then paste the lines you can copy below.</p>
-		<pre style="white-space: pre;956px!important">
+		<pre style="white-space: pre;width: 956px!important">
 <% control Downloads %><% if FolderPadded %>git submodule add $GITLinkGIT $Folder
 <% end_if %><% end_control %>
 		</pre>
@@ -41,7 +41,7 @@
 		<p>To set these, using the command line, browse to the root folder of your Silvestripe SVN-based project and type:</p>
 		<pre>svn propedit svn:externals .</pre>
 		<p>Then paste the lines you can copy below.</p>
-		<pre style="white-space: pre;956px!important">
+		<pre style="white-space: pre;width: 956px!important">
 <% control Downloads %><% if FolderPadded %>$FolderPadded $SVNLink
 <% end_if %><% end_control %>
 		</pre>
