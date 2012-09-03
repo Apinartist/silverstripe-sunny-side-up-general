@@ -35,7 +35,7 @@ class OffSpringField extends FormField {
 		$this->headerField = new HeaderField($name . '[header]', $title, 4);
 		$this->nameField = new TextField($name . '[name]', "Name");
 		$this->dobField = new TextField($name . '[dob]', "Date of Birth (e.g. 31/01/1986)");
-		$this->sexField = new OptionsetField($name . '[sex]', false, array("girl", "boy"));
+		$this->sexField = new OptionsetField($name . '[sex]', false, array("female", "male"));
 		$this->headerField->addExtraClass("header");
 		$this->nameField->addExtraClass("name");
 		$this->dobField->addExtraClass("dob");

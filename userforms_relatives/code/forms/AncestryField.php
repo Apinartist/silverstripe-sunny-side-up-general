@@ -68,11 +68,13 @@ class AncestryField extends FormField {
 
 	function Field() {
 		Requirements::themedCSS("AncestryField");
-		//Requirements::javascript();
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("userforms_relatives/javascript/AncestryField.js");
 		$html = "";
 		foreach($this->fieldDefinition as $key => $fieldTitle) {
 			$levelClass = "level".(strlen($key)-5);
-			$html .= "<div class=\"$key $levelClass ancestorNode \">".$this->fieldHolder[$key]->SmallFieldHolder()."</div>";
+			$nextLevels = ".".str_replace("Field", "mField", $key).", .".str_replace("Field", "fField", $key);
+			$html .= "<div class=\"$key $levelClass ancestorNode \" rel=\"$nextLevels\">".$this->fieldHolder[$key]->SmallFieldHolder()."</div>";
 		}
 		return $html;
 	}
