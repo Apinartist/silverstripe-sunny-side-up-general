@@ -93,7 +93,8 @@ class MetaTagAutomation extends SiteTreeDecorator {
 		$linkToManager = "/" . MetaTagCMSControlPages::get_url_segment() ."/";
 		$fields->addFieldToTab('Root.Content.Metadata', new LiteralField("LinkToManagerHeader", "<p>Open the Meta Tag Manager to <a href=\"$linkToManager\" target=\"_blank\">Review and Edit</a> the Meta Data for all pages on this site. Also make sure to review the general <a href=\"/admin/show/root/\">settings for Search Engines</a>.</p>"), "URL");
 		if($this->owner->URLSegment == "home") {
-			$newField = $fields->dataFieldByName("URLSegment")->performReadonlyTransformation();
+			$newField = $fields->dataFieldByName("URLSegment");
+			$newField->setRightTitle("Careful: changing the URL from 'home' to anything else means that this page will no longer be the home page")
 			$fields->replaceField("URLSegment", $newField);
 		}
 		return $fields;
