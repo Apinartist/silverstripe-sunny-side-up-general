@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * allows you to open all pages to check if all of them can be opened.
+ *
+ *
+ */
 class TemplateOverviewTestPage extends Page {
 
 	//parents and children in sitetree

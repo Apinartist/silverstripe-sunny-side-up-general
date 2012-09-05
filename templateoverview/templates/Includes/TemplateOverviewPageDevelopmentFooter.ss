@@ -7,9 +7,10 @@
 			<!-- <a href="#" onclick="templateoverviewoverlay.addExtension('{$ClassName}'); " id="overlayFor{$ClassName}" class="overlayLink">add a design overlay.</a> -->
 	</p>
 	<ul id="TemplateOverviewPageDevelopmentFooterLoadHere"><li class="hiddenListItem">&nbsp;</li></ul>
-	<ul id="TemplateOverviewPrevNextList">
-		<li>Choose template: <% control TemplateList %><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" class="$LinkingMode">$Pos</a><% if Last %><% else %>, <% end_if %><% end_if %><% end_control %></li>
-	</ul>
+	<h4>Choose template: </h4>
+	<ol id="TemplateOverviewPrevNextList">
+		<% control TemplateList %><li><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" class="$LinkingMode"><% else %><a title="-- there are no $ClassName pages --"><% end_if %>$ClassName ($Count)</a></li><% end_control %>
+	</ol>
 	<% if TemplateOverviewBugs %>
 	<h3>Known Bugs</h3>
 	<ul id="TemplateOverviewBugs">
@@ -18,7 +19,7 @@
 	<% end_control %>
 	</ul>
 	<% end_if %>
-	<p><a href="$BugManagementLink">Record a bug</a></p>
+	<p class="clear"><a href="$BugManagementLink">Record a bug</a></p>
 </div>
 <% end_if %><% end_if %>
 

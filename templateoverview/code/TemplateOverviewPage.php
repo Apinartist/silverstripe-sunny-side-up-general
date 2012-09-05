@@ -22,7 +22,7 @@ class TemplateOverviewPage extends Page {
 		static function set_parent_url_segment($value) {self::$parent_url_segment = $value;}
 		static function get_parent_url_segment() {return self::$parent_url_segment;}
 
-	protected static $classes_to_exclude = array("SiteTree", "TemplateOverviewPage", "RedirectorPage", "VirtualPage");
+	protected static $classes_to_exclude = array("SiteTree", "TemplateOverviewPage","TemplateOverviewTestPage", "RedirectorPage", "VirtualPage");
 		static function set_classes_to_exclude($array) {self::$classes_to_exclude = $array;}
 		static function get_classes_to_exclude() {return self::$classes_to_exclude;}
 
