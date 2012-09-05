@@ -19,6 +19,6 @@
 	<% end_control %>
 <% end_if %>
 <% control Results %>
-<li class="example moreDetailLI">example #{$Pos}. <a href="$URLSegment">$Title</a> - <a href="/admin/show/$ID">CMS view</a></li>
+<li class="example moreDetailLI">{$Pos}. <a href="$URLSegment">$Title</a> - <a href="/admin/show/$ID">CMS view</a></li>
 <% end_control %>
 
