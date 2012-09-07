@@ -5,9 +5,11 @@ see
 */
 
 jQuery(document).ready(function() {
-    jQuery('#AdvertisementsHolder').cycle({
+	if(jQuery('#AdvertisementsHolder div').length > 0) {
+		jQuery('#AdvertisementsHolder').cycle({
 			fx: 'fade' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
-	});
+		});
+	}
 });
 
 /*
