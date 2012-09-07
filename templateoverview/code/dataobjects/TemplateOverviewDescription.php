@@ -50,13 +50,13 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $default_sort = 'ClassNameLink ASC';
 
-	/* CURRENTLY CREATES AN ERROR
-	static $indexes = array(
-		"ClassNameLinkUnique" => "unique('ClassNameLink')",
-	);
-	*/
+
 	static $indexes = array(
 		"ClassNameLink" => true,
+	);
+
+	static $casting = array(
+		"Title" => "Varchar",
 	);
 
 	function canAdd() {
@@ -72,7 +72,8 @@ class TemplateOverviewDescription extends DataObject {
 		return preg_replace("/(?<=[^A-Z])([A-Z])/", "$1", $this->ClassNameLink);
 	}
 
-	function Title() {
+	function Title() {return $this->getTitle();}
+	function getTitle() {
 		return $this->ClassNameLinkFancy();
 	}
 
