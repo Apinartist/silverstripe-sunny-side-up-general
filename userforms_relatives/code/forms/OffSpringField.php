@@ -1,12 +1,8 @@
 <?php
 /**
  *
- * # Configuration
- *
- * All options in {@link setConfig()} are passed through to {@link nameField} and {@link dobField}.
- *
- * @package sapphire
- * @subpackage forms
+ * @package userforms
+ * @subpackage relatives
  */
 class OffSpringField extends FormField {
 
@@ -150,10 +146,7 @@ class OffSpringField extends FormField {
 }
 
 /**
- * The readonly class for our {@link DatedobField}.
- *
- * @package forms
- * @subpackage fields-datetime
+
  */
 class OffSpringField_Readonly extends OffSpringField {
 

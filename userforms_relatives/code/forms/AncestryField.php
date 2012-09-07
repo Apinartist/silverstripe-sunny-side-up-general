@@ -1,12 +1,8 @@
 <?php
 /**
  *
- * # Configuration
- *
- * All options in {@link setConfig()} are passed through to {@link nameField} and {@link dobField}.
- *
- * @package sapphire
- * @subpackage forms
+ * @package userforms
+ * @subpackage relatives
  */
 class AncestryField extends FormField {
 
@@ -80,11 +76,6 @@ class AncestryField extends FormField {
 	}
 
 	/**
-	 * Sets the internal value to ISO date format.
-	 *
-	 * @param string|array $val String expects an ISO date format. Array notation with 'date' and 'time'
-	 *  keys can contain localized strings. If the 'dmyfields' option is used for {@link nameField},
-	 *  the 'date' value may contain array notation was well (see {@link nameField->setValue()}).
 	 */
 	function setValue($val) {
 		if(empty($val)) {
