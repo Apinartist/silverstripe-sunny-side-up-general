@@ -50,7 +50,6 @@ class TemplateOverviewDescription extends DataObject {
 
 	static $default_sort = 'ClassNameLink ASC';
 
-
 	static $indexes = array(
 		"ClassNameLink" => true,
 	);
@@ -58,6 +57,22 @@ class TemplateOverviewDescription extends DataObject {
 	static $casting = array(
 		"Title" => "Varchar",
 	);
+
+	/**
+	 * Location where we keep the template overview designs.
+	 * @var String
+	 */
+	protected static $image_folder_name = "templateoverview/designz";
+		static function get_image_folder_name() {return self::$image_folder_name; }
+		static function set_image_folder_name($s) {self::$image_folder_name = $s; }
+
+	/**
+	 * Location where we keep the template overview designs.
+	 * @var String
+	 */
+	protected static $image_source_folder = "";
+		static function get_image_source_folder() {return self::$image_source_folder; }
+		static function set_image_source_folder($s) {self::$image_source_folder = $s; }
 
 	function canAdd() {
 		return false;
@@ -93,13 +108,13 @@ class TemplateOverviewDescription extends DataObject {
 		$fields->removeByName("Image3");
 		$fields->removeByName("Image4");
 		$fields->removeByName("Image5");
-		$fields->addFieldToTab("Root.Design", new ImageField("Image1", "Design One", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Design", new ImageField("Image2", "Design Two", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Design", new ImageField("Image6", "Design Three", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Instructions", new ImageField("Image3", "Instructions One", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Instructions", new ImageField("Image4", "Instructions Two", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Instructions", new ImageField("Image5", "Instructions Three", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
-		$fields->addFieldToTab("Root.Instructions", new ImageField("Image7", "Instructions Four", $value = null, $form = null, $rightTitle = null, $folderName = "templateoverview/designs"));
+		$fields->addFieldToTab("Root.Design", new ImageField("Image1", "Design One", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Design", new ImageField("Image2", "Design Two", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Design", new ImageField("Image6", "Design Three", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image3", "Instructions One", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image4", "Instructions Two", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image5", "Instructions Three", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
+		$fields->addFieldToTab("Root.Instructions", new ImageField("Image7", "Instructions Four", $value = null, $form = null, $rightTitle = null, self::get_image_folder_name()));
 		$fields->addFieldToTab("Root.Main", new HeaderField("ClassNameLinkInfo", "Details for: ".$this->ClassNameLink), "Description");
 		$fields->addFieldToTab("Root.Main", new LiteralField("BackLink", '<p><a href="'.$page->Link().'#sectionFor-'.$this->ClassNameLink.'">go back to template overview page</a> - dont forget to SAVE FIRST.</p>'));
 		$fields->removeByName("ParentID");
@@ -110,14 +125,73 @@ class TemplateOverviewDescription extends DataObject {
 		parent::requireDefaultRecords();
 		$data = ClassInfo::subclassesFor("SiteTree");
 		$templateOverviewPage = DataObject::get_one("TemplateOverviewPage");
+		$fileList = null;
+		if(self::get_image_source_folder()) {
+			$fileList = CMSHelp::get_list_of_files(self::get_image_source_folder());
+			if(!is_array($fileList)) {
+				$fileList = null;
+			}
+			elseif(!count($fileList)) {
+				$fileList = null;
+			}
+		}
+		if($fileList) {
+			$destinationDir = Director::baseFolder()."/assets/".self::get_image_folder_name()."/";
+			$destinationFolder = Folder::findOrMake(self::get_image_folder_name());
+		}
 		if($data && $templateOverviewPage) {
 			foreach($data as $className) {
-				if(!DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '$className'")) {
-					$new = new TemplateOverviewDescription();
-					$new->ClassNameLink = $className;
-					$new->ParentID = $templateOverviewPage->ID;
-					$new->write();
-					DB::alteration_message("adding template description for $className");
+				$object = DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '$className'");
+				if(!$object) {
+					$object = new TemplateOverviewDescription();
+					$object->ClassNameLink = $className;
+					$object->ParentID = $templateOverviewPage->ID;
+					$object->write();
+					DB::alteration_message("adding template description for $className", "created");
+				}
+				if($fileList) {
+					$i = 0;
+					foreach($fileList as $fileArray) {
+						$explodeByDot = explode(".", $fileArray["FileName"]);
+						if(is_array($explodeByDot) && count($explodeByDot)) {
+							$base = $explodeByDot[0];
+							$explodeByUnderscore = explode("_", $base);
+							if(is_array($explodeByUnderscore) && count($explodeByUnderscore)) {
+								$base = $explodeByUnderscore[0];
+								$classNameOptionArray = array($className);
+								for($j = 0; $j < 10; $j++) {
+									$classNameOptionArray[] = $className.$j;
+								}
+								foreach($classNameOptionArray as $potentialBase) {
+									if($base == $potentialBase) {
+										$i++;
+										$filename = "".self::get_image_folder_name()."/".$fileArray["FileName"];
+										if(!file_exists($destinationDir.$fileArray["FileName"])) {
+											copy($fileArray["FullLocation"], $destinationDir.$fileArray["FileName"]);
+										}
+										$image = DataObject::get_one("Image", "\"ParentID\" = ".$destinationFolder->ID." AND \"Name\" = '".$fileArray["FileName"]."'");
+										if(!$image) {
+											$image = new Image();
+											$image->ParentID = $destinationFolder->ID;
+											$image->Filename = $filename;
+											$image->Name = $fileArray["FileName"];
+											$image->Title = $fileArray["Title"];
+											$image->write();
+										}
+										$fieldName = "Image$i"."ID";
+										if($object->$fieldName != $image->ID) {
+											$object->$fieldName = $image->ID;
+											$object->write();
+											DB::alteration_message("adding image to $className: ".$image->Title." (".$image->Filename.") using $fieldName field.", "created");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				else {
+					DB::alteration_message("no images to find", "deleted");
 				}
 			}
 		}

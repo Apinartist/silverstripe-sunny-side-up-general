@@ -43,6 +43,16 @@ class CMSHelp extends ContentController {
 		return array();
 	}
 
+
+	/**
+	 * returns the Link to the controller
+	 *
+	 * @return String -
+	 */
+	function Link() {
+		return "/".self::$url_segment."/";
+	}
+
 	/**
 	 * @return Object - DataObjectSet of help files
 	 *
@@ -50,7 +60,7 @@ class CMSHelp extends ContentController {
 	 */
 	function HelpFiles(){
 		$dos = new DataObjectSet();
-		$fileArray = $this->getListOfHelpFiles();
+		$fileArray = self::get_list_of_files(self::get_help_file_directory_name());
 		if($fileArray && count($fileArray)) {
 			$linkArray = array();
 			foreach($fileArray as $file) {
@@ -75,23 +85,26 @@ class CMSHelp extends ContentController {
 
 
 	/**
+	 * @param String $location - folder location without start and end slahs (e.g. assets/myfolder )
 	 * @return Array - array of help files
 	 *
 	 *
 	 */
-	private function getListOfHelpFiles() {
+	public static function get_list_of_files($location) {
 		$fileArray = array();
-		$directory = "/".self::get_help_file_directory_name()."/";
+		$directory = "/".$location."/";
 		$baseDirectory = Director::baseFolder().$directory;
 		//get all image files with a .jpg extension.
-		$images = $this->getDirectoryList($baseDirectory , array("png", "jpg"));
+		$images = self::get_list_of_files_in_directory($baseDirectory , array("png", "jpg", "gif"));
 		//print each file name
-		if($images && count($images)) {
+		if(is_array($images) && count($images)) {
 			foreach($images as $key => $image){
 				if($image) {
 					if(file_exists($baseDirectory.$image)) {
+						$fileArray[$key]["FileName"] = $image;
+						$fileArray[$key]["FullLocation"] = $baseDirectory.$image;
 						$fileArray[$key]["Link"] = $directory.$image;
-						$fileArray[$key]["Title"] = $this->spaceBeforeCapital($image);
+						$fileArray[$key]["Title"] = self::add_space_before_capital($image);
 					}
 				}
 			}
@@ -106,40 +119,34 @@ class CMSHelp extends ContentController {
 	 *
 	 * @return Array - list of all files in a directory
 	 */
-	private function getDirectoryList ($directory, $extensionArray) {
+	public static function get_list_of_files_in_directory ($directory, $extensionArray) {
 		//	create an array to hold directory list
 		$results = array();
 		// create a handler for the directory
-		$handler = opendir($directory);
-		//if(!is_dir($directory)) {
-		//	return false;
-		//}
-		// open directory and walk through the filenames
-		while ($file = readdir($handler)) {
-			// if file isn't this directory or its parent, add it to the results
-			if ($file != "." && $file != ".." && !is_dir($file)) {
-				//echo $file;
-				$extension = substr(strrchr($file, '.'), 1);
-				if(in_array($extension, $extensionArray)) {
-					$results[] = $file;
+		$handler = @opendir($directory);
+		if(!is_dir($directory)) {
+			return false;
+		}
+		if($handler) {
+			//open directory and walk through the filenames
+			while ($file = readdir($handler)) {
+				// if file isn't this directory or its parent, add it to the results
+				if ($file != "." && $file != ".." && !is_dir($file)) {
+					//echo $file;
+					$extension = substr(strrchr($file, '.'), 1);
+					if(in_array($extension, $extensionArray)) {
+						$results[] = $file;
+					}
 				}
 			}
+			// tidy up: close the handler
+			closedir($handler);
+			// done!
+			asort($results);
 		}
-	// tidy up: close the handler
-		closedir($handler);
-		// done!
-		asort($results);
 		return $results;
 	}
 
-	/**
-	 * returns the Link to the controller
-	 *
-	 * @return String -
-	 */
-	function Link() {
-		return "/".self::$url_segment."/";
-	}
 
 
 
@@ -148,7 +155,7 @@ class CMSHelp extends ContentController {
 	 * @param String $string - input
 	 * @return String
 	 */
-	private function spaceBeforeCapital($string){
+	private static function add_space_before_capital($string){
 		$string = preg_replace('/(?<!\ )[A-Z\-]/', ' $0', $string);
 		$extension = substr(strrchr($string, '.'), 0);
 		$string = str_replace(array('-', $extension, '.'),"", $string);

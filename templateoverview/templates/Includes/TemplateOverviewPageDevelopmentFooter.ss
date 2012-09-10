@@ -9,7 +9,7 @@
 	<ul id="TemplateOverviewPageDevelopmentFooterLoadHere"><li class="hiddenListItem">&nbsp;</li></ul>
 	<h4>Choose template: </h4>
 	<ol id="TemplateOverviewPrevNextList">
-		<% control TemplateList %><li><% if Count %><a href="{$FullLink}?flush=1" title="$ClassName - $Title" class="$LinkingMode"><% else %><a title="-- there are no $ClassName pages --"><% end_if %>$ClassName ($Count)</a></li><% end_control %>
+		<% control TemplateList %><li style="background-image: url({$Icon});"><% if Count %><a href="{$FullLink}?flush=1" title="example: $Title.ATT" class="$LinkingMode"><% else %><a title="-- there are no $ClassName pages --"><% end_if %>$ClassName ($Count)</a></li><% end_control %>
 	</ol>
 	<% if TemplateOverviewBugs %>
 	<h3>Known Bugs</h3>

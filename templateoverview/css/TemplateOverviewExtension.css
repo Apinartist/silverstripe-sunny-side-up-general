@@ -14,7 +14,9 @@
 	-webkit-column-gap: 20px;
 	column-count: 5;
 	column-gap: 20px;
+	padding: 0px;
+	margin: 0px;
 }
-#TemplateOverviewPrevNextList li{list-style: decimal inside;}
+#TemplateOverviewPrevNextList li{list-style: none; background-repeat: no-repeat; background-position: top left; padding-left: 20px; }
 #TemplateOverviewPageDevelopmentFooter li.hiddenListItem{display: none;}
 #TemplateOverviewPageDevelopmentFooter .clear {clear: both;}

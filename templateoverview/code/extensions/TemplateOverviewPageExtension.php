@@ -81,4 +81,8 @@ class TemplateOverviewPageExtension extends Extension {
 		);
 	}
 
+	function TemplateDescriptionForThisClass(){
+		return DataObject::get_one("TemplateOverviewDescription", "ClassNameLink = '".$this->owner->ClassName."'");
+	}
+
 }

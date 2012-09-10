@@ -20,6 +20,9 @@ ErrorPage::$icon = "templateoverview/images/treeicons/ErrorPage";
 //}
 //TemplateOverviewPage::set_auto_include(true);
 //LeftAndMain::require_css("templateoverview/css/TemplateOverviewCMSHelp.css");
+//any file in the folder below which starts with the Exact ClassName - e.g. HomePage or HomePage1 or HomePage_MoreDetail
+//will be added to the template description.
+//TemplateOverviewDescription::set_image_source_folder("_dev/designs");
 
 // --- help files ---
 //CMSHelp::set_help_file_directory_name("_help");

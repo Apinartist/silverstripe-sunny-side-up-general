@@ -38,6 +38,14 @@ class TemplateOverviewBug extends DataObject {
 		"Fixed",
 		"TemplateID"
 	);
+
+	public static $summary_fields = array(
+		"Title" => "PartialMatchFilter",
+		"NeedsMoreInformation",
+		"Fixed",
+		"Template.Title"
+	);
+
 	public static $field_labels = array(
 		"Title" => "Short Description (e.g. newsletter page does not open)",
 		"Member" => "Reported by",
