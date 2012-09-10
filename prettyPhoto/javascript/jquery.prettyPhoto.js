@@ -6,11 +6,9 @@ var PrettyPhotoLoader = {
 
 	load: function(outerSelector) {
 		if(window.PrettyPhotoInitConfigs === undefined) {
-			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto();
+			window.PrettyPhotoInitConfigs = {social_tools: false}
 		}
-		else {
-			jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(PrettyPhotoInitConfigs);
-		}
+		jQuery(outerSelector + PrettyPhotoLoader.selector).prettyPhoto(window.PrettyPhotoInitConfigs);
 	}
 };
 /* ------------------------------------------------------------------------
