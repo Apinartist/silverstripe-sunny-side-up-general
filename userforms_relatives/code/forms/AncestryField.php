@@ -10,7 +10,7 @@ class AncestryField extends FormField {
 	 * @var nameField
 	 */
 	//level 1
-	protected $fieldDefinition = array(
+	protected static $array_of_ancestors = array(
 		"mField" => "Mother",
 		"fField" => "Father",
 	//level 2
@@ -45,11 +45,13 @@ class AncestryField extends FormField {
 		"fffmField" => "Father's Father's Father's Mother",
 		"ffffField" => "Father's Father's Father's Father"
 	);
+	function static get_array_of_ancestors() {return self::$array_of_ancestors;}
+	function static set_array_of_ancestors($a) {self::$array_of_ancestors = $a;}
 
 	protected $fieldHolder = array();
 
 	function __construct($name, $title = null, $value = ""){
-		foreach($this->fieldDefinition as $key => $fieldTitle) {
+		foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 			$this->fieldHolder[$key] = new TextField($name . '['.$key.']', $fieldTitle);
 		}
 		parent::__construct($name, $title, $value);
@@ -57,7 +59,7 @@ class AncestryField extends FormField {
 
 	function setForm($form) {
 		parent::setForm($form);
-		foreach($this->fieldDefinition as $key => $fieldTitle) {
+		foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 			$this->fieldHolder[$key]->setForm($form);
 		}
 	}
@@ -67,7 +69,7 @@ class AncestryField extends FormField {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("userforms_relatives/javascript/AncestryField.js");
 		$html = "";
-		foreach($this->fieldDefinition as $key => $fieldTitle) {
+		foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 			$levelClass = "level".(strlen($key)-5);
 			$nextLevels = ".".str_replace("Field", "mField", $key).", .".str_replace("Field", "fField", $key);
 			$html .= "<div class=\"$key $levelClass ancestorNode \" rel=\"$nextLevels\">".$this->fieldHolder[$key]->SmallFieldHolder()."</div>";
@@ -79,7 +81,7 @@ class AncestryField extends FormField {
 	 */
 	function setValue($val) {
 		if(empty($val)) {
-			foreach($this->fieldDefinition as $key => $fieldTitle) {
+			foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 				$this->fieldHolder[$key]->setValue(null);
 			}
 		}
@@ -90,7 +92,7 @@ class AncestryField extends FormField {
 			}
 			// Setting from form submission
 			elseif(is_array($val)) {
-				foreach($this->fieldDefinition as $key => $fieldTitle) {
+				foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 					$myValue = isset($val[$key]) ? $val[$key] : "";
 					$this->fieldHolder[$key]->setValue($myValue);
 				}
@@ -105,7 +107,7 @@ class AncestryField extends FormField {
 
 	function dataValue() {
 		$array = array();
-		foreach($this->fieldDefinition as $key => $fieldTitle) {
+		foreach(self::get_array_of_ancestors() as $key => $fieldTitle) {
 			$array[$key] = $this->fieldHolder[$key]->dataValue();
 		}
 		return $array;
