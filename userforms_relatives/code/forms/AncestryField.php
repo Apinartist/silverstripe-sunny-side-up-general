@@ -45,8 +45,8 @@ class AncestryField extends FormField {
 		"fffmField" => "Father's Father's Father's Mother",
 		"ffffField" => "Father's Father's Father's Father"
 	);
-	function static get_array_of_ancestors() {return self::$array_of_ancestors;}
-	function static set_array_of_ancestors($a) {self::$array_of_ancestors = $a;}
+	static function get_array_of_ancestors() {return self::$array_of_ancestors;}
+	static function set_array_of_ancestors($a) {self::$array_of_ancestors = $a;}
 
 	protected $fieldHolder = array();
 
