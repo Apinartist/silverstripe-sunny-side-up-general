@@ -90,16 +90,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 								}
 							}
 							if($actualField == "Version" && !in_array($actualField, $requiredFields)) {
-								$versioningPresent = false;
-								$array = $dataObject->stat('extensions');
-								if(is_array($array) && count($array)) {
-									if(in_array("Versioned('Stage', 'Live')", $array)) {
-										$versioningPresent = true;
-									}
-								}
-								if($dataObject->stat('versioning')) {
-									$versioningPresent = true;
-								}
+								$versioningPresent = $dataObject->hasVersioning();
 								if(!$versioningPresent) {
 									DB::alteration_message ("$dataClass.$actualField $link", "deleted");
 									if($deleteNow) {
@@ -111,6 +102,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 					}
 					$rawCount = DB::query("SELECT COUNT(\"ID\") FROM \"$dataClass\"")->value();
 					if($rawCount < 1000){
+						Versioned::set_reading_mode("Stage");
 						$realCount = 0;
 						$objects = DataObject::get($dataClass);
 						if($objects) {
@@ -130,7 +122,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 						}
 					}
 					else {
-						DB::alteration_message("<span style=\"color: yellow\">We cant fully check $dataClass because it as more than 1000 records</span>");
+						DB::alteration_message("<span style=\"color: orange\">We cant fully check $dataClass because it as more than 1000 records</span>");
 					}
 					unset($actualTables[$dataClass]);
 				}
@@ -268,6 +260,20 @@ class DataIntegrityTest extends DevelopmentAdmin {
 			}
 		}
 		return $newArray;
+	}
+
+	protected function hasVersioning($dataObject) {
+		$versioningPresent = false;
+		$array = $dataObject->stat('extensions');
+		if(is_array($array) && count($array)) {
+			if(in_array("Versioned('Stage', 'Live')", $array)) {
+				$versioningPresent = true;
+			}
+		}
+		if($dataObject->stat('versioning')) {
+			$versioningPresent = true;
+		}
+		return $versioningPresent;
 	}
 
 }
