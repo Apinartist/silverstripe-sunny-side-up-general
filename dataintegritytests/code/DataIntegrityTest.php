@@ -104,7 +104,7 @@ class DataIntegrityTest extends DevelopmentAdmin {
 					if($rawCount < 1000){
 						Versioned::set_reading_mode("Stage");
 						$realCount = 0;
-						$objects = DataObject::get($dataClass);
+						$objects = DataObject::get($dataClass, "\"$dataClass\".ID > 0");
 						if($objects) {
 							$realCount = $objects->count();
 						}
