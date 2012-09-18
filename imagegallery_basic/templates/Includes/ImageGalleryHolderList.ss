@@ -12,7 +12,7 @@
 			<% end_if %>
 			<div class="details">
 				<h3><a href="$Link">$Title</a></h3>
-				<p>$Content.FirstSentence</p>
+				<div class="contentSummary">$Content.Summary</div>
 			</div>
 		</li>
 	<% end_control %>
