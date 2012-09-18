@@ -191,7 +191,7 @@ class TemplateOverviewDescription extends DataObject {
 					}
 				}
 				else {
-					DB::alteration_message("no images to find", "deleted");
+					DB::alteration_message("no design images found for $className", "deleted");
 				}
 			}
 		}
