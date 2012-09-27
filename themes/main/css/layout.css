@@ -19,6 +19,7 @@ body.mobileBrowsing {
 	border: 10px solid #fff;
 }
 #Wrapper{}
+.mobileBrowsing #Wrapper{background-color: #fff;}
 	#Container{}
 		#Nav {} /* see MENU.CSS spreadsheet */
 		#Breadcrumbs {text-align: right; padding: 0; position: absolute; top: 7px; font-size: 12px; }
