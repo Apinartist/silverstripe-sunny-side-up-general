@@ -18,13 +18,13 @@ body.mobileBrowsing {
 	padding-top: 166px;
 	border: 10px solid #fff;
 }
-#Wrapper{background-color: #fff!important;}
+#Wrapper{}
 	#Container{}
 		#Nav {} /* see MENU.CSS spreadsheet */
 		#Breadcrumbs {text-align: right; padding: 0; position: absolute; top: 7px; font-size: 12px; }
 		.mobileBrowsing #Breadcrumbs  {display: none;}
 		#SidebarSection {width: 20%; float: right; padding: 67px 20px 0 0;}
-		#Layout {padding: 67px 270px 50px 210px; max-width: 770px;}
+		#Layout {padding: 67px 270px 50px 210px; max-width: 770px; background-color: #fff;}
 		.mobileBrowsing #Layout {padding-right: 0px; padding-left: 0px; padding-top: 0px;}
 		.pageTitle {text-transform: uppercase;}
 	#shareThisUL {position: absolute;right: 12px;top: 12px;}
