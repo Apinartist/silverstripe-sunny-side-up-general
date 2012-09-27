@@ -2,7 +2,7 @@
 ;(function($) {
 	jQuery(document).ready(
 		function() {
-			SSUhoverMenu.init();
+			//must do first!
 			windowResizer.init();
 		}
 	);
@@ -11,6 +11,8 @@
 
 var SSUhoverMenu = {
 
+	mobileBrowsing: false,
+	set_mobileBrowsing: function(b) {this.mobileBrowsing = b;},
 	firstTime: true,
 	animateIn: {opacity: "1"},
 	animateOut: {opacity: "0.75"},
@@ -18,42 +20,65 @@ var SSUhoverMenu = {
 	animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
 
 	init: function() {
-		jQuery("#Nav li.level1").hoverIntent(
-			{
-				over: SSUhoverMenu.menuIn,  // function = onMouseOver callback (required)
-				timeout: 200,   // number = milliseconds delay before onMouseOut function call
-				out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
-			}
-		);
-		jQuery(".hasCSSHover").removeClass("hasCSSHover");
-		jQuery("#Nav").hoverIntent(
-			{
-				over: function(){
-					if(SSUhoverMenu.firstTime) {
-						jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-						SSUhoverMenu.firstTime = false;
-					}
-					else {
-						jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-					}
-				},  // function = onMouseOver callback (required)
-				timeout: 1500,   // number = milliseconds delay before onMouseOut function call
-				out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
-			}
-		);
-		jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
-		jQuery("#Nav").children("li").each(
-			function(i, el) {
-				var parentOffset = jQuery(el).offset();
-				var left = parentOffset.left;
-				var docWidth = jQuery(document).width();
-				if(left > (docWidth - 270)) {
-					left = docWidth - 270;
+		if(this.mobileBrowsing) {
+			jQuery("#Nav li.level1").hoverIntent(
+				{
+					over: function(){},  // function = onMouseOver callback (required)
+					timeout: 0,   // number = milliseconds delay before onMouseOut function call
+					out:  function(){}  // function = onMouseOut callback (required)
 				}
-				leftString = left + "px";
-				jQuery(el).children("ul").animate({left: leftString});
-			}
-		);
+			);
+			jQuery(".hasCSSHover").removeClass("hasCSSHover");
+			jQuery("#Nav").hoverIntent(
+				{
+					over: function(){},  // function = onMouseOver callback (required)
+					timeout: 0,   // number = milliseconds delay before onMouseOut function call
+					out:  function(){}  // function = onMouseOut callback (required)
+				}
+			);
+			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
+
+			jQuery("#Nav").children("li").css("left", "auto").css("position", "inherit");
+		}
+		else {
+			jQuery("#Nav li.level1").hoverIntent(
+				{
+					over: SSUhoverMenu.menuIn,  // function = onMouseOver callback (required)
+					timeout: 200,   // number = milliseconds delay before onMouseOut function call
+					out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
+				}
+			);
+			jQuery(".hasCSSHover").removeClass("hasCSSHover");
+			jQuery("#Nav").hoverIntent(
+				{
+					over: function(){
+						if(SSUhoverMenu.firstTime) {
+							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
+							SSUhoverMenu.firstTime = false;
+						}
+						else {
+							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
+						}
+					},  // function = onMouseOver callback (required)
+					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
+					out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
+				}
+			);
+			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
+
+			jQuery("#Nav").children("li").each(
+				function(i, el) {
+					var parentOffset = jQuery(el).offset();
+					var left = parentOffset.left;
+					var docWidth = jQuery(document).width();
+					if(left > (docWidth - 270)) {
+						left = docWidth - 270;
+					}
+					leftString = left + "px";
+					jQuery(el).children("ul").animate({left: leftString});
+				}
+			);
+		}
 	},
 
 	menuIn: function() {jQuery(this).children("ul").slideDown()},
@@ -83,6 +108,8 @@ var windowResizer = {
 	maxWrapperWidth: 1920,
 
 	maxWrapperHeight: 1449,
+
+	smallScreenMaxSize: 700,
 
 	imageWidth: "",
 
@@ -172,17 +199,22 @@ var windowResizer = {
 		return jQuery('#RandomImageLarge img');
 	},
 
+	oldSideBarWidth: 270,
+
 	manageSidebar: function(){
 		this.getWindowSizing();
-		if(this.windowWidth < 700) {
-			jQuery("#Layout").addClass("hiddenSidebar");
-			jQuery("aside").insertBefore("#LayoutHolder div.mainSection");
-			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px").toggleClass("closed")
-			jQuery(".sidebarTop").html("<a href=\"#Sidebar\" class=\"findLink\">find</a><a href=\"#Sidebar\" class=\"closeLink\">close</a>").click(
-				function(){
-					jQuery("#Sidebar").toggleClass("open").toggleClass("closed");
-				}
-			);
+		if(this.windowWidth < this.smallScreenMaxSize) {
+			jQuery("body").addClass("mobileBrowsing");
+			this.oldSideBarWidth = jQuery("#LayoutHolder").width();
+			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px");
+			SSUhoverMenu.set_mobileBrowsing(true);
+			SSUhoverMenu.init();
+		}
+		else {
+			jQuery("body").removeClass("mobileBrowsing");
+			jQuery("#Sidebar").width(this.oldSideBarWidth+"px");
+			SSUhoverMenu.set_mobileBrowsing(false);
+			SSUhoverMenu.init();
 		}
 	},
 
@@ -192,7 +224,6 @@ var windowResizer = {
 	}
 
 }
-
 
 
 

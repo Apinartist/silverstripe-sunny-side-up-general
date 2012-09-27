@@ -12,4 +12,39 @@
 			#Nav ul li a {font-size: 1.2em;color: #808383;}
 				#Nav ul li a:hover, #Nav ul li.current a, #Nav ul li.section a {color: #000;}
 
-	#Nav li:hover .hasCSSHover {display: block;}
+	#Nav li .hasCSSHover {display: block;}
+
+.mobileBrowsing #Nav, .mobileBrowsing #Nav ul, .mobileBrowsing #Nav ul ul {
+	position: relative!important;
+	margin-left: 0px;
+	margin-right: 0px;
+	width: auto;
+	bottom: auto;
+	padding: 0px!important;
+	border-top-left: 0px;
+}
+.mobileBrowsing #Nav ul, .mobileBrowsing #Nav ul ul {
+	margin: 0px!important;
+}
+.mobileBrowsing #Nav li, .mobileBrowsing #Nav ul li, .mobileBrowsing #Nav ul ul li{
+	float: none;
+	width: auto;
+}
+
+.mobileBrowsing #Nav ul{display: none;}
+
+.mobileBrowsing #Nav li.section ul, .mobileBrowsing #Nav li.current ul {
+	display: block;
+	border-radius: 0px;
+	-moz-border-radius-topleft: 0px;
+	border-top-left-radius: 0px;
+}
+
+.mobileBrowsing #Nav a{
+	display: block;
+	padding: 0!important;
+}
+
+
+.mobileBrowsing #Nav{margin-bottom: 30px;}
+
