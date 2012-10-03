@@ -174,6 +174,192 @@ class DefaultRecordsForEcommerce extends DataObject {
 						"Content" => "",
 					),
 					array(
+						"URLSegment" => "others",
+						"MetaTitle" => "Other Silverstripe E-Commerce Applications",
+						"Title" => "Other Silverstripe E-Commerce Applications",
+						"MenuTitle" => "Also See",
+						"ShowInMenus" => true,
+						"ShowInSearch" => true,
+						"Content" => "
+
+									<p>Below are three other Silverstripe E-commerce Solutions (information updated 1 Oct 2012)</p>
+									<table style=\"width: 100%\">
+										<tbody>
+											<tr>
+												<th style=\"width: 10%;\" scope=\"col\">&nbsp;</th>
+												<th style=\"width: 30%;\" scope=\"col\">
+													<a href=\"\"><a href=\"https://github.com/burnbright/silverstripe-shop\">Shop</a>
+												</th>
+												<th style=\"width: 30%;\" scope=\"col\">
+													<a href=\"https://github.com/frankmullenger/silverstripe-swipestripe\">Swipestripe</a>
+												</th>
+												<th style=\"width: 30%;\" scope=\"col\">
+													<a href=\"https://bitbucket.org/silvercart/\">Silvercart</a>
+												</th>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Lead developer</th>
+												<td>Jeremy</td>
+												<td>Frank</td>
+												<td>Roland</td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Strength (among others)</th>
+												<td>
+													<ul>
+														<li>Easily extendable</li>
+														<li>Excellent documentation</li>
+														<li>Innovative Concepts</li>
+														<li>Silverstripe Best Practice</li>
+														<li>Tests</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li>Extensive Tests</li>
+														<li>3.0 ready</li>
+														<li>Reliable</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li>Most polished of all e-commerce applications</li>
+														<li>Internationalisation</li>
+													</ul>
+												</td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Cost</th>
+												<td>Free</td>
+												<td>USD250ish + module cost</td>
+												<td>Free</td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Demo</th>
+												<td><a href=\"http://demo.ss-shop.org/\">demo.ss-shop.org/</a></td>
+												<td>
+													<a href=\"http://demo.swipestripe.com/\">demo.swipestripe.com/</a>
+													<a href=\"http://ss3.swipestripe.com/\">ss3.swipestripe.com/</a>
+												</td>
+												<td><a href=\"http://demo.trysilvercart.com\">demo.trysilvercart.com</a></td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Features</th>
+												<td>
+													<ul>
+														<li>Product catalog that can be stored in a categorized  tree hierarchy, or flat via model admin</li>
+														<li>Account page for members to view past orders, and pay for incomplete orders</li>
+														<li>Simplistic code base, intended to scale</li>
+														<li>Integrates with payment module</li>
+														<li>Product variations/options</li>
+														<li>Address book</li>
+														<li>Single page checkout</li>
+														<li>35 unit tests running on TravisCI</li>
+														<li>Self contained installer</li>
+														<li>Discount coupon codes</li>
+														<li>Zoned shipping system</li>
+														<li>Product enquiry form</li>
+														<li>Product searching</li>
+														<li>Google analytics recording</li>
+														<li>Bootstrap theme</li>
+													</ul>
+												</td>
+												<td>
+													<p>Aiming for a small and simple core codebase which is flexible enough to be extended easily in order to add features like product galleries, shipping, tax, coupon codes etc. Currently have a small selection of extensions (http://swipestripe.com/products/extensions/) that can be purchased seperately and provide common features for shopping carts such as:</p>
+													<ul>
+														<li>Product gallery with fancy box</li>
+														<li>Xero integrations</li>
+														<li>Virtual (downloadable) products</li>
+														<li>Region based shipping</li>
+														<li>Weight and region based shipping</li>
+														<li>Region based tax rates</li>
+														<li>Featured products</li>
+														<li>Courier codes for orders</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li>Master and slave products (product variations can be grouped while the variations can be independently maintained)</li>
+														<li>A products stock status can be displayed as quantity or with a traffic light as a symbol.</li>
+														<li>Products can be provided with multiple images or a gallery.</li>
+														<li>Unlimited quantity of products and product groups.</li>
+														<li>Products can be mirrored in several product groups.</li>
+														<li>Each product can have multiple files assigned (PDF,DOC,XLS, etc.)</li>
+														<li>Drag and drop reordering</li>
+														<li>manufacturer logo and link maintainable</li>
+														<li>various possibilities to filter products</li>
+														<li>Class diagram and API documentation</li>
+														<li>Integrated update mechanism</li>
+														<li>Import and export via CSV</li>
+														<li>User account area with order history</li>
+														<li>B2B or B2C</li>
+													</ul>
+												</td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Planned</th>
+												<td>
+													<ul>
+														<li>SubShops - allowing members to create their own semi-branded store, and set profits</li>
+														<li>SilverStripe 3 upgrade</li>
+														<li>US/International tax support</li>
+														<li>Multi-currency</li>
+														<li>Stock control</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li>Using new SilverStripe 3.0 compatible payment module</li>
+														<li>Multiple currency</li>
+														<li>Documentation</li>
+														<li>More comprehensive reporting</li>
+														<li>Further 3rd party integrations</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li>Amazon module</li>
+														<li>Groupon module</li>
+														<li>Saferpay payment module</li>
+														<li>Sofort banking module</li>
+													</ul>
+												</td>
+											</tr>
+
+											<tr>
+												<th scope=\"row\">Support</th>
+												<td>
+													<ul>
+														<li>Online: <a href=\"http://demo.ss-shop.org/docs/developer/en\">docs</a>, <a href=\"http://api.ss-shop.org/\">api</a></li>
+														<li>mysite.com/dev/shop - tools and tasks for development</li>
+														<li>Moderate forum support (shared with ecommerce module)</li>
+														<li>Ecommerce mailing list (shared with ecommerce module)</li>
+													</ul>
+												</td>
+												<td>
+													<ul>
+														<li><a href=\"http://docs.swipestripe.com/\">API documentation</a></li>
+														<li><a href=\"http://swipestripe.com/docs\">Installation documentation</a></li>
+													</ul>
+												</td>
+												<td>
+													SilverCart uses the YAML CSS framework and customhtmlform module which takes care of SilverStripes HTML limitations for forms.
+													<a href=\"http://www.silvercart.org/forum/\">support forum</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+
+
+						",
+					),
+					array(
 						"ClassName" => "DownloadPage",
 						"URLSegment" => "downloads-git-svn",
 						"Title" => "downloads / git / svn",
