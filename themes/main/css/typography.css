@@ -16,7 +16,7 @@
 /* general font-size changes and combos */
 .typography p, .typography li, .typography address {font-size: 1em;}
 	.typography td p {font-size: 1em;}
-	.typography td li {font-size: 1em; list-style-position: inside; }
+	.typography td li {font-size: 0.9em; list-style-position: inside; margin-left: 0px; padding-left:0px; list-style-type: square; list-style-image:none;}
 	.typography li p {font-size: 1em; margin-top: 0px; padding-top: 0px;}
 	.typography li li {font-size: 0.95em;}
 		.typography li li li {font-size: 0.85em;}
@@ -59,9 +59,10 @@
 	.typography th, .typography td {padding: 0.7em; border-left: 1px solid #fff;border-top: 1px solid #fff; background-color: #BFC1C1; font-size: 12px!important;}
 		.typography table th[scope='col'] {vertical-align: middle; font-weight: bold; color: #fff; background-color: #808383}
 		.typography table th[scope='row'] {text-align: left; vertical-align: top; font-weight: bold;}
+		.typography table th a {color: #fff;}
 		.typography table td {vertical-align: top;}
 			.typography table td p, .typography table td li{margin: 0px; padding: 0px;}
-			.typography table td ol, .typography table td ul{margin-top: 0px; padding-top: 0px;}
+			.typography table td ol, .typography table td ul{margin-top: 0px; padding-top: 0px; margin-left: 0px; padding-left: 0px;}
 
 
 
