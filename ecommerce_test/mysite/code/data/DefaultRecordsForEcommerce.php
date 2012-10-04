@@ -206,32 +206,6 @@ class DefaultRecordsForEcommerce extends DataObject {
 											</tr>
 
 											<tr>
-												<th scope=\"row\">Strength (among others)</th>
-												<td>
-													<ul>
-														<li>Easily extendable</li>
-														<li>Excellent documentation</li>
-														<li>Innovative Concepts</li>
-														<li>Silverstripe Best Practice</li>
-														<li>Tests</li>
-													</ul>
-												</td>
-												<td>
-													<ul>
-														<li>Extensive Tests</li>
-														<li>3.0 ready</li>
-														<li>Reliable</li>
-													</ul>
-												</td>
-												<td>
-													<ul>
-														<li>Most polished of all e-commerce applications</li>
-														<li>Internationalisation</li>
-													</ul>
-												</td>
-											</tr>
-
-											<tr>
 												<th scope=\"row\">Cost</th>
 												<td>Free</td>
 												<td>USD250ish + module cost</td>
