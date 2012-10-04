@@ -94,8 +94,9 @@ MetaTagAutomation_controller::set_combine_js_files_into_one(true);
 Payment::set_site_currency("EUR");
 Currency::setCurrencySymbol("€");
 Payment::set_supported_methods(array(
-	'DirectCreditPayment' => 'Direct Credit (payment into bank account)',
-	'InStorePayment' => 'Pay in Store on Pick-Up'
+	'DirectCreditPayment_TESTSUCCESS' => 'Test Successful Payment',
+	'DirectCreditPayment_TESTFAILURE' => 'Test Failed Payment',
+	'InStorePayment' => 'Pay in Store on Pick-Up',
 ));
 //===================---------------- END payment MODULE ----------------===================
 
