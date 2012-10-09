@@ -1,4 +1,4 @@
-#Nav {}
+#Nav {display: none;}
 #Nav, #Nav ul, #Nav ul ul {position: fixed; right: 0; width: 100%; text-transform: lowercase;}
 #Nav {bottom: 0px; background-color: #808383; z-index: 999; }
 	#Nav li {padding: 0.77em 1.7em; float: right; list-style: none; text-align: right;}
