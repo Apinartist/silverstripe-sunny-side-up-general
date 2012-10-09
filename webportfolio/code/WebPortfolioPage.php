@@ -44,13 +44,14 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		PrettyPhoto::include_code();
 		Requirements::javascript("webportfolio/javascript/webportfolio.js");
 		Requirements::themedCSS("WebPortfolioPage");
+		$this->addall();
 	}
 
 	protected $IDArray = array();
 	protected $hasFilter = false;
 	protected $currentCode = "";
 
-	function addall(){
+	public function addall(){
 		$member = Member::currentUser();
 		if($member->IsAdmin()){
 			$items = DataObject::get("WebPortfolioItem", "ScreenshotID > 0");
