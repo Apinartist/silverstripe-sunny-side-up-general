@@ -48,7 +48,7 @@
 		<% else %>
 			<% if NotPubliclyAvailable %>
 			<% else %>
-			<strong>Visit:</strong> <a href="$WebAddress.URL" class="externalLink">the site</a>
+			<strong>Visit:</strong> <a href="$WebAddress.URL" class="externalLink">$HeadLine</a>
 			<% end_if %>
 		<% end_if %>
 	</span>
