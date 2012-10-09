@@ -53,7 +53,7 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	function addall(){
 		$member = Member::currentUser();
 		if($member->IsAdmin()){
-			$items DataObject::get("WebPortfolioItem", "ScreenshotID > 0");
+			$items = DataObject::get("WebPortfolioItem", "ScreenshotID > 0");
 			if($items) {
 				foreach($items as $item) {
 					$this->WebPortfolioItems()->add($item);
