@@ -1,3 +1,4 @@
+jQuery("#Sidebar, #nav").hide();
 
 ;(function($) {
 	jQuery(document).ready(
@@ -39,7 +40,6 @@ var SSUhoverMenu = {
 					out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
 				}
 			);
-			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
@@ -52,6 +52,7 @@ var SSUhoverMenu = {
 					jQuery(el).children("ul").animate({left: leftString});
 				}
 			);
+			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
 		}
 	},
 
@@ -177,13 +178,13 @@ var windowResizer = {
 		this.getWindowSizing();
 		if(this.windowWidth < this.smallScreenMaxSize) {
 			jQuery("body").addClass("mobileBrowsing");
-			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px");
+			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px").show();
 			SSUhoverMenu.set_mobileBrowsing(true);
 			SSUhoverMenu.init();
 		}
 		else {
 			jQuery("body").removeClass("mobileBrowsing");
-			jQuery("#Sidebar").width(this.standardSidebarWidth+"px");
+			jQuery("#Sidebar").width(this.standardSidebarWidth+"px").show();
 			SSUhoverMenu.set_mobileBrowsing(false);
 			SSUhoverMenu.init();
 		}
