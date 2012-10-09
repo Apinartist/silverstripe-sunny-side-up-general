@@ -15,7 +15,8 @@ class WebPortfolioPageTimeLine extends Page {
 
 	public static $db = array(
 		"TimeLineHeader" => "Varchar",
-		"TimeLineIntro" => "HTMLText"
+		"TimeLineIntro" => "HTMLText",
+		"JSON" => "HTMLText"
 	);
 
 	public static $many_many = array(
@@ -36,40 +37,22 @@ class WebPortfolioPageTimeLine extends Page {
 		return $fields;
 	}
 
-
-}
-
-class WebPortfolioPageTimeLine_Controller extends Page_Controller {
-
-
-	protected static $ajax_file_location = "webportfolio/javascript/timeline-executive.js";
-		static function set_ajax_file_location($s){self::$ajax_file_location = $s;}
-		static function get_ajax_file_location(){return self::$ajax_file_location;}
-
-	function init() {
-		parent::init();
-		Requirements::javascript(self::get_ajax_file_location());
-		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
-		Requirements::themedCSS("WebPortfolioPageTimeLine");
-	}
-
-	function json(){
+	function createJSON(){
 		SSViewer::set_source_file_comments(false);
-
 		$json = '
 {
-    "timeline":
-    {
-        "headline":'.$this->html2json($this->TimeLineHeader).',
-        "type":"default",
-        "text": '.$this->html2json($this->TimeLineIntro).',
-        "date": [';
-        //'.$this->html2json($this->TimeLineIntro).'';//
-        //"asset": {
-        //    "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
-        //    "credit":"Credit Name Goes Here",
-        //    "caption":"Caption text goes here"
-        //},
+		"timeline":
+		{
+				"headline":'.$this->html2json($this->TimeLineHeader).',
+				"type":"default",
+				"text": '.$this->html2json($this->TimeLineIntro).',
+				"date": [';
+				//'.$this->html2json($this->TimeLineIntro).'';//
+				//"asset": {
+				//    "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
+				//    "credit":"Credit Name Goes Here",
+				//    "caption":"Caption text goes here"
+				//},
 
 		$data = $this->WebPortfolioItems();
 		if($data && $data->count()) {
@@ -91,39 +74,41 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 				$headLine = str_replace(".", " . ", $headLine);
 				$headLine = $this->html2json($headLine); //
 				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
-        $json .= '
-            {
-                "startDate":"'.$startDate.'",
-                "headline": '.$headLine.',
-                "text": '.$text.'
-            }
-        ';
-        if(!$site->Last()) {
+				$json .= '
+						{
+								"startDate":"'.$startDate.'",
+								"headline": '.$headLine.',
+								"text": '.$text.'
+						}
+				';
+				if(!$site->Last()) {
 					$json .= ",";
 				}
 			}
 		}
 /*
-        "era": [
-            {
-                "startDate":"2011,12,10",
-                "endDate":"2011,12,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional"
-            }
+				"era": [
+						{
+								"startDate":"2011,12,10",
+								"endDate":"2011,12,11",
+								"headline":"Headline Goes Here",
+								"text":"<p>Body text goes here, some HTML is OK</p>",
+								"tag":"This is Optional"
+						}
 
-        ]
-        */
+				]
+				*/
 		$json .='
-      ]
-    }
+			]
+		}
 }';
-		return $json;
-	}
-
-	function JSONLink(){
-		return Director::absoluteURL($this->Link("json/"));
+		if($json) {
+			$this->JSON = $json;
+			$this->writeToStage('Stage');
+			$this->Publish('Stage', 'Live');
+			$this->Status = "Published";
+			$this->flushCache();
+		}
 	}
 
 	protected function html2json($html){
@@ -133,6 +118,35 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 		}
 		$json = Convert::raw2json($html);
 		return $json;
+	}
+
+
+}
+
+class WebPortfolioPageTimeLine_Controller extends Page_Controller {
+
+
+	protected static $ajax_file_location = "webportfolio/javascript/timeline-executive.js";
+		static function set_ajax_file_location($s){self::$ajax_file_location = $s;}
+		static function get_ajax_file_location(){return self::$ajax_file_location;}
+
+	function init() {
+		parent::init();
+		Requirements::javascript(self::get_ajax_file_location());
+		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
+		Requirements::themedCSS("WebPortfolioPageTimeLine");
+	}
+
+	function json($request){
+		SSViewer::set_source_file_comments(false);
+		if(isset($_GET['flush']) || !$this->JSON) {
+			$this->createJSON();
+		}
+		return $this->JSON;
+	}
+
+	function JSONLink(){
+		return Director::absoluteURL($this->Link("json/"));
 	}
 
 }
