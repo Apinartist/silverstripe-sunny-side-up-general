@@ -92,7 +92,7 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 				$headLine = str_replace("http://", "", $headLine);
 				$headLine = str_replace(".", " . ", $headLine);
 				$headLine = $this->html2json($headLine); //
-				$text = $this->html2json(preg_replace('!\s+!', ' ', $site->renderWith("WebPortfolioPageOneItemTimeline"))); // //
+				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
         $json .= '
             {
                 "startDate":"'.$startDate.'",
@@ -129,13 +129,11 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 	}
 
 	protected function html2json($html){
+		$html = preg_replace('!\s+!', ' ', $html);
 		if(!trim($html)) {
 			$html = "&nbsp;";
 		}
 		$json = Convert::raw2json($html);
-		$json = str_replace("\t", " ", $json);
-		$json = str_replace("\r", " ", $json);
-		$json = str_replace("\n", " ", $json);
 		return $json;
 	}
 

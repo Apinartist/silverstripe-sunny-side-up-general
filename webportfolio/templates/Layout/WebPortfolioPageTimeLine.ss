@@ -1,6 +1,5 @@
 <div id="HomePage" class="mainSection content-container withSidebar">
 	<% include ContentSection %>
-	<div id="timeline-embed">$JSONLink</div>
 	<% include FormSection %>
 	<% include PageCommentSection %>
 </div>
