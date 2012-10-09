@@ -48,7 +48,7 @@
 		<% else %>
 			<% if NotPubliclyAvailable %>
 			<% else %>
-			<strong>Visit:</strong> <a href="$WebAddress.URL" class="externalLink">visit the website</a>
+			<strong>Visit:</strong> <a href="$WebAddress.URL" class="externalLink">the site</a>
 			<% end_if %>
 		<% end_if %>
 	</span>
@@ -57,25 +57,4 @@
 
 </div>
 </div>
-
-<script type="text/javascript">//<![CDATA[
-	window.setTimeout(
-		function(){
-			jQuery("#webPortfolioItem$ID").ready(
-				function() {
-					jQuery("#webPortfolioItem$ID").hide().css("border", "1px solid red")
-					.click(
-						function(event) {
-							event.preventDefault();
-							jQuery("#webPortfolioItem$ID").slideToggle();
-							return false;
-						}
-					);
-
-				}
-			);
-		},
-		500
-	);
-//]]></script>
 
