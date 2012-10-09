@@ -7,7 +7,7 @@
 	<% base_tag %>
 	$ExtendedMetatags
 </head>
-<body id="Body$ClassName">
+<body id="Body$ClassName" class="mobileBrowsing">
 <div id="Wrapper">
 	<div id="Container">
 		<% include Navigation %>

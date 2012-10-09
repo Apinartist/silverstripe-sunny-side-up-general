@@ -121,10 +121,21 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	text-decoration: none;
 }
 
-
-.mobileBrowsing label {float: none!important; width: 90%!important; border: none!important;}
+.mobileBrowsing form{width: 100%!important; margin-left: auto; margin-right: auto;}
+.mobileBrowsing .typography label {float: none!important; border: none!important;width: 95%!important; }
 .mobileBrowsing .middleColumn {margin-left: 0px!important;}
-.mobileBrowsing .typography .field span.message {margin-left: 0px!important;}
-.mobileBrowsing .typography label.right {margin-left: 0px!important;}
-.mobileBrowsing form{width: 370px!important; margin-left: auto; margin-right: auto;}
+.mobileBrowsing .typography .field span.message {margin-left: 0px!important; width: 95%;}
+.mobileBrowsing .typography label.right {margin-left: 0px!important; width: 95%;}
 
+.mobileBrowsing .typography .middleColumn input,
+	.mobileBrowsing .typography .middleColumn textarea,
+	.mobileBrowsing .typography .middleColumn select {width: 95%;}
+.mobileBrowsing .typography .middleColumn .message {width: 95%;}
+.mobileBrowsing .typography .confirmedpassword .middleColumn a {width: 95%;}
+.mobileBrowsing .readonly .middleColumn span {width: 95%;}
+
+.mobileBrowsing .typography .middleColumn,
+	.mobileBrowsing .typography .Actions,
+	.mobileBrowsing .typography input.action,
+	.mobileBrowsing .typography p.ForgotPassword,
+	.mobileBrowsing .typography p.checkbox {margin-left: 0px!important;}

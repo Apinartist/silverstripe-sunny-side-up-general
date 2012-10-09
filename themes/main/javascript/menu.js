@@ -13,11 +13,8 @@ var SSUhoverMenu = {
 
 	mobileBrowsing: false,
 	set_mobileBrowsing: function(b) {this.mobileBrowsing = b;},
-	firstTime: true,
 	animateIn: {opacity: "1"},
 	animateOut: {opacity: "0.75"},
-	animateOutSecondTime: {width: "20%", fontSize: "0.77em", right: "20px", float: "left", borderRadius: "3px", paddingRight: "24px"},
-	animateInSecondTime: {width: "100%", fontSize: "1em", right: "0", float: "right", borderRadius: "0px"},
 
 	init: function() {
 		if(this.mobileBrowsing) {
@@ -51,15 +48,7 @@ var SSUhoverMenu = {
 			jQuery(".hasCSSHover").removeClass("hasCSSHover");
 			jQuery("#Nav").hoverIntent(
 				{
-					over: function(){
-						if(SSUhoverMenu.firstTime) {
-							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-							SSUhoverMenu.firstTime = false;
-						}
-						else {
-							jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
-						}
-					},  // function = onMouseOver callback (required)
+					over: function(){jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");},  // function = onMouseOver callback (required)
 					timeout: 1500,   // number = milliseconds delay before onMouseOut function call
 					out: function(){jQuery(this).animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");}  // function = onMouseOut callback (required)
 				}
@@ -109,7 +98,7 @@ var windowResizer = {
 
 	maxWrapperHeight: 1449,
 
-	smallScreenMaxSize: 700,
+	smallScreenMaxSize: 960,
 
 	imageWidth: "",
 
@@ -123,8 +112,6 @@ var windowResizer = {
 			jQuery("#RandomVisualThought").click(
 				function(el) {
 					var url = jQuery(this).attr("rel");
-					width = 100;
-					height = 100;
 					jQuery("body").append('<div id="RandomImageLarge"><img src="'+url+'" alt="random image large" /></div>');
 					jQuery("#RandomImageLarge")
 						//.css('background-image', 'url('+url+')')
@@ -199,20 +186,19 @@ var windowResizer = {
 		return jQuery('#RandomImageLarge img');
 	},
 
-	oldSideBarWidth: 270,
+	standardSidebarWidth: 200,
 
 	manageSidebar: function(){
 		this.getWindowSizing();
 		if(this.windowWidth < this.smallScreenMaxSize) {
 			jQuery("body").addClass("mobileBrowsing");
-			this.oldSideBarWidth = jQuery("#LayoutHolder").width();
 			jQuery("#Sidebar").width(jQuery("#LayoutHolder").width()+"px");
 			SSUhoverMenu.set_mobileBrowsing(true);
 			SSUhoverMenu.init();
 		}
 		else {
 			jQuery("body").removeClass("mobileBrowsing");
-			jQuery("#Sidebar").width(this.oldSideBarWidth+"px");
+			jQuery("#Sidebar").width(this.standardSidebarWidth+"px");
 			SSUhoverMenu.set_mobileBrowsing(false);
 			SSUhoverMenu.init();
 		}
