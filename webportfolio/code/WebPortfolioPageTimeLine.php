@@ -51,22 +51,7 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 		Requirements::javascript(self::get_ajax_file_location());
 		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
 		Requirements::themedCSS("WebPortfolioPageTimeLine");
-		$this->addall();
 	}
-
-
-	public function addall(){
-		$member = Member::currentUser();
-		if($member->IsAdmin()){
-			$items = DataObject::get("WebPortfolioItem", "ScreenshotID > 0");
-			if($items) {
-				foreach($items as $item) {
-					$this->WebPortfolioItems()->add($item);
-				}
-			}
-		}
-	}
-
 
 	function json(){
 		SSViewer::set_source_file_comments(false);
