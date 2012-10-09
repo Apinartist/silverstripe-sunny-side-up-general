@@ -23,7 +23,7 @@ var SSUhoverMenu = {
 			jQuery("#Nav").unbind("mouseenter").unbind("mouseleave");
 			jQuery("#Nav li.level1").unbind("mouseenter").unbind("mouseleave");
 			jQuery("#Nav ul li").css('left', 'auto');
-			jQuery("#Nav").animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
+			jQuery("#Nav").show().animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
 		}
 		else {
 			jQuery("#Nav li.level1").hoverIntent(
@@ -52,7 +52,7 @@ var SSUhoverMenu = {
 					jQuery(el).children("ul").animate({left: leftString});
 				}
 			);
-			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
+			jQuery("#Nav").show().animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
 		}
 	},
 
