@@ -192,8 +192,8 @@ var windowResizer = {
 	},
 
 	getWindowSizing : function(){
-		this.windowWidth = jQuery(window).width();
-		this.windowHeight = jQuery(window).height();
+		this.windowWidth = window.innerWidth;
+		this.windowHeight = window.innerHeight;
 	}
 
 }
