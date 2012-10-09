@@ -1,7 +1,5 @@
 <div id="webPortfolioItemOuter$ID" class="webPortfolioItemOuter">
-<a class="screenshotPopup" href="$Screenshot.Link" rel="prettyPhoto" class="externalLink">
-	<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
-</a>
+<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
 <div class="portFolioItem">
 
 	<div class="webPortfolioMoreInfo" id="WebPortfolioItem$ID">
