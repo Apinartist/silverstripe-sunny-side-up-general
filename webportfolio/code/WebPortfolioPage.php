@@ -50,6 +50,18 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	protected $hasFilter = false;
 	protected $currentCode = "";
 
+	function addall(){
+		$member = Member::currentUser();
+		if($member->IsAdmin()){
+			$items DataObject::get("WebPortfolioItem", "ScreenshotID > 0");
+			if($items) {
+				foreach($items as $item) {
+					$this->WebPortfolioItems()->add($item);
+				}
+			}
+		}
+	}
+
 	function show(){
 		$this->hasFilter = true;
 		$code = Convert::raw2sql($this->request->param("ID"));
