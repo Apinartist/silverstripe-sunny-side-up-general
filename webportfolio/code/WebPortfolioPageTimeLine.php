@@ -72,7 +72,7 @@ class WebPortfolioPageTimeLine extends Page {
 				$headLine = str_replace("https://", "", $headLine);
 				$headLine = str_replace("http://", "", $headLine);
 				$headLine = str_replace(".", " . ", $headLine);
-				$headLine = $this->html2json($headLine); /
+				$headLine = $this->html2json($headLine);
 				$site->HeadLine = $headLine;
 				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
 				$json .= '
