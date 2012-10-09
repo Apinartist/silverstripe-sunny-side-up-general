@@ -62,7 +62,7 @@ class WebPortfolioItem extends DataObject {
 	public static $summary_fields = array(
 		"WebAddress",
 		"Client",
-		"Thumbnail" => "Screenshot"
+		"Thumbnail"
 	);
 
 
