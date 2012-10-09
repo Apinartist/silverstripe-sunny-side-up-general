@@ -61,8 +61,22 @@ class WebPortfolioItem extends DataObject {
 
 	public static $summary_fields = array(
 		"WebAddress",
-		"Client"
+		"Client",
+		"Thumbnail" => "Screenshot"
 	);
+
+
+	public function Thumbnail() {
+		if($this->ScreenshotID) {
+			if($image = $this->Screenshot()) {
+				if($image->exists()){
+					return $image->CroppedImage(100,100);
+				}
+			}
+			return "image can not be found";
+		}
+		return "no image";
+	}
 
 	public static $casting = array(
 		"Title" => "Varchar"

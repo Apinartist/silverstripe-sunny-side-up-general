@@ -3,9 +3,9 @@
 class WebPortfolioAdmin extends ModelAdmin {
 
 	public static $managed_models = array(
+		'WebPortfolioItem',
 		'WebPortfolioAgent',
 		'WebPortfolioWhatWeDidDescriptor',
-		'WebPortfolioItem'
 	);
 
 	static $url_segment = 'webportfolio'; // will be linked as /admin/products
