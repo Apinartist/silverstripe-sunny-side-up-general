@@ -11,31 +11,18 @@
 
 var SSUhoverMenu = {
 
-	mobileBrowsing: false,
+	mobileBrowsing: true,
 	set_mobileBrowsing: function(b) {this.mobileBrowsing = b;},
 	animateIn: {opacity: "1"},
 	animateOut: {opacity: "0.75"},
 
 	init: function() {
+		jQuery(".hasCSSHover").removeClass("hasCSSHover");
 		if(this.mobileBrowsing) {
-			jQuery("#Nav li.level1").hoverIntent(
-				{
-					over: function(){},  // function = onMouseOver callback (required)
-					timeout: 0,   // number = milliseconds delay before onMouseOut function call
-					out:  function(){}  // function = onMouseOut callback (required)
-				}
-			);
-			jQuery(".hasCSSHover").removeClass("hasCSSHover");
-			jQuery("#Nav").hoverIntent(
-				{
-					over: function(){},  // function = onMouseOver callback (required)
-					timeout: 0,   // number = milliseconds delay before onMouseOut function call
-					out:  function(){}  // function = onMouseOut callback (required)
-				}
-			);
-			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
-
-			jQuery("#Nav").children("li").css("left", "auto").css("position", "inherit");
+			jQuery("#Nav").unbind("mouseenter").unbind("mouseleave");
+			jQuery("#Nav li.level1").unbind("mouseenter").unbind("mouseleave");
+			jQuery("#Nav ul li").css('left', 'auto');
+			jQuery("#Nav").animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");
 		}
 		else {
 			jQuery("#Nav li.level1").hoverIntent(
@@ -45,7 +32,6 @@ var SSUhoverMenu = {
 					out: SSUhoverMenu.menuOut  // function = onMouseOut callback (required)
 				}
 			);
-			jQuery(".hasCSSHover").removeClass("hasCSSHover");
 			jQuery("#Nav").hoverIntent(
 				{
 					over: function(){jQuery(this).animate(SSUhoverMenu.animateIn).addClass("menuIn").removeClass("menuOut");},  // function = onMouseOver callback (required)
@@ -54,7 +40,6 @@ var SSUhoverMenu = {
 				}
 			);
 			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");
-
 			jQuery("#Nav").children("li").each(
 				function(i, el) {
 					var parentOffset = jQuery(el).offset();
