@@ -1,7 +1,9 @@
 <div id="HomePage" class="mainSection content-container withSidebar">
 	<% include ContentSection %>
-	<div id="timeline-link" style="display: none;">$JSONLink</div>
-	<div id="timeline-embed"></div>
+	<div id="timeline-outer">
+		<div id="timeline-link" style="display: none;">$JSONLink</div>
+		<div id="timeline-embed"></div>
+	</div>
 	<% include FormSection %>
 	<% include PageCommentSection %>
 </div>
