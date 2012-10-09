@@ -16,7 +16,7 @@ class WebPortfolioPageTimeLine extends Page {
 	public static $db = array(
 		"TimeLineHeader" => "Varchar",
 		"TimeLineIntro" => "HTMLText",
-		"JSON" => "HTMLText"
+		"JSON" => "Text"
 	);
 
 	public static $many_many = array(
@@ -109,6 +109,7 @@ class WebPortfolioPageTimeLine extends Page {
 			$this->Status = "Published";
 			$this->flushCache();
 		}
+		return $json;
 	}
 
 	protected function html2json($html){
@@ -140,7 +141,7 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 	function json($request){
 		SSViewer::set_source_file_comments(false);
 		if(isset($_GET['flush']) || !$this->JSON) {
-			$this->createJSON();
+			return $this->createJSON();
 		}
 		return $this->JSON;
 	}
