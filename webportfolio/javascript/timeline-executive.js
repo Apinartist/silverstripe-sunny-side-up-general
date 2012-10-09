@@ -1,5 +1,6 @@
 var timeline_config_holder = document.getElementById("timeline-embed");
-var timeline_config_link = timeline_config_holder.innerHTML;
+var timeline_config_holder_link = document.getElementById("timeline-link");
+var timeline_config_link = timeline_config_holder_link.innerHTML;
 var timeline_config = {
 		width:              "100%",
 		height:             "600",
