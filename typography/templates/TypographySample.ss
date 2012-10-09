@@ -145,7 +145,7 @@
 	Nullam mi.
 </p>
 <div>
-	<div style="width: 370px; display: block;" class="captionImage left">
+	<div class="captionImage left">
 		<img  title="title" alt="alt" src="typography/images/kapiti.jpg" class="left" />
 		<p class="caption">caption has been added here...</p>
 	</div>
