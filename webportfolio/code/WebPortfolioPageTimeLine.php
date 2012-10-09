@@ -51,10 +51,13 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 		Requirements::javascript(self::get_ajax_file_location());
 		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
 		Requirements::themedCSS("WebPortfolioPageTimeLine");
+		PrettyPhoto::include_code();
 	}
 
 
 	function json(){
+		SSViewer::set_source_file_comments(false);
+
 		$json = '
 {
     "timeline":
@@ -89,7 +92,7 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 				$headLine = str_replace("http://", "", $headLine);
 				$headLine = str_replace(".", " . ", $headLine);
 				$headLine = $this->html2json($headLine); //
-				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
+				$text = $this->html2json(preg_replace('!\s+!', ' ', $site->renderWith("WebPortfolioPageOneItemTimeline"))); // //
         $json .= '
             {
                 "startDate":"'.$startDate.'",

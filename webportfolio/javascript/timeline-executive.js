@@ -14,6 +14,7 @@ var timeline_config = {
 //		css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
 //		js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
 }
+
 /**
 
         var timeline_config = {
