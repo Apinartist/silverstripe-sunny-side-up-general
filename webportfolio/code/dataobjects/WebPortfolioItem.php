@@ -65,6 +65,14 @@ class WebPortfolioItem extends DataObject {
 		"Thumbnail"
 	);
 
+	public static $casting = array(
+		"Title" => "Varchar",
+		"HeadLine" => "Varchar"
+	);
+
+	public static $singular_name = "Item";
+
+	public static $plural_name = "Items";
 
 	public function Thumbnail() {
 		if($this->ScreenshotID) {
@@ -77,15 +85,6 @@ class WebPortfolioItem extends DataObject {
 		}
 		return "no image";
 	}
-
-	public static $casting = array(
-		"Title" => "Varchar"
-	);
-
-	public static $singular_name = "Item";
-
-	public static $plural_name = "Items";
-
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -101,6 +100,24 @@ class WebPortfolioItem extends DataObject {
 			);
 		}
 		return $fields;
+	}
+
+	function getHeadLine(){
+		$searchArray = array(
+			"https://www.",
+			"http://www.",
+			"https://",
+			"http://",
+			"."
+		);
+		$replaceArray = array(
+			"",
+			"",
+			"",
+			"",
+			" . "
+		);
+		return str_replace( $searchArray, $replaceArray, $this->WebAddress);
 	}
 
 	protected $newWhatWeDid = null;

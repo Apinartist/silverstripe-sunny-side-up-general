@@ -67,13 +67,7 @@ class WebPortfolioPageTimeLine extends Page {
 				}
 				$startDateArray = explode("-", $startDateRaw);
 				$startDate = intval($startDateArray[0]). ",".intval($startDateArray[1]). ",".intval($startDateArray[2]);
-				$headLine = str_replace("https://www.", "", $site->getTitle());
-				$headLine = str_replace("http://www.", "", $site->getTitle());
-				$headLine = str_replace("https://", "", $headLine);
-				$headLine = str_replace("http://", "", $headLine);
-				$headLine = str_replace(".", " . ", $headLine);
-				$headLine = $this->html2json($headLine);
-				$site->HeadLine = $headLine;
+				$headLine = $this->html2json($site->getHeadLine());
 				$text = $this->html2json($site->renderWith("WebPortfolioPageOneItemTimeline")); // //
 				$json .= '
 						{
