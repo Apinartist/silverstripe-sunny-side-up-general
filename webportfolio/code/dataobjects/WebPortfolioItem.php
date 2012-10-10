@@ -155,4 +155,18 @@ class WebPortfolioItem extends DataObject {
 		return $this->WebAddress;
 	}
 
+
+	function Link(){
+		$link = "";
+		$page = DataObject::get_one("WebPortfolioPage");
+		if($page) {
+			$link = $page->Link("show/".$this->ID."/");
+		}
+		elseif($this->ScreenshotID) {
+			if($screenshot = $this->Screenshot()){
+				$link = $screenshot->Link();
+			}
+		}
+		return $link;
+	}
 }

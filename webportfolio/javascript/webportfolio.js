@@ -8,7 +8,7 @@
  *
  *
  */
-
+jQuery.noConflict();
 ;(function($) {
 	$(document).ready(
 		function() {
@@ -26,7 +26,19 @@
 					jQuery("#" + id).slideToggle();
 					return false;
 				}
-			)
+			);
+			if(jQuery(".webPortfolioShowMore").length == 1) {
+				window.setTimeout(
+					function(){
+						jQuery(".webPortfolioMoreInfo").slideDown(
+							"slow",
+							function() {
+								jQuery(".screenshotPopup").click();
+							}
+						);
+					}, 700
+				);
+			}
 		}
 
 	}

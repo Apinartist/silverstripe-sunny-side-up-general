@@ -1,3 +1,21 @@
+jQuery.noConflict();
+
+jQuery(document).ready(
+	function(){
+		jQuery("#timeline-embed").delegate(
+			".webPortfolioItemOuter",
+			"click",
+			function(){
+				jQuery(this).find("a").each(
+					function(i, el) {
+						jQuery(el).attr("target", "_blank");
+					}
+				);
+			}
+		);
+	}
+)
+
 var timeline_config_holder = document.getElementById("timeline-embed");
 var timeline_config_holder_link = document.getElementById("timeline-link");
 var timeline_config_link = timeline_config_holder_link.innerHTML;

@@ -1,5 +1,9 @@
 <div id="webPortfolioItemOuter$ID" class="webPortfolioItemOuter">
-<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
+<% if Screenshot %>
+	<a href="$Screenshot.Link" rel="prettyPhoto">
+		<% control Screenshot.SetWidth(250) %><img width="250" height="188" alt="$Title.ATT" src="$Link"/><% end_control %>
+	</a>
+<% end_if %>
 <div class="portFolioItem">
 
 	<div class="webPortfolioMoreInfo" id="WebPortfolioItem$ID">
@@ -36,7 +40,7 @@
 	<% end_if %>
 
 	<% if Agent %>
-		<span class="agent"><strong>Agency:</strong> <% control Agent %><a href="$AgentWebAddress.URL" class="externalLink">$Name</a><% end_control %></span>
+		<span class="agent"><strong>Agency:</strong> <% control Agent %><a href="$AgentWebAddress.URL">$Name</a><% end_control %></span>
 	<% end_if %>
 
 	<% if ScreenshotTaken %>
@@ -48,7 +52,7 @@
 		<% else %>
 			<% if NotPubliclyAvailable %>
 			<% else %>
-			<strong>Visit:</strong> <a href="$WebAddress.URL" class="externalLink">$HeadLine</a>
+			<strong>Visit:</strong> <a href="$WebAddress.URL">$HeadLine</a>
 			<% end_if %>
 		<% end_if %>
 	</span>

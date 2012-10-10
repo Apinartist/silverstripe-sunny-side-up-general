@@ -128,6 +128,13 @@ class WebPortfolioPageTimeLine_Controller extends Page_Controller {
 
 	function init() {
 		parent::init();
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		if(class_exists("PrettyPhoto")) {
+			PrettyPhoto::include_code();
+		}
+		else {
+			user_error("It is recommended that you include the PrettyPhoto Module", E_USER_NOTICE);
+		}
 		Requirements::javascript(self::get_ajax_file_location());
 		Requirements::javascript("webportfolio/thirdparty/TimelineJS/compiled/js/timeline-embed.js");
 		Requirements::themedCSS("WebPortfolioPageTimeLine");

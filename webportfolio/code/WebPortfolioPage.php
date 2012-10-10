@@ -41,7 +41,12 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	function init() {
 		parent::init();
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-		PrettyPhoto::include_code();
+		if(class_exists("PrettyPhoto")) {
+			PrettyPhoto::include_code();
+		}
+		else {
+			user_error("It is recommended that you include the PrettyPhoto Module", E_USER_NOTICE);
+		}
 		Requirements::javascript("webportfolio/javascript/webportfolio.js");
 		Requirements::themedCSS("WebPortfolioPage");
 
@@ -55,7 +60,16 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	function show(){
 		$this->hasFilter = true;
 		$code = Convert::raw2sql($this->request->param("ID"));
-		if($code) {
+		if(is_numeric($code) && intval($code) > 0) {
+			$this->currentCode = $code;
+			$item = DataObject::get_by_id("WebPortfolioItem", intval($code));
+			if($item) {
+				$this->IDArray = array($item->ID => $item->ID);
+				$this->Title .= " - ".$item->getTitle();
+				$this->MetaTitle .= " - ".$item->getTitle();
+			}
+		}
+		elseif($code) {
 			$this->currentCode = $code;
 			$obj = DataObject::get_one("WebPortfolioWhatWeDidDescriptor", "\"Code\" = '$code'");
 			$this->Title .= " - ".$obj->Name;

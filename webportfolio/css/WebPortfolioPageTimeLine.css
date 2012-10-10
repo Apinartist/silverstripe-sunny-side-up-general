@@ -1,4 +1,4 @@
 body #timeline-outer {border-top: 7px solid #808383; border-bottom: 7px solid #808383; -webkit-border-radius: 7px;-moz-border-radius: 7px;border-radius: 7px;}
 .webPortfolioItemOuter span{font-size: 0.77em; line-height: 1.4; font-family: 'Pontano Sans',sans-serif !important;}
 .webPortfolioItemOuter span a{color: #808383!important; }
-.webPortfolioItemOuter img{margin-left: 10px;}
+.webPortfolioItemOuter img{margin-left: 10px!important;}
