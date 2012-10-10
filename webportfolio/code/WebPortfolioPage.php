@@ -63,6 +63,10 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	protected $hasFilter = false;
 	protected $currentCode = "";
 
+	function index(){
+		$this->MetaTitle .= " - Favourites";
+		$this->Title .= " - Favourites";
+	}
 
 	function show(){
 		$this->hasFilter = true;
@@ -117,8 +121,6 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		$extraWhere = "";
 		if(!$this->hasFilter) {
 			$extraWhere = " AND \"Favourites\" = 1";
-			$this->MetaTitle .= " - Favourites";
-			$this->Title .= " - Favourites";
 		}
 		return DataObject::get(
 			"WebPortfolioItem",
