@@ -20,11 +20,13 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 	public static $default_sort = "Name";
 
 	public static $searchable_fields = array(
-		"Name" => "PartialMatchFilter"
+		"Name" => "PartialMatchFilter",
+		"Description" => "PartialMatchFilter"
 	);
 
 	public static $summary_fields = array(
-		"Name"
+		"Name",
+		"Description"
 	);
 
 	public static $indexes = array(
@@ -66,6 +68,16 @@ class WebPortfolioWhatWeDidDescriptor extends DataObject {
 					new CheckboxSetField("WebPortfolioItem", "Carried out for", $dosArray)
 				)
 			);
+		}
+		if(class_exists("DataObjectOneFieldUpdateController")) {
+			$link = DataObjectOneFieldUpdateController::popup_link(
+				$ClassName = $this->ClassName,
+				$FieldName = "Description",
+				$where = '',
+				$sort = 'Description DESC',
+				$linkText = 'Edit Description'
+			);
+			$fields->addFieldToTab("Root.Main", new LiteralField("EditDescription", $link), "Description");
 		}
 		return $fields;
 	}
