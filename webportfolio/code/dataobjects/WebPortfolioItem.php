@@ -67,6 +67,7 @@ class WebPortfolioItem extends DataObject {
 
 	public static $casting = array(
 		"Title" => "Varchar",
+		"Thumbnail" => "HTMLText",
 		"HeadLine" => "Varchar"
 	);
 
@@ -74,17 +75,6 @@ class WebPortfolioItem extends DataObject {
 
 	public static $plural_name = "Items";
 
-	public function Thumbnail() {
-		if($this->ScreenshotID) {
-			if($image = $this->Screenshot()) {
-				if($image->exists()){
-					return $image->CroppedImage(100,100);
-				}
-			}
-			return "image can not be found";
-		}
-		return "no image";
-	}
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -168,5 +158,18 @@ class WebPortfolioItem extends DataObject {
 			}
 		}
 		return $link;
+	}
+
+	public function getThumbnail() {return $this->Thumbnail();}
+	public function Thumbnail() {
+		if($this->ScreenshotID) {
+			if($image = $this->Screenshot()) {
+				if($image->exists()){
+					return $image->CroppedImage(100,100);
+				}
+			}
+			return "image can not be found";
+		}
+		return "no image";
 	}
 }

@@ -23,15 +23,24 @@ class WebPortfolioPageTimeLine extends Page {
 		"WebPortfolioItems" => "WebPortfolioItem"
 	);
 
+
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.Portfolio", new HTMLEditorField("TimeLineIntro", "Time line intro", 3));
 		$fields->addFieldToTab("Root.Content.Portfolio", new TextField("TimeLineHeader", "Time line header"));
-		$fields->addFieldToTab("Root.Content.Portfolio",
-			new ManyManyComplexTableField(
-				$controller = $this,
-				$name = "WebPortfolioItems",
-				$sourceClass = "WebPortfolioItem"
+		$fields->addFieldToTab("Root.Content.Portfolio", new HTMLEditorField("TimeLineIntro", "Time line intro", 3));
+		$itemOptionSet = DataObject::get("WebPortfolioItem");
+		$itemOptionSetMap = ($itemOptionSet) ? $itemOptionSet->map('ID', 'Title') : array();
+		$fields->addFieldsToTab("Root.Content.Portfolio",
+			array(
+				new LiteralField("UpdatePortfolio", "<h3>Update Portfolio</h3>"),
+				new LiteralField("EditPortfolio", "<p><a href=\"/admin/webportfolio\" target=\"_blank\">edit portfolio</a></p>"),
+				new LiteralField("RefreshPortfolio", "<p><a href=\"".$this->Link("json/?flush=json")."\" target=\"_blank\">clear portfolio cache</a> (portfolio data is cached to incrase loading speed)</p>"),
+				new LiteralField("SelectPortfolio", "<h3>Select Portfolio</h3>"),
+				new CheckboxSetField(
+					$name = "WebPortfolioItems",
+					$title = "Items shown",
+					$source = $itemOptionSetMap
+				)
 			)
 		);
 		return $fields;

@@ -23,11 +23,18 @@ class WebPortfolioPage extends Page {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Content.Portfolio",
-			new ManyManyComplexTableField(
-				$controller = $this,
-				$name = "WebPortfolioItems",
-				$sourceClass = "WebPortfolioItem"
+		$itemOptionSet = DataObject::get("WebPortfolioItem");
+		$itemOptionSetMap = ($itemOptionSet) ? $itemOptionSet->map('ID', 'Title') : array();
+		$fields->addFieldsToTab("Root.Content.Portfolio",
+			array(
+				new LiteralField("UpdatePortfolio", "<h3>Update Portfolio</h3>"),
+				new LiteralField("EditPortfolio", "<p><a href=\"/admin/webportfolio\" target=\"_blank\">edit portfolio</a></p>"),
+				new LiteralField("RefreshPortfolio", "<p><a href=\"".$this->Link("json/?flush=json")."\" target=\"_blank\">clear portfolio cache</a> (portfolio data is cached to incrase loading speed)</p>"),
+				new CheckboxSetField(
+					$name = "WebPortfolioItems",
+					$title = "Items shown",
+					$source = $itemOptionSetMap
+				)
 			)
 		);
 		return $fields;
