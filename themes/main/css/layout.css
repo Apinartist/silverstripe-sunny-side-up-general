@@ -46,7 +46,14 @@ body.mobileBrowsing {
 #Sidebar table {width: 100%;}
 #Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
 #Sidebar td.quantity img {margin: 0px;}
-#Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;}
+#Sidebar ul{margin-left: 0px; padding-left: 0px; list-style: none;
+	-moz-column-count: 1;
+	-moz-column-gap: 0;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0;
+	column-count: 1;
+	column-gap: 0;
+}
 #Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside; list-style-image: none;}
 #Sidebar ul li.current a{color: #317010 !important;}
 #Sidebar th, #Sidebar td {background-color: transparent; border: none;}
