@@ -14,7 +14,7 @@ body #timeline-outer {border-top: 7px solid #808383; border-bottom: 7px solid #8
 .slider-item h3 {color:  #FFCC33!important;}
 .timenav-line {background-color:#808383!important; }
 .flag h3 {color: #808383!important;}
-.active .flag h3 {color: #FFCC33!important;}
+.active .flag h3, .flag.zFront h3 {color: #FFCC33!important;}
 .dot, .line {background-color: #808383;}
 .nav-container .icon {opacity:0.3;filter:alpha(opacity=30);}
 .nav-container .date {display: none;}
