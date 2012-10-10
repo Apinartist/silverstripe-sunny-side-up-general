@@ -94,7 +94,7 @@ class WebPortfolioItem extends DataObject {
 				$ClassName = $this->ClassName,
 				$FieldName = "Favourites",
 				$where = '',
-				$sort = '',
+				$sort = 'Favourites DESC',
 				$linkText = 'Select Favourites'
 			);
 			$fields->addFieldToTab("Root.Main", new LiteralField("SelectFavourites", $link), "Favourites");
