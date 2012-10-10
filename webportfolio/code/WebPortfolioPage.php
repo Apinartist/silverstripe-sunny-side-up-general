@@ -77,8 +77,8 @@ class WebPortfolioPage_Controller extends Page_Controller {
 			$item = DataObject::get_by_id("WebPortfolioItem", intval($code));
 			if($item) {
 				$this->IDArray = array($item->ID => $item->ID);
-				$this->Title .= " - ".$item->getTitle();
-				$this->MetaTitle .= " - ".$item->getTitle();
+				$this->Title .= " - ".$item->getHeadLine();
+				$this->MetaTitle .= " - ".$item->getHeadLine();
 			}
 		}
 		elseif($code) {
