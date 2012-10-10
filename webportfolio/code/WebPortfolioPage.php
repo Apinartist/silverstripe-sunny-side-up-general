@@ -117,6 +117,8 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		$extraWhere = "";
 		if(!$this->hasFilter) {
 			$extraWhere = " AND \"Favourites\" = 1";
+			$this->MetaTitle .= " - Favourites"
+			$this->Title .= " - Favourites"
 		}
 		return DataObject::get(
 			"WebPortfolioItem",
