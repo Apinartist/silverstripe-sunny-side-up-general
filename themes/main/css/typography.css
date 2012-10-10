@@ -15,8 +15,14 @@
 
 /* general font-size changes and combos */
 .typography p, .typography li, .typography address {font-size: 1em;}
-	.typography td p {font-size: 1em;}
-	.typography td li {font-size: 0.9em; list-style-position: inside; margin-left: 0px; padding-left:0px; list-style-type: square; list-style-image:none;}
+.typography ul {
+	-moz-column-count: 2;
+	-moz-column-gap: 2.5em;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 2.5em;
+	column-count: 2;
+	column-gap: 2.5em;
+}
 	.typography li p {font-size: 1em; margin-top: 0px; padding-top: 0px;}
 	.typography li li {font-size: 0.95em;}
 		.typography li li li {font-size: 0.85em;}
@@ -63,6 +69,15 @@
 		.typography table td {vertical-align: top;}
 			.typography table td p, .typography table td li{margin: 0px; padding: 0px;}
 			.typography table td ol, .typography table td ul{margin-top: 0px; padding-top: 0px; margin-left: 0px; padding-left: 0px;}
+			.typography td li {font-size: 0.9em; list-style-position: inside; list-style-type: square; list-style-image:none;}
+.typography table ul{
+	-moz-column-count: 1;
+	-moz-column-gap: 0;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0;
+	column-count: 1;
+	column-gap: 0;
+}
 
 
 
