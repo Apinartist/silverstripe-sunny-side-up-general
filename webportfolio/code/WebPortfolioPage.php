@@ -66,6 +66,7 @@ class WebPortfolioPage_Controller extends Page_Controller {
 	function index(){
 		$this->MetaTitle .= " - Favourites";
 		$this->Title .= " - Favourites";
+		return Array();
 	}
 
 	function show(){
