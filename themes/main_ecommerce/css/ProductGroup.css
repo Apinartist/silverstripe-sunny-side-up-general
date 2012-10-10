@@ -132,3 +132,12 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 .displayStyledefault .productItem h3 a:hover {}
 .displayStyledefault .priceDisplay  {text-align: center; font-size: 0.8em; margin-top: -0.5em;}
 .displayStyledefault .productActions  a {display: block;}
+
+.menuChildGroups ul, #Products ul {
+	-moz-column-count: 1;
+	-moz-column-gap: 0;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0;
+	column-count: 1;
+	column-gap: 0;
+}
