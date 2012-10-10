@@ -89,6 +89,13 @@ class WebPortfolioItem extends DataObject {
 				)
 			);
 		}
+		if(class_exists("DataObjectOneFieldUpdateController")) {
+			$link = DataObjectOneFieldUpdateController::popup_link(
+				$ClassName = $this->ClassName,
+				$FieldName = "Favourite"
+			);
+			$fields->addFieldToTab(new LiteralField("SelectFavourites", $link));
+		}
 		return $fields;
 	}
 
