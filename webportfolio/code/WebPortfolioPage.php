@@ -114,10 +114,14 @@ class WebPortfolioPage_Controller extends Page_Controller {
 		if($reset) {
 			$this->IDArray = array(0 => 0);
 		}
+		$extraWhere = "";
+		if(!$this->hasFilter) {
+			$extraWhere = " AND \"Favourites\" = 1"
+		}
 		return DataObject::get(
 			"WebPortfolioItem",
-			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).") AND \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioPageID\" = ".$this->ID,
-			"Favourites DESC, RAND()",
+			"\"WebPortfolioItem\".\"ID\" IN (".implode(",", $this->IDArray).") AND \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioPageID\" = ".$this->ID.$extraWhere,
+			"\"Favourites\" DESC, RAND()",
 			" INNER JOIN \"WebPortfolioPage_WebPortfolioItems\" ON \"WebPortfolioPage_WebPortfolioItems\".\"WebPortfolioItemID\" = \"WebPortfolioItem\".\"ID\""
 		);
 	}
