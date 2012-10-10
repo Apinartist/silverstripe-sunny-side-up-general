@@ -2,7 +2,7 @@
 <div id="Sidebar">
 	<div class="sidebarBox filterList">
 		<ul>
-			<li class="<% if HasFilter %>link<% else %>current<% end_if %>"><a href="$Link">All</a></li>
+			<li class="<% if HasFilter %>link<% else %>current<% end_if %>"><a href="$Link">Favourites</a></li>
 	<% control FilterList %>
 			<li class="$LinkingMode"><a href="$Link">$Name</a>
 	<% if LinkingMode = current %>: <span>$Description</span><% end_if %>
