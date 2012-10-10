@@ -7,7 +7,7 @@ class PrettyPhoto extends Object {
 	protected static $theme = "";
 		static function set_theme($v) {if(!in_array($v, self::$themes)) {user_error("Please select a valid PrettyPhoto theme in PrettyPhoto::set_theme()", E_USER_WARNING);} self::$theme = $v;}
 
-	protected static $more_config = "";
+	protected static $more_config = "social_tools: false";
 		static function set_more_config($v) {self::$more_config = $v;}
 
 	protected static $selector = "body";
