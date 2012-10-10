@@ -15,3 +15,5 @@ body #timeline-outer {border-top: 7px solid #808383; border-bottom: 7px solid #8
 .timenav-line {background-color:#808383!important; }
 .flag h3 {color: #808383!important;}
 .dot, .line {background-color: #808383;}
+.nav-container .icon {opacity:0.3;filter:alpha(opacity=30);}
+.nav-container .date {display: none;}
