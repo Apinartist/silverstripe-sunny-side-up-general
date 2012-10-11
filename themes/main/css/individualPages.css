@@ -3,18 +3,3 @@
 
 #OrderForm_OrderForm .Actions {height: 70px!important;}
 
-
-/** timeline **/
-body #timeline-outer {border-top: 7px solid #808383; border-bottom: 7px solid #808383; -webkit-border-radius: 7px;-moz-border-radius: 7px;border-radius: 7px;}
-.webPortfolioItemOuter span{font-size: 0.77em; line-height: 1.4; font-family: 'Pontano Sans',sans-serif !important;}
-.webPortfolioItemOuter span a{color: #808383!important; }
-.webPortfolioItemOuter img{margin-left: 10px!important;}
-
-.timenav-background {background-image: url("/themes/main/images/pat.png");}
-.slider-item h3 {color:  #FFCC33!important;}
-.timenav-line {background-color:#808383!important; }
-.flag h3 {color: #808383!important;}
-.active .flag h3, .flag.zFront h3 {color: #FFCC33!important;}
-.dot, .line {background-color: #808383;}
-.nav-container .icon {opacity:0.3;filter:alpha(opacity=30);}
-.nav-container .date {display: none;}
