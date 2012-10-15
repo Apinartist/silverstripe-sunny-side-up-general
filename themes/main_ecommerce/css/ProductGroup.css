@@ -105,7 +105,7 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
 	-webkit-box-shadow: 1px 1px 7px 1px #808383;
-	box-shadow: 1px 1px 7px 1px #808383;
+	box-shadow: 1px 1px 3px 1px #808383;
 }
 .item1, .item4, .item7, .item10, .item13, .item16, .item19, .item22, .item25, .item28, .item31 {margin-left: 0px!important;}
 .item3, .item6, .item9, .item13, .item15, .item18, .item21, .item24, .item27, .item30, .item33 {margin-right: 0px!important;}
@@ -127,7 +127,7 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 .productActionsHolder .message p {line-height: 1; font-size: 0.77em; font-weight: normal}
 
 .displayStyledefault .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; margin-top: 0.5em; }
-.displayStyledefault .productItem h3 a:hover {}
+.displayStyledefault .productItem h3 a:hover {border-bottom: 1px solid transparent;}
 .displayStyledefault .priceDisplay  {text-align: center; font-size: 0.8em; margin-top: -0.5em;}
 .displayStyledefault .productActions  a {display: block;}
 
