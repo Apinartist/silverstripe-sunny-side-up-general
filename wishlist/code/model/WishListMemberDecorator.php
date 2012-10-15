@@ -26,6 +26,35 @@ class WishListMemberDecorator extends DataObjectDecorator {
 	 */
 	function updateCMSFields(&$fields) {
 		$fields->removeByName("WishList");
+		$member = Member::currentUser();
+		if($member && $member->IsAdmin()) {
+			$html = "";
+			$array = unserialize($this->owner->WishList);
+			$links = array();
+			if(is_array($array) && count($array)) {
+				foreach($array as $item) {
+					$object = DataObject::get_by_id($item[1], $item[0]);
+					if($object) {
+						$links[] = "<a href=\"".$object->Link()."\">".$object->Title."</a>";
+					}
+					else {
+						$links[] = "error in retrieving object ".implode($item);
+					}
+				}
+			}
+			else {
+				$links[] = "no items on wishlist";
+			}
+			$html = "<ul><li>".implode("</li><li>", $links)."</li></ul>";
+			$field = new LiteralField(
+				"WishListOverview",
+				$html
+			);
+			$fields->addFieldToTab("Root.WishList", $field);
+		}
+		else {
+			$fields->removeByName("WishList");
+		}
 	}
 
 
