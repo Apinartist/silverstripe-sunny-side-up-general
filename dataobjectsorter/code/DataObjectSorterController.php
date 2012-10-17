@@ -30,7 +30,11 @@ class DataObjectSorterController extends Controller{
 	 * @return String
 	 */
 	function popup_link($className, $filterField = "", $filterValue = "", $linkText = "sort this list", $titleField = "") {
-		$obj = singleton($className);
+		$where = "";
+		if($filterField) {
+			$where = "\"$filterField\" = '$filterValue'";
+		}
+		$obj = DataObject::get_one($className, $where);
 		if($obj->canEdit()) {
 			$link = '/dataobjectsorter/sort/'.$className."/";
 			if($filterField) {
@@ -75,8 +79,8 @@ class DataObjectSorterController extends Controller{
 	/**
 	 * runs the actual sorting...
 	 */
-	function dodataobjectsort() {
-		$class = Director::URLParam("ID");
+	function dodataobjectsort($request) {
+		$class = $request->param("ID");
 		if($class) {
 			if(class_exists($class)) {
 				$obj = DataObject::get_one($class);
