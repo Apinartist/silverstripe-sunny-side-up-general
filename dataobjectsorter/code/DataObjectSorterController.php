@@ -32,7 +32,10 @@ class DataObjectSorterController extends Controller{
 	function popup_link($className, $filterField = "", $filterValue = "", $linkText = "sort this list", $titleField = "") {
 		$where = "";
 		if($filterField) {
-			$where = "\"$filterField\" = '$filterValue'";
+			$singleton = singleton($className);
+			if($singleton->hasDatabaseField($filterField)) {
+				$where = "\"$filterField\" = '$filterValue'";
+			}
 		}
 		$obj = DataObject::get_one($className, $where);
 		if($obj && $obj->canEdit()) {
