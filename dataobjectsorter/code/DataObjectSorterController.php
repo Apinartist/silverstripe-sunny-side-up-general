@@ -35,7 +35,7 @@ class DataObjectSorterController extends Controller{
 			$where = "\"$filterField\" = '$filterValue'";
 		}
 		$obj = DataObject::get_one($className, $where);
-		if($obj->canEdit()) {
+		if($obj && $obj->canEdit()) {
 			$link = '/dataobjectsorter/sort/'.$className."/";
 			if($filterField) {
 				$link .= $filterField.'/';
