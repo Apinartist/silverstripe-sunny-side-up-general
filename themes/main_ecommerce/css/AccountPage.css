@@ -34,3 +34,5 @@
 
 tr.total td{font-weight: bold;}
 #SubTotal td{font-weight: bold;}
+
+#BodyAccountPage .Actions input {margin-top: 20px}
