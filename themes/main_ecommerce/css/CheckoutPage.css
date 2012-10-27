@@ -27,18 +27,6 @@
 #CartPageMessage  {margin-top: 20px; margin-bottom: 20px; }
 #CartPageMessage p {font-size: 12px!important; padding: 0px; padding-left: 10px;}
 
-#Checkout ol.steps {
-	padding: 10px; margin: 10px 0;
-	background-color: #D3D4B6;
-	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
-	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
-	background-position:0px center;
-	background-repeat:no-repeat;
-	border-top:       10px solid #808383;
--moz-border-radius-topleft: 5px; border-top-left-radius: 5px;
-}
-#Checkout ol.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block; }
-#Checkout ol.steps li.current {color: #FF336D;}
 
 .selectorderaddress ul {border-top: 1px solid #D3D4B6; width: 376px;}
 .selectorderaddress ul li {clear: both; }

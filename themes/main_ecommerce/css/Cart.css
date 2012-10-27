@@ -86,8 +86,7 @@ ul.productActions li a:hover, .goToCart a:hover {
 ol.steps {
 	padding: 10px; margin: 10px 0;
 	background-color: #D3D4B6;
-	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
-	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
+	/* gradient */
 	background-position:0px center;
 	background-repeat:no-repeat;
 	border-top:       10px solid #808383;
@@ -95,3 +94,4 @@ ol.steps {
 }
 ol.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block; }
 ol.steps li.current {color: #FF336D;}
+
