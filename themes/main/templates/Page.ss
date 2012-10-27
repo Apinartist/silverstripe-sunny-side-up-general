@@ -2,7 +2,7 @@
 <!--[if lt IE 7]> <html class=" ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class=" ie7 oldie" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class=" ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html lang="$ContentLocale"> <!--<![endif]-->
 <head>
 	<% base_tag %>
 	$ExtendedMetatags

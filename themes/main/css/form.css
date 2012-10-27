@@ -5,13 +5,13 @@
 	.typography label {font-size: 0.8em;}
 	.typography li label, .typography p label {font-size: 0.8em;}
 		.typography label.FormHeading{display: block; color: #808383; font-weight: bold; margin-bottom: 1em;}
-		.typography label.left{float: left; display: block; width: 270px; border-top: 1px solid #BFC1C1;}
+		.typography label.left{float: left; display: block; width: 270px; border-top: 1px solid #D3D4B6;}
 			.typography .dropdown label.left{padding-bottom: 3px;}
 			.typography .optionset label.left, .typography .checkboxset label.left{border: 0;}
 
 	.typography .field{width: 100%; padding-bottom: 0.8em;padding-top: 0.8em; clear: left;}
 		.typography .middleColumn, .typography .Actions,.typography input.action, .typography p.ForgotPassword, .typography p.checkbox {display: block; margin-left: 270px;}
-			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #BFC1C1; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif; margin-top: 0px}
+			.typography .middleColumn input, .typography .middleColumn textarea, .typography .middleColumn select{border: 1px solid #D3D4B6; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif; margin-top: 0px}
 			.typography .middleColumn textarea{margin-top: 0px;}
 			.typography .middleColumn ul{margin-left: 0!important; padding-left: 0!important; margin-top: 0px; padding-top: 0px;}
 			.typography .middleColumn li{list-style: none!important; margin-top: 0px; padding-top: 0px;}
@@ -22,14 +22,14 @@
 
 		.typography .Actions{}
 
-		.typography .message{font-weight: bold; background-color: #FFCC33; display: block;padding: 4px; text-align: center; border-bottom: 1px solid #BFC1C1;
+		.typography .message{font-weight: bold; background-color: #FFCC33; display: block;padding: 4px; text-align: center; border-bottom: 1px solid #D3D4B6;
 
 -moz-border-radius-bottomright: 5px; border-bottom-right-radius: 5px;
 
 		}
 		.typography .middleColumn .message{width: 368px; }
 
-.typography label.required {display: block; color: #82274B; font-size: 0.8em;}
+.typography label.required {display: block; color: #298599; font-size: 0.8em;}
 
 /* exceptions */
 .typography .radio, .typography .checkbox{width: auto!important;}
@@ -44,8 +44,8 @@
 
 .typography .field span.message {margin-left: 270px; width: 370px; font-size: 0.8em; margin-top: 7px;}
 .typography .field .middleColumn .message {margin-left: 0px; width: 370px; }
-.typography span.bad, .typography span.required {color: #82274B;}
-.typography span.good, .typography span.good {background-color: #317010; color: #fff;}
+.typography span.bad, .typography span.required {color: #FF336D;}
+.typography span.good, .typography span.good {background-color: #298599; color: #fff;}
 
 .typography label.right {display: block; margin-left: 270px; width: 370px; font-size: 0.8em}
 
@@ -68,9 +68,9 @@
 input[type=text], input[type=password], textarea, select {
 -moz-border-radius-bottomright: 5px; border-bottom-right-radius: 5px;
 
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BFC1C1')";
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#D3D4B6')";
 	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BFC1C1');
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#D3D4B6');
 }
 input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover {
 	-moz-box-shadow:
@@ -89,7 +89,7 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	column-width: 14em;
 }
 
-.readonly .middleColumn span {display: block; border: 1px solid #BFC1C1; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif;}
+.readonly .middleColumn span {display: block; border: 1px solid #D3D4B6; width: 370px; padding: 3px; font-family: Arial, Verdana, sans-serif;}
 
 
 
@@ -115,7 +115,7 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 }
 .typography .action:hover, .typography .Actions input:hover, .typography input.action:hover {
 	border: 1px solid #808383;
-	color: #317010;
+	color: #FF336D;
 	-moz-box-shadow:
 		0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 1px rgba(255,255,255,0.7);
