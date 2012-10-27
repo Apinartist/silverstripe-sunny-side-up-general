@@ -4,7 +4,7 @@
 .typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; text-transform: uppercase;}
 	.typography h1#PageTitle, .typography h1.pageTitle{margin-top: 0!important; padding-top: 0!important; }
 .typography h2 {color: #FF336D; font-size: 1.33em; }
-.typography h3 {color: #FF336D; font-size: 1em;font-size: 1em;}
+.typography h3 {color: #326874; font-size: 1em;font-size: 1em;}
 .typography h4{font-size: 1em;font-weight: bold; color: #298599}
 .typography h5{font-size: 1em; }
 .typography h6{font-size: 0.87em; color: #326874; text-decoration: underline;}
@@ -51,7 +51,7 @@
 	.typography blockquote p {font-size: 1em;}
 .typography address {font-style: italic; margin-left: 3em; font-family: 'courier new', courier, monospace}
 .typography pre {font-family: "courier new", courier, monospace; line-height: 1.7; font-size: 0.7em; padding: 0.7em; margin: 0.3em 0;
-	background-color: #f7f7f7;
+	background-color: #D3D4B6;
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
 	background-position:0px center;
@@ -63,7 +63,7 @@
 /* tables */
 .typography table{margin: 1em 0; width: 80%; margin-left: auto; margin-right: auto;}
 	.typography th, .typography td {padding: 0.7em; border-left: 1px solid #fff;border-top: 1px solid #fff; background-color: #D3D4B6; font-size: 12px!important;}
-		.typography table th[scope='col'] {vertical-align: middle; font-weight: bold; color: #fff; background-color: #808383}
+		.typography table th[scope='col'] {vertical-align: middle; font-weight: bold; color: #fff; background-color: #326874}
 		.typography table th[scope='row'] {text-align: left; vertical-align: top; font-weight: bold;}
 		.typography table th a {color: #fff;}
 		.typography table td {vertical-align: top;}
@@ -82,7 +82,7 @@
 
 
 /* ---- inline elements */
-.typography strong, .typography b {font-weight: normal; color: #298599}
+.typography strong, .typography b {font-weight: normal!important; color: #454747}
 .typography em{font-style: italic;}
 .typography u{}
 .typography q {}

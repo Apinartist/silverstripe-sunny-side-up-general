@@ -1,16 +1,17 @@
-#Nav {display: none;}
-#Nav, #Nav ul, #Nav ul ul {position: fixed; right: 0; width: 100%; text-transform: lowercase;}
+#Nav {display: none; text-align: center;}
+#Nav, #Nav ul, #Nav ul ul {position: fixed; right: 0; width: 100%; text-transform: lowercase; }
 #Nav {bottom: 0px; background-color: #808383; z-index: 999; }
-	#Nav li {padding: 0.77em 1.7em; float: right; list-style: none; text-align: right;}
+	#Nav li {padding: 0.77em 20px; list-style: none; text-align: right;}
+	#Nav > li {display: inline-block}
 		#Nav li a {font-size: 1.9em;color: #fff; text-decoration: none; display: block;}
 			#Nav li a:hover, #Nav li.current a, #Nav li.section a {color: #FFCC33;}
-				#Nav li.current li.link a, #Nav li.section  li.link  a {color: #808383;}
+				#Nav li.current li.link a, #Nav li.section  li.link  a {color: #D3D4B6;}
 				#Nav li.current li.link a:hover, #Nav li.section  li.link  a:hover {color: #000;}
-	#Nav ul {bottom: 3.9em; background-color: #D3D4B6;border-top: 1px solid: #fff; width: auto; display: none; -moz-border-radius-topleft: 5px; border-top-left-radius: 5px; position: absolute; }
-		#Nav ul li {padding: 0.53em 1.3em; display: block; float: none; border-top: 1px solid #fff; text-align: left;}
+	#Nav ul {bottom: 3.9em; background-color: #298599;border-top: 1px solid: #fff; width: auto; display: none; -moz-border-radius-topleft: 5px; border-top-left-radius: 5px; position: absolute; margin-right: 20px; margin-left: 22px; padding-top: 7px;}
+		#Nav ul li {padding: 0.53em 1.3em; display: block; float: none; border-top: 1px dotted #D3D4B6; text-align: left;}
 			#Nav ul li.first {}
-			#Nav ul li a {font-size: 1.2em;color: #808383;}
-				#Nav ul li a:hover, #Nav ul li.current a, #Nav ul li.section a {color: #000;}
+			#Nav ul li a {font-size: 1.2em;color: #D3D4B6;}
+				#Nav ul li a:hover, #Nav ul li.current > a, #Nav ul li.section > a {color: #000;}
 
 	#Nav li .hasCSSHover {display: block;}
 
@@ -29,6 +30,7 @@
 .mobileBrowsing #Nav li, .mobileBrowsing #Nav ul li, .mobileBrowsing #Nav ul ul li{
 	float: none;
 	width: auto;
+	display: block;
 }
 
 .mobileBrowsing #Nav ul{display: none;}

@@ -34,7 +34,7 @@ body.mobileBrowsing {
 #Sidebar {
 	position: absolute; top: 40px; right: 20px; width: 200px; padding:12px;
 	padding-bottom: 200px;
-	background-color: #f7f7f7;
+	background-color: #FFF;
 	background-image: url(/themes/main/images/pat.png);
 	border:           0px solid #fff;
 	-moz-border-radius-bottomright: 5px;
@@ -81,7 +81,7 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 
 
 .resultsBar, .pageNumbers {font-size: 12px;
-	background-color: #f7f7f7;
+	background-color: #D3D4B6;
 	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
 	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
 	background-position:0px center;

@@ -15,7 +15,7 @@ var SSUhoverMenu = {
 	mobileBrowsing: true,
 	set_mobileBrowsing: function(b) {this.mobileBrowsing = b;},
 	animateIn: {opacity: "1"},
-	animateOut: {opacity: "0.75"},
+	animateOut: {opacity: "0.85"},
 
 	init: function() {
 		jQuery("#Nav").show();
