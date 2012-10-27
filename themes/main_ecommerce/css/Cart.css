@@ -55,7 +55,7 @@ ul.productActions li a, .goToCart a, a.selectVariation {
 }
 
 ul.productActions li a:hover, .goToCart a:hover {
-	color: #317010;
+	color: #FF336D;
 	-moz-box-shadow:
 		0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 1px rgba(255,255,255,0.7);
@@ -94,4 +94,4 @@ ol.steps {
 -moz-border-radius-topleft: 5px; border-top-left-radius: 5px;
 }
 ol.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block; }
-ol.steps li.current {color: #317010;}
+ol.steps li.current {color: #FF336D;}

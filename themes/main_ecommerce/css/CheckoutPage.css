@@ -38,9 +38,9 @@
 -moz-border-radius-topleft: 5px; border-top-left-radius: 5px;
 }
 #Checkout ol.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block; }
-#Checkout ol.steps li.current {color: #317010;}
+#Checkout ol.steps li.current {color: #FF336D;}
 
-.selectorderaddress ul {border-top: 1px solid #BFC1C1; width: 376px;}
+.selectorderaddress ul {border-top: 1px solid #D3D4B6; width: 376px;}
 .selectorderaddress ul li {clear: both; }
 .selectorderaddress ul input {float: left;}
 .selectorderaddress ul address {display: block; width: 60%; float: left; margin-left: 0px;}

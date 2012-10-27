@@ -81,7 +81,7 @@ td.price {text-align: right;}
 #Products .displayStyleMoreDetail>li.last  {}
 #Products .displayStyleMoreDetail li h3 {text-align: left; padding: 0; margin-bottom: 0.5em;}
 #Products .displayStyleMoreDetail li h3 a{display: inline;padding: 0;}
-#Products .displayStyleMoreDetail li h3 a:hover{color: #317010!important; background-color: transparent; border-bottom: 0px;}
+#Products .displayStyleMoreDetail li h3 a:hover{color: #FF336D!important; background-color: transparent; border-bottom: 0px;}
 #Products .displayStyleMoreDetail li img {margin-right: 20px; float: left; margin-bottom: 6em;}
 #Products .displayStyleMoreDetail li a {}
 #Products .displayStyleMoreDetail li p.moreInformation {padding: 0; margin: 0; padding-bottom: 10px;}

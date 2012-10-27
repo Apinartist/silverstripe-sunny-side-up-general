@@ -4,6 +4,10 @@ global $project; $project = 'mysite';
 global $database; $database = 'ecommerce';
 require_once('conf/ConfigureFromEnv.php');
 
+//===================---------------- START PHP ----------------===================
+date_default_timezone_set("NZ");
+//===================---------------- END PHP ----------------===================
+
 //===================---------------- START mysite MODULE ----------------===================
 Director::addRules(50, array(
 	'build-ecommerce//$Action/$ID/$OtherID' => 'CleanEcommerceTables'
@@ -11,6 +15,7 @@ Director::addRules(50, array(
 
 Object::add_extension('SiteConfig', 'SiteConfigExtras');
 //===================---------------- END mysite MODULE ----------------===================
+
 
 //===================---------------- START sapphire MODULE ----------------===================
 MySQLDatabase::set_connection_charset('utf8');
