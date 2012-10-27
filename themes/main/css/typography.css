@@ -4,8 +4,8 @@
 .typography h1 {color: #FFCC33; font-size: 1.77em; line-height: 0.85em; text-transform: uppercase;}
 	.typography h1#PageTitle, .typography h1.pageTitle{margin-top: 0!important; padding-top: 0!important; }
 .typography h2 {color: #FF336D; font-size: 1.33em; }
-.typography h3 {color: #326874; font-size: 1em;font-size: 1em;}
-.typography h4{font-size: 1em;font-weight: bold; color: #298599}
+.typography h3 {color: #298599; font-size: 1em;font-size: 1em;}
+.typography h4{font-size: 1em;font-weight: bold; color: #326874}
 .typography h5{font-size: 1em; }
 .typography h6{font-size: 0.87em; color: #326874; text-decoration: underline;}
 .typography h1:first-child,.typography h2:first-child,.typography h3:first-child,.typography h4:first-child,.typography h5:first-child,.typography h6:first-child {margin-top: 0px; padding-top: 0px;}
@@ -52,8 +52,7 @@
 .typography address {font-style: italic; margin-left: 3em; font-family: 'courier new', courier, monospace}
 .typography pre {font-family: "courier new", courier, monospace; line-height: 1.7; font-size: 0.7em; padding: 0.7em; margin: 0.3em 0;
 	background-color: #D3D4B6;
-	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
-	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
+	/* gradient */
 	background-position:0px center;
 	background-repeat:no-repeat;
 	border-top:       10px solid #808383;
@@ -92,7 +91,7 @@
 	.typography a:link{text-decoration: underline;}
 	.typography a:visited{text-decoration: none; }
 	.typography a:focus {outline: none;}
-	.typography a:hover{border-bottom: 1px dotted #FFCC33; text-decoration: none;}
+	.typography a:hover{border-bottom: 1px dotted #FF336D; text-decoration: none; color: #FF336D;}
 	.typography a:active{color: red;}
 	.typography a.externalLink{ background:transparent url(/themes/main/images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
 
@@ -152,3 +151,12 @@
 body.mobileBrowsing .typography img {max-width: 100%!important; padding-left: 0px; padding-right: 0px; margin-right: 0px; margin-left: 0px;}
 
 
+body.mobileBrowsing .typography p, body.mobileBrowsing .typography li, body.mobileBrowsing .typography address {font-size: 1em;}
+body.mobileBrowsing .typography ul {
+	-moz-column-count: 1;
+	-moz-column-gap: 0;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0;
+	column-count: 1;
+	column-gap: 0;
+}

@@ -50,7 +50,7 @@ var SSUhoverMenu = {
 						left = docWidth - 270;
 					}
 					leftString = left + "px";
-					jQuery(el).children("ul").animate({left: leftString});
+					jQuery(el).children("ul").animate({paddingLeft: leftString});
 				}
 			);
 			jQuery("#Nav").animate(SSUhoverMenu.animateOut).addClass("menuOut").removeClass("menuIn");

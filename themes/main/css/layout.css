@@ -34,15 +34,29 @@ body.mobileBrowsing {
 #Sidebar {
 	position: absolute; top: 40px; right: 20px; width: 200px; padding:12px;
 	padding-bottom: 200px;
-	background-color: #FFF;
-	background-image: url(/themes/main/images/pat.png);
+	background-color: #D3D4B6;
+	/*background-image: url(/themes/main/images/pat.png);*/
 	border:           0px solid #fff;
 	-moz-border-radius-bottomright: 5px;
 	border-bottom-right-radius: 5px;
 	border-top: 18px solid #808383;
 	/* let JS add it ! */
 }
-#Sidebar .sidebarBox {padding-bottom: 30px; }
+#Sidebar .sidebarBox  {
+	padding: 10px 0px 0px!important;
+	margin-bottom: 20px;
+}
+
+#Sidebar .sidebarBox h3 {
+	margin-left: -12px;
+	margin-right: -12px;
+	border-bottom: 1px dotted #fff;
+	padding-left: 12px;
+}
+
+#SidebarSiblings h3, #SidebarChildren h3 {color: #FF336D;}
+#SidebarSiblings a, #SidebarChildren a {text-decoration: none;}
+
 #Sidebar table {width: 100%;}
 #Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
 #Sidebar td.quantity img {margin: 0px;}
@@ -56,7 +70,7 @@ body.mobileBrowsing {
 }
 #Sidebar ul li{margin-left: 0px; padding-left: 0px; list-style-position: inside; list-style-image: none;}
 #Sidebar ul li.current a{color: #FF336D !important;}
-#Sidebar th, #Sidebar td {background-color: transparent; border: none;}
+#Sidebar th, #Sidebar td {background-color: transparent; border: none; border-bottom: 2px solid #808383;}
 #Sidebar p{line-height: 1;}
 
 .mobileBrowsing #Layout #Sidebar {position: inherit!important; right: auto!important;top: auto!important; width: auto!important; margin-bottom: 10px!important; padding-bottom: 10px!important; margin-top: 30px;}
@@ -82,8 +96,7 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 
 .resultsBar, .pageNumbers {font-size: 12px;
 	background-color: #D3D4B6;
-	background-image: -webkit-gradient(linear, 0% 10%, 0% 100%, from(#fafafa), to(#f0f0f0));
-	background-image: -moz-linear-gradient(center bottom , #f0f0f0 10%, #fafafa 100%);
+	/* gradient */
 	background-position:0px center;
 	background-repeat:no-repeat;
 	border-top:       1px solid #808383;
