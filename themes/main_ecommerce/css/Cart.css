@@ -95,3 +95,9 @@ ol.steps {
 ol.steps li {background-image: none; padding: 0px; margin: 0; width: auto; padding-right: 20px; font-size: 10px; display: inline-block; }
 ol.steps li.current {color: #FF336D;}
 
+#BodyOrderConfirmationPage #OrderPrintAndMailOuter,
+#BodyOrderConfirmationPage #PaymentForm,
+#BodyOrderConfirmationPage #CancelForm,
+#BodyOrderConfirmationPage #CartActionsAndMessages {
+	margin-top: 3em;
+}
