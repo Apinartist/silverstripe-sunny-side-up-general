@@ -42,4 +42,4 @@ li.featured a {color: #FF336D!important;}
 
 #Product .actionCell ul, #Product .actionCell li {margin: 0; padding: 0}
 .priceDisplay {}
-.notForSale.message {display: inheret!important;}
+.notForSale.message {position: inherit!important;}
