@@ -52,10 +52,12 @@ body.mobileBrowsing {
 	margin-right: -12px;
 	border-bottom: 1px dotted #fff;
 	padding-left: 12px;
+	padding-right: 12px;
 }
 
+/** special sidebars **/
 #SidebarSiblings h3, #SidebarChildren h3 {color: #FF336D;}
-#SidebarSiblings a, #SidebarChildren a {text-decoration: none;}
+	#SidebarSiblings li a, #SidebarChildren li a {text-decoration: none; text-transform: lowercase;}
 
 #Sidebar table {width: 100%;}
 #Sidebar th, #Sidebar td {font-size: 11px; padding: 2px;}
@@ -105,7 +107,7 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 	padding: 0.7em; margin: 0.3em 0;
 	padding-right: 30px;
 }
-.pageNumbers {display: inline-block; height: 0.7em; overflow:hidden;}
+.pageNumbers {}
 /***************************** START RANDOM IMAGE ******************/
 #RandomImage {
 	cursor: pointer;
