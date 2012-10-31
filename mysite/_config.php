@@ -28,12 +28,13 @@ Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 //Requirements::set_combined_files_folder("themes/main"); //DO NOT USE!!!
 //Director::forceWWW();
-FulltextSearchable::enable();
+FulltextSearchable::enable(array("SiteTree"));
 if(Director::isLive()) {
 	//Director::forceWWW();
 	SS_Log::add_writer(new SS_LogEmailWriter('errors@sunnysideup.co.nz'), SS_Log::ERR);
 }
 else {
+	Email::send_all_emails_to("example@best.com");
 	BasicAuth::protect_entire_site();
 	if(Director::isDev()) {
 		SSViewer::set_source_file_comments(true);
