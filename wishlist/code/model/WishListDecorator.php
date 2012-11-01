@@ -83,20 +83,7 @@ class WishListDecorator_Controller extends Extension {
 		return self::$session_variable_name;
 	}
 
-	/**
-	 * Return wish list data from member as a serialised array.
-	 * @return string (serialised array)
-	 */
-	public static function get_wish_list_from_member_serialized() {
-		$string = self::get_wish_list_from_member_serialized();
-		if($string) {
-			$array = unserialize($string);
-			if(is_array($array) && count($array)) {
-				self::set_wish_list_to_member($array);
-			}
-		}
-		return $string;
-	}
+
 
 	/**
 	 * Return wish list data from current member as an array.
