@@ -105,8 +105,10 @@ class WishListDecorator_Controller extends Extension {
 					$wishListMemberID = Session::get(self::get_session_variable_name()."_memberID");
 					if($wishListMemberID) {
 						if($wishListMember = DataObject::get_by_id("WishListMember", intval($wishListMemberID))) {
-							$member->WishList = $wishListMember->WishList;
-							$member->write();
+							if($wishListMember->WishList) {
+								$member->WishList = $wishListMember->WishList;
+								$member->write();
+							}
 							$wishListMember->delete();
 							Session::clear(self::get_session_variable_name()."_memberID");
 						}
