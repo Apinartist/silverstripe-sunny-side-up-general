@@ -116,7 +116,7 @@ class WishListPage_Controller extends Page_Controller {
 	 * @return boolean
 	 */
 	function CanRetrieveWishList() {
-		if($savedOne = WishListDecorator_Controller::get_wish_list_from_member_array()) {
+		if($array = WishListDecorator_Controller::get_wish_list_from_member_array()) {
 			if(is_array($array)) {
 				if(count($array)) {
 					return true;
