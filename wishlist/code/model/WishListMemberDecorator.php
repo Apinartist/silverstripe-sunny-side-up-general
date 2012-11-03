@@ -79,6 +79,7 @@ class WishListMemberDecorator extends DataObjectDecorator {
 							unset($wishList[$key]);
 						}
 					}
+					$this->WishList = serialize($wishList);
 					$this->owner->write();
 				}
 			}
