@@ -11,7 +11,7 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 			$object = $this->owner;
 		}
 		$array = WishListDecorator_Controller::get_wish_list_from_member_array();
-		$dataobject_index = $object->ClassName.".".$object->ID;
+		$dataobject_index = $this->owner->WishListIndex("string");
 		return isset($array[$dataobject_index]);
 	}
 
@@ -24,8 +24,23 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 		WishListDecorator_Controller::set_inline_requirements();
 	}
 
-	function WishlistIndex(){
-
+	/**
+	 *
+	 * @return String
+	 */
+	function WishlistIndex($type){
+		if($type == "string") {
+			return $object->owner->ClassName.".".$object->owner->ID
+		}
+		elseif($type == "array") {
+			return array(
+				0 => $this->owner->ClassName,
+				1 => $this->owner->ID
+			);
+		}
+		else {
+			user_error("Type needs to be 'string' or 'array', you set it to: ".$string);
+		}
 	}
 
 }
@@ -202,8 +217,7 @@ class WishListDecorator_Controller extends Extension {
 			if($object = self::get_wish_list_object($idAndClass)){
 				$outcome = true;
 				$array = self::get_wish_list_from_member_array();
-				$dataobject_index = $object->ClassName.".".$object->ID;
-				$array[$dataobject_index]= array(0 => $object->ClassName, 1 => $object->ID);
+				$array[$object->WishListIndex("string")] = $this->WishListIndex("array");
 				self::set_wish_list_to_member($array, true);
 			}
 		}
@@ -225,7 +239,7 @@ class WishListDecorator_Controller extends Extension {
 				//get current wish list
 				$array = self::get_wish_list_from_member_array();
 				//remove from wish list
-				$dataobject_index = $object->ClassName.".".$object->ID;
+				$dataobject_index = $object->WishListIndex("string");
 				if(isset($array[$dataobject_index])) {
 					unset($array[$dataobject_index]);
 				}
@@ -409,9 +423,10 @@ class WishListDecorator_Controller extends Extension {
 	 */
 	protected static function get_wish_list_object($array){
 		if(is_array($array)){
-			list($class, $id) = $array;
-			if(class_exists($class)){
-				return DataObject::get_by_id($class, intval($id));
+			$class = $array[0];
+			$id = intval($array[1]);
+			if(class_exists($class) && $id){
+				return DataObject::get_by_id($class, $id);
 			}
 		}
 		return NULL;

@@ -57,5 +57,32 @@ class WishListMemberDecorator extends DataObjectDecorator {
 		}
 	}
 
+	function requireDefaultRecords() {
+		if(isset($_GET["updatewishlist"])) {
+			$member = DataObject::get("Member", "WishList <> ''");
+			$wishList = unserialize($member->WishList);
+			if(is_array($wishList)) {
+				if(count($wishList)) {
+					foreach($wishList as $key => $array) {
+						$newKey = null;
+						$newArray = null;
+						$keyExploded = explode(".", $key);
+						if(intval($keyExploded[0]) && class_exists($keyExploded[1])) {
+							$newKey = $keyExploded[1].$keyExploded[0];
+						}
+						if(intval($array[0]) && class_exists($array[1])) {
+							$newArray = array( 0 => $array[1], 1 => $array[0]);
+						}
+						if($newArray && $newKey) {
+							$wishList[$newKey] = $newArray;
+							unset($wishList[$key]);
+						}
+					}
+					$this->owner->write();
+				}
+			}
+		}
+	}
+
 
 }
