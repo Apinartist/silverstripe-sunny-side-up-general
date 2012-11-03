@@ -10,7 +10,19 @@
 	font-weight:bold;
 }
 
+.BlogError {
+	text-align: center;
+}
 
-p.authorDate, p.tags, p.blogVitals {font-size: 0.7em; margin-top: 0px; padding-top: 0px; padding-bottom: 0; margin-bottom: 0; width: 49%;}
-p.authorDate {float: right; text-align: right;}
-p.blogVitals {margin-bottom: 3em; text-align: right; width: 100%}
+.BlogError p {
+	color: #fff;
+	display: inline;
+	background-color:	#f77;
+	padding: 7px;
+	font-weight:bold;
+}
+
+.blogSummary p {display: none;}
+.blogSummary p.authorDate, .blogSummary p.tags, .blogSummary p.blogVitals {display: blocl font-size: 0.7em; margin-top: 0px; padding-top: 0px; padding-bottom: 0; margin-bottom: 0; width: 49%;}
+.blogSummary p.authorDate {float: right; text-align: right;}
+.blogSummary p.blogVitals {margin-bottom: 3em; text-align: right; width: 100%}
