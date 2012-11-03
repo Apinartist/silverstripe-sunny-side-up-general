@@ -59,6 +59,7 @@ class WishListMemberDecorator extends DataObjectDecorator {
 
 	function requireDefaultRecords() {
 		if(isset($_GET["updatewishlist"])) {
+			DB::alteration_message("updating wishlists", "created");
 			$member = DataObject::get("Member", "WishList <> ''");
 			$wishList = unserialize($member->WishList);
 			if(is_array($wishList)) {
