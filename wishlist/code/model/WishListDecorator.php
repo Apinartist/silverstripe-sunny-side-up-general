@@ -30,7 +30,7 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 	 */
 	function WishlistIndex($type){
 		if($type == "string") {
-			return $object->owner->ClassName.".".$object->owner->ID
+			return $object->owner->ClassName.".".$object->owner->ID;
 		}
 		elseif($type == "array") {
 			return array(
