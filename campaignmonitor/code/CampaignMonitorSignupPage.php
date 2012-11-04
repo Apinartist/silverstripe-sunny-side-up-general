@@ -33,9 +33,6 @@ class CampaignMonitorSignupPage extends Page {
 	static $has_many = array(
 		"CampaignMonitorCampaigns" => "CampaignMonitorCampaign"
 	);
-	static $casting = array(
-		"" => "Boolean"
-	);
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
