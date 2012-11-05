@@ -39,7 +39,7 @@ class DataObjectSorterController extends Controller{
 		}
 		$obj = DataObject::get_one($className, $where);
 		if($obj && $obj->canEdit()) {
-			$link = '/dataobjectsorter/sort/'.$className."/";
+			$link = 'dataobjectsorter/sort/'.$className."/";
 			if($filterField) {
 				$link .= $filterField.'/';
 			}
