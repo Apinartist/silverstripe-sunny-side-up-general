@@ -212,7 +212,6 @@ class WishListDecorator_Controller extends Extension {
 		$idAndClass = $this->getIDForWishList();
 		$outcome = false;
 		$object = NULL;
-
 		if($idAndClass) {
 			if($object = self::get_wish_list_object($idAndClass)){
 				$outcome = true;

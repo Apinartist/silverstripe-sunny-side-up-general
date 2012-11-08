@@ -60,27 +60,43 @@ class WishListMemberDecorator extends DataObjectDecorator {
 	function requireDefaultRecords() {
 		if(isset($_GET["updatewishlist"])) {
 			DB::alteration_message("updating wishlists", "created");
-			$member = DataObject::get("Member", "WishList <> ''");
-			$wishList = unserialize($member->WishList);
-			if(is_array($wishList)) {
-				if(count($wishList)) {
-					foreach($wishList as $key => $array) {
-						$newKey = null;
-						$newArray = null;
-						$keyExploded = explode(".", $key);
-						if(intval($keyExploded[0]) && class_exists($keyExploded[1])) {
-							$newKey = $keyExploded[1].$keyExploded[0];
-						}
-						if(intval($array[0]) && class_exists($array[1])) {
-							$newArray = array( 0 => $array[1], 1 => $array[0]);
-						}
-						if($newArray && $newKey) {
-							$wishList[$newKey] = $newArray;
-							unset($wishList[$key]);
+			$members = DataObject::get("Member", "WishList <> ''");
+			if($members) {
+				foreach($members as $member) {
+					$change = false;
+					$wishList = unserialize($member->WishList);
+					if(is_array($wishList)) {
+						if(count($wishList)) {
+							foreach($wishList as $key => $array) {
+								$newKey = null;
+								$newArray = null;
+								$keyExploded = explode(".", $key);
+								if(intval($keyExploded[0]) && class_exists($keyExploded[1])) {
+									$newKey = $keyExploded[1].".".$keyExploded[0];
+								}
+								if(intval($array[0]) && class_exists($array[1])) {
+									$newArray = array( 0 => $array[1], 1 => $array[0]);
+								}
+								if($newArray && $newKey) {
+									DB::alteration_message( "changing ".$key." to ".$newKey.", new value = ".print_r($newArray, 1) );
+									$change = true;
+									$wishList[$newKey] = $newArray;
+									unset($wishList[$key]);
+								}
+								elseif(!strpos($key, ".")) {
+									$change = true;
+									$newKey = str_replace("ProductVariation", "ProductVariation.", $key);
+									$newKey = str_replace("KahuvetProduct", "KahuvetProduct.", $key);
+									$wishList[$newKey] = $array;
+									unset($wishList[$key]);
+								}
+							}
+							if($change) {
+								$member->WishList = serialize($wishList);
+								$member->write();
+							}
 						}
 					}
-					$this->WishList = serialize($wishList);
-					$this->owner->write();
 				}
 			}
 		}
