@@ -11,7 +11,7 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 			$object = $this->owner;
 		}
 		$array = WishListDecorator_Controller::get_wish_list_from_member_array();
-		$dataobject_index = $this->owner->WishListIndex("string");
+		$dataobject_index = $this->owner->WishListIndexString();
 		return isset($array[$dataobject_index]);
 	}
 
@@ -26,21 +26,21 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 
 	/**
 	 *
+	 * @return Array
+	 */
+	function WishlistIndexArray{
+		return array(
+			0 => $this->owner->ClassName,
+			1 => $this->owner->ID
+		);
+	}
+
+	/**
+	 *
 	 * @return String
 	 */
-	function WishlistIndex($type){
-		if($type == "string") {
-			return $object->owner->ClassName.".".$object->owner->ID;
-		}
-		elseif($type == "array") {
-			return array(
-				0 => $this->owner->ClassName,
-				1 => $this->owner->ID
-			);
-		}
-		else {
-			user_error("Type needs to be 'string' or 'array', you set it to: ".$string);
-		}
+	function WishlistIndexString($type){
+		return $object->owner->ClassName.".".$object->owner->ID;
 	}
 
 }
@@ -76,8 +76,6 @@ class WishListDecorator_Controller extends Extension {
 	 */
 	protected static $session_variable_name = "WishListDecoratorMessage";
 
-	protected static $data = null;
-
 	/**
 	 * Set the name of the session variable, to change from default.
 	 * @param string
@@ -94,91 +92,11 @@ class WishListDecorator_Controller extends Extension {
 		return self::$session_variable_name;
 	}
 
-	static function get_member_for_wishlist(){
-		$member = Member::currentMember();
-		if(!$member) {
-			$wishListMemberID = Session::get(self::get_session_variable_name()."_wishListMemberID");
-			if($wishListMemberID) {
-				if($wishListMember = DataObject::get_by_id("WishListMember", intval($wishListMemberID))) {
-					//do nothing
-				}
-				else {
-					$wishListMemberID = 0;
-				}
-			}
-			if(!$wishListMemberID) {
-				$wishListMember = new WishListMember();
-				$wishListMember->write();
-				Session::set(self::get_session_variable_name()."_wishListMemberID", $wishListMember->ID);
-			}
-			return $wishListMember;
-		}
-		else {
-			//copy if the member does not have a wish list, but the session does.
-			if(!$member->WishList) {
-				if(!$member->IsAdmin()) {
-					$wishListMemberID = Session::get(self::get_session_variable_name()."_memberID");
-					if($wishListMemberID) {
-						if($wishListMember = DataObject::get_by_id("WishListMember", intval($wishListMemberID))) {
-							if($wishListMember->WishList) {
-								$member->WishList = $wishListMember->WishList;
-								$member->write();
-							}
-							$wishListMember->delete();
-							Session::clear(self::get_session_variable_name()."_memberID");
-						}
-					}
-				}
-			}
-			return $member;
-		}
-	}
-
 	/**
-	 * Return wish list data from current member as an array.
-	 * @return array
+	 * temporary store for the data
+	 * @array
 	 */
-	public static function get_wish_list_from_member_array() {
-		$string = self::get_wish_list_from_member_serialized();
-		return unserialize($string);
-	}
-
-	/**
-	 * Return wish list data from current member as a serialised array.
-	 * @return string (serialised array)
-	 */
-	public static function get_wish_list_from_member_serialized() {
-		$member = self::get_member_for_wishlist();
-		$string = '';
-		if($member) {
-			$string = $member->WishList;
-		}
-		if(!is_string($string)) {
-			$string = '';
-		}
-		return $string;
-	}
-
-	/**
-	 * Save wish list data to current member.
-	 * @param array
-	 * @return Boolean
-	 */
-	static function set_wish_list_to_member($array, $force = false) {
-		if(!is_array($array)) {
-			user_error("There is an error in storing your wish list, your variable should be an array", E_USER_WARNING);
-		}
-		$member = self::get_member_for_wishlist();
-		if($member) {
-			$newValue = serialize($array);
-			if($member->WishList != $newValue || $force) {
-				$member->WishList = $newValue;
-				$member->write();
-			}
-			return true;
-		}
-		return false;
-	}
+	protected static $data = null;
 
 	/**
 	 * Add js and css requirements to current page.
@@ -201,6 +119,91 @@ class WishListDecorator_Controller extends Extension {
 		}
 	}
 
+	/**
+	 * returns a real or fake member against which we save the wishlist.
+	 * @return Member | WishListMember
+	 */
+	static function get_member_for_wishlist(){
+		$member = Member::currentMember();
+		if(!$member) {
+			$wishListMemberID = Session::get(self::get_session_variable_name()."_wishListMemberID");
+			if($wishListMemberID) {
+				if($wishListMember = DataObject::get_by_id("WishListMember", intval($wishListMemberID))) {
+					//do nothing
+				}
+				else {
+					$wishListMemberID = null;
+				}
+			}
+			if(!$wishListMemberID) {
+				$wishListMember = new WishListMember();
+				$wishListMember->write();
+				Session::set(self::get_session_variable_name()."_wishListMemberID", $wishListMember->ID);
+			}
+			return $wishListMember;
+		}
+		else {
+			//copy if the member does not have a wish list, but the session does.
+			if(!$member->WishList) {
+				if(!$member->IsAdmin()) {
+					$wishListMemberID = Session::get(self::get_session_variable_name()."_wishListMemberID");
+					if($wishListMemberID) {
+						if($wishListMember = DataObject::get_by_id("WishListMember", intval($wishListMemberID))) {
+							if($wishListMember->WishList) {
+								$member->WishList = $wishListMember->WishList;
+								$member->write();
+							}
+							$wishListMember->delete();
+							Session::clear(self::get_session_variable_name()."_wishListMemberID");
+						}
+					}
+				}
+			}
+			return $member;
+		}
+	}
+
+	/**
+	 * Return wish list data from current member as an array.
+	 * @return array
+	 */
+	public static function get_wish_list_from_member_array() {
+		$member = self::get_member_for_wishlist();
+		$string = '';
+		if($member) {
+			$string = $member->WishList;
+		}
+		if(!is_string($string)) {
+			$string = '';
+		}
+		return unserialize($string);
+	}
+
+	/**
+	 * Save wish list data to current member.
+	 * @param array
+	 * @return Boolean
+	 */
+	static function set_wish_list_to_member($array, $force = false) {
+		if(!is_array($array)) {
+			user_error("There is an error in storing your wish list, your variable should be an array", E_USER_WARNING);
+		}
+		$member = self::get_member_for_wishlist();
+		if($member) {
+			$serialisedArray = serialize($array);
+			if($member->WishList != $serialisedArray || $force) {
+				$member->WishList = $serialisedArray;
+				$member->write();
+			}
+			return true;
+		}
+		else {
+			user_error("Could not find / create member for wish list", E_USER_WARNING);
+		}
+		return false;
+	}
+
+
 	// ____ actions
 
 	/**
@@ -209,16 +212,14 @@ class WishListDecorator_Controller extends Extension {
 	 * @return string | null
 	 */
 	function addtowishlist() {
-		$idAndClass = $this->getIDForWishList();
+		$object = $this->getWishListObject();
 		$outcome = false;
-		$object = NULL;
-		if($idAndClass) {
-			if($object = self::get_wish_list_object($idAndClass)){
-				$outcome = true;
-				$array = self::get_wish_list_from_member_array();
-				$array[$object->WishListIndex("string")] = $this->WishListIndex("array");
-				self::set_wish_list_to_member($array, true);
-			}
+		if($object){
+			$outcome = true;
+			$array = self::get_wish_list_from_member_array();
+			$index = $object->WishListIndexString();
+			$array[$index] = $object->WishListIndexArray();
+			self::set_wish_list_to_member($array, true);
 		}
 		return $this->standardReturn($outcome, "AddedToListText", "AddedToListTextError", "WishListLinkInner", $object);
 	}
@@ -229,22 +230,19 @@ class WishListDecorator_Controller extends Extension {
 	 * @return string | null
 	 */
 	function removefromwishlist() {
-		$idAndClass = $this->getIDForWishList();
+		$object = $this->getWishListObject();
 		$outcome = false;
-		$object = NULL;
-		if($idAndClass) {
-			if($object = self::get_wish_list_object($idAndClass)){
-				$outcome = true;
-				//get current wish list
-				$array = self::get_wish_list_from_member_array();
-				//remove from wish list
-				$dataobject_index = $object->WishListIndex("string");
-				if(isset($array[$dataobject_index])) {
-					unset($array[$dataobject_index]);
-				}
-				//reset
-				self::set_wish_list_to_member($array, true);
+		if($object){
+			$outcome = true;
+			//get current wish list
+			$array = self::get_wish_list_from_member_array();
+			//remove from wish list
+			$index = $object->WishListIndexString();
+			if(isset($array[$index])) {
+				unset($array[$index]);
 			}
+			//reset
+			self::set_wish_list_to_member($array, true);
 		}
 		return $this->standardReturn($outcome, "RemovedFromListText", "RemovedFromListTextError", "WishListLinkInner", $object);
 	}
@@ -361,16 +359,6 @@ class WishListDecorator_Controller extends Extension {
 	}
 
 	/**
-	 * Return the ID and Class to be stored in the wish list of the current page.
-	 * @return Array
-	 */
-	protected function getIDForWishList() {
-		if(isset($_GET['id']) && $_GET['id'] && isset($_GET['class']) && $_GET['class']){
-			return array(Convert::raw2sql($_GET['class']), intval($_GET['id']));
-		}
-	}
-
-	/**
 	 * Retrieve a single wish list page.
 	 * @return WishListPage
 	 */
@@ -417,13 +405,12 @@ class WishListDecorator_Controller extends Extension {
 	 * Instantiate a DataObject base on the id-classname pair passed.
 	 * Checks that classname is valid and is a DataObject.
 	 * Returns NULL is not valid or doesn't exist.
-	 * @param array(id, classname)
 	 * @return DataObject | null
 	 */
-	protected static function get_wish_list_object($array){
-		if(is_array($array)){
-			$class = $array[0];
-			$id = intval($array[1]);
+	protected function getWishListObject(){
+		if(isset($_GET['id']) && $_GET['id'] && isset($_GET['class']) && $_GET['class']){
+			$class = Convert::raw2sql($_GET['class']);
+			$id = intval($_GET['id']);
 			if(class_exists($class) && $id){
 				return DataObject::get_by_id($class, $id);
 			}
