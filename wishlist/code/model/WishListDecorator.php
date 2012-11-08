@@ -28,7 +28,7 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 	 *
 	 * @return Array
 	 */
-	function WishlistIndexArray{
+	function WishlistIndexArray(){
 		return array(
 			0 => $this->owner->ClassName,
 			1 => $this->owner->ID
