@@ -295,13 +295,13 @@ class WishListDecorator_Controller extends Extension {
 	 */
 	function WishList() {
 		if(self::$data === null) {
-			self::$data  = false;
+			self::$data = false;
 			$array = self::get_wish_list_from_member_array();
 			if(is_array($array) && count($array) ) {
 				$stage = Versioned::current_stage();
 				$objects = array();
 				foreach($array as $value){
-					if($object = self::get_wish_list_object($value)) {
+					if($object = DataObject::get_by_id($value[0], $value[1])) {
 						$objects[] = $object;
 					}
 				}
