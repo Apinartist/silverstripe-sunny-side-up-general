@@ -39,8 +39,8 @@ class WishListDecorator_DataObject extends DataObjectDecorator {
 	 *
 	 * @return String
 	 */
-	function WishlistIndexString($type){
-		return $object->owner->ClassName.".".$object->owner->ID;
+	function WishlistIndexString(){
+		return $this->owner->ClassName.".".$this->owner->ID;
 	}
 
 }
