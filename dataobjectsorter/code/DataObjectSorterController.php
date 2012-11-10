@@ -49,6 +49,7 @@ class DataObjectSorterController extends Controller{
 			if($titleField) {
 				$link .= $titleField.'/';
 			}
+			$link = Director::baseURL().$link;
 			return '
 			<a href="'.$link.'" onclick="window.open(\''.$link.'\', \'sortlistFor'.$className.$filterField.$filterValue.'\',\'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=600,height=600,left = 440,top = 200\'); return false;">'.$linkText.'</a>';
 		}

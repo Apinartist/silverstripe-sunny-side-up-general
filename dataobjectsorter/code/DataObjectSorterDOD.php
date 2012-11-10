@@ -26,38 +26,35 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 
 	function dodataobjectsort() {
 		$i = 0;
-		if($this->owner->canEdit()) {
-			$extraSet = '';
-			$extraWhere = '';
-			$field = "Sort";
-			$baseDataClass = ClassInfo::baseDataClass($this->owner->ClassName);
-			if($baseDataClass) {
-				if(isset ($_REQUEST["dos"])) {
-					foreach ($_REQUEST['dos'] as $position => $id) {
-						$i++;
-						$position = intval($position);
-						$id = intval($id);
-						$sql = "
-							UPDATE \"".$baseDataClass."\"
-							SET \"".$baseDataClass."\".\"".$field."\" = ".$position. "
-							WHERE \"".$baseDataClass."\".\"ID\" = ".$id."
-								AND (\"".$baseDataClass."\".\"".$field."\" <> ".$position." )
-							LIMIT 1;";
-						//echo $sql .'<hr />';
-						DB::query($sql);
+		$extraSet = '';
+		$extraWhere = '';
+		$field = "Sort";
+		$baseDataClass = ClassInfo::baseDataClass($this->owner->ClassName);
+		if($baseDataClass) {
+			if(isset ($_REQUEST["dos"])) {
+				foreach ($_REQUEST['dos'] as $position => $id) {
+					$id = intval($id);
+					$object = DataObject::get_by_id($baseDataClass, $id);
+					$i++;
+					$position = intval($position);
+					if($object && $object->canEdit()) {
+						$object->$field = $position;
 						if("SiteTree" == $baseDataClass) {
-							$sql_Live = str_replace("\"SiteTree\"", "\"SiteTree_Live\"", $sql);
-							//echo $sql_Live .'<hr />';
-							DB::query($sql_Live);
+							$object->writeToStage('Stage');
+							$object->Publish('Stage', 'Live');
+							$object->Status = "Published";
 						}
+						else {
+							$object->write();
+						}
+					}
+					else {
+						return _t("DataObjectSorter.NOACCESS", "You do not have access rights to make these changes.");
 					}
 				}
 			}
-			return _t("DataObjectSorter.UPDATEDRECORDS", "Updated record(s)");
 		}
-		else {
-			return _t("DataObjectSorter.NOACCESS", "You do not have access rights to make these changes");
-		}
+		return _t("DataObjectSorter.UPDATEDRECORDS", "Updated record(s)");
 	}
 
 	/**
