@@ -35,22 +35,26 @@ class DataObjectSorterDOD extends DataObjectDecorator {
 				foreach ($_REQUEST['dos'] as $position => $id) {
 					$id = intval($id);
 					$object = DataObject::get_by_id($baseDataClass, $id);
-					$i++;
-					$position = intval($position);
+					//we add one because position 0 is not good.
+					$position = intval($position)+1;
 					if($object && $object->canEdit()) {
-						$object->$field = $position;
-						if("SiteTree" == $baseDataClass) {
-							$object->writeToStage('Stage');
-							$object->Publish('Stage', 'Live');
-							$object->Status = "Published";
-						}
-						else {
-							$object->write();
+						if($object->$field != $position) {
+							$object->$field = $position;
+							//hack for site tree
+							if("SiteTree" == $baseDataClass) {
+								$object->writeToStage('Stage');
+								$object->Publish('Stage', 'Live');
+								$object->Status = "Published";
+							}
+							else {
+								$object->write();
+							}
 						}
 					}
 					else {
 						return _t("DataObjectSorter.NOACCESS", "You do not have access rights to make these changes.");
 					}
+
 				}
 			}
 		}
