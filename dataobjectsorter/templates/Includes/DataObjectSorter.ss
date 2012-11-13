@@ -1,7 +1,6 @@
 <% if Children %>
 <div id="DataObjectSorterListInfo">
-	<h1>Sort objects by drag-and-dropping them into a new order and close this window when done.</h1>
-	<p>(drag-and-drop: click on item with mouse, hold click-button while moving item with your mouse, release click button once item is in the desired spot)</p>
+	<h1>Sort objects by <a href="#" title="drag-and-drop: click on item with mouse, hold click-button while moving item with your mouse, release click button once item is in the desired spot">drag-and-dropping</a> them into a new order and close this window when done.</h1>
 </div>
 <ul id="DataObjectSorterList">
 <% control Children  %>
