@@ -33,12 +33,12 @@ class WishListMemberDecorator extends DataObjectDecorator {
 			$links = array();
 			if(is_array($array) && count($array)) {
 				foreach($array as $item) {
-					$object = DataObject::get_by_id($item[1], $item[0]);
+					$object = DataObject::get_by_id($item[0], $item[1]);
 					if($object) {
 						$links[] = "<a href=\"".$object->Link()."\">".$object->Title."</a>";
 					}
 					else {
-						$links[] = "error in retrieving object ".implode($item);
+						$links[] = "error in retrieving object ".implode(", ", $item);
 					}
 				}
 			}
