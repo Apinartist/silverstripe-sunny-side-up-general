@@ -135,7 +135,7 @@ class WishListPage_Controller extends Page_Controller {
 	}
 
 	function upgradeWishList(){
-		if(isset($_GET["updatewishlist"])) {
+		if(Permission::check("ADMIN")) {
 			DB::alteration_message("updating wishlists", "created");
 			$members = DataObject::get("Member", "WishList <> '' AND WishList IS NOT NULL");
 			if($members) {
