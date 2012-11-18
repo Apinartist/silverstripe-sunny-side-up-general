@@ -288,8 +288,9 @@ class MetaTagAutomation_controller extends Extension {
 			}
 			$googleFontArray = MetaTagAutomation::get_google_font_collection();
 			if($googleFontArray && count($googleFontArray)) {
+				$protocol = Director::protocol();
 				foreach($googleFontArray as $font) {
-					Requirements::insertHeadTags('<link href="http://fonts.googleapis.com/css?family='.urlencode($font).'" rel="stylesheet" type="text/css" />');
+					Requirements::insertHeadTags('<link href="' + $protocol + 'fonts.googleapis.com/css?family=' . urlencode($font) . '" rel="stylesheet" type="text/css" />');
 				}
 			}
 		}
