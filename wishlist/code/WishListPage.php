@@ -134,8 +134,8 @@ class WishListPage_Controller extends Page_Controller {
 		return $this->CanRetrieveWishList();
 	}
 
-	function upgradeWishList(){
-		if(Permission::check("ADMIN")) {
+	function upgrade(){
+		//if(Permission::check("ADMIN")) {
 			DB::alteration_message("updating wishlists", "created");
 			$members = DataObject::get("Member", "WishList <> '' AND WishList IS NOT NULL");
 			if($members) {
@@ -176,7 +176,7 @@ class WishListPage_Controller extends Page_Controller {
 					}
 				}
 			}
-		}
+		//}
 
 	}
 
