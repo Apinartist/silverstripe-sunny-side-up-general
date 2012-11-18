@@ -134,12 +134,13 @@ class WishListPage_Controller extends Page_Controller {
 		return $this->CanRetrieveWishList();
 	}
 
-	function upgrade(){
-		//if(Permission::check("ADMIN")) {
+	function upgradeoldlists(){
+		if(Permission::check("ADMIN")) {
 			DB::alteration_message("updating wishlists", "created");
 			$members = DataObject::get("Member", "WishList <> '' AND WishList IS NOT NULL");
 			if($members) {
 				foreach($members as $member) {
+					DB::alteration_message("<h3>Checking Member: ".$member->Email."</h3>");
 					$change = false;
 					$wishList = unserialize($member->WishList);
 					if(is_array($wishList)) {
@@ -169,14 +170,27 @@ class WishListPage_Controller extends Page_Controller {
 								}
 							}
 							if($change) {
+								DB::alteration_message("Updating wishlist", "created");
 								$member->WishList = serialize($wishList);
 								$member->write();
 							}
+							else {
+								DB::alteration_message("No need to update");
+							}
 						}
+						else {
+							DB::alteration_message("No wishlist found");
+						}
+					}
+					else {
+						DB::alteration_message("No wishlist found");
 					}
 				}
 			}
-		//}
+			else {
+				DB::alteration_message("No users found");
+			}
+		}
 
 	}
 
