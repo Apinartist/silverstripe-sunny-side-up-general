@@ -134,64 +134,6 @@ class WishListPage_Controller extends Page_Controller {
 		return $this->CanRetrieveWishList();
 	}
 
-	function upgradeoldlists(){
-		if(Permission::check("ADMIN")) {
-			DB::alteration_message("updating wishlists", "created");
-			$members = DataObject::get("Member", "WishList <> '' AND WishList IS NOT NULL");
-			if($members) {
-				foreach($members as $member) {
-					DB::alteration_message("<h3>Checking Member: ".$member->Email."</h3>");
-					$change = false;
-					$wishList = unserialize($member->WishList);
-					if(is_array($wishList)) {
-						if(count($wishList)) {
-							foreach($wishList as $key => $array) {
-								$newKey = null;
-								$newArray = null;
-								$keyExploded = explode(".", $key);
-								if(intval($keyExploded[0]) && class_exists($keyExploded[1])) {
-									$newKey = $keyExploded[1].".".$keyExploded[0];
-								}
-								if(intval($array[0]) && class_exists($array[1])) {
-									$newArray = array( 0 => $array[1], 1 => $array[0]);
-								}
-								if($newArray && $newKey) {
-									DB::alteration_message( "changing ".$key." to ".$newKey.", new value = ".print_r($newArray, 1) );
-									$change = true;
-									$wishList[$newKey] = $newArray;
-									unset($wishList[$key]);
-								}
-								elseif(!strpos($key, ".")) {
-									$change = true;
-									$newKey = str_replace("ProductVariation", "ProductVariation.", $key);
-									$newKey = str_replace("KahuvetProduct", "KahuvetProduct.", $key);
-									$wishList[$newKey] = $array;
-									unset($wishList[$key]);
-								}
-							}
-							if($change) {
-								DB::alteration_message("Updating wishlist", "created");
-								$member->WishList = serialize($wishList);
-								$member->write();
-							}
-							else {
-								DB::alteration_message("No need to update");
-							}
-						}
-						else {
-							DB::alteration_message("No wishlist found");
-						}
-					}
-					else {
-						DB::alteration_message("No wishlist found");
-					}
-				}
-			}
-			else {
-				DB::alteration_message("No users found");
-			}
-		}
 
-	}
 
 }
