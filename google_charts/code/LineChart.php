@@ -224,8 +224,7 @@ class LineChart_Interactive extends LineChart {
 	 * Includes the needed JS files via the Requirements system
 	 */
 	public static function addRequirements() {
-		$s = Chart::$secure_requirements ? 's' : '';
-		Requirements::javascript("http$s://www.google.com/jsapi");
+		Requirements::javascript(Director::protocol() . 'www.google.com/jsapi');
 		Requirements::javascript('googlecharts/javascript/line.js');
 		Requirements::javascript('googlecharts/javascript/tooltipfix.js');
 	}
