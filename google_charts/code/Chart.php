@@ -16,7 +16,7 @@ class Chart extends ViewableData {
 	 * 
 	 * @var string
 	 */
-	protected static $base_url = 'http://chart.apis.google.com/chart?';
+	protected static $base_url = 'chart.apis.google.com/chart?';
 	
 	/**
 	 * The default width of generated charts in pixels.  Can be set with Chart::$default_width = 400; in your _config.php
@@ -569,7 +569,7 @@ class Chart extends ViewableData {
 			$paramValues[] = "$name=$value";
 		}
 		
-		return self::$base_url . implode('&', $paramValues);
+		return Director::protocol() . self::$base_url . implode('&', $paramValues);
 	}
 	
 	/**
