@@ -75,10 +75,12 @@ class MetaTagSiteConfigExtension extends DataObjectDecorator {
 					new TextareaField("ExtraMeta","Custom Meta Tags (advanced users only)")
 				),
 				new Tab("Pages",
+					//takes too long to load
 					//new LiteralField("ManageLinksForPages", "<iframe src=\"$linkToManagerForPages\" name=\"manage links for pages\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
 					new LiteralField("LinkToManagerHeaderForPages", "<p><a href=\"$linkToManagerForPages\" target=\"_blank\">Review and Edit</a> pages in a new window ...</p>")
 				),
 				new Tab("Files",
+					//takes too long to load
 					//new LiteralField("ManageLinksForFiles", "<iframe src=\"$linkToManagerForFiles\" name=\"manage links for files\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
 					new LiteralField("LinkToManagerHeaderForFiles", "<p><a href=\"$linkToManagerForFiles\" target=\"_blank\">Review and Edit</a> files in a new window ...</p>")
 				),
