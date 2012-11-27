@@ -75,12 +75,12 @@ class MetaTagSiteConfigExtension extends DataObjectDecorator {
 					new TextareaField("ExtraMeta","Custom Meta Tags (advanced users only)")
 				),
 				new Tab("Pages",
-					new LiteralField("ManageLinksForPages", "<iframe src=\"$linkToManagerForPages\" name=\"manage links for pages\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
-					new LiteralField("LinkToManagerHeaderForPages", "<p>Need more room? <a href=\"$linkToManagerForPages\" target=\"_blank\">Review and Edit</a> pages in a new window ...</p>")
+					//new LiteralField("ManageLinksForPages", "<iframe src=\"$linkToManagerForPages\" name=\"manage links for pages\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
+					new LiteralField("LinkToManagerHeaderForPages", "<p><a href=\"$linkToManagerForPages\" target=\"_blank\">Review and Edit</a> pages in a new window ...</p>")
 				),
 				new Tab("Files",
-					new LiteralField("ManageLinksForFiles", "<iframe src=\"$linkToManagerForFiles\" name=\"manage links for files\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
-					new LiteralField("LinkToManagerHeaderForFiles", "<p>Need more room? <a href=\"$linkToManagerForFiles\" target=\"_blank\">Review and Edit</a> files in a new window ...</p>")
+					//new LiteralField("ManageLinksForFiles", "<iframe src=\"$linkToManagerForFiles\" name=\"manage links for files\" width=\"100%\" height=\"90%\">you browser does not support i-frames</iframe>"),
+					new LiteralField("LinkToManagerHeaderForFiles", "<p><a href=\"$linkToManagerForFiles\" target=\"_blank\">Review and Edit</a> files in a new window ...</p>")
 				),
 				new Tab("Back Links",
 					new LiteralField("MetaTagsLinksExplanation", "<h3>Referencing Websites</h3><p>A big part of Search Engine Optimisation is getting other sites to link to your site.  Below you can keep a record of these back links.</p>"),
