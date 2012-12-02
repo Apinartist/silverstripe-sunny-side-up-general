@@ -108,12 +108,6 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	padding: 1%;
 	min-height: 230px;
 	position: relative;
-	-webkit-border-radius: 3px 3px 15px 3px;
-	border-radius: 3px 3px 15px 3px;
-	/* gradient */
-	-webkit-box-shadow: 1px 1px 7px 1px #808383;
-	box-shadow: 1px 1px 3px 1px #808383;
-	background-color: #D3D4B6;
 }
 .item1, .item4, .item7, .item10, .item13, .item16, .item19, .item22, .item25, .item28, .item31 {margin-left: 0px!important;}
 .item3, .item6, .item9, .item13, .item15, .item18, .item21, .item24, .item27, .item30, .item33 {margin-right: 0px!important;}
