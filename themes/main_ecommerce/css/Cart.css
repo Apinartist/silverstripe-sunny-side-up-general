@@ -42,13 +42,13 @@ ul.productActions li a, .goToCart a, a.selectVariation {
 	padding: 7px;
 }
 
-.notInCart .addLink {display: inline-block!important;}
+.notInCart .addLink {display: block;}
 .notInCart .removeLink {display: none!important;}
 .notInCart .goToCheckoutLink {display: none!important;}
 
 .inCart .addLink {display: none!important;}
-.inCart .removeLink {display: inline-block!important;}
-.inCart .goToCheckoutLink {display: inline-block!important;}
+.inCart .removeLink {display: block!important;}
+.inCart .goToCheckoutLink {display: block!important;}
 
 #Sidebar .goToCart a {
 	font-size: 11px;

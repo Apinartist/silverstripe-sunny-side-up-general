@@ -56,11 +56,19 @@ td.price {text-align: right;}
 .productList .productActions{
 	padding:0;
 	margin:0;
+	-moz-column-count: 1;
+	-moz-column-gap: 0;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 0;
+	column-count: 1;
+	column-gap: 0;
 }
 .productList .productActions li {
 	list-style: none;
 	padding:0;
 	margin:0;
+	max-width: 210px;
+	text-align: center;
 }
 .productList img, .productList  h3 {
 	padding: 0; margin:0
@@ -117,11 +125,8 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	margin-right: auto;
 }
 .displayStyledefault .productActions, .productActionsHolder .message {
-	bottom: 10px;
 	margin: 0;
 	padding: 0;
-	position: absolute;
-	right: 10px;
 }
 .productActionsHolder .message {left: 10px; padding: 10px; }
 .productActionsHolder .message p {line-height: 1; font-size: 0.77em; font-weight: normal}
