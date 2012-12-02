@@ -122,12 +122,12 @@ ul.displayStyledefault {padding: 10px; margin: 0px;}
 	margin: 0;
 	padding: 0;
 }
-.productActionsHolder .message {left: 10px; padding: 10px; }
+.productActionsHolder .message {padding: 10px;  margin-top: 25px;}
 .productActionsHolder .message p {line-height: 1; font-size: 0.77em; font-weight: normal}
 
 .displayStyledefault .productItem h3 a {text-decoration: none; font-weight: bold; display: block; text-align: center; margin-top: 0.5em; }
 .displayStyledefault .productItem h3 a:hover {border-bottom: 1px solid transparent;}
-.displayStyledefault .priceDisplay  {text-align: center; font-size: 0.8em; margin-top: -0.5em;}
+.displayStyledefault .priceDisplay  {text-align: center; font-size: 0.8em; margin: 0; padding: 0px}
 .displayStyledefault .productActions  a {display: block;}
 
 .menuChildGroups ul, #Products ul {
