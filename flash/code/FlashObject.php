@@ -20,7 +20,7 @@ class FlashObject extends ViewableData  {
 
 	protected static $flash_version = "6.0.0";
 
-	protected static $alternative_content = '<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
+	protected static $alternative_content = '<a href="http://www.adobe.com/go/getflashplayer">get flash player</a>'; //no image here to save bandwidth
 
 	protected static $param_array = Array();
 
