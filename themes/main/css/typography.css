@@ -96,8 +96,8 @@
 	.typography a.externalLink{ background:transparent url(/themes/main/images/externalLink.gif) no-repeat scroll right center; padding-right:13px; display:inline;}
 
 /* images */
-.typography img{float: right; margin-left: 10px; margin-bottom: 10px; display: block;
-
+.typography img{
+	float: right; margin-left: 10px; margin-bottom: 10px; display: block;
 	border: 1px solid #808383;
 	-moz-box-shadow: 3px 3px 4px #808383;
 	-webkit-box-shadow: 3px 3px 4px #808383;
