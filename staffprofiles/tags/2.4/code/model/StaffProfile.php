@@ -50,7 +50,9 @@ class StaffProfile extends DataObject {
 
   public function EmailObfuscatorName() {
 		$obj = HideEmail::convert_email($this->Email);
-		return $obj->text;
+		if($obj) {
+			return $obj->text;
+		}
 	}
 
 	public function EmailObfuscatorLink() {
