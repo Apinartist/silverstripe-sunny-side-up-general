@@ -89,9 +89,7 @@ OrderStep:
 	order_steps_to_include: [
 		OrderStep_Created,
 		OrderStep_Submitted,
-		OrderStep_SentInvoice,
 		OrderStep_Paid,
-		OrderStep_Confirmed,
 		OrderStep_SentReceipt,
 		OrderStep_Sent,
 		OrderStep_Archived
