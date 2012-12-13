@@ -15,14 +15,20 @@
 
 /* general font-size changes and combos */
 .typography p, .typography li, .typography address {font-size: 1em;}
-.typography ul {
+.typography ul {}
+
+/*
 	-moz-column-count: 2;
 	-moz-column-gap: 2.5em;
+	-moz-column-fill: auto;
 	-webkit-column-count: 2;
 	-webkit-column-gap: 2.5em;
+	-webkit-column-fill: auto;
 	column-count: 2;
 	column-gap: 2.5em;
-}
+	column-fill: auto;
+	*/
+
 	.typography li p {font-size: 1em; margin-top: 0px; padding-top: 0px;}
 	.typography li li {font-size: 0.95em;}
 		.typography li li li {font-size: 0.85em;}

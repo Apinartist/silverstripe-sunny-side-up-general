@@ -101,12 +101,12 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	background: -moz-linear-gradient(
 		top,
 		#ffffff 0%,
-		#808383
+		#cfd4d4
 	);
 	background: -webkit-gradient(
 		linear, left top, left bottom,
 		from(#ffffff),
-		to(#808383)
+		to(#cfd4d4)
 	);
 	border-radius: 5px 3px 15px 5px;
 	-moz-border-radius: 5px 3px 15px 5px;
@@ -114,7 +114,7 @@ input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover
 	border: 1px solid #808383;
 	text-decoration: none!important;
 	padding-right: 17px!important;
-	color: #000;
+	color: #808383;
 }
 .typography .action:hover, .typography .Actions input:hover, .typography input.action:hover {
 	background: -moz-linear-gradient(

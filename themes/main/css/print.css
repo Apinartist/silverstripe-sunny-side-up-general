@@ -1,10 +1,13 @@
 @media print {
-	#Nav {display: none;}
-
-	a:link:after {content: "(" attr(href) ")";margin-left: 10px;}
+	body {background-image: none!important;}
+	#Nav, aside, #Sidebar, .backToTop {display: none!important;}
+	#Layout {padding: 30px!important; width: 100%!important}
+	a:link:after {content: "(" attr(href) ")";}
 	a:link {
 		font-weight: bold;
 		text-decoration: underline;
-		color: #0066cc;
+		color: #000;
 	}
+	p, a, h1, h2, h3, h4, h5, h6 {color: #000!important;}
+	th, td {background-color: #FFF!important; border: 1px solid #000!important;}
 }
