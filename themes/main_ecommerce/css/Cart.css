@@ -33,7 +33,7 @@ even when theme-ing ecommerce, these should not be themed
 
 ul.productActions {margin: 0px; padding: 0px;}
 ul.productActions li {display: block; margin: 10px; list-style: none; padding: 0px; margin: 10px 0; line-height: 0.8;}
-ul.productActions li a, .goToCart a, a.selectVariation {
+ul.productActions li a, .goToCart a, a.selectVariation, #ActionLinks a {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	text-decoration: none!important;
@@ -54,7 +54,7 @@ ul.productActions li a, .goToCart a, a.selectVariation {
 	font-size: 11px;
 }
 
-ul.productActions li a:hover, .goToCart a:hover {
+ul.productActions li a:hover, .goToCart a:hover, #ActionLinks a:hover {
 	color: #FF336D;
 	-moz-box-shadow:
 		0px 1px 3px rgba(000,000,000,0.5),
@@ -65,6 +65,7 @@ ul.productActions li a:hover, .goToCart a:hover {
 	border: 1px solid #808383;
 
 }
+#ActionLinks li {float: left; width: 48%; list-style: none;}
 
 .summary {font-weight: bold;}
 
@@ -100,4 +101,20 @@ ol.steps li.current {color: #FF336D;}
 #BodyOrderConfirmationPage #CancelForm,
 #BodyOrderConfirmationPage #CartActionsAndMessages {
 	margin-top: 3em;
+}
+
+td .ajaxRemoveFromCart img {
+	border: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.productList .inCart.productActions .ajaxBuyableRemove, .ajaxRemoveFromCart img {
+	filter: url(/ecommerce/css/filters.svg#grayscale); /* Firefox 3.5+ */
+	filter: gray; /* IE6-9 */
+	-webkit-filter: grayscale(1); /* Google Chrome & Safari 6+ */
+}
+.inCart.productActions .ajaxBuyableRemove:hover, .ajaxRemoveFromCart:hover  img {
+	filter: none;
+	-webkit-filter: grayscale(0);
 }
