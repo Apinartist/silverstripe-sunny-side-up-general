@@ -43,7 +43,7 @@ ProductGroup:
 		price:
 			Title: 'Lowest Price'
 			SQL: "\"Price\" ASC, \"Title\" ASC"
-		lastest:
+		latest:
 			Title: 'Latest Arrivals'
 			SQL: "\"Created\" DESC"
 	filter_options:
