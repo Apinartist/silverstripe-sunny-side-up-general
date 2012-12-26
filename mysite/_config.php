@@ -7,23 +7,24 @@ global $database; $database = "silverstripe_webdevelopment_com";
 require_once("conf/ConfigureFromEnv.php");
 
 
+//===================---------------- START mysite MODULE ----------------===================
+Object::add_extension("SiteConfig", "SiteConfigExtras");
+//===================---------------- END mysite MODULE ----------------===================
+
+
 //===================---------------- START php MODULE ----------------===================
 date_default_timezone_set("NZ");
 //===================---------------- END php MODULE ----------------===================
 
 
-//===================---------------- START mysite MODULE ----------------===================
-Object::add_extension("SiteConfig", "SiteConfigExtras");
-//===================---------------- END mysite MODULE ----------------===================
-
 //===================---------------- START sapphire MODULE ----------------===================
 SSViewer::set_theme('main');
 MySQLDatabase::set_connection_charset('utf8');
-Geoip::$default_country_code = "NZ";
+//SS3 obsolete: Geoip::$default_country_code = "NZ";
 GD::set_default_quality(85);
 Email::setAdminEmail('swd@sunnysideup.co.nz');
 //Member::set_password_validator( new NZGovtPasswordValidator()); //this does not really work
-SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
+//SS3 obsolete: SiteTree::$breadcrumbs_delimiter = ' <span class="delimiter">&raquo;</span> ';
 Session::set_timeout(1209600);//60 * 60 * 24 * 14
 Email::bcc_all_emails_to('copyonly@sunnysideup.co.nz');
 //Requirements::set_combined_files_folder("themes/main"); //DO NOT USE!!!
@@ -49,22 +50,26 @@ i18n::set_date_format("dd-MM-YYYY");
  * Add this means that we never scan for language files for the en_NZ locale.
  */
 $GLOBALS['lang']['en_NZ'] = array();
-//===================---------------- END sapphire MODULE ----------------===================
 
-
-//===================---------------- START cms MODULE ----------------===================
 LeftAndMain::setApplicationName("Sunny Side Up Test Website");
-LeftAndMain::set_loading_image("themes/main/images/logo.gif");
-ModelAdmin::set_page_length(100);
-CMSMenu::remove_menu_item("CommentAdmin");
-CMSMenu::remove_menu_item("ReportAdmin");
-//CMSMenu::remove_menu_item("HelpAdmin");
-LeftAndMain::setLogo($location = "", $style = "");
-PageComment::enableModeration();
+LeftAndMain::require_css("mysite/css/cmsfixes.css");
+//SS3 obsolete: LeftAndMain::setLogo($location = "", $style = "");
+//SS3 obsolete: LeftAndMain::set_loading_image("themes/main/images/logo.gif");
+
 HtmlEditorConfig::get('cms')->setOption('paste_auto_cleanup_on_paste','true');
 HtmlEditorConfig::get('cms')->setOption('paste_remove_styles','true');
 HtmlEditorConfig::get('cms')->setOption('paste_remove_styles_if_webkit','true');
 HtmlEditorConfig::get('cms')->setOption('paste_strip_class_attributes','true');
+
+ModelAdmin::set_page_length(100);
+//===================---------------- END sapphire MODULE ----------------===================
+
+
+//===================---------------- START cms MODULE ----------------===================
+CMSMenu::remove_menu_item("CommentAdmin");
+//CMSMenu::remove_menu_item("ReportAdmin");
+//CMSMenu::remove_menu_item("HelpAdmin");
+PageComment::enableModeration();
 //===================---------------- END cms MODULE  ----------------===================
 
 //===================---------------- START blog MODULE ----------------===================
