@@ -94,7 +94,12 @@ ul#PageComments>li {list-style-image: url("/themes/main/images/comment.png");}
 .sidebarBox .middleColumn, input.action {margin-left: 0px!important;}
 .sidebarBox .middleColumn input{width: 90%!important;}
 
-
+#SidebarChildren li a, #SidebarSiblings li a {display: block; padding: 5px; text-decoration: none; border-bottom: 1px solid #f0f0f0; font-size: 88%;}
+#SidebarChildren li a:hover, #SidebarSiblings li a:hover {
+	-moz-border-radius-bottomright: 30px;
+	border-bottom-right-radius: 2px;
+	background-color: #808383;
+}
 
 .resultsBar, .pageNumbers {font-size: 12px;
 	background-color: #D3D4B6;

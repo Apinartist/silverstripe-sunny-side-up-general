@@ -1,6 +1,7 @@
+;
 jQuery("#Sidebar, #nav").hide();
 
-;(function($) {
+(function($) {
 	jQuery(document).ready(
 		function() {
 			//must do first!
@@ -9,6 +10,7 @@ jQuery("#Sidebar, #nav").hide();
 	);
 
 })(jQuery);
+
 
 var SSUhoverMenu = {
 
@@ -305,3 +307,4 @@ var windowResizer = {
 		// bind the function to the two event listeners
 		return this.bind('mouseenter',handleHover).bind('mouseleave',handleHover);
 	};
+})(jQuery);
