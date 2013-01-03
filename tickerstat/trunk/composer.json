@@ -1,0 +1,20 @@
+{
+	"name": "silverstripe/tickerstat",
+	"type": "silverstripe-module",
+	"description": "Add a ticker to your sites for basic numbers, such as 'number of visitors', 'babies born since the year 0' or whatever tickers your fancy",
+	"homepage": "http://www.silverstripe-webdevelopment.com",
+	"keywords": ["tickerstat", "silverstripe"],
+	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+	"authors":[
+		{
+			"name": "Nicolaas Francken",
+			"homepage": "https://github.com/sunnysideup",
+			"email" : "modules@sunnysideup.co.nz",
+			"role" : "lead developer"
+		}
+	],
+	"require":{
+		"php": ">=5.3.2",
+		"silverstripe/framework": "3.0.*"
+	}
+}

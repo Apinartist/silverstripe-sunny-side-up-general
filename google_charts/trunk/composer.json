@@ -1,0 +1,20 @@
+{
+	"name": "silverstripe/google_charts",
+	"type": "silverstripe-module",
+	"description": "In-depth application of the google charts API for Silverstripe websites",
+	"homepage": "http://www.silverstripe-webdevelopment.com",
+	"keywords": ["google_charts", "silverstripe"],
+	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+	"authors":[
+		{
+			"name": "Nicolaas Francken",
+			"homepage": "https://github.com/sunnysideup",
+			"email" : "modules@sunnysideup.co.nz",
+			"role" : "lead developer"
+		}
+	],
+	"require":{
+		"php": ">=5.3.2",
+		"silverstripe/framework": "3.0.*"
+	}
+}
