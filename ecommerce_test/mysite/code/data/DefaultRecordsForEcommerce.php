@@ -545,9 +545,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 						<li><a href=\"http://www.photowarehouse.co.nz\">photowarehouse</a> - a large retailer site with over four thousand products - contracted by <a href=\"http://www.msodesign.com\">MSO Design</a> to develop back-end only</li>
 						<li><a href=\"http://www.kprcatering.co.nz\">kpr catering</a> - a catering company - contracted by <a href=\"http://www.msodesign.com\">MSO Design</a> to develop back-end only</li>
 						<li><a href=\"http://www.resumetemplates-usa.com\">resume templates usa</a> - a US based company selling curriculum vitae (resume) templates</li>
-						<li><a href=\"http://www.kahuvet.co.nz\">kahu vet</a> - an NZ based company selling products to Vets - contracted by <a href=\"http://www.studiolief.co.nz\">studio lief</a> to build back-end</li>
 						<li><a href=\"http://www.regalsalmon.co.nz\">Regal Salmon</a> - an NZ based company selling salmon - contracted by three-sixty media to build back-end</li>
-						<li><a href=\"http://www.cathaven.com.au\">Cat Haven</a> - an AU based organisation helping cats - contracted by <a href=\"http://www.designcity.com.au\"design city</a> to build back-end</li>
+						<li><a href=\"http://www.cathaven.com.au\">Cat Haven</a> - an AU based organisation helping cats - contracted by <a href=\"http://www.designcity.com.au\">design city</a> to build back-end</li>
 						<li><a href=\"http://www.avelonshop.me\">Avelon Fashion</a> - an NL based fasion design company</li>
 					</ul>
 					<p>
