@@ -106,7 +106,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 				<h2>Silverstripe 3.0</h2>
 				<p>
-					We are in the process of upgrading e-commerce to <a href=\"http://ss3.silverstripe-ecommerce.com/\"Silverstripe 3.0</a>.
+					We are in the process of upgrading e-commerce to <a href=\"http://ss3.silverstripe-ecommerce.com/\">Silverstripe 3.0</a>.
 				</p>
 
 				<h2>Testing</h2>
