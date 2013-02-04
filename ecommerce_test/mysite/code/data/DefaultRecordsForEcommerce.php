@@ -157,8 +157,8 @@ class DefaultRecordsForEcommerce extends DataObject {
 
 				<h3>bugs / feedback / questions</h3>
 				<p>
-					Please visit our <a href=\"http://code.google.com/p/silverstripe-ecommerce/issues/list\">issue list</a> or <a href=\"https://github.com/sunnysideup/silverstripe-ecommerce/issues\">file an issue on github</a> or email us [modules ad sunnysideup.co.nz] or whatever is easiest for you.
-					We welcome any feedback.
+					Please visit our <a href=\"http://code.google.com/p/silverstripe-ecommerce/issues/list\">issue list</a> or <a href=\"https://github.com/sunnysideup/silverstripe-ecommerce/issues\">file an issue on github</a> or email us [modules <i>ad</i> sunnysideup.co.nz] or get in touch with us in whatever way is easiest for you.
+					We welcome any feedback and we will act on it where we can.
 				</p>
 
 				<h2>Thank you</h2>
