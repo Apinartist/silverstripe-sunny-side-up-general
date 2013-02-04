@@ -151,8 +151,15 @@ class DefaultRecordsForEcommerce extends DataObject {
 				</p>
 				<h3>data model</h3>
 				<p>Please review the latest <a href=\"/ecommerce/docs/en/SSUE-commerceDataModel.png\">e-commerce data model</a>.</p>
+
 				<h3>Customising your own copy of e-commerce</h3>
 				<p>We have created a PDF that shows a flow-chart of recommended steps you should take to <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/trunk/docs/en/CustomisingEcommerce.pdf\">customise your own e-commerce application</a>.</p>
+
+				<h3>bugs / feedback / questions</h3>
+				<p>
+					Please visit our <a href=\"http://code.google.com/p/silverstripe-ecommerce/issues/list\">issue list</a> or <a href=\"https://github.com/sunnysideup/silverstripe-ecommerce/issues\">file an issue on github</a> or email us [modules ad sunnysideup.co.nz] or whatever is easiest for you.
+					We welcome any feedback.
+				</p>
 
 				<h2>Thank you</h2>
 				<p>
