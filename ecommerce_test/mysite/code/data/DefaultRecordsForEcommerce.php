@@ -869,7 +869,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->WeightMultiplier= 0;
 			$obj->WeightUnit= 0;
 			$obj->Percentage= 0;
-			$obj->FixedCost= 3;
+			$obj->FixedCost= 0;
 			$obj->Sort= 0;
 			$obj->write();
 		}
@@ -887,6 +887,22 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->Percentage= 0;
 			$obj->FixedCost= 13;
 			$obj->Sort= 100;
+			$obj->write();
+		}
+		$obj = null;
+		if(!DataObject::get_one("PickUpOrDeliveryModifierOptions", "Code = 'personal'")) {
+			$obj = new PickUpOrDeliveryModifierOptions();
+			$obj->IsDefault = 1;
+			$obj->Code = "personal";
+			$obj->Name = "personal delivery";
+			$obj->MinimumDeliveryCharge = 0;
+			$obj->MaximumDeliveryCharge = 0;
+			$obj->MinimumOrderAmountForZeroRate= 0;
+			$obj->WeightMultiplier= 0;
+			$obj->WeightUnit= 0;
+			$obj->Percentage= 10;
+			$obj->FixedCost= 0;
+			$obj->Sort= 0;
 			$obj->write();
 		}
 		$obj = null;
