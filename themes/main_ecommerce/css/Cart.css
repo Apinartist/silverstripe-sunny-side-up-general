@@ -65,7 +65,9 @@ ul.productActions li a:hover, .goToCart a:hover, #ActionLinks a:hover {
 	border: 1px solid #808383;
 
 }
+#ActionLinks  {padding: 0; margin: 0;}
 #ActionLinks li {float: left; width: 48%; list-style: none;}
+#ActionLinks li a{width: 80%;}
 
 .summary {font-weight: bold;}
 
