@@ -56,7 +56,7 @@ class StaffProfile extends DataObject {
 	}
 
 	public function EmailObfuscatorLink() {
-		$obj = HideEmail::convert_email($this->Email);
+		$obj = HideEmail::convert_email($this->Email, "enquiry from ".Director::baseURL());
 		return $obj->mailto;
 	}
 
