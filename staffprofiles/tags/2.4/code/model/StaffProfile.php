@@ -60,7 +60,7 @@ class StaffProfile extends DataObject {
 			$obj = HideEmail::convert_email($this->Email, "Enquiry from www.davidtrubridge.com");
 			return $obj->mailto;
 		}
-		else {
+		elseif($this->Email) {
 			return "mailto:".$this->Email;
 		}
 	}
@@ -75,7 +75,7 @@ class StaffProfile extends DataObject {
 		if(class_exists("HideEmail") && $this->Email) {
 			return HideEmail::encode_string(str_replace("@", "[at]", $this->Email));
 		}
-		else {
+		elseif($this->Email) {
 			return $this->Email;
 		}
 	}
