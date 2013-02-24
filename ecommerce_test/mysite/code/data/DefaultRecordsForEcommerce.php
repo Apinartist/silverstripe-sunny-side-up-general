@@ -150,7 +150,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 					</strong>
 				</p>
 				<h3>data model</h3>
-				<p>Please review the latest <a href=\"/ecommerce/docs/en/SSUE-commerceDataModel.png\">e-commerce data model</a>.</p>
+				<p>Please review the latest <a href=\"/ecommerce/docs/en/DataModel.png\">e-commerce data model</a>.</p>
 
 				<h3>Customising your own copy of e-commerce</h3>
 				<p>We have created a PDF that shows a flow-chart of recommended steps you should take to <a href=\"https://silverstripe-ecommerce.googlecode.com/svn/trunk/docs/en/CustomisingEcommerce.pdf\">customise your own e-commerce application</a>.</p>
