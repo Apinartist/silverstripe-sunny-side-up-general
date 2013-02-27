@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/google_charts",
+	"name": "sunnysideup/google_charts",
 	"type": "silverstripe-module",
 	"description": "In-depth application of the google charts API for Silverstripe websites",
 	"homepage": "http://www.silverstripe-webdevelopment.com",

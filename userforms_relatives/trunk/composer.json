@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/userforms_relatives",
+	"name": "sunnysideup/userforms_relatives",
 	"type": "silverstripe-module",
 	"description": "Add family (relatives) related fields to your editable userform: my children and my ancestors.",
 	"homepage": "http://www.silverstripe-webdevelopment.com",

@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/tickerstat",
+	"name": "sunnysideup/tickerstat",
 	"type": "silverstripe-module",
 	"description": "Add a ticker to your sites for basic numbers, such as 'number of visitors', 'babies born since the year 0' or whatever tickers your fancy",
 	"homepage": "http://www.silverstripe-webdevelopment.com",
