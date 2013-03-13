@@ -126,7 +126,13 @@ class WordCloudChart_Rotating extends Chart {
 	static function addRequirements() {
 		$protocol = Director::protocol();
 		Requirements::javascript("{$protocol}www.google.com/jsapi");
-		Requirements::javascript("{$protocol}word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js");
+
+		// Host wordcumulus.js locally so that we can modify a url that it requests,
+		// otherwise the original wordcumulus.js makes an http request for a swf
+		// which cause a security block of the swf on Chrome if page is loaded via https.
+		//Requirements::javascript("{$protocol}word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js");
+		Requirements::javascript("googlecharts/javascript/word-cumulus-goog-vis/wordcumulus.js");
+
 		Requirements::javascript("{$protocol}word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js");
 		Requirements::javascript('googlecharts/javascript/wordcloudrotating.js');
 	}
