@@ -32,6 +32,7 @@ gviz_word_cumulus.WordCumulus.prototype.draw = function(data, options) {
 
   // Use a locally hosted version of tagcloud.swf to avoid security issues 
   // with Chrome when the page is loaded via https.
+  // Note that the leading / means that the site must be in the root directory.
   //var url = "http://word-cumulus-goog-vis.googlecode.com/svn/trunk/tagcloud.swf";
   var url = "/googlecharts/javascript/word-cumulus-goog-vis/tagcloud.swf";
 
