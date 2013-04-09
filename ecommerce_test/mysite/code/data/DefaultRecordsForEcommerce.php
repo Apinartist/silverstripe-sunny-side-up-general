@@ -900,7 +900,7 @@ class DefaultRecordsForEcommerce extends DataObject {
 			$obj->MinimumOrderAmountForZeroRate= 0;
 			$obj->WeightMultiplier= 0;
 			$obj->WeightUnit= 0;
-			$obj->Percentage= 10;
+			$obj->Percentage= 0.1;
 			$obj->FixedCost= 0;
 			$obj->Sort= 0;
 			$obj->write();
