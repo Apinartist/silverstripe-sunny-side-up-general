@@ -71,15 +71,17 @@ TickerStat = {
 	 * @param Int width
 	 */
 	turnNumberIntroStringWithSpans: function(number, width) {
-		string = number + "";
+		var string = number + "";
 		var padding = width - string.length;
-		outcome = "";
+		var outcome = "";
 		for(i = 0; i < width; i++){
 			if(i < padding) {
 				outcome += "<span>&nbsp;</span>";
 			}
 			else {
-				outcome += "<span>"+string[(-1 * padding) + i]+"</span>";
+				//use charAt() instead of string[i] as that's not support in IE7
+				//outcome += "<span>"+string[(-1 * padding) + i]+"</span>";
+				outcome += "<span>"+string.charAt((-1 * padding) + i)+"</span>";
 			}
 		}
 		return outcome;
