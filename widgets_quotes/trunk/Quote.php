@@ -28,8 +28,8 @@ class Quote extends Widget {
 		static function get_folder_name_for_images(){return self::$folder_name_for_images;}
 
 	function getCMSFields() {
-		$folder = Folder::findOrMake(self::get_folder_name_for_images());
-		$fields = new FieldSet(
+		$folder = Folder::find_or_make(self::get_folder_name_for_images());
+		$fields = new FieldList(
 			new HeaderField("FieldExplanations", "Enter optional fields below..."),
 			new TextField("WidgetTitle", "Title"),
 			new TextField("SubTitle", "Sub title"),
@@ -40,8 +40,8 @@ class Quote extends Widget {
 		);
 		$hasPhoto = false;
 		if($this->ID) {
-			$images = DataObject::get("Image", "ParentID = ".$folder->ID);
-			if($images) {
+			$images = Image::get()->filter('ParentID', $folder->ID);
+			if($images->exists()) {
 				$list = $images->map();
 				$fields->push(new DropdownField("PhotoID", "Photo", $list, null, null, " --- select image --- "));
 				$hasPhoto = true;
@@ -71,6 +71,5 @@ class Quote extends Widget {
 	function MyPhoto() {
 		return $this->Photo();
 	}
-
 }
 
